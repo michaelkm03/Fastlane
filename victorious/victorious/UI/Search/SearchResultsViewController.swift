@@ -9,46 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol PaginatedDataSourceType: class {
-    var currentOperation: RequestOperation? { get }
-    var isLoading: Bool { get }
-    var visibleItems: NSOrderedSet { get }
-    weak var delegate: PaginatedDataSourceDelegate? { set get }
-    
-    func cancelCurrentOperation()
-    func unload()
-    func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? )
-}
-
-protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSource {
-    func registerCells( forTableView tableView: UITableView )
-    func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )
-    var searchTerm: String? { get }
-    var error: NSError? { get }
-}
-
-@objc protocol SearchResultsViewControllerDelegate: class {
-    func searchResultsViewControllerDidSelectCancel()
-    func searchResultsViewControllerDidSelectResult(result: AnyObject)
-}
-
 class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     var dependencyManager: VDependencyManager?
     
-    enum SearchState {
-        case Loading
-        case Cleared
-        case NoResults
-        case Results
-        case Error
-    }
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        view.color = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        view.hidesWhenStopped = true
+        return view
+    }()
     
-    private(set) var state: SearchState = .Cleared {
-        didSet {
-            onSearchStateUpdated();
-        }
+    var state: DataSourceState {
+        return self.dataSource?.state ?? .Cleared
     }
     
     var searchController: UISearchController = UISearchController() {
@@ -65,11 +39,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     @IBOutlet private var tableView: UITableView!
     
-    var noContentView: VNoContentView? {
-        didSet {
-            setupNoContentView()
-        }
-    }
+    var noContentView: VNoContentView?
 
     private lazy var scrollPaginator: VScrollPaginator = {
         let paginator = VScrollPaginator()
@@ -81,19 +51,15 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     func clear() {
         dataSource?.unload()
-        state = .Cleared
     }
     
     func cancel() {
         dataSource?.cancelCurrentOperation()
-        updateSearchState()
     }
     
-    func search( searchTerm searchTerm: String ) {
-        dataSource?.search(searchTerm: searchTerm, pageType: .First) { error in
-            self.updateSearchState()
-        }
-        state = .Loading
+    func search( searchTerm searchTerm: String, completion:((NSError?)->())? = nil ) {
+        dataSource?.unload()
+        dataSource?.search(searchTerm: searchTerm, pageType: .First, completion: completion)
     }
     
     // MARK: - UIViewController
@@ -107,18 +73,23 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         
         searchController.searchBar.delegate = self
         dataSource?.delegate = self
-        tableView.separatorStyle = .None
+        
+        view.insertSubview(activityIndicatorView, aboveSubview: tableView)
+        view.v_addCenterHorizontallyConstraintsToSubview(activityIndicatorView)
+        view.v_addPinToTopToSubview(activityIndicatorView, topMargin: activityIndicatorView.bounds.height)
+        
+        // Removes the separaters for empty rows
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         
         onDidSetDataSource()
-        onSearchStateUpdated()
-        setupNoContentView()
+        updateTableView()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         // Unable to immediately make the searchBar first responder without this hack
-        dispatch_after(0.01) { () -> () in
+        dispatch_after(0.01) {
             self.searchController.searchBar.becomeFirstResponder()
         }
     }
@@ -151,36 +122,43 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if let searchTerm = searchBar.text {
-            self.search(searchTerm: searchTerm)
+            search(searchTerm: searchTerm, completion:nil)
         }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.characters.isEmpty {
-            self.clear()
+            clear()
         }
     }
     
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        if let dataSource = dataSource,
-            let searchTerm = dataSource.searchTerm where dataSource.isLoading == false {
-                dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
+        guard let dataSource = dataSource,
+            let searchTerm = dataSource.searchTerm where dataSource.state != .Loading else {
+                return
         }
+        dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
     }
     
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
-        updateSearchState()
-        
         if oldValue.count > 0 && newValue.count > 0 {
             tableView.flashScrollIndicators()
         }
+        
+        // FIXME: tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+        tableView.reloadData()
     }
     
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        
+        updateTableView()
+    }
+
     // MARK: - Private
     
     private func onDidSetDataSource() {
@@ -194,51 +172,39 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         dataSource?.registerCells( forTableView: tableView )
     }
     
-    private func setupNoContentView() {
-        if let noContentView = noContentView where isViewLoaded() && noContentView.superview == nil {
-            view.insertSubview(noContentView, belowSubview: tableView)
-            view.v_addFitToParentConstraintsToSubview(noContentView)
-        }
-    }
-    
-    private func updateSearchState() {
-        guard let dataSource = dataSource else {
+    func updateTableView() {
+        
+        guard let dataSource = self.dataSource else {
+            tableView.backgroundView = nil
+            activityIndicatorView.stopAnimating()
             return
         }
         
-        if dataSource.error != nil {
-            state = .Error
+        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .SingleLine : .None
+        let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
+        
+        switch dataSource.state {
             
-        } else if state != .Cleared && !dataSource.isLoading {
-            state = dataSource.visibleItems.count == 0 ? .NoResults : .Results
-        }
-    }
-    
-    private func onSearchStateUpdated() {
-        switch self.state {
-        case .NoResults:
-            let wasHidden = noContentView?.hidden ?? false
-            noContentView?.hidden = false
-            tableView.hidden = true
-            
-            if wasHidden {
-                noContentView?.resetInitialAnimationState()
+        case .Error, .NoResults:
+            guard let tableView = self.tableView else {
+                break
             }
-            noContentView?.animateTransitionIn()
+            if !isAlreadyShowingNoContent {
+                noContentView?.resetInitialAnimationState()
+                noContentView?.animateTransitionIn()
+            }
             
-        case .Error:
-            noContentView?.hidden = true
-            tableView.hidden = true
+            noContentView?.frame = tableView.bounds
+            tableView.backgroundView = noContentView
+            activityIndicatorView.stopAnimating()
             
-        case .Cleared, .Loading where dataSource?.visibleItems.count == 0:
-            noContentView?.hidden = true
-            tableView.hidden = false
+        case .Loading where dataSource.visibleItems.count == 0:
+            tableView.backgroundView = nil
+            activityIndicatorView.startAnimating()
             
         default:
-            noContentView?.hidden = true
-            tableView.hidden = false
+            tableView.backgroundView = nil
+            activityIndicatorView.stopAnimating()
         }
-        
-        tableView.reloadData()
     }
 }

@@ -28,7 +28,7 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         super.viewDidLoad()
         
         if let viewController = viewControllers.first,
-            var searchResultsViewControler = viewController as? SearchResultsViewController {
+            let searchResultsViewControler = viewController as? SearchResultsViewController {
                 
                 searchResultsViewControler.dataSource = UserSearchDataSource()
                 searchResultsViewControler.searchResultsDelegate = self
@@ -47,7 +47,6 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
                 viewController.navigationItem.titleView = searchController.searchBar
                 
                 let noContentView: VNoContentView = VNoContentView.v_fromNib()
-                noContentView.translatesAutoresizingMaskIntoConstraints = false
                 noContentView.icon = UIImage(named: "user-icon")
                 noContentView.title = NSLocalizedString("NoUserSearchResultsTitle", comment:"")
                 noContentView.message = NSLocalizedString("NoUserSearchResultsMessage", comment:"")

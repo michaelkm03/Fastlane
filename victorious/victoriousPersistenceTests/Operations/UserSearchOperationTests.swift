@@ -13,7 +13,14 @@ import XCTest
 class UserSearchOperationTests: BaseRequestOperationTestCase {
 
     let testUserID: Int = 1
-
+    var operation: UserSearchOperation!
+    
+    override func setUp() {
+        super.setUp()
+        operation = UserSearchOperation(searchTerm: "test")
+        operation.requestExecutor = testRequestExecutor
+    }
+    
     func testBasicSearch() {
         guard let operation = UserSearchOperation(searchTerm: "test") else {
             XCTFail("Operation initialization should not fail here")

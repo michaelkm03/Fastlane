@@ -34,9 +34,8 @@ class VCurrentUser: NSObject {
             return userFromMainContext
             
         } else {
-            let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
-                return context.objectWithID( objectID ) as? VUser
+                return context.objectWithID( userFromMainContext.objectID ) as? VUser
             }
         }
     }

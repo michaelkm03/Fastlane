@@ -8,17 +8,26 @@
 
 import Foundation
 
-/// Utility used for creating large HTTP request POST bodies in temporary files.
-/// This is particularly useful for large bodies, such as those that contain images or other media.
-class AccountUpdateRequestBodyWriter: RequestBodyWriter {
+class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     
-    var bodyTempFile: NSURL {
-        return createBodyTempFile()
+    struct Output {
+        let fileURL: NSURL
+        let contentType: String
     }
     
-    /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write(parameters parameters: AccountUpdateParameters) throws -> RequestBodyWriterOutput {
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
+    let parameters: AccountUpdateParameters
+    
+    init( parameters: AccountUpdateParameters ) {
+        self.parameters = parameters
+    }
+    
+    deinit {
+        removeBodyTempFile()
+    }
+    
+    func write() throws -> Output {
+        
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         // Write params for a password update
         if let passwordCurrent = parameters.passwordUpdate?.passwordCurrent,
@@ -53,6 +62,6 @@ class AccountUpdateRequestBodyWriter: RequestBodyWriter {
         
         try writer.finishWriting()
         
-        return RequestBodyWriterOutput(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
     }
 }

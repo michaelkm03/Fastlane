@@ -8,6 +8,7 @@
 
 import Foundation
 import VictoriousIOSSDK
+import VictoriousCommon
 
 extension RequestContext {
     

@@ -11,6 +11,7 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
+    
     let testUserID: Int = 1
     let emails = ["h@h.hh", "mike@msena.com"]
     
@@ -20,6 +21,7 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
             return
         }
         operation.persistentStore = testStore
+        operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
 

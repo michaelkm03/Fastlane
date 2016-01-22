@@ -14,7 +14,6 @@ class MainRequestExecutor: RequestExecutorType {
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private(set) var error: NSError?
-
     
     weak var delegate: RequestExecutorDelegate? = nil
     

@@ -9,14 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol ResultsOperation : class {
-    var results: [AnyObject]? { get }
-    var didResetResults: Bool { get }
-}
-
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedOperation : ResultsOperation {
+protocol PaginatedOperation {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -33,10 +28,26 @@ protocol PaginatedOperation : ResultsOperation {
     
     /// Returns a copy of this operation configured for loading previous page worth of data
     func prev() -> Self?
+    
+    /// A place to store the results so that they are available to calling code that is
+    /// consuming this delegate (most likely an NSOperation).  This is why the protocol
+    /// is required to be implemented by a class.
+    var results: [AnyObject]? { set get }
+    
+    /// Once a network request's response has been parsed and dumped in the persistent store,
+    /// this method re-retrives from the main context any of the loaded results that should
+    /// be sent back the view controller ready for display on the main thread
+    func fetchResults() -> [AnyObject]
+    
+    /// In some situations is it necessary to clear existing data in the persistent store
+    /// to make room for some updated data from the network that supercedes it.  The nature
+    /// of this supercession is critial in that if operations were not to clear results
+    /// when asked, the ordering and accuracy of results may be unexpected.
+    func clearResults()
 }
 
 extension PaginatedOperation {
-    
+
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)
@@ -48,9 +59,7 @@ extension PaginatedOperation {
 extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
-        guard let results = self.results else {
-            fatalError( "The `resultCount` property has not been set on the receiver (\(self.dynamicType)).  This is required in order to determine if there is a next page available.  I would suggest setting it in the completion closure provided to `RequestOperation`s `requestExecutor.executeRequest(_:onComplete:onError:)` method." )
-        }
+        let results = self.results ?? []
         if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: results.count) {
             return self.dynamicType.init(request: request)
         }

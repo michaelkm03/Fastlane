@@ -35,8 +35,7 @@ class NotificationTests: XCTestCase {
         XCTAssertEqual(notification.type, "private_message")
         XCTAssertEqual(notification.updatedAt, dateFormatter.dateFromString("2015-11-11 19:00:33"))
         XCTAssertEqual(notification.subject, "Ryan Higa sent you a message")
-        XCTAssertEqual(notification.remoteID, Int(0))
-        XCTAssertEqual(notification.displayOrder, Int(0))
+        XCTAssertEqual(notification.notificationID, "0")
         XCTAssertEqual(notification.user.name, "Ryan Higa")
     }
 }

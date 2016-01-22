@@ -9,73 +9,36 @@
 import Foundation
 import SwiftyJSON
 
-/// Sends a message to a recipient.
-public class SendMessageRequest: RequestType {
+public struct SendMessageRequest: RequestType {
     
-    public let recipientID: Int
-    public let text: String?
-    public let mediaURL: NSURL?
-    public let mediaType: MediaAttachmentType?
+    private let requestBodyWriter: MessageRequestBodyWriter
+    private let requestBody: MessageRequestBodyWriter.Output
     
-    public private(set) var urlRequest = NSURLRequest()
-    
-    private var bodyTempFile: NSURL?
-    
-    private func makeRequest() throws -> NSURLRequest {
-        let bodyTempFile = self.tempFile()
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
-        
-        try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext(String(recipientID), withFieldName: "to_user_id")
-        
-        if let mediaURL = mediaURL,
-            let mediaType = mediaType,
-            let pathExtension = mediaURL.pathExtension,
-            let mimeType = mediaURL.vsdk_mimeType {
-                if mediaType == .GIF {
-                    try writer.appendPlaintext("true", withFieldName: "is_gif_style")
-                }
-                try writer.appendFileWithName("message_media.\(pathExtension)", contentType: mimeType, fileURL: mediaURL, fieldName: "media_data")
-        }
-        
-        try writer.finishWriting()
-        self.bodyTempFile = bodyTempFile
-        
+    public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/message/send")!)
         request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: bodyTempFile)
+        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request
     }
     
-    private func tempFile() -> NSURL {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }
-    
-    public init?(recipientID: Int, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
-        
-        self.recipientID = recipientID
-        self.text = text
-        self.mediaType = mediaAttachmentType
-        self.mediaURL = mediaURL
-        
+    public init?( creationParameters: Message.CreationParameters ) {
         do {
-            self.urlRequest = try makeRequest()
+            requestBodyWriter = MessageRequestBodyWriter(parameters: creationParameters)
+            requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }
     }
     
-    deinit {
-        if let bodyTempFile = bodyTempFile {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
-        }
-    }
-    
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int, messageID: Int) {
         let payload = responseJSON["payload"]
-        guard let conversationID = Int(payload["conversation_id"].string ?? ""),
-            let messageID = payload["message_id"].int else {
+        
+        let conversationIDJSON = payload["conversation_id"]
+        let messageIDJSON = payload["message_id"]
+        
+        guard let conversationID = Int(conversationIDJSON.stringValue) ?? conversationIDJSON.int,
+            let messageID = Int(messageIDJSON.stringValue) ?? messageIDJSON.int else {
                 throw ResponseParsingError()
         }
         return (conversationID, messageID)

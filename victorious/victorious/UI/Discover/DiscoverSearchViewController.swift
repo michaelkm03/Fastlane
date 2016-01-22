@@ -24,13 +24,12 @@ public extension DiscoverSearchViewController {
         userSearchVC.didMoveToParentViewController(self)
         userSearchVC.searchResultsDelegate = self
         
-        let usersNoContentView: VNoContentView = VNoContentView.v_fromNib()
-        usersNoContentView.translatesAutoresizingMaskIntoConstraints = false
+        let usersNoContentView = VNoContentView(frame: view.bounds)
         usersNoContentView.icon = UIImage(named: "user-icon")?.imageWithRenderingMode(.AlwaysTemplate)
         usersNoContentView.title = NSLocalizedString("No People Found In Search Title", comment:"")
         usersNoContentView.message = NSLocalizedString("No people found in search", comment:"")
         usersNoContentView.resetInitialAnimationState()
-        usersNoContentView.setDependencyManager( self.dependencyManager! )
+        usersNoContentView.setDependencyManager(self.dependencyManager)
         userSearchVC.noContentView = usersNoContentView
         
         let hashtagSearchVC: SearchResultsViewController = UserSearchViewController.v_fromStoryboard( "UserSearchViewController",
@@ -46,13 +45,12 @@ public extension DiscoverSearchViewController {
         hashtagSearchVC.didMoveToParentViewController(self)
         hashtagSearchVC.searchResultsDelegate = self
         
-        let hashtagNoContentView: VNoContentView = VNoContentView.v_fromNib()
-        hashtagNoContentView.translatesAutoresizingMaskIntoConstraints = false
+        let hashtagNoContentView = VNoContentView(frame: view.bounds)
         hashtagNoContentView.icon = UIImage(named: "tabIconHashtag")?.imageWithRenderingMode(.AlwaysTemplate)
         hashtagNoContentView.title = NSLocalizedString("No Hashtags Found In Search Title", comment:"")
         hashtagNoContentView.message = NSLocalizedString("No hashtags found in search", comment:"")
         hashtagNoContentView.resetInitialAnimationState()
-        hashtagNoContentView.setDependencyManager( self.dependencyManager! )
+        hashtagNoContentView.setDependencyManager(self.dependencyManager)
         hashtagSearchVC.noContentView = hashtagNoContentView
     }
 }

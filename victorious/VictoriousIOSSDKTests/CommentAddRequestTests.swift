@@ -12,53 +12,45 @@ import XCTest
 
 class CommentAddRequestTests: XCTestCase {
     
-    let textOnlyParameters = CommentParameters(
-        sequenceID: "17100",
+    let textOnlyParameters = Comment.CreationParameters(
         text: "test",
+        sequenceID: "17100",
         replyToCommentID: 1564,
-        mediaURL: nil,
-        mediaType: nil,
-        realtimeComment: nil
+        mediaAttachment: nil,
+        realtimeAttachment: nil
     )
     
     func testTextOnlyRequest() {
-        let request = CommentAddRequest(parameters: textOnlyParameters)!
+        let request = CommentAddRequest(creationParameters: textOnlyParameters)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
     }
     
     func testRealtimeRequest() {
-        let params = CommentParameters(
-            sequenceID: "17100",
+        let params = Comment.CreationParameters(
             text: "test",
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: nil,
-            mediaType: nil,
-            realtimeComment: CommentParameters.RealtimeComment(time: 0.54, assetID: 999)
+            mediaAttachment: nil,
+            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
         )
         
-        let request = CommentAddRequest(parameters: params)!
+        let request = CommentAddRequest(creationParameters: params)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
     }
     
     func testMediaRequest() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("test_image", withExtension: "png") else {
-            XCTFail("Error reading mock image")
-            return
-        }
-        
-        let params = CommentParameters(
-            sequenceID: "17100",
+        let params = Comment.CreationParameters(
             text: nil,
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: mockUserDataURL,
-            mediaType: .Image,
-            realtimeComment: nil
+            mediaAttachment: nil,
+            realtimeAttachment: nil
         )
-        let request = CommentAddRequest(parameters: params)!
+        let request = CommentAddRequest(creationParameters: params)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
@@ -70,7 +62,7 @@ class CommentAddRequestTests: XCTestCase {
                 XCTFail("Error reading mock json data")
                 return
         }
-        let request = CommentAddRequest(parameters: textOnlyParameters)!
+        let request = CommentAddRequest(creationParameters: textOnlyParameters)!
         
         let comment: Comment?
         do {

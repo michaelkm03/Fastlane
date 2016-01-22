@@ -11,10 +11,15 @@ import VictoriousIOSSDK
 
 extension VConversation: PersistenceParsable {
     
-    func populate( fromSourceModel conversation: Conversation ) {
-        isRead      = conversation.isRead
-        postedAt    = conversation.postedAt
-        remoteId    = conversation.conversationID
-        messages    = NSOrderedSet()
+    func populate( fromSourceModel sourceModel: Conversation ) {
+        isRead              = sourceModel.isRead ?? isRead
+        postedAt            = sourceModel.postedAt ?? postedAt
+        remoteId            = sourceModel.conversationID ?? remoteId
+        lastMessageText     = sourceModel.previewMessageText ?? lastMessageText
+        
+        if self.user == nil {
+            self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.otherUser.userID ] ) as VUser
+        }
+        self.user?.populate(fromSourceModel: sourceModel.otherUser)
     }
 }

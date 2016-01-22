@@ -55,7 +55,7 @@ class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self.requestExecutor.error )
+                self.mainQueueCompletionBlock?(self.requestExecutor.error )
             }
         }
         queue.addOperation( self )

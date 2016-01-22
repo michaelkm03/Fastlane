@@ -11,16 +11,12 @@ import SwiftyJSON
 @testable import VictoriousIOSSDK
 
 class UserSearchRequestTests: XCTestCase {
-
+    
     func testConfiguredRequest() {
         
         let searchTerm = "asdf"
         let paginator = StandardPaginator(pageNumber: 2, itemsPerPage: 25)
-        guard let request = UserSearchRequest(searchTerm: searchTerm, paginator: paginator) else {
-            XCTFail("UserSearchRequest: Could not create request.")
-            return
-        }
-        
+        let request = UserSearchRequest(searchTerm: searchTerm, paginator: paginator)
         XCTAssertEqual(request.urlRequest.URL, NSURL(string:"/api/userinfo/search_paginate/asdf/2/25/message"))
     }
     
@@ -31,10 +27,7 @@ class UserSearchRequestTests: XCTestCase {
             return
         }
         
-        guard let request = UserSearchRequest(searchTerm: "a") else {
-            XCTFail("UserSearchRequest: Could not create request.")
-            return
-        }
+        let request = UserSearchRequest(searchTerm: "a")
         
         let results: [User]
         do {
@@ -51,5 +44,5 @@ class UserSearchRequestTests: XCTestCase {
             XCTFail("should have at least one user")
         }
     }
-
+    
 }

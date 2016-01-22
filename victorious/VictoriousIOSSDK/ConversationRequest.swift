@@ -21,7 +21,7 @@ public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
     public let paginator: StandardPaginator
     
     public init(request: ConversationRequest, paginator: StandardPaginator) {
-        self.init( conversationID: request.conversationID, paginator: request.paginator)
+        self.init( conversationID: request.conversationID, paginator: paginator)
     }
     
     public init(conversationID: Int, paginator: StandardPaginator = StandardPaginator() ) {

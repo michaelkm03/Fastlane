@@ -198,7 +198,7 @@
     [self.searchField resignFirstResponder];
     if ( textField.text != nil && textField.text.length > 0 )
     {
-        [self.currentSearchVC searchWithSearchTerm:textField.text];
+        [self.currentSearchVC searchWithSearchTerm:textField.text completion:nil];
     }
     return YES;
 }

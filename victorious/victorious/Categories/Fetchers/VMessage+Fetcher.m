@@ -18,7 +18,7 @@
 {
     if ([self hasMedia])
     {
-        if ([self.mediaPath v_hasVideoExtension]) // << Video media type
+        if ([self.mediaUrl v_hasVideoExtension]) // << Video media type
         {
             if ([[self shouldAutoplay] boolValue])
             {
@@ -46,13 +46,13 @@
 - (NSURL *)previewImageURL
 {
     NSURL *url;
-    if (self.thumbnailPath != nil && ![self.thumbnailPath isEmpty])
+    if (self.thumbnailUrl != nil && ![self.thumbnailUrl isEmpty])
     {
-        url = [NSURL URLWithString:self.thumbnailPath];
+        url = [NSURL URLWithString:self.thumbnailUrl];
     }
-    else if (self.mediaPath != nil && ![self.mediaPath isEmpty] && [self messageMediaType] == VMessageMediaTypeImage)
+    else if (self.mediaUrl != nil && ![self.mediaUrl isEmpty] && [self messageMediaType] == VMessageMediaTypeImage)
     {
-        url = [NSURL URLWithString:self.mediaPath];
+        url = [NSURL URLWithString:self.mediaUrl];
     }
     
     return url;
@@ -86,7 +86,7 @@
             return [self mp4MediaURL];
             break;
         default:
-            return [NSURL URLWithString:self.mediaPath];
+            return [NSURL URLWithString:self.mediaUrl];
             break;
     }
 }
@@ -95,15 +95,15 @@
 
 - (BOOL)hasMedia
 {
-    return (self.mediaPath != nil && self.mediaPath.length > 0) || (self.thumbnailPath && ![self.thumbnailPath isEmpty]);;
+    return (self.mediaUrl != nil && self.mediaUrl.length > 0) || (self.thumbnailUrl && ![self.thumbnailUrl isEmpty]);;
 }
 
 - (NSURL *)mp4MediaURL
 {
     NSString *mediaDataURLString = [self messageMediaURLForMimeType:kmp4MimeType];
-    if ( mediaDataURLString == nil && [self.mediaPath v_isExtensionMp4] )
+    if ( mediaDataURLString == nil && [self.mediaUrl v_isExtensionMp4] )
     {
-        mediaDataURLString = self.mediaPath;
+        mediaDataURLString = self.mediaUrl;
     }
     
     return [NSURL URLWithString:mediaDataURLString];

@@ -37,8 +37,7 @@ class StoredLoginOperation: Operation {
             }
             user.setAsCurrentUser()
             
-            let id = Int(user.remoteId.integerValue)
-            UserInfoOperation( userID: id ).queueAfter(self)
+            PreloadUserInfoOperation().queueAfter(self)
       
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let accountIdentifier = defaults.stringForKey(kAccountIdentifierDefaultsKey),

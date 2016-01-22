@@ -25,10 +25,6 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        
-        super.init()
-        
-        clearsVisibleItemsBeforeLoadingFirstPage = true
     }
     
     func registerCells( forTableView tableView: UITableView ) {
@@ -62,7 +58,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     //MARK: - UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.isLoading ? Section.Count : 1
+        return self.state == .Loading ? Section.Count : 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

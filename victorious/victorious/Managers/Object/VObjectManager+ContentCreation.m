@@ -486,7 +486,7 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
                                          @"text" : message.text ?: [NSNull null]
                                          } mutableCopy];
     
-    if (message.mediaPath != nil)
+    if (message.mediaUrl != nil)
     {
         NSString *gifParameterValue = message.shouldAutoplay.boolValue ? @"true" : @"false";
         parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
@@ -494,11 +494,11 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
 
     NSDictionary *allURLs;
     NSURL *mediaURL;
-    if (message.mediaPath != nil)
+    if (message.mediaUrl != nil)
     {
-        mediaURL = [NSURL URLWithString:message.mediaPath];
+        mediaURL = [NSURL URLWithString:message.mediaUrl];
         allURLs = @{@"media_data": mediaURL};
-        NSString *type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
+        NSString *type = [message.mediaUrl v_hasVideoExtension] ? @"video" : @"image";
         [parameters setValue:type forKey:@"media_type"];
     }
     
@@ -539,11 +539,11 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
     
-    //Use a copy of the inputs to prevent the text and mediaPath from changing when these parameters fall out of memory or are reused
+    //Use a copy of the inputs to prevent the text and mediaUrl from changing when these parameters fall out of memory or are reused
     tempMessage.text = [text copy];
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
-    tempMessage.thumbnailPath = [self localImageURLForVideo:[publishParameters.mediaToUploadURL absoluteString]];
-    tempMessage.mediaPath = [[publishParameters.mediaToUploadURL absoluteString] copy];
+    tempMessage.thumbnailUrl = [self localImageURLForVideo:[publishParameters.mediaToUploadURL absoluteString]];
+    tempMessage.mediaUrl = [[publishParameters.mediaToUploadURL absoluteString] copy];
     tempMessage.sender = self.mainUser;
     tempMessage.senderUserId = self.mainUser.remoteId;
     tempMessage.shouldAutoplay = [NSNumber numberWithBool:publishParameters.isGIF];

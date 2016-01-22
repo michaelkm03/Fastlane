@@ -9,11 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SuggestedUsersOperation: RequestOperation, ResultsOperation {
+class SuggestedUsersOperation: RequestOperation {
     
     let request = SuggestedUsersRequest()
-    var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
+    var suggestedUsers: [VSuggestedUser]?
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
@@ -36,14 +35,14 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
             }
             context.v_save()
             
-            self.results = self.fetchResults( suggestedUsers )
+            self.results = self.reloadFromMainContext( suggestedUsers )
             completion()
         }
     }
     
-    func fetchResults( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
-        var output = [VSuggestedUser]()
-        persistentStore.mainContext.v_performBlockAndWait() { context in
+    private func reloadFromMainContext( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            var output = [VSuggestedUser]()
             for suggestedUser in suggestedUsers {
                 guard let user = context.objectWithID( suggestedUser.user.objectID ) as? VUser else {
                     fatalError( "Could not load user." )
@@ -53,7 +52,17 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
                 }
                 output.append( VSuggestedUser( user: user, recentSequences: recentSequences ) )
             }
+            return output
         }
-        return output
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

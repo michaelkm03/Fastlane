@@ -19,6 +19,6 @@ extern NSString * const VDependencyManagerObjectManagerKey; ///< An instance of 
  of VObjectManager as a singleton, this property should be used in favor of [`VObjectManager sharedManager]`
  wherever possible.
  */
-- (VObjectManager *)objectManager;
+//- (VObjectManager *)objectManager;
 
 @end

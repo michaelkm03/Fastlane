@@ -32,7 +32,7 @@
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
-@property (nonatomic, retain) VConversation *conversation;
+@property (nonatomic, retain) NSOrderedSet *conversations;
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSOrderedSet *followedHashtags;

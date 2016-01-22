@@ -21,10 +21,8 @@ import VictoriousIOSSDK
 
 final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults = false
-    
     let request: HashtagSearchRequest
+    
     private let escapedQueryString: String
     
     required init( request: HashtagSearchRequest ) {
@@ -40,14 +38,10 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: self.onError)
+        requestExecutor.executeRequest(self.request, onComplete: onComplete, onError: nil)
     }
     
-    private func onError( error: NSError, completion: ()->() ) {
-        completion()
-    }
-    
-    private func onComplete( networkResult: HashtagSearchRequest.ResultType, completion: () -> () ) {
+    func onComplete( networkResult: HashtagSearchRequest.ResultType, completion: () -> () ) {
         
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
@@ -56,6 +50,16 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         
         completion()
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }
 
 class SaveHashtagsOperation: Operation {
@@ -78,16 +82,28 @@ class SaveHashtagsOperation: Operation {
         
         self.beganExecuting()
         
+        guard !hashtags.isEmpty else {
+            return
+        }
+        
         // Populate our local hashtags cache based off the new data
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            
             for hashtag in self.hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : hashtag.tag ])
                 persistentHashtag.populate(fromSourceModel: hashtag)
             }
-            
             context.v_save()
             self.finishedExecuting()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

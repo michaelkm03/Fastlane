@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public struct MarkConversationReadRequest : RequestType {
 
@@ -21,5 +22,10 @@ public struct MarkConversationReadRequest : RequestType {
         let urlRequest = NSMutableURLRequest(URL: MarkConversationReadRequest.basePath)
         urlRequest.vsdk_addURLEncodedFormPost(["conversation_id":String(conversationID)])
         return urlRequest
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int? {
+        let payload = responseJSON["payload"]
+        return payload["unread_count"].int 
     }
 }

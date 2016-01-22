@@ -9,11 +9,10 @@
 import Foundation
 import SwiftyJSON
 
-/// Adds a comment to a particular sequence
 public struct CommentAddRequest: RequestType {
     
-    private let requestBody: RequestBodyWriterOutput
-    private let requestBodyWriter = CommentAddRequestBodyWriter()
+    private let requestBodyWriter: CommentRequestBodyWriter
+    private let requestBody: CommentRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
@@ -23,9 +22,10 @@ public struct CommentAddRequest: RequestType {
         return request
     }
     
-    public init?( parameters: CommentParameters ) {
+    public init?( creationParameters: Comment.CreationParameters ) {
         do {
-            self.requestBody = try requestBodyWriter.write(parameters: parameters)
+            requestBodyWriter = CommentRequestBodyWriter(parameters: creationParameters)
+            requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }

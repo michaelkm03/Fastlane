@@ -12,51 +12,89 @@ import VictoriousIOSSDK
 final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     let request: ConversationListRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
-    required init( request: ConversationListRequest = ConversationListRequest()) {
+    required init( request: ConversationListRequest = ConversationListRequest() ) {
         self.request = request
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onError( error: NSError, completion: ()->() ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
+    func onComplete( results: ConversationListRequest.ResultType, completion:()->() ) {
+        guard !results.isEmpty else {
+            completion()
+            return
         }
-        completion()
-    }
-    
-    func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
+        
+        // Filter flagged conversations here so that they never even make it into the persistent store
+        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
+        let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
-            
-            var persistentConversations = [VConversation]()
-            for conversation in conversations {
-                let uniqueElements = [ "remoteId" : conversation.conversationID ]
-                let persistentConversation: VConversation = context.v_findOrCreateObject( uniqueElements )
-                persistentConversation.populate( fromSourceModel: conversation )
-                persistentConversation.displayOrder = displayOrder++
-                persistentConversations.append( persistentConversation )
+            var displayOrder = self.request.paginator.displayOrderCounterStart
+            for result in unflaggedResults {
+                let uniqueElements = [ "user.remoteId" : result.otherUser.userID ]
+                let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
+                conversation.populate( fromSourceModel: result )
+                conversation.displayOrder = displayOrder++
             }
             context.v_save()
-            
-            self.results = self.fetchResults()
             completion()
         }
     }
     
-    func fetchResults() -> [VConversation] {
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            let existing: [VConversation] = context.v_findAllObjects()
+            for object in existing {
+                context.deleteObject( object )
+            }
+            context.v_save()
+        }
+    }
+    
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(v_paginator: self.request.paginator)
+            let predicate = NSPredicate(
+                vsdk_format: "",
+                vsdk_argumentArray: [],
+                vsdk_paginator: self.request.paginator
+            )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+        }
+    }
+}
+
+class FetchConverationListOperation: FetcherOperation {
+    
+    let userID: Int
+    let paginator: NumericPaginator
+    
+    init( userID: Int, paginator: NumericPaginator = StandardPaginator() ) {
+        self.userID = userID
+        self.paginator = paginator
+    }
+    
+    override func main() {
+        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                vsdk_format: "",
+                vsdk_argumentArray: [],
+                vsdk_paginator: self.paginator
+            )
+            fetchRequest.predicate = predicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+            return results
         }
     }
 }

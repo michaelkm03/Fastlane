@@ -18,33 +18,30 @@ import VictoriousIOSSDK
 }
 
 final class UserSearchOperation: RequestOperation, PaginatedOperation {
-    
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults = false
+    internal(set) var didClearResults = false
     
     let request: UserSearchRequest
-    private let escapedQueryString: String
+    
+    private let searchTerm: String
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.searchTerm
+        self.searchTerm = request.searchTerm
     }
     
     convenience init?( searchTerm: String ) {
-        guard let request = UserSearchRequest(searchTerm: searchTerm) else {
+
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
             /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
-            self.init(request: UserSearchRequest(searchTerm: "")!)
+            self.init(request: UserSearchRequest(searchTerm: ""))
             return nil
         }
-        self.init(request: request)
+        self.init(request: UserSearchRequest(searchTerm: escapedSearchTerm))
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: self.onError)
-    }
-    
-    private func onError( error: NSError, completion: ()->() ) {
-        completion()
+        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: nil)
     }
     
     func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
@@ -73,4 +70,14 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
             context.v_save()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

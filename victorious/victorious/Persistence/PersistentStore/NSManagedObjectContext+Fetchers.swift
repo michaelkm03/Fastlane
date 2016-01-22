@@ -26,7 +26,7 @@ extension NSManagedObjectContext {
                     }
                 }
             }
-            fatalError( "Failed to save." )
+            fatalError( "Failed to save object: \(userInfo[ "NSValidationErrorKey" ])" )
         }
     }
     
@@ -60,7 +60,7 @@ extension NSManagedObjectContext {
         
         } else {
             let object = self.v_createObjectWithEntityName( entityName )
-            for (key, value) in queryDictionary where !(value is [String : AnyObject]) {
+            for (key, value) in queryDictionary where !(value is [String : AnyObject]) && !(key.containsString(".")) {
                 object.setValue(value, forKey: key)
             }
             return object

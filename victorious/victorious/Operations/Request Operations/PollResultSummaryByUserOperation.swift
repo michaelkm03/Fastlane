@@ -13,8 +13,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     
     let request: PollResultSummaryRequest
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
+    internal(set) var results: [AnyObject]?
     
     private let userID: Int
     
@@ -39,12 +38,9 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            defer {
-                completion()
-            }
             
-            // Update the user
             guard let user: VUser = context.v_findObjects( [ "remoteId" :  self.userID ] ).first else {
+                completion()
                 return
             }
             
@@ -66,6 +62,15 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
             }
             
             context.v_save()
+            completion()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }
