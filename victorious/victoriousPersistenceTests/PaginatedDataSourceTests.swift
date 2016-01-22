@@ -33,19 +33,23 @@ class MockPaginatedObject {
 final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
     
     let request: MockPaginatedRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     required init( request: MockPaginatedRequest = MockPaginatedRequest() ) {
         self.request = request
     }
     
     override func main() {
-         self.results = self.fetchResults()
+         
     }
     
-    func fetchResults() -> [MockPaginatedObject] {
-        var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
+
+    }
+    
+    func fetchResults() -> [AnyObject] {
+        var displayOrder = self.request.paginator.displayOrderCounterStart
         var results = [MockPaginatedObject]()
         if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
             for _ in 0..<self.request.paginator.itemsPerPage {
@@ -78,44 +82,6 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
     
     override func tearDown() {
         super.tearDown()
-    }
-    
-    func testFilters() {
-        let expectation = expectationWithDescription("testFilters")
-        let pageType: VPageType = .First
-        paginatedDataSource.addFilter() { object in
-            if let displayOrder = (object as? MockPaginatedObject)?.displayOrder {
-                return displayOrder.integerValue % 2 == 0 // Fitler out odd values
-            } else {
-                XCTFail("Uknown object found its way into the results!" )
-                return false
-            }
-        }
-        paginatedDataSource.loadPage( pageType,
-            createOperation: {
-                return MockPaginatedOperation()
-            },
-            completion: { (operation, error) in
-                expectation.fulfill()
-                
-                guard let operation = operation else {
-                    XCTFail( "Operation didn't return itself, it must've failed." )
-                    return
-                }
-                let expectedItems = operation.request.paginator.itemsPerPage / 2
-                XCTAssertEqual( self.paginatedDataSource.visibleItems.count, expectedItems )
-                guard let objects = self.paginatedDataSource.visibleItems.array as? [MockPaginatedObject] else {
-                    XCTFail("Uknown objects found their way into the results!" )
-                    return
-                }
-                var i = 0
-                for object in objects {
-                    XCTAssertEqual( object.displayOrder, i)
-                    i += 2
-                }
-            }
-        )
-        waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testUnload() {

@@ -31,6 +31,8 @@
     {
         _stream = stream;
         _paginatedDataSource = [[PaginatedDataSource alloc] init];
+        _paginatedDataSource.delegate = self;
+        _visibleItems = [[NSOrderedSet alloc] init];
     }
     return self;
 }
@@ -42,19 +44,12 @@
         return;
     }
     _suppressShelves = suppressShelves;
-    
-    if ( _suppressShelves )
-    {
-        [_paginatedDataSource addFilter:^BOOL(id _Nonnull object)
-         {
-             VStreamItem *streamItem = (VStreamItem *)object;
-             return [streamItem isKindOfClass:[VStreamItem class]] && [streamItem.itemType isEqualToString:VStreamItemTypeShelf];
-         }];
-    }
-    else
-    {
-        [_paginatedDataSource resetFilters];
-    }
+    [self paginatedDataSource:self.paginatedDataSource didUpdateVisibleItemsFrom:self.visibleItems to:self.visibleItems];
+}
+
+- (BOOL)isLoading
+{
+    return self.paginatedDataSource.isLoading;
 }
 
 - (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems
@@ -160,7 +155,10 @@
         return [(id <UICollectionViewDataSource>)self.delegate collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
-    return nil;
+    //In case none of the above cases executed, and to prevent crash
+    NSString *failureReusableIdentifier = @"failureReusableViewIdentifier";
+    [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier];
+    return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier forIndexPath:indexPath];
 }
 
 @end

@@ -15,9 +15,6 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     
     private var sequenceID: String
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
-    
     required init( request: SequenceLikersRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
@@ -28,21 +25,13 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
-    }
-    
-    private func onError( error: NSError, completion:(()->()) ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-        } else {
-            self.results = []
-        }
-        completion()
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+        
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            var displayOrder = self.request.paginator.displayOrderCounterStart
 
             let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])
             for user in users {
@@ -56,24 +45,30 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
                 userSequenceContext.displayOrder = displayOrder++
             }
             context.v_save()
-            
-            self.results =  self.fetchResults()
             completion()
         }
     }
     
-    private func fetchResults() -> [VUser] {
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "sequence.remoteId = %@",
-                v_argumentArray: [ self.sequenceID ],
-                v_paginator: self.request.paginator
+                vsdk_format: "sequence.remoteId = %@",
+                vsdk_argumentArray: [ self.sequenceID ],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
             return results.map { $0.user }
         }
+    }
+    
+    func clearResults() {
+        fatalError("Implement me!")
     }
 }

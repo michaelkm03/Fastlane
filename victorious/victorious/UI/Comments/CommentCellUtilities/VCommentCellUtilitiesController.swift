@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension VCommentCellUtilitiesController {
+extension VCommentCellUtilitiesController {
     
     func flagComment( comment: VComment ) {
         FlagCommentOperation(commentID: comment.remoteId.integerValue).queue()

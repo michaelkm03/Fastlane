@@ -1,5 +1,5 @@
 //
-//  UnfollowUserOperation.swift
+//  UnFollowUsersOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/4/16.
@@ -9,19 +9,19 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnfollowUserOperation: RequestOperation {
+class UnFollowUsersOperation: RequestOperation {
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: UnfollowUserRequest
+    private let request: UnFollowUserRequest
     private let userID: Int
     
-    init( userID: Int, screenName: String ) {
+    init( userID: Int, sourceScreenName: String? ) {
         self.userID = userID
-        self.request = UnfollowUserRequest(userID: userID, screenName: screenName)
+        self.request = UnFollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistedUserID = NSNumber(integer: self.userID)
             
             guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,
@@ -33,16 +33,15 @@ class UnfollowUserOperation: RequestOperation {
             objectUser.numberOfFollowers = objectUser.numberOfFollowers - 1
             subjectUser.numberOfFollowing = subjectUser.numberOfFollowing - 1
             
-            // Find the following relationship and delete it
             let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
             if let followedUser: VFollowedUser = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( followedUser )
             }
-            
+
             context.v_save()
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
         }
+        
+        self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }

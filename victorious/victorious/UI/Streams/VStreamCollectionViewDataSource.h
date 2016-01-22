@@ -11,12 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol PaginatedDataSourceDelegate;
 @class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation, PaginatedDataSource;
 
 /**
  *  Data delegate for the VStreamCollectionViewDataSource.
  */
-@protocol VStreamCollectionDataDelegate <NSObject>
+@protocol VStreamCollectionDataDelegate <PaginatedDataSourceDelegate>
 
 @required
 
@@ -76,6 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
 @property (nonatomic, nonnull, strong) PaginatedDataSource *paginatedDataSource;
+@property (nonatomic, strong) NSOrderedSet *visibleItems;
+@property (nonatomic, readonly) BOOL isLoading;
 
 /**
  *  Initializes the data source with a default stream.

@@ -7,7 +7,6 @@
 //
 
 #import "VUnreadMessageCountCoordinator.h"
-#import "VObjectManager+DirectMessaging.h"
 #import "victorious-Swift.h"
 
 @interface VUnreadMessageCountCoordinator ()
@@ -27,22 +26,15 @@
 
 @implementation VUnreadMessageCountCoordinator
 
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager
+- (instancetype)init
 {
     self = [super init];
     if (self)
     {
-        _objectManager = objectManager;
         _loadingUnreadMessageCount = 0;
         _privateQueue = dispatch_queue_create("VInboxCoordinator private queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
-}
-
-- (instancetype)init
-{
-    NSAssert(NO, @"Use the designated initializer");
-    return nil;
 }
 
 - (void)updateUnreadMessageCount
@@ -61,12 +53,13 @@
         
         self.loadingUnreadMessageCount = YES;
         
-        [self.objectManager unreadMessageCountWithCompletion:^(NSNumber *unreadMessages, NSError *error)
-        {
-            if ( unreadMessages != nil )
-            {
-                self.unreadMessageCount = [unreadMessages integerValue];
-            }
+        UnreadMessageCountOperation *operation = [[UnreadMessageCountOperation alloc] init];
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+         {
+             if ( operation.unreadMessagesCount != nil )
+             {
+                 self.unreadMessageCount = operation.unreadMessagesCount.integerValue;
+             }
             dispatch_async(self.privateQueue, ^(void)
             {
                 self.loadingUnreadMessageCount = NO;
@@ -82,10 +75,15 @@
 
 - (void)markConversationRead:(VConversation *)conversation
 {
-    [self.objectManager markConversationAsRead:conversation
-                                withCompletion:^(NSNumber *unreadMessages, NSError *error)
+    if ( conversation.remoteId == nil || conversation.remoteId.integerValue == 0 )
     {
-        if ( unreadMessages != nil )
+        return;
+    }
+    
+    MarkConversationReadOperation *operation = [[MarkConversationReadOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if ( operation.unreadConversationsCount != nil )
         {
             dispatch_async(self.privateQueue, ^(void)
             {
@@ -96,7 +94,7 @@
                 }
                 dispatch_sync(dispatch_get_main_queue(), ^(void)
                 {
-                    self.unreadMessageCount = [unreadMessages integerValue];
+                    self.unreadMessageCount = operation.unreadConversationsCount.integerValue;
                 });
             });
         }

@@ -234,7 +234,7 @@
              {
                  [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
                  {
-                     [self.viewModel flagSequenceWithCompletion:^void(NSError *error)
+                     [self.viewModel.commentsDataSource flagSequenceWithCompletion:^void(NSError *error)
                       {
                           [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                       }];

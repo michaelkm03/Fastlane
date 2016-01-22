@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: Operation {
     
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     override func start() {
         super.start()
@@ -33,14 +33,13 @@ class StoredLoginOperation: Operation {
                     user.status = "stored"
                 }
                 context.v_save()
-                user.setAsCurrentUser()
                 return user
             }
+            user.setAsCurrentUser()
             
-            let id = Int(user.remoteId.integerValue)
-            UserInfoOperation( userID: id ).queueAfter( self, queue: Operation.defaultQueue )
-        }
-        else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
+            PreloadUserInfoOperation().queueAfter(self)
+      
+        } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let accountIdentifier = defaults.stringForKey(kAccountIdentifierDefaultsKey),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
                 
@@ -50,9 +49,9 @@ class StoredLoginOperation: Operation {
                     loginType: loginType,
                     accountIdentifier: accountIdentifier
                 )
-                operation.queueAfter( self, queue: Operation.defaultQueue )
-        }
-        else {
+                operation.queueAfter(self)
+      
+        } else {
             // Nothing to do here without a stored token or credentials to log in.
             // Subsequent operations in the queue will handle logging in the user
             // after this operation completes without creating a valid user object.

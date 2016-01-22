@@ -12,10 +12,10 @@ import VictoriousIOSSDK
 final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceRepostersRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     private var sequenceID: String
+    
+    private var resultObjectIDs = [NSManagedObjectID]()
     
     required init( request: SequenceRepostersRequest ) {
         self.sequenceID = request.sequenceID
@@ -30,14 +30,10 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onError( error: NSError, completion:(()->()) ) {
-        self.results = []
-        completion()
-    }
-    
-    private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
+    func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             for user in users {
@@ -51,11 +47,22 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             sequence.v_addObjects( reposters, to: "reposters" )
             context.v_save()
             
-            let objectIDs = reposters.map { $0.objectID }
-            self.persistentStore.mainContext.v_performBlock() { context in
-                self.results = objectIDs.flatMap { context.objectWithID($0) as? VUser }
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.resultObjectIDs = reposters.map { $0.objectID }
                 completion()
             }
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.persistentStore.mainContext.v_performBlockAndWait() { context in
+            return self.resultObjectIDs.flatMap { context.objectWithID($0) as? VUser }
+        } as [VUser]
+    }
+    
+    func clearResults() { }
 }

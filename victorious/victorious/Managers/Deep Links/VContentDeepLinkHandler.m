@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+Sequence.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -36,7 +34,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         NSParameterAssert( _dependencyManager != nil );
-        NSParameterAssert( [_dependencyManager objectManager] != nil );
                               
         _scaffoldViewController = [dependencyManager scaffoldViewController];
         NSParameterAssert( _scaffoldViewController != nil );
@@ -73,12 +70,13 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
     
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    
     NSNumber *commentId = nil;
+    
     NSString *commentIDString = [url v_pathComponentAtIndex:2];
     if ( commentIDString != nil )
     {
-        commentId = @([commentIDString integerValue]);
+        // TODO: Deep link to comment is disabled until implemented with 4.0 architecture
+        // commentId = @([commentIDString integerValue]);
     }
     
     NSString *streamId = [url v_pathComponentAtIndex:3];
@@ -96,7 +94,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
          {
              [hud hide:YES];
              
-             id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+             id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
              [persistentStore.mainContext performBlockAndWait:^
               {
                   NSArray *objects = [persistentStore.mainContext v_findObjectsWithEntityName:[VSequence entityName]

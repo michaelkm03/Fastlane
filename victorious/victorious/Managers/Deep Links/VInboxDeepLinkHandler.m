@@ -11,15 +11,15 @@
 #import "VConversation.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VInboxViewController.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
+#import "VConversationListViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 
 @import MBProgressHUD;
 
 @interface VInboxDeepLinkHandler()
 
-@property (nonatomic, weak) VInboxViewController *inboxViewController;
+@property (nonatomic, weak) VConversationListViewController *inboxViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -27,7 +27,7 @@
 @implementation VInboxDeepLinkHandler
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-             inboxViewController:(VInboxViewController *)inboxViewController
+             inboxViewController:(VConversationListViewController *)inboxViewController
 {
     self = [super init];
     if (self)
@@ -89,7 +89,7 @@
              completion( YES, self.inboxViewController );
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-                                [self.inboxViewController displayConversationForUser:conversation.user animated:YES];
+                                [self.inboxViewController displayConversation:conversation animated:YES];
                             });
          }
      }

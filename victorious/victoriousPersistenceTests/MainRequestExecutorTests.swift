@@ -7,12 +7,22 @@
 //
 
 import XCTest
+import VictoriousIOSSDK
 @testable import victorious
 import Nocilla
 
 class MainRequestExecutorTests: XCTestCase {
     
-    var requestExecutor = MainRequestExecutor(persistentStore: PersistentStoreSelector.mainPersistentStore)
+    lazy var requestExecutor: RequestExecutorType = {
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(environment: currentEnvironment)
+        var executor = MainRequestExecutor(
+            baseURL: currentEnvironment.baseURL,
+            requestContext: requestContext,
+            authenticationContext: nil
+        )
+        return executor
+    }()
 
     override func setUp() {
         super.setUp()

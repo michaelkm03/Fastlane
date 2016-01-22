@@ -25,7 +25,7 @@ enum PersistentStoreError: ErrorType {
     /// A context used primarily for asynchronous writes that should only ever be accessed from
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
-    var backgroundContext: NSManagedObjectContext { get }
+    func createBackgroundContext() -> NSManagedObjectContext
 }
 
 /// An object that provides functions for finding an appropriate concrete implementation
@@ -34,9 +34,9 @@ class PersistentStoreSelector: NSObject {
     
     /// Returns the primary persistent store used by this application and appropriate for its
     /// environment.
-    class var mainPersistentStore: PersistentStoreType {
+    class var defaultPersistentStore: PersistentStoreType {
         
-        if NSBundle.v_testBundle() != nil {
+        if NSBundle.v_isTestBundle {
             return TestPersistentStore()
         } else {
             return MainPersistentStore()

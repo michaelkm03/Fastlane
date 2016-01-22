@@ -9,122 +9,108 @@
 import Foundation
 import VictoriousIOSSDK
 
+/// Sends a recently-created local comment over the network to be saved to the Victorious backend
 class CommentAddOperation: RequestOperation {
     
-    var request: CommentAddRequest
+    var request: CommentAddRequest!
     
-    private let publishParameters: VPublishParameters?
-    private let commentParameters: CommentParameters
+    private let localCommentID: NSManagedObjectID
     
-    private var optimisticCommentObjectID: NSManagedObjectID?
-    
-    private init( request: CommentAddRequest, commentParameters: CommentParameters, publishParameters: VPublishParameters?) {
+    required init( request: CommentAddRequest, localCommentID: NSManagedObjectID) {
         self.request = request
-        self.commentParameters = commentParameters
-        self.publishParameters = publishParameters
+        self.localCommentID = localCommentID
     }
     
-    convenience init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
-        if let request = CommentAddRequest(parameters: commentParameters) {
-            self.init(request: request, commentParameters: commentParameters, publishParameters: publishParameters)
-        } else {
+    convenience init?( localCommentID: NSManagedObjectID, creationParameters: Comment.CreationParameters) {
+        guard let request = CommentAddRequest(creationParameters: creationParameters) else {
             return nil
         }
+        self.init(request: request, localCommentID: localCommentID)
     }
     
     override func main() {
-        guard let currentUserId = VCurrentUser.user()?.remoteId else {
-            return
-        }
-        
-        // Optimistically create a comment before sending request
-        persistentStore.backgroundContext.v_performBlock() { context in
-            let comment: VComment = context.v_createObject()
-            comment.remoteId = 0
-            comment.sequenceId = String(self.commentParameters.sequenceID)
-            comment.userId = currentUserId
-            comment.user = VCurrentUser.user()
-            if let realtime = self.commentParameters.realtimeComment {
-                comment.realtime = NSNumber(float: Float(realtime.time))
-            }
-            comment.mediaWidth = self.publishParameters?.width
-            comment.mediaHeight = self.publishParameters?.height
-            comment.text = self.commentParameters.text ?? ""
-            comment.postedAt = NSDate()
-            comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
-            comment.mediaUrl = self.commentParameters.mediaURL?.absoluteString
-            
-            // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
-            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
-            let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
-            sequence.comments = NSOrderedSet(array: allComments)
-            
-            context.v_save()
-            dispatch_sync( dispatch_get_main_queue() ) {
-                self.optimisticCommentObjectID = comment.objectID
-            }
-        }
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
-        
-        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
-            parameters: [
-                VTrackingKeyTextLength : self.commentParameters.text?.characters.count ?? 0,
-                VTrackingKeyMediaType : self.publishParameters?.mediaToUploadURL?.pathExtension ?? ""
-            ]
-        )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
-        
-        persistentStore.backgroundContext.v_performBlock() { context in
-            defer {
-                completion()
-            }
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
-            guard let objectID = self.optimisticCommentObjectID,
-                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
+            guard let optimisticObject = context.objectWithID( self.localCommentID ) as? VComment else {
+                    completion()
                     return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
-            optimisticComment.populate( fromSourceModel: comment )
+            optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
             completion()
         }
     }
+}
+
+// Creates a local comment in the persistent store and then queues `CommentAddOperation` when
+// complete to send the comment to the Victorious backend
+class CreateCommentOperation: FetcherOperation {
     
-    private func localImageURLForVideoAtPath( localVideoPath: String ) -> String? {
-        
-        guard let url = NSURL(string:localVideoPath) else {
-            return nil
+    private let creationParameters: Comment.CreationParameters
+    
+    init( creationParameters: Comment.CreationParameters) {
+        self.creationParameters = creationParameters
+    }
+    
+    override func main() {
+        // Optimistically create a comment before sending request
+        let newCommentObjectID: NSManagedObjectID? = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            let sequenceID = self.creationParameters.sequenceID
+            guard let sequence: VSequence = context.v_findObjects( [ "remoteId" : self.creationParameters.sequenceID ] ).first,
+                let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                    return nil
+            }
+            
+            let creationDate = NSDate()
+            
+            let predicate = NSPredicate( format: "sequence.remoteId == %@", argumentArray: [sequenceID])
+            let newDisplayOrder = self.newObjectDisplayOrder(VComment.v_entityName(), context: context, predicate: predicate)
+            
+            let comment: VComment = context.v_createObject()
+            comment.sequenceId = String(sequenceID)
+            comment.userId = currentUser.remoteId.integerValue
+            comment.user = VCurrentUser.user(inManagedObjectContext: context)
+            if let realtimeAttachment = self.creationParameters.realtimeAttachment {
+                comment.realtime = NSNumber(float: Float(realtimeAttachment.time))
+            }
+            comment.text = self.creationParameters.text ?? ""
+            comment.postedAt = creationDate
+            comment.displayOrder = newDisplayOrder
+            
+            if let mediaAttachment = self.creationParameters.mediaAttachment,
+                let thumbnailURL = mediaAttachment.createThumbnailImage() {
+                    comment.mediaType = mediaAttachment.type.rawValue
+                    comment.mediaUrl = mediaAttachment.url.absoluteString
+                    comment.thumbnailUrl = thumbnailURL.absoluteString
+                    comment.mediaWidth = mediaAttachment.size?.width
+                    comment.mediaHeight = mediaAttachment.size?.height
+            }
+            
+            let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
+            sequence.comments = NSOrderedSet(array: allComments)
+            
+            context.v_save()
+            return comment.objectID
         }
         
-        guard !localVideoPath.v_hasImageExtension() else {
-            return localVideoPath
+        if let newCommentObjectID = newCommentObjectID,
+            let remoteOperation = CommentAddOperation(localCommentID: newCommentObjectID, creationParameters: self.creationParameters) {
+                remoteOperation.queueAfter(self)
         }
         
-        let asset = AVAsset(URL: url)
-        let assetGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale)
-        let anImageRef: CGImageRef?
-        do {
-            anImageRef = try assetGenerator.copyCGImageAtTime(time, actualTime: nil)
-        } catch {
-            return nil
-        }
-        
-        guard let imageRef = anImageRef else {
-            return nil
-        }
-        let previewImage = UIImage(CGImage: imageRef)
-        
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
-        if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
-            imgData.writeToURL(tempFile, atomically: false )
-            return tempFile.absoluteString
-        }
-        
-        return nil
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
+            parameters: [
+                VTrackingKeyTextLength : self.creationParameters.text?.characters.count ?? 0,
+                VTrackingKeyMediaType : self.creationParameters.mediaAttachment?.url.absoluteString ?? ""
+            ]
+        )
     }
 }
+

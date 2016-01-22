@@ -26,7 +26,7 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
     }
     
     var isLoading: Bool {
-        return paginatedDataSource.isLoading
+        return paginatedDataSource.isLoading()
     }
     
     private(set) var searchQuery: String?
@@ -49,7 +49,7 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
                 }
             }
         )
-        paginatedDataSource.unload()
+        paginatedDataSource.clearVisibleItems()
         delegate?.dataSourceDidUpdate(self)
     }
     
@@ -99,7 +99,7 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
     //MARK: - UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.paginatedDataSource.isLoading ? 2 : 1
+        return self.paginatedDataSource.isLoading() ? 2 : 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

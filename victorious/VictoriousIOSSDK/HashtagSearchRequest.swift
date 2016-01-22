@@ -2,44 +2,61 @@
 //  HashtagSearchRequest.swift
 //  victorious
 //
-//  Created by Cody Kolodziejzyk on 11/9/15.
+//  Created by Patrick Lynch on 1/6/16.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 import SwiftyJSON
 
-/// Retrieves a list of hashtags based on a search term
 public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    /// The search term to use when querying for hashtags
     public let searchTerm: String
+    
+    let context: SearchContext?
     
     public let paginator: StandardPaginator
     
-    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
+    let url: NSURL
+    
+    public init(request: HashtagSearchRequest, paginator: StandardPaginator ) {
+        self.searchTerm = request.searchTerm
+        self.url = request.url
+        self.context = request.context
+        self.paginator = paginator
+    }
+    
+    // param: - searchTerm must be a urlPathPart percent encoded string
+    public init?(searchTerm: String, context: SearchContext? = nil, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+        
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet),
+            let url = NSURL(string: "/api/hashtag/search/\(escapedSearchTerm)") else {
+                return nil
+        }
+        
+        self.url = url
+        self.context = context
         self.searchTerm = searchTerm
         self.paginator = paginator
     }
     
-    public init( request: HashtagSearchRequest, paginator: StandardPaginator ) {
-        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
-    }
-    
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/hashtag/search")!
         let request = NSMutableURLRequest(URL: url)
-        request.URL = request.URL?.URLByAppendingPathComponent(searchTerm)
         paginator.addPaginationArgumentsToRequest(request)
-        return request
+        if let context = context {
+            let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
+            return NSURLRequest(URL: contextualURL)
+        } else {
+            return request.copy() as! NSURLRequest
+        }
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
-        
-        guard let hashtagJSON = responseJSON["payload"].array else {
+        guard let hashtagStrings = responseJSON["payload"].rawValue as? [String] else {
             throw ResponseParsingError()
         }
         
-        return hashtagJSON.flatMap { Hashtag(json: $0) }
+        return hashtagStrings.flatMap { Hashtag(tag: $0) }
     }
 }

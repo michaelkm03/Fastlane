@@ -158,56 +158,6 @@ static NSString * const kVAPIParamContext = @"context";
      }];
 }
 
-#pragma mark - Following
-
-- (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail
-                                       fromScreen:(NSString *)screenName
-{
-    NSDictionary *parameters = @{ @"target_user_id": user.remoteId,
-                                  @"source": screenName};
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if ( user.numberOfFollowers != nil )
-        {
-            user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
-        }
-        
-        if ( self.mainUser.numberOfFollowing != nil )
-        {
-            self.mainUser.numberOfFollowing = @(self.mainUser.numberOfFollowing.integerValue - 1);
-        }
-        
-        [self.mainUser removeFollowingObject:user];
-        user.isFollowedByMainUser = @NO;
-        
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
-        
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
-    {
-        NSInteger errorCode = error.code;
-        if (errorCode == kVFollowsRelationshipDoesNotExistError)
-        {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            [mainUser removeFollowingObject:user];
-        }
-        fail(operation, error);
-    };
-    
-    return [self POST:@"/api/follow/remove"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:fullFail];
-}
 
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
                                               successBlock:(VSuccessBlock)success

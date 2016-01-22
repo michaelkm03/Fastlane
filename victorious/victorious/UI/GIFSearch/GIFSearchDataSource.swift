@@ -91,7 +91,7 @@ class GIFSearchDataSource: NSObject {
         
         let nextOperation: GIFSearchDefaultResultsOperation?
         switch pageType {
-        case .First:
+        case .Refresh:
             nextOperation = GIFSearchDefaultResultsOperation()
         case .Next:
             nextOperation = self.mostRecentTrendingOperation?.next()
@@ -114,7 +114,7 @@ class GIFSearchDataSource: NSObject {
                     if self.isLastPage {
                         self.state = .Content
                     } else {
-                        if pageType == .First {
+                        if pageType == .Refresh {
                             self.clear()
                         }
                         self.state = .Error
@@ -144,7 +144,7 @@ class GIFSearchDataSource: NSObject {
         
         let nextOperation: GIFSearchOperation?
         switch pageType {
-        case .First:
+        case .Refresh:
             nextOperation = GIFSearchOperation(searchTerm: searchText)
         case .Next:
             nextOperation = self.mostRecentSearchOperation?.next()
@@ -166,7 +166,7 @@ class GIFSearchDataSource: NSObject {
                         self.state = .Content
                     }
                     else {
-                        if pageType == .First {
+                        if pageType == .Refresh {
                             self.clear()
                         }
                         self.state = .Error
@@ -244,7 +244,7 @@ class GIFSearchDataSource: NSObject {
     
     private func updateDataSource( results: [GIFSearchResultObject], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
-        if pageType == .First {
+        if pageType == .Refresh {
             if self.sections.count == 0 && results.count > 0 {
                 result.deletedSections = NSIndexSet(index: 0) // No content cell
             }

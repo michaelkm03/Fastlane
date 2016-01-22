@@ -10,7 +10,6 @@
 #import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
-#import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
@@ -114,25 +113,24 @@
     self.followControl.hidden = [self.user isCurrentUser];
     VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
     [self.followControl setControlState:controlState animated:animated];
-    [self populateData];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
     long long userId = self.user.remoteId.longLongValue;
-    NSString *screenName = @"";
+    NSString *sourceScreenName = nil;
     
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 @end

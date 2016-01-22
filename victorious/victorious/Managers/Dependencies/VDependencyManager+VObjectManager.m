@@ -13,9 +13,9 @@ NSString * const VDependencyManagerObjectManagerKey = @"objectManager";
 
 @implementation VDependencyManager (VObjectManager)
 
-- (VObjectManager *)objectManager
+/*- (VObjectManager *)objectManager
 {
     return (VObjectManager *)[self singletonObjectOfType:[VObjectManager class] forKey:VDependencyManagerObjectManagerKey];
-}
+}*/
 
 @end

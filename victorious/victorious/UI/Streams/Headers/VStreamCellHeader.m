@@ -240,19 +240,19 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
     long long userId = self.sequence.user.remoteId.longLongValue;
-    NSString *screenName = VFollowSourceScreenSleekCell;
+    NSString *sourceScreenName = VFollowSourceScreenSleekCell;
     
     RequestOperation *operation;
     if ( self.sequence.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 #pragma mark - Internal Methods

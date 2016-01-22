@@ -12,10 +12,9 @@ import SwiftyJSON
 /// A struct representing a notification
 public struct Notification {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
+    public let notificationID: String
+    public let subject: String
+    public let user: User
     public let body: String?
     public let createdAt: NSDate
     public let deeplink: String?
@@ -23,31 +22,36 @@ public struct Notification {
     public let isRead: Bool?
     public let type: String?
     public let updatedAt: NSDate?
-    public let remoteID: Int
-    public let subject: String
-    public let displayOrder: Int?
-    public let user: User
     
     public init?(json: JSON) {
         
-        guard let createdAtDateString = json["created_at"].string,
-            let createdAtDate = dateFormatter.dateFromString(createdAtDateString),
-            let notificationID = json["id"].int,
-            let subjectString = json["subject"].string,
-            let sender = User(json: json["created_by"]) else {
+        guard let createdAt     = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["created_at"].stringValue),
+            let notificationID  = json["id"].v_stringFromInt,
+            let subject         = json["subject"].string,
+            let user            = User(json: json["created_by"]) else {
                 return nil
         }
+        self.createdAt          = createdAt
+        self.notificationID     = notificationID
+        self.subject            = subject
+        self.user               = user
         
-        createdAt = createdAtDate
-        remoteID = notificationID
-        subject = subjectString
-        user = sender
-        body = json["body"].string
-        deeplink = json["deeplink"].string
-        imageURL = json["creator_profile_image_url"].string
-        isRead = Bool(json["is_read"].stringValue)
-        type = json["type"].string
-        updatedAt = dateFormatter.dateFromString(json["updated_at"].stringValue)
-        displayOrder = json["display_order"].int
+        body                    = json["body"].string
+        deeplink                = json["deeplink"].string
+        imageURL                = json["creator_profile_image_url"].string
+        isRead                  = json["is_read"].v_boolFromAnyValue
+        type                    = json["type"].string
+        updatedAt               = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["updated_at"].stringValue)
+    }
+}
+
+extension JSON {
+    
+    var v_stringFromInt: String? {
+        if let integer = self.int {
+            return String(integer)
+        } else {
+            return self.string
+        }
     }
 }

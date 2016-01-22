@@ -8,8 +8,6 @@
 
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
-#import "VObjectManager.h"
-#import "VObjectManager+Login.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VDependencyManager.h"
@@ -81,7 +79,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
-    NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    NSInteger mainUserID = [VCurrentUser user].remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
     [self updateFollowStatusAnimated:NO];
@@ -110,19 +108,19 @@ static const CGFloat kInviteCellHeight = 50.0f;
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
     long long userId = self.profile.remoteId.longLongValue;
-    NSString *screenName = @"";
+    NSString *sourceScreenName = nil;
     
     RequestOperation *operation;
     if ( self.profile.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 @end

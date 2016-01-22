@@ -23,6 +23,11 @@ static const CGFloat kBaselineOffset = 0.5f;
 
 @implementation VConversationCell
 
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -76,22 +81,14 @@ static const CGFloat kBaselineOffset = 0.5f;
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
     self.profileButton.user = conversation.user;
-
-    if (self.conversation.isRead.boolValue)
-    {
-        self.backgroundColor = [UIColor whiteColor];
-    }
-    else
-    {
-        //Could / should this be backend driven?
-        self.backgroundColor = [UIColor colorWithRed:.90 green:.91 blue:.93 alpha:1];
-    }
 }
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.conversation.user];
-    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    if ( self.delegate != nil )
+    {
+        [self.delegate cellDidSelectProfile:self];
+    }
 }
 
 @end

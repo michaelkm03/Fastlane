@@ -12,8 +12,6 @@ import VictoriousIOSSDK
 final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
     
     let request: PollResultSummaryRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     private let sequenceID: String
     
@@ -27,17 +25,12 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
-    }
-    
-    private func onError( error: NSError, completion:(()->()) ) {
-        self.results = []
-        completion()
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
     }
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : self.sequenceID] )
             for pollResult in pollResults where pollResult.sequenceID != nil {
@@ -61,4 +54,14 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
             completion()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

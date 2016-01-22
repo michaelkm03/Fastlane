@@ -19,7 +19,6 @@
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import <Crashlytics/Crashlytics.h>
-#import "NSBundle+TestBundle.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"
@@ -33,12 +32,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSBundle *testBundle = [NSBundle v_testBundle];
-    if ( testBundle != nil && !testBundle.v_shouldCompleteLaunch )
+    if ([NSBundle v_isTestBundle])
     {
         return YES;
     }
-    
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
@@ -153,7 +150,7 @@
 - (void)savePersistentChanges
 {
     // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
 

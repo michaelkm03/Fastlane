@@ -34,15 +34,12 @@ class ConversationListRequestTests: XCTestCase {
             if let firstConversation = results.first {
                 XCTAssertEqual(firstConversation.conversationID, 3075)
                 XCTAssertEqual(firstConversation.isRead, true)
-                XCTAssertEqual(firstConversation.recipient.name, "Düüd")
+                XCTAssertEqual(firstConversation.otherUser.name, "Düüd")
                 XCTAssertEqual(firstConversation.previewMessageID, 7793)
                 XCTAssertEqual(firstConversation.previewMessageText, "a")
-                XCTAssertEqual(firstConversation.thumbnailURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
-                XCTAssertEqual(firstConversation.mediaURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
-                XCTAssertEqual(firstConversation.mediaType, "image")
 
                 // Test Date parsing
-                let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
+                let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)
                 let testDate = dateFormatter.dateFromString("2015-08-28 23:25:31")
                 XCTAssertEqual(firstConversation.postedAt, testDate)
             }
@@ -66,7 +63,7 @@ class ConversationListRequestTests: XCTestCase {
             let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             let secondConversation = results[1]
-            XCTAssertEqual(secondConversation.isRead, true)
+            XCTAssertNil(secondConversation.isRead)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")
         }

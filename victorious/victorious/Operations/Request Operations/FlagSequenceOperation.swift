@@ -26,7 +26,10 @@ class FlagSequenceOperation: RequestOperation {
     }
     
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        
+        self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
+        
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
                 completion()
                 return
@@ -34,11 +37,7 @@ class FlagSequenceOperation: RequestOperation {
             
             context.deleteObject( sequence )
             context.v_save()
-            
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.flaggedContent.addRemoteId( sequence.remoteId, toFlaggedItemsWithType: .StreamItem)
-                completion()
-            }
+            completion()
         }
     }
 }

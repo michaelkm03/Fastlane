@@ -75,8 +75,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
         let urlPath = url.v_pathComponent()
-        exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-        exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        //exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
+        //exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         // Factory for trending topic shelf
@@ -118,7 +118,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-        searchResultsViewController?.updateTableView()
+        
+        // FIXME:
+        // searchResultsViewController?.updateTableView()
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

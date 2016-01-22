@@ -12,6 +12,8 @@ extension VReposterTableViewController {
     
     func loadReposters( pageType pageType: VPageType, sequence: VSequence ) {
         
+        // TODO: Use paginated data source on this
+        
         let operation: SequenceRepostersOperation?
         switch pageType {
         case .First:
@@ -20,6 +22,8 @@ extension VReposterTableViewController {
             operation = self.repostersOperation?.next()
         case .Previous:
             operation = self.repostersOperation?.prev()
+        default:
+            fatalError("Use paginated data source on this")
         }
         
         if let operation = operation {

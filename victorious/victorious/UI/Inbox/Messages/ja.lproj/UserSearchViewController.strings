@@ -1,9 +1,0 @@
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "DKA-MJ-hKV"; */
-"DKA-MJ-hKV.text" = "Label";
-
-/* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "IEA-Xp-rzr"; */
-"IEA-Xp-rzr.text" = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!";
-
-/* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "h3N-Km-Jkq"; */
-"h3N-Km-Jkq.text" = "NO USERS FOUND";

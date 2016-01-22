@@ -14,12 +14,13 @@
 
 @implementation VMessage
 
-@dynamic mediaPath;
+@dynamic mediaUrl;
 @dynamic postedAt;
 @dynamic remoteId;
+@dynamic displayOrder;
 @dynamic senderUserId;
 @dynamic text;
-@dynamic thumbnailPath;
+@dynamic thumbnailUrl;
 @dynamic isRead;
 @dynamic conversation;
 @dynamic notification;
@@ -28,5 +29,6 @@
 @dynamic shouldAutoplay;
 @dynamic mediaWidth;
 @dynamic mediaHeight;
+@dynamic mediaType;
 
 @end

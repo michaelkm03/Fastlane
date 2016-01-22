@@ -7,6 +7,7 @@
 //
 
 #import "VKeyboardBarContainerViewController.h"
+#import "VConversationViewController.h"
 #import "VConstants.h"
 #import "VInlineSearchTableViewController.h"
 
@@ -31,10 +32,10 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
 {
     [super viewDidLoad];
 
-    [self addChildViewController:self.conversationTableViewController];
-    self.conversationTableViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.conversationTableViewController.view];
-    [self.conversationTableViewController didMoveToParentViewController:self];
+    [self addChildViewController:self.innerViewController];
+    self.innerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.innerViewController.view];
+    [self.innerViewController didMoveToParentViewController:self];
     
     [self addChildViewController:self.keyboardBarViewController];
     self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,11 +62,11 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
                                                           constant:0];
     [self.view addConstraint:self.bottomConstraint];
     
-    UIView *tableView = self.conversationTableViewController.view;
+    UIView *view = self.innerViewController.view;
     id topConstraintView = (id)self.topConstraintView ?: self.topLayoutGuide;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][view]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, view)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
                                                           attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                              toItem:nil
@@ -73,12 +74,12 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
                                                          multiplier:1.0f
                                                            constant:kConversationTableViewInitialHeight]];
 
-    UITableView *conversationTableView = self.conversationTableViewController.tableView;
-    conversationTableView.contentInset = UIEdgeInsetsMake(conversationTableView.contentInset.top,
-                                                          conversationTableView.contentInset.left,
+    UITableView *tableView = self.innerViewController.tableView;
+    tableView.contentInset = UIEdgeInsetsMake(tableView.contentInset.top,
+                                                          tableView.contentInset.left,
                                                           self.keyboardBarHeightConstraint.constant,
-                                                          conversationTableView.contentInset.right);
-    conversationTableView.scrollIndicatorInsets = conversationTableView.contentInset;
+                                                          tableView.contentInset.right);
+    tableView.scrollIndicatorInsets = tableView.contentInset;
     
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.extendedLayoutIncludesOpaqueBars = YES;
@@ -140,7 +141,7 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
     {
         CGFloat keyboardEndY = CGRectGetMinY(keyboardEndFrame);
         CGFloat keyboardHeight = CGRectGetHeight(self.view.bounds) - keyboardEndY;
-        UITableView *tableView = self.conversationTableViewController.tableView;
+        UITableView *tableView = self.innerViewController.tableView;
         CGFloat offset = tableView.contentOffset.y + CGRectGetMinY(keyboardStartFrame) - keyboardEndY;
         CGFloat tableHeight = CGRectGetHeight(tableView.bounds);
         CGFloat contentHeight = tableView.contentSize.height;
@@ -206,15 +207,15 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
 
 #pragma mark - VUserTaggingTextStorageDelegate
 
-- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)innerViewController
 {
-    [tableViewController.view removeFromSuperview];
+    [innerViewController.view removeFromSuperview];
 }
 
-- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)innerViewController
 {
     // Inline Search layout constraints
-    UIView *searchTableView = viewController.view;
+    UIView *searchTableView = innerViewController.view;
     UIView *superview = self.view;
     [superview addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];

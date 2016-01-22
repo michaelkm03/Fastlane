@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class VLikersDataSource: PaginatedDataSource, VUsersDataSource {
+@objc final class VLikersDataSource: PaginatedDataSource, VUsersDataSource {
     
     let sequence: VSequence
     

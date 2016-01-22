@@ -11,13 +11,12 @@ import SwiftyJSON
 @testable import VictoriousIOSSDK
 
 class UserSearchRequestTests: XCTestCase {
-
+    
     func testConfiguredRequest() {
         
-        let queryString = "asdf"
+        let searchTerm = "asdf"
         let paginator = StandardPaginator(pageNumber: 2, itemsPerPage: 25)
-        let request = UserSearchRequest(query: queryString, paginator: paginator)
-        
+        let request = UserSearchRequest(searchTerm: searchTerm, paginator: paginator)
         XCTAssertEqual(request.urlRequest.URL, NSURL(string:"/api/userinfo/search_paginate/asdf/2/25/message"))
     }
     
@@ -28,7 +27,8 @@ class UserSearchRequestTests: XCTestCase {
             return
         }
         
-        let request = UserSearchRequest(query: "a")
+        let request = UserSearchRequest(searchTerm: "a")
+        
         let results: [User]
         do {
             results = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
@@ -44,5 +44,5 @@ class UserSearchRequestTests: XCTestCase {
             XCTFail("should have at least one user")
         }
     }
-
+    
 }

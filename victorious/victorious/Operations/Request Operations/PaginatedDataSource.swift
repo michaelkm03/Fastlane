@@ -7,26 +7,32 @@
 //
 
 import Foundation
-
-/// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
-@objc protocol PaginatedDataSourceDelegate {
-    
-    /// Called from a `PaginateddataSource` instance when new objects have been fetched and added to its backing store.
-    /// The `oldValue` and `newValue` parameters are designed to allow calling code to
-    /// precisely reload only what has changed instead of useing `reloadData()`.
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet)
-}
+import VictoriousIOSSDK
 
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc class PaginatedDataSource: NSObject {
+@objc public class PaginatedDataSource: NSObject {
     
-    private typealias Filter = AnyObject -> Bool
-    private var filters = [Filter]()
+    // Keeps a reference without retaining; avoids needing [weak self] when queueing
+    private(set) weak var currentOperation: NSOperation?
     
-    private(set) var currentOperation: RequestOperation?
-    private(set) var isLoading: Bool = false
+    private(set) var hasReachedLastPage: Bool = false
+    
+    private(set) var state: DataSourceState = .Cleared {
+        didSet {
+            if oldValue != state {
+                self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
+            }
+        }
+    }
+    
+    // Tracks page numbers already loaded to prevent re-loading pages unecessarily
+    private var pagesLoaded = Set<Int>()
+    
+    func isLoading() -> Bool {
+        return state == .Loading
+    }
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
@@ -36,84 +42,122 @@ import Foundation
         }
     }
     
-    private(set) var unfilteredItems = NSOrderedSet() {
-        didSet {
-            applyFilters()
-        }
-    }
-    
     // MARK: - Public API
     
     var delegate: PaginatedDataSourceDelegate?
     
-    func addFilter( filter: AnyObject -> Bool  ) {
-        filters.append( filter )
-        applyFilters()
-    }
-    
-    func resetFilters() {
-        filters = []
-        applyFilters()
-    }
-    
     func unload() {
-        unfilteredItems = NSOrderedSet()
+        cancelCurrentOperation()
         visibleItems = NSOrderedSet()
+        pagesLoaded = Set<Int>()
+        state = .Cleared
     }
     
-    func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
+    func cancelCurrentOperation() {
+        currentOperation?.cancel()
+        currentOperation = nil
+        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+    }
+    
+    // Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
+    // operations locally on the persistent store only and does not send a network request.
+    func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
+        let operation: FetcherOperation = createOperation()
+        operation.queue() { results in
+            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+            self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+            completion?(results)
+        }
+    }
+    
+    
+    // Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    // operates by sending a network request to retreive results, then parses them into the persistent store.
+    func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
-        guard !isLoading else {
+        guard self.currentOperation != nil else {
             return
         }
         
-        let operationToQueue: RequestOperation?
-        switch pageType {
-            
-        case .First:
-            operationToQueue = createOperation() as? RequestOperation
-            
-        case .Next:
-            operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
-            
-        case .Previous:
-            operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
+        var operation: T = createOperation()
+        guard let requestOperation = operation as? RequestOperation else {
+            return
         }
         
-        if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
-            self.isLoading = true
-            operation.queue() { error in
-                self.isLoading = false
-                self.onOperationComplete( typedOperation, pageType: pageType, error: error)
-                completion?( operation: typedOperation, error: error )
+        self.state = .Loading
+        requestOperation.queue() { error in
+            
+            let results = operation.fetchResults() ?? []
+            operation.results = results
+            let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
+            if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
             }
+            self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+            completion?( newResults, error )
         }
-        
-        self.currentOperation = operationToQueue
     }
     
-    // MARK: - Private helpers
-    
-    private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
-        guard let results = operation.results else {
+    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
+        
+        guard !isLoading() || (self.hasReachedLastPage && pageType == .Next) else {
             return
         }
         
-        if operation.didResetResults {
-            self.unfilteredItems = NSOrderedSet().v_orderedSet( byAddingObjects: results, forPageType: pageType)
+        if pageType == .First {
+            // Clear all from `pagesLoaded` because .First indicates a "refresh"
+            pagesLoaded = Set<Int>()
         }
         
-        if !results.isEmpty {
-            self.unfilteredItems = self.unfilteredItems.v_orderedSet( byAddingObjects: results, forPageType: pageType)
+        let operationToQueue: T?
+        switch pageType {
+        case .First:
+            operationToQueue = createOperation()
+        case .Next:
+            operationToQueue = (currentOperation as? T)?.next()
+        case .Previous:
+            operationToQueue = (currentOperation as? T)?.prev()
         }
-    }
-    
-    private func applyFilters() {
-        var items = unfilteredItems.array
-        for filter in filters {
-            items = items.filter { filter($0) }
+        
+        // Return early if there is no operation to queue, i.e. no work to do
+        guard let requestOperation = operationToQueue as? RequestOperation,
+            var operation = operationToQueue else {
+                self.hasReachedLastPage = true
+                return
         }
-        visibleItems = NSOrderedSet(array: items)
+        
+        // Return early if we've already loaded this page
+        guard !pagesLoaded.contains(operation.request.paginator.pageNumber) else {
+            return
+        }
+        
+        // Add the page from `pagesLoaded` so it won't be loaded again
+        pagesLoaded.insert(operation.request.paginator.pageNumber)
+        
+        self.state = .Loading
+        self.hasReachedLastPage = false
+        requestOperation.queue() { error in
+            
+            // Fetch local results if we failed because of no network
+            if error == nil || (error?.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .First) {
+                let results = operation.fetchResults() ?? []
+                operation.results = results
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                
+            } else {
+                // Remove the page from `pagesLoaded` so that it can be attempted again
+                self.pagesLoaded.remove( operation.request.paginator.pageNumber )
+                
+                // Return no results
+                operation.results = []
+                self.state = .Error
+            }
+            
+            completion?( operation: operation, error: error )
+        }
+        
+        self.currentOperation = requestOperation
     }
 }
 

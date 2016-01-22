@@ -15,7 +15,6 @@
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
 #import "VAssetCollectionGridViewController.h"
-#import "VImageSearchViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "VVideoCameraViewController.h"
@@ -31,9 +30,6 @@
 #import "VPublishPresenter.h"
 #import "VPublishViewController.h"
 #import "VPublishParameters.h"
-
-// API driven behavior
-#import "VObjectManager.h"
 
 // Dependencies
 #import "VDependencyManager.h"

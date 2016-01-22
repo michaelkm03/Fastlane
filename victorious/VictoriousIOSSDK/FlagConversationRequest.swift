@@ -9,16 +9,16 @@
 import Foundation
 
 public struct FlagConversationRequest: RequestType {
-    public let conversationID: Int
+    public let mostRecentMessageID: Int
     private static let basePath = NSURL(string: "/api/message/flag")!
     
-    public init(conversationID: Int) {
-        self.conversationID = conversationID
+    public init(mostRecentMessageID: Int) {
+        self.mostRecentMessageID = mostRecentMessageID
     }
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: FlagConversationRequest.basePath)
-        urlRequest.vsdk_addURLEncodedFormPost(["message_id":String(conversationID)])
+        urlRequest.vsdk_addURLEncodedFormPost( ["message_id" : String(mostRecentMessageID)] )
         return urlRequest
     }
 }

@@ -25,19 +25,19 @@ class CommentTests: XCTestCase {
         XCTAssertEqual(comment.commentID, 28543)
         XCTAssertEqual(comment.displayOrder, 1)
         XCTAssertEqual(comment.userID, 5160)
-        XCTAssertEqual(comment.shouldAutoplay, false)
         XCTAssertEqual(comment.user.name, "Ryan Higa")
         XCTAssertEqual(comment.text, "test")
         XCTAssertEqual(comment.flags, 0)
-        let dateFormatter = NSDateFormatter(format: .Standard)
+        let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         XCTAssertEqual(dateFormatter.stringFromDate(comment.postedAt), "2015-11-12 02:18:54")
         
-        if let media = comment.media {
-            XCTAssertEqual(media.type, MediaAttachmentType.Image)
-            XCTAssertEqual(media.url, NSURL(string: "some_image.png"))
-            XCTAssertEqual(media.thumbnailURL, NSURL(string: "some_image_sm.png"))
-            XCTAssertEqual(media.size.width, 100)
-            XCTAssertEqual(media.size.height, 200)
+        if let mediaAttachment = comment.mediaAttachment {
+            XCTAssertEqual(mediaAttachment.shouldAutoplay, false)
+            XCTAssertEqual(mediaAttachment.type, MediaAttachmentType.Image)
+            XCTAssertEqual(mediaAttachment.url, NSURL(string: "some_image.png"))
+            XCTAssertEqual(mediaAttachment.thumbnailURL, NSURL(string: "some_image_sm.png"))
+            XCTAssertEqual(mediaAttachment.size?.width, 100)
+            XCTAssertEqual(mediaAttachment.size?.height, 200)
         } else {
             XCTFail( "Missing expected `media` value." )
         }

@@ -39,26 +39,15 @@ public struct User {
 
 extension User {
     public init?(json: JSON) {
-        let userIDFromJSON: Int
-        let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         
         // Check for "id" as either a string or a number, because the back-end is inconsistent.
-        if let userIDString = json["id"].string,
-           let userIDNumber = Int(userIDString) {
-            userIDFromJSON = userIDNumber
-        } else if let userIDValue = json["id"].int {
-            userIDFromJSON = userIDValue
-        } else {
+        guard let userID = Int(json["id"].stringValue) ?? json["id"].int,
+            let statusString = json["status"].string,
+            let status = ProfileStatus(rawValue: statusString) else {
             return nil
         }
-        
-        if let statusString = json["status"].string,
-           let status = ProfileStatus(rawValue: statusString) {
-            self.userID = userIDFromJSON
-            self.status = status
-        } else {
-            return nil
-        }
+        self.userID = userID
+        self.status = status
         
         email                       = json["email"].string
         name                        = json["name"].string
@@ -72,12 +61,7 @@ extension User {
         numberOfFollowing           = Int(json["number_of_following"].stringValue)
         profileImageURL             = json["profile_image"].string
         maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
-        
-        if let dateString = json["token_updated_at"].string {
-            self.tokenUpdatedAt = dateFormatter.dateFromString(dateString)
-        } else {
-            self.tokenUpdatedAt = nil
-        }
+        tokenUpdatedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
     
         if let previewImageAssets = json["preview"]["assets"].array {
             self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }
