@@ -10,6 +10,7 @@
 #import "VConstants.h"
 #import "VAdViewController.h"
 #import "UIView+AutoLayout.h"
+#import "victorious-Swift.h"
 
 @interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
@@ -31,14 +32,15 @@
         
         _adDetails = details;
         _monetizationPartner = monetizationPartner;
-        
-        // When ads are supported again, switch on the `monitizationPartner` value to
-        // provide a view controller for the `adViewController` property.
-        _adViewController = nil;
-        
-        if ( _adViewController == nil )
-        {
-            return nil;
+
+        switch (_monetizationPartner) {
+            case VMonetizationPartnerIMA:
+                _adViewController = [[IMAAdViewController alloc] init];
+                break;
+                
+            default:
+                return nil;
+                break;
         }
     }
     return self;

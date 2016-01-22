@@ -377,9 +377,10 @@
 		624675361C3DC8DE002B92A5 /* FollowUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */; };
 		6256A6261C516CA30033439B /* VAdBreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6256A6251C516CA30033439B /* VAdBreak.swift */; };
 		6256A6281C51702A0033439B /* VAdBreak+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6256A6231C516ABF0033439B /* VAdBreak+Parsable.swift */; };
-		626930481C49B84B00A1A664 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626930471C49B84B00A1A664 /* AdManager.swift */; };
+		626930481C49B84B00A1A664 /* IMAAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626930471C49B84B00A1A664 /* IMAAdManager.swift */; };
 		627C0FF91C5176BE00E08047 /* VSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */; };
 		627D07E61C3F6A8F004B8D27 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
+		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
 		62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
@@ -2436,9 +2437,10 @@
 		6256A6231C516ABF0033439B /* VAdBreak+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAdBreak+Parsable.swift"; sourceTree = "<group>"; };
 		6256A6251C516CA30033439B /* VAdBreak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAdBreak.swift; sourceTree = "<group>"; };
 		625D6E721C385C4D00DB5F1F /* UnFollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnFollowUsersOperationTests.swift; sourceTree = "<group>"; };
-		626930471C49B84B00A1A664 /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
+		626930471C49B84B00A1A664 /* IMAAdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAAdManager.swift; sourceTree = "<group>"; };
 		627C0FF71C5176BE00E08047 /* VSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+RestKit.h"; sourceTree = "<group>"; };
 		627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+RestKit.m"; sourceTree = "<group>"; };
+		629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAAdViewController.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		62E2407A1C332125001037C3 /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
@@ -6307,7 +6309,7 @@
 		626930461C49B81300A1A664 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				626930471C49B84B00A1A664 /* AdManager.swift */,
+				626930471C49B84B00A1A664 /* IMAAdManager.swift */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -8904,6 +8906,7 @@
 		DBAD775B19F711D900B6A939 /* Monetization */ = {
 			isa = PBXGroup;
 			children = (
+				629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */,
 				DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */,
 				DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */,
 				DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */,
@@ -11191,6 +11194,7 @@
 				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
+				629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */,
 				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				A7245F0B1C04E69A00187825 /* FlagCommentOperation.swift in Sources */,
@@ -11408,7 +11412,7 @@
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
-				626930481C49B84B00A1A664 /* AdManager.swift in Sources */,
+				626930481C49B84B00A1A664 /* IMAAdManager.swift in Sources */,
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */,

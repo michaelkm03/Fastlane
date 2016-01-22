@@ -1,5 +1,5 @@
 //
-//  AdManager.swift
+//  IMAAdManager.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/15/16.
@@ -9,7 +9,7 @@
 import AVFoundation
 import GoogleInteractiveMediaAds
 
-@objc class AdManager: NSObject, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
+@objc class IMAAdManager: NSObject, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
     let player: AVPlayer
     let contentPlayhead: IMAAVPlayerContentPlayhead
     let adsLoader: IMAAdsLoader

@@ -14,6 +14,6 @@
 typedef NS_ENUM(NSInteger, VMonetizationPartner)
 {
     VMonetizationPartnerNone,
-    VMonetizationPartnerDoubleClick = 5,
+    VMonetizationPartnerIMA = 5,
     VMonetizationPartnerCount
 };
