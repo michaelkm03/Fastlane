@@ -75,8 +75,21 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
         let urlPath = url.v_pathComponent()
-        //exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-        //exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        let query = ["apiPath" : urlPath]
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        var persistentStream: VStream?
+        
+        persistentStore.mainContext.performBlockAndWait {
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.entityName(), queryDictionary: query) as? VStream else { return }
+            stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+            persistentStore.mainContext.v_save()
+            persistentStream = stream
+        }
+        
+        if let stream = persistentStream {
+            exploreVC.currentStream = stream
+        }
+        
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         // Factory for trending topic shelf
@@ -92,7 +105,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewDidLoad()
         
         configureSearchBar()
-        collectionView.backgroundColor = UIColor.whiteColor()
         marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
@@ -104,9 +116,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
+        streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         if let dataSource = streamDataSource {
             dataSource.stream = currentStream
             dataSource.delegate = self
+            dataSource.paginatedDataSource.delegate = self
             collectionView.dataSource = dataSource
         }
         
@@ -154,18 +168,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             }
         }
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
-    }
-    
-    override func dataSource(dataSource: VStreamCollectionViewDataSource, hasNewStreamItems streamItems: [AnyObject] ) {
-        if let streamItems = streamItems as? [VStreamItem] {
-            let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
-            for streamItem in recentItems {
-                let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            }
-        }
-        updateSectionRanges()
-        trackVisibleCells()
     }
     
     private func updateSectionRanges() {
@@ -686,5 +688,23 @@ extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
     func reselected() {
         v_navigationController().setNavigationBarHidden(false)
         collectionView.setContentOffset(CGPointZero, animated: true)
+    }
+}
+
+extension VExploreViewController {
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
+            return
+        }
+        
+        for streamItem in recentItems {
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+        }
+        
+        updateSectionRanges()
+        trackVisibleCells()
+        collectionView.reloadData()
     }
 }

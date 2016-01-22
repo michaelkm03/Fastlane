@@ -17,8 +17,12 @@ extension VStream: PersistenceParsable {
         itemSubType     = stream.subtype?.rawValue ?? itemSubType
         name            = stream.name ?? name
         count           = stream.postCount ?? count
+        previewImagesObject = stream.previewImagesObject
         
         let streamItems = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
         self.v_addObjects( streamItems, to: "streamItems" )
+        
+        let marqueeItems = VStreamItem.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
+        self.v_addObjects(marqueeItems, to: "marqueeItems")
     }
 }

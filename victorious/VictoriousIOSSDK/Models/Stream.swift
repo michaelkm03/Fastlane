@@ -17,6 +17,7 @@ public struct Stream: StreamItemType {
     public let postCount: Int?
     public let streamUrl: String?
     public let items: [StreamItemType]?
+    public let marqueeItems: [StreamItemType]?
     public let streamContentType: StreamContentType?
     
     // MARK: - StreamItemType
@@ -45,12 +46,25 @@ extension Stream {
         streamContentType           = StreamContentType(rawValue: json["stream_content_type"].stringValue)
         name                        = json["name"].string
         title                       = json["title"].string
-        postCount                   = json["postCount"].int
+        postCount                   = json["postCount"].int ?? json["count"].int
         streamUrl                   = json["streamUrl"].string
         
-        items = (json["items"].array ?? json["content"].array)?.flatMap {
-            let isStream = $0["items"].array != nil || $0["content"].array != nil
-            return isStream ? Stream(json: $0) : Sequence(json:$0)
+        items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
+            switch $0["type"].stringValue {
+            case "stream", "shelf":
+                return Stream(json: $0)
+            default:
+                return Sequence(json: $0)
+            }
+        }
+        
+        marqueeItems = json["marquee"].array?.flatMap {
+            switch $0["type"].stringValue {
+            case "sequence":
+                return Sequence(json: $0)
+            default:
+                return Stream(json: $0)
+            }
         }
         
         // MARK: - StreamItemType
