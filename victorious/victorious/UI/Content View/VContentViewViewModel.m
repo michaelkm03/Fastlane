@@ -162,7 +162,6 @@
     self.adChain = [[NSMutableArray alloc] init];
 
     NSOrderedSet *adBreakSet = self.sequence.adBreaks;
-
     for (VAdBreak *adBreak in adBreakSet)
     {
         [self.adChain addObject:adBreak];

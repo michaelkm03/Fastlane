@@ -6,7 +6,7 @@
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
     </entity>
-    <entity name="AdBreak" representedClassName="VAdBreak" syncable="YES">
+    <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cannedAdXML" optional="YES" attributeType="String" syncable="YES"/>
