@@ -100,8 +100,14 @@ import VictoriousIOSSDK
     
     func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading() || (self.hasLoadedLastPage && pageType == .Next) else {
+        guard !isLoading() else {
             return
+        }
+        
+        if pageType == .Next {
+            guard !self.hasLoadedLastPage else {
+                return
+            }
         }
         
         if pageType == .First {
