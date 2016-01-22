@@ -32,7 +32,9 @@ public extension UITableView {
             deletedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
-        self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
+        self.beginUpdates()
         self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Bottom)
+        self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
+        self.endUpdates()
     }
 }

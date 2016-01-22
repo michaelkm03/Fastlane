@@ -61,10 +61,11 @@ import VictoriousIOSSDK
     
     // Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     // operations locally on the persistent store only and does not send a network request.
+    // Clears any existing results
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+            self.visibleItems = NSOrderedSet(array: results)
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?(results)
         }

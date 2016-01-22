@@ -61,13 +61,13 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
             let predicate = NSPredicate(
                 vsdk_format: "",
                 vsdk_argumentArray: [],
                 vsdk_paginator: self.request.paginator
             )
-            fetchRequest.predicate = predicate
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, VConversation.notFlaggedForDeletionPredicate, VConversation.hasPostedAtPredicate])
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
@@ -86,15 +86,14 @@ class FetchConverationListOperation: FetcherOperation {
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
             let predicate = NSPredicate(
                 vsdk_format: "",
                 vsdk_argumentArray: [],
                 vsdk_paginator: self.paginator
             )
-            fetchRequest.predicate = predicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
-            return results
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, VConversation.notFlaggedForDeletionPredicate, VConversation.hasPostedAtPredicate])
+            return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
 }
