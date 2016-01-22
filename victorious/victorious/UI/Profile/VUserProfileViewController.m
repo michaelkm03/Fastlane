@@ -70,24 +70,19 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    VUser *currentUser = [VCurrentUser user];
+    if ( currentUser != nil && [remoteId isEqualToNumber:currentUser.remoteId] )
+    {
+        return [self userProfileWithUser:currentUser andDependencyManager:dependencyManager];
+    }
+    
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
     [viewController addLoginStatusChangeObserver];
-    
-    VUser *mainUser = [VCurrentUser user];
-    const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
-    if ( isCurrentUser )
-    {
-        viewController.user = mainUser;
-    }
-    else
-    {
-        viewController.remoteId = remoteId;
-    }
-    
+    viewController.remoteId = remoteId;
     return viewController;
 }
 
@@ -99,9 +94,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
     [viewController addLoginStatusChangeObserver];
-    
     viewController.user = aUser;
-    
     return viewController;
 }
 
@@ -143,7 +136,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
     
     [self updateProfileHeader];
-    [self loadPage:VPageTypeFirst completion:nil];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -164,7 +156,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
         else
         {
-            [self reloadUserFollowCounts];
+            RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+            [operation queueOn:operation.defaultQueue completionBlock:nil];
         }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
@@ -184,12 +177,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    if ( !self.user.isCurrentUser && self.user == nil && self.remoteId != nil )
-    {
-        [self showRefreshHUD];
-        [self loadUserWithRemoteId:self.remoteId forceReload:NO];
-    }
-    
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
     
@@ -199,6 +186,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     self.didEndViewWillAppear = YES;
+    
     [self attemptToRefreshProfileUI];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
@@ -305,12 +293,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - Loading data
 
-- (void)reloadUserFollowCounts
-{
-    RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
-}
-
 - (void)setInitialHeaderState
 {
     if ( self.profileHeaderViewController == nil )
@@ -367,28 +349,38 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
+- (void)loadUserWithRemoteId:(NSNumber *)remoteId
 {
     self.remoteId = remoteId;
     
-    [self fetchUserInfoWithUserID:remoteId.integerValue completion:^(NSError *_Nullable error) {
+    FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:remoteId.integerValue];
+    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
+    
+    // Try to fetch the user locally
+    FetchUserOperation *fetchUserOperation = [[FetchUserOperation alloc] initWithUserID:self.remoteId.integerValue];
+    [fetchUserOperation queueOn:fetchUserOperation.defaultQueue completionBlock:^(Operation *_Nonnull error) {
         if ( error != nil )
         {
-            //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-            self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
-            self.retryHUD.mode = MBProgressHUDModeCustomView;
-            self.retryHUD.customView = self.retryProfileLoadButton;
-            self.retryHUD.margin = 0.0f;
-            [self.retryProfileLoadButton setUserInteractionEnabled:YES];
+            return;
+        }
+        
+        VUser *fetchedUser = fetchUserOperation.user;
+        if ( fetchedUser != nil )
+        {
+            [self setUser:fetchedUser];
         }
         else
         {
-            [self.retryHUD hide:YES];
-            [self.retryProfileLoadButton removeFromSuperview];
-            self.retryHUD = nil;
-            
-            // Reload follow counts when user pulls to refresh
-            [self reloadUserFollowCounts];
+            // If that fails, load the user from the backend
+            UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
+            [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+             {
+                 VUser *loadedUser = userInfoOperation.user;
+                 if ( error == nil && loadedUser != nil )
+                 {
+                     [self setUser:loadedUser];
+                 }
+             }];
         }
     }];
 }
@@ -398,7 +390,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     //Disable user interaction to avoid spamming
     [self.retryProfileLoadButton setUserInteractionEnabled:NO];
     [self showRefreshHUD];
-    [self loadUserWithRemoteId:self.remoteId forceReload:NO];
+    [self loadUserWithRemoteId:self.remoteId];
 }
 
 - (UIButton *)retryProfileLoadButton
@@ -410,7 +402,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     /*
      To make a full-HUD button, it needs to have origin (-margin, -margin) and size (margin * 2 + MBProgressHUDCustomViewSide, margin * 2 + MBProgressHUDCustomViewSide).
-    */
+     */
     CGFloat margin = self.defaultMBProgressHUDMargin;
     CGFloat buttonSide = margin * 2 + MBProgressHUDCustomViewSide;
     _retryProfileLoadButton = [[UIButton alloc] initWithFrame:CGRectMake(-margin, -margin, buttonSide, buttonSide)];
@@ -422,8 +414,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)attemptToRefreshProfileUI
 {
-    //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile and stream presentation by avoiding unnecessary refreshes even when loading from a remoteId
-    if ( self.didEndViewWillAppear && self.user != nil )
+    //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile
+    // and stream presentation by avoiding unnecessary refreshes even when loading from a remoteId
+    if ( !self.didEndViewWillAppear )
+    {
+        return;
+    }
+    
+    if ( self.user != nil )
     {
         CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
         height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
@@ -433,13 +431,17 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         
         if ( self.streamDataSource.count == 0 )
         {
-            [self refresh:nil];
+            [super refresh:nil];
         }
         else
         {
             [self shrinkHeaderAnimated:YES];
-            [self reloadUserFollowingRelationship];
         }
+        [self reloadUserFollowingRelationship];
+    }
+    else if ( self.remoteId != nil )
+    {
+        [self loadUserWithRemoteId:self.remoteId];
     }
 }
 
@@ -482,10 +484,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
-    {
-        self.profileHeaderViewController.loading = NO;
-        [self reloadUserFollowingRelationship];
-    }];
+     {
+         self.profileHeaderViewController.loading = NO;
+         [self reloadUserFollowingRelationship];
+     }];
 }
 
 #pragma mark - Login status change
@@ -545,14 +547,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        VStream *stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        self.currentStream = stream;
         [persistentStore.mainContext save:nil];
     }];
     
-    [self updateProfileHeader];
-    
     [self attemptToRefreshProfileUI];
-    
+    [self updateProfileHeader];
     [self setupFloatingView];
 }
 
@@ -744,35 +745,20 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
-    {
-        if ( [evaluatedObject conformsToProtocol:@protocol(VMultipleContainer)] )
-        {
-            id<VMultipleContainer> multipleContainer = evaluatedObject;
-            return [self array:multipleContainer.children containsObjectOfClass:objectClass];
-        }
-        return [evaluatedObject isKindOfClass:objectClass];
-    }];
+                              {
+                                  if ( [evaluatedObject conformsToProtocol:@protocol(VMultipleContainer)] )
+                                  {
+                                      id<VMultipleContainer> multipleContainer = evaluatedObject;
+                                      return [self array:multipleContainer.children containsObjectOfClass:objectClass];
+                                  }
+                                  return [evaluatedObject isKindOfClass:objectClass];
+                              }];
     return [array filteredArrayUsingPredicate:predicate].count > 0;
 }
 
 - (BOOL)navigationHistoryContainsInbox
 {
     return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
-}
-
-#pragma mark - VAbstractStreamCollectionViewController
-
-- (void)refresh:(UIRefreshControl *)sender
-{
-    NSNumber *mainUserId = [VCurrentUser user].remoteId;
-    const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
-    const BOOL wasTriggeredByUIElement = sender != nil;
-    if ( wasTriggeredByUIElement && hasUserData )
-    {
-        [self loadUserWithRemoteId:mainUserId forceReload:YES];
-    }
-    
-    [super refresh:sender];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate
