@@ -55,11 +55,9 @@ extension VStreamItem {
                 return persistentStream
                 
             case .Some(.Shelf):
-                guard let shelf = item as? Stream else { return nil }
+                guard let shelf = item as? VictoriousIOSSDK.Shelf else { return nil }
                 let persistentShelf = context.v_findOrCreateObject(uniqueElements) as Shelf
-                persistentShelf.populate(fromSourceModel: shelf)
-                persistentShelf.streamUrl = stream.streamUrl ?? ""
-                persistentShelf.title = stream.title ?? ""
+                persistentShelf.populate(fromSourceShelf: shelf)
                 return persistentShelf
                 
             default:
