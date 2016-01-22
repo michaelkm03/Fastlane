@@ -21,5 +21,6 @@
 @dynamic messages;
 @dynamic user;
 @dynamic displayOrder;
+@dynamic isFlaggedForDeletion;
 
 @end
