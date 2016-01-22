@@ -70,7 +70,7 @@ extension Stream {
         // MARK: - StreamItemType
         
         previewTextPostAsset    = json["preview"].string
-        previewImageAssets      = json["preview.assets"].array?.flatMap { ImageAsset(json: $0) }
+        previewImageAssets      = json["preview"]["assets"].array?.flatMap { ImageAsset(json: $0) }
         
         let previewImage = json["preview_image"]
         previewImagesObject = (previewImage.array?.flatMap { $0.string } as? AnyObject) ?? previewImage.string as? AnyObject
