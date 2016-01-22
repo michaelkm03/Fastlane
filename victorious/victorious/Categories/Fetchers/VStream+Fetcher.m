@@ -9,9 +9,7 @@
 #import "VStream+Fetcher.h"
 #import "VStream+RestKit.h"
 #import "VSequence.h"
-#import "VObjectManager.h"
 #import "VUser.h"
-#import "VPaginationManager.h"
 
 @import VictoriousIOSSDK;
 
@@ -30,16 +28,6 @@
 - (BOOL)hasShelfID
 {
     return self.shelfId != nil && ![self.shelfId isEqualToString:@""];
-}
-
-+ (VStream *)streamForUser:(VUser *)user
-{
-    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    
-    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
-                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath

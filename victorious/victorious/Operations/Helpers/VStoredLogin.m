@@ -8,7 +8,6 @@
 
 #import "VStoredLogin.h"
 #import "VUser+RestKit.h"
-#import "VObjectManager.h"
 #import "victorious-Swift.h"
 
 @interface VStoredLoginInfo()
