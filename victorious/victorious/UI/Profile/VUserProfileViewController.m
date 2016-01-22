@@ -156,8 +156,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
         else
         {
-            RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            [self reloadUserFollowingRelationship];
         }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
@@ -308,6 +307,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowingRelationship
 {
+    FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.remoteId.integerValue];
+    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
+}
+
+- (void)updateUserFollowingRelationship
+{
     if ( self.user.isCurrentUser )
     {
         self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
@@ -353,36 +358,15 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     self.remoteId = remoteId;
     
-    FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:remoteId.integerValue];
-    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
-    
-    // Try to fetch the user locally
-    FetchUserOperation *fetchUserOperation = [[FetchUserOperation alloc] initWithUserID:self.remoteId.integerValue];
-    [fetchUserOperation queueOn:fetchUserOperation.defaultQueue completionBlock:^(Operation *_Nonnull error) {
-        if ( error != nil )
-        {
-            return;
-        }
-        
-        VUser *fetchedUser = fetchUserOperation.user;
-        if ( fetchedUser != nil )
-        {
-            [self setUser:fetchedUser];
-        }
-        else
-        {
-            // If that fails, load the user from the backend
-            UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
-            [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
-             {
-                 VUser *loadedUser = userInfoOperation.user;
-                 if ( error == nil && loadedUser != nil )
-                 {
-                     [self setUser:loadedUser];
-                 }
-             }];
-        }
-    }];
+    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
+    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+     {
+         VUser *loadedUser = userInfoOperation.user;
+         if ( error == nil && loadedUser != nil )
+         {
+             [self setUser:loadedUser];
+         }
+     }];
 }
 
 - (void)retryProfileLoad
@@ -437,7 +421,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             [self shrinkHeaderAnimated:YES];
         }
-        [self reloadUserFollowingRelationship];
+        [self updateUserFollowingRelationship];
     }
     else if ( self.remoteId != nil )
     {
@@ -463,7 +447,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self shrinkHeaderAnimated:YES];
     }
     [self.profileHeaderViewController reloadProfileImage];
-    [self reloadUserFollowingRelationship];
+    [self updateUserFollowingRelationship];
 }
 
 #pragma mark -
@@ -486,7 +470,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
-         [self reloadUserFollowingRelationship];
+         [self updateUserFollowingRelationship];
      }];
 }
 
@@ -502,7 +486,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else if ( [VCurrentUser user] != nil )
     {
-        [self reloadUserFollowingRelationship];
+        [self updateUserFollowingRelationship];
     }
 }
 
@@ -525,7 +509,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change) {
-                              [welf reloadUserFollowingRelationship];
+                              [welf updateUserFollowingRelationship];
                           }];
     
     [self.KVOController observe:self.currentStream

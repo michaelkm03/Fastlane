@@ -13,6 +13,8 @@ class UserInfoOperation: RequestOperation {
     
     let request: UserInfoRequest
     
+    var user: VUser?
+    
     init( userID: Int ) {
         self.request = UserInfoRequest(userID: userID)
     }
@@ -26,7 +28,12 @@ class UserInfoOperation: RequestOperation {
             let persistentUser: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ])
             persistentUser.populate(fromSourceModel: user)
             context.v_save()
-            completion()
+            let objectID = persistentUser.objectID;
+            
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.user = context.objectWithID(objectID) as? VUser
+                completion()
+            }
         }
     }
 }
