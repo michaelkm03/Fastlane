@@ -27,7 +27,7 @@ class RequestOperation: NSOperation, Queuable {
     /// A place to store a background context so that it is retained for as long as expected during the operation
     var storedBackgroundContext: NSManagedObjectContext?
     
-    lazy var requestExecutor = MainRequestExecutor()
+    lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
     
     // MARK: - Queuable
     
