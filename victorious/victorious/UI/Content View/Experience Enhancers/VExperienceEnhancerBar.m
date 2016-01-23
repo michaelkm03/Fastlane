@@ -238,28 +238,33 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else
     {
-        // Increment the vote count
-        if ( [enhancerForIndexPath vote] )
-        {
-            // Restart cooldown
-            [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
-            [experienceEnhancerCell startCooldown];
-            
-            // Call the selection block (configured in VNewContentViewController) to play the animations
-            if ( self.selectionBlock != nil )
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // Increment the vote count
+            if ( [enhancerForIndexPath vote] )
             {
-                UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-                CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
-                self.selectionBlock(enhancerForIndexPath, convertedCenter);
+                // Restart cooldown
+                [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [experienceEnhancerCell startCooldown];
+                });
+                
+                // Call the selection block (configured in VNewContentViewController) to play the animations
+                if ( self.selectionBlock != nil )
+                {
+                    UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                    CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
+                    self.selectionBlock(enhancerForIndexPath, convertedCenter);
+                }
+                
+                if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+                {
+                    [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+                }
             }
-            
-            if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
-            {
-                [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
-            }
-        }
+        });
     }
 }
+
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {

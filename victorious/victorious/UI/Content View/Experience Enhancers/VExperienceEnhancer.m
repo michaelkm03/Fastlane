@@ -32,7 +32,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
                                                                    NSDictionary *bindings)
                               {
-                                  return enhancer.iconImage != nil;
+                                  return enhancer.voteType.iconImage != nil;
                               }];
     return [enhancers filteredArrayUsingPredicate:predicate];
 }
@@ -45,7 +45,6 @@
         _voteType = voteType;
         _voteCount = voteCount;
         
-        _contentMode = voteType.contentMode;
         _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
         _cooldownDuration = (double)voteType.cooldownDuration.unsignedIntegerValue / 1000.0f;

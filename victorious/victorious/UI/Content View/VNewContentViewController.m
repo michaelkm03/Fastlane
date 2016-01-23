@@ -978,6 +978,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
 {
+    NSArray * images = enhancer.voteType.images;
     if ( enhancer.isBallistic )
     {
         CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
@@ -987,46 +988,49 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
         animationImageView.center = convertedCenterForAnimation;
         animationImageView.image = enhancer.flightImage;
-        [self.view addSubview:animationImageView];
-        
-        [UIView animateWithDuration:enhancer.flightDuration
-                              delay:0.0f
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^
-         {
-             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
-             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
-             animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
-         }
-                         completion:^(BOOL finished)
-         {
-             animationImageView.animationDuration = enhancer.animationDuration;
-             animationImageView.animationImages = enhancer.animationSequence;
-             animationImageView.animationRepeatCount = 1;
-             animationImageView.image = nil;
-             [animationImageView startAnimating];
-             
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                            {
-                                [animationImageView removeFromSuperview];
-                            });
-         }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view addSubview:animationImageView];
+            
+            [UIView animateWithDuration:enhancer.flightDuration
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveLinear
+                             animations:^
+             {
+                 CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
+                 CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
+                 animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
+             }
+                             completion:^(BOOL finished)
+             {
+                 animationImageView.animationDuration = enhancer.animationDuration;
+                 animationImageView.animationImages = images;
+                 animationImageView.animationRepeatCount = 1;
+                 animationImageView.image = nil;
+                 [animationImageView startAnimating];
+                 
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                {
+                                    [animationImageView removeFromSuperview];
+                                });
+             }];
+        });
     }
     else
     {
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
-        animationImageView.animationDuration = enhancer.animationDuration;
-        animationImageView.animationImages = enhancer.animationSequence;
-        animationImageView.animationRepeatCount = 1;
-        animationImageView.contentMode = enhancer.contentMode;
         
-        [self.contentCell.contentView addSubview:animationImageView];
-        [animationImageView startAnimating];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                       {
-                           [animationImageView removeFromSuperview];
-                       });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+            animationImageView.animationDuration = enhancer.animationDuration;
+            animationImageView.animationImages = images;
+            animationImageView.animationRepeatCount = 1;
+            animationImageView.contentMode = enhancer.voteType.contentMode;
+            [self.contentCell.contentView addSubview:animationImageView];
+            [animationImageView startAnimating];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animationImageView.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [animationImageView removeFromSuperview];
+                           });
+        });
     }
 }
 
