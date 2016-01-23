@@ -30,10 +30,6 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
 	}
 	
-	enum State: Int {
-		case None, Loading, Content, Error, NoResults
-	}
-	
 	/// A type for organizing search results into grouped sections
 	struct Section {
 		
@@ -54,8 +50,14 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
 	}
 	
-    private(set) var isLastPage: Bool = false
-    private(set) var state = State.None
+    var hasLoadedLastPage: Bool {
+        return dataSource?.hasLoadedLastPage ?? true
+    }
+    
+    var state: DataSourceState {
+        return dataSource?.state ?? .Cleared
+    }
+    
 	private(set) var sections: [Section] = []
 	
 	private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
@@ -63,38 +65,14 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     var dataSource: MediaSearchDataSource?
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
-		
 		guard let dataSource = self.dataSource else {
 			fatalError( "Attempt to perform a search without configuring a data source" )
 		}
-		
-		guard self.state != .Loading else {
-			completion?( nil )
-			return
-		}
-		
-		self.state = .Loading
 		dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
-			
-			var result = ChangeResult()
-			if let error = error {
-				if self.isLastPage {
-					self.state = .Content
-				} else {
-					self.state = .Error
-					result.error = error
-                }
-                
-                self.isLastPage = true
-				completion?(nil)
-				
-			} else if let results = dataSource.visibleItems.array as? [MediaSearchResult] {
-				self.state = .Content
-				let result = self.updateDataSource(results, pageType: pageType)
-
-                self.isLastPage = results.count == 0
-				completion?(result)
-			}
+            if let results = dataSource.visibleItems.array as? [MediaSearchResult] where error == nil {
+                let result = self.updateDataSource(results, pageType: pageType)
+                completion?(result)
+            }
 		}
     }
 
@@ -228,7 +206,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-	private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: State ) {
+	private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""
@@ -236,7 +214,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		case .Error:
 			cell.text = NSLocalizedString( "Error loading results", comment:"" )
 			cell.loading = false
-		case .Content where self.sections.count == 0:
+		case .Results where self.sections.count == 0:
 			cell.loading = false
 			cell.text = NSLocalizedString( "No results", comment:"" )	
 		default:

@@ -8,17 +8,11 @@
 
 import UIKit
 
-@objc protocol MediaSearchDataSource {
+@objc protocol MediaSearchDataSource: PaginatedDataSourceType {
     
     var options: MediaSearchOptions { get }
+    
+    var title: String { get }
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? )
-	
-    var title: String { get }
-    
-    var visibleItems: NSOrderedSet { get }
-    
-    func unload()
-    
-    var delegate: PaginatedDataSourceDelegate? { set get }
 }

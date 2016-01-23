@@ -18,7 +18,7 @@ public struct ImageSearchRequest: PaginatorPageable, ResultBasedPageable {
 	public let paginator: StandardPaginator
 	
     public init( request: ImageSearchRequest, paginator: StandardPaginator ) {
-        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
+        self.init( searchTerm: request.searchTerm, paginator: paginator)
     }
 	
 	public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
