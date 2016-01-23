@@ -12,11 +12,11 @@ import VictoriousIOSSDK
 extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel stream: Stream ) {
-        remoteId        = stream.streamID
-        itemType        = stream.type?.rawValue ?? itemType
-        itemSubType     = stream.subtype?.rawValue ?? itemSubType
-        name            = stream.name ?? name
-        count           = stream.postCount ?? count
+        remoteId            = stream.streamID
+        itemType            = stream.type?.rawValue ?? itemType
+        itemSubType         = stream.subtype?.rawValue ?? itemSubType
+        name                = stream.name ?? name
+        count               = stream.postCount ?? count
         previewImagesObject = stream.previewImagesObject
         
         let streamItems = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
