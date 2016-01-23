@@ -10,7 +10,7 @@
     let adManager: IMAAdManager
     let adTag: String
 
-    init(player: AVPlayer, adTag: String, nibName: String? = nil, nibBundle: NSBundle? = nil) {
+    init(player: VVideoPlayer, adTag: String, nibName: String? = nil, nibBundle: NSBundle? = nil) {
         self.adTag = adTag
         adManager = IMAAdManager(player: player)
         super.init(nibName: nibName, bundle: nibBundle)
@@ -21,6 +21,10 @@
     }
 
     override func startAdManager() {
-        adManager.requestAds(adTag: adTag, adContainerView: playerView)
+        guard let view = self.view else {
+            print("Can't play ads on a non existent view")
+            return
+        }
+        adManager.requestAds(adTag: adTag, adContainerView: view)
     }
 }

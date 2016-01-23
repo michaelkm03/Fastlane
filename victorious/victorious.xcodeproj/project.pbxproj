@@ -381,6 +381,7 @@
 		627C0FF91C5176BE00E08047 /* VSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */; };
 		627D07E61C3F6A8F004B8D27 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
 		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
+		629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */; };
 		62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
@@ -2441,6 +2442,7 @@
 		627C0FF71C5176BE00E08047 /* VSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+RestKit.h"; sourceTree = "<group>"; };
 		627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+RestKit.m"; sourceTree = "<group>"; };
 		629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAAdViewController.swift; sourceTree = "<group>"; };
+		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		62E2407A1C332125001037C3 /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
@@ -6310,6 +6312,7 @@
 			isa = PBXGroup;
 			children = (
 				626930471C49B84B00A1A664 /* IMAAdManager.swift */,
+				629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -11027,6 +11030,7 @@
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
 				A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */,
+				629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,

@@ -10,13 +10,14 @@ import AVFoundation
 import GoogleInteractiveMediaAds
 
 @objc class IMAAdManager: NSObject, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
-    let player: AVPlayer
-    let contentPlayhead: IMAAVPlayerContentPlayhead
+    let player: VVideoPlayer
+    let contentPlayhead: VIMAContentPlayhead
     let adsLoader: IMAAdsLoader
+    var adsManager: IMAAdsManager?
 
-    init(player: AVPlayer) {
+    init(player: VVideoPlayer) {
         self.player = player
-        self.contentPlayhead = IMAAVPlayerContentPlayhead(AVPlayer: player)
+        self.contentPlayhead = VIMAContentPlayhead(player: player)
         self.adsLoader = IMAAdsLoader()
         super.init()
 
@@ -25,7 +26,7 @@ import GoogleInteractiveMediaAds
             self,
             selector: "contentDidFinishPlaying:",
             name: AVPlayerItemDidPlayToEndTimeNotification,
-            object: player.currentItem)
+            object: player)
     }
 
     func requestAds(adTag adTag: String, adContainerView: UIView) {
@@ -35,7 +36,7 @@ import GoogleInteractiveMediaAds
     }
 
     func contentDidFinishPlaying(notification: NSNotification) {
-        if let playerItem = notification.object as? AVPlayerItem where playerItem == player.currentItem {
+        if let player = notification.object as? VVideoPlayer where player === self.player {
             adsLoader.contentComplete()
         }
     }
@@ -43,11 +44,15 @@ import GoogleInteractiveMediaAds
     // MARK - IMAAdsLoaderDelegate methods
 
     func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
-        let adsManager = adsLoadedData.adsManager
-        adsManager.delegate = self
+        self.adsManager = adsLoadedData.adsManager
+        guard let adsManagerInstance = self.adsManager else {
+            print("Failed to instantiate IMAAdsManager, can't show ads without it")
+            return
+        }
+        adsManagerInstance.delegate = self
         let adsRenderingSettings = IMAAdsRenderingSettings()
         adsRenderingSettings.webOpenerPresentingController = UIViewController()
-        adsManager.initializeWithAdsRenderingSettings(adsRenderingSettings)
+        adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
     }
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
