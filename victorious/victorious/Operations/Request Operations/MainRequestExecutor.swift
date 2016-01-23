@@ -13,22 +13,11 @@ import VictoriousCommon
 class MainRequestExecutor: RequestExecutorType {
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     private(set) var error: NSError?
-    
-    weak var delegate: RequestExecutorDelegate? = nil
     
     private var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
-    }
-    
-    let baseURL: NSURL
-    let requestContext: RequestContext
-    let authenticationContext: AuthenticationContext?
-    
-    init(baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext? ) {
-        self.baseURL = baseURL
-        self.requestContext = requestContext
-        self.authenticationContext = authenticationContext
     }
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
@@ -59,7 +48,7 @@ class MainRequestExecutor: RequestExecutorType {
                     dispatch_async( dispatch_get_main_queue() ) {
                         
                         if !alerts.isEmpty {
-                            self.delegate?.didReceiveAlerts( alerts )
+                            self.alertsReceiver.onAlertsReceived( alerts )
                         }
                         
                         if let error = error as? RequestErrorType {

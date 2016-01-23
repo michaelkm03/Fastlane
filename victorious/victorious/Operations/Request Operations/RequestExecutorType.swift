@@ -8,14 +8,8 @@
 
 import VictoriousIOSSDK
 
-protocol RequestExecutorDelegate: class {
-    func didReceiveAlerts( alerts: [Alert] )
-}
-
 /// Defines an object that executes concrete implementations of `RequestType`
 protocol RequestExecutorType: class {
-    
-    var delegate: RequestExecutorDelegate? { set get }
     
     /// Objects must be able to provide any errors encountered during executing.
     /// This value, if defined, should reference the same `NSError` instance returned in the `onError:` closure
