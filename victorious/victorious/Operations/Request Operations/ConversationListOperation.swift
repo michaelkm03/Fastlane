@@ -62,12 +62,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "",
-                vsdk_argumentArray: [],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, VConversation.notFlaggedForDeletionPredicate, VConversation.hasPostedAtPredicate])
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.request.paginator.paginatorPredicate(), VConversation.defaultPredicate])
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
@@ -87,12 +82,7 @@ class FetchConverationListOperation: FetcherOperation {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "",
-                vsdk_argumentArray: [],
-                vsdk_paginator: self.paginator
-            )
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, VConversation.notFlaggedForDeletionPredicate, VConversation.hasPostedAtPredicate])
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.paginator.paginatorPredicate() , VConversation.defaultPredicate])
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }

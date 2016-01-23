@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, retain, nullable) NSNumber * isRead;
 @property (nonatomic, retain, nullable) NSString * lastMessageText;
-@property (nonatomic, retain, nullable) NSDate * postedAt;
+@property (nonatomic, retain, null_unspecified) NSDate * postedAt;
 @property (nonatomic, retain, nullable) NSNumber * remoteId;
 @property (nonatomic, retain, nullable) NSString * lastMessageContentType;
 @property (nonatomic, retain, nullable) NSOrderedSet *messages;
 @property (nonatomic, retain, nullable) VUser *user;
 @property (nonatomic, retain, null_unspecified) NSNumber * displayOrder; // This will be nonnull once the rest of the Core Data models are audited
-@property (nonatomic, strong) NSNumber *isFlaggedForDeletion;
+@property (nonatomic, strong) NSNumber *flaggedForDeletion;
 
 @end
 

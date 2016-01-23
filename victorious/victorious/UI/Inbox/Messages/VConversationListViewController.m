@@ -291,8 +291,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
                                                                           handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull indexPath)
                                           {
                                               VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-                                              conversation.isFlaggedForDeletion = [NSNumber numberWithBool:YES];
-                                              
+                                              conversation.markedForDeletion = YES;
                                               [self.dataSource refreshLocal];
                                               [self removeCachedViewControllerForUser:conversation.user];
                                               RequestOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
