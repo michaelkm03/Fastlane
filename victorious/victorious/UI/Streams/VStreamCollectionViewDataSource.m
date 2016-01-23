@@ -47,6 +47,11 @@
     [self paginatedDataSource:self.paginatedDataSource didUpdateVisibleItemsFrom:self.visibleItems to:self.visibleItems];
 }
 
+- (BOOL)hasLoadedLastPage
+{
+    return self.paginatedDataSource.hasLoadedLastPage;
+}
+
 - (BOOL)isLoading
 {
     return self.paginatedDataSource.isLoading;
