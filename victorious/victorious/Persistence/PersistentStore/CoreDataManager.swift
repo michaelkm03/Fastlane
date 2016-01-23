@@ -35,7 +35,7 @@ class CoreDataManager: NSObject {
     let currentModelVersion: ModelVersion
     let previousModelVersion: ModelVersion?
     let persistentStoreURL: NSURL
-    let storeType: String = NSSQLiteStoreType
+    let storeType: String = NSInMemoryStoreType
     
     let mainContext: NSManagedObjectContext
     private let managedObjectModel: NSManagedObjectModel

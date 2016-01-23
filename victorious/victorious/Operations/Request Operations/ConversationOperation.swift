@@ -72,17 +72,12 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
             
             let objectID = conversation.objectID
             self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = self.fetchResults()
                 self.conversation = context.objectWithID( objectID ) as? VConversation
                 completion()
             }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {}
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in

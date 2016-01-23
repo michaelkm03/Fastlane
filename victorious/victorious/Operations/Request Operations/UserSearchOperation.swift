@@ -70,14 +70,4 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
             context.v_save()
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

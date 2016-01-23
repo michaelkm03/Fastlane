@@ -87,7 +87,7 @@ import VictoriousIOSSDK
         self.state = .Loading
         requestOperation.queue() { error in
             
-            let results = operation.fetchResults() ?? []
+            let results = operation.results ?? []
             operation.results = results
             let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
             if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
@@ -139,9 +139,8 @@ import VictoriousIOSSDK
         requestOperation.queue() { error in
             
             // Fetch local results if we failed because of no network
-            if error == nil || (error?.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .First) {
-                let results = operation.fetchResults() ?? []
-                operation.results = results
+            if error == nil {
+                let results = operation.results ?? []
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 

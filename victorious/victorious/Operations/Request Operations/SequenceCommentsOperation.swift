@@ -54,22 +54,12 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
                 newComments.append( persistentComment )
             }
             sequence.v_addObjects( newComments, to: "comments" )
+            
             context.v_save()
-            completion()
-        }
-    }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
-            for comment in existingComments {
-                context.deleteObject( comment )
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
             }
-            context.v_save()
         }
     }
     

@@ -42,12 +42,6 @@ final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
          
     }
     
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {
-
-    }
-    
     func fetchResults() -> [AnyObject] {
         var displayOrder = self.request.paginator.displayOrderCounterStart
         var results = [MockPaginatedObject]()

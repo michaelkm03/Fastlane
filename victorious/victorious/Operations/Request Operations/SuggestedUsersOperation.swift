@@ -34,8 +34,7 @@ class SuggestedUsersOperation: RequestOperation {
                 return VSuggestedUser( user: user, recentSequences: recentSequences )
             }
             context.v_save()
-            
-            self.results = self.reloadFromMainContext( suggestedUsers )
+            self.suggestedUsers = self.reloadFromMainContext( suggestedUsers )
             completion()
         }
     }
@@ -55,14 +54,4 @@ class SuggestedUsersOperation: RequestOperation {
             return output
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }
