@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "VConstants.h"
-
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  A simple model for sharing publish parameters among different objects.
  */
@@ -33,12 +33,12 @@
 /**
  *  The parent sequence id if this is a remix.
  */
-@property (nonatomic, strong) NSString *parentSequenceID;
+@property (nonatomic, strong, nullable) NSString *parentSequenceID;
 
 /**
  *  The parent node id if this is a remix.
  */
-@property (nonatomic, strong) NSNumber *parentNodeID;
+@property (nonatomic, strong, nullable) NSNumber *parentNodeID;
 
 /**
  *  The loop type if this is a video.
@@ -48,7 +48,7 @@
 /**
  *  The media url to use for uploading.
  */
-@property (nonatomic, strong) NSURL *mediaToUploadURL;
+@property (nonatomic, strong, nullable) NSURL *mediaToUploadURL;
 
 /**
  *  Whether or not this is a gif asset.
@@ -73,17 +73,17 @@
 /**
  *  The name of the filter used.
  */
-@property (nonatomic, copy) NSString *filterName;
+@property (nonatomic, copy, nullable) NSString *filterName;
 
 /**
  *  The embedded text in the image if the user embedded text.
  */
-@property (nonatomic, copy) NSString *embeddedText;
+@property (nonatomic, copy, nullable) NSString *embeddedText;
 
 /**
  *  The text tool type (ex: MEME).
  */
-@property (nonatomic, copy) NSString *textToolType;
+@property (nonatomic, copy, nullable) NSString *textToolType;
 
 /**
  *  A boolean indicating whether or not this asset should be saved to the user's camera roll on publish.
@@ -103,13 +103,13 @@
 /**
  *  The source of the asset.
  */
-@property (nonatomic, copy) NSString *source;
+@property (nonatomic, copy, nullable) NSString *source;
 
 /**
  *  An external identifier for the asset that identifies it with its souce, such as with
  *  image search or GIF search.
  */
-@property (nonatomic, copy) NSString *assetRemoteId;
+@property (nonatomic, copy, nullable) NSString *assetRemoteId;
 
 /**
  *  The width of the asset if available
@@ -122,3 +122,5 @@
 @property (nonatomic, assign) NSInteger height;
 
 @end
+
+NS_ASSUME_NONNULL_END
