@@ -19,7 +19,6 @@ target :victorious do
     pod 'FBSDKShareKit'
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'youtube-ios-player-helper'
-    pod 'GoogleAds-IMA-iOS-SDK', '~> 3.1.0'
     link_with 'victorious'
 
     target :test do
