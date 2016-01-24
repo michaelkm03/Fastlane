@@ -12,11 +12,9 @@ import VictoriousCommon
 
 class RequestOperation: NSOperation, Queuable {
     
-    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
+    internal(set) var results: [AnyObject]?
     
-    static let errorDomain: String                  = "com.getvictorious.RequestOperation"
-    static let errorCodeNoNetworkConnection: Int    = 9001
-    static let errorCodeNoMoreResults: Int          = 9002
+    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
     
     var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
     
