@@ -12,7 +12,7 @@
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
@@ -401,9 +401,9 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
             [self openURL:deepLink];
         }
     }
-    else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
+    else if ( [deepLink.host isEqualToString:VConversationListViewControllerDeeplinkHostComponent] )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VConversationListViewControllerInboxPushReceivedNotification object:self];
     }
 }
 

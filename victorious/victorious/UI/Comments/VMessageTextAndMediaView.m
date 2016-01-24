@@ -25,7 +25,7 @@ static UIEdgeInsets const kTextInsets = { 2.0f, 0.0f, 2.0f, 0.0f };
     _message = message;
     
     // Set up proper media URL to use in lightbox
-    self.mediaURLForLightbox = [NSURL URLWithString:message.mediaPath];
+    self.mediaURLForLightbox = [NSURL URLWithString:message.mediaUrl];
     
     // For calculating intrinsic content size
     self.hasMedia = [message hasMediaAttachment];

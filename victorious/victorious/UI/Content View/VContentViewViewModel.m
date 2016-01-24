@@ -119,7 +119,7 @@
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
         
-        _commentsDataSource = [[PaginatedDataSource alloc] init];
+        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence];
     }
     return self;
 }

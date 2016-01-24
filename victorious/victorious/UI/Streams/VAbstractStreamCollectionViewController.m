@@ -171,7 +171,7 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.streamDataSource.paginatedDataSource.visibleItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.visibleItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
@@ -279,7 +279,7 @@
 
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if ( self.streamDataSource.paginatedDataSource.isLoading )
+    if ( self.streamDataSource.isLoading )
     {
         [self.refreshControl endRefreshing];
         return;
@@ -304,24 +304,22 @@
              completion();
          }
          
-         [self didFinishLoadingWithPageType:pageType];
-         
          [self.refreshControl endRefreshing];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
-- (void)didFinishLoadingWithPageType:(VPageType)pageType
-{
-    // For subclasses
-}
-
 - (void)positionRefreshControl
 {
+    if ( self.refreshControl.subviews.count == 0 )
+    {
+        return;
+    }
+    // Since we're using the collection flow delegate method for the insets
+    // we need to manually position the frame of the refresh control.
     UIView *subView = self.refreshControl.subviews[0];
-    
-    // Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
-    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds), CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
+    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
+                                 CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer
@@ -354,9 +352,10 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
+    const BOOL canLoadNextPage = !self.streamDataSource.hasLoadedLastPage;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
-    return isLastSection && hasOneOrMoreItems;
+    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
 }
 
 - (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
@@ -422,8 +421,8 @@
 - (void)shouldLoadNextPage
 {
     if ( self.collectionView.visibleCells.count == 0 ||
-         self.streamDataSource.paginatedDataSource.visibleItems.count == 0 ||
-         self.streamDataSource.paginatedDataSource.isLoading )
+         self.streamDataSource.visibleItems.count == 0 ||
+         self.streamDataSource.isLoading )
     {
         return;
     }

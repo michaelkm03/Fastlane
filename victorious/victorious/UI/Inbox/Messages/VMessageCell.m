@@ -13,26 +13,31 @@
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
-static const CGFloat      kMinimumCellHeight    = 71.0f;
+static const CGFloat kMinimumCellHeight         = 71.0f;
 static const UIEdgeInsets kTextInsets           = { 24.0f, 74.0f, 24.0f, 32.0f };
-static NSString * const   kChatBubble           = @"ChatBubble";
-static NSString * const   kChatBubbleArrowLeft  = @"ChatBubbleArrowLeft";
-static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
+static NSString * const kChatBubble             = @"ChatBubble";
+static NSString * const kChatBubbleArrowLeft    = @"ChatBubbleArrowLeft";
+static NSString * const kChatBubbleArrowRight   = @"ChatBubbleArrowRight";
 
 @interface VMessageCell ()
 
 @property (nonatomic, weak, readwrite) IBOutlet VMessageTextAndMediaView *messageTextAndMediaView;
-@property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubbleArrow;
-@property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
-@property (nonatomic, weak, readwrite) IBOutlet UIView                   *profileImageSuperview; ///< The superview for both profileImageView and timeLabel
-@property (nonatomic, strong)                   NSArray                  *resettableConstraints; ///< Constraints that are set in -updateConstraints
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *chatBubbleArrow;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton *profileImageButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *profileImageSuperview; ///< The superview for both profileImageView and timeLabel
+@property (nonatomic, strong) NSArray *resettableConstraints; ///< Constraints that are set in -updateConstraints
 
 @end
 
 @implementation VMessageCell
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
 
 - (void)awakeFromNib
 {
@@ -140,9 +145,9 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 - (IBAction)profileImageTapped:(UIButton *)sender
 {
-    if (self.onProfileImageTapped)
+    if ( self.profileDelegate != nil )
     {
-        self.onProfileImageTapped();
+        [self.profileDelegate cellDidSelectProfile:self];
     }
 }
 

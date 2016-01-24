@@ -10,11 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define LOG_PAGINATION_EVENTS 0
-#if LOG_PAGINATION_EVENTS
-#warning VScrollPaginator is logging pagination events.  Please turn this off before merging.
-#endif
-
 @implementation VScrollPaginator
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -33,9 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if ( scrollPositionY >= maxContentOffset )
     {
-#if LOG_PAGINATION_EVENTS
-        VLog( @"shouldLoadNextPage :: delegate = (%@)", NSStringFromClass( [self.delegate class] ) );
-#endif
         if ( [self.delegate respondsToSelector:@selector(shouldLoadNextPage)] )
         {
             [self.delegate shouldLoadNextPage];
@@ -43,9 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     else if ( scrollPositionY < minContentOffset )
     {
-#if LOG_PAGINATION_EVENTS
-        VLog( @"shouldLoadPreviousPage :: delegate = (%@)", NSStringFromClass( [self.delegate class] ) );
-#endif
         if ( [self.delegate respondsToSelector:@selector(shouldLoadPreviousPage)] )
         {
             [self.delegate shouldLoadPreviousPage];

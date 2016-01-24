@@ -31,4 +31,26 @@ public protocol Paginator {
 public protocol NumericPaginator: Paginator {
     var pageNumber: Int { get }
     var itemsPerPage: Int { get }
+    var displayOrderCounterStart: Int { get }
+    var displayOrderRangeStart: Int { get }
+    var displayOrderRangeEnd: Int { get }
+}
+
+extension NumericPaginator {
+    
+    public var displayOrderCounterStart: Int {
+        return (pageNumber - 1) * itemsPerPage
+    }
+    
+    public var displayOrderRangeStart: Int {
+        let start = (pageNumber - 1) * itemsPerPage
+        if start > 0 {
+            return start
+        }
+        return Int.min
+    }
+    
+    public var displayOrderRangeEnd: Int {
+        return max(displayOrderRangeStart, 0) + itemsPerPage
+    }
 }

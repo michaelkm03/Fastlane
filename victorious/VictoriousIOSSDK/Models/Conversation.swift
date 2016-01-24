@@ -13,49 +13,40 @@ public struct Conversation {
     public let conversationID: Int
     public let previewMessageID: Int
     public var isRead: Bool?
-    public let recipient: User
+    public let otherUser: User
     public let previewMessageText: String?
     public let postedAt: NSDate?
-    public let thumbnailURL: NSURL?
-    public let mediaURL: NSURL?
-    public let mediaType: String?
 }
 
 extension Conversation {
     
     public init?(json: JSON) {
-        if let conversationID = json["conversation_id"].int,
-            let messageIDNumber = Int(json["message_id"].stringValue),
-            let recipientUser = User(json:json["other_interlocutor_user"]),
-            let postedAtString = json["posted_at"].string {
-                self.conversationID = conversationID
-                self.previewMessageID = messageIDNumber
-                self.recipient = recipientUser
-                self.postedAt = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(postedAtString)
-        }
-        else {
+        guard let conversationID    = json["conversation_id"].int,
+            let previewMessageID    = Int(json["message_id"].stringValue),
+            let otherUser           = User(json: json["other_interlocutor_user"]),
+            let postedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue) else {
             return nil
         }
-        
-        self.previewMessageText = json["text"].string
-        if let mediaURLString = json["media_url"].string {
-            self.mediaURL = NSURL(string: mediaURLString)
+        self.otherUser              = otherUser
+        self.conversationID         = conversationID
+        self.previewMessageID       = previewMessageID
+        self.postedAt               = postedAt
+                
+        self.previewMessageText     = json["text"].string
+        self.isRead                 = json["is_read"].v_boolFromAnyValue
+    }
+}
+
+extension JSON {
+    
+    /// Optional bool or optional bool unwrapped and casted from integer or string
+    var v_boolFromAnyValue: Bool? {
+        if let integer = self.int {
+            return Bool(integer)
+        } else if let string = self.string {
+            return Bool(string)
         } else {
-            self.mediaURL = nil
+            return self.bool
         }
-        
-        if let isReadNumber = json["is_read"].int {
-            self.isRead = Bool(isReadNumber)
-        } else {
-            self.isRead = true
-        }
-        
-        if let thumbnailURLString = json["thumbnail_url"].string {
-            self.thumbnailURL = NSURL(string: thumbnailURLString)
-        } else {
-            self.thumbnailURL = nil
-        }
-        
-        self.mediaType = json["media_type"].string
     }
 }

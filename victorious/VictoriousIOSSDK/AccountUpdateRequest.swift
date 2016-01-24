@@ -19,8 +19,9 @@ public struct AccountUpdateRequest: RequestType {
     
     public let profileUpdate: ProfileUpdate?
     public let passwordUpdate: PasswordUpdate?
-    private let requestBody: RequestBodyWriterOutput
-    private let requestBodyWriter = AccountUpdateRequestBodyWriter()
+    
+    private let requestBodyWriter: AccountUpdateRequestBodyWriter
+    private let requestBody: AccountUpdateRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/account/update")!)
@@ -42,10 +43,12 @@ public struct AccountUpdateRequest: RequestType {
         self.profileUpdate = profileUpdate
         self.passwordUpdate = nil
         do {
-            self.requestBody = try requestBodyWriter.write(parameters: AccountUpdateParameters(
+            let parameters = AccountUpdateParameters(
                 profileUpdate: profileUpdate,
-                passwordUpdate: passwordUpdate)
+                passwordUpdate: passwordUpdate
             )
+            requestBodyWriter = AccountUpdateRequestBodyWriter(parameters: parameters)
+            requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }

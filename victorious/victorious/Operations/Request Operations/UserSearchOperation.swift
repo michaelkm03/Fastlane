@@ -18,62 +18,66 @@ import VictoriousIOSSDK
 }
 
 final class UserSearchOperation: RequestOperation, PaginatedOperation {
-    
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults = false
+    internal(set) var didClearResults = false
     
     let request: UserSearchRequest
-    private let escapedQueryString: String
+    
+    private let searchTerm: String
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.queryString
+        self.searchTerm = request.searchTerm
     }
     
-    convenience init?( queryString: String ) {
-        guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
-            /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
-            self.init(request: UserSearchRequest(query: ""))
+    convenience init?( searchTerm: String ) {
 
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
+            /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
+            self.init(request: UserSearchRequest(searchTerm: ""))
             return nil
         }
-        self.init(request: UserSearchRequest(query: escapedString))
+        self.init(request: UserSearchRequest(searchTerm: escapedSearchTerm))
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: self.onError)
+        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: nil)
     }
     
-    private func onError( error: NSError, completion: ()->() ) {
-        completion()
-    }
-    
-    internal func onComplete(result: UserSearchRequest.ResultType, completion: () -> () ) {
+    func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
         
-        defer {
-            // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
-            completion()
-        }
-        
-        guard !result.isEmpty else {
+        guard !networkResult.isEmpty else {
             results = []
+            completion()
             return
         }
         
-        results = result.map{ UserSearchResultObject( user: $0) }
+        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
+        
+        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
+        completion()
 
         // Populate our local users cache based off the new data
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            guard !result.isEmpty else {
+            guard !networkResult.isEmpty else {
                 return
             }
             
-            for networkUser in result {
+            for networkUser in networkResult {
                 let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID])
                 localUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }
-

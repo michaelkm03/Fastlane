@@ -13,6 +13,7 @@
 #import "VInStreamMediaLink.h"
 #import "VTagStringFormatter.h"
 #import "VCommentMediaTypeHelper.h"
+#import "VMediaAttachment.h"
 
 @implementation VInStreamCommentCellContents
 

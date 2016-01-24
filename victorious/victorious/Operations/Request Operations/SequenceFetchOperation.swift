@@ -41,3 +41,21 @@ class SequenceFetchOperation: RequestOperation {
         }
     }
 }
+
+class LoadStreamOperation: FetcherOperation {
+    
+    private let apiPath: String
+    
+    var result: VStream?
+    
+    init(apiPath: String, title: String) {
+        self.apiPath = apiPath
+    }
+    
+    override func main() {
+        // Loading a stream is required before a stream UI can be shown, so we use main context
+        self.persistentStore.mainContext.v_performBlockAndWait() { context in
+            self.result = context.v_findOrCreateObject([ "apiPath" : self.apiPath ]) as? VStream
+        }
+    }
+}

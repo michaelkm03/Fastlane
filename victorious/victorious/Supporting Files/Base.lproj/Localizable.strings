@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
 
+"NoUserSearchResultsTitle"       =   "NO USERS FOUND";
+"NoUserSearchResultsMessage"     =   "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!";
+
 "NoFollowersTitle"      =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
 "NoFollowersMessage"    =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
 

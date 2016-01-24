@@ -30,7 +30,7 @@
 /**
  Hashtag property to format
  */
-@property (nonatomic, strong) VHashtag *hashtag;
+@property (nonatomic, strong) NSString *hashtagText;
 
 /**
  Set this to adjust font, font color, and background color
@@ -50,5 +50,7 @@
  @param animate BOOL to tell the control to animate it's changing state
  */
 - (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading;
+
++ (NSString *)suggestedReuseIdentifier;
 
 @end

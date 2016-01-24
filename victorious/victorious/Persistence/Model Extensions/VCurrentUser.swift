@@ -34,9 +34,8 @@ class VCurrentUser: NSObject {
             return userFromMainContext
             
         } else {
-            let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
-                return context.objectWithID( objectID ) as? VUser
+                return context.objectWithID( userFromMainContext.objectID ) as? VUser
             }
         }
     }
@@ -46,6 +45,14 @@ class VCurrentUser: NSObject {
             fatalError( "Attempt to read current user from the persistent store's main context from a thread other than the main thread.  Use method `user(inManagedObjectcontext:)` and provide the context in which you are working." )
         }
         return VCurrentUser.user( inManagedObjectContext: persistentStore.mainContext )
+    }
+    
+    static func isLoggedIn() -> Bool {
+        var isLoggedIn = false
+        persistentStore.mainContext.performBlockAndWait() {
+            isLoggedIn = VCurrentUser.user() != nil
+        }
+        return isLoggedIn
     }
     
     /// Strips the current user of its "current" status.  `currentUser()` method will
@@ -60,7 +67,7 @@ class VCurrentUser: NSObject {
 extension VUser {
     
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
-    /// current user will lose its current status, as their can be only one.
+    /// current user will lose its current status, as there can be only one.
     func setAsCurrentUser() {
         let persistentStore = VCurrentUser.persistentStore
         

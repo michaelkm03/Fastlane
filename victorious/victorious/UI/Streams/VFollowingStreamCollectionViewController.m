@@ -35,6 +35,10 @@
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
+    
+    self.noContentView.title = NSLocalizedString( @"NotFollowingTitle", @"" );
+    self.noContentView.message = NSLocalizedString( @"NotFollowingMessage", @"" );
+    self.noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
 }
 
 - (void)dealloc
@@ -46,36 +50,10 @@
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self.streamDataSource unloadStream];
+    [self.streamDataSource.paginatedDataSource unload];
     if ( [VCurrentUser user] != nil )
     {
         [self loadPage:VPageTypeFirst completion:nil];
-    }
-}
-
-// This is an override of a superclass method
-- (void)didFinishLoadingWithPageType:(VPageType)pageType
-{
-    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( self.noContentView == nil )
-        {
-            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
-            {
-                noContentView.dependencyManager = self.dependencyManager;
-            }
-            noContentView.title = NSLocalizedString( @"NotFollowingTitle", @"" );
-            noContentView.message = NSLocalizedString( @"NotFollowingMessage", @"" );
-            noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
-            self.noContentView = noContentView;
-        }
-        
-        self.collectionView.backgroundView = self.noContentView;
-    }
-    else
-    {
-        self.collectionView.backgroundView = nil;
     }
 }
 

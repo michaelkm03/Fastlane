@@ -10,5 +10,9 @@ import Foundation
 
 /// Returns the name of a class by itself (without any package name)
 func StringFromClass(aClass: AnyClass) -> String {
-    return (NSStringFromClass(aClass) as NSString).pathExtension
+    var className = (NSStringFromClass(aClass) as NSString)
+    if className.pathExtension.characters.count > 0 {
+        className = className.pathExtension
+    }
+    return className as String
 }

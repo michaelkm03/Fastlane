@@ -10,44 +10,24 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-private let _defaultQueue: NSOperationQueue = NSOperationQueue()
-
-class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
+class RequestOperation: NSOperation, Queuable {
+    
+    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
     
     static let errorDomain: String                  = "com.getvictorious.RequestOperation"
     static let errorCodeNoNetworkConnection: Int    = 9001
     static let errorCodeNoMoreResults: Int          = 9002
     
-    var defaultQueue: NSOperationQueue { return _defaultQueue }
-    
-    static var sharedQueue: NSOperationQueue { return _defaultQueue }
+    var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
     
     var mainQueueCompletionBlock: ((NSError?)->())?
-    
-    var alertsReceiver: AlertReceiver? = AlertReceiverSelector.defaultReceiver
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     /// A place to store a background context so that it is retained for as long as expected during the operation
     var storedBackgroundContext: NSManagedObjectContext?
     
-    lazy var requestExecutor: RequestExecutorType = {
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        
-        let authenticationContext = self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VCurrentUser.user())
-        }
-        
-        var executor = MainRequestExecutor(
-            baseURL: currentEnvironment.baseURL,
-            requestContext: requestContext,
-            authenticationContext: authenticationContext
-        )
-        executor.delegate = self
-        return executor
-    }()
+    lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
     
     // MARK: - Queuable
     
@@ -57,15 +37,9 @@ class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self.requestExecutor.error )
+                self.mainQueueCompletionBlock?(self.requestExecutor.error)
             }
         }
         queue.addOperation( self )
-    }
-    
-    // MARK: - RequestExecutorDelegate
-    
-    func didReceiveAlerts( alerts: [Alert] ) {
-        self.alertsReceiver?.onAlertsReceived( alerts )
     }
 }

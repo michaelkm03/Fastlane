@@ -22,7 +22,6 @@ class FlagCommentOperation: RequestOperation {
     }
     
     override func main() {
-        // Add comment to flagged comments so it will be filtered from view
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically

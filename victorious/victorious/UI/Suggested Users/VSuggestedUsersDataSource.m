@@ -20,7 +20,7 @@ static NSString * const kPromptTextKey = @"prompt";
 
 @property (nonatomic, strong) NSArray *suggestedUsers;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, assign) BOOL isLoadingSuggestedUsers;
+@property (nonatomic, assign) NSOperation *currentLoadOperation;
 @property (nonatomic, assign) BOOL loadedOnce;
 @property (nonatomic, strong) VSuggestedUserRetryCell *retryCell;
 
@@ -48,29 +48,30 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (void)refreshWithCompletion:(void(^)())completion
 {
-    if ( self.isLoadingSuggestedUsers )
+    if ( self.currentLoadOperation != nil )
     {
         //Already loading, don't try to load again
         return;
     }
     
-    self.isLoadingSuggestedUsers = YES;
+    SuggestedUsersOperation *operation = [[SuggestedUsersOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        NSArray<VSuggestedUser *> *suggestedUsers = operation.results;
+        if ( error != nil && suggestedUsers != nil )
+        {
+            self.loadedOnce = YES;
+            self.currentLoadOperation = nil;
+            [self updateStateOfRetryCell];
+            self.suggestedUsers = suggestedUsers;
+            if ( completion != nil )
+            {
+                completion();
+            }
+        }
+    }];
     
-    __weak typeof(self) weakSelf = self;
-    [self loadSuggestedUsersWithCompletion: ^(NSArray *suggestedUsers)
-     {
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         if (strongSelf != nil)
-         {
-             strongSelf.loadedOnce = YES;
-             strongSelf.isLoadingSuggestedUsers = NO;
-             strongSelf.suggestedUsers = suggestedUsers;
-             if ( completion != nil )
-             {
-                 completion();
-             }
-         }
-     }];
+    self.currentLoadOperation = operation;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -119,12 +120,6 @@ static NSString * const kPromptTextKey = @"prompt";
 
 #pragma mark - setters / getters
 
-- (void)setIsLoadingSuggestedUsers:(BOOL)isLoadingSuggestedUsers
-{
-    _isLoadingSuggestedUsers = isLoadingSuggestedUsers;
-    [self updateStateOfRetryCell];
-}
-
 - (void)setRetryCell:(VSuggestedUserRetryCell *)retryCell
 {
     _retryCell = retryCell;
@@ -140,7 +135,7 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (void)updateStateOfRetryCell
 {
-    self.retryCell.state = self.isLoadingSuggestedUsers ? VSuggestedUserRetryCellStateLoading : VSuggestedUserRetryCellStateDefault;
+    self.retryCell.state = self.currentLoadOperation != nil ? VSuggestedUserRetryCellStateLoading : VSuggestedUserRetryCellStateDefault;
 }
 
 @end

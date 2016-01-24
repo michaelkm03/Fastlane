@@ -9,9 +9,9 @@
 #import "VUserProfileViewController.h"
 #import "VUser.h"
 #import "VProfileEditViewController.h"
-#import "VMessageContainerViewController.h"
+#import "VConversationContainerViewController.h"
 #import "VStream+Fetcher.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
@@ -116,6 +116,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
     if ( remoteId != nil )
     {
+#warning FIXME: Use operations here to load local and/or network user
         return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
     }
     
@@ -199,6 +200,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     self.didEndViewWillAppear = YES;
+    
     [self attemptToRefreshProfileUI];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
@@ -211,6 +213,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 - (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateProfileSize];
+}
+
+- (void)updateProfileSize
 {
     CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
     height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
@@ -371,26 +379,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     self.remoteId = remoteId;
     
-    [self fetchUserInfoWithUserID:remoteId.integerValue completion:^(NSError *_Nullable error) {
-        if ( error != nil )
-        {
-            //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-            self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
-            self.retryHUD.mode = MBProgressHUDModeCustomView;
-            self.retryHUD.customView = self.retryProfileLoadButton;
-            self.retryHUD.margin = 0.0f;
-            [self.retryProfileLoadButton setUserInteractionEnabled:YES];
-        }
-        else
-        {
-            [self.retryHUD hide:YES];
-            [self.retryProfileLoadButton removeFromSuperview];
-            self.retryHUD = nil;
-            
-            // Reload follow counts when user pulls to refresh
-            [self reloadUserFollowCounts];
-        }
-    }];
+    FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:remoteId.integerValue];
+    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
+    
+    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
+    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:nil];
 }
 
 - (void)retryProfileLoad
@@ -454,8 +447,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super loadPage:pageType completion:completionBlock];
 }
 
-- (void)didFinishLoadingWithPageType:(VPageType)pageType
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
     if ( self.streamDataSource.count > 0 )
     {
         [self shrinkHeaderAnimated:YES];
@@ -481,7 +476,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         self.profileHeaderViewController.loading = NO;
         [self reloadUserFollowingRelationship];
@@ -647,28 +642,26 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)shrinkHeaderAnimated:(BOOL)animated
 {
-    if ( !animated )
-    {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
-        [self.currentProfileCell invalidateIntrinsicContentSize];
-    }
-    else
-    {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
-        CGRect newFrame = self.currentProfileCell.frame;
-        newFrame.size.height = self.currentProfileSize.height;
-        [UIView animateWithDuration:0.4f
-                              delay:0.0f
-             usingSpringWithDamping:0.95f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^
-         {
-             [self.currentProfileCell setFrame:newFrame];
-             [self.currentProfileCell layoutIfNeeded];
-         }
-                         completion:nil];
-    }
+    [self updateProfileSize];
+    CGRect newFrame = self.currentProfileCell.frame;
+    newFrame.size.height = self.currentProfileSize.height;
+    [UIView animateWithDuration:0.4f
+                          delay:0.0f
+         usingSpringWithDamping:0.95f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^
+     {
+         [self.currentProfileCell setFrame:newFrame];
+         [self.currentProfileCell invalidateIntrinsicContentSize];
+         [self.currentProfileCell layoutIfNeeded];
+         
+     } completion:nil];
+    
+    [self.collectionView performBatchUpdates:^
+     {
+         [self.collectionView invalidateIntrinsicContentSize];
+     } completion:nil];
 }
 
 #pragma mark - Scroll
@@ -760,7 +753,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)navigationHistoryContainsInbox
 {
-    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
+    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VConversationListViewController class]];
 }
 
 #pragma mark - VAbstractStreamCollectionViewController
@@ -794,7 +787,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     const BOOL isCurrentUserLoggedIn = [VCurrentUser user] != nil;
     const BOOL isCurrentUser = self.user != nil && self.user == [VCurrentUser user];
     
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         if ( didNavigateFromInbox )
         {
@@ -828,7 +821,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         if ( self.user.isCurrentUser )
         {
@@ -836,12 +829,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
         else
         {
-            // Make a new container with destination's dependencyManager, and push it to the navigation controller stack
-            VDependencyManager *destinationDependencyManager = ((VMessageContainerViewController *)menuItem.destination).dependencyManager;
-            VMessageContainerViewController *destinationMessageContainerVC = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager: destinationDependencyManager];
-            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];
+            // Fetch the conversation or create a new one
+            VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
+            LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+            [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull op)
+             {
+                 VConversation *conversation = operation.loadedConversation;
+                 if ( conversation != nil )
+                 {
+                     VConversationContainerViewController *viewController = [VConversationContainerViewController newWithDependencyManager:destinationDependencyManager];
+                     viewController.conversation = conversation;
+                     [self.navigationController pushViewController:viewController animated:YES];
+                 }
+             }];
             
-            return NO;
+            return YES;
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )

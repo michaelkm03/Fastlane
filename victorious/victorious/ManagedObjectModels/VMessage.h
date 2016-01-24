@@ -13,12 +13,14 @@
 
 @interface VMessage : NSManagedObject
 
-@property (nonatomic, retain) NSString * mediaPath;
+@property (nonatomic, retain) NSString * mediaUrl;
 @property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain) NSNumber * senderUserId;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * thumbnailPath;
+@property (nonatomic, retain) NSString * thumbnailUrl;
+@property (nonatomic, retain) NSString * mediaType;
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VNotification *notification;
