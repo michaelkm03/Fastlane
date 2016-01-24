@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 
 - (instancetype)initWithContext:(ContentViewContext *)context NS_DESIGNATED_INITIALIZER;
 
-- (void)setupAdChain;
+- (void)setupAdBreak;
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
 
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) NSInteger totalVotes;
 @property (nonatomic, strong, readonly) VLargeNumberFormatter *largeNumberFormatter;
 @property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
-@property (nonatomic, assign, readonly) NSArray *monetizationDetails;
+@property (nonatomic, assign, readonly) VAdBreak *adBreak;
 @property (nonatomic, readonly) float speed;
 @property (nonatomic, readonly) BOOL loop;
 @property (nonatomic, readonly) BOOL playerControlsDisabled; //< Determines whether the video player will show its toolbar with play controls.

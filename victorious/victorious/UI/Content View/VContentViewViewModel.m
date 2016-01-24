@@ -42,8 +42,7 @@
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
-@property (nonatomic, strong) NSMutableArray *adChain;
-@property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
+@property (nonatomic, strong) VAdBreak *adBreak;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
@@ -115,10 +114,7 @@
         {
             _currentAsset = [_currentNode imageAsset];
         }
-        
-        // Set the default ad chain index
-        self.currentAdChainIndex = 0;
-        
+
         _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence];
     }
     return self;
@@ -152,26 +148,16 @@
 
 #pragma mark - Create the ad chain
 
-- (void)setupAdChain
+- (void)setupAdBreak
 {
-    if ( self.adChain != nil )
+    if ( self.adBreak != nil )
     {
         return;
     }
     
-    self.adChain = [[NSMutableArray alloc] init];
-
-    NSOrderedSet *adBreakSet = self.sequence.adBreaks;
-    for (VAdBreak *adBreak in adBreakSet)
-    {
-        [self.adChain addObject:adBreak];
-    }
-
-    // Grab the preroll
-    VAdBreak *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
-    int adSystemPartner = [[breakItem adSystemID] intValue];
+    self.adBreak = self.sequence.adBreaks.firstObject;
+    int adSystemPartner = [[self.adBreak adSystemID] intValue];
     self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
-    self.monetizationDetails = self.adChain;
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize

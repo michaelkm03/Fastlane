@@ -28,7 +28,7 @@ extension VContentViewViewModel {
 
             // Sets up the monetization chain
             if (self.sequence.adBreaks?.count ?? 0) > 0 {
-                self.setupAdChain()
+                self.setupAdBreak()
             }
             self.delegate?.didUpdateSequence()
         }

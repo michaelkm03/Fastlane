@@ -17,28 +17,28 @@
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, strong) VAdViewController *adViewController;
 @property (nonatomic, readwrite) BOOL adPlaying;
-@property (nonatomic, strong) NSArray *adDetails;
+@property (nonatomic, strong) VAdBreak *adBreak;
 
 @end
 
 @implementation VAdVideoPlayerViewController
 
 - (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
-                          details:(NSArray *)details
+                          adBreak:(VAdBreak *)adBreak
                            player:(id<VVideoPlayer>)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSAssert(details != nil, @"%@ needs a details array in order to initialize.", [VAdVideoPlayerViewController class]);
+        NSAssert(adBreak != nil, @"%@ needs an adBreak in order to initialize.", [VAdVideoPlayerViewController class]);
         
-        _adDetails = details;
+        _adBreak = adBreak;
         _monetizationPartner = monetizationPartner;
 
         switch (_monetizationPartner) {
             case VMonetizationPartnerIMA:
                 _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
-                                                                          adTag:((VAdBreak *)self.adDetails.firstObject).adTag
+                                                                          adTag:self.adBreak.adTag
                                                                         nibName:nil
                                                                       nibBundle:nil];
                 break;
@@ -72,7 +72,6 @@
 - (void)start
 {
     self.adViewController.delegate = self;
-    self.adViewController.adServerMonetizationDetails = self.adDetails;
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
     [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];

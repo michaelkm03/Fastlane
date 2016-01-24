@@ -27,6 +27,14 @@ struct PersistentStoreTestHelper {
         } as VSequence
     }
 
+    func createAdBreak(adSystemID adSystemID: Int = VMonetizationPartner.IMA.rawValue,
+        adTag: String = "http://example.com") -> VAdBreak {
+            return persistentStore.mainContext.v_createObjectAndSave { adBreak in
+                adBreak.adSystemID = adSystemID
+                adBreak.adTag = adTag
+            } as VAdBreak
+    }
+
     func tearDownPersistentStore() {
         do {
             try persistentStore.deletePersistentStore()

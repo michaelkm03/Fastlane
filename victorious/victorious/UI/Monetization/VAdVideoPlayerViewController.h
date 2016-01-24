@@ -10,7 +10,7 @@
 #import "VMonetizationPartner.h"
 #import "VVideoPlayer.h"
 
-@class VAdVideoPlayerViewController;
+@class VAdVideoPlayerViewController, VAdBreak;
 
 /**
  Reports on ad playback events
@@ -38,13 +38,13 @@
  *  The designated constructor for VAdVideoPlayerViewController taking a partner and a details specification.
  *
  *  @param monetizationPartner Enum value for which of the ad networks to use.
- *  @param details             Array of options and parameters for the ad.
+ *  @param adBreak             Parameters for the ad.
  *  @param player              Player where a video is played.
  *
  *  @return Returns an instance of the VAdVideoPlayerViewController class.
  */
 - (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
-                          details:(NSArray *)details
+                          adBreak:(VAdBreak *)adBreak
                            player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

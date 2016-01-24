@@ -7,21 +7,16 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
+@testable import VictoriousIOSSDK
 @testable import VictoriousIOSSDKTests
 @testable import victorious
 
-class VSequenceTests: XCTestCase {
+class VSequenceTests: BasePersistentStoreTestCase {
     let modelHelper = ModelHelper()
-    var persistentStoreHelper: PersistentStoreTestHelper!
-    var testStore: TestPersistentStore!
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        testStore = TestPersistentStore()
-        persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
-        persistentStoreHelper.tearDownPersistentStore()
     }
 
     func testValid() {
@@ -32,10 +27,5 @@ class VSequenceTests: XCTestCase {
         let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: 1)
         persistentSequenceModel.populate(fromSourceModel: sequenceModel)
         XCTAssertEqual(1, persistentSequenceModel.adBreaks?.count)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        persistentStoreHelper.tearDownPersistentStore()
     }
 }
