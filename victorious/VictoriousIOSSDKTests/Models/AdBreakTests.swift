@@ -22,19 +22,19 @@ class AdBreakTests: XCTestCase {
     }
 
     func testValid() {
-        guard let adBreakWithEverything = modelHelper.createAdBreak(JSONFilename: "AdBreakWithEverything") else { return }
+        guard let adBreakWithEverything: AdBreak = modelHelper.createModel(JSONFileName: "AdBreakWithEverything") else { return }
         XCTAssertEqual(5, adBreakWithEverything.adSystemID)
         XCTAssertEqual(7000, adBreakWithEverything.timeout)
         XCTAssertEqual(expectedTestAdTag, adBreakWithEverything.adTag)
         XCTAssertEqual("test_xml", adBreakWithEverything.cannedAdXML)
 
-        guard let adBreakWithOnlyAdTag = modelHelper.createAdBreak(JSONFilename: "AdBreakWithOnlyAdTag") else { return }
+        guard let adBreakWithOnlyAdTag: AdBreak = modelHelper.createModel(JSONFileName: "AdBreakWithOnlyAdTag") else { return }
         XCTAssertEqual(5, adBreakWithOnlyAdTag.adSystemID)
         XCTAssertEqual(7000, adBreakWithOnlyAdTag.timeout)
         XCTAssertEqual(expectedTestAdTag, adBreakWithOnlyAdTag.adTag)
         XCTAssertEqual("", adBreakWithOnlyAdTag.cannedAdXML)
 
-        guard let adBreakWithOnlyCannedXML = modelHelper.createAdBreak(JSONFilename: "AdBreakWithOnlyCannedXML") else { return }
+        guard let adBreakWithOnlyCannedXML: AdBreak = modelHelper.createModel(JSONFileName: "AdBreakWithOnlyCannedXML") else { return }
         XCTAssertEqual(5, adBreakWithOnlyCannedXML.adSystemID)
         XCTAssertEqual(7000, adBreakWithOnlyCannedXML.timeout)
         XCTAssertEqual("", adBreakWithOnlyCannedXML.adTag)

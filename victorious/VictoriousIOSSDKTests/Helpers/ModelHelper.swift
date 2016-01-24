@@ -10,27 +10,16 @@ import XCTest
 import SwiftyJSON
 @testable import VictoriousIOSSDK
 
-/// Helps with creating test Sequence data
+/// Helps with creating test models
 class ModelHelper {
-    func createSequence(JSONFileName fileName: String) -> Sequence? {
+    func createModel<T: ModelType>(JSONFileName fileName: String) -> T? {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
             let mockData = NSData(contentsOfURL: url),
-            let sequence = Sequence(json: JSON(data: mockData)) else {
+            let modelInstance = T(json: JSON(data: mockData)) else {
                 XCTFail("Failed to parse a sequence from \(fileName).json")
                 return nil
         }
 
-        return sequence
-    }
-
-    func createAdBreak(JSONFilename fileName: String) -> AdBreak? {
-        guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: url),
-            let adBreak = AdBreak(json: JSON(data: mockData)) else {
-                XCTFail("Failed to parse a sequence from \(fileName).json")
-                return nil
-        }
-
-        return adBreak
+        return modelInstance
     }
 }

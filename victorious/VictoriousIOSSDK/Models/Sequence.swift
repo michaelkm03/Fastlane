@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct Sequence: StreamItemType {
+public struct Sequence: StreamItemType, ModelType {
     public let sequenceID: String
     public let category: Category
     public let user: User
