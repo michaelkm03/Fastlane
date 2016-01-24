@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class TrendingUsersOperation: RequestOperation {
     
     let request = TrendingUsersRequest()
-    private(set) var results: [VUser]?
     private var resultObjectIDs = [NSManagedObjectID]()
     
     override func main() {
@@ -23,24 +22,32 @@ class TrendingUsersOperation: RequestOperation {
         self.results = []
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            var persistentUsers = [VUser]()
             for networkUser in networkResult {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])
                 persistentUser.populate(fromSourceModel: networkUser)
-                self.resultObjectIDs.append(persistentUser.objectID)
+                persistentUsers.append(persistentUser)
             }
             context.v_save()
+            self.resultObjectIDs = persistentUsers.map { $0.objectID }
             
-            self.persistentStore.mainContext.v_performBlock() { context in
-                var mainQueueUsers = [VUser]()
-                for foundFriendObjectID in self.resultObjectIDs {
-                    let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
-                    if let mainQueuePersistentUser = mainQueuePersistentUser {
-                        mainQueueUsers.append(mainQueuePersistentUser)
-                    }
-                }
-                self.results = mainQueueUsers
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
                 completion()
             }
+        }
+    }
+    
+    func fetchResults() -> [AnyObject] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            var mainQueueUsers = [VUser]()
+            for foundFriendObjectID in self.resultObjectIDs {
+                let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
+                if let mainQueuePersistentUser = mainQueuePersistentUser {
+                    mainQueueUsers.append(mainQueuePersistentUser)
+                }
+            }
+            return mainQueueUsers
         }
     }
 }

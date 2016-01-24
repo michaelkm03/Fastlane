@@ -36,21 +36,10 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
                 notification.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
-        }
-    }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let existing: [VNotification] = context.v_findAllObjects()
-            for object in existing {
-                context.deleteObject( object )
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
             }
-            context.v_save()
         }
     }
     

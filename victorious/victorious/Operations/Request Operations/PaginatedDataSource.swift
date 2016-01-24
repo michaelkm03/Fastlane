@@ -17,7 +17,7 @@ import VictoriousIOSSDK
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
     private(set) weak var currentOperation: NSOperation?
     
-    private(set) var hasReachedLastPage: Bool = false
+    private(set) var hasLoadedLastPage: Bool = false
     
     private(set) var state: DataSourceState = .Cleared {
         didSet {
@@ -87,7 +87,7 @@ import VictoriousIOSSDK
         self.state = .Loading
         requestOperation.queue() { error in
             
-            let results = operation.fetchResults() ?? []
+            let results = operation.results ?? []
             operation.results = results
             let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
             if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
@@ -100,13 +100,20 @@ import VictoriousIOSSDK
     
     func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading() || (self.hasReachedLastPage && pageType == .Next) else {
+        guard !isLoading() else {
             return
+        }
+        
+        if pageType == .Next {
+            guard !self.hasLoadedLastPage else {
+                return
+            }
         }
         
         if pageType == .First {
             // Clear all from `pagesLoaded` because .First indicates a "refresh"
             pagesLoaded = Set<Int>()
+            self.hasLoadedLastPage = false
         }
         
         let operationToQueue: T?
@@ -122,7 +129,7 @@ import VictoriousIOSSDK
         // Return early if there is no operation to queue, i.e. no work to do
         guard let requestOperation = operationToQueue as? RequestOperation,
             var operation = operationToQueue else {
-                self.hasReachedLastPage = true
+                self.hasLoadedLastPage = true
                 return
         }
         
@@ -135,13 +142,11 @@ import VictoriousIOSSDK
         pagesLoaded.insert(operation.request.paginator.pageNumber)
         
         self.state = .Loading
-        self.hasReachedLastPage = false
         requestOperation.queue() { error in
             
             // Fetch local results if we failed because of no network
-            if error == nil || (error?.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .First) {
-                let results = operation.fetchResults() ?? []
-                operation.results = results
+            if error == nil {
+                let results = operation.results ?? []
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 

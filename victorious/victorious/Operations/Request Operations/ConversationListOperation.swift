@@ -40,21 +40,10 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
                 conversation.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
-        }
-    }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            let existing: [VConversation] = context.v_findAllObjects()
-            for object in existing {
-                context.deleteObject( object )
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
             }
-            context.v_save()
         }
     }
     
