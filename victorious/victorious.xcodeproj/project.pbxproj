@@ -379,6 +379,9 @@
 		62575ED81C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ED61C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json */; };
 		62575ED91C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ED71C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json */; };
 		62575EDB1C54C83F00B49CB0 /* AdBreakWithoutAdTagAndCannedAdXML.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EDA1C54C83F00B49CB0 /* AdBreakWithoutAdTagAndCannedAdXML.json */; };
+		62575EDD1C54C96000B49CB0 /* SequenceWithoutUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EDC1C54C96000B49CB0 /* SequenceWithoutUser.json */; };
+		62575EDF1C54C9FD00B49CB0 /* SequenceWithoutCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EDE1C54C9FD00B49CB0 /* SequenceWithoutCategory.json */; };
+		62575EE11C54CA6700B49CB0 /* SequenceWithoutID.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EE01C54CA6700B49CB0 /* SequenceWithoutID.json */; };
 		627C0FF91C5176BE00E08047 /* VSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */; };
 		627D07E61C3F6A8F004B8D27 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
 		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
@@ -2480,6 +2483,9 @@
 		62575ED61C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithOnlyCannedXML.json; path = AdBreak/AdBreakWithOnlyCannedXML.json; sourceTree = "<group>"; };
 		62575ED71C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithoutAdSystemID.json; path = AdBreak/AdBreakWithoutAdSystemID.json; sourceTree = "<group>"; };
 		62575EDA1C54C83F00B49CB0 /* AdBreakWithoutAdTagAndCannedAdXML.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithoutAdTagAndCannedAdXML.json; path = AdBreak/AdBreakWithoutAdTagAndCannedAdXML.json; sourceTree = "<group>"; };
+		62575EDC1C54C96000B49CB0 /* SequenceWithoutUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceWithoutUser.json; sourceTree = "<group>"; };
+		62575EDE1C54C9FD00B49CB0 /* SequenceWithoutCategory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceWithoutCategory.json; sourceTree = "<group>"; };
+		62575EE01C54CA6700B49CB0 /* SequenceWithoutID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceWithoutID.json; sourceTree = "<group>"; };
 		625D6E721C385C4D00DB5F1F /* UnFollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnFollowUsersOperationTests.swift; sourceTree = "<group>"; };
 		627C0FF71C5176BE00E08047 /* VSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+RestKit.h"; sourceTree = "<group>"; };
 		627C0FF81C5176BE00E08047 /* VSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+RestKit.m"; sourceTree = "<group>"; };
@@ -5505,6 +5511,9 @@
 				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				A72EDF9E1C040172003D6177 /* Sequence.json */,
+				62575EDC1C54C96000B49CB0 /* SequenceWithoutUser.json */,
+				62575EE01C54CA6700B49CB0 /* SequenceWithoutID.json */,
+				62575EDE1C54C9FD00B49CB0 /* SequenceWithoutCategory.json */,
 				A72EDF9C1C03FFC9003D6177 /* SequenceSimple.json */,
 				62B509751C549595008C8D38 /* SequenceWithAdBreak.json */,
 				C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */,
@@ -9801,9 +9810,11 @@
 				795B75901BFA686200227647 /* tos.json in Resources */,
 				C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */,
 				C323C3B51BF55D8300681059 /* UpdateCommentResponse.json in Resources */,
+				62575EDD1C54C96000B49CB0 /* SequenceWithoutUser.json in Resources */,
 				C3D956131BF431AF00069FD6 /* SequenceCommentsResponse.json in Resources */,
 				C37CCC5A1BFA78B2008B8D80 /* FanLoyalty.json in Resources */,
 				62575ED91C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json in Resources */,
+				62575EE11C54CA6700B49CB0 /* SequenceWithoutID.json in Resources */,
 				C3FEA79D1BF17307003446CC /* TrendingGIFsResponse.json in Resources */,
 				C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */,
 				A72EDF9F1C040172003D6177 /* Sequence.json in Resources */,
@@ -9811,6 +9822,7 @@
 				795B75921BFA6A8400227647 /* tos.html in Resources */,
 				79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */,
 				79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */,
+				62575EDF1C54C9FD00B49CB0 /* SequenceWithoutCategory.json in Resources */,
 				79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */,
 				67C210241BFA7A210074E40E /* HashtagSearchResponse.json in Resources */,
 				62575EC51C54BDB700B49CB0 /* AdBreakWithEverything.json in Resources */,

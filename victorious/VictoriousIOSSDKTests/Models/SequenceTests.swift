@@ -54,7 +54,16 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.comments?.count, 1 )
         XCTAssertEqual( sequence.recentComments?.count, 1 )
     }
-    
+
+    func testInvalid() {
+        let sequenceWithoutUser: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutUser")
+        XCTAssertNil(sequenceWithoutUser)
+        let sequenceWithoutCategory: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutCategory")
+        XCTAssertNil(sequenceWithoutCategory)
+        let sequenceWithoutID: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutID")
+        XCTAssertNil(sequenceWithoutID)
+    }
+
     func testDefaults() {
         guard let sequence: Sequence = modelHelper.createModel(JSONFileName: "SequenceSimple") else { return }
         
