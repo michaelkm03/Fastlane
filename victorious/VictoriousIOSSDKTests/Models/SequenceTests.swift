@@ -11,18 +11,16 @@ import VictoriousIOSSDK
 import XCTest
 
 class SequenceTests: XCTestCase {
-    
+    let sequenceHelper = SequenceHelper()
+
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+    }
+
     func testValid() {
-        guard let url = NSBundle(forClass: self.dynamicType).URLForResource("Sequence", withExtension: "json" ),
-            let mockData = NSData(contentsOfURL: url) else {
-                XCTFail("Error reading mock json data" )
-                return
-        }
-        guard let sequence = Sequence(json: JSON(data: mockData)) else {
-            XCTFail("Sequence initializer failed" )
-            return
-        }
-        
+        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "Sequence") else { return }
+
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
         
@@ -58,12 +56,7 @@ class SequenceTests: XCTestCase {
     }
     
     func testDefaults() {
-        guard let url = NSBundle(forClass: self.dynamicType).URLForResource("SimpleSequence", withExtension: "json" ),
-            let mockData = NSData(contentsOfURL: url),
-            let sequence = Sequence(json: JSON(data: mockData)) else {
-                XCTFail("Stream initializer failed" )
-                return
-        }
+        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "SequenceSimple") else { return }
         
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
@@ -75,5 +68,23 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.subtype, StreamContentType.Video )
         XCTAssertEqual( sequence.user.userID, Int(3694) )
         XCTAssertNil( sequence.nodes )
+    }
+
+    func testAdBreaks() {
+        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "SequenceWithAdBreak") else { return }
+
+        guard let adBreaks = sequence.adBreaks else {
+            XCTFail("No adBreaks on a sequence")
+            return
+        }
+
+        let testAdTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples" +
+            "&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1" +
+            "&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator="
+        XCTAssertEqual(1, adBreaks.count)
+        XCTAssertEqual(5, adBreaks[0].adSystemID)
+        XCTAssertEqual(7000, adBreaks[0].timeout)
+        XCTAssertEqual(testAdTag, adBreaks[0].adTag)
+        XCTAssertEqual("", adBreaks[0].cannedAdXML)
     }
 }
