@@ -40,4 +40,13 @@ class AdBreakTests: XCTestCase {
         XCTAssertEqual("", adBreakWithOnlyCannedXML.adTag)
         XCTAssertEqual("test_xml", adBreakWithOnlyCannedXML.cannedAdXML)
     }
+
+    func testInvalid() {
+        let adBreakWithoutAdSystemID: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithoutAdSystemID")
+        XCTAssertNil(adBreakWithoutAdSystemID)
+        let adBreakWithoutTimeout: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithoutTimeout")
+        XCTAssertNil(adBreakWithoutTimeout)
+        let adBreakWithoutAdTagAndCannedAdXML: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithoutAdTagAndCannedAdXML")
+        XCTAssertNil(adBreakWithoutAdTagAndCannedAdXML)
+    }
 }

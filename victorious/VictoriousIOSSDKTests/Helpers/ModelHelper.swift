@@ -14,12 +14,11 @@ import SwiftyJSON
 class ModelHelper {
     func createModel<T: ModelType>(JSONFileName fileName: String) -> T? {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: url),
-            let modelInstance = T(json: JSON(data: mockData)) else {
-                XCTFail("Failed to parse a sequence from \(fileName).json")
+            let mockData = NSData(contentsOfURL: url) else {
+                XCTFail("Failed to read data from \(fileName).json")
                 return nil
         }
 
-        return modelInstance
+        return T(json: JSON(data: mockData))
     }
 }

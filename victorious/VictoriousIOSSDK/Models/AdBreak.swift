@@ -25,7 +25,7 @@ extension AdBreak {
         let adTag = json["ad_tag"].string
         let cannedAdXML = json["canned_ad_xml"].string
 
-        if adTag == nil && cannedAdXML == nil {
+        if (adTag == nil || adTag == "") && (cannedAdXML == nil || cannedAdXML == "") {
             print("Failed to parse an AdBreak because there is no ad information")
             return nil
         }
