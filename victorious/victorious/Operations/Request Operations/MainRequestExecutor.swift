@@ -13,28 +13,18 @@ import VictoriousCommon
 class MainRequestExecutor: RequestExecutorType {
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     private(set) var error: NSError?
     
-    weak var delegate: RequestExecutorDelegate? = nil
-    
-    let baseURL: NSURL
-    let requestContext: RequestContext
-    let authenticationContext: AuthenticationContext?
-    
-    init(baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext? ) {
-        self.baseURL = baseURL
-        self.requestContext = requestContext
-        self.authenticationContext = authenticationContext
-    }
-    
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
-
+        
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
         let authenticationContext: AuthenticationContext? = dispatch_sync( dispatch_get_main_queue() ) {
             return AuthenticationContext(currentUser: VCurrentUser.user())
         }
+        
         networkActivityIndicator.start()
         let executeSemphore = dispatch_semaphore_create(0)
         request.execute(
@@ -45,7 +35,7 @@ class MainRequestExecutor: RequestExecutorType {
                 dispatch_async( dispatch_get_main_queue() ) {
                     
                     if !alerts.isEmpty {
-                        self.delegate?.didReceiveAlerts( alerts )
+                        self.alertsReceiver.onAlertsReceived( alerts )
                     }
                     
                     if let error = error as? RequestErrorType {
