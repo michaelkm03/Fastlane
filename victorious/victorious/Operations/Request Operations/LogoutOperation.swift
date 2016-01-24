@@ -27,9 +27,6 @@ class LogoutOperation: RequestOperation {
             return
         }
         
-        // Execute the network request and don't wait for response
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
-        
         dispatch_sync( dispatch_get_main_queue() ) {
             
             InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
@@ -47,30 +44,17 @@ class LogoutOperation: RequestOperation {
         }
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let loggedOutUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                fatalError()
-            }
-            
-            let conversations: [VConversation] = context.v_findObjects( [ "user" : loggedOutUser ])
-            for object in conversations {
-                context.deleteObject( object )
-            }
-            
-            let notifications: [VNotification] = context.v_findObjects( [ "user" : loggedOutUser ])
-            for object in notifications {
-                context.deleteObject( object )
-            }
-            
-            let pollResults: [VPollResult] = context.v_findObjects( [ "user" : loggedOutUser ])
-            for object in pollResults {
-                context.deleteObject( object )
-            }
-            
+            context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
+            context.v_deleteAllObjectsWithEntityName( VNotification.v_entityName() )
+            context.v_deleteAllObjectsWithEntityName( VPollResult.v_entityName() )
             context.v_save()
         }
         
         // And finally, clear the user.  Don't do this early because
         // some of the stuff above requires knowing the current user
         VCurrentUser.clear()
+        
+        // Execute the network request and don't wait for response
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
