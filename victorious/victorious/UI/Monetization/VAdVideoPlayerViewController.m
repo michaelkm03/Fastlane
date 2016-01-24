@@ -25,7 +25,7 @@
 
 - (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
                           details:(NSArray *)details
-                           player:(AVPlayer *)player
+                           player:(id<VVideoPlayer>)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VMonetizationPartner.h"
-@import AVFoundation;
+#import "VVideoPlayer.h"
 
 @class VAdVideoPlayerViewController;
 
@@ -45,7 +45,7 @@
  */
 - (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
                           details:(NSArray *)details
-                           player:(AVPlayer *)player NS_DESIGNATED_INITIALIZER;
+                           player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
