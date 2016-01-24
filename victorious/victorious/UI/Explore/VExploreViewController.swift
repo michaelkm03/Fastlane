@@ -8,14 +8,6 @@
 
 import UIKit
 
-
-/// View Controllers conform to this protocol to handle
-/// search result navigation(e.g. tap on a user result, or hashtag result)
-@objc protocol ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser)
-    func selectedHashtag(hashtag: VHashtag)
-}
-
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate {
@@ -134,9 +126,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-        
-        // FIXME:
-        // searchResultsViewController?.updateTableView()
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -296,7 +285,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         }
         
         searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
-        searchResultsViewController?.navigationDelegate = self
         searchController = UISearchController(searchResultsController: searchResultsViewController)
 
         // Configure searchController properties
@@ -666,22 +654,6 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
-        }
-    }
-}
-
-extension VExploreViewController: ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.userProfileViewControllerWithUser(user)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
-        }
-    }
-    
-    func selectedHashtag(hashtag: VHashtag) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
         }
     }
 }
