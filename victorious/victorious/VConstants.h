@@ -42,6 +42,7 @@ static CGFloat const kStreamViewCellHeight       = 320.0f;
 #pragma mark - Error Codes
 
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
+static NSString * const kVictoriousErrorMessageKey      = @"VictoriousErrorMessage";
 
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;

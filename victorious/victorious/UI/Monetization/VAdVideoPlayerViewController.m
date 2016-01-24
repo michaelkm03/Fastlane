@@ -99,7 +99,7 @@
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
-- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
+- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController withError:(NSError *)error
 {
     self.adPlaying = NO;
 

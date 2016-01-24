@@ -69,28 +69,46 @@ import GoogleInteractiveMediaAds
     }
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
-        print("Failed to load adds with error: \(adErrorData.adError.message)")
-        player.play()
+        let imaError = adErrorData.adError
+        let error = NSError(domain: kVictoriousErrorDomain,
+            code: imaError.code.rawValue,
+            userInfo: [kVictoriousErrorMessageKey : imaError.message])
+        delegate?.adHadErrorInAdViewController?(self, withError: error)
     }
 
     // MARK - IMAAdsManagerDelegate methods
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdEvent event: IMAAdEvent!) {
-        if event.type == IMAAdEventType.LOADED {
+        switch event.type {
+        case .LOADED:
             adsManager.start()
+            delegate?.adDidLoadForAdViewController(self)
+        case .STARTED:
+            delegate?.adDidStartPlaybackInAdViewController?(self)
+        case .COMPLETE:
+            delegate?.adDidFinishForAdViewController(self)
+        case .FIRST_QUARTILE:
+            delegate?.adDidHitFirstQuartileInAdViewController?(self)
+        case .MIDPOINT:
+            delegate?.adDidHitMidpointInAdViewController?(self)
+        case .THIRD_QUARTILE:
+            delegate?.adDidHitThirdQuartileInAdViewController?(self)
+        default:
+            print("IMAAdViewController received an unrecognized event \(event.typeString)")
         }
     }
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdError error: IMAAdError!) {
         print("IMAAdsManager has an error: \(error.message)")
-        player.play()
+        let nsError = NSError(domain: kVictoriousErrorDomain,
+            code: error.code.rawValue,
+            userInfo: [kVictoriousErrorMessageKey : error.message])
+        delegate?.adHadErrorInAdViewController?(self, withError: nsError)
     }
 
     func adsManagerDidRequestContentPause(adsManager: IMAAdsManager!) {
-        player.pause()
     }
 
     func adsManagerDidRequestContentResume(adsManager: IMAAdsManager!) {
-        player.play()
     }
 }
