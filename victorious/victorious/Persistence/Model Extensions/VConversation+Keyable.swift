@@ -19,6 +19,6 @@ extension VConversation: Keyable {
         case messages
         case user
         case displayOrder
-        case flaggedForDeletion
+        case markForDeletion
     }
 }

@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension VConversation {
+extension VConversation: PredicateModelType {
     
-    static var defaultPredicate: NSPredicate {
+    class var defaultPredicate: NSPredicate {
         return NSCompoundPredicate(andPredicateWithSubpredicates: [hasPostedAtPredicate, notMarkedForDeletionPredicate])
     }
     

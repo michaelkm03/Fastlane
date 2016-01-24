@@ -12,18 +12,18 @@ extension VConversation: Deletable {
     
     var markedForDeletion: Bool {
         get {
-            return self.flaggedForDeletion.boolValue
+            return self.markForDeletion.boolValue
         }
         set {
-            self.flaggedForDeletion = newValue
+            self.markForDeletion = newValue
         }
     }
     
     static var markedForDeletionPredicate: NSPredicate {
-        return NSPredicate(format: "%K == YES", VConversation.Keys.flaggedForDeletion.rawValue)
+        return NSPredicate(format: "%K == YES", VConversation.Keys.markForDeletion.rawValue)
     }
     
     static var notMarkedForDeletionPredicate: NSPredicate{
-        return NSPredicate(format: "%K == NO", VConversation.Keys.flaggedForDeletion.rawValue)
+        return NSPredicate(format: "%K == NO", VConversation.Keys.markForDeletion.rawValue)
     }
 }

@@ -8,11 +8,16 @@
 
 import Foundation
 
-/// Conforming classes can be flagged for deletion.
+/// Conforming classes can be marked for deletion in a two-phase process.
+/// This is to assist calling code of the persistence layer which may be
+/// retaining a `Deletable` class.
 protocol Deletable: class {
 
     var markedForDeletion: Bool { get set }
     
-    static var markedForDeletionPredicate: NSPredicate{get}
-    static var notMarkedForDeletionPredicate: NSPredicate{get}
+    /// When an object has been marked for deletion this predicate should evaluate to true
+    static var markedForDeletionPredicate: NSPredicate{ get }
+    
+    /// When an object has *not* been marked for deletion this predicate should evaluate to true
+    static var notMarkedForDeletionPredicate: NSPredicate{ get }
 }
