@@ -311,7 +311,7 @@
 
 - (void)positionRefreshControl
 {
-        UIView *subView = self.refreshControl.subviews.firstObject;
+    UIView *subView = self.refreshControl.subviews.firstObject;
     if (subView != nil)
     {
         // Since we're using the collection flow delegate method for the insets

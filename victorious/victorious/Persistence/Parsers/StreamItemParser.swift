@@ -55,36 +55,40 @@ extension VStreamItem {
                 return persistentStream
                 
             case .Some(.Shelf):
-                switch item.subtype {
-                    
-                case .Some(.User):
-                    guard let userShelf = item as? VictoriousIOSSDK.UserShelf else { return nil }
-                    let persistentUserShelf = context.v_findOrCreateObject(uniqueElements) as UserShelf
-                    persistentUserShelf.populate(fromSourceShelf: userShelf)
-                    return persistentUserShelf
-                    
-                case .Some(.Hashtag):
-                    guard let hashtagShelf = item as? VictoriousIOSSDK.HashtagShelf else { return nil }
-                    let persistentHashtagShelf = context.v_findOrCreateObject(uniqueElements) as HashtagShelf
-                    persistentHashtagShelf.populate(fromSourceShelf: hashtagShelf)
-                    return persistentHashtagShelf
-                    
-                case .Some(.Playlist):
-                    guard let listShelf = item as? VictoriousIOSSDK.ListShelf else { return nil }
-                    let persistentListShelf = context.v_findOrCreateObject(uniqueElements) as ListShelf
-                    persistentListShelf.populate(fromSourceShelf: listShelf)
-                    return persistentListShelf
-                    
-                default:
-                    guard let shelf = item as? VictoriousIOSSDK.Shelf else { return nil }
-                    let persistentShelf = context.v_findOrCreateObject(uniqueElements) as Shelf
-                    persistentShelf.populate(fromSourceShelf: shelf)
-                    return persistentShelf
-                }
+                return populateShelf(fromStreamItem: item, withUniqueIdentifier: uniqueElements, context: context)
                 
             default:
                 return nil
             }
+        }
+    }
+    
+    static private func populateShelf(fromStreamItem item: StreamItemType, withUniqueIdentifier identifier: [String : AnyObject], context: NSManagedObjectContext) -> Shelf? {
+        switch item.subtype {
+            
+        case .Some(.User):
+            guard let userShelf = item as? VictoriousIOSSDK.UserShelf else { return nil }
+            let persistentUserShelf = context.v_findOrCreateObject(identifier) as UserShelf
+            persistentUserShelf.populate(fromSourceShelf: userShelf)
+            return persistentUserShelf
+            
+        case .Some(.Hashtag):
+            guard let hashtagShelf = item as? VictoriousIOSSDK.HashtagShelf else { return nil }
+            let persistentHashtagShelf = context.v_findOrCreateObject(identifier) as HashtagShelf
+            persistentHashtagShelf.populate(fromSourceShelf: hashtagShelf)
+            return persistentHashtagShelf
+            
+        case .Some(.Playlist):
+            guard let listShelf = item as? VictoriousIOSSDK.ListShelf else { return nil }
+            let persistentListShelf = context.v_findOrCreateObject(identifier) as ListShelf
+            persistentListShelf.populate(fromSourceShelf: listShelf)
+            return persistentListShelf
+            
+        default:
+            guard let shelf = item as? VictoriousIOSSDK.Shelf else { return nil }
+            let persistentShelf = context.v_findOrCreateObject(identifier) as Shelf
+            persistentShelf.populate(fromSourceShelf: shelf)
+            return persistentShelf
         }
     }
 }

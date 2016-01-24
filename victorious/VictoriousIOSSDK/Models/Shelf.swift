@@ -8,4 +8,6 @@
 
 import Foundation
 
+/// A `Shelf` and a `Stream` hold same data as network models, but have different persistent models
+/// This type is created to take advantage of the swift type system when parsing
 public typealias Shelf = Stream
