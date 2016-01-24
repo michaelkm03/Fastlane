@@ -15,7 +15,7 @@
 /// The view controller to manage the presentation of explore search results
 /// This view is shown when user starts to edit the search field
 /// This view is dismissed when user clears the search field
-@interface VExploreSearchResultsViewController : DiscoverSearchViewController <UISearchBarDelegate>
+@interface VExploreSearchResultsViewController : DiscoverSearchViewController
 
 @property (nonatomic, weak) id<ExploreSearchResultNavigationDelegate> navigationDelegate;
 

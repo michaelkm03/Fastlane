@@ -80,7 +80,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         var persistentStream: VStream?
         
         persistentStore.mainContext.performBlockAndWait {
-            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.entityName(), queryDictionary: query) as? VStream else { return }
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.entityName(), queryDictionary: query) as? VStream else {
+                return
+            }
             stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
             persistentStore.mainContext.v_save()
             persistentStream = stream
@@ -706,5 +708,27 @@ extension VExploreViewController {
         updateSectionRanges()
         trackVisibleCells()
         collectionView.reloadData()
+    }
+}
+
+extension VExploreViewController: SearchResultsViewControllerDelegate {
+    func searchResultsViewControllerDidSelectCancel() { }
+    
+    func searchResultsViewControllerDidSelectResult(result: AnyObject) {
+        if let userResult = result as? UserSearchResultObject {
+            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
+            operation.queue() { op in
+                if let user = operation.result,
+                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
+                        self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            
+        } else if let hashtagResult = result as? HashtagSearchResultObject {
+            let hashtag = hashtagResult.sourceResult.tag
+            if let vc = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+                navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 }
