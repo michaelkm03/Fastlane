@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 import XCTest
 
 class SequenceTests: XCTestCase {
-    let sequenceHelper = SequenceHelper()
+    let modelHelper = ModelHelper()
 
     override func setUp() {
         super.setUp()
@@ -19,7 +19,7 @@ class SequenceTests: XCTestCase {
     }
 
     func testValid() {
-        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "Sequence") else { return }
+        guard let sequence = modelHelper.createSequence(JSONFileName: "Sequence") else { return }
 
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
@@ -56,7 +56,7 @@ class SequenceTests: XCTestCase {
     }
     
     func testDefaults() {
-        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "SequenceSimple") else { return }
+        guard let sequence = modelHelper.createSequence(JSONFileName: "SequenceSimple") else { return }
         
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
@@ -71,7 +71,7 @@ class SequenceTests: XCTestCase {
     }
 
     func testAdBreaks() {
-        guard let sequence = sequenceHelper.parseSequenceFromJSON(fileName: "SequenceWithAdBreak") else { return }
+        guard let sequence = modelHelper.createSequence(JSONFileName: "SequenceWithAdBreak") else { return }
 
         guard let adBreaks = sequence.adBreaks else {
             XCTFail("No adBreaks on a sequence")
