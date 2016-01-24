@@ -15,14 +15,16 @@ class CreateMediaUploadOperation: Operation {
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
     let mediaURL: NSURL?
+    let uploadCompletion: (NSError?) -> Void
     
-    init(publishParameters: VPublishParameters, uploadManager: VUploadManager) {
+    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, uploadCompletion: (NSError?) -> Void) {
         let baseURL = VEnvironmentManager.sharedInstance().currentEnvironment.baseURL
         
         self.mediaURL = publishParameters.mediaToUploadURL
         self.request = CreateMediaUploadRequest(baseURL: baseURL)
         self.publishParameters = publishParameters
         self.uploadManager = uploadManager
+        self.uploadCompletion = uploadCompletion
     }
     
     override func start() {
@@ -32,6 +34,7 @@ class CreateMediaUploadOperation: Operation {
     
     func upload(uploadManager: VUploadManager) {
         guard let mediaURL = formFields["media_data"] where !mediaURL.absoluteString.isEmpty else {
+            uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
@@ -43,10 +46,12 @@ class CreateMediaUploadOperation: Operation {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in
                 dispatch_async(dispatch_get_main_queue()) {
+                    self.uploadCompletion(nil)
                     self.mainQueueCompletionBlock?(self)
                 }
             }
         } catch {
+            uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
     }

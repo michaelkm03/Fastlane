@@ -307,24 +307,25 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     [self trackPublishWithPublishParameters:self.publishParameters];
     
     __weak typeof(self) welf = self;
-    [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
-                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+    Operation *operation = [[CreateMediaUploadOperation alloc] initWithPublishParameters:self.publishParameters
+                                                                           uploadManager:[VUploadManager sharedManager]
+                                                                        uploadCompletion:^(NSError *_Nullable error)
     {
         __strong typeof(welf) strongSelf = welf;
         strongSelf.publishing = NO;
         [hud hide:YES];
         
         if (error != nil)
-        {           
+        {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upload failure", @"")
                                                                                      message:error.localizedDescription
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction *action)
-                                        {
-                                            [strongSelf closeOnComplete:NO];
-                                        }]];
+            {
+                [strongSelf closeOnComplete:NO];
+            }]];
             [strongSelf presentViewController:alertController animated:YES completion:nil];
         }
         else
@@ -335,7 +336,9 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
                 [strongSelf closeOnComplete:YES];
             });
         }
-     }];
+    }];
+    
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
