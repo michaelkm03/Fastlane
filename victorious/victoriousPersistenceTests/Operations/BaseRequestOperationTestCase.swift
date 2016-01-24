@@ -31,7 +31,7 @@ class BaseRequestOperationTestCase: XCTestCase {
     }
     
     override func tearDown() {
-        self.persistentStoreHelper.tearDownPersistentStore()
+        persistentStoreHelper.tearDownPersistentStore()
     }
 
     /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.

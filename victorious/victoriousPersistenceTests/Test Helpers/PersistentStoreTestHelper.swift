@@ -21,6 +21,12 @@ struct PersistentStoreTestHelper {
         } as VUser
     }
 
+    func createSequence(remoteId remoteId: Int) -> VSequence {
+        return persistentStore.mainContext.v_createObjectAndSave { sequence in
+            sequence.remoteId = String(remoteId)
+        } as VSequence
+    }
+
     func tearDownPersistentStore() {
         do {
             try persistentStore.deletePersistentStore()

@@ -9,7 +9,6 @@
 #import "VVideoView.h"
 #import <KVOController/FBKVOController.h>
 #import "VVideoUtils.h"
-#import "victorious-Swift.h"
 
 @import AVFoundation;
 

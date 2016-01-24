@@ -9,7 +9,6 @@
 @import UIKit;
 
 #import "VVideoPlayerDelegate.h"
-@import AVFoundation;
 
 NS_ASSUME_NONNULL_BEGIN
 
