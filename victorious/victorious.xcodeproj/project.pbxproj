@@ -12401,9 +12401,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -12430,9 +12428,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13456,9 +13452,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -13485,9 +13479,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13752,9 +13744,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -13785,9 +13775,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -13814,9 +13802,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -13852,9 +13838,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13960,9 +13944,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -13985,9 +13967,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/3rd\\ Party\\ SDKs",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
