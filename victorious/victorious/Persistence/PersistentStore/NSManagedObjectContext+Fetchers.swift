@@ -105,4 +105,23 @@ extension NSManagedObjectContext {
         }
         return [NSManagedObject]()
     }
+    
+    func v_displayOrderForNewObjectWithEntityName( entityName: String, predicate: NSPredicate ) -> Int {
+        let request = NSFetchRequest(entityName: entityName)
+        request.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+        request.predicate = predicate
+        request.fetchBatchSize = 1
+        request.fetchLimit = 1
+        
+        do {
+            let results = try executeFetchRequest( request )
+            if let lowestDisplayOrderObject = results.first as? PaginatedObjectType {
+                let lowestDisplayOrder = (lowestDisplayOrderObject.displayOrder?.integerValue ?? 0)
+                return lowestDisplayOrder - 1
+            }
+        } catch {
+            print( "Error: \(error)" )
+        }
+        return -1
+    }
 }
