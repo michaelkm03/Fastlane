@@ -31,13 +31,6 @@ extern NSString * const VDependencyManagerAccessoryItemLegalInfo;
 @interface VDependencyManager (VAccessoryScreens)
 
 /**
- Internally calls addAccessoryScreensToNavigationItem:fromViewController: with nil for the second parameter.
- 
- @param navigationItem the navigation item to configure
- */
-- (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem;
-
-/**
  Adds accessory screens to the given navigation item according to this VDependencyManager's configuration.
  Should be called from viewWillAppear
  

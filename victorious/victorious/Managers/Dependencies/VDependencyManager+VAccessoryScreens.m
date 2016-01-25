@@ -49,11 +49,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 @implementation VDependencyManager (VAccessoryScreens)
 
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
-{
-    [self addAccessoryScreensToNavigationItem:navigationItem fromViewController:nil];
-}
-
-- (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
                            fromViewController:(UIViewController *)sourceViewController
 {
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
@@ -135,8 +130,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     shouldAnimate = newBarButtonItemsLeft.count != navigationItem.leftBarButtonItems.count;
     [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:shouldAnimate];
     
-    shouldAnimate = newBarButtonItemsRight.count != navigationItem.rightBarButtonItems.count;
-    [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
+    [navigationItem setRightBarButtonItems:newBarButtonItemsRight];
 }
 
 - (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
