@@ -6,16 +6,14 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import XCTest
 import SwiftyJSON
-@testable import VictoriousIOSSDK
 
 /// Helps with creating test models
 class ModelHelper {
     func createModel<T: ModelType>(JSONFileName fileName: String) -> T? {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
             let mockData = NSData(contentsOfURL: url) else {
-                XCTFail("Failed to read data from \(fileName).json")
+                print("Failed to read data from \(fileName).json")
                 return nil
         }
 

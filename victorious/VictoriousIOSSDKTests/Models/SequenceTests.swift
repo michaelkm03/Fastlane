@@ -7,7 +7,7 @@
 //
 
 import SwiftyJSON
-import VictoriousIOSSDK
+@testable import VictoriousIOSSDK
 import XCTest
 
 class SequenceTests: XCTestCase {
