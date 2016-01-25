@@ -82,18 +82,17 @@ class SequenceTests: XCTestCase {
     func testAdBreaks() {
         guard let sequence: Sequence = modelHelper.createModel(JSONFileName: "SequenceWithAdBreak") else { return }
 
-        guard let adBreaks = sequence.adBreaks else {
-            XCTFail("No adBreaks on a sequence")
+        guard let adBreak = sequence.adBreak else {
+            XCTFail("No adBreak on a sequence")
             return
         }
 
         let testAdTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples" +
             "&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1" +
             "&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator="
-        XCTAssertEqual(1, adBreaks.count)
-        XCTAssertEqual(5, adBreaks[0].adSystemID)
-        XCTAssertEqual(7000, adBreaks[0].timeout)
-        XCTAssertEqual(testAdTag, adBreaks[0].adTag)
-        XCTAssertEqual("", adBreaks[0].cannedAdXML)
+        XCTAssertEqual(5, adBreak.adSystemID)
+        XCTAssertEqual(7000, adBreak.timeout)
+        XCTAssertEqual(testAdTag, adBreak.adTag)
+        XCTAssertEqual("", adBreak.cannedAdXML)
     }
 }

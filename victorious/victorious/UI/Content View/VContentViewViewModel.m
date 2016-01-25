@@ -155,7 +155,7 @@
         return;
     }
     
-    self.adBreak = self.sequence.adBreaks.firstObject;
+    self.adBreak = self.sequence.adBreak;
     int adSystemPartner = [[self.adBreak adSystemID] intValue];
     self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
 }
@@ -196,16 +196,6 @@
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     return request;
 }
-
-/*
-- (VAdSystem)adSystem
-{
-    VAdBreak *adBreak = self.sequence.adBreaks;
-    NSNumber *system_type = adBreak.adSystem;
-    VAdSystem ad_system = [system_type intValue];
-    return ad_system;
-}
-*/
 
 - (VUser *)user
 {

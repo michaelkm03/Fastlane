@@ -18,11 +18,5 @@ class BasePersistentStoreTestCase: XCTestCase {
         super.setUp()
         testStore = TestPersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
-        persistentStoreHelper.tearDownPersistentStore()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        persistentStoreHelper.tearDownPersistentStore()
     }
 }

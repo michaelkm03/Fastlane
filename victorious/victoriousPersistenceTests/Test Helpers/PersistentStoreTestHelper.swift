@@ -34,15 +34,4 @@ struct PersistentStoreTestHelper {
                 adBreak.adTag = adTag
             } as VAdBreak
     }
-
-    func tearDownPersistentStore() {
-        do {
-            try persistentStore.deletePersistentStore()
-        } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
-            XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error)." +
-                "Failing this test since it can cause test pollution.")
-        } catch {
-            XCTFail("Something went wrong while clearing persitent store")
-        }
-    }
 }

@@ -48,13 +48,12 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
                 subjectUser.v_addObject( followedUser, to: "followers" )
             }
             context.v_save()
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
+            }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -69,9 +68,5 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
             return results.flatMap { $0.objectUser }
         }
-    }
-    
-    func clearResults() {
-        fatalError("Implement me!")
     }
 }

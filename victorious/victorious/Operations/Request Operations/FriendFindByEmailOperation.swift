@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class FriendFindByEmailOperation: RequestOperation {
     
     private var resultObjectIDs = [NSManagedObjectID]()
-    private(set) var results: [AnyObject]?
     
     private var request: FriendFindByEmailRequest!
     
@@ -31,25 +30,26 @@ class FriendFindByEmailOperation: RequestOperation {
     func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var resultObjectIDs = [NSManagedObjectID]()
+            var persistentUsers = [VUser]()
             for foundFriend in results {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
                 persistentUser.populate(fromSourceModel: foundFriend)
-                resultObjectIDs.append(persistentUser.objectID)
+                persistentUsers.append(persistentUser)
             }
             context.v_save()
+            self.resultObjectIDs = persistentUsers.map { $0.objectID }
             
-            dispatch_sync(dispatch_get_main_queue()) {
-                self.results = self.reloadFromMainContext(resultObjectIDs)
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
                 completion()
             }
         }
     }
     
-    private func reloadFromMainContext( resultObjectIDs: [NSManagedObjectID] ) -> [VUser] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             var mainQueueUsers = [VUser]()
-            for foundFriendObjectID in resultObjectIDs {
+            for foundFriendObjectID in self.resultObjectIDs {
                 let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
                 if let mainQueuePersistentUser = mainQueuePersistentUser {
                     mainQueueUsers.append(mainQueuePersistentUser)

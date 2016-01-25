@@ -54,14 +54,4 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
             completion()
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

@@ -27,7 +27,7 @@ extension VContentViewViewModel {
             self.experienceEnhancerController.updateData()
 
             // Sets up the monetization chain
-            if (self.sequence.adBreaks?.count ?? 0) > 0 {
+            if (self.sequence.adBreak != nil) {
                 self.setupAdBreak()
             }
             self.delegate?.didUpdateSequence()

@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import victorious
+import victoriousPersistenceTests
 
 class VAdVideoPlayerViewControllerTests: BasePersistentStoreTestCase {
     func testInit() {

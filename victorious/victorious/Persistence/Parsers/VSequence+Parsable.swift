@@ -39,13 +39,12 @@ extension VSequence: PersistenceParsable {
             tracking?.populate(fromSourceModel: trackingModel)
         }
 
-        if let adBreaks = sequence.adBreaks {
-            self.adBreaks = NSOrderedSet(array: adBreaks.flatMap {
-                let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
-                persistentAdBreak.populate(fromSourceModel: $0)
-                return persistentAdBreak
-            })
+        if let adBreak = sequence.adBreak {
+            let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
+            persistentAdBreak.populate(fromSourceModel: adBreak)
+            self.adBreak = persistentAdBreak
         }
+
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         

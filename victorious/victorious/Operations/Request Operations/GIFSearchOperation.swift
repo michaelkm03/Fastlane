@@ -37,14 +37,4 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
         self.results = results.map { GIFSearchResultObject( $0 ) }
         completion()
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10118.6" systemVersion="15C50" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -13,7 +13,7 @@
         <attribute name="startPosition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="timeout" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="fallbacks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreakFallback" inverseName="adbreak" inverseEntity="AdBreakFallback" syncable="YES"/>
-        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreaks" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreak" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="AdBreakFallback" representedClassName="VAdBreakFallback" syncable="YES">
         <attribute name="adSystem" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -252,7 +252,7 @@
         <attribute name="repostCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trendingTopicName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
+        <relationship name="adBreak" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="likers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="sequence" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>

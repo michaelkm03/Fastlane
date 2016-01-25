@@ -50,16 +50,6 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         
         completion()
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }
 
 class SaveHashtagsOperation: Operation {
@@ -96,14 +86,4 @@ class SaveHashtagsOperation: Operation {
             self.finishedExecuting()
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

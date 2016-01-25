@@ -26,6 +26,6 @@ class VSequenceTests: BasePersistentStoreTestCase {
         }
         let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: 1)
         persistentSequenceModel.populate(fromSourceModel: sequenceModel)
-        XCTAssertEqual(1, persistentSequenceModel.adBreaks?.count)
+        XCTAssert(persistentSequenceModel.adBreak != nil)
     }
 }
