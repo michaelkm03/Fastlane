@@ -66,7 +66,7 @@ static const NSUInteger kCharacterLimit = 1024;
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self updateTitle];
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -79,7 +79,7 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)updateTitle
