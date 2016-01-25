@@ -15,9 +15,19 @@ struct PersistentStoreTestHelper {
 
     func createUser(remoteId remoteId: Int, token: String = "token") -> VUser {
         return persistentStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(integer: remoteId)
+            user.remoteId = remoteId
             user.status = "stored"
             user.token = token
         } as VUser
+    }
+    
+    func createConversation() -> VConversation {
+        let conversation: VConversation = persistentStore.mainContext.v_createObject()
+        conversation.remoteId = 0
+        conversation.lastMessageText = ""
+        conversation.isRead = false
+        conversation.postedAt = NSDate()
+        conversation.messages = NSOrderedSet()
+        return conversation
     }
 }

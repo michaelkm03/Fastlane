@@ -12,7 +12,8 @@ import VictoriousIOSSDK
 public extension VConversationContainerViewController {
     
     public func sendMessage( text text: String, publishParameters: VPublishParameters?, inConversation conversation: VConversation, completion:(()->())? = nil ) {
-        guard let recipient = conversation.user else {
+        guard let recipient = conversation.user,
+            remoteId = conversation.remoteId else {
             return
         }
         
@@ -26,7 +27,7 @@ public extension VConversationContainerViewController {
         let parameters = Message.CreationParameters(
             text: text,
             recipientID: recipient.remoteId.integerValue,
-            conversationID: conversation.remoteId.integerValue,
+            conversationID: remoteId.integerValue,
             mediaAttachment: mediaAttachment
         )
         CreateMessageOperation(creationParameters: parameters).queue() { results in

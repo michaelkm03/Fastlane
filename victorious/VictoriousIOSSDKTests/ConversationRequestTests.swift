@@ -39,6 +39,25 @@ class ConversationRequestTests: XCTestCase {
             XCTAssertEqual(firstMessage.mediaAttachment?.thumbnailURL, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/thumbnail-00001.jpg"))
             XCTAssertEqual(firstMessage.mediaAttachment?.url, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/playlist.m3u8"))
             XCTAssertEqual(firstMessage.mediaAttachment?.type, .Video)
+            
+            // Test MediaAttachment Parsing
+            if let formats = firstMessage.mediaAttachment?.formats {
+                
+                XCTAssertEqual(formats.count, 2)
+                if let firstFormat = formats.first {
+                    XCTAssertEqual(firstFormat.mimeType, MimeType.HLSStream)
+                    XCTAssertEqual(firstFormat.url, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/playlist.m3u8"))
+                }
+                if formats.count > 1 {
+                   let secondFormat = formats[1]
+                    XCTAssertEqual(secondFormat.mimeType, MimeType.MP4)
+                    XCTAssertEqual(secondFormat.url, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/720/video.mp4"))
+                }
+            }
+            else {
+                XCTFail("This message should have multiple formats for its attachment.")
+            }
+            
             // Test Date parsing
             let testDate = dateFormatter.dateFromString("2015-11-10 03:09:52")
             XCTAssertEqual(firstMessage.postedAt, testDate)

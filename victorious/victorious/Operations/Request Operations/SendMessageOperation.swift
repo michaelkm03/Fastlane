@@ -77,6 +77,7 @@ class CreateMessageOperation: FetcherOperation {
             if let mediaAttachment = self.creationParameters.mediaAttachment,
                 let thumbnailURL = mediaAttachment.createThumbnailImage() {
                     message.mediaType = mediaAttachment.type.rawValue
+                    message.shouldAutoplay = mediaAttachment.type == .GIF ? true : false
                     message.mediaUrl = mediaAttachment.url.absoluteString
                     message.thumbnailUrl = thumbnailURL.absoluteString
                     message.mediaWidth = mediaAttachment.size?.width
