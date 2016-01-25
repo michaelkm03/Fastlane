@@ -311,15 +311,14 @@
 
 - (void)positionRefreshControl
 {
-    if ( self.refreshControl.subviews.count == 0 )
+    UIView *subView = self.refreshControl.subviews.firstObject;
+    if (subView != nil)
     {
-        return;
+        // Since we're using the collection flow delegate method for the insets
+        // we need to manually position the frame of the refresh control.
+        subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
+                                     CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
     }
-    // Since we're using the collection flow delegate method for the insets
-    // we need to manually position the frame of the refresh control.
-    UIView *subView = self.refreshControl.subviews[0];
-    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
-                                 CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer

@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class SuggestedUsersOperation: RequestOperation {
     
     let request = SuggestedUsersRequest()
-    var suggestedUsers: [VSuggestedUser]?
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
@@ -34,13 +33,14 @@ class SuggestedUsersOperation: RequestOperation {
                 return VSuggestedUser( user: user, recentSequences: recentSequences )
             }
             context.v_save()
-            
-            self.results = self.reloadFromMainContext( suggestedUsers )
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults( suggestedUsers )
+                completion()
+            }
         }
     }
     
-    private func reloadFromMainContext( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
+    private func fetchResults( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             var output = [VSuggestedUser]()
             for suggestedUser in suggestedUsers {
@@ -55,14 +55,4 @@ class SuggestedUsersOperation: RequestOperation {
             return output
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

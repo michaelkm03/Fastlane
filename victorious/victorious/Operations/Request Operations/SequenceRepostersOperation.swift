@@ -47,22 +47,18 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             sequence.v_addObjects( reposters, to: "reposters" )
             context.v_save()
             
+            self.resultObjectIDs = reposters.map { $0.objectID }
+            
             dispatch_async( dispatch_get_main_queue() ) {
-                self.resultObjectIDs = reposters.map { $0.objectID }
+                self.results = self.fetchResults()
                 completion()
             }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return self.persistentStore.mainContext.v_performBlockAndWait() { context in
             return self.resultObjectIDs.flatMap { context.objectWithID($0) as? VUser }
         } as [VUser]
     }
-    
-    func clearResults() { }
 }

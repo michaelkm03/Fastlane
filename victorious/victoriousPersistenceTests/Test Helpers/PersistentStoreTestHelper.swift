@@ -15,20 +15,19 @@ struct PersistentStoreTestHelper {
 
     func createUser(remoteId remoteId: Int, token: String = "token") -> VUser {
         return persistentStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(integer: remoteId)
+            user.remoteId = remoteId
             user.status = "stored"
             user.token = token
         } as VUser
     }
-
-    func tearDownPersistentStore() {
-        do {
-            try persistentStore.deletePersistentStore()
-        } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
-            XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error)." +
-                "Failing this test since it can cause test pollution.")
-        } catch {
-            XCTFail("Something went wrong while clearing persitent store")
-        }
+    
+    func createConversation() -> VConversation {
+        let conversation: VConversation = persistentStore.mainContext.v_createObject()
+        conversation.remoteId = 0
+        conversation.lastMessageText = ""
+        conversation.isRead = false
+        conversation.postedAt = NSDate()
+        conversation.messages = NSOrderedSet()
+        return conversation
     }
 }

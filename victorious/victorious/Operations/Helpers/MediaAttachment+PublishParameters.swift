@@ -24,16 +24,19 @@ extension MediaAttachment {
             type = .GIF
             isGIFStyle = true
             shouldAutoplay = true
-       
+            // iOS client is only capable of creating .mp4 assets
+            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL ?? NSURL(string: "")!, mimeType: .MP4)]
         } else if publishParameters.isVideo {
             type = .Video
             isGIFStyle = false
             shouldAutoplay = false
-            
+            // iOS client is only capable of creating .mp4 assets
+            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL ?? NSURL(string: "")!, mimeType: .MP4)]
         } else {
             type = .Image
             isGIFStyle = false
             shouldAutoplay = false
+            formats = nil
         }
         
         thumbnailURL = nil

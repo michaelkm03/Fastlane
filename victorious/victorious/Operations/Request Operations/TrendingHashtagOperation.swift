@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class TrendingHashtagOperation: RequestOperation {
     
     let request = TrendingHashtagRequest()
-    private(set) var results: [HashtagSearchResultObject]?
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
