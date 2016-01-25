@@ -48,11 +48,11 @@ extension RequestType {
     ///
     /// - parameter result: The results of this request, if available.
     /// - parameter error: If an error occurred while executing this request, this parameter will have details.
-    public typealias ResultCallback = ( result: ResultType?, error: ErrorType?, alerts: [Alert] ) -> ()
+    public typealias ResultCallback = ( result: ResultType?, error: ErrorType? ) -> ()
     
     /// Executes this request
     ///
-    /// - returns: A CancelableTask reference that can be used to cancel the network request before it completes
+    /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
     public func execute(baseURL baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
         let urlSession = NSURLSession.sharedSession()
         let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
@@ -65,12 +65,16 @@ extension RequestType {
         } else {
             mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext)
         }
+#if os(iOS)
+        mutableRequest.vsdk_setOSVersionHeader()
+#endif
+        mutableRequest.vsdk_setPlatformHeader()
+        mutableRequest.vsdk_setAppVersionHeaderValue(requestContext.appVersion)
         
         let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
             
             let result: ResultType?
             let error: ErrorType?
-            let alerts: [Alert]
             if let response = response,
                let data = data {
                 do {
@@ -78,28 +82,21 @@ extension RequestType {
                     try self.parseError(responseJSON)
                     result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: responseJSON)
                     error = requestError
-                    alerts = self.parseAlerts(responseJSON)
                 }
                 catch let e {
                     result = nil
                     error = e
-                    alerts = []
                 }
             }
             else {
                 result = nil
                 error = requestError
-                alerts = []
             }
             
-            callback?(result: result, error: error, alerts: alerts)
+            callback?(result: result, error: error)
         }
         dataTask.resume()
         return dataTask
-    }
-    
-    private func parseAlerts( responseJSON: JSON ) -> [Alert] {
-        return responseJSON["alerts"].arrayValue.flatMap({ Alert(json: $0) })
     }
     
     private func parseError( responseJSON: JSON ) throws {
