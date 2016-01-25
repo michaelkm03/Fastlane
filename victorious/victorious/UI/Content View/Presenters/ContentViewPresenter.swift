@@ -24,10 +24,17 @@ class ContentViewContext: NSObject {
     var contentPreviewProvider: VContentPreviewViewProvider?
 }
 
+@objc protocol ContentViewPresenterDelegate: class {
+    
+    optional func contentViewPresenterDidDeleteContent(presenter: ContentViewPresenter)
+
+}
+
 /// A helper presenter class that helps VStreamCollectionViewController
 /// or VScaffoldViewController to present a VNewContentView
-class ContentViewPresenter: NSObject {
+class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
     
+    weak var delegate: ContentViewPresenterDelegate?
     let transitionDelegate = VTransitionDelegate(transition: ContentViewStreamTransition() )
     
     /// Presents a content view for the specified VSequence object.
@@ -60,9 +67,19 @@ class ContentViewPresenter: NSObject {
                     if context.contentPreviewProvider != nil {
                         contentViewController.transitioningDelegate = transitionDelegate;
                     }
+                    if let contentViewNavigationController = contentViewController as? VNavigationController,
+                        let contentViewController = contentViewNavigationController.innerNavigationController.viewControllers.first as? VNewContentViewController {
+                            contentViewController.delegate = self
+                    }
                     viewController.presentViewController( contentViewController, animated: true, completion: nil )
                 }
         }
+    }
+    
+    //MARK: - VNewContentViewControllerDelegate
+    
+    func contnetViewDidDeleteContent(contentViewController: VNewContentViewController!) {
+        delegate?.contentViewPresenterDidDeleteContent?(self)
     }
 }
 

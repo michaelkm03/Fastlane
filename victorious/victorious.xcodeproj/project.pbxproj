@@ -542,6 +542,10 @@
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
 		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
+		79B718F71C56D65300578012 /* VSequence+Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718F61C56D65300578012 /* VSequence+Deletable.swift */; };
+		79B718F91C56D68E00578012 /* VSequence+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718F81C56D68E00578012 /* VSequence+Keyable.swift */; };
+		79B718FB1C56D96200578012 /* VSequence+Predicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718FA1C56D96200578012 /* VSequence+Predicates.swift */; };
+		79B718FD1C56DAA700578012 /* VStream+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718FC1C56DAA700578012 /* VStream+Keyable.swift */; };
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */; };
@@ -2662,6 +2666,10 @@
 		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
+		79B718F61C56D65300578012 /* VSequence+Deletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Deletable.swift"; sourceTree = "<group>"; };
+		79B718F81C56D68E00578012 /* VSequence+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Keyable.swift"; sourceTree = "<group>"; };
+		79B718FA1C56D96200578012 /* VSequence+Predicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Predicates.swift"; sourceTree = "<group>"; };
+		79B718FC1C56DAA700578012 /* VStream+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Keyable.swift"; sourceTree = "<group>"; };
 		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
 		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
 		79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Aspect.swift"; sourceTree = "<group>"; };
@@ -7790,7 +7798,6 @@
 			isa = PBXGroup;
 			children = (
 				795FEB151C533347008EDB44 /* VConversationTests.swift */,
-				A7B0A61C1C347A01008B875C /* CoreDataManagerTests.swift */,
 				A7EBF5241C2B8CA20080C7CF /* Info.plist */,
 				A7B0A61D1C347A01008B875C /* MainPersistentStoreTests.swift */,
 				67A904A81C404D1A0016CC6B /* MainRequestExecutorTests.swift */,
@@ -7813,7 +7820,11 @@
 				79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */,
 				79FE18551C53182300170E5B /* VConversation+Predicates.swift */,
 				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
+				79B718F61C56D65300578012 /* VSequence+Deletable.swift */,
+				79B718F81C56D68E00578012 /* VSequence+Keyable.swift */,
 				A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */,
+				79B718FA1C56D96200578012 /* VSequence+Predicates.swift */,
+				79B718FC1C56DAA700578012 /* VStream+Keyable.swift */,
 			);
 			path = "Model Extensions";
 			sourceTree = "<group>";
@@ -10897,6 +10908,7 @@
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
+				79B718FB1C56D96200578012 /* VSequence+Predicates.swift in Sources */,
 				7979A0301C18B10400455FF8 /* VNotificationSettingsViewController.swift in Sources */,
 				A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */,
 				F059A0031B852D1800037BC8 /* Shelf.swift in Sources */,
@@ -11465,6 +11477,7 @@
 				F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */,
 				F06B41AD1B7C3D8F008709E8 /* UserShelf+RestKit.swift in Sources */,
 				C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */,
+				79B718FD1C56DAA700578012 /* VStream+Keyable.swift in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
 				A7C565EF1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift in Sources */,
@@ -11690,6 +11703,7 @@
 				C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */,
+				79B718F71C56D65300578012 /* VSequence+Deletable.swift in Sources */,
 				A721E95C1B572454000B7901 /* UIView+Masking.m in Sources */,
 				A778CB6D1C474EF7007DF0C2 /* VConversationViewController.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
@@ -11796,6 +11810,7 @@
 				A71F41FB1C040D4D00131BE6 /* VReposterTableViewController.swift in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
+				79B718F91C56D68E00578012 /* VSequence+Keyable.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
