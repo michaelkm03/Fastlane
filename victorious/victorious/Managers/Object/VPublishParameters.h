@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #import "VConstants.h"
+
 NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A simple model for sharing publish parameters among different objects.
  */

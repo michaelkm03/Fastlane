@@ -1,5 +1,5 @@
 //
-//  CreateMediaUploadRequest.swift
+//  MediaUploadCreateRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 1/23/16.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct CreateMediaUploadRequest: RequestType {
+public struct MediaUploadCreateRequest: RequestType {
     
     public let baseURL: NSURL
     

@@ -50,7 +50,7 @@ final class CreatePollOperation: Operation {
         upload(uploadManager)
     }
     
-    func upload(uploadManager: VUploadManager) {
+    private func upload(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields

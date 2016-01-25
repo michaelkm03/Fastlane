@@ -1,5 +1,5 @@
 //
-//  CreateMediaUploadRequestTests.swift
+//  MediaUploadCreateRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 1/23/16.
@@ -10,18 +10,18 @@ import XCTest
 import VictoriousIOSSDK
 import SwiftyJSON
 
-class CreateMediaUploadRequestTests: XCTestCase {
+class MediaUploadCreateRequestTests: XCTestCase {
     
     let mockBaseURLString = "http://www.google.com"
 
     func testRequest() {
-        let request = CreateMediaUploadRequest(baseURL: NSURL(string: mockBaseURLString)!)
+        let request = MediaUploadCreateRequest(baseURL: NSURL(string: mockBaseURLString)!)
         
         XCTAssertEqual(request.urlRequest.URL?.absoluteString, "\(mockBaseURLString)/api/mediaupload/create")
     }
     
     func testResponse() {
-        let request = CreateMediaUploadRequest(baseURL: NSURL(string: mockBaseURLString)!)
+        let request = MediaUploadCreateRequest(baseURL: NSURL(string: mockBaseURLString)!)
         let mockSequenceID = "mockSequenceID"
         let mockJSON = JSON( [ "payload": ["sequence_id": mockSequenceID] ] )
         

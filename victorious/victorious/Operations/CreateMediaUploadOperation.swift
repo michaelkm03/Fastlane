@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 import FBSDKCoreKit
 
 class CreateMediaUploadOperation: Operation {
-    let request: CreateMediaUploadRequest
+    
+    let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
     let mediaURL: NSURL?
@@ -21,7 +22,7 @@ class CreateMediaUploadOperation: Operation {
         let baseURL = VEnvironmentManager.sharedInstance().currentEnvironment.baseURL
         
         self.mediaURL = publishParameters.mediaToUploadURL
-        self.request = CreateMediaUploadRequest(baseURL: baseURL)
+        self.request = MediaUploadCreateRequest(baseURL: baseURL)
         self.publishParameters = publishParameters
         self.uploadManager = uploadManager
         self.uploadCompletion = uploadCompletion
@@ -32,7 +33,7 @@ class CreateMediaUploadOperation: Operation {
         upload(uploadManager)
     }
     
-    func upload(uploadManager: VUploadManager) {
+    private func upload(uploadManager: VUploadManager) {
         guard let mediaURL = formFields["media_data"] where !mediaURL.absoluteString.isEmpty else {
             uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
@@ -46,13 +47,16 @@ class CreateMediaUploadOperation: Operation {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.uploadCompletion(nil)
                     self.mainQueueCompletionBlock?(self)
                 }
             }
         } catch {
             uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
+        }
+
+        dispatch_async(dispatch_get_main_queue()) {
+            self.uploadCompletion(nil)
         }
     }
     
@@ -85,7 +89,7 @@ class CreateMediaUploadOperation: Operation {
             dict["subcategory"] = "meme"
         case .Quote:
             dict["subcategory"] = "secret"
-        default:
+        case .Normal:
             break
         }
         if publishParameters.shareToFacebook {
