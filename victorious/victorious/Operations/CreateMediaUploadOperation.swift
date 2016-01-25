@@ -45,11 +45,7 @@ class CreateMediaUploadOperation: Operation {
         
         do {
             let task = try taskCreator.createUploadTask()
-            uploadManager.enqueueUploadTask(task) { _ in
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.mainQueueCompletionBlock?(self)
-                }
-            }
+            uploadManager.enqueueUploadTask(task) { _ in }
         } catch {
             uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
@@ -57,6 +53,7 @@ class CreateMediaUploadOperation: Operation {
 
         dispatch_async(dispatch_get_main_queue()) {
             self.uploadCompletion(nil)
+            self.mainQueueCompletionBlock?(self)
         }
     }
     
