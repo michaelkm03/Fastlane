@@ -64,7 +64,7 @@ import VictoriousIOSSDK
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+            self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(results)
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?(results)
         }
@@ -163,6 +163,20 @@ import VictoriousIOSSDK
         }
         
         self.currentOperation = requestOperation
+    }
+    
+    //MARK: - Private
+    
+    func filterFlaggedForDeletionItemsFromResults(results: [AnyObject]) -> NSOrderedSet {
+        var itemsToDelete = [AnyObject]()
+        for visibleItem in self.visibleItems {
+            if let visibleItem = visibleItem as? Deletable where visibleItem.markedForDeletion {
+                itemsToDelete.append(visibleItem)
+            }
+        }
+        let newVisibleItems = NSMutableOrderedSet(orderedSet: self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous))
+        newVisibleItems.minusOrderedSet(NSOrderedSet(array:itemsToDelete))
+        return newVisibleItems
     }
 }
 
