@@ -13,16 +13,7 @@ import Nocilla
 
 class MainRequestExecutorTests: XCTestCase {
     
-    lazy var requestExecutor: RequestExecutorType = {
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        var executor = MainRequestExecutor(
-            baseURL: currentEnvironment.baseURL,
-            requestContext: requestContext,
-            authenticationContext: nil
-        )
-        return executor
-    }()
+    lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
 
     override func setUp() {
         super.setUp()
@@ -35,7 +26,7 @@ class MainRequestExecutorTests: XCTestCase {
         LSNocilla.sharedInstance().stop()
     }
     
-    func testCopmletion() {
+    func testCompletion() {
         let expectation = self.expectationWithDescription("testCopmletion")
         let request = MockRequest()
         let url = request.urlRequest.URL?.absoluteString

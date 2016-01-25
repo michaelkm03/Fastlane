@@ -283,43 +283,30 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - UITableViewDelegate
 
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView
+                           editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                            title:NSLocalizedString(@"Delete", nil)
+                                                                          handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull indexPath)
+                                          {
+                                              VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+                                              conversation.markedForDeletion = YES;
+                                              [self.dataSource refreshLocal];
+                                              [self removeCachedViewControllerForUser:conversation.user];
+                                              RequestOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+                                              [operation queueOn:[operation defaultQueue]
+                                                 completionBlock:nil];
+                                          }];
+    return @[deleteAction];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [cell isKindOfClass:[VConversationCell class]] )
     {
         VConversationCell *conversationCell = (VConversationCell *)cell;
         conversationCell.delegate = self;
-    }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-    return conversation.remoteId.integerValue > 0;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-        DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-        {
-            if ( error != nil )
-            {
-                [self removeCachedViewControllerForUser:conversation.user];
-            }
-            else
-            {
-                [tableView setEditing:NO animated:YES];
-            }
-        }];
     }
 }
 

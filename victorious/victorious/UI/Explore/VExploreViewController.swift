@@ -8,14 +8,6 @@
 
 import UIKit
 
-
-/// View Controllers conform to this protocol to handle
-/// search result navigation(e.g. tap on a user result, or hashtag result)
-@objc protocol ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser)
-    func selectedHashtag(hashtag: VHashtag)
-}
-
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate {
@@ -75,8 +67,23 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
         let urlPath = url.v_pathComponent()
-        //exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-        //exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        let query = ["apiPath" : urlPath]
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        var persistentStream: VStream?
+        
+        persistentStore.mainContext.performBlockAndWait {
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.entityName(), queryDictionary: query) as? VStream else {
+                return
+            }
+            stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+            persistentStore.mainContext.v_save()
+            persistentStream = stream
+        }
+        
+        if let stream = persistentStream {
+            exploreVC.currentStream = stream
+        }
+        
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         // Factory for trending topic shelf
@@ -92,7 +99,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewDidLoad()
         
         configureSearchBar()
-        collectionView.backgroundColor = UIColor.whiteColor()
         marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
@@ -104,9 +110,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
+        streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         if let dataSource = streamDataSource {
             dataSource.stream = currentStream
             dataSource.delegate = self
+            dataSource.paginatedDataSource.delegate = self
             collectionView.dataSource = dataSource
         }
         
@@ -118,9 +126,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-        
-        // FIXME:
-        // searchResultsViewController?.updateTableView()
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -154,18 +159,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             }
         }
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
-    }
-    
-    override func dataSource(dataSource: VStreamCollectionViewDataSource, hasNewStreamItems streamItems: [AnyObject] ) {
-        if let streamItems = streamItems as? [VStreamItem] {
-            let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
-            for streamItem in recentItems {
-                let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            }
-        }
-        updateSectionRanges()
-        trackVisibleCells()
     }
     
     private func updateSectionRanges() {
@@ -292,7 +285,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         }
         
         searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
-        searchResultsViewController?.navigationDelegate = self
         searchController = UISearchController(searchResultsController: searchResultsViewController)
 
         // Configure searchController properties
@@ -666,25 +658,49 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
     }
 }
 
-extension VExploreViewController: ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.userProfileViewControllerWithUser(user)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
-        }
-    }
-    
-    func selectedHashtag(hashtag: VHashtag) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
-        }
-    }
-}
-
 extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
     func reselected() {
         v_navigationController().setNavigationBarHidden(false)
         collectionView.setContentOffset(CGPointZero, animated: true)
+    }
+}
+
+extension VExploreViewController {
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
+            return
+        }
+        
+        for streamItem in recentItems {
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+        }
+        
+        updateSectionRanges()
+        trackVisibleCells()
+        collectionView.reloadData()
+    }
+}
+
+extension VExploreViewController: SearchResultsViewControllerDelegate {
+    func searchResultsViewControllerDidSelectCancel() { }
+    
+    func searchResultsViewControllerDidSelectResult(result: AnyObject) {
+        if let userResult = result as? UserSearchResultObject {
+            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
+            operation.queue() { op in
+                if let user = operation.result,
+                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
+                        self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            
+        } else if let hashtagResult = result as? HashtagSearchResultObject {
+            let hashtag = hashtagResult.sourceResult.tag
+            if let vc = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+                navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 }

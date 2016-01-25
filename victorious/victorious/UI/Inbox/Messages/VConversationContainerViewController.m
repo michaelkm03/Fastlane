@@ -230,7 +230,7 @@ static const NSUInteger kCharacterLimit = 1024;
     }
     
     [self sendMessageWithText:text
-            publishParameters: publishParameters
+            publishParameters:publishParameters
                inConversation:self.conversation completion:^
      {
          [self.innerViewController scrollToBottomAnimated:YES];

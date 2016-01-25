@@ -8,9 +8,17 @@
 
 import Foundation
 import CoreData
+import VictoriousIOSSDK
 
 class ListShelf: Shelf {
 
     @NSManaged var caption: String
-
+    
+    override func populate(fromSourceShelf sourceShelf: StreamItemType) {
+        guard let listShelf = sourceShelf as? VictoriousIOSSDK.ListShelf else { return }
+        
+        super.populate(fromSourceShelf: listShelf.shelf)
+        
+        self.caption = listShelf.caption
+    }
 }

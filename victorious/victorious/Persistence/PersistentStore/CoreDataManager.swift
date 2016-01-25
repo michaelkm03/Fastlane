@@ -35,15 +35,13 @@ class CoreDataManager: NSObject {
     let currentModelVersion: ModelVersion
     let previousModelVersion: ModelVersion?
     let persistentStoreURL: NSURL
-    let storeType: String = NSSQLiteStoreType
+    let storeType: String = NSInMemoryStoreType
     
     let mainContext: NSManagedObjectContext
     private let managedObjectModel: NSManagedObjectModel
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
-        
-        print( "Initializing persistent store at URL: \(persistentStoreURL)" )
         
         self.persistentStoreURL = persistentStoreURL
         self.currentModelVersion = currentModelVersion
@@ -55,15 +53,11 @@ class CoreDataManager: NSObject {
             try self.persistentStoreCoordinator.addPersistentStoreWithType( self.storeType,
                 configuration: nil,
                 URL: self.persistentStoreURL,
-                options: [
-                    NSSQLitePragmasOption: [ "journal_mode" : "DELETE" ],
-                    NSMigratePersistentStoresAutomaticallyOption : true,
-                    NSInferMappingModelAutomaticallyOption : true
-                ]
+                options: nil
             )
        
         } catch {
-            fatalError( "Failed to create persistent store.  If using a persistent store, either the managed object model and persistent store URLs provided are invalid, or a migration failed between a current and previous mapping model failed.  If you are using a mapping model, double check that all attributes and relationships are being migrated properly.  Caught error: \(error)" )
+            fatalError( "Failed to create persistent store: \(error)" )
         }
         
         self.mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
