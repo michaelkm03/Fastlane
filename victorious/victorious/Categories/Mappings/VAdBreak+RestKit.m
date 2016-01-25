@@ -7,7 +7,6 @@
 //
 
 #import "VAdBreak+RestKit.h"
-#import "VAdBreakFallback+RestKit.h"
 #import "VSequence+RestKit.h"
 
 @implementation VAdBreak (RestKit)
@@ -28,11 +27,6 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    RKRelationshipMapping *fallbacksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"fallback"
-                                                                                         toKeyPath:VSelectorName(fallbacks)
-                                                                                       withMapping:[VAdBreakFallback entityMapping]];
-    [mapping addPropertyMapping:fallbacksMapping];
 
     return mapping;
 }

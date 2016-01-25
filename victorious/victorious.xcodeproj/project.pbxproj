@@ -714,7 +714,6 @@
 		A721E91B1B572454000B7901 /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8781B572452000B7901 /* VStream+Fetcher.m */; };
 		A721E91C1B572454000B7901 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E87A1B572452000B7901 /* VStreamItem+Fetcher.m */; };
 		A721E91E1B572454000B7901 /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */; };
-		A721E9201B572454000B7901 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8821B572452000B7901 /* VAdBreakFallback+RestKit.m */; };
 		A721E9211B572454000B7901 /* VAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8841B572452000B7901 /* VAnswer+RestKit.m */; };
 		A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8861B572452000B7901 /* VAnswerAction+RestKit.m */; };
 		A721E9231B572454000B7901 /* VAsset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8881B572452000B7901 /* VAsset+RestKit.m */; };
@@ -1609,7 +1608,6 @@
 		DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */; };
 		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
 		DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */; };
-		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
@@ -2920,8 +2918,6 @@
 		A721E87A1B572452000B7901 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
 		A721E87D1B572452000B7901 /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
 		A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
-		A721E8811B572452000B7901 /* VAdBreakFallback+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreakFallback+RestKit.h"; sourceTree = "<group>"; };
-		A721E8821B572452000B7901 /* VAdBreakFallback+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAdBreakFallback+RestKit.m"; sourceTree = "<group>"; };
 		A721E8831B572452000B7901 /* VAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswer+RestKit.h"; sourceTree = "<group>"; };
 		A721E8841B572452000B7901 /* VAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnswer+RestKit.m"; sourceTree = "<group>"; };
 		A721E8851B572452000B7901 /* VAnswerAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswerAction+RestKit.h"; sourceTree = "<group>"; };
@@ -4278,8 +4274,6 @@
 		DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		DBDD7D5D1A97F4EE0023CBF9 /* VLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLocationManager.h; sourceTree = "<group>"; };
 		DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLocationManager.m; sourceTree = "<group>"; };
-		DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdBreakFallback.h; sourceTree = "<group>"; };
-		DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdBreakFallback.m; sourceTree = "<group>"; };
 		DBF8B4A91A78942900CFFD47 /* DiscoverSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverSearchViewController.h; sourceTree = "<group>"; };
 		DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverSearchViewController.m; sourceTree = "<group>"; };
 		DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.release.xcconfig"; sourceTree = "<group>"; };
@@ -6932,8 +6926,6 @@
 				620F84FD1C517FB700529951 /* VAdBreak+RestKit.m */,
 				A721E87D1B572452000B7901 /* VAbstractFilter+RestKit.h */,
 				A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */,
-				A721E8811B572452000B7901 /* VAdBreakFallback+RestKit.h */,
-				A721E8821B572452000B7901 /* VAdBreakFallback+RestKit.m */,
 				A721E8831B572452000B7901 /* VAnswer+RestKit.h */,
 				A721E8841B572452000B7901 /* VAnswer+RestKit.m */,
 				A721E8851B572452000B7901 /* VAnswerAction+RestKit.h */,
@@ -8271,8 +8263,6 @@
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
 				BE89D98C1921531400D97E7F /* VAbstractFilter.m */,
 				6256A6251C516CA30033439B /* VAdBreak.swift */,
-				DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */,
-				DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */,
 				BE799B9319C8A91C0023CE88 /* VAnswer.h */,
 				BE799B9419C8A91C0023CE88 /* VAnswer.m */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
@@ -11377,7 +11367,6 @@
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
-				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
 				A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */,
 				A7EBF5381C2B99F40080C7CF /* UsersFollowedByUserOperation.swift in Sources */,
 				DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */,
@@ -11673,7 +11662,6 @@
 				A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
 				0314D48819B46B5E00FA363C /* VTextAndMediaView.m in Sources */,
-				A721E9201B572454000B7901 /* VAdBreakFallback+RestKit.m in Sources */,
 				03EE1DE01C4D77B200C25287 /* NSURL+DefaultScheme.swift in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				03E910831B96B032009CC937 /* TrendingTopicGradientView.swift in Sources */,

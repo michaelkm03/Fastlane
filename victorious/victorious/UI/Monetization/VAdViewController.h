@@ -42,11 +42,6 @@
 @property (nonatomic, strong) UIView *playerView;
 
 /**
- Position in the VAdBreakFallback object where the ad should be played from
- */
-@property (nonatomic, assign) NSInteger playbackPosition;
-
-/**
  Ad video player delegate object
  */
 @property (nonatomic, weak) id<VAdViewControllerDelegate> delegate;
