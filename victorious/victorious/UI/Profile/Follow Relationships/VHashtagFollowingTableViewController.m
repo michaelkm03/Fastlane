@@ -7,7 +7,7 @@
 //
 
 #import "VHashtagFollowingTableViewController.h"
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VNoContentTableViewCell.h"
 #import "VUser.h"
 #import "VHashtag.h"
@@ -23,7 +23,7 @@
 
 @import MBProgressHUD;
 
-static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
+static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
 
 @interface VHashtagFollowingTableViewController ()
 
@@ -112,44 +112,41 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VTrendingTagCell cellHeight];
+    return [VHashtagCell cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
+    VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     
     VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
     [customCell setHashtagText:hashtag.tag];
     customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
-    customCell.subscribeToTagAction = ^(void)
+    customCell.onToggleFollowHashtag = ^(void)
     {
-        __strong VTrendingTagCell *strongCell = weakCell;
+        __strong VHashtagCell *strongCell = weakCell;
         
         if ( strongCell == nil )
         {
             return;
         }
         
-        // Disable follow / unfollow button
-        if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
-        {
-            return;
-        }
-        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
-        
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
         if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
         {
             RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+                [strongCell updateSubscribeStatusAnimated:YES showLoading:NO];
+            }];
         }
         else
         {
             RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+                [strongCell updateSubscribeStatusAnimated:YES showLoading:NO];
+            }];
         }
     };
     customCell.dependencyManager = self.dependencyManager;
@@ -185,9 +182,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     for (UITableViewCell *cell in self.tableView.visibleCells)
     {
-        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        if ( [cell isKindOfClass:[VHashtagCell class]] )
         {
-            VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
+            VHashtagCell *trendingCell = (VHashtagCell *)cell;
             if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
             {
                 [trendingCell updateSubscribeStatusAnimated:YES showLoading:!respond];

@@ -858,8 +858,8 @@
 		A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E01AB7BEFC00C35063 /* VColorType.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m */; };
-		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
-		A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */; };
+		A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VHashtagCell.m */; };
+		A75FAF1C19E8AC1E00EB87C1 /* VHashtagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0A19E8AC1E00EB87C1 /* VHashtagCell.xib */; };
 		A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m */; };
@@ -3158,9 +3158,9 @@
 		A75FAF0319E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverSuggestedPeopleSectionCell.m; sourceTree = "<group>"; };
 		A75FAF0519E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverSuggestedPersonCell.h; sourceTree = "<group>"; };
 		A75FAF0619E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverSuggestedPersonCell.m; sourceTree = "<group>"; };
-		A75FAF0819E8AC1E00EB87C1 /* VTrendingTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrendingTagCell.h; sourceTree = "<group>"; };
-		A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrendingTagCell.m; sourceTree = "<group>"; };
-		A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTrendingTagCell.xib; sourceTree = "<group>"; };
+		A75FAF0819E8AC1E00EB87C1 /* VHashtagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagCell.h; sourceTree = "<group>"; };
+		A75FAF0919E8AC1E00EB87C1 /* VHashtagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagCell.m; sourceTree = "<group>"; };
+		A75FAF0A19E8AC1E00EB87C1 /* VHashtagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHashtagCell.xib; sourceTree = "<group>"; };
 		A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverConstants.h; sourceTree = "<group>"; };
 		A75FAF0D19E8AC1E00EB87C1 /* VDiscoverContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverContainerViewController.h; sourceTree = "<group>"; };
 		A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverContainerViewController.m; sourceTree = "<group>"; };
@@ -7115,9 +7115,9 @@
 				A75FAF0519E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.h */,
 				A75FAF0619E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m */,
 				03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */,
-				A75FAF0819E8AC1E00EB87C1 /* VTrendingTagCell.h */,
-				A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */,
-				A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */,
+				A75FAF0819E8AC1E00EB87C1 /* VHashtagCell.h */,
+				A75FAF0919E8AC1E00EB87C1 /* VHashtagCell.m */,
+				A75FAF0A19E8AC1E00EB87C1 /* VHashtagCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -9975,7 +9975,7 @@
 				A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */,
 				A75DF5331C3E13C700A4C82A /* UserSearchResultTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
-				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
+				A75FAF1C19E8AC1E00EB87C1 /* VHashtagCell.xib in Resources */,
 				A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
@@ -11123,7 +11123,7 @@
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
-				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
+				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,

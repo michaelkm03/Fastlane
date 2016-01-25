@@ -29,7 +29,6 @@ class UnfollowHashtagOperation: RequestOperation {
             persistentHashtag.tag = self.request.hashtag
             
             // Find or create the following relationship
-            // TODO: See if you can use just the IDs instead of the obejcts as values in this dictionary
             let uniqueElements = [ "user" : currentUser, "hashtag" : self.request.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( followedHashtag )
@@ -39,6 +38,31 @@ class UnfollowHashtagOperation: RequestOperation {
             
             self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
             self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
+        }
+    }
+}
+
+class ToggleFollowHashtagOperation: RequestOperation {
+    
+    private let hashtag: String
+    
+    required init(hashtag: String) {
+        self.hashtag = hashtag
+    }
+    
+    override func main() {
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
+            
+            let uniqueElements = [ "user" : currentUser, "hashtag" : self.hashtag ]
+            if let _: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
+                UnfollowHashtagOperation(hashtag: self.hashtag).queueAfter(self)
+          
+            } else {
+               FollowHashtagOperation(hashtag: self.hashtag).queueAfter(self)
+            }
         }
     }
 }

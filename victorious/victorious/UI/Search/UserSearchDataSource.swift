@@ -13,6 +13,8 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     
     private(set) var searchTerm: String?
     
+    let separatorStyle: UITableViewCellSeparatorStyle = .SingleLine
+    
     //MARK: - API
     
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? = nil ) {

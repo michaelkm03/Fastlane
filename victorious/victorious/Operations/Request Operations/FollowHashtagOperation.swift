@@ -29,16 +29,15 @@ class FollowHashtagOperation: RequestOperation {
             persistentHashtag.tag = self.request.hashtag
             
             // Find or create the following relationship
-            // TODO: See if you can use just the IDs instead of the obejcts as values in this dictionary
             let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( [ "user" : currentUser ] )
             followedHashtag.user = currentUser
             followedHashtag.hashtag = persistentHashtag
-            followedHashtag.displayOrder = -1
+            followedHashtag.displayOrder = 0
             
             context.v_save()
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidFollowHashtag)
         }
+        
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
+        self.trackingManager.trackEvent(VTrackingEventUserDidFollowHashtag)
     }
 }
