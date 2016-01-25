@@ -76,8 +76,7 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VConversation] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedDescending }
-        self.visibleItems = NSOrderedSet(array: sortedArray)
+        self.visibleItems = newValue
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

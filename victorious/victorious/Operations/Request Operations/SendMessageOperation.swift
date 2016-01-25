@@ -84,9 +84,11 @@ class CreateMessageOperation: FetcherOperation {
                     message.mediaHeight = mediaAttachment.size?.height
             }
             
+            let newConversationDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VConversation.v_entityName())
             conversation.lastMessageText = message.text
             conversation.postedAt = conversation.postedAt ?? creationDate
             conversation.v_addObject(message, to: "messages")
+            conversation.displayOrder = newConversationDisplayOrder
             context.v_save()
             
             return message.objectID

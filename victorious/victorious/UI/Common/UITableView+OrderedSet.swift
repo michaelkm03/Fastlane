@@ -21,15 +21,21 @@ public extension UITableView {
         }
         
         var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue where !oldValue.containsObject( item ) {
-            let index = newValue.indexOfObject( item )
-            insertedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
+        for item in newValue  {
+            let newIndex = newValue.indexOfObject( item )
+            if oldValue.indexOfObject(item) == newIndex {
+                continue
+            }
+            insertedIndexPaths.append( NSIndexPath(forRow: newIndex, inSection: section) )
         }
         
         var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue where !newValue.containsObject( item ) {
-            let index = oldValue.indexOfObject( item )
-            deletedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
+        for item in oldValue {
+            let oldIndex = oldValue.indexOfObject( item )
+            if oldIndex == newValue.indexOfObject(item) {
+                continue
+            }
+            deletedIndexPaths.append( NSIndexPath(forRow: oldIndex, inSection: section) )
         }
         
         self.beginUpdates()
