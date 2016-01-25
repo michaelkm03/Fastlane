@@ -33,6 +33,7 @@ extension VSequence: PersistenceParsable {
         repostCount             = sequence.repostCount ?? repostCount
         sequenceDescription     = sequence.sequenceDescription ?? sequenceDescription
         releasedAt              = sequence.releasedAt ?? releasedAt
+        trendingTopicName       = sequence.trendingTopicName
         
         if let trackingModel = sequence.tracking {
             tracking = v_managedObjectContext.v_createObject() as VTracking
