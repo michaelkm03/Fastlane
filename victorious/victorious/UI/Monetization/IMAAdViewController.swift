@@ -7,6 +7,7 @@
 //
 
 import GoogleInteractiveMediaAds
+import SafariServices
 
 @objc class IMAAdViewController: VAdViewController, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
     let adTag: String
@@ -64,7 +65,7 @@ import GoogleInteractiveMediaAds
         }
         adsManagerInstance.delegate = self
         let adsRenderingSettings = IMAAdsRenderingSettings()
-        adsRenderingSettings.webOpenerPresentingController = UIViewController()
+        adsRenderingSettings.webOpenerPresentingController = self
         adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
     }
 
