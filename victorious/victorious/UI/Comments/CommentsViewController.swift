@@ -333,7 +333,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
         cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
             
-            guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView, previewImage = previewImage else {
+            guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView else {
                 return
             }
             
@@ -347,7 +347,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: LightBox
     
-    func showLightBoxWithMediaURL(mediaURL: NSURL, previewImage: UIImage, isVideo: Bool, sourceView: UIView) {
+    func showLightBoxWithMediaURL(mediaURL: NSURL, previewImage: UIImage?, isVideo: Bool, sourceView: UIView) {
         var lightBox: VLightboxViewController?
         if isVideo {
             lightBox = VVideoLightboxViewController(previewImage: previewImage, videoURL: mediaURL)
