@@ -15,7 +15,6 @@ extension VConversation: PredicateModelType {
     }
     
     static var hasPostedAtPredicate: NSPredicate {
-        return NSPredicate(format: "%K != nil", VConversation.Keys.postedAt.rawValue)
+        return NSPredicate(format: "%K != nil", Keys.postedAt.rawValue)
     }
-
 }

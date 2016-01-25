@@ -134,7 +134,7 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if ([mainUser isFollowingHashtagString:hashtag])
+    if ([mainUser isCurrentUserFollowingHashtagString:hashtag])
     {
         success(nil, nil, @[]);
         return nil;
@@ -183,7 +183,7 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if (![mainUser isFollowingHashtagString:hashtag])
+    if (![mainUser isCurrentUserFollowingHashtagString:hashtag])
     {
         success(nil, nil, @[]);
         return nil;

@@ -25,44 +25,17 @@ class UnfollowHashtagOperation: RequestOperation {
                 return
             }
             
-            let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.request.hashtag ] )
-            persistentHashtag.tag = self.request.hashtag
-            
-            // Find or create the following relationship
-            let uniqueElements = [ "user" : currentUser, "hashtag" : self.request.hashtag ]
+            // Find the following relationship using VFollowedHashtag
+            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
+                followedHashtag.hashtag.isFollowedByMainUser = false
+                // TODO: Use batch delete
                 context.deleteObject( followedHashtag )
             }
-            
             context.v_save()
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
         }
-    }
-}
-
-class ToggleFollowHashtagOperation: RequestOperation {
-    
-    private let hashtag: String
-    
-    required init(hashtag: String) {
-        self.hashtag = hashtag
-    }
-    
-    override func main() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
-            }
-            
-            let uniqueElements = [ "user" : currentUser, "hashtag" : self.hashtag ]
-            if let _: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
-                UnfollowHashtagOperation(hashtag: self.hashtag).queueAfter(self)
-          
-            } else {
-               FollowHashtagOperation(hashtag: self.hashtag).queueAfter(self)
-            }
-        }
+        
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
+        self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
     }
 }

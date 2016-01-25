@@ -42,7 +42,7 @@ static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VHashtagCell";
 static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
-@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer>
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VDiscoverSuggestedPeopleDelegate, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
@@ -263,7 +263,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
 
-#pragma mark - VSuggestedPeopleCollectionViewControllerDelegate
+#pragma mark - VDiscoverSuggestedPeopleDelegate
 
 - (void)suggestedPeopleDidFailToLoad
 {
@@ -375,11 +375,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 }
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
+                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag.tag] )
                 {
                     RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
                     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                        [strongCell.followHashtagControl updateSubscribeStatusAnimated:YES showLoading:NO];
+                        //[strongCell.followHashtagControl updateSubscribeStatusAnimated:YES showLoading:NO];
                     }];
                 }
                 else
@@ -387,7 +387,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                     RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
                     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
                         
-                        [strongCell.followHashtagControl setControlState:VFollowControlStateFollowed animated:YES];
+                        //[strongCell.followHashtagControl setControlState:VFollowControlStateFollowed animated:YES];
                     }];
                 }
             };
@@ -449,29 +449,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
-{
-    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
-    
-    for (UITableViewCell *cell in self.tableView.visibleCells)
-    {
-        if ( [cell isKindOfClass:[VHashtagCell class]] )
-        {
-            VHashtagCell *trendingCell = (VHashtagCell *)cell;
-            if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
-            {
-                VFollowControlState controlState = VFollowControlStateLoading;
-                if ( respond )
-                {
-                    controlState = [VFollowControl controlStateForFollowing:trendingCell.isSubscribedToTag];
-                }
-                [trendingCell.followHashtagControl setControlState:controlState animated:YES];
-                return;
-            }
-        }
-    }
 }
 
 #pragma mark - VCoachmarkDisplayer

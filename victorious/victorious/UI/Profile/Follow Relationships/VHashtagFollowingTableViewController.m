@@ -120,38 +120,53 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     
     VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
-    [customCell setHashtagText:hashtag.tag];
+    NSString *hashtagText = hashtag.tag;
+    [customCell setHashtagText:hashtagText];
+    [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
     customCell.dependencyManager = self.dependencyManager;
     
-    __weak typeof(customCell) weakCell = customCell;
+    __weak VHashtagCell *weakCell = customCell;
+    __weak VHashtagFollowingTableViewController *weakSelf = self;
     customCell.onToggleFollowHashtag = ^(void)
     {
         __strong VHashtagCell *strongCell = weakCell;
-        
+        __strong VHashtagFollowingTableViewController *strongSelf = weakSelf;
         if ( strongCell == nil )
         {
             return;
         }
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
+        RequestOperation *operation;
+        if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag.tag] )
         {
-            RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                [strongCell updateSubscribeStatusAnimated:YES showLoading:NO];
-            }];
+            operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
         }
         else
         {
-            RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                [strongCell updateSubscribeStatusAnimated:YES showLoading:NO];
-            }];
+            operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
         }
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+            [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
+        }];
     };
     customCell.dependencyManager = self.dependencyManager;
     
     return customCell;
+}
+             
+- (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
+{
+    VFollowControlState controlState;
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
+    {
+        controlState = VFollowControlStateFollowed;
+    }
+    else
+    {
+        controlState = VFollowControlStateUnfollowed;
+    }
+    [followControl setControlState:controlState animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -168,34 +183,5 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
 }
-
-#pragma mark - Subscribe / Unsubscribe Actions
-
-- (BOOL)isUserSubscribedToHashtag:(NSString *)tag
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
-    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    return followedHashtag != nil;
-}
-
-- (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
-{
-    for (UITableViewCell *cell in self.tableView.visibleCells)
-    {
-        if ( [cell isKindOfClass:[VHashtagCell class]] )
-        {
-            VHashtagCell *trendingCell = (VHashtagCell *)cell;
-            if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
-            {
-                [trendingCell updateSubscribeStatusAnimated:YES showLoading:!respond];
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-}
-
+             
 @end

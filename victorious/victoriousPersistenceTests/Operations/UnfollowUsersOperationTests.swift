@@ -1,5 +1,5 @@
 //
-//  UnFollowUsersOperationTests.swift
+//  UnfollowUsersOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/2/16.
@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UnFollowUsersOperationTests: BaseRequestOperationTestCase {
+class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
     var operation: UnFollowUsersOperation!
     let userID = 1
     let currentUserID = 2

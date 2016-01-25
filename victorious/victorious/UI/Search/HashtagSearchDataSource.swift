@@ -51,6 +51,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     }
     
     //MARK: - UITableViewDataSource
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.visibleItems.count ?? 0
     }
@@ -62,11 +63,35 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         searchResultCell.dependencyManager = self.dependencyManager
         let hashtag = hashtagResult.sourceResult.tag
         searchResultCell.hashtagText = hashtag
-        searchResultCell.onToggleFollowHashtag = { [weak searchResultCell] in
-            ToggleFollowHashtagOperation(hashtag: hashtag).queue() { error in
-                searchResultCell?.followHashtagControl?.setControlState(.Followed, animated: true)
+        self.updateFollowControlState(searchResultCell.followHashtagControl, forHashtag: hashtag)
+        searchResultCell.onToggleFollowHashtag = { [weak self, weak searchResultCell] in
+            guard let currentUser = VCurrentUser.user() else {
+                return
+            }
+            
+            let operation: RequestOperation
+            if currentUser.isCurrentUserFollowingHashtagString(hashtag) {
+                operation = UnfollowHashtagOperation( hashtag: hashtag )
+            } else {
+                operation = FollowHashtagOperation(hashtag: hashtag)
+            }
+            operation.queue() { error in
+                self?.updateFollowControlState(searchResultCell?.followHashtagControl, forHashtag: hashtag)
             }
         }
         return searchResultCell
+    }
+    
+    func updateFollowControlState(followControl: VFollowControl?, forHashtag hashtag: String) {
+        guard let followControl = followControl, currentUser = VCurrentUser.user() else {
+            return
+        }
+        let controlState: VFollowControlState
+        if currentUser.isCurrentUserFollowingHashtagString(hashtag) == true {
+            controlState = .Followed
+        } else {
+            controlState = .Unfollowed
+        }
+        followControl.setControlState(controlState, animated: true)
     }
 }
