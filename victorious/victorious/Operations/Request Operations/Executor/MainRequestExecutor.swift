@@ -27,16 +27,14 @@ class MainRequestExecutor: RequestExecutorType {
         
         networkActivityIndicator.start()
         let executeSemphore = dispatch_semaphore_create(0)
-        request.execute(
+        
+        let requestWithAlertsParsing = AlertsRequestDecorator(request: request)
+        requestWithAlertsParsing.execute(
             baseURL: baseURL,
             requestContext: requestContext,
             authenticationContext: authenticationContext,
-            callback: { (result, error, alerts) -> () in
+            callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
-                    
-                    if !alerts.isEmpty {
-                        self.alertsReceiver.onAlertsReceived( alerts )
-                    }
                     
                     if let error = error as? RequestErrorType {
                         let nsError = NSError( error )
@@ -49,9 +47,12 @@ class MainRequestExecutor: RequestExecutorType {
                             dispatch_semaphore_signal( executeSemphore )
                         }
                         
-                    } else if let requestResult = result {
+                    } else if let result = result {
+                        if !result.alerts.isEmpty {
+                            self.alertsReceiver.onAlertsReceived( result.alerts )
+                        }
                         if let onComplete = onComplete {
-                            onComplete( requestResult ) {
+                            onComplete( result.result ) {
                                 dispatch_semaphore_signal( executeSemphore )
                             }
                         } else {
