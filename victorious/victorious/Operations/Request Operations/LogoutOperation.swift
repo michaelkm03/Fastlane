@@ -66,6 +66,8 @@ class LogoutOperation: RequestOperation {
                 context.deleteObject( object )
             }
             
+            // TODO: Maybe we can just delete the user?  That way the deletion cascades to everything?
+            
             context.v_save()
         }
         
