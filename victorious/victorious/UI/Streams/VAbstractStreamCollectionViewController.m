@@ -114,9 +114,18 @@
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
+
     if ( shouldRefresh )
     {
-        [self loadPage:VPageTypeFirst completion:nil];
+        BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+        if (isPreLoaded)
+        {
+            [self loadPreloadedStreamWithCompletion:nil];
+        }
+        else
+        {
+            [self loadPage:VPageTypeFirst completion:nil];
+        }
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -307,6 +316,26 @@
          [self.refreshControl endRefreshing];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
+}
+
+- (void)loadPreloadedStreamWithCompletion:(void(^)(void))completion
+{
+    [self.streamDataSource loadPreloadedStream:^(NSError *_Nullable error)
+    {
+        [self.streamTrackingHelper streamDidLoad:self.currentStream];
+
+        if ( error != nil )
+        {
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
+        }
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
+        
+        [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+    }];
 }
 
 - (void)positionRefreshControl
