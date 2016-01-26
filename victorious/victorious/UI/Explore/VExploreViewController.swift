@@ -114,7 +114,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         if let dataSource = streamDataSource {
             dataSource.stream = currentStream
             dataSource.delegate = self
-            dataSource.paginatedDataSource.delegate = self
+            dataSource.paginatedDataSource.delegate = self.streamDataSource
             collectionView.dataSource = dataSource
         }
         
@@ -596,6 +596,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         // Navigating to a single stream
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
+            stream.apiPath = nil
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
             if let streamDataSource = streamCollection?.streamDataSource {
                 streamDataSource.suppressShelves = stream == currentStream
