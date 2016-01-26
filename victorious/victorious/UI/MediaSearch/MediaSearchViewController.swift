@@ -12,7 +12,7 @@ import UIKit
 /// Delegate that handles events that originate from within a `MediaSearchViewController`
 @objc protocol MediaSearchViewControllerDelegate {
     
-    /// The user selected a GIF image and wants to proceed with it in a creation flow.
+    /// The user selected a search result and wants to proceed with it in a creation flow.
     func mediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult )
 }
 
@@ -26,8 +26,7 @@ class MediaSearchOptions: NSObject {
     }
 }
 
-/// View controller that allows users to search for GIF files using the Giphy API
-/// as part of a content creation flow.
+/// View controller that allows users to search for media files as part of a content creation flow.
 class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, PaginatedDataSourceDelegate {
     
     /// Enum of selector strings used in this class
@@ -132,7 +131,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 			} else {
 				let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
 				progressHUD.mode = .Text
-				progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
+				progressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
 				progressHUD.hide(true, afterDelay: 3.0)
 			}
 			
@@ -205,7 +204,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.MediaSearchNext.rawValue
     }
     
-    /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
+    /// Inserts a new section into the collection view that shows a fullsize preview video for the search result
     func showPreviewForResult( indexPath: NSIndexPath ) {
         var sectionInserted: Int?
         
@@ -240,7 +239,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }, completion:nil )
     }
     
-    /// Removes the section showing a GIF search result preview at the specified index path
+    /// Removes the section showing a search result preview at the specified index path
     func hidePreviewForResult( indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
