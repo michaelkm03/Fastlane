@@ -1,5 +1,5 @@
 //
-//  VSuggestedPeopleCollectionViewController.h
+//  VDiscoverSuggestedPeopleViewController.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
@@ -11,7 +11,7 @@
 
 @class VUser;
 
-@protocol VSuggestedPeopleCollectionViewControllerDelegate <NSObject>
+@protocol VDiscoverSuggestedPeopleDelegate <NSObject>
 
 - (void)suggestedPeopleDidFailToLoad;
 - (void)suggestedPeopleDidFinishLoading;
@@ -25,7 +25,7 @@
 
 - (void)refresh:(BOOL)shouldClearCurrentContent;
 
-@property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<VDiscoverSuggestedPeopleDelegate> delegate;
 
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic,  strong) NSArray *suggestedUsers;

@@ -12,7 +12,7 @@
 #import "VDiscoverViewController.h"
 #import "VDiscoverSuggestedPeopleSectionCell.h"
 #import "VNoContentTableViewCell.h"
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VDiscoverSuggestedPeopleViewController.h"
 #import "VDummyModels.h"
 #import "VTestHelpers.h"
@@ -172,7 +172,7 @@
     [self.viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
         NSIndexPath *indexPath = VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags);
         cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:indexPath];
-        XCTAssert( [cell isKindOfClass:[VTrendingTagCell class]], @"Cell should be a valid VTrending" );
+        XCTAssert( [cell isKindOfClass:[VHashtagCell class]], @"Cell should be a valid VTrending" );
     }];
 }
 

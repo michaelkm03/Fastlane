@@ -31,12 +31,14 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.request.paginator.displayOrderCounterStart
             
+            // The user who is doing the following of other users
             let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
             
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             for user in users {
-                // Load the user who is following self.userID
+                
+                // Load a user who is followed by self.userID according to the results
                 let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
                 objectUser.populate(fromSourceModel: user)
                 
@@ -45,7 +47,6 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
                 followedUser.objectUser = objectUser
                 followedUser.subjectUser = subjectUser
                 followedUser.displayOrder = displayOrder++
-                subjectUser.v_addObject( followedUser, to: "followers" )
             }
             context.v_save()
             dispatch_async( dispatch_get_main_queue() ) {
@@ -60,8 +61,8 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                vsdk_format: "subjectUser.remoteId = %@",
-                vsdk_argumentArray: [ self.userID ],
+                vsdk_format: "subjectUser.remoteId == %@ && objectUser.remoteId != %@",
+                vsdk_argumentArray: [ self.userID, self.userID ],
                 vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate

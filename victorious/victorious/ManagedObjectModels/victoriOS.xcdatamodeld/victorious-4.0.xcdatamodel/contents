@@ -117,6 +117,7 @@
     </entity>
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isFollowedByMainUser" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
     </entity>
@@ -376,7 +377,7 @@
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="FollowedHashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="FollowedUser" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="HashtagShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
