@@ -22,44 +22,57 @@ struct MediaSearchExporter {
     /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
     typealias MediaSearchExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
-    /// For the provided MediaSearchResult, downlods its video asset to disk and loads a preview image
+    /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
     func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
         
-        if let searchResultURL = mediaSearchResult.sourceMediaURL {
-            let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
-            if let previewImageURL = mediaSearchResult.thumbnailImageURL,
-                let videoURL = mediaSearchResult.sourceMediaURL,
-                let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
-                    
-                    // FIXME: Need AFURLConnectionOperation imported properly in Swift briding header
-                    /*let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
-                    videoOperation.completionBlock = {
-                        
-                        // Load the image synchronously before we leave this thread
-                        let previewImage: UIImage? = {
-                            if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
-                                return UIImage(data: previewImageData)
-                            }
-                            return nil
-                        }()
-                        
-                        // Dispatch back to main thread for completion
-                        dispatch_async( dispatch_get_main_queue() ) {
-                            completion(
-                                previewImage: previewImage,
-                                mediaUrl: downloadURL,
-                                error: nil
-                            )
-                        }
-                    }
-                    videoOperation.outputStream = videoOutputStream
-                    self.operationQueue.addOperation( videoOperation )*/
+        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
+            return
+        }
+        let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
+        
+        guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
+            let videoURL = mediaSearchResult.sourceMediaURL else {
+                return
+        }
+        
+        let videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
+            
+            guard let location = location else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(previewImage: nil, mediaUrl: nil, error: error)
+                }
+                return
+            }
+            
+            let previewImage: UIImage? = {
+                if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
+                    return UIImage(data: previewImageData)
+                }
+                return nil
+            }()
+            
+            do {
+                try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
+            } catch (let error) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
+                }
+            }
+            
+            // Dispatch back to main thread for completion
+            dispatch_async( dispatch_get_main_queue() ) {
+                completion(
+                    previewImage: previewImage,
+                    mediaUrl: downloadURL,
+                    error: nil
+                )
             }
         }
+        videoDownloadTask.resume()
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {

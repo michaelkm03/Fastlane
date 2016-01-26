@@ -78,13 +78,12 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-#warning TODO: New Architecture
-    /*VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    VUploadManager *uploadManager = [VUploadManager sharedManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
         [uploadManager startURLSession];
-    }*/
+    }
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
