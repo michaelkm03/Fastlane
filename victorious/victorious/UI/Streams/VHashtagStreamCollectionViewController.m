@@ -224,11 +224,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    // Becase the backend doesn't assign text posts to hashtags based on tags in the text,
-    // Text posts will allow you to view a hastag stream for hashtag that doesn't exist.
-    // If you're viewing a hashtag stream with no items, the backend returns an error if you
-    // attempt to follow it. This prevents showing the button in that case.
-    return self.streamDataSource.count > 0;
+    return YES;
 }
 
 - (UIControl *)customControlForAccessoryMenuItem:(VNavigationMenuItem *)menuItem

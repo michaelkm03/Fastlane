@@ -38,23 +38,25 @@ class UnFollowUsersOperationTests: BaseRequestOperationTestCase {
         followedUser.displayOrder = -1
         testStore.mainContext.v_save()
 
-        operation.main()
+        queueExpectedOperation(operation: operation)
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+            guard let updatedUser = self.testStore.mainContext.objectWithID(objectUser.objectID) as? VUser else {
+                XCTFail("No user to follow found after following a user")
+                return
+            }
+            guard let updatedCurrentUser = VCurrentUser.user() else {
+                XCTFail("No current user found after following a user")
+                return
+            }
 
-        guard let updatedUser = testStore.mainContext.objectWithID(objectUser.objectID) as? VUser else {
-            XCTFail("No user to follow found after following a user")
-            return
+            XCTAssertEqual(0, updatedUser.numberOfFollowers)
+            XCTAssertEqual(0, updatedUser.followers.count)
+            XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
+            XCTAssertEqual(0, updatedCurrentUser.following.count)
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
+            XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
+            XCTAssertEqual(VTrackingEventUserDidUnfollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
-        guard let updatedCurrentUser = VCurrentUser.user() else {
-            XCTFail("No current user found after following a user")
-            return
-        }
-
-        XCTAssertEqual(0, updatedUser.numberOfFollowers)
-        XCTAssertEqual(0, updatedUser.followers.count)
-        XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
-        XCTAssertEqual(0, updatedCurrentUser.following.count)
-        XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
-        XCTAssertEqual(VTrackingEventUserDidUnfollowUser, testTrackingManager.trackEventCalls[0].eventName!)
     }
 }

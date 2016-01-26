@@ -88,6 +88,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
+    UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     streamDirectory.marqueeController = marqueeController;
     streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];
@@ -113,10 +115,19 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     
     NSString *path = [url v_pathComponent];
-    //VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    //stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    NSDictionary *query = @{ @"apiPath" : path };
+    __block VStream *stream = nil;
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        [persistentStore.mainContext save:nil];
+    }];
+    
     NSObject <VDirectoryCellFactory> *cellFactory = [[VDirectoryContentCellFactory alloc] initWithDependencyManager:dependencyManager];
-    return [self streamDirectoryForStream:nil dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
+    VDirectoryCollectionViewController *directoryVC = [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
+    
+    return directoryVC;
 }
 
 #pragma mark - Shared setup
@@ -148,6 +159,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
+    self.streamDataSource.paginatedDataSource.delegate = self;
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
     
@@ -392,6 +404,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.collectionView setContentOffset:CGPointZero animated:YES];
+}
+
+#pragma mark - Paginated Data Source Delegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 @end

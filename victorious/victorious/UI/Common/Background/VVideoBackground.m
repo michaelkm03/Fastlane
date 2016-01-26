@@ -11,7 +11,7 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
-#import "victorious-Swift.h"
+#import "victorious-swift.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -30,14 +30,16 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         _videoView = [[VVideoView alloc] initWithFrame:CGRectZero];
         _videoView.delegate = self;
+        _videoView.backgroundColor = [UIColor blackColor];
         
-        NSString *sequenceId = [[dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-        if (sequenceId != nil)
+        NSString *sequenceURL = [dependencyManager stringForKey:kSequenceURLKey];
+        NSString *sequenceID = [sequenceURL lastPathComponent];
+        if (sequenceID != nil)
         {
-            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
+            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID];
             [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
              {
-                 VSequence *sequence = (VSequence *)operation.result;
+                 VSequence *sequence = operation.result;
                  if ( error == nil && sequence != nil )
                  {
                      VNode *node = (VNode *)[sequence firstNode];
@@ -49,9 +51,6 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
                          item.loop = YES;
                          [self.videoView setItem:item];
                      }
-                 }else
-                 {
-                     self.videoView.backgroundColor = [UIColor blackColor];
                  }
              }];
         }

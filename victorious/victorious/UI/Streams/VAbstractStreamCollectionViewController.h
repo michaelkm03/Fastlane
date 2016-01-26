@@ -36,7 +36,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
  */
 @property (nonatomic, strong, nullable) VStreamCollectionViewDataSource *streamDataSource;
 
-@property (nonatomic, null_unspecified, weak) IBOutlet UICollectionView *collectionView;///<The collection view used to display the streamItems
+@property (nonatomic, null_unspecified, strong) IBOutlet UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll

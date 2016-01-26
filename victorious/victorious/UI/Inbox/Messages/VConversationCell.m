@@ -17,6 +17,15 @@ static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;
 static const CGFloat kBaselineOffset = 0.5f;
 
+@interface VConversationCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
+
+@end
+
 @implementation VConversationCell
 
 + (NSString *)suggestedReuseIdentifier

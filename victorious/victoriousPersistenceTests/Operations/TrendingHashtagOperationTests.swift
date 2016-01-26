@@ -33,7 +33,7 @@ class TrendingHashtagOperationTests: BaseRequestOperationTestCase {
         
         XCTAssertEqual(operation.results?.count, 1)
 
-        guard let firstResult = operation.results?.first else {
+        guard let firstResult = operation.results?.first as? HashtagSearchResultObject else {
             XCTFail("first object in results should be an instance of HashtagSearchResultObject")
             return
         }

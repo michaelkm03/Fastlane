@@ -280,6 +280,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
+    [self.dataSource unload];
+    
     if ( [VCurrentUser user] != nil )
     {
         [self fetchNotificationCount];

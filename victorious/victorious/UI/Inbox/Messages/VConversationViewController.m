@@ -181,25 +181,30 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( ![cell isKindOfClass:[VMessage class]] )
+    if ( ![cell isKindOfClass:[VMessageCell class]] )
     {
         return;
     }
     VMessageCell *messageCell = (VMessageCell *)cell;
     messageCell.messageTextAndMediaView.mediaTapDelegate = self;
     messageCell.profileDelegate = self;
+    messageCell.focusType = VFocusTypeStream;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( ![cell isKindOfClass:[VMessageCell class]] )
+    {
+        return;
+    }
+    VMessageCell *messageCell = (VMessageCell *)cell;
+    messageCell.focusType = VFocusTypeNone;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage *message = self.dataSource.visibleItems[ indexPath.row ];
     return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) message:message];
-}
-
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // End focus on this cell to stop video if there is one
-    [self.focusHelper endFocusOnCell:cell];
 }
 
 #pragma mark - VCellWithProfileDelegate
@@ -228,12 +233,6 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
-    // Preview image hasn't loaded yet, do not try and show lightbox
-    if (image == nil)
-    {
-        return;
-    }
-    
     VLightboxViewController *lightbox;
     if ([mediaURL v_hasImageExtension])
     {

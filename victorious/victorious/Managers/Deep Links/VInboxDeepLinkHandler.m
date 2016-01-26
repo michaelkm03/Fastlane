@@ -12,6 +12,7 @@
 #import "VObjectManager+Login.h"
 #import "VConversationListViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "victorious-swift.h"
 
 @import MBProgressHUD;
 
@@ -72,33 +73,23 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:scaffoldViewController.view animated:YES];
     
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-    
-#warning FIXME:
-    /*[[VObjectManager sharedManager] conversationByID:@(conversationID)
-                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    ConversationOperation *operation = [[ConversationOperation alloc] initWithConversationID:conversationID];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
          [hud hide:YES];
          
-         VConversation *conversation = (VConversation *)[resultObjects firstObject];
-         if ( conversation == nil )
+         VConversation *conversation = (VConversation *)operation.conversation;
+         if ( error != nil || conversation == nil )
          {
-             completion( NO, nil );
+             VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
+             completion( NO, nil) ;
          }
          else
          {
              completion( YES, self.inboxViewController );
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                [self.inboxViewController displayConversation:conversation animated:YES];
-                            });
+             [self.inboxViewController displayConversation:conversation animated:YES];
          }
-     }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-         VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
-         completion( NO, nil) ;
-     }];*/
+     }];
 }
 
 @end

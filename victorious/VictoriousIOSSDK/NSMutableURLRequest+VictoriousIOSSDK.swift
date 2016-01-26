@@ -45,10 +45,14 @@ public struct RequestContext {
     /// The value of CFBundleVersion in the application's Info.plist file
     public let buildNumber: String
     
-    public init(appID: Int, deviceID: String, buildNumber: String) {
+    /// The value of CFBundleShortVersionString in the application's Info.plist file
+    public let appVersion: String
+    
+    public init(appID: Int, deviceID: String, buildNumber: String, appVersion: String) {
         self.appID = appID
         self.deviceID = deviceID
         self.buildNumber = buildNumber
+        self.appVersion = appVersion
     }
 }
 

@@ -24,7 +24,7 @@ class PreloadUserInfoOperation: Operation {
             }
             
             let userID = currentUser.remoteId.integerValue
-            let apiPath = "/api/sequence/detail_list_by_user/\(userID)/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
+            let apiPath = "/api/sequence/detail_list_by_user/\(userID)/\(VSDKPaginatorMacroPageNumber)/\(VSDKPaginatorMacroItemsPerPage)"
             StreamOperation(apiPath: apiPath).queue()
             
             UserInfoOperation(userID: userID).queue()

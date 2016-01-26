@@ -17,7 +17,7 @@ protocol AlertReceiver {
 
 class AlertReceiverSelector: NSObject {
     
-    class var defaultReceiver: AlertReceiver? {
+    class var defaultReceiver: AlertReceiver {
         return InterstitialManager.sharedInstance
     }
 }

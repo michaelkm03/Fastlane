@@ -19,6 +19,8 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     let conversationID: Int
     let request: ConversationRequest
     
+    var conversation: VConversation?
+    
     convenience init(conversationID: Int) {
         self.init( request: ConversationRequest(conversationID: conversationID) )
     }
@@ -68,15 +70,14 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 // a conversation already deleted.
             }
             
-            completion()
+            let objectID = conversation.objectID
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = self.fetchResults()
+                self.conversation = context.objectWithID( objectID ) as? VConversation
+                completion()
+            }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {}
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in

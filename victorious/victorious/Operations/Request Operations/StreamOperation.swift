@@ -46,13 +46,12 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             }
             persistentStream.v_addObjects(streamItems, to: "streamItems")
             context.v_save()
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
+            }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -66,18 +65,6 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItem]
             return results
-        }
-    }
-    
-    func clearResults() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
-                return
-            }
-            for streamItem in persistentStream.streamItems.array as? [VStreamItem] ?? [] {
-                context.deleteObject( streamItem )
-            }
-            context.v_save()
         }
     }
 }
