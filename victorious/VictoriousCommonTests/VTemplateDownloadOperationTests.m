@@ -14,7 +14,6 @@
 #import "VTemplateSerialization.h"
 
 #import <UIKit/UIKit.h>
-//#import <VictoriousCommon/VictoriousCommon-Swift.h>
 #import <XCTest/XCTest.h>
 
 @import VictoriousCommon;
