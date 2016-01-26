@@ -59,15 +59,6 @@ import VictoriousIOSSDK
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
-    /// Call this function when loading stream items from a already populated stream with valid stream items
-    /// e.g. Streams in a shelf or marquee
-    func loadPrePopulatedStream(stream: VStream, completion: (() -> Void)? = nil ) {
-        visibleItems = stream.streamItems
-        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-        self.hasLoadedLastPage = true
-        completion?()
-    }
-    
     /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     /// operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
