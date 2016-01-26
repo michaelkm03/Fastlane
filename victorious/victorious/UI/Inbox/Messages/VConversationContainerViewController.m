@@ -27,7 +27,6 @@ static const NSUInteger kCharacterLimit = 1024;
 @interface VConversationContainerViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, readonly) BOOL canFlagConversation;
 
 @end
 
@@ -66,7 +65,7 @@ static const NSUInteger kCharacterLimit = 1024;
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self updateTitle];
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,22 +114,16 @@ static const NSUInteger kCharacterLimit = 1024;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (BOOL)canFlagConversation
-{
-    id mostRecentMessage = self.conversation.messages.lastObject;
-    return [mostRecentMessage isKindOfClass:[VMessage class]] && mostRecentMessage != nil;
-}
-
 - (void)flagConversation
 {
-    if ( !self.canFlagConversation )
+    VMessage *mostRecentMessage = (VMessage *)self.conversation.messages.lastObject;
+    if ( mostRecentMessage == nil )
     {
         return;
     }
     
     [self.innerViewController onConversationFlagged];
     
-    VMessage *mostRecentMessage = (VMessage *)self.conversation.messages.lastObject;
     NSInteger conversationID = self.conversation.remoteId.integerValue;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
     FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
@@ -276,10 +269,6 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMore] )
-    {
-        return self.canFlagConversation;
-    }
     return YES;
 }
 

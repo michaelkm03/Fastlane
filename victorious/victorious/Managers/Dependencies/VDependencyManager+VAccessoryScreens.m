@@ -130,7 +130,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     shouldAnimate = newBarButtonItemsLeft.count != navigationItem.leftBarButtonItems.count;
     [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:shouldAnimate];
     
-    [navigationItem setRightBarButtonItems:newBarButtonItemsRight];
+    shouldAnimate = newBarButtonItemsRight.count != navigationItem.rightBarButtonItems.count;
+    [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
 }
 
 - (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
