@@ -15,7 +15,7 @@ import VictoriousIOSSDK
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) var currentOperation: NSOperation?
+    private(set) weak var currentOperation: NSOperation?
     
     private(set) var hasLoadedLastPage: Bool = false
     
