@@ -114,19 +114,19 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 			return
 		}
 		
-		let gifSearchResulObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
+		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
 		
 		let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
 		progressHUD.mode = .Indeterminate
 		progressHUD.dimBackground = true
 		progressHUD.show(true)
 		
-		self.mediaExporter.loadMedia( gifSearchResulObject ) { (previewImage, mediaURL, error) in
+		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
 			
 			if let previewImage = previewImage, let mediaURL = mediaURL {
-				gifSearchResulObject.exportPreviewImage = previewImage
-				gifSearchResulObject.exportMediaURL = mediaURL
-				self.delegate?.mediaSearchResultSelected( gifSearchResulObject )
+				mediaSearchResultObject.exportPreviewImage = previewImage
+				mediaSearchResultObject.exportMediaURL = mediaURL
+				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
 				
 			} else {
 				let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
