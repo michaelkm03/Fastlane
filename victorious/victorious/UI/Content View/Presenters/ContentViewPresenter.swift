@@ -27,7 +27,7 @@ class ContentViewContext: NSObject {
 @objc protocol ContentViewPresenterDelegate: class {
     
     optional func contentViewPresenterDidDeleteContent(presenter: ContentViewPresenter)
-
+    optional func contentViewPresenterDidFlagContent(presenter: ContentViewPresenter)
 }
 
 /// A helper presenter class that helps VStreamCollectionViewController
@@ -80,6 +80,10 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
     
     func contentViewDidDeleteContent(contentViewController: VNewContentViewController!) {
         delegate?.contentViewPresenterDidDeleteContent?(self)
+    }
+    
+    func contentViewDidFlagContent(contentViewController: VNewContentViewController!) {
+        delegate?.contentViewPresenterDidFlagContent?(self)
     }
 }
 

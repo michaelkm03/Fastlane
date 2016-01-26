@@ -21,6 +21,7 @@
 @optional
 
 - (void)contentViewDidDeleteContent:(VNewContentViewController *)contentViewController;
+- (void)contentViewDidFlagContent:(VNewContentViewController *)contentViewController;
 
 @end
 

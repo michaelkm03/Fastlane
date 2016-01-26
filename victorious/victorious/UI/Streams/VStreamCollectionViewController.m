@@ -679,6 +679,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
 }
 
+- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+}
+
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView

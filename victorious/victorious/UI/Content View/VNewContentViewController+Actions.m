@@ -207,7 +207,10 @@
                                                             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                        }];
                                                       self.viewModel.sequence.markForDeletion = @(YES);
-                                                      [self.delegate contentViewDidDeleteContent:self];
+                                                      if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
+                                                      {
+                                                          [self.delegate contentViewDidDeleteContent:self];
+                                                      }
                                                   }];
                                              }]];
                  
@@ -230,11 +233,16 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
                  {
-                     [self.viewModel.commentsDataSource flagSequenceWithCompletion:^void(NSError *error)
+                     [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                       completion:^
                       {
-                          [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                          self.viewModel.sequence.markForDeletion = @(YES);
+                          if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
+                          {
+                              [self.delegate contentViewDidFlagContent:self];
+                          }
                       }];
                  }];
              }];
