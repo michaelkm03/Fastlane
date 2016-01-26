@@ -21,7 +21,9 @@ extension NSManagedObject {
                 let source = self.mutableSetValueForKey( key )
                 let destination = copy.mutableSetValueForKey( key )
                 for value in source {
-                    destination.addObject( value.v_deepCopy(context) )
+                    if let value = value as? NSManagedObject {
+                        destination.addObject( value.v_deepCopy(context) )
+                    }
                 }
             }
             else if let object = self.valueForKey(key) as? NSManagedObject where object != self {
