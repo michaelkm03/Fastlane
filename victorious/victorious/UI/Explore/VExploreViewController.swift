@@ -596,8 +596,12 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         // Navigating to a single stream
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
-            stream.apiPath = nil
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+            
+            //`stream`'s just inherits from explore feed's apiPath,
+            // but it should really be nil because the destination is a pre-populated stream without an apiPath
+            stream.apiPath = nil
+            
             if let streamDataSource = streamCollection?.streamDataSource {
                 streamDataSource.suppressShelves = stream == currentStream
             }
