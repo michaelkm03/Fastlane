@@ -37,7 +37,7 @@ class AccountUpdateOperation: RequestOperation {
         if let profileUpdate = self.request.profileUpdate {
             persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
 
-                guard let user = VCurrentUser.user() else {
+                guard let user = VCurrentUser.user(inManagedObjectContext:context) else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
                 

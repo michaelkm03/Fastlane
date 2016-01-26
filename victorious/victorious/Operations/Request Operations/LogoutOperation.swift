@@ -39,8 +39,6 @@ class LogoutOperation: RequestOperation {
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
             VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
-            
-            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -56,5 +54,9 @@ class LogoutOperation: RequestOperation {
         
         // Execute the network request and don't wait for response
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        
+        dispatch_sync( dispatch_get_main_queue() ) {
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
+        }
     }
 }

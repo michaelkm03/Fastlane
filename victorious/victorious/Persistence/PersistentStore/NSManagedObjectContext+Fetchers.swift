@@ -33,13 +33,15 @@ extension NSManagedObjectContext {
     func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
         
         let fetchRequest = NSFetchRequest(entityName: entityName)
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
         do {
-            try self.executeRequest( deleteRequest )
+            let results = try self.executeFetchRequest( fetchRequest ) as? [NSManagedObject] ?? []
+            for result in results {
+                deleteObject( result )
+            }
             return true
         } catch {
-            print( "Failed to delete curernt user data: \(error)" )
+            print( "Failed to delete objects with entity name \(entityName): \(error)" )
             return false
         }
     }
