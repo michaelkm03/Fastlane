@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 @property (nonatomic, assign) VInlineSearchState searchState;
 @property (nonatomic, strong) UIButton *backgroundButton;
 @property (nonatomic, strong) NSTimer *UIUpdateTimer;
-@property (nonatomic, strong) RKObjectRequestOperation *searchOperation;
+@property (nonatomic, strong) NSOperation *searchOperation;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) NSString *currentSearchText;
 

@@ -223,24 +223,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
-#pragma mark - Overrides
-
-- (NSFetchedResultsController *)makeFetchedResultsController
-{
-    RKObjectManager *manager = [RKObjectManager sharedManager];
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation v_entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
-
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
-                                                 sectionNameKeyPath:nil
-                                                          cacheName:fetchRequest.entityName];
-}
-
 #pragma mark - Message View Controller Cache
 
 - (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user

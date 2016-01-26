@@ -35,7 +35,6 @@
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];

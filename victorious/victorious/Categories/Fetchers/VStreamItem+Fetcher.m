@@ -161,7 +161,9 @@ NSString * const VStreamItemSubTypeStream = @"stream";
                                                inManagedObjectContext:context];
         editorializationItem.apiPath = apiPath;
         editorializationItem.streamItemId = self.remoteId;
-        [editorializationItem.managedObjectContext saveToPersistentStore:nil];
+        
+#warning FIXME: Redo this whoe method in the new architecture
+        [editorializationItem.managedObjectContext save:nil];
     }
     
     return editorializationItem;

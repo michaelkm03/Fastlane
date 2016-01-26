@@ -77,7 +77,8 @@
         object.apiPath = apiPath;
         object.name = @"";
         object.previewImagesObject = @"";
-        [object.managedObjectContext saveToPersistentStore:nil];
+#warning FIXME: Redo in new architecture
+        [object.managedObjectContext save:nil];
         
         [streamCache setObject:object forKey:apiPath];
     }

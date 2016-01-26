@@ -91,7 +91,8 @@
                                                                     enabled:!assetIsCached];
         downloadItem.selectionHandler = ^(VActionItem *item)
         {
-            VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
+#warning FIXME: Use new architecture
+            /*VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
             VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
             NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
             urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
@@ -112,7 +113,7 @@
                  [hud hide:YES];
                  VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
                  [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-             }];
+             }];*/
             VLog(@"download video");
             
             [self dismissViewControllerAnimated:YES
