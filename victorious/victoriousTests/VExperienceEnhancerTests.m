@@ -119,7 +119,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
         if ( idx < kValidExperienceEnhancerCount )
         {
             enhancer.iconImage = [UIImage new];
-            enhancer.animationSequence = @[ [UIImage new], [UIImage new], [UIImage new], [UIImage new] ];
         }
         [mutableArray addObject:enhancer];
     }];
@@ -132,10 +131,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     NSArray *experienceEnhancers = [self createExperienceEnhancers];
     NSArray *filtered = nil;
     
-    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
-    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
-    
-    ((VExperienceEnhancer *)experienceEnhancers.firstObject).animationSequence = nil;
     filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
     XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
     

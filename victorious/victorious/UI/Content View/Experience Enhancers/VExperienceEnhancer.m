@@ -32,7 +32,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
                                                                    NSDictionary *bindings)
                               {
-                                  return enhancer.voteType.iconImage != nil;
+                                  return enhancer.iconImage != nil;
                               }];
     return [enhancers filteredArrayUsingPredicate:predicate];
 }
