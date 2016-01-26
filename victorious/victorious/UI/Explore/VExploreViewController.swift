@@ -556,8 +556,6 @@ extension VExploreViewController: VHashtagSelectionResponder {
 
 extension VExploreViewController : VMarqueeSelectionDelegate {
     
-    
-    
     func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
         
         if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
@@ -597,10 +595,6 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
-            
-            //`stream`'s just inherits from explore feed's apiPath,
-            // but it should really be nil because the destination is a pre-populated stream without an apiPath
-            stream.apiPath = nil
             
             if let streamDataSource = streamCollection?.streamDataSource {
                 streamDataSource.suppressShelves = stream == currentStream
