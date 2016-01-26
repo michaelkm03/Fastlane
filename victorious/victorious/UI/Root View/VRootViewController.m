@@ -14,7 +14,6 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
@@ -214,7 +213,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.rootDependencyManager = [VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts];
     VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:self.rootDependencyManager
-                                                                                configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
+                                                                                configuration:nil
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;
 }
@@ -469,8 +468,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
     
     [self showViewController:nil animated:NO completion:nil];
-    [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 

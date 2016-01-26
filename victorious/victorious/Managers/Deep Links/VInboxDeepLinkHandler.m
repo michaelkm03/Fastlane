@@ -9,7 +9,6 @@
 #import "VInboxDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
-#import "VObjectManager+Login.h"
 #import "VConversationListViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "victorious-swift.h"

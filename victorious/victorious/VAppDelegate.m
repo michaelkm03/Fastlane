@@ -8,15 +8,9 @@
 
 #import "VAppDelegate.h"
 #import "VReachability.h"
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
 #import "VConstants.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VPurchaseManager.h"
@@ -43,8 +37,6 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-    
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
@@ -87,12 +79,13 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+#warning TODO: New Architecture
+    /*VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
         [uploadManager startURLSession];
-    }
+    }*/
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options

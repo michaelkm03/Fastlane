@@ -35,7 +35,8 @@ struct MediaSearchExporter {
                 let videoURL = mediaSearchResult.sourceMediaURL,
                 let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
                     
-                    let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
+                    // FIXME: Need AFURLConnectionOperation imported properly in Swift briding header
+                    /*let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
                     videoOperation.completionBlock = {
                         
                         // Load the image synchronously before we leave this thread
@@ -56,7 +57,7 @@ struct MediaSearchExporter {
                         }
                     }
                     videoOperation.outputStream = videoOutputStream
-                    self.operationQueue.addOperation( videoOperation )
+                    self.operationQueue.addOperation( videoOperation )*/
             }
         }
     }

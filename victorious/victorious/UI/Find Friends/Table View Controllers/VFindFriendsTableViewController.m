@@ -12,8 +12,6 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"

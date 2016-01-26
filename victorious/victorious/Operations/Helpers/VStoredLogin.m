@@ -9,6 +9,8 @@
 #import "VStoredLogin.h"
 #import "victorious-Swift.h"
 
+NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
+
 @interface VStoredLoginInfo()
 
 @property (nonatomic, strong, readwrite) NSString *token;

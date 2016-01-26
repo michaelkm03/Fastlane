@@ -10,7 +10,6 @@
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsTableView.h"
 #import "victorious-Swift.h"
-#import "VObjectManager+Users.h"
 #import "VConstants.h"
 
 @import FBSDKCoreKit;
@@ -57,7 +56,8 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
-    [[VObjectManager sharedManager] findFriendsBySocialWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
+#warning TODO: New Architecture
+    /*[[VObjectManager sharedManager] findFriendsBySocialWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
                                                           secret:nil
                                                 withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -72,7 +72,7 @@
         {
             completionBlock(nil, error);
         }
-    }];
+    }];*/
 }
 
 - (NSString *)headerTextForNewFriendsSection

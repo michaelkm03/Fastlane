@@ -7,7 +7,6 @@
 //
 
 #import "VDependencyManager+VObjectManager.h"
-#import "VObjectManager.h"
 
 NSString * const VDependencyManagerObjectManagerKey = @"objectManager";
 

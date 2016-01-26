@@ -18,7 +18,6 @@
 #import "VNode+Fetcher.h"
 #import "VComment+Fetcher.h"
 #import "VUser.h"
-#import "VPaginationManager.h"
 #import "VAsset+VCachedData.h"
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"

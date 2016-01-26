@@ -13,10 +13,6 @@
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
 #import "VEnvironment+VDataCacheID.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+VTemplateDownloaderConformance.h"
 #import "VUser.h"
 #import "VReachability.h"
 #import "VSessionTimer.h"
@@ -157,8 +153,9 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
    
     self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[StoredLoginOperation alloc] init];
     
-    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager]
-                                                                                andDelegate:self];
+    // REMOVE ME
+    /*self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager]
+                                                                                andDelegate:self];*/
 
     self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;

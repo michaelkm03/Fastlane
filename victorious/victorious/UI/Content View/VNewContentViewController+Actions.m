@@ -204,12 +204,13 @@
                                                  [self.presentingViewController dismissViewControllerAnimated:YES
                                                                                                    completion:^
                                                   {
-                                                      [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
+#warning: New Arhicture:
+                                                      /*[[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
                                                                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                        {
                                                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                        }
-                                                                                           failBlock:nil];
+                                                                                           failBlock:nil];*/
                                                   }];
                                              }]];
                  

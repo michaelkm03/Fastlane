@@ -12,8 +12,6 @@
 #import "VInlineUserTableViewCell.h"
 
 // VObject Manager
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
 
 // No Content View
 #import "VNoContentView.h"
@@ -23,7 +21,6 @@
 
 #import "VDependencyManager.h"
 
-#import "VObjectManager+Pagination.h"
 #import "VScrollPaginator.h"
 
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
@@ -86,10 +83,11 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     [self.tableView reloadData];
     
     self.currentSearchText = searchText;
-    VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
+#warning TODO: Replae with new architecture
+    /*VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
     {
         [self presentLoadedData:resultObjects];
-    };
+    };*/
     
     if ([searchText length] > 0)
     {
@@ -98,12 +96,13 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         
         NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
         
-        self.searchOperation = [[VObjectManager sharedManager] findUsersBySearchString:searchText
+#warning TODO: Replae with new architecture
+        /*self.searchOperation = [[VObjectManager sharedManager] findUsersBySearchString:searchText
                                                                             sequenceID:sequenceId
                                                                                  limit:kUserSearchResultLimit
                                                                                context:VObjectManagerSearchContextUserTag
                                                                       withSuccessBlock:searchSuccess
-                                                                             failBlock:nil];
+                                                                             failBlock:nil];*/
     }
     else
     {
@@ -205,7 +204,8 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 
 - (void)shouldLoadNextPage
 {
-    VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
+#warning TODO: Replae with new architecture
+    /*VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
     {
         [self addPage:resultObjects];
     };
@@ -217,7 +217,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
                                                    pageType:VPageTypeNext
                                                     context:VObjectManagerSearchContextUserTag
                                            withSuccessBlock:searchSuccess
-                                                  failBlock:nil];
+                                                  failBlock:nil];*/
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

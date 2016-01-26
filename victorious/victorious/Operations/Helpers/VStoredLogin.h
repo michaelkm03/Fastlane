@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const kLoggedInChangedNotification;
+
 @interface VStoredLoginInfo : NSObject
 
 @property (nonatomic, strong, readonly) NSString *token;
