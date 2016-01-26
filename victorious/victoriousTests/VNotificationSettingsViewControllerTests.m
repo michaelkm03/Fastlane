@@ -10,15 +10,14 @@
 #import <XCTest/XCTest.h>
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
-#import "VNotificationSettings+Fetcher.h"
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsViewController.h"
 #import "VTestHelpers.h"
-#import "VObjectManager.h"
-#import "VObjectManager+DeviceRegistration.h"
+#import "VNotificationSettings.h"
 #import "VAsyncTestHelper.h"
 #import "VSettingsSwitchCell.h"
 #import "VNoContentTableViewCell.h"
+#import "victorious-swift.h"
 
 @interface VNotificationSettingsViewController (UnitTests)
 
