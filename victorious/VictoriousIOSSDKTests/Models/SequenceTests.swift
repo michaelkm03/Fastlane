@@ -19,7 +19,10 @@ class SequenceTests: XCTestCase {
     }
 
     func testValid() {
-        guard let sequence: Sequence = modelHelper.createModel(JSONFileName: "Sequence") else { return }
+        guard let sequence: Sequence = createAdSequenceFromJSON(fileName: "Sequence") else {
+            XCTFail("Failed to create a Sequence")
+            return
+        }
 
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
@@ -56,16 +59,19 @@ class SequenceTests: XCTestCase {
     }
 
     func testInvalid() {
-        let sequenceWithoutUser: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutUser")
+        let sequenceWithoutUser: Sequence? = createAdSequenceFromJSON(fileName: "SequenceWithoutUser")
         XCTAssertNil(sequenceWithoutUser)
-        let sequenceWithoutCategory: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutCategory")
+        let sequenceWithoutCategory: Sequence? = createAdSequenceFromJSON(fileName: "SequenceWithoutCategory")
         XCTAssertNil(sequenceWithoutCategory)
-        let sequenceWithoutID: Sequence? = modelHelper.createModel(JSONFileName: "SequenceWithoutID")
+        let sequenceWithoutID: Sequence? = createAdSequenceFromJSON(fileName: "SequenceWithoutID")
         XCTAssertNil(sequenceWithoutID)
     }
 
     func testDefaults() {
-        guard let sequence: Sequence = modelHelper.createModel(JSONFileName: "SequenceSimple") else { return }
+        guard let sequence: Sequence = createAdSequenceFromJSON(fileName: "SequenceSimple") else {
+            XCTFail("Failed to create a Sequence")
+            return
+        }
         
         let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
@@ -80,7 +86,10 @@ class SequenceTests: XCTestCase {
     }
 
     func testAdBreaks() {
-        guard let sequence: Sequence = modelHelper.createModel(JSONFileName: "SequenceWithAdBreak") else { return }
+        guard let sequence: Sequence = createAdSequenceFromJSON(fileName: "SequenceWithAdBreak") else {
+            XCTFail("Failed to create a Sequence")
+            return
+        }
 
         guard let adBreak = sequence.adBreak else {
             XCTFail("No adBreak on a sequence")
@@ -94,5 +103,18 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual(7000, adBreak.timeout)
         XCTAssertEqual(testAdTag, adBreak.adTag)
         XCTAssertEqual("", adBreak.cannedAdXML)
+    }
+
+    private func createAdSequenceFromJSON(fileName fileName: String) -> Sequence? {
+        guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json") else {
+            XCTFail("Failed to find mock data with name \(fileName).json")
+            return nil
+        }
+
+        guard let Sequence = Sequence(url: url) else {
+            return nil
+        }
+
+        return Sequence
     }
 }

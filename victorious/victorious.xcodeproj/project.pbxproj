@@ -3495,7 +3495,6 @@
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
-		A7C15E771BAA50B2007B969C /* VMonetizationPartner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMonetizationPartner.h; sourceTree = "<group>"; };
 		A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperationTests.swift; sourceTree = "<group>"; };
 		A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InterstitialManager+Debug.swift"; sourceTree = "<group>"; };
 		A7C565E11C40665600E4DF6A /* AlertReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift; sourceTree = "<group>"; };
@@ -5554,7 +5553,6 @@
 				62575ECE1C54C36E00B49CB0 /* JSONDeseriealizable.swift */,
 				A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */,
 				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
-				62B3CC431C5633E300FD733A /* ModelHelper.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
 				C3E7C0EC1BF3E1BD00AFE545 /* Notification.swift */,
 				A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */,
@@ -10589,7 +10587,6 @@
 				A734AF1A1C499C9100ECA324 /* MessageRequestBodyWriter.swift in Sources */,
 				C323C3B71BF55F6600681059 /* CommentEditRequest.swift in Sources */,
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
-				62B3CC441C5633E300FD733A /* ModelHelper.swift in Sources */,
 				A72EDF961C03FA17003D6177 /* FollowCountRequest.swift in Sources */,
 				A75DF52B1C3E0DB900A4C82A /* SearchContext.swift in Sources */,
 				C32D8BDC1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift in Sources */,
