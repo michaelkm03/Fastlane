@@ -203,4 +203,14 @@
     return YES;
 }
 
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if ( searchBar.text != nil && searchBar.text.length > 0 )
+    {
+        [self.currentSearchVC searchWithSearchTerm:searchBar.text completion:nil];
+    }
+}
+
 @end

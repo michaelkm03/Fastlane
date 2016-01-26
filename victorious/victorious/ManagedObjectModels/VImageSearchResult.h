@@ -15,6 +15,4 @@
 @property (nonatomic, strong) NSURL *thumbnailURL;
 @property (nonatomic, strong) NSURL *sourceURL;
 
-+ (RKResponseDescriptor *)descriptor;
-
 @end

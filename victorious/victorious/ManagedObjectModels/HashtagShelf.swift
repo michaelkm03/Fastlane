@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import VictoriousIOSSDK
 
 class HashtagShelf: Shelf {
 
@@ -15,4 +16,13 @@ class HashtagShelf: Shelf {
     @NSManaged var amFollowing: NSNumber
     @NSManaged var postsCount: NSNumber
 
+    override func populate(fromSourceShelf sourceShelf: StreamItemType) {
+        guard let hashtagShelf = sourceShelf as? VictoriousIOSSDK.HashtagShelf else { return }
+        
+        super.populate(fromSourceShelf: hashtagShelf.shelf)
+        
+        self.hashtagTitle = hashtagShelf.hashtag.tag
+        self.amFollowing = NSNumber(bool: hashtagShelf.hashtag.amFollowing ?? false)
+        self.postsCount = NSNumber(integer: hashtagShelf.postCount)
+    }
 }

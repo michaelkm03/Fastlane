@@ -34,6 +34,10 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
         return self.paginatedDataSource.state
     }
     
+    func unload() {
+        self.paginatedDataSource.unload()
+    }
+    
     func loadConversations( pageType: VPageType, completion:((NSError?)->())? = nil ) {
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
@@ -41,26 +45,8 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
             },
             completion: { (operation, error) in
                 completion?(error)
-                
-                guard let currentUser = VCurrentUser.user() else {
-                    return
-                }
-                self.KVOController.unobserve( currentUser )
-                self.KVOController.observe( currentUser,
-                    keyPath: "conversations",
-                    options: [.Initial],
-                    action: Selector("onConversationsChanged:")
-                )
             }
         )
-    }
-    
-    func onConversationsChanged( change: [NSObject : AnyObject]? ) {
-        guard let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind == .Setting else {
-                return
-        }
-        self.refreshLocal()
     }
     
     func refreshLocal() {
@@ -76,8 +62,7 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VConversation] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedDescending }
-        self.visibleItems = NSOrderedSet(array: sortedArray)
+        self.visibleItems = newValue
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

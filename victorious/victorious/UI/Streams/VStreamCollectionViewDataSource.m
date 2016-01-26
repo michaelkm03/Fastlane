@@ -9,7 +9,6 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
 #import "VFooterActivityIndicatorView.h"
-#import "VPaginationManager.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
@@ -45,6 +44,11 @@
     }
     _suppressShelves = suppressShelves;
     [self paginatedDataSource:self.paginatedDataSource didUpdateVisibleItemsFrom:self.visibleItems to:self.visibleItems];
+}
+
+- (BOOL)hasLoadedLastPage
+{
+    return self.paginatedDataSource.hasLoadedLastPage;
 }
 
 - (BOOL)isLoading

@@ -14,7 +14,7 @@
  A view controller that offers a promiment search bar and a segmented control that hides and shows
  various child view controllers that can display search results for various types of content.
  */
-@interface DiscoverSearchViewController : UIViewController
+@interface DiscoverSearchViewController : UIViewController <UISearchBarDelegate>
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

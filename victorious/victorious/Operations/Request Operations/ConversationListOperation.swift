@@ -40,34 +40,18 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
                 conversation.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
-        }
-    }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func clearResults() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            let existing: [VConversation] = context.v_findAllObjects()
-            for object in existing {
-                context.deleteObject( object )
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
             }
-            context.v_save()
         }
     }
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "",
-                vsdk_argumentArray: [],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = predicate
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.request.paginator.paginatorPredicate(), VConversation.defaultPredicate])
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
@@ -86,15 +70,9 @@ class FetchConverationListOperation: FetcherOperation {
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "",
-                vsdk_argumentArray: [],
-                vsdk_paginator: self.paginator
-            )
-            fetchRequest.predicate = predicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
-            return results
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.paginator.paginatorPredicate() , VConversation.defaultPredicate])
+            return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
 }

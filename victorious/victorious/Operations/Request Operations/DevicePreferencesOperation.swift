@@ -34,7 +34,7 @@ class DevicePreferencesOperation: RequestOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // Grab the background current user's notificationSettings, creating if none already exist
-            let currentUser = VCurrentUser.user()
+            let currentUser = VCurrentUser.user(inManagedObjectContext: context)
             let newSettings: VNotificationSettings = currentUser?.notificationSettings ?? context.v_createObject()
             currentUser?.notificationSettings = newSettings
             newSettings.populate(fromSourceModel: result)

@@ -10,7 +10,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConversationListViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VConversation+RestKit.h"
 #import "VConversationViewController.h"
 #import "VConversationContainerViewController.h"
 #import "VConversationCell.h"
@@ -224,24 +223,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
-#pragma mark - Overrides
-
-- (NSFetchedResultsController *)makeFetchedResultsController
-{
-    RKObjectManager *manager = [RKObjectManager sharedManager];
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
-
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
-                                                 sectionNameKeyPath:nil
-                                                          cacheName:fetchRequest.entityName];
-}
-
 #pragma mark - Message View Controller Cache
 
 - (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user
@@ -283,43 +264,30 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - UITableViewDelegate
 
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView
+                           editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                            title:NSLocalizedString(@"Delete", nil)
+                                                                          handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull indexPath)
+                                          {
+                                              VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+                                              conversation.markedForDeletion = YES;
+                                              [self.dataSource refreshLocal];
+                                              [self removeCachedViewControllerForUser:conversation.user];
+                                              RequestOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+                                              [operation queueOn:[operation defaultQueue]
+                                                 completionBlock:nil];
+                                          }];
+    return @[deleteAction];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [cell isKindOfClass:[VConversationCell class]] )
     {
         VConversationCell *conversationCell = (VConversationCell *)cell;
         conversationCell.delegate = self;
-    }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-    return conversation.remoteId.integerValue > 0;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-        DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-        {
-            if ( error != nil )
-            {
-                [self removeCachedViewControllerForUser:conversation.user];
-            }
-            else
-            {
-                [tableView setEditing:NO animated:YES];
-            }
-        }];
     }
 }
 
@@ -426,6 +394,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     else
     {
+        [self.dataSource unload];
         self.badgeNumber = 0;
     }
 }

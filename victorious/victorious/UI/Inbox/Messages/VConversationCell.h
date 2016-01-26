@@ -13,18 +13,18 @@ extern const CGFloat VConversationCellHeight;
 
 @class VConversation, VDefaultProfileButton, VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VConversationCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
-@property (strong, nonatomic) VConversation *conversation;
-@property (weak, nonatomic) UITableViewController *parentTableViewController;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, nullable) VConversation *conversation;
+@property (nonatomic, weak, nullable) UITableViewController *parentTableViewController;
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
 + (NSString *)suggestedReuseIdentifier;
 
-@property (nonatomic, strong) id<VCellWithProfileDelegate> delegate;
+@property (nonatomic, strong, nullable) id<VCellWithProfileDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END

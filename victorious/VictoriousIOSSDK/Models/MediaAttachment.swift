@@ -16,13 +16,25 @@ public enum MediaAttachmentType: String {
     case Ballistic  = "voteType"
 }
 
+public enum MimeType: String {
+    case HLSStream  = "application/x-mpegURL"
+    case MP4        = "video/mp4"
+}
+
 public struct MediaAttachment {
+    
+    public struct Format {
+        public let mimeType: MimeType
+        public let url: NSURL
+    }
+    
     public let type: MediaAttachmentType
     public let url: NSURL
     public let thumbnailURL: NSURL?
     public let size: CGSize?
     public let isGIFStyle: Bool?
     public let shouldAutoplay: Bool?
+    public let formats: [MediaAttachment.Format]?
     
     public init(
         url: NSURL,
@@ -30,13 +42,15 @@ public struct MediaAttachment {
         thumbnailURL: NSURL,
         size: CGSize?,
         isGIFStyle: Bool? = nil,
-        shouldAutoplay: Bool? = nil) {
+        shouldAutoplay: Bool? = nil,
+        formats: [MediaAttachment.Format]? = nil) {
             self.type = type
             self.url = url
             self.size = size
             self.isGIFStyle = isGIFStyle
             self.thumbnailURL = thumbnailURL
             self.shouldAutoplay = shouldAutoplay
+            self.formats = formats
     }
 }
 
@@ -50,10 +64,16 @@ extension MediaAttachment {
         }
         self.url                = url
         self.thumbnailURL       = thumbnailURL
-        self.type               = type
+        self.shouldAutoplay     = json["should_autoplay"].bool
+        if let shouldAutoplay = self.shouldAutoplay where shouldAutoplay == true{
+            self.type = .GIF
+        }
+        else {
+            self.type = type
+        }
         
         self.isGIFStyle         = json["is_gif_style"].bool
-        self.shouldAutoplay     = json["should_autoplay"].bool
+        
         
         if let width = json["media_width"].float,
             let height = json["media_height"].float {
@@ -61,5 +81,50 @@ extension MediaAttachment {
         } else {
             self.size = nil
         }
+        
+        if let media = json["media"].array {
+            var mediaFormats: [MediaAttachment.Format] = []
+            for mediaFormatJSON in media {
+                if let format = MediaAttachment.Format.init(json: mediaFormatJSON) {
+                    mediaFormats.append(format)
+                }
+            }
+            self.formats = mediaFormats
+        } else {
+            self.formats = nil
+        }
+    }
+    
+    public func MP4URLForMediaAttachment() -> NSURL? {
+        var url: NSURL? = nil
+        
+        // We MUST use the MP4 asset for gifs
+        if let formats = formats where type == .GIF {
+            for format in formats {
+                if format.mimeType == .MP4 {
+                    url = format.url
+                }
+            }
+        }
+        return url
+    }
+}
+
+extension MediaAttachment.Format {
+    
+    public init(url: NSURL, mimeType: MimeType) {
+        self.url = url
+        self.mimeType = mimeType
+    }
+    
+    public init?(json: JSON) {
+        guard let dataString = json["data"].string,
+            mediaURL = NSURL(string: dataString),
+            mimeTypeString = json["mime_type"].string,
+            mimeType = MimeType(rawValue: mimeTypeString) else {
+                return nil
+        }
+        self.url = mediaURL
+        self.mimeType = mimeType
     }
 }

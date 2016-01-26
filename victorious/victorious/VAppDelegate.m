@@ -8,15 +8,9 @@
 
 #import "VAppDelegate.h"
 #import "VReachability.h"
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
 #import "VConstants.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VPurchaseManager.h"
@@ -41,10 +35,7 @@
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-    
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
@@ -87,7 +78,7 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    VUploadManager *uploadManager = [VUploadManager sharedManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;

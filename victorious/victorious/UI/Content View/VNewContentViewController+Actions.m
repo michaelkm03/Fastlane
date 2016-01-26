@@ -11,9 +11,7 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VSequence+Fetcher.h"
 #import "VNoContentView.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
@@ -22,15 +20,9 @@
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "VDownloadManager.h"
-#import "VDownloadTaskInformation.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
-#import "VAsset+VCachedData.h"
-#import "VAsset+VAssetCache.h"
-#import "victorious-Swift.h"
-
 #import "victorious-Swift.h"
 
 @interface VNewContentViewController ()
@@ -80,48 +72,6 @@
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
     
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        BOOL assetIsCached = [[self.viewModel.currentNode mp4Asset] assetDataIsCached];
-        
-        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:assetIsCached ? @"Downloaded" : @"Download"
-                                                                 actionIcon:nil
-                                                                 detailText:nil
-                                                                    enabled:!assetIsCached];
-        downloadItem.selectionHandler = ^(VActionItem *item)
-        {
-            VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
-            VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
-            NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
-            urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
-            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[mp4Asset cacheURLForAsset]];
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
-                                                      animated:YES];
-            hud.mode = MBProgressHUDModeAnnularDeterminate;
-            hud.labelText = @"Downloading...";
-            [downloadManager enqueueDownloadTask:downloadTask
-                                    withProgress:^(CGFloat progress)
-             {
-                 hud.progress = progress;
-                 hud.labelText = [NSString stringWithFormat:@"Downloading... %.2f%%", progress*100];
-                 VLog(@"progress: %@", @(progress));
-             }
-                                      onComplete:^(NSURL *downloadFileLocation, NSError *error)
-             {
-                 [hud hide:YES];
-                 VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
-                 [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-             }];
-            VLog(@"download video");
-            
-            [self dismissViewControllerAnimated:YES
-                                     completion:nil];
-        };
-        [actionItems addObject:downloadItem];
-    }
-#endif
-
     if (self.viewModel.sequence.permissions.canRepost)
     {
         NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
@@ -204,12 +154,18 @@
                                                  [self.presentingViewController dismissViewControllerAnimated:YES
                                                                                                    completion:^
                                                   {
-                                                      [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
-                                                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                      
+                                                      DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
+                                                      [deleteOperation queueOn:deleteOperation.defaultQueue
+                                                               completionBlock:^(NSError *_Nullable error)
                                                        {
                                                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                       }
-                                                                                           failBlock:nil];
+                                                       }];
+                                                      self.viewModel.sequence.markForDeletion = @(YES);
+                                                      if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
+                                                      {
+                                                          [self.delegate contentViewDidDeleteContent:self];
+                                                      }
                                                   }];
                                              }]];
                  
@@ -232,11 +188,16 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
                  {
-                     [self.viewModel.commentsDataSource flagSequenceWithCompletion:^void(NSError *error)
+                     [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                       completion:^
                       {
-                          [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                          self.viewModel.sequence.markForDeletion = @(YES);
+                          if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
+                          {
+                              [self.delegate contentViewDidFlagContent:self];
+                          }
                       }];
                  }];
              }];

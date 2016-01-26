@@ -30,11 +30,15 @@ class LikeSequenceOperation: RequestOperation {
             
             sequence.isLikedByMainUser = true
             
+            let predicate = NSPredicate( format: "sequence.remoteId == %@", argumentArray: [self.sequenceID] )
+            let newDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VSequenceLiker.v_entityName(), predicate: predicate)
+            
             let uniqueElements = [ "sequence"  : sequence, "user" : currentUser ]
             let sequenceLiker: VSequenceLiker = context.v_findOrCreateObject(uniqueElements)
             sequenceLiker.sequence = sequence
             sequenceLiker.user = currentUser
-            sequenceLiker.displayOrder = 0
+            sequenceLiker.displayOrder = newDisplayOrder
+            sequence.likeCount += 1
             context.v_save()
         }
         

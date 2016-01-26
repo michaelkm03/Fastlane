@@ -8,7 +8,6 @@
 
 #import "VNotificationsViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VNotification+RestKit.h"
 #import "VNotificationCell.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
@@ -281,6 +280,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
+    [self.dataSource unload];
+    
     if ( [VCurrentUser user] != nil )
     {
         [self fetchNotificationCount];

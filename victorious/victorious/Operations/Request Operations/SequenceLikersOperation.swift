@@ -45,13 +45,14 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
                 userSequenceContext.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
+            }
         }
     }
     
     // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -64,11 +65,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
             )
             fetchRequest.predicate = predicate
             let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
-            return results.map { $0.user }
+            return results.flatMap { $0.user }
         }
-    }
-    
-    func clearResults() {
-        fatalError("Implement me!")
     }
 }

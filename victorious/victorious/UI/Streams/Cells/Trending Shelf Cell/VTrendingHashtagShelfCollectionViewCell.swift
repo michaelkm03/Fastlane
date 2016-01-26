@@ -149,7 +149,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             return
         }
         let controlState: VFollowControlState
-        if VCurrentUser.user()?.isFollowingHashtagString(shelf.hashtagTitle) == true {
+        if VCurrentUser.user()?.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) == true {
             controlState = .Followed
         } else {
             controlState = .Unfollowed
@@ -202,23 +202,18 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     //MARK: - Interaction response
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        guard let shelf = shelf as? HashtagShelf else {
+        guard let shelf = shelf as? HashtagShelf, let currentUser = VCurrentUser.user() else {
             fatalError("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
         }
         
-        switch followControl.controlState {
-        case .Unfollowed:
-            let operation = UnfollowHashtagOperation( hashtag: shelf.hashtagTitle )
-            operation.queue() { error in
-                self.updateFollowControlState()
-            }
-        case .Followed:
-            let operation = FollowHashtagOperation( hashtag: shelf.hashtagTitle )
-            operation.queue() { error in
-                self.updateFollowControlState()
-            }
-        case .Loading:
-            break
+        let operation: RequestOperation
+        if currentUser.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) {
+            operation = UnfollowHashtagOperation( hashtag: shelf.hashtagTitle )
+        } else {
+            operation = FollowHashtagOperation( hashtag: shelf.hashtagTitle )
+        }
+        operation.queue() { error in
+            self.updateFollowControlState()
         }
     }
 }

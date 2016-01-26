@@ -85,7 +85,7 @@ class DeleteUnusedLocalConversationOperation: Operation {
                 return
             }
             
-            guard conversation.messages.count == 0 else {
+            guard let messages = conversation.messages where messages.count == 0 else {
                 self.finishedExecuting()
                 return
             }

@@ -31,14 +31,14 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
     private func onComplete( results: SequenceLikersRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            
+            // The user being followed
             let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
+            
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             for user in results {
                 
-                // Load the user who is following self.userID
+                // Load a user who is following self.userID according to the results
                 let subjectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
-                subjectUser.isFollowedByMainUser = true
                 subjectUser.populate(fromSourceModel: user)
 
                 // Find or create the following relationship
@@ -49,30 +49,28 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
                 followedUser.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
+            }
         }
     }
     
     // MARK: - PaginatedOperation
     
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                vsdk_format: "objectUser.remoteId = %@",
-                vsdk_argumentArray: [ self.userID ],
+                vsdk_format: "objectUser.remoteId == %@ && subjectUser.remoteId != %@",
+                vsdk_argumentArray: [ self.userID, self.userID ],
                 vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
             return results.flatMap { $0.subjectUser }
         }
-    }
-    
-    func clearResults() {
-        fatalError("Implement me!")
     }
 }

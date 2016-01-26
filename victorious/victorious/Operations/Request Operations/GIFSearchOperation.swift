@@ -21,7 +21,8 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init( searchTerm: String? ) {
-        self.init( request: GIFSearchRequest(searchTerm: searchTerm) )
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
+        self.init( request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator) )
     }
     
     override func main() {
@@ -37,14 +38,4 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
         self.results = results.map { GIFSearchResultObject( $0 ) }
         completion()
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }

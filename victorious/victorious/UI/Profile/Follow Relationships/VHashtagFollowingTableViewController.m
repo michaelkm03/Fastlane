@@ -7,7 +7,7 @@
 //
 
 #import "VHashtagFollowingTableViewController.h"
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VNoContentTableViewCell.h"
 #import "VUser.h"
 #import "VHashtag.h"
@@ -23,7 +23,7 @@
 
 @import MBProgressHUD;
 
-static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
+static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
 
 @interface VHashtagFollowingTableViewController ()
 
@@ -112,49 +112,61 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VTrendingTagCell cellHeight];
+    return [VHashtagCell cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
+    VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     
     VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
-    [customCell setHashtagText:hashtag.tag];
+    NSString *hashtagText = hashtag.tag;
+    [customCell setHashtagText:hashtagText];
+    [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
     customCell.dependencyManager = self.dependencyManager;
     
-    __weak typeof(customCell) weakCell = customCell;
-    customCell.subscribeToTagAction = ^(void)
+    __weak VHashtagCell *weakCell = customCell;
+    __weak VHashtagFollowingTableViewController *weakSelf = self;
+    customCell.onToggleFollowHashtag = ^(void)
     {
-        __strong VTrendingTagCell *strongCell = weakCell;
-        
-        if ( strongCell == nil )
+        __strong VHashtagCell *strongCell = weakCell;
+        __strong VHashtagFollowingTableViewController *strongSelf = weakSelf;
+        if ( strongCell == nil || strongSelf == nil )
         {
             return;
         }
-        
-        // Disable follow / unfollow button
-        if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
-        {
-            return;
-        }
-        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
+        RequestOperation *operation;
+        if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
         {
-            RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
         else
         {
-            RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+            [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
+        }];
     };
     customCell.dependencyManager = self.dependencyManager;
     
     return customCell;
+}
+             
+- (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
+{
+    VFollowControlState controlState;
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
+    {
+        controlState = VFollowControlStateFollowed;
+    }
+    else
+    {
+        controlState = VFollowControlStateUnfollowed;
+    }
+    [followControl setControlState:controlState animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -171,34 +183,5 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
 }
-
-#pragma mark - Subscribe / Unsubscribe Actions
-
-- (BOOL)isUserSubscribedToHashtag:(NSString *)tag
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
-    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    return followedHashtag != nil;
-}
-
-- (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
-{
-    for (UITableViewCell *cell in self.tableView.visibleCells)
-    {
-        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
-        {
-            VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
-            if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
-            {
-                [trendingCell updateSubscribeStatusAnimated:YES showLoading:!respond];
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-}
-
+             
 @end

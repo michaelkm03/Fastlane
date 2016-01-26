@@ -8,7 +8,6 @@
 
 #import "VAsyncTestHelper.h"
 #import "VConstants.h"
-#import "VObjectManager+Login.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"

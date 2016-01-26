@@ -21,7 +21,6 @@ FOUNDATION_EXPORT const unsigned char VictoriousCommonVersionString[];
 #import <VictoriousCommon/NSURL+VDataCacheID.h>
 #import <VictoriousCommon/VBundleWriterDataCache.h>
 #import <VictoriousCommon/VDataCache.h>
-#import <VictoriousCommon/VEnvironment+VDataCacheID.h>
 #import <VictoriousCommon/VTemplateImage.h>
 #import <VictoriousCommon/VTemplateImageMacro.h>
 #import <VictoriousCommon/VTemplateImageSet.h>

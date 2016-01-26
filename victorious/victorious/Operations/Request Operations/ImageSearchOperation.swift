@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class ImageSearchOperation: RequestOperation, PaginatedOperation {
 	
-	let request: ImageSearchRequest
+    let request: ImageSearchRequest
 	
 	private let searchTerm: String
 	
@@ -21,7 +21,8 @@ final class ImageSearchOperation: RequestOperation, PaginatedOperation {
 	}
 	
 	convenience init( searchTerm: String ) {
-		self.init( request: ImageSearchRequest(searchTerm: searchTerm) )
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
+        self.init( request: ImageSearchRequest(searchTerm: searchTerm, paginator: paginator) )
 	}
 	
 	override func main() {
@@ -37,16 +38,6 @@ final class ImageSearchOperation: RequestOperation, PaginatedOperation {
 		self.results = results.map { ImageSearchResultObject( $0 ) }
 		completion()
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }
 
 @objc class ImageSearchResultObject: NSObject, MediaSearchResult {

@@ -7,7 +7,6 @@
 //
 
 #import "VFindFriendsTableView.h"
-#import "VObjectManager+Users.h"
 #import "VSuggestedFriendsTableViewController.h"
 
 @implementation VSuggestedFriendsTableViewController
@@ -32,7 +31,8 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
-    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+#warning TODO: New Architeture
+    /*[[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (completionBlock)
         {
@@ -45,7 +45,7 @@
         {
             completionBlock(nil, error);
         }
-    }];
+    }];*/
 }
 
 @end

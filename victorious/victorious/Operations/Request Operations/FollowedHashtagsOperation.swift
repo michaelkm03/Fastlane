@@ -18,7 +18,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience override init() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30)
         self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
     }
     
@@ -35,24 +35,24 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
             }
             
             var displayOrder = self.request.paginator.displayOrderCounterStart
-            
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
                 persistentHashtag.populate(fromSourceModel: hashtag)
+                persistentHashtag.isFollowedByMainUser = true
                 
-                let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( [ "user" : currentUser ] )
+                let uniqueInfo = [ "user" : currentUser, "hashtag" : persistentHashtag ]
+                let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueInfo )
                 followedHashtag.user = currentUser
                 followedHashtag.hashtag = persistentHashtag
                 followedHashtag.displayOrder = displayOrder++
             }
             context.v_save()
-            completion()
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
+                completion()
+            }
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -62,17 +62,12 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                vsdk_format: "user.remoteId = %@",
-                vsdk_argumentArray: [ currentUser.remoteId ],
-                vsdk_paginator: self.request.paginator
+                format: "user.remoteId == %@",
+                argumentArray: [ currentUser.remoteId.integerValue ]
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )
-            return results.flatMap { $0.hashtag }
+            return results.map { $0.hashtag }
         }
-    }
-    
-    func clearResults() {
-        fatalError("Implement me!")
     }
 }

@@ -13,8 +13,6 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     
     let request: PollResultSummaryRequest
     
-    internal(set) var results: [AnyObject]?
-    
     private let userID: Int
     
     required init( request: PollResultSummaryRequest ) {
@@ -65,12 +63,4 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
             completion()
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }
