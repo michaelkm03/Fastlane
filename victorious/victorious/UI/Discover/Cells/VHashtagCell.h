@@ -1,5 +1,5 @@
 //
-//  VTrendingTagCell.h
+//  VHashtagCell.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
@@ -10,17 +10,12 @@
 
 @class VHashtag, VFollowControl, VDependencyManager;
 
-@interface VTrendingTagCell : UITableViewCell
+@interface VHashtagCell : UITableViewCell
 
 /**
  Block to execute upon tapping on the subscribe / unsubscribe button
  */
-@property (nonatomic, copy) void (^subscribeToTagAction)(void);
-
-/**
- Reports if the hashtag to be presented has been subscribed to
- */
-@property (nonatomic, readonly) BOOL isSubscribedToTag;
+@property (nonatomic, copy) void (^onToggleFollowHashtag)(void);
 
 /**
  The control for the subscribe / unsubscribe button
@@ -43,13 +38,6 @@
  @return NSInteger value for the cell height
  */
 + (NSInteger)cellHeight;
-
-/**
- Checks to see if hashtag is subscribed to or not and animates the subscribe button accordingly.
- 
- @param animate BOOL to tell the control to animate it's changing state
- */
-- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading;
 
 + (NSString *)suggestedReuseIdentifier;
 

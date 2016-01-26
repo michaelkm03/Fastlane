@@ -209,7 +209,7 @@
 #import "VTracking.h"
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VTwitterManager.h"
 #import "VUploadTaskCreator.h"
 #import "VUploadTaskInformation.h"

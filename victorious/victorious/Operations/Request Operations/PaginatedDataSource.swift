@@ -59,8 +59,8 @@ import VictoriousIOSSDK
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
-    // Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
-    // operations locally on the persistent store only and does not send a network request.
+    /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
+    /// operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
@@ -74,8 +74,8 @@ import VictoriousIOSSDK
         self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(self.visibleItems.array)
     }
     
-    // Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
-    // operates by sending a network request to retreive results, then parses them into the persistent store.
+    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
         guard self.currentOperation != nil else {

@@ -207,23 +207,19 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        guard let shelf = shelf as? UserShelf else {
+        guard let shelf = shelf as? UserShelf, let currentUser = VCurrentUser.user() else {
             fatalError("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
         }
         
-        switch followControl.controlState {
-        case .Unfollowed:
-            let operation = UnFollowUsersOperation( userID: shelf.user.remoteId.integerValue, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
-            operation.queue() { error in
-                self.updateFollowControlState()
-            }
-        case .Followed:
-            let operation = FollowUsersOperation( userID: shelf.user.remoteId.integerValue, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
-            operation.queue() { error in
-                self.updateFollowControlState()
-            }
-        case .Loading:
-            break
+        let userID = shelf.user.remoteId.integerValue
+        let operation: RequestOperation
+        if currentUser.isCurrentUserFollowingUserID(userID) {
+            operation = UnFollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
+        } else {
+            operation = FollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
+        }
+        operation.queue() { error in
+            self.updateFollowControlState()
         }
     }
     

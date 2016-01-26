@@ -1,12 +1,12 @@
 //
-//  VTrendingTagCell.m
+//  VHashtagCell.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VUser.h"
 #import "VHashTags.h"
 #import "VConstants.h"
@@ -14,6 +14,7 @@
 #import "VFollowControl.h"
 #import "VDependencyManager.h"
 #import "victorious-swift.h"
+#import "FBKVOController.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -43,14 +44,14 @@ IB_DESIGNABLE
 
 static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
-@interface VTrendingTagCell()
+@interface VHashtagCell()
 
 @property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
 @property (nonatomic, readwrite) BOOL isSubscribedToTag;
 
 @end
 
-@implementation VTrendingTagCell
+@implementation VHashtagCell
 
 + (NSString *)suggestedReuseIdentifier
 {
@@ -80,39 +81,18 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
 
     [self.hashTagLabel setText:text];
-
-    [self updateSubscribeStatusAnimated:NO showLoading:NO];
-}
-
-- (BOOL)isSubscribedToTag
-{
-    _isSubscribedToTag = [[VCurrentUser user] isFollowingHashtagString:self.hashtagText];
-    return _isSubscribedToTag;
-}
-
-- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading
-{
-    VFollowControlState controlState = VFollowControlStateLoading;
-    if ( !loading )
-    {
-        controlState = [VFollowControl controlStateForFollowing:self.isSubscribedToTag];
-    }
-    [self.followHashtagControl setControlState:controlState
-                                      animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
 {
-    if (self.subscribeToTagAction != nil)
+    if (self.onToggleFollowHashtag != nil)
     {
-        self.subscribeToTagAction();
+        self.onToggleFollowHashtag();
     }
 }
 
 - (void)prepareForReuse
 {
-    self.isSubscribedToTag = NO;
-    self.followHashtagControl.userInteractionEnabled = YES;
     self.followHashtagControl.alpha = 1.0f;
 }
 

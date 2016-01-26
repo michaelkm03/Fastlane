@@ -180,7 +180,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
             return
         }
         
-        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .SingleLine : .None
+        let preferredStyle = dataSource.separatorStyle
+        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? preferredStyle : .None
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
         switch dataSource.state {

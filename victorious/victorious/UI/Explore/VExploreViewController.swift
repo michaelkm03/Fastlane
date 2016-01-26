@@ -114,7 +114,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         if let dataSource = streamDataSource {
             dataSource.stream = currentStream
             dataSource.delegate = self
-            dataSource.paginatedDataSource.delegate = self
+            dataSource.paginatedDataSource.delegate = self.streamDataSource
             collectionView.dataSource = dataSource
         }
         
@@ -558,8 +558,6 @@ extension VExploreViewController: VHashtagSelectionResponder {
 
 extension VExploreViewController : VMarqueeSelectionDelegate {
     
-    
-    
     func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
         
         if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
@@ -599,6 +597,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+            
             if let streamDataSource = streamCollection?.streamDataSource {
                 streamDataSource.suppressShelves = stream == currentStream
             }
