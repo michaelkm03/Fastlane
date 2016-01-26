@@ -7283,6 +7283,7 @@
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
+				6749C9A51C571F3D00D0A2D1 /* StreamItemsFetcherOperation.swift */,
 				A73D16BA1C24F98D00497F83 /* StreamOperation.swift */,
 				A73D16BC1C24F99700497F83 /* SuggestedUsersOperation.swift */,
 				A73D16BE1C24FA0700497F83 /* TermsOfServiceOperation.swift */,
@@ -7298,7 +7299,6 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
-				6749C9A51C571F3D00D0A2D1 /* StreamItemsFetcherOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
