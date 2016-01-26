@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct AdBreak: ModelType {
+public struct AdBreak: JSONDeseriealizable {
     public let adSystemID: Int
     public let timeout: Int
     public let adTag: String?

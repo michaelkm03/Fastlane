@@ -374,7 +374,7 @@
 		6256A6281C51702A0033439B /* VAdBreak+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6256A6231C516ABF0033439B /* VAdBreak+Parsable.swift */; };
 		62575EC51C54BDB700B49CB0 /* AdBreakWithEverything.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EC41C54BDB700B49CB0 /* AdBreakWithEverything.json */; };
 		62575ECB1C54C22E00B49CB0 /* AdBreakWithOnlyAdTag.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ECA1C54C22E00B49CB0 /* AdBreakWithOnlyAdTag.json */; };
-		62575ECF1C54C36E00B49CB0 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62575ECE1C54C36E00B49CB0 /* ModelType.swift */; };
+		62575ECF1C54C36E00B49CB0 /* JSONDeseriealizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62575ECE1C54C36E00B49CB0 /* JSONDeseriealizable.swift */; };
 		62575ED51C54C7BA00B49CB0 /* AdBreakWithoutTimeout.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ED41C54C7BA00B49CB0 /* AdBreakWithoutTimeout.json */; };
 		62575ED81C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ED61C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json */; };
 		62575ED91C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575ED71C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json */; };
@@ -2480,7 +2480,7 @@
 		6256A6251C516CA30033439B /* VAdBreak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAdBreak.swift; sourceTree = "<group>"; };
 		62575EC41C54BDB700B49CB0 /* AdBreakWithEverything.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithEverything.json; path = AdBreak/AdBreakWithEverything.json; sourceTree = "<group>"; };
 		62575ECA1C54C22E00B49CB0 /* AdBreakWithOnlyAdTag.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithOnlyAdTag.json; path = AdBreak/AdBreakWithOnlyAdTag.json; sourceTree = "<group>"; };
-		62575ECE1C54C36E00B49CB0 /* ModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
+		62575ECE1C54C36E00B49CB0 /* JSONDeseriealizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDeseriealizable.swift; sourceTree = "<group>"; };
 		62575ED41C54C7BA00B49CB0 /* AdBreakWithoutTimeout.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithoutTimeout.json; path = AdBreak/AdBreakWithoutTimeout.json; sourceTree = "<group>"; };
 		62575ED61C54C7E100B49CB0 /* AdBreakWithOnlyCannedXML.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithOnlyCannedXML.json; path = AdBreak/AdBreakWithOnlyCannedXML.json; sourceTree = "<group>"; };
 		62575ED71C54C7E100B49CB0 /* AdBreakWithoutAdSystemID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdBreakWithoutAdSystemID.json; path = AdBreak/AdBreakWithoutAdSystemID.json; sourceTree = "<group>"; };
@@ -5551,10 +5551,10 @@
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				C32D8BE51BF2E19100AB5085 /* ImageSearchResult.swift */,
 				A7EF1BC31BF2754D00D429DE /* Interaction.swift */,
+				62575ECE1C54C36E00B49CB0 /* JSONDeseriealizable.swift */,
 				A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */,
 				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
 				62B3CC431C5633E300FD733A /* ModelHelper.swift */,
-				62575ECE1C54C36E00B49CB0 /* ModelType.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
 				C3E7C0EC1BF3E1BD00AFE545 /* Notification.swift */,
 				A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */,
@@ -10636,7 +10636,7 @@
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
-				62575ECF1C54C36E00B49CB0 /* ModelType.swift in Sources */,
+				62575ECF1C54C36E00B49CB0 /* JSONDeseriealizable.swift in Sources */,
 				67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */,
 				A71F41F31C0409C400131BE6 /* SequenceRepostersRequest.swift in Sources */,
 				A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */,

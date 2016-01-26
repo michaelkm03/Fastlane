@@ -10,7 +10,7 @@ import SwiftyJSON
 
 /// Helps with creating test models
 class ModelHelper {
-    func createModel<T: ModelType>(JSONFileName fileName: String) -> T? {
+    func createModel<T: JSONDeseriealizable>(JSONFileName fileName: String) -> T? {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
             let mockData = NSData(contentsOfURL: url) else {
                 print("Failed to read data from \(fileName).json")

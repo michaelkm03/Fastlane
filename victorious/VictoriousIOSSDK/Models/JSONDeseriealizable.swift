@@ -1,5 +1,5 @@
 //
-//  ModelType.swift
+//  JSONDeseriealizable.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/24/16.
@@ -8,6 +8,6 @@
 
 import SwiftyJSON
 
-protocol ModelType {
+protocol JSONDeseriealizable {
     init?(json: JSON)
 }
