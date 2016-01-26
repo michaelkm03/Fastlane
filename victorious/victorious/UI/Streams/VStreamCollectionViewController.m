@@ -917,6 +917,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( self.uploadProgressViewController == nil )
     {
 #warning FIXME: New ARchiCtuRe
+        return; //< Returning early to avoid crash
         //self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];

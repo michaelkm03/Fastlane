@@ -7,12 +7,10 @@
 //
 
 #import "VLoadingViewController.h"
-
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
-#import "VEnvironment+VDataCacheID.h"
 #import "VUser.h"
 #import "VReachability.h"
 #import "VSessionTimer.h"
@@ -23,6 +21,8 @@
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
 #import "victorious-Swift.h"
+
+@import VictoriousCommon;
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
@@ -149,16 +149,22 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     }
     self.isLoading = YES;
     
-    VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
    
     self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[StoredLoginOperation alloc] init];
+    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[PersistenceTemplateDownloader alloc] init]
+                                                                                andDelegate:self];
     
-    // REMOVE ME
-    /*self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager]
-                                                                                andDelegate:self];*/
+    VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
+    NSString *buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    TemplateCache *templateCache = [[TemplateCache alloc] initWithDataCache:[[VDataCache alloc] init] environment:environmentManager.currentEnvironment buildNumber:buildNumber];
+    self.templateDownloadOperation.templateCache = templateCache;
 
-    self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
-    self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
+    NSDictionary *cachedTemplate = nil;
+    NSData *cachedTemplateData = [templateCache cachedTemplateData];
+    if ( cachedTemplateData != nil )
+    {
+        cachedTemplate = [VTemplateSerialization templateConfigurationDictionaryWithData:cachedTemplateData];
+    }
     
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
@@ -169,12 +175,16 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             strongSelf.isLoading = NO;
             strongSelf.progressHUD.taskInProgress = NO;
             [strongSelf.progressHUD hide:YES];
-            [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
+            [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration ?: cachedTemplate];
         }
     }];
-    [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
     [self.templateDownloadOperation addDependency:self.loginOperation];
+    
+    if ( cachedTemplate == nil )
+    {
+        [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
+    }
     
     [[Operation sharedQueue] addOperation:self.templateDownloadOperation];
     [[Operation sharedQueue] addOperation:self.loginOperation];
@@ -238,7 +248,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.finishLoadingOperation removeDependency:downloadOperation];
 }
 
-- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
+- (void)templateDownloadOperationFailed:(VTemplateDownloadOperation *)downloadOperation
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
