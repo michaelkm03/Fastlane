@@ -9,7 +9,6 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
 #import "VFooterActivityIndicatorView.h"
-#import "VPaginationManager.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"

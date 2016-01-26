@@ -7,7 +7,6 @@
 //
 
 #import "VConstants.h"
-#import "VObjectManager+Private.h"
 #import "VUploadTaskInformation.h"
 
 @implementation VUploadTaskInformation

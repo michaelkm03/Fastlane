@@ -11,7 +11,6 @@
 #import "VWorkspaceTool.h"
 #import "VDependencyManager.h"
 #import "VHashtagType.h"
-#import "VObjectManager+Discover.h"
 #import "NSArray+VMap.h"
 #import "VHashtag.h"
 #import "VHashtags.h"

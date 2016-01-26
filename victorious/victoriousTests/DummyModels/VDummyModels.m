@@ -7,8 +7,6 @@
 //
 
 #import "VDummyModels.h"
-#import "VObjectManager.h"
-#import "RKManagedObjectStore.h"
 #import "VUser.h"
 #import "VVoteResult.h"
 #import "VTracking.h"

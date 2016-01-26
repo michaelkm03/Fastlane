@@ -20,7 +20,6 @@
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VHashtag+RestKit.h"
 #import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
@@ -63,7 +62,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     __block VStream *stream = nil;
     id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         stream.name = [NSString stringWithFormat:@"#%@", hashtag];
         [persistentStore.mainContext save:nil];

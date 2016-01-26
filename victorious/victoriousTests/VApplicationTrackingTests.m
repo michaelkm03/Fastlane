@@ -13,7 +13,6 @@
 #import "NSCharacterSet+VSDKURLParts.h"
 #import "VSDKURLMacroReplacement.h"
 #import "victorious-Swift.h"
-#import "VObjectManager.h"
 #import "VMockRequestRecorder.h"
 
 @interface VApplicationTracking (UnitTest)

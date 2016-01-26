@@ -18,14 +18,11 @@
 #import "VNode+Fetcher.h"
 #import "VComment+Fetcher.h"
 #import "VUser.h"
-#import "VPaginationManager.h"
-#import "VAsset+VCachedData.h"
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
-#import "VAsset+VAssetCache.h"
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 #import "VStream.h"
@@ -246,12 +243,6 @@
 {
     // Check for the cached mp4
     VAsset *mp4Asset = [self.currentNode mp4Asset];
-    NSURL *cacheURL = [mp4Asset cacheURLForAsset];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path])
-    {
-        VLog(@"cache hit!");
-        return cacheURL;
-    }
     
     if ([self loop])
     {

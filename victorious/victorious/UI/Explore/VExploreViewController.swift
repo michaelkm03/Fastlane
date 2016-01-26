@@ -72,7 +72,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         var persistentStream: VStream?
         
         persistentStore.mainContext.performBlockAndWait {
-            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.entityName(), queryDictionary: query) as? VStream else {
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.v_entityName(), queryDictionary: query) as? VStream else {
                 return
             }
             stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
@@ -406,7 +406,9 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     }
     
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
-        let filter = VObjectManager.sharedManager().filterForStream(currentStream)
+        fatalError( "FIXME" )
+        // FIXME: USED TO BE THIS: let filter = VObjectManager.sharedManager().filterForStream(currentStream)
+        let filter = NSObject() as! VAbstractFilter
         let perPageNumber = filter.perPageNumber.integerValue
         let pageLocation = indexPath.row % perPageNumber
         let streamItem = streamItemFor(indexPath)

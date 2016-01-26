@@ -8,7 +8,6 @@
 
 #import "VNotificationsViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VNotification+RestKit.h"
 #import "VNotificationCell.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"

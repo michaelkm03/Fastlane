@@ -14,7 +14,6 @@
 #import "VColorType.h"
 #import "VTextColorTool.h"
 #import "VHashtagTool.h"
-#import "VObjectManager+ContentCreation.h"
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextPostImageHelper.h"

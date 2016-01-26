@@ -145,7 +145,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     __block VStream *stream = nil;
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         [persistentStore.mainContext save:nil];
     }];
@@ -927,7 +927,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+#warning FIXME: New ARchiCtuRe
+        return; //< Returning early to avoid crash
+        //self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;

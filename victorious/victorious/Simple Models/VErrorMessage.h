@@ -16,6 +16,4 @@
 @property (nonatomic, assign) NSInteger total_pages;
 @property (nonatomic, strong) NSArray *errorMessages;
 
-+ (RKObjectMapping *)objectMapping;
-
 @end
