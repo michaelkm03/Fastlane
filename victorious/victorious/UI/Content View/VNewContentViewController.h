@@ -20,7 +20,7 @@
 @protocol VNewContentViewControllerDelegate <NSObject>
 @optional
 
-- (void)contnetViewDidDeleteContent:(VNewContentViewController *)contentViewController;
+- (void)contentViewDidDeleteContent:(VNewContentViewController *)contentViewController;
 
 @end
 

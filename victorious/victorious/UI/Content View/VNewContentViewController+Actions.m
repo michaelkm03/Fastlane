@@ -207,7 +207,7 @@
                                                             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                        }];
                                                       self.viewModel.sequence.markForDeletion = @(YES);
-                                                      [self.delegate contnetViewDidDeleteContent:self];
+                                                      [self.delegate contentViewDidDeleteContent:self];
                                                   }];
                                              }]];
                  

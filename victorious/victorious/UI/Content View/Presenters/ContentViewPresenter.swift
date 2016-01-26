@@ -78,7 +78,7 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
     
     //MARK: - VNewContentViewControllerDelegate
     
-    func contnetViewDidDeleteContent(contentViewController: VNewContentViewController!) {
+    func contentViewDidDeleteContent(contentViewController: VNewContentViewController!) {
         delegate?.contentViewPresenterDidDeleteContent?(self)
     }
 }
