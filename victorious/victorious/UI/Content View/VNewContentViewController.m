@@ -114,7 +114,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
-
+@property (nonatomic, strong) NSOperationQueue * experienceEnhancerSetupQueue;
+@property (nonatomic, strong) NSOperationQueue * experienceEnhancerCompletionQueue;
 @end
 
 @implementation VNewContentViewController
@@ -401,6 +402,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.view.backgroundColor = [UIColor blackColor];
     
     self.videoPlayerDidFinishPlayingOnce = NO;
+    
+    _experienceEnhancerSetupQueue = [NSOperationQueue new];
+    _experienceEnhancerCompletionQueue = [NSOperationQueue new];
+    
+    //Maximum of 5 animations playing at a time if the device type is not iPod
+    _experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [self deviceRating];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -435,7 +442,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    
     [self trackVideoViewStart];
 }
 
@@ -494,6 +500,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    //Cancels all animations
+    [self.experienceEnhancerCell.experienceEnhancerBar.operationQueue cancelAllOperations];
     
     [self.dependencyManager trackViewWillDisappear:self];
     
@@ -978,60 +986,46 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
 {
-    NSArray * images = enhancer.voteType.images;
-    if ( enhancer.isBallistic )
-    {
-        CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
-        animationImageView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-        animationImageView.center = convertedCenterForAnimation;
-        animationImageView.image = enhancer.flightImage;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view addSubview:animationImageView];
+    __block NSArray * images;
+//    Load images from disk, might take some time since animations may be large
+    NSOperation * readFromDiskOp = [NSBlockOperation blockOperationWithBlock:^{
+        images = enhancer.voteType.images;
+    }];
+    
+//    Display the animations with up to N different animations playing at the same time
+    NSOperation * animationOp;
+    if (enhancer.isBallistic) {
+        animationOp = [NSBlockOperation blockOperationWithBlock:^{
+            CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
+            VAnimationImageView * animationImageView = [[VAnimationImageView alloc] initWithFrame:animationFrameSize];
+            animationImageView.contentMode = UIViewContentModeScaleAspectFit;
             
-            [UIView animateWithDuration:enhancer.flightDuration
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveLinear
-                             animations:^
-             {
-                 CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
-                 CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
-                 animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
-             }
-                             completion:^(BOOL finished)
-             {
-                 animationImageView.animationDuration = enhancer.animationDuration;
-                 animationImageView.animationImages = images;
-                 animationImageView.animationRepeatCount = 1;
-                 animationImageView.image = nil;
-                 [animationImageView startAnimating];
-                 
-                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                {
-                                    [animationImageView removeFromSuperview];
-                                });
-             }];
-        });
-    }
-    else
-    {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+            animationImageView.flightImage = enhancer.flightImage;
             animationImageView.animationDuration = enhancer.animationDuration;
-            animationImageView.animationImages = images;
-            animationImageView.animationRepeatCount = 1;
-            animationImageView.contentMode = enhancer.voteType.contentMode;
-            [self.contentCell.contentView addSubview:animationImageView];
-            [animationImageView startAnimating];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animationImageView.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                           {
-                               [animationImageView removeFromSuperview];
-                           });
-        });
+            animationImageView.animationSequence = images;
+            
+            CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
+            [animationImageView startFlightFor:enhancer.flightDuration on:self.view center:convertedCenterForAnimation frame:self.contentCell.frame];
+        }];
     }
+    else {
+        animationOp = [NSBlockOperation blockOperationWithBlock:^{
+            VAnimationImageView *animationImageView = [[VAnimationImageView alloc] initWithFrame:self.contentCell.bounds];
+            animationImageView.contentMode = enhancer.voteType.contentMode;
+            animationImageView.animationSequence = images;
+            animationImageView.animationDuration = enhancer.animationDuration;
+            
+//            Completion block only allows one animation at a time
+            dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+            
+            [animationImageView startAnimatingOn:self.contentCell.contentView withSemaphore:sem];
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+            images = nil;
+        }];
+    }
+    [animationOp addDependency:readFromDiskOp];
+    [_experienceEnhancerSetupQueue addOperation:readFromDiskOp];
+    [_experienceEnhancerCompletionQueue addOperation:animationOp];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -1817,6 +1811,30 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     self.closeButton.alpha = 1.0f;
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+}
+
+#pragma mark - Device Capabilities Helper
+
+//    Should return a nonzero positive number indicating the number of animations the device can support concurrently
+-(NSUInteger)deviceRating {
+    NSString * device = [UIDevice currentDevice].model;
+    if ([device hasPrefix:@"iPod"]) {
+        return 1;
+    }
+    else return 5;
+}
+
+#pragma mark - Memory Warning
+
+-(void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+    //    Cancels all animations/setup
+    [self.experienceEnhancerSetupQueue cancelAllOperations];
+    [self.experienceEnhancerCompletionQueue cancelAllOperations];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ANIMATION_IMAGE_VIEW_MEMORY_WARNING_STOP object:nil];
+    
 }
 
 @end

@@ -73,8 +73,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.minimumInteritemSpacing = 15.0f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    
     self.enabled = YES;
+    _operationQueue = [NSOperationQueue new];
 }
 
 - (void)dealloc
@@ -238,7 +238,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSBlockOperation * experienceEnhancerOp = [NSBlockOperation blockOperationWithBlock:^{
             // Increment the vote count
             if ( [enhancerForIndexPath vote] )
             {
@@ -261,7 +261,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
                     [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
                 }
             }
-        });
+        }];
+        [self.operationQueue addOperation:experienceEnhancerOp];
     }
 }
 

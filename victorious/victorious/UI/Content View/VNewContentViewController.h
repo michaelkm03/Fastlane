@@ -14,6 +14,7 @@
 #import "VPollResultReceiver.h"
 #import "VRenderablePreviewView.h"
 #import "VVideoPreviewView.h"
+#import "VAnimationImageView.h"
 
 @class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
