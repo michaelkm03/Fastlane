@@ -1,5 +1,5 @@
 //
-//  CreateTextPostRequest.swift
+//  TextPostCreateRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 1/11/16.
@@ -26,7 +26,7 @@ public struct TextPostParameters {
     }
 }
 
-public struct CreateTextPostRequest: RequestType {
+public struct TextPostCreateRequest: RequestType {
     
     public let parameters: TextPostParameters
     public let baseURL: NSURL
