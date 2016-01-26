@@ -247,6 +247,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     return NO;
 }
 
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
 @end
 
 #pragma mark -
