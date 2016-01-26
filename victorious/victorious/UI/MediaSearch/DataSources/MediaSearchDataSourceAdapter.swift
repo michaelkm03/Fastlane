@@ -209,7 +209,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-    func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
+    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""
