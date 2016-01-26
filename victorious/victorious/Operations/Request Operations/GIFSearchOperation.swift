@@ -21,7 +21,8 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init( searchTerm: String? ) {
-        self.init( request: GIFSearchRequest(searchTerm: searchTerm) )
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
+        self.init( request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator) )
     }
     
     override func main() {
