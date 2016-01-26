@@ -103,8 +103,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if (self.options.clearSelectionOnAppearance == true)
-        {
+        if self.options.clearSelectionOnAppearance {
             collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
         }
     }
@@ -151,15 +150,22 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         if self.dataSourceAdapter.state != .Loading {
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
+                self.reloadNoContentSection()
             }
-            
-            // Trigger a reload for the loading state
-            if self.dataSourceAdapter.sections.count == 0 {
-                self.collectionView.performBatchUpdates({
-                    self.collectionView.reloadSections( NSIndexSet(index: 0) )
-                }, completion: nil)
-            }
+            self.reloadNoContentSection()
         }
+    }
+    
+    func reloadNoContentSection() {
+        /// The no content cell is only visible when the data source's sections are empty
+        guard self.dataSourceAdapter.sections.isEmpty else {
+            return
+        }
+        
+        // Now reload the no content cell's section to update to current state
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadSections( NSIndexSet(index: 0) )
+        }, completion: nil)
     }
     
     func updateViewWithResult( result: MediaSearchDataSourceAdapter.ChangeResult? ) {
@@ -271,6 +277,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        
         // To update whether the bottom activity indicator footer shows
         if paginatedDataSource.hasLoadedLastPage {
             self.updateLayout()

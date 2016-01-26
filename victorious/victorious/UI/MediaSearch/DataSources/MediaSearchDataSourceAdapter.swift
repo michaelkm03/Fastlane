@@ -134,10 +134,10 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     private func updateDataSource( results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
-            if self.sections.count == 0 && results.count > 0 {
+            if self.sections.isEmpty && results.count > 0 {
                 result.deletedSections = NSIndexSet(index: 0) // No content cell
             }
-            else if self.sections.count > 0 && results.count == 0 {
+            else if self.sections.count > 0 && results.isEmpty {
                 let range = NSRange( location: 0, length: self.sections.count )
                 result.deletedSections = NSIndexSet(indexesInRange: range)
             }
@@ -165,15 +165,15 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	// MARK: - UICollectionViewDataSource
 	
 	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.sections.count == 0 ? 1 : self.sections[ section ].count
+		return self.sections.isEmpty ? 1 : self.sections[ section ].count
 	}
 	
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-		return self.sections.count == 0 ? 1 : self.sections.count
+		return self.sections.isEmpty ? 1 : self.sections.count
 	}
 	
 	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		if self.sections.count == 0,
+		if self.sections.isEmpty,
 			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
 				self.configureNoContentCell( cell, forState: self.state )
 				return cell
