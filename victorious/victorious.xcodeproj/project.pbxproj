@@ -88,7 +88,6 @@
 		031DF62A1B7986E700FDD7D3 /* NSURL+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF62B1B7986E700FDD7D3 /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF62C1B7986E700FDD7D3 /* VDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761481B322F830016B69D /* VDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF62D1B7986E700FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF62E1B7986E700FDD7D3 /* VTemplateImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C51171B37B3D700A903C2 /* VTemplateImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF62F1B7986E700FDD7D3 /* VTemplateImageMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6301B7986E700FDD7D3 /* VTemplateImageSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -103,7 +102,6 @@
 		031DF63C1B7986EB00FDD7D3 /* NSURL+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF63D1B7986EB00FDD7D3 /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF63E1B7986EB00FDD7D3 /* VDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761481B322F830016B69D /* VDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF63F1B7986EB00FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6401B7986EB00FDD7D3 /* VTemplateImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C51171B37B3D700A903C2 /* VTemplateImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6411B7986EB00FDD7D3 /* VTemplateImageMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6421B7986EB00FDD7D3 /* VTemplateImageSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -157,7 +155,6 @@
 		0352FCAA1B72BB3D00DB6EAB /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
 		0352FCAB1B72BB3D00DB6EAB /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
 		0352FCAC1B72BB3D00DB6EAB /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
-		0352FCAD1B72BB3D00DB6EAB /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
 		0352FCAE1B72BB3D00DB6EAB /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
 		0352FCAF1B72BB3D00DB6EAB /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
 		0352FCB01B72BB3D00DB6EAB /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
@@ -188,6 +185,8 @@
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		0361B8F91C560F970038E9D6 /* alerts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0361B8F81C560F970038E9D6 /* alerts.json */; };
+		0361B8FB1C56D6FF0038E9D6 /* TemplateCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0361B8FA1C56D6FF0038E9D6 /* TemplateCache.swift */; };
+		0361B8FD1C56D72E0038E9D6 /* TemplateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0361B8FC1C56D72E0038E9D6 /* TemplateCacheTests.swift */; };
 		0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0362656A1BAB99ED00C34C73 /* FacebookHelper.swift */; };
 		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		03645B0D1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03645B0C1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib */; };
@@ -252,7 +251,6 @@
 		0370FBE21B71B3C4009047B6 /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
 		0370FBE31B71B3C4009047B6 /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
 		0370FBE41B71B3C4009047B6 /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
-		0370FBE51B71B3C4009047B6 /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
 		0370FBE61B71B3C4009047B6 /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
 		0370FBE71B71B3C4009047B6 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
 		0370FBE81B71B3C4009047B6 /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
@@ -2005,8 +2003,6 @@
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactoryTests.m; sourceTree = "<group>"; };
-		032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEnvironment+VDataCacheID.h"; sourceTree = "<group>"; };
-		032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEnvironment+VDataCacheID.m"; sourceTree = "<group>"; };
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
 		03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousIOSSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VictoriousIOSSDK.h; sourceTree = "<group>"; };
@@ -2102,6 +2098,8 @@
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0361B8F81C560F970038E9D6 /* alerts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = alerts.json; sourceTree = "<group>"; };
+		0361B8FA1C56D6FF0038E9D6 /* TemplateCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateCache.swift; sourceTree = "<group>"; };
+		0361B8FC1C56D72E0038E9D6 /* TemplateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateCacheTests.swift; sourceTree = "<group>"; };
 		0362656A1BAB99ED00C34C73 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
 		03645B0C1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPublishSaveCollectionViewCell.xib; sourceTree = "<group>"; };
 		03645B0E1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPublishShareCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -5638,6 +5636,7 @@
 		034527A51B604A9100E990BB /* Template Loader */ = {
 			isa = PBXGroup;
 			children = (
+				0361B8FA1C56D6FF0038E9D6 /* TemplateCache.swift */,
 				0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */,
 				0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */,
 				0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */,
@@ -5716,8 +5715,6 @@
 				036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */,
 				03A761481B322F830016B69D /* VDataCache.h */,
 				03A761491B322F830016B69D /* VDataCache.m */,
-				032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */,
-				032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */,
 			);
 			path = "Data Cache";
 			sourceTree = "<group>";
@@ -6000,6 +5997,7 @@
 			isa = PBXGroup;
 			children = (
 				0370FBC41B71B261009047B6 /* Supporting Files */,
+				0361B8FC1C56D72E0038E9D6 /* TemplateCacheTests.swift */,
 				0352FC671B729A6C00DB6EAB /* Test Data */,
 				031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */,
 				036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */,
@@ -9461,7 +9459,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				031DF63F1B7986EB00FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */,
 				031DF63A1B7986EB00FDD7D3 /* NSString+VCrypto.h in Headers */,
 				031DF6491B7986EB00FDD7D3 /* VTemplateSerialization.h in Headers */,
 				031DF6411B7986EB00FDD7D3 /* VTemplateImageMacro.h in Headers */,
@@ -9485,7 +9482,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				031DF62D1B7986E700FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */,
 				031DF6281B7986E700FDD7D3 /* NSString+VCrypto.h in Headers */,
 				031DF6371B7986E700FDD7D3 /* VTemplateSerialization.h in Headers */,
 				031DF62F1B7986E700FDD7D3 /* VTemplateImageMacro.h in Headers */,
@@ -10800,7 +10796,6 @@
 				0352FCB41B72BB3D00DB6EAB /* VBulkDownloadOperation.m in Sources */,
 				0352FCAE1B72BB3D00DB6EAB /* VTemplateImage.m in Sources */,
 				0352FCA91B72BB3D00DB6EAB /* NSString+VDataCacheID.m in Sources */,
-				0352FCAD1B72BB3D00DB6EAB /* VEnvironment+VDataCacheID.m in Sources */,
 				0352FCB31B72BB3D00DB6EAB /* VJSONHelper.m in Sources */,
 				0352FCB21B72BB3D00DB6EAB /* VEnvironment.m in Sources */,
 				0352FCAB1B72BB3D00DB6EAB /* VBundleWriterDataCache.m in Sources */,
@@ -10835,7 +10830,7 @@
 				0370FBEC1B71B3C4009047B6 /* VBulkDownloadOperation.m in Sources */,
 				0370FBE61B71B3C4009047B6 /* VTemplateImage.m in Sources */,
 				0370FBE11B71B3C4009047B6 /* NSString+VDataCacheID.m in Sources */,
-				0370FBE51B71B3C4009047B6 /* VEnvironment+VDataCacheID.m in Sources */,
+				0361B8FB1C56D6FF0038E9D6 /* TemplateCache.swift in Sources */,
 				0370FBEB1B71B3C4009047B6 /* VJSONHelper.m in Sources */,
 				0370FBEA1B71B3C4009047B6 /* VEnvironment.m in Sources */,
 				0370FBE31B71B3C4009047B6 /* VBundleWriterDataCache.m in Sources */,
@@ -10853,6 +10848,7 @@
 				0352FC711B729B0300DB6EAB /* VTemplateSerializationTests.m in Sources */,
 				0352FC6E1B729B0300DB6EAB /* VJSONHelperTests.m in Sources */,
 				0352FC701B729B0300DB6EAB /* VTemplateImageSetTests.m in Sources */,
+				0361B8FD1C56D72E0038E9D6 /* TemplateCacheTests.swift in Sources */,
 				0352FC6C1B729B0300DB6EAB /* VDownloadOperationTests.m in Sources */,
 				0370FBF21B728612009047B6 /* VTemplatePackageManagerTests.m in Sources */,
 				0352FC6F1B729B0300DB6EAB /* VTemplateDownloadOperationTests.m in Sources */,
@@ -13364,7 +13360,6 @@
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
@@ -13386,7 +13381,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
@@ -13408,7 +13402,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
@@ -13430,7 +13423,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
@@ -13452,7 +13444,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";

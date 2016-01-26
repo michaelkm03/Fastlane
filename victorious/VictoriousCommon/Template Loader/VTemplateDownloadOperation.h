@@ -42,22 +42,16 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @optional
 
 /**
- Notifies the delegate that due to a timeout, a cached template was
- loaded and can be read from the templateConfiguration property.
+ Notifies the delegate that the template download operation failed.
  */
-- (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation;
-
-/**
- Notifies the delegate that the template download operation failed and there was no cache to fall back on.
- */
-- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation;
+- (void)templateDownloadOperationFailed:(VTemplateDownloadOperation *)downloadOperation;
 
 @end
 
 #pragma mark -
 
+@class TemplateCache;
 @class VDataCache;
-@protocol VDataCacheID;
 
 /**
  Provides a fresh, piping-hot template straight off the wire
@@ -69,17 +63,16 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @interface VTemplateDownloadOperation : NSOperation
 
 /**
- An instance of VDataCache used for storing & retrieving template data.
+ An instance of VDataCache used for caching images found in the template.
  If this is not set, there is a suitable default that will be used.
  */
 @property (nonatomic, strong) VDataCache *dataCache;
 
 /**
- The VDataCacheID that will be used to store & retrieve the
- template configuration in the instance of VDataCache
- provided in the dataCache property.
+ An instance of TemplateCache that will be used
+ to store the downloaded template data.
  */
-@property (nonatomic, copy, nullable) id<VDataCacheID> templateConfigurationCacheID;
+@property (nonatomic, strong, nullable) TemplateCache *templateCache;
 
 /**
  The downloader that was provided at initialization time
@@ -118,19 +111,10 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @property (nonatomic) BOOL completedSuccessfully;
 
 /**
- When this operation is done (or sometimes earlier--see the
- templateDownloadOperationDidFallbackOnCache: method on 
- VTemplateDownloadOperationDelegate), this property will 
- be populated with the template that was downloaded.
+ When this operation is done, this property will be
+ populated with the template that was downloaded.
  */
 @property (nonatomic, readonly, nullable) NSDictionary *templateConfiguration;
-
-/**
- The current build number of the application. This is used to determine the
- validity of the template retrieved from the cache (if one exists). must be set
- BEFORE the download operation starts.
- */
-@property (nonatomic, strong) NSString *buildNumber;
 
 /**
  Initializes a new template download manager with a downloader and a delegate
