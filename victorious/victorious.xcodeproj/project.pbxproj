@@ -7596,7 +7596,6 @@
 				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
 				79B718FE1C56E93100578012 /* VSequence+Deletable.swift */,
 				79B719001C56E95800578012 /* VSequence+Keyable.swift */,
-				A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */,
 			);
 			path = "Model Extensions";
 			sourceTree = "<group>";
@@ -10966,7 +10965,6 @@
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
-				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
@@ -11527,7 +11525,6 @@
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A71F41FB1C040D4D00131BE6 /* VReposterTableViewController.swift in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
-				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
 				79B719011C56E95800578012 /* VSequence+Keyable.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
@@ -12230,7 +12227,6 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -12263,8 +12259,7 @@
 			baseConfigurationReference = 0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -12292,8 +12287,7 @@
 			baseConfigurationReference = BC2D8AAB3016F7E483662531 /* Pods-VictoriousIOSSDK.staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -12321,8 +12315,7 @@
 			baseConfigurationReference = 2FF26ACB7B7F5D83A0C89A42 /* Pods-VictoriousIOSSDK.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -12350,8 +12343,7 @@
 			baseConfigurationReference = B6E4C00CAA076E3D3D35B10A /* Pods-VictoriousIOSSDK.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
