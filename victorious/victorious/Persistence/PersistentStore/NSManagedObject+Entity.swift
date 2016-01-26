@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-public extension NSManagedObject {
+extension NSManagedObject {
     
     class func v_entityName() -> String {
         var className = (NSStringFromClass(self) as NSString)

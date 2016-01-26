@@ -7614,12 +7614,12 @@
 		A7EBF5641C2F3BF40080C7CF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				79FE184F1C53150400170E5B /* Deletable.swift */,
+				79FE18571C53188700170E5B /* Keyable.swift */,
+				A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */,
 				5A75EADB1C57653200B08056 /* VPublishParameters.h */,
 				5A75EADC1C57653200B08056 /* VPublishParameters.m */,
 				5A75EADD1C57653200B08056 /* VPublishParameters.swift */,
-				A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */,
-				79FE184F1C53150400170E5B /* Deletable.swift */,
-				79FE18571C53188700170E5B /* Keyable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
