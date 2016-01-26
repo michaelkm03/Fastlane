@@ -14,13 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat contentHeight = scrollView.contentSize.height;
-    CGFloat containerHeight = scrollView.bounds.size.height;
-    if ( contentHeight < containerHeight || self.delegate == nil )
+    if ( self.delegate == nil )
     {
         return;
     }
     
+    const CGFloat contentHeight = scrollView.contentSize.height;
     const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
     const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;

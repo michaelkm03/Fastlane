@@ -28,7 +28,7 @@ class MediaSearchOptions: NSObject {
 
 /// View controller that allows users to search for GIF files using the Giphy API
 /// as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate {
+class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, PaginatedDataSourceDelegate {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -58,6 +58,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
             viewController.dependencyManager = depndencyManager
 			viewController.dataSourceAdapter.dataSource = dataSource
+            dataSource.delegate = viewController
             return viewController
         }
         fatalError( "Could not load MediaSearchViewController from storyboard." )
@@ -151,6 +152,13 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
             }
+            
+            // Trigger a reload for the loading state
+            if self.dataSourceAdapter.sections.count == 0 {
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections( NSIndexSet(index: 0) )
+                }, completion: nil)
+            }
         }
     }
     
@@ -160,7 +168,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 self.collectionView.applyDataSourceChanges( result )
             }, completion: nil)
         }
-        if result?.error != nil || (result?.hasChanges == false && self.dataSourceAdapter.sections.count == 0) {
+        if result?.error != nil || (result?.hasChanges == false && (self.dataSourceAdapter.dataSource?.visibleItems.count ?? 0) == 0) {
             self.collectionView.reloadData()
         }
     }
@@ -254,11 +262,22 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 	func searchBarSearchButtonClicked(searchBar: UISearchBar) {
 		guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
 			return
-		}
+        }
+        self.clearSearch()
 		self.performSearch(searchTerm: searchTerm)
-		self.clearSearch()
 		searchBar.resignFirstResponder()
-	}
+    }
+    
+    // MARK: - PaginatedDataSourceDelegate
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        // To update whether the bottom activity indicator footer shows
+        if paginatedDataSource.hasLoadedLastPage {
+            self.updateLayout()
+        }
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {}
 }
 
 /// Conveninece method to insert/delete sections during a batch update

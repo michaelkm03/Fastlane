@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XjX-lt-zKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XjX-lt-zKI">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
     </dependencies>
     <scenes>
         <!--Media Search View Controller-->
@@ -18,7 +18,6 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Han-PZ-YhT">
                                 <rect key="frame" x="0.0" y="44" width="600" height="556"/>
-                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="sjA-Lx-uDC">
                                     <size key="itemSize" width="102" height="102"/>
@@ -36,15 +35,12 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2op-9K-t9j">
                                                     <rect key="frame" x="0.0" y="0.0" width="294" height="251"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="jY3-bw-i3y">
                                                     <rect key="frame" x="137" y="116" width="20" height="20"/>
-                                                    <animations/>
                                                 </activityIndicatorView>
                                                 <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LPM-L4-PAv">
                                                     <rect key="frame" x="0.0" y="0.0" width="294" height="251"/>
-                                                    <animations/>
                                                     <state key="normal">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -53,10 +49,8 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <animations/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="2op-9K-t9j" secondAttribute="bottom" id="3O8-iw-c2i"/>
@@ -85,23 +79,18 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zv5-eY-VaX" userLabel="emptyView">
                                                     <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jT7-0T-Z0S">
                                                     <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fVM-ce-a29" userLabel="Overlay">
                                                     <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="fVM-ce-a29" secondAttribute="trailing" id="3Hv-Lc-qVU"/>
                                             <constraint firstAttribute="bottom" secondItem="Zv5-eY-VaX" secondAttribute="bottom" id="Eg7-2q-Udw"/>
@@ -131,20 +120,16 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No results found." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsd-YZ-qgl">
                                                     <rect key="frame" x="8" y="8" width="235" height="172"/>
-                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Arz-in-0j6">
                                                     <rect key="frame" x="115" y="84" width="20" height="20"/>
-                                                    <animations/>
                                                 </activityIndicatorView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="bsd-YZ-qgl" secondAttribute="trailing" constant="8" id="Cah-lV-T5v"/>
                                             <constraint firstAttribute="centerX" secondItem="Arz-in-0j6" secondAttribute="centerX" constant="0.5" id="LI7-Cn-JkD"/>
@@ -166,14 +151,12 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="giphy_attribution" translatesAutoresizingMaskIntoConstraints="NO" id="2bB-vU-NvB">
                                             <rect key="frame" x="237" y="16" width="125" height="17"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="125" id="2nF-zk-WYi"/>
                                                 <constraint firstAttribute="height" constant="17" id="vXl-rO-C9v"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="2bB-vU-NvB" secondAttribute="centerY" constant="0.5" id="uHY-4Q-mdG"/>
                                         <constraint firstAttribute="centerX" secondItem="2bB-vU-NvB" secondAttribute="centerX" constant="0.5" id="zNR-J6-l1N"/>
@@ -185,17 +168,14 @@
                                     <subviews>
                                         <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Zp9-Ch-ErL">
                                             <rect key="frame" x="290" y="15" width="20" height="20"/>
-                                            <animations/>
                                         </activityIndicatorView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bdi-Gm-gNs">
                                             <rect key="frame" x="8" y="8" width="584" height="34"/>
-                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Bdi-Gm-gNs" secondAttribute="bottom" constant="8" id="4KE-5T-sTk"/>
                                         <constraint firstAttribute="centerY" secondItem="Zp9-Ch-ErL" secondAttribute="centerY" id="R3A-iR-Xh1"/>
@@ -212,12 +192,10 @@
                             </collectionView>
                             <searchBar contentMode="redraw" barStyle="black" searchBarStyle="prominent" text="" translatesAutoresizingMaskIntoConstraints="NO" id="ahe-Of-ru5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <animations/>
                                 <color key="barTintColor" white="0.0" alpha="0.46000000000000002" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits" keyboardType="webSearch" keyboardAppearance="alert" returnKeyType="search"/>
                             </searchBar>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Han-PZ-YhT" firstAttribute="leading" secondItem="g3j-JW-UiO" secondAttribute="leading" id="3mV-rK-Qdh"/>

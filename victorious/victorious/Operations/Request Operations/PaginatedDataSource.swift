@@ -15,7 +15,7 @@ import VictoriousIOSSDK
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentOperation: NSOperation?
+    private(set) var currentOperation: NSOperation?
     
     private(set) var hasLoadedLastPage: Bool = false
     
@@ -47,7 +47,6 @@ import VictoriousIOSSDK
     var delegate: PaginatedDataSourceDelegate?
     
     func unload() {
-        cancelCurrentOperation()
         visibleItems = NSOrderedSet()
         pagesLoaded = Set<Int>()
         state = .Cleared
@@ -147,6 +146,7 @@ import VictoriousIOSSDK
             // Fetch local results if we failed because of no network
             if error == nil {
                 let results = operation.results ?? []
+                self.hasLoadedLastPage = results.isEmpty
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 
@@ -156,6 +156,7 @@ import VictoriousIOSSDK
                 
                 // Return no results
                 operation.results = []
+                self.hasLoadedLastPage = true
                 self.state = .Error
             }
             

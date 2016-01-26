@@ -17,6 +17,8 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		static let AttributionHeader = "MediaSearchAttributionView" ///< Set in storyboard
 		static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
 	}
+    
+    var delegate: PaginatedDataSourceDelegate?
 	
 	/// A type used to record data source chanages that can then be applied to the collection
 	/// view in a `performBatchUpdates(_:completion)` call.
@@ -68,12 +70,13 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		guard let dataSource = self.dataSource else {
 			fatalError( "Attempt to perform a search without configuring a data source" )
 		}
-		dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
-            if let results = dataSource.visibleItems.array as? [MediaSearchResult] where error == nil {
+        let resultsBefore = self.dataSource?.visibleItems ?? NSOrderedSet()
+        dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
+            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.containsObject($0) }) as? [MediaSearchResult] where error == nil {
                 let result = self.updateDataSource(results, pageType: pageType)
                 completion?(result)
             }
-		}
+        }
     }
 
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
@@ -206,7 +209,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-	private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
+    func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""
@@ -214,7 +217,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		case .Error:
 			cell.text = NSLocalizedString( "Error loading results", comment:"" )
 			cell.loading = false
-		case .Results where self.sections.count == 0:
+        case .NoResults:
 			cell.loading = false
 			cell.text = NSLocalizedString( "No results", comment:"" )	
 		default:

@@ -21,7 +21,8 @@ final class ImageSearchOperation: RequestOperation, PaginatedOperation {
 	}
 	
 	convenience init( searchTerm: String ) {
-		self.init( request: ImageSearchRequest(searchTerm: searchTerm) )
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
+        self.init( request: ImageSearchRequest(searchTerm: searchTerm, paginator: paginator) )
 	}
 	
 	override func main() {
