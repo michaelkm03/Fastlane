@@ -10,7 +10,6 @@
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
