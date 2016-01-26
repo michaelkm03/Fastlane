@@ -161,7 +161,8 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             return
         }
         
-        // Now reload the no content cell's section to update to current state
+        // Now reload the no content cell's section so that it is accurately reflecting
+        //  the current state of the paginated data source
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections( NSIndexSet(index: 0) )
         }, completion: nil)
