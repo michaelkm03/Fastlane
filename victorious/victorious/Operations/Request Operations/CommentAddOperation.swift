@@ -71,7 +71,7 @@ class CreateCommentOperation: FetcherOperation {
             let creationDate = NSDate()
             
             let predicate = NSPredicate( format: "sequence.remoteId == %@", argumentArray: [sequenceID])
-            let newDisplayOrder = self.newObjectDisplayOrder(VComment.v_entityName(), context: context, predicate: predicate)
+            let newDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VComment.v_entityName(), predicate: predicate)
             
             let comment: VComment = context.v_createObject()
             comment.sequenceId = String(sequenceID)
@@ -96,6 +96,7 @@ class CreateCommentOperation: FetcherOperation {
             
             let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
             sequence.comments = NSOrderedSet(array: allComments)
+            sequence.commentCount = allComments.count
             
             context.v_save()
             return comment.objectID

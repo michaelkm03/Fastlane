@@ -65,7 +65,7 @@ class CreateMessageOperation: FetcherOperation {
             let creationDate = NSDate()
             
             let predicate = NSPredicate( format: "conversation.remoteId == %@", argumentArray: [self.creationParameters.conversationID])
-            let newDisplayOrder = self.newObjectDisplayOrder(VMessage.v_entityName(), context: context, predicate: predicate)
+            let newDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VMessage.v_entityName(), predicate: predicate)
             
             let message: VMessage = context.v_createObject()
             message.sender = currentUser
@@ -84,9 +84,11 @@ class CreateMessageOperation: FetcherOperation {
                     message.mediaHeight = mediaAttachment.size?.height
             }
             
+            let newConversationDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VConversation.v_entityName())
             conversation.lastMessageText = message.text
             conversation.postedAt = conversation.postedAt ?? creationDate
             conversation.v_addObject(message, to: "messages")
+            conversation.displayOrder = newConversationDisplayOrder
             context.v_save()
             
             return message.objectID

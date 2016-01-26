@@ -32,16 +32,4 @@ class FetcherOperation: NSOperation, Queuable {
         }
         queue.addOperation( self )
     }
-    
-    func newObjectDisplayOrder( entityName: String, context: NSManagedObjectContext, predicate: NSPredicate ) -> Int {
-        let fetchRequest = NSFetchRequest(entityName: entityName)
-        fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-        fetchRequest.predicate = predicate
-        fetchRequest.fetchBatchSize = 1
-        fetchRequest.fetchLimit = 1
-        guard let lowestDisplayOrderObject = context.v_executeFetchRequest( fetchRequest ).first as? PaginatedObjectType else {
-            return -1
-        }
-        return (lowestDisplayOrderObject.displayOrder?.integerValue ?? 0) - 1
-    }
 }
