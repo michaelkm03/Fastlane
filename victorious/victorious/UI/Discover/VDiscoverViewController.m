@@ -362,35 +362,35 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             
             HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
-            [customCell setHashtagText:hashtag.tag];
+            NSString *hashtagText = hashtag.tag;
+            [customCell setHashtagText:hashtagText];
             
             __weak VHashtagCell *weakCell = customCell;
+            __weak VDiscoverViewController *weakSelf = self;
             customCell.onToggleFollowHashtag = ^(void)
             {
                 __strong VHashtagCell *strongCell = weakCell;
-                
-                if ( strongCell == nil )
+                __strong VDiscoverViewController *strongSelf = weakSelf;
+                if ( strongCell == nil || strongSelf == nil )
                 {
                     return;
                 }
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag.tag] )
+                RequestOperation *operation;
+                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
                 {
-                    RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-                    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                        //[strongCell.followHashtagControl updateSubscribeStatusAnimated:YES showLoading:NO];
-                    }];
+                    operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
                 else
                 {
-                    RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-                    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                        
-                        //[strongCell.followHashtagControl setControlState:VFollowControlStateFollowed animated:YES];
-                    }];
+                    operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
+                [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+                    [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
+                }];
             };
+            
             customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
@@ -402,6 +402,20 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     }
     
     return cell;
+}
+
+- (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
+{
+    VFollowControlState controlState;
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
+    {
+        controlState = VFollowControlStateFollowed;
+    }
+    else
+    {
+        controlState = VFollowControlStateUnfollowed;
+    }
+    [followControl setControlState:controlState animated:YES];
 }
 
 #pragma mark - UITableViewDelegate

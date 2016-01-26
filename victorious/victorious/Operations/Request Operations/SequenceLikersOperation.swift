@@ -65,7 +65,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
             )
             fetchRequest.predicate = predicate
             let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
-            return results.map { $0.user }
+            return results.flatMap { $0.user }
         }
     }
 }

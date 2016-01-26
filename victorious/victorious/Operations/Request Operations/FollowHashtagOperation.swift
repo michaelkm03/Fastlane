@@ -22,7 +22,7 @@ class FollowHashtagOperation: RequestOperation {
     override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                    return
+                return
             }
             
             let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.request.hashtag ] )

@@ -131,20 +131,20 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     {
         __strong VHashtagCell *strongCell = weakCell;
         __strong VHashtagFollowingTableViewController *strongSelf = weakSelf;
-        if ( strongCell == nil )
+        if ( strongCell == nil || strongSelf == nil )
         {
             return;
         }
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
         RequestOperation *operation;
-        if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag.tag] )
+        if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
         {
-            operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
+            operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
         else
         {
-            operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
+            operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
         [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
             [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];

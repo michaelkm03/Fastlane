@@ -67,7 +67,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
-            return results.map { $0.objectUser }
+            return results.flatMap { $0.objectUser }
         }
     }
 }
