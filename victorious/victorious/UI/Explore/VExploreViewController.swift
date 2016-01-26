@@ -406,10 +406,9 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     }
     
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
-        fatalError( "FIXME" )
-        // FIXME: USED TO BE THIS: let filter = VObjectManager.sharedManager().filterForStream(currentStream)
-        let filter = NSObject() as! VAbstractFilter
-        let perPageNumber = filter.perPageNumber.integerValue
+        //FIXME: There might be a better fix than this. For RC1 this should be fine.
+        let paginator = StandardPaginator()
+        let perPageNumber = paginator.itemsPerPage
         let pageLocation = indexPath.row % perPageNumber
         let streamItem = streamItemFor(indexPath)
         if pageLocation == 0 {
