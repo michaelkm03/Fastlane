@@ -290,7 +290,7 @@
 
 #pragma mark - Flag
 
-- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(UIAlertAction *))completion
+- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(BOOL success))completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
@@ -310,9 +310,9 @@
     [viewController presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(BOOL success))completion
 {
-    [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:nil];
+    [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:completion];
 }
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message

@@ -11,9 +11,7 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VSequence+Fetcher.h"
 #import "VNoContentView.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
@@ -29,8 +27,6 @@
 #import "VAsset+Fetcher.h"
 #import "VAsset+VCachedData.h"
 #import "VAsset+VAssetCache.h"
-#import "victorious-Swift.h"
-
 #import "victorious-Swift.h"
 
 @interface VNewContentViewController ()
@@ -205,13 +201,18 @@
                                                  [self.presentingViewController dismissViewControllerAnimated:YES
                                                                                                    completion:^
                                                   {
-#warning: New Arhicture:
-                                                      /*[[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
-                                                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                      
+                                                      DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
+                                                      [deleteOperation queueOn:deleteOperation.defaultQueue
+                                                               completionBlock:^(NSError *_Nullable error)
                                                        {
                                                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                       }
-                                                                                           failBlock:nil];*/
+                                                       }];
+                                                      self.viewModel.sequence.markForDeletion = @(YES);
+                                                      if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
+                                                      {
+                                                          [self.delegate contentViewDidDeleteContent:self];
+                                                      }
                                                   }];
                                              }]];
                  
@@ -234,11 +235,16 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
                  {
-                     [self.viewModel.commentsDataSource flagSequenceWithCompletion:^void(NSError *error)
+                     [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                       completion:^
                       {
-                          [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                          self.viewModel.sequence.markForDeletion = @(YES);
+                          if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
+                          {
+                              [self.delegate contentViewDidFlagContent:self];
+                          }
                       }];
                  }];
              }];

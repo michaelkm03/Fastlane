@@ -225,3 +225,4 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+#import "VNewContentViewController.h"

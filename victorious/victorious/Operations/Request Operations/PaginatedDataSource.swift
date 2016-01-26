@@ -70,6 +70,9 @@ import VictoriousIOSSDK
         }
     }
     
+    func refreshLocalJustFilters() {
+        self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(self.visibleItems.array)
+    }
     
     // Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
     // operates by sending a network request to retreive results, then parses them into the persistent store.
@@ -91,7 +94,8 @@ import VictoriousIOSSDK
             operation.results = results
             let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
             if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                let newVisibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(newVisibleItems.array)
             }
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?( newResults, error )

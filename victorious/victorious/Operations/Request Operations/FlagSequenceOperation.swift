@@ -23,12 +23,10 @@ class FlagSequenceOperation: RequestOperation {
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
     }
     
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
-        
-        self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
-        
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
                 completion()
