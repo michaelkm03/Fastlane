@@ -82,7 +82,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, ContentViewPresenterDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -188,6 +188,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    self.contentViewPresenter.delegate = self;
     self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
@@ -669,6 +670,18 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[(VSequence *)streamItem initialImageURLs]];
         }
     }
+}
+
+#pragma mark - ContentViewPresenterDelegate
+
+- (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+}
+
+- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
 }
 
 #pragma mark - VSequenceActionsDelegate

@@ -50,12 +50,6 @@ class CommentsDataSource : PaginatedDataSource {
         )
     }
     
-    func flagSequence( completion completion: ((NSError?)->())? = nil ) {
-        FlagSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
-            completion?( error )
-        }
-    }
-    
     func deleteSequence( completion completion: ((NSError?)->())? = nil ) {
         DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
             completion?( error )
