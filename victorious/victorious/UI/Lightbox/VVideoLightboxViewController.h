@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param previewImage An image to display while the video is loading
  @param videoURL     The video URL to play
  */
-- (instancetype)initWithPreviewImage:(UIImage *)previewImage videoURL:(NSURL *)videoURL;
+- (instancetype)initWithPreviewImage:(UIImage *_Nullable)previewImage videoURL:(NSURL *)videoURL;
 
 @end
 

@@ -413,6 +413,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     else
     {
+        [self.dataSource unload];
         self.badgeNumber = 0;
     }
 }

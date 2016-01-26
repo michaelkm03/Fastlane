@@ -91,6 +91,7 @@ class CreateCommentOperation: FetcherOperation {
                     comment.thumbnailUrl = thumbnailURL.absoluteString
                     comment.mediaWidth = mediaAttachment.size?.width
                     comment.mediaHeight = mediaAttachment.size?.height
+                    comment.shouldAutoplay = mediaAttachment.shouldAutoplay
             }
             
             let allComments = [comment] + sequence.comments.array as? [VComment] ?? []

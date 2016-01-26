@@ -843,7 +843,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                  }
              }];
             
-            return YES;
+            return NO;
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )

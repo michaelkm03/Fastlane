@@ -24,7 +24,7 @@ class RepostSequenceOperation: RequestOperation {
         
         // Peform optimistic changes before the request is executed
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let user = VCurrentUser.user() else {
+            guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
                 fatalError( "User must be logged in." )
             }
             let node:VNode = context.v_findOrCreateObject( [ "remoteId" : self.nodeID ] )
