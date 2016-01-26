@@ -24,9 +24,6 @@
 #import <CoreServices/CoreServices.h>
 #endif
 
-// Make RestKit globally available
-@import RestKit;
-
 #import "VTrackingManager.h"
 #import "VAppTimingEventType.h"
 
