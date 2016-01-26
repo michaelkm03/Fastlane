@@ -61,6 +61,7 @@ struct MediaSearchExporter {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
                 }
+                return
             }
             
             // Dispatch back to main thread for completion
