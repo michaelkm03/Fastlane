@@ -30,6 +30,22 @@ extension NSManagedObjectContext {
         }
     }
     
+    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
+        
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        
+        do {
+            let results = try self.executeFetchRequest( fetchRequest ) as? [NSManagedObject] ?? []
+            for result in results {
+                deleteObject( result )
+            }
+            return true
+        } catch {
+            print( "Failed to delete objects with entity name \(entityName): \(error)" )
+            return false
+        }
+    }
+    
     func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
         let object = self.v_createObjectWithEntityName( entityName )
         configurations( object )
