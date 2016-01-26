@@ -18,7 +18,6 @@ extension VStream: PersistenceParsable {
         name                = stream.name ?? name
         count               = stream.postCount ?? count
         previewImagesObject = stream.previewImagesObject
-        streamId            = stream.streamID
         
         if let previewImageAssets = stream.previewImageAssets {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {

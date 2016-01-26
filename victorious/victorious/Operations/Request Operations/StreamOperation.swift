@@ -39,7 +39,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             
             // Parse stream items
             var displayOrder = self.request.paginator.displayOrderCounterStart
-            let streamItems = persistentStream.streamItems.array as? [VStreamItem] ?? []
+            let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
             for streamItem in streamItems {
                 streamItem.displayOrder = displayOrder++
                 streamItem.streamId = stream.streamID

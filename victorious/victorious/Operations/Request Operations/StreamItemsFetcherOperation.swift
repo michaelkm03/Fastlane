@@ -10,19 +10,18 @@ import Foundation
 
 class StreamItemsFetcherOperation: FetcherOperation {
     
-    let streamID: String
+    let streamObjectID: NSManagedObjectID
     
-    init( streamID: String ) {
-        self.streamID = streamID
+    init( streamObjectID: NSManagedObjectID ) {
+        self.streamObjectID = streamObjectID
     }
     
     override func main() {
-        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            fetchRequest.predicate = NSPredicate(format: "ANY self.streams.remoteId = %@", self.streamID )
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItem]
-            return results
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let stream = context.objectWithID(self.streamObjectID) as? VStream else {
+                return
+            }
+            self.results = stream.streamItems.array as? [VStreamItem] ?? []
         }
     }
 }
