@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "TestFairy.h"
 #import "VAppDelegate.h"
 #import "VReachability.h"
 #import "VPushNotificationManager.h"
@@ -33,7 +34,11 @@
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
+#ifdef V_ENABLE_TESTFAIRY
+    [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
+#else
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+#endif
     
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
