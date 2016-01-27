@@ -41,7 +41,6 @@
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
-@property (nonatomic, strong) VAdBreak *adBreak;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

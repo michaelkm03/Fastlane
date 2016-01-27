@@ -161,7 +161,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    [self.contentCell playAdWithAdBreak:self.viewModel.adBreak];
+    [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 
