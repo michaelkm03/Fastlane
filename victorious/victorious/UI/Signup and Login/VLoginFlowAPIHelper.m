@@ -290,7 +290,10 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     [self queueUpdateProfileOperationWithUsername:nil profileImageURL:filePath completion:^(NSError *error)
      {
-         completion(error == nil, error);
+         if (completion != nil)
+         {
+             completion(error == nil, error);
+         }
      }];
 }
 
