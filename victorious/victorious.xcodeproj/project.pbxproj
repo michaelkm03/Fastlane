@@ -502,7 +502,7 @@
 		7925E72F1C58258300946D0F /* VUserTaggingTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E72E1C58258300946D0F /* VUserTaggingTextStorage.swift */; };
 		7925E7311C58292400946D0F /* UserTaggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7301C58292400946D0F /* UserTaggingViewController.swift */; };
 		7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */; };
-		7925E7351C584E7900946D0F /* FetchUserMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */; };
+		7925E7351C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */; };
 		7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */; };
 		7938F0991C3CD055009CE091 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
@@ -2568,7 +2568,7 @@
 		7925E72E1C58258300946D0F /* VUserTaggingTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserTaggingTextStorage.swift; sourceTree = "<group>"; };
 		7925E7301C58292400946D0F /* UserTaggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTaggingViewController.swift; sourceTree = "<group>"; };
 		7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserTaggingViewController.storyboard; sourceTree = "<group>"; };
-		7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserMainContextOperation.swift; sourceTree = "<group>"; };
+		7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchManagedObjectsOnMainContextOperation.swift; sourceTree = "<group>"; };
 		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchOperationTests.swift; sourceTree = "<group>"; };
 		7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FriendFindByEmailResponse.json; sourceTree = "<group>"; };
@@ -7036,6 +7036,7 @@
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				031DE6001C54BCAB0063492B /* Executor */,
 				A763636E1C5037FB000887C4 /* FetcherOperation.swift */,
+				7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */,
 				67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A7AF872C1C4603D800B49478 /* FlagConversationOperation.swift */,
@@ -7088,7 +7089,6 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
-				7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -11317,7 +11317,7 @@
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
-				7925E7351C584E7900946D0F /* FetchUserMainContextOperation.swift in Sources */,
+				7925E7351C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
