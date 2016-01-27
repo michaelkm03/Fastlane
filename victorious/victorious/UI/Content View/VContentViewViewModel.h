@@ -12,7 +12,6 @@
 #import "VExperienceEnhancerController.h"
 #import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
-#import "VMonetizationPartner.h"
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -112,7 +111,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
 @property (nonatomic, readonly) NSInteger totalVotes;
 @property (nonatomic, strong, readonly) VLargeNumberFormatter *largeNumberFormatter;
-@property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readonly) VAdBreak *adBreak;
 @property (nonatomic, readonly) float speed;
 @property (nonatomic, readonly) BOOL loop;

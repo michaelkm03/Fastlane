@@ -161,12 +161,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
-    {
-        [self.contentCell playAd:self.viewModel.monetizationPartner
-                         adBreak:self.viewModel.adBreak];
-    }
-    
+    [self.contentCell playAdWithAdBreak:self.viewModel.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 

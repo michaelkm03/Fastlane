@@ -9,6 +9,7 @@
 import GoogleInteractiveMediaAds
 import SafariServices
 
+/// Provides an integration with Google IMA Ad system
 @objc class IMAAdViewController: VAdViewController, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
     let adTag: String
     let player: VVideoPlayer

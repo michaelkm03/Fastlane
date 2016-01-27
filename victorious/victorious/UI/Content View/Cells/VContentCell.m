@@ -231,17 +231,16 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 #pragma mark  Ad Video Player
 
-- (void)playAd:(VMonetizationPartner)monetizationPartner adBreak:(VAdBreak *)adBreak
+- (void)playAdWithAdBreak:(VAdBreak *)adBreak
 {
-    if ( self.isPreparedForDismissal || self.isPlayingAd )
+    if ( self.isPreparedForDismissal || self.isPlayingAd || adBreak.adSystemID.longLongValue != kMonetizationPartnerIMA )
     {
         return;
     }
     
     self.backgroundColor = [UIColor blackColor];
-    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
-                                                                                                 adBreak:adBreak
-                                                                                                  player:self.videoPlayer];
+    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdBreak:adBreak
+                                                                                      player:self.videoPlayer];
     if ( self.adVideoPlayerViewController != nil )
     {
         self.adVideoPlayerViewController.delegate = self;

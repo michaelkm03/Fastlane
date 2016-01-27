@@ -23,30 +23,19 @@
 
 @implementation VAdVideoPlayerViewController
 
-- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
-                          adBreak:(VAdBreak *)adBreak
-                           player:(id<VVideoPlayer>)player
+- (instancetype)initWithAdBreak:(VAdBreak *)adBreak
+               player:(id<VVideoPlayer>)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
         NSAssert(adBreak != nil, @"%@ needs an adBreak in order to initialize.", [VAdVideoPlayerViewController class]);
-        
+        NSAssert(player != nil, @"%@ needs a player in order to initialize.", [VAdVideoPlayerViewController class]);
         _adBreak = adBreak;
-        _monetizationPartner = monetizationPartner;
-
-        switch (_monetizationPartner) {
-            case VMonetizationPartnerIMA:
-                _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
-                                                                          adTag:self.adBreak.adTag
-                                                                        nibName:nil
-                                                                      nibBundle:nil];
-                break;
-                
-            default:
-                return nil;
-                break;
-        }
+        _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
+                                                                  adTag:self.adBreak.adTag
+                                                                nibName:nil
+                                                              nibBundle:nil];
     }
     return self;
 }

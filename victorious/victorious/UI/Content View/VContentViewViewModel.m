@@ -42,7 +42,6 @@
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
 @property (nonatomic, strong) VAdBreak *adBreak;
-@property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -143,20 +142,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark - Create the ad chain
-
-- (void)setupAdBreak
-{
-    if ( self.adBreak != nil )
-    {
-        return;
-    }
-    
-    self.adBreak = self.sequence.adBreak;
-    int adSystemPartner = [[self.adBreak adSystemID] intValue];
-    self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize

@@ -27,7 +27,7 @@ struct PersistentStoreTestHelper {
         } as VSequence
     }
 
-    func createAdBreak(adSystemID adSystemID: Int = VMonetizationPartner.IMA.rawValue,
+    func createAdBreak(adSystemID adSystemID: UInt = kMonetizationPartnerIMA,
         adTag: String = "http://example.com") -> VAdBreak {
             return persistentStore.mainContext.v_createObjectAndSave { adBreak in
                 adBreak.adSystemID = adSystemID

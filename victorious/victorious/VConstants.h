@@ -166,5 +166,7 @@ static NSString * const   kPollAnswerBarStoryboardID           = @"pollanswerbar
 static NSString * const   kHashTagsContainerStoryboardID       = @"hashtagscontainer";
 static NSString * const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString * const   kKeyboardBarStoryboardID             = @"keyboardbar";
-
 static NSString * const   kProfileCreateStoryboardID           = @"profileCreate";
+
+#pragma mark - Supported Ad Networks
+static NSUInteger const kMonetizationPartnerIMA = 5;

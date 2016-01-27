@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMonetizationPartner.h"
 #import "VVideoPlayer.h"
 
 @class VAdVideoPlayerViewController, VAdBreak;
@@ -35,17 +34,15 @@
 
 
 /**
- *  The designated constructor for VAdVideoPlayerViewController taking a partner and a details specification.
+ *  The designated constructor for VAdVideoPlayerViewController
  *
- *  @param monetizationPartner Enum value for which of the ad networks to use.
  *  @param adBreak             Parameters for the ad.
  *  @param player              Player where a video is played.
  *
  *  @return Returns an instance of the VAdVideoPlayerViewController class.
  */
-- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
-                          adBreak:(VAdBreak *)adBreak
-                           player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAdBreak:(VAdBreak *)adBreak
+                         player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
@@ -60,11 +57,6 @@
  Ad video player delegate object
  */
 @property (nonatomic, weak) id<VAdVideoPlayerViewControllerDelegate>delegate;
-
-/**
- Enum value to check which ad manager to load
- */
-@property (nonatomic, assign) VMonetizationPartner monetizationPartner;
 
 /**
  Method that starts the ad manager

@@ -25,11 +25,6 @@ extension VContentViewViewModel {
         SequenceFetchOperation( sequenceID: self.sequence.remoteId ).queue() { error in
             // Update the vote/EBs thrown counts
             self.experienceEnhancerController.updateData()
-
-            // Sets up the monetization chain
-            if (self.sequence.adBreak != nil) {
-                self.setupAdBreak()
-            }
             self.delegate?.didUpdateSequence()
         }
 
