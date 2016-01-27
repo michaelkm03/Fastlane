@@ -18,6 +18,7 @@ extension VSequence: PersistenceParsable {
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
+        isGifStyle              = sequence.isGifStyle ?? isGifStyle
         commentCount            = sequence.commentCount ?? commentCount
         gifCount                = sequence.gifCount ?? gifCount
         hasReposted             = sequence.hasReposted ?? hasReposted
@@ -40,7 +41,6 @@ extension VSequence: PersistenceParsable {
             tracking = v_managedObjectContext.v_createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
-        
         
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
