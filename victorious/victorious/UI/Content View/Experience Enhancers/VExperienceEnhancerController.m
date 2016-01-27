@@ -127,7 +127,6 @@
         {
             // This effectively marks it as invalid and it will not display
             // until the required images are loaded
-//            enhancer.voteType.iconImage = nil;
         }
         else
         {

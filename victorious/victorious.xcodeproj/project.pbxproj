@@ -905,7 +905,9 @@
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
-		BF79160B1C57D68300664259 /* VAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF79160A1C57D68300664259 /* VAnimationImageView.m */; };
+		BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */; };
+		BF79160B1C57D68300664259 /* VImageAnimationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BF79160A1C57D68300664259 /* VImageAnimationOperation.m */; };
+		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
@@ -3002,8 +3004,10 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		BF7916091C57D68300664259 /* VAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimationImageView.h; sourceTree = "<group>"; };
-		BF79160A1C57D68300664259 /* VAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnimationImageView.m; sourceTree = "<group>"; };
+		BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAnimationOperation.swift; sourceTree = "<group>"; };
+		BF7916091C57D68300664259 /* VImageAnimationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageAnimationOperation.h; sourceTree = "<group>"; };
+		BF79160A1C57D68300664259 /* VImageAnimationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperation.m; sourceTree = "<group>"; };
+		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
 		C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
@@ -5668,6 +5672,7 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
+				BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7543,8 +7548,9 @@
 				C3C734561B606BD500D6795D /* RadialAnimatingView.swift */,
 				C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */,
 				A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */,
-				BF7916091C57D68300664259 /* VAnimationImageView.h */,
-				BF79160A1C57D68300664259 /* VAnimationImageView.m */,
+				BF7916091C57D68300664259 /* VImageAnimationOperation.h */,
+				BF79160A1C57D68300664259 /* VImageAnimationOperation.m */,
+				BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */,
 			);
 			path = "Experience Enhancers";
 			sourceTree = "<group>";
@@ -9380,6 +9386,7 @@
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
+				BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
@@ -9548,7 +9555,7 @@
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
-				BF79160B1C57D68300664259 /* VAnimationImageView.m in Sources */,
+				BF79160B1C57D68300664259 /* VImageAnimationOperation.m in Sources */,
 				7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
@@ -9684,6 +9691,7 @@
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
+				BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */,
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
 				A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */,
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,

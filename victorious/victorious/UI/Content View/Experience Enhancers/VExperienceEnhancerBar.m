@@ -238,7 +238,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else
     {
-        NSBlockOperation * experienceEnhancerOp = [NSBlockOperation blockOperationWithBlock:^{
+        NSBlockOperation *experienceEnhancerOp = [NSBlockOperation blockOperationWithBlock:^{
             // Increment the vote count
             if ( [enhancerForIndexPath vote] )
             {
