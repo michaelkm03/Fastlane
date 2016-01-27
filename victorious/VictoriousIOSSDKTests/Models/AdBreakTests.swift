@@ -11,7 +11,6 @@ import SwiftyJSON
 @testable import VictoriousIOSSDK
 
 class AdBreakTests: XCTestCase {
-    let modelHelper = ModelHelper()
     let expectedTestAdTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples" +
         "&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1" +
     "&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator="
@@ -22,7 +21,7 @@ class AdBreakTests: XCTestCase {
     }
 
     func testValid() {
-        guard let adBreakWithEverything = createAdBreakFromJSON("AdBreakWithEverything") else {
+        guard let adBreakWithEverything = createAdBreakFromJSON(fileName: "AdBreakWithEverything") else {
             XCTFail("Failed to create an adBreak")
             return
         }
@@ -31,7 +30,7 @@ class AdBreakTests: XCTestCase {
         XCTAssertEqual(expectedTestAdTag, adBreakWithEverything.adTag)
         XCTAssertEqual("test_xml", adBreakWithEverything.cannedAdXML)
 
-        guard let adBreakWithOnlyAdTag = createAdBreakFromJSON("AdBreakWithOnlyAdTag") else {
+        guard let adBreakWithOnlyAdTag = createAdBreakFromJSON(fileName: "AdBreakWithOnlyAdTag") else {
             XCTFail("Failed to create an adBreak")
             return
         }
@@ -40,7 +39,7 @@ class AdBreakTests: XCTestCase {
         XCTAssertEqual(expectedTestAdTag, adBreakWithOnlyAdTag.adTag)
         XCTAssertEqual("", adBreakWithOnlyAdTag.cannedAdXML)
 
-        guard let adBreakWithOnlyCannedXML = createAdBreakFromJSON("AdBreakWithOnlyCannedXML") else {
+        guard let adBreakWithOnlyCannedXML = createAdBreakFromJSON(fileName: "AdBreakWithOnlyCannedXML") else {
             XCTFail("Failed to create an adBreak")
             return
         }
@@ -51,15 +50,15 @@ class AdBreakTests: XCTestCase {
     }
 
     func testInvalid() {
-        let adBreakWithUnsupportedSystemID: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithUnsupportedSystemID")
+        let adBreakWithUnsupportedSystemID: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithUnsupportedSystemID")
         XCTAssertNil(adBreakWithUnsupportedSystemID)
-        let adBreakWithoutTimeout: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithoutTimeout")
+        let adBreakWithoutTimeout: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutTimeout")
         XCTAssertNil(adBreakWithoutTimeout)
-        let adBreakWithoutAdTagAndCannedAdXML: AdBreak? = modelHelper.createModel(JSONFileName: "AdBreakWithoutAdTagAndCannedAdXML")
+        let adBreakWithoutAdTagAndCannedAdXML: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutAdTagAndCannedAdXML")
         XCTAssertNil(adBreakWithoutAdTagAndCannedAdXML)
     }
 
-    private func createAdBreakFromJSON(fileName: String) -> AdBreak? {
+    private func createAdBreakFromJSON(fileName fileName: String) -> AdBreak? {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json") else {
             XCTFail("Failed to find mock data with name \(fileName).json")
             return nil

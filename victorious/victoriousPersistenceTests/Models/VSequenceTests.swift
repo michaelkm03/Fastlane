@@ -8,24 +8,34 @@
 
 import XCTest
 @testable import VictoriousIOSSDK
-@testable import VictoriousIOSSDKTests
 @testable import victorious
 
 class VSequenceTests: BasePersistentStoreTestCase {
-    let modelHelper = ModelHelper()
-
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
     }
 
     func testValid() {
-        guard let sequenceModel: Sequence = modelHelper.createModel(JSONFileName: "SequenceWithAdBreak") else {
+        guard let sequenceModel: Sequence = createAdSequenceFromJSON(fileName: "SequenceWithAdBreak") else {
             XCTFail("Failed to create a sequence model")
             return
         }
         let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: 1)
         persistentSequenceModel.populate(fromSourceModel: sequenceModel)
         XCTAssert(persistentSequenceModel.adBreak != nil)
+    }
+
+    private func createAdSequenceFromJSON(fileName fileName: String) -> Sequence? {
+        guard let url = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json") else {
+            XCTFail("Failed to find mock data with name \(fileName).json")
+            return nil
+        }
+
+        guard let Sequence = Sequence(url: url) else {
+            return nil
+        }
+
+        return Sequence
     }
 }

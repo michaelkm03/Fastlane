@@ -11,7 +11,6 @@ import SwiftyJSON
 import XCTest
 
 class SequenceTests: XCTestCase {
-    let modelHelper = ModelHelper()
 
     override func setUp() {
         super.setUp()
