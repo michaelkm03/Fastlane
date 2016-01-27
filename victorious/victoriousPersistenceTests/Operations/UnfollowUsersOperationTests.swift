@@ -17,7 +17,6 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
 
     override func setUp() {
         super.setUp()
-        continueAfterFailure = false
         operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
@@ -57,8 +56,10 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
             XCTAssertEqual(0, updatedUser.followers.count)
             XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
             XCTAssertEqual(0, updatedCurrentUser.following.count)
-            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
+            
+            self.continueAfterFailure = false
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(VTrackingEventUserDidUnfollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
     }
