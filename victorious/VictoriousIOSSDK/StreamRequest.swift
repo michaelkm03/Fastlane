@@ -49,6 +49,9 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         } else if responseJSON["payload"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"] ])) {
                 stream = streamFromItems
+        } else if responseJSON["payload"]["content"].array != nil,
+            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"]["content"] ])) {
+                stream = streamFromItems
         } else {
             throw ResponseParsingError()
         }
