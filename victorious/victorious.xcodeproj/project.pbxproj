@@ -499,6 +499,10 @@
 		79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
+		7925E72F1C58258300946D0F /* VUserTaggingTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E72E1C58258300946D0F /* VUserTaggingTextStorage.swift */; };
+		7925E7311C58292400946D0F /* UserTaggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7301C58292400946D0F /* UserTaggingViewController.swift */; };
+		7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */; };
+		7925E7351C584E7900946D0F /* FetchUserMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */; };
 		7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */; };
 		7938F0991C3CD055009CE091 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
@@ -2561,6 +2565,10 @@
 		7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Victorious.swift"; sourceTree = "<group>"; };
 		7925A50C1BCDC20100BCA649 /* VCrashlyticsLogTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrashlyticsLogTracking.h; sourceTree = "<group>"; };
 		7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrashlyticsLogTracking.m; sourceTree = "<group>"; };
+		7925E72E1C58258300946D0F /* VUserTaggingTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserTaggingTextStorage.swift; sourceTree = "<group>"; };
+		7925E7301C58292400946D0F /* UserTaggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTaggingViewController.swift; sourceTree = "<group>"; };
+		7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserTaggingViewController.storyboard; sourceTree = "<group>"; };
+		7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserMainContextOperation.swift; sourceTree = "<group>"; };
 		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchOperationTests.swift; sourceTree = "<group>"; };
 		7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FriendFindByEmailResponse.json; sourceTree = "<group>"; };
@@ -4993,16 +5001,18 @@
 		0314D3EF19B46B5E00FA363C /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				A75DF5301C3E126C00A4C82A /* UserSearchViewController.storyboard */,
 				A75DF51A1C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift */,
-				A75DF51B1C3DBD5100A4C82A /* SearchResultsViewController.swift */,
-				5A75EAD81C51860700B08056 /* SearchDataSourceType.swift */,
-				A75DF51C1C3DBD5100A4C82A /* UserSearchDataSource.swift */,
 				A75DF5281C3E0B3F00A4C82A /* HashtagSearchDataSource.swift */,
+				5A75EAD81C51860700B08056 /* SearchDataSourceType.swift */,
+				A75DF51B1C3DBD5100A4C82A /* SearchResultsViewController.swift */,
+				A75DF51C1C3DBD5100A4C82A /* UserSearchDataSource.swift */,
 				A75DF51D1C3DBD5100A4C82A /* UserSearchResultTableViewCell.swift */,
 				A75DF5321C3E13C700A4C82A /* UserSearchResultTableViewCell.xib */,
+				A75DF5301C3E126C00A4C82A /* UserSearchViewController.storyboard */,
 				A75DF51E1C3DBD5100A4C82A /* UserSearchViewController.storyboard */,
 				A75DF51F1C3DBD5100A4C82A /* UserSearchViewController.swift */,
+				7925E7301C58292400946D0F /* UserTaggingViewController.swift */,
+				7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -6146,6 +6156,7 @@
 				03C82F1E1A81DDFE00190C7D /* VUserTaggingTextStorage.h */,
 				03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */,
 				F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */,
+				7925E72E1C58258300946D0F /* VUserTaggingTextStorage.swift */,
 			);
 			path = "User Tagging";
 			sourceTree = "<group>";
@@ -7077,6 +7088,7 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
+				7925E7341C584E7900946D0F /* FetchUserMainContextOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -9795,6 +9807,7 @@
 				037A643019F727AB0001C90B /* VVideoPlayerToolbarView.xib in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
+				7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */,
 				A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
 				03645B0F1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
@@ -10795,6 +10808,7 @@
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowSource.m in Sources */,
+				7925E72F1C58258300946D0F /* VUserTaggingTextStorage.swift in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */,
@@ -10938,6 +10952,7 @@
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				F0411E811B45AACD00557176 /* VTimeSinceWidget.m in Sources */,
+				7925E7311C58292400946D0F /* UserTaggingViewController.swift in Sources */,
 				A702C85B1C126038001EE1D5 /* PaginatedOperation.swift in Sources */,
 				031DE6041C55E3570063492B /* AlertsRequestDecorator.swift in Sources */,
 				F06B41C51B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift in Sources */,
@@ -11302,6 +11317,7 @@
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
+				7925E7351C584E7900946D0F /* FetchUserMainContextOperation.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
