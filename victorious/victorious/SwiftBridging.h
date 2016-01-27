@@ -98,7 +98,7 @@
 #import "VEnvironment.h"
 #import "VEnvironmentManager.h"
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
-#import "VExploreSearchResultsViewController.h"
+#import "DiscoverSearchViewController.h"
 #import "VFindContactsTableViewController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VFlaggedContent.h"

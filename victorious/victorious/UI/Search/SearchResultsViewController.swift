@@ -11,7 +11,11 @@ import VictoriousIOSSDK
 
 class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
-    weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
+    weak var searchResultsDelegate: SearchResultsViewControllerDelegate? {
+        didSet {
+            onDidSetSearchBarDelegate()
+        }
+    }
     var dependencyManager: VDependencyManager?
     
     lazy var activityIndicatorView: UIActivityIndicatorView = {
@@ -23,12 +27,6 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     var state: DataSourceState {
         return self.dataSource?.state ?? .Cleared
-    }
-    
-    var searchController: UISearchController = UISearchController() {
-        didSet {
-            searchController.searchBar.delegate = self
-        }
     }
     
     var dataSource: SearchDataSourceType? {
@@ -71,8 +69,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchController.searchBar.delegate = self
         dataSource?.delegate = self
+        onDidSetSearchBarDelegate()
         
         view.insertSubview(activityIndicatorView, aboveSubview: tableView)
         view.v_addCenterHorizontallyConstraintsToSubview(activityIndicatorView)
@@ -90,13 +88,18 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         
         // Unable to immediately make the searchBar first responder without this hack
         dispatch_after(0.01) {
-            self.searchController.searchBar.becomeFirstResponder()
+            self.searchResultsDelegate?.searchController?.searchBar.becomeFirstResponder()
         }
+    }
+    
+    private func onDidSetSearchBarDelegate() {
+        searchResultsDelegate?.searchController?.searchBar.delegate = self
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelect
+        RowAtIndexPath indexPath: NSIndexPath) {
         if let searchResult = dataSource?.visibleItems[ indexPath.row ] {
             searchResultsDelegate?.searchResultsViewControllerDidSelectResult(searchResult)
         }
@@ -117,7 +120,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         dataSource?.cancelCurrentOperation()
-        searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
+        searchResultsDelegate?.searchResultsViewControllerDidSelectCancel?()
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

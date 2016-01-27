@@ -24,8 +24,10 @@ protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSo
 
 @objc protocol SearchResultsViewControllerDelegate: class {
     
+    optional var searchController: UISearchController { get }
+    
     /// If the search UI contains a cancel button, respond to its selection
-    func searchResultsViewControllerDidSelectCancel()
+    optional func searchResultsViewControllerDidSelectCancel()
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }

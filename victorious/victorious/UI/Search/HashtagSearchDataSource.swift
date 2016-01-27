@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, UITableViewDataSource {
     
     private(set) var searchTerm: String?
-    private(set) var error: NSError?
     
     let dependencyManager: VDependencyManager
     
@@ -37,14 +36,11 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
             return
         }
         
-        self.error = nil
-        
         loadPage( pageType,
             createOperation: {
-                return operation
+                return HashtagSearchOperation(searchTerm: searchTerm)!
             },
             completion: { (operation, error) in
-                self.error = error
                 completion?( error )
             }
         )
