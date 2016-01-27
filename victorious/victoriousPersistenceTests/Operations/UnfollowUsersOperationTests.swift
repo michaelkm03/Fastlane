@@ -31,12 +31,12 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
         objectUser.isFollowedByMainUser = true
         objectUser.numberOfFollowers = 1
         currentUser.numberOfFollowing = 1
-        let uniqueElements = [ "subjectUser" : currentUser, "objectUser" : objectUser ]
-        let followedUser: VFollowedUser = testStore.mainContext.v_findOrCreateObject( uniqueElements )
-        followedUser.objectUser = objectUser
-        followedUser.subjectUser = currentUser
-        followedUser.displayOrder = -1
-        testStore.mainContext.v_save()
+//        let uniqueElements = [ "subjectUser" : currentUser, "objectUser" : objectUser ]
+//        let followedUser: VFollowedUser = testStore.mainContext.v_findOrCreateObject( uniqueElements )
+//        followedUser.objectUser = objectUser
+//        followedUser.subjectUser = currentUser
+//        followedUser.displayOrder = -1
+//        testStore.mainContext.v_save()
 
         queueExpectedOperation(operation: operation)
         waitForExpectationsWithTimeout(expectationThreshold) { error in
