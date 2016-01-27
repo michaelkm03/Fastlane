@@ -55,7 +55,7 @@ class AccountCreateOperation: RequestOperation {
                 }
                 user.setAsCurrentUser()
                 self.updateStoredCredentials( user )
-                self.notifyLoginChange( user, isNewUser: response.newUser )
+                VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( self.isNewUser )
                 PreloadUserInfoOperation().queueAfter(self)
                 completion()
             }
@@ -68,10 +68,5 @@ class AccountCreateOperation: RequestOperation {
         if let accountIdentifier = self.accountIdentifier {
             NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
         }
-    }
-    
-    private func notifyLoginChange( user: VUser, isNewUser: Bool ) {
-        VLoginType(rawValue: user.loginType.integerValue )?.trackSuccess( isNewUser )
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
     }
 }

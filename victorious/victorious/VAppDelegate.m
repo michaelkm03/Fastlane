@@ -11,8 +11,10 @@
 #import "VReachability.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
+#import "VUser.h"
 #import "VConstants.h"
 #import "VRootViewController.h"
+#import "VStoredLogin.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -36,6 +38,7 @@
     
 #ifdef V_ENABLE_TESTFAIRY
     [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
+    [self addLoginListener];
 #else
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
 #endif
@@ -149,5 +152,21 @@
     id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
+
+#ifdef V_ENABLE_TESTFAIRY
+- (void)addLoginListener
+{
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *_Nonnull notification)
+    {
+        VUser *user = [VCurrentUser user];
+        if ( user != nil )
+        {
+            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.name ?: @"",
+                                                                     TFSDKIdentityTraitEmailAddressKey: user.email ?: @"",
+                                                                     }];
+        }
+    }];
+}
+#endif
 
 @end

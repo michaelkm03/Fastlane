@@ -12,8 +12,6 @@ import UIKit
 /// Utilize subclasses for implementations.
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
-    private let kLoggedInChangedNotification = "com.getvictorious.LoggedInChangedNotification"
-    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
