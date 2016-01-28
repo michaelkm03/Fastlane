@@ -22,7 +22,7 @@ extension VDependencyManager {
     }
 }
 
-class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
+class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
 
     // MARK: - Factory Method
     
@@ -60,17 +60,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    /// A `CommentsDataSource` conformant object. Consumers should call methods on this variable when determining the state of the comments.
     var dataSource: CommentsDataSource? {
         didSet {
-            dataSource?.delegate = self
+            if let dataSource = dataSource {
+                collectionView.dataSource = dataSource
+                dataSource.delegate = self
+            }
         }
     }
     
     var sequence: VSequence? {
         didSet {
             if let sequence = sequence {
-                dataSource = CommentsDataSource(sequence: sequence)
+                dataSource = CommentsDataSource(sequence: sequence, dependencyManager: dependencyManager)
             } else {
                 dataSource = nil
             }
@@ -83,12 +85,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         noContentView.title = NSLocalizedString("NoCommentsTitle", comment:"")
         noContentView.message = NSLocalizedString("NoCommentsMessage", comment:"")
         noContentView.resetInitialAnimationState()
-        noContentView.setDependencyManager(dependencyManager)
+        noContentView.setDependencyManager(self.dependencyManager)
         return noContentView
     }()
     
     // MARK: - Private Properties
-    private var registeredCommentReuseIdentifiers = Set<String>()
+    
     private let scrollPaginator = VScrollPaginator()
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
@@ -215,6 +217,34 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         focusHelper?.endFocusOnCell(cell)
     }
     
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+        let cell = cell as! VContentCommentsCell
+        let comment = dataSource?.visibleItems[indexPath.item] as! VComment
+        cell.dependencyManager = dependencyManager
+        cell.comment = comment
+        cell.commentAndMediaView?.textView?.tagTapDelegate = self
+        cell.swipeViewController?.controllerDelegate = self
+        cell.commentsUtilitiesDelegate = self
+        cell.onUserProfileTapped = { [weak self] in
+            if let strongSelf = self {
+                let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user)
+                strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
+            }
+        }
+        cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
+            
+            guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView else {
+                return
+            }
+            
+            strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
+                previewImage: previewImage,
+                isVideo: strongCell.mediaIsVideo,
+                sourceView: commentAndMediaView)
+        }
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -311,56 +341,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 }
             }
         }
-    }
-    
-    // MARK: - UICollectionViewDataSource
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource?.visibleItems.count ?? 0
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        guard let commentForIndexPath = dataSource?.visibleItems[indexPath.item] as? VComment else {
-            fatalError( "Unable to find comment to display" )
-        }
-        
-        let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(commentForIndexPath)
-        if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
-            collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
-            registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
-        }
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell else {
-            fatalError("We must have registered a cell for this comment!")
-        }
-        
-        cell.dependencyManager = dependencyManager
-        cell.comment = commentForIndexPath
-        cell.commentAndMediaView?.textView?.tagTapDelegate = self
-        cell.swipeViewController?.controllerDelegate = self
-        cell.commentsUtilitiesDelegate = self
-        cell.onUserProfileTapped = { [weak self] in
-            if let strongSelf = self {
-                let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
-                strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
-            }
-        }
-        cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
-            
-            guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView else {
-                return
-            }
-            
-            strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
-                previewImage: previewImage,
-                isVideo: strongCell.mediaIsVideo,
-                sourceView: commentAndMediaView)
-        }
-        return cell
     }
     
     // MARK: LightBox
