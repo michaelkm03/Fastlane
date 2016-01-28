@@ -15,7 +15,6 @@
 @interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
-@property (nonatomic, strong) VAdViewController *adViewController;
 @property (nonatomic, readwrite) BOOL adPlaying;
 @property (nonatomic, strong) VAdBreak *adBreak;
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VVideoPlayer.h"
+#import "VAdViewController.h"
 
 @class VAdVideoPlayerViewController, VAdBreak;
 
@@ -57,6 +58,11 @@
  Ad video player delegate object
  */
 @property (nonatomic, weak) id<VAdVideoPlayerViewControllerDelegate>delegate;
+
+/**
+ ViewController instance that deals with an add provider
+ */
+@property (nonatomic, readwrite) VAdViewController *adViewController;
 
 /**
  Method that starts the ad manager
