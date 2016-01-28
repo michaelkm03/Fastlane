@@ -60,6 +60,7 @@ class VCurrentUser: NSObject {
     static func clear() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = nil
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
     }
 }
@@ -77,6 +78,7 @@ extension VUser {
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
     }
     

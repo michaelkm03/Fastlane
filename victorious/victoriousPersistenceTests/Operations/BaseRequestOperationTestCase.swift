@@ -24,12 +24,10 @@ class BaseRequestOperationTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
+        testStore.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
-    }
-    
-    override func tearDown() {
     }
 
     /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.

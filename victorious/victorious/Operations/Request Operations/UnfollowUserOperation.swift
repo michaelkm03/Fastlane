@@ -35,6 +35,8 @@ class UnfollowUserOperation: RequestOperation {
             
             let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
             if let followedUser: VFollowedUser = context.v_findObjects( uniqueElements ).first {
+                objectUser.v_removeObject(followedUser, from: "followers")
+                subjectUser.v_removeObject(followedUser, from: "following")
                 context.deleteObject( followedUser )
             }
 
