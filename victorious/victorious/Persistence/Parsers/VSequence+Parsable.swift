@@ -59,21 +59,21 @@ extension VSequence: PersistenceParsable {
             self.parentUser = persistentParentUser
         }
         
-        if let previewImageAssets   = sequence.previewImageAssets {
+        if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-                }) ?? self.previewImageAssets
+                })
         }
         
-        if let nodes = sequence.nodes {
+        if let nodes = sequence.nodes where nodes.count > 0 {
             self.nodes = NSOrderedSet(array: nodes.flatMap {
                 let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.nodeID ])
                 node.populate( fromSourceModel: $0 )
                 node.sequence = self
                 return node
-            }) ?? self.nodes
+            })
         }
     }
 }
