@@ -1016,7 +1016,6 @@
 		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
-		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */; };
@@ -1536,7 +1535,6 @@
 		D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD519CB7C80007FD86A /* VTickerCell.xib */; };
 		D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */; };
 		D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E5A4EC1AAA72C30019F231 /* VBlurOverPresentationController.m */; };
-		D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E5A4F91AAA76460019F231 /* VBlurOverTransitioner.m */; };
 		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
 		D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */; };
 		D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */; };
@@ -3368,8 +3366,6 @@
 		A7B514511A4517A80074282F /* VUtilityButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonCell.h; sourceTree = "<group>"; };
 		A7B514521A4517A80074282F /* VUtilityButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonCell.m; sourceTree = "<group>"; };
 		A7B514571A464E770074282F /* VUtilityButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUtilityButtonCell.xib; sourceTree = "<group>"; };
-		A7B89EEE1AA7B26A00475CC2 /* VPresentWithBlurTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPresentWithBlurTransition.h; sourceTree = "<group>"; };
-		A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPresentWithBlurTransition.m; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTestHelpers.h; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTestHelpers.m; sourceTree = "<group>"; };
 		A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableSection.h; sourceTree = "<group>"; };
@@ -4107,8 +4103,6 @@
 		D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
 		D8E5A4EB1AAA72C30019F231 /* VBlurOverPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurOverPresentationController.h; sourceTree = "<group>"; };
 		D8E5A4EC1AAA72C30019F231 /* VBlurOverPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurOverPresentationController.m; sourceTree = "<group>"; };
-		D8E5A4F81AAA76460019F231 /* VBlurOverTransitioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurOverTransitioner.h; sourceTree = "<group>"; };
-		D8E5A4F91AAA76460019F231 /* VBlurOverTransitioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurOverTransitioner.m; sourceTree = "<group>"; };
 		D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
 		D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
@@ -7138,8 +7132,6 @@
 				D8E5A4EA1AAA72C30019F231 /* Presentation Controllers */,
 				D8E5A4F71AAA761B0019F231 /* Transitioners */,
 				A7738B091A4A3744008EA973 /* VAnimatedTransition.h */,
-				A7B89EEE1AA7B26A00475CC2 /* VPresentWithBlurTransition.h */,
-				A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */,
 				A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */,
 				A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */,
 				A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */,
@@ -8802,8 +8794,6 @@
 			children = (
 				A6EED6A71B5EE4210074052E /* VAlongsideTransitioner.h */,
 				A6EED6A81B5EE4210074052E /* VAlongsideTransitioner.m */,
-				D8E5A4F81AAA76460019F231 /* VBlurOverTransitioner.h */,
-				D8E5A4F91AAA76460019F231 /* VBlurOverTransitioner.m */,
 			);
 			path = Transitioners;
 			sourceTree = "<group>";
@@ -11131,7 +11121,6 @@
 				D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				C348D2111B8C03CA0040042C /* Memoization.swift in Sources */,
-				D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */,
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
 				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
@@ -11521,7 +11510,6 @@
 				A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
-				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
 				79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */,

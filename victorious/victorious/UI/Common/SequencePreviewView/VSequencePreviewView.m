@@ -180,7 +180,7 @@
 
 - (UIColor *)defaultBackgroundColor
 {
-    return [UIColor blackColor];
+    return [UIColor clearColor];
 }
 
 - (void)updateBackgroundColorAnimated:(BOOL)animated
