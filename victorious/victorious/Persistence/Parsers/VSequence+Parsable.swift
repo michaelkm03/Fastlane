@@ -50,7 +50,7 @@ extension VSequence: PersistenceParsable {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-            })
+            }) ?? self.previewImageAssets
         }
         
         if let nodes = sequence.nodes {
@@ -58,7 +58,7 @@ extension VSequence: PersistenceParsable {
                 let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.nodeID ])
                 node.populate( fromSourceModel: $0 )
                 return node
-            })
+            }) ?? self.nodes
         }
     }
 }
