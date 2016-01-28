@@ -10,44 +10,39 @@
 #import "VDiscoverContainerViewController.h"
 #import "VDiscoverSuggestedPeopleSectionCell.h"
 #import "VStream+Fetcher.h"
-#import "VTrendingTagCell.h"
+#import "VHashtagCell.h"
 #import "VDiscoverHeaderView.h"
 #import "VDiscoverSuggestedPeopleViewController.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Discover.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
 #import "VDiscoverViewControllerProtocol.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
-#import "VAuthorizedAction.h"
 #import <KVOController/FBKVOController.h>
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
-#import "VFollowResponder.h"
+#import "NSArray+VMap.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
-static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
+static NSString * const kVTrendingTagIdentifier = @"VHashtagCell";
 static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
-@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer, VFollowResponder>
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VDiscoverSuggestedPeopleDelegate, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
-@property (nonatomic, strong) NSArray *trendingTags;
+@property (nonatomic, strong) NSArray<HashtagSearchResultObject *> *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaderTitles;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL loadedUserFollowing;
@@ -92,12 +87,14 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                              selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
+    VUser *currentUser = [VCurrentUser user];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:NSStringFromSelector(@selector(hashtags))
+    [self.KVOController observe:currentUser
+                        keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    
+    [self.KVOController observe:currentUser
                         keyPath:NSStringFromSelector(@selector(following))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedUsers)];
@@ -111,6 +108,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     
     if ( self.hasLoadedOnce )
     {
+        // FIXME: Remove this line and use the original proper reload logic described below
         [self.tableView reloadData];
         
         // Only refresh suggested users if main user has followed someone since the last time they visited
@@ -190,7 +188,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.trendingTags = hashtags;
     
     // If logged in, load any tags already being followed
-    if ([VObjectManager sharedManager].authorized)
+    if ( [VCurrentUser user] != nil )
     {
         [self updatedFollowedTags];
     }
@@ -215,14 +213,19 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)reload
 {
-    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self hashtagsDidLoad:resultObjects];
-     }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self hashtagsDidFailToLoadWithError:error];
-     }];
+    TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            NSArray *hashtags = operation.results;
+            [self hashtagsDidLoad:hashtags];
+        }
+        else
+        {
+            [self hashtagsDidFailToLoadWithError:error];
+        }
+    }];
 }
 
 - (void)updatedFollowedTags
@@ -242,7 +245,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isShowingNoData
 {
-    BOOL tagFollowStatesAreValid = [[VObjectManager sharedManager] mainUser] == nil || self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [VCurrentUser user] == nil || self.loadedUserFollowing;
     return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
@@ -257,7 +260,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
 
-#pragma mark - VSuggestedPeopleCollectionViewControllerDelegate
+#pragma mark - VDiscoverSuggestedPeopleDelegate
 
 - (void)suggestedPeopleDidFailToLoad
 {
@@ -353,51 +356,39 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         }
         else
         {
-            VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
+            VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             
-            VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-            [customCell setHashtag:hashtag];
+            HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
+            NSString *hashtagText = hashtag.tag;
+            [customCell setHashtagText:hashtagText];
+            [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
             
-            __weak VTrendingTagCell *weakCell = customCell;
-            customCell.subscribeToTagAction = ^(void)
+            __weak VHashtagCell *weakCell = customCell;
+            __weak VDiscoverViewController *weakSelf = self;
+            customCell.onToggleFollowHashtag = ^(void)
             {
-                __strong VTrendingTagCell *strongCell = weakCell;
-                
-                if ( strongCell == nil )
+                __strong VHashtagCell *strongCell = weakCell;
+                __strong VDiscoverViewController *strongSelf = weakSelf;
+                if ( strongCell == nil || strongSelf == nil )
                 {
                     return;
                 }
                 
-                // Disable follow / unfollow button
-                if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
+                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+                RequestOperation *operation;
+                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
                 {
-                    return;
+                    operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
-                
-                // Check for authorization first
-                VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                            dependencyManager:self.dependencyManager];
-                [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
-                 {
-                     if (!authorized)
-                     {
-                         [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
-                         return;
-                     }
-                     
-                     [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
-                     
-                     // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                     if ([self isUserSubscribedToHashtag:hashtag.tag])
-                     {
-                         [self unsubscribeToTagAction:hashtag];
-                     }
-                     else
-                     {
-                         [self subscribeToTagAction:hashtag];
-                     }
-                 }];
+                else
+                {
+                    operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
+                }
+                [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+                    [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
+                }];
             };
+            
             customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
@@ -409,6 +400,20 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     }
     
     return cell;
+}
+
+- (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
+{
+    VFollowControlState controlState;
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
+    {
+        controlState = VFollowControlStateFollowed;
+    }
+    else
+    {
+        controlState = VFollowControlStateUnfollowed;
+    }
+    [followControl setControlState:controlState animated:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -432,7 +437,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VDiscoverSuggestedPeopleSectionCell cellHeight] : [VTrendingTagCell cellHeight];
+    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VDiscoverSuggestedPeopleSectionCell cellHeight] : [VHashtagCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -440,8 +445,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-        
+        HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
         // Tracking
         NSDictionary *params = @{ VTrackingKeyHashtag : hashtag.tag ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectTrendingHashtag parameters:params];
@@ -453,89 +457,10 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 #pragma mark - Show Hashtag Stream
 
-- (void)showStreamWithHashtag:(VHashtag *)hashtag
+- (void)showStreamWithHashtag:(HashtagSearchResultObject *)hashtag
 {
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark - Subscribe / Unsubscribe Actions
-
-- (BOOL)isUserSubscribedToHashtag:(NSString *)tag
-{
-    for ( VHashtag *hashtag in [[VObjectManager sharedManager] mainUser].hashtags )
-    {
-        if ( [hashtag.tag isEqualToString:tag] )
-        {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (void)subscribeToTagAction:(VHashtag *)hashtag
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
-    
-    // Backend Call to Subscribe to Hashtag
-    
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }
-                  failureBlock:^(NSError *error)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-         self.failureHud.mode = MBProgressHUDModeText;
-         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-         [self.failureHud hide:YES afterDelay:3.0f];
-     }];
-}
-
-- (void)unsubscribeToTagAction:(VHashtag *)hashtag
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
-    
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }
-            failureBlock:^(NSError *error)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-         self.failureHud.mode = MBProgressHUDModeText;
-         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-         [self.failureHud hide:YES afterDelay:3.0f];
-     }];
-}
-
-- (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
-{
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-    
-    for (UITableViewCell *cell in self.tableView.visibleCells)
-    {
-        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
-        {
-            VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
-            if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
-            {
-                VFollowControlState controlState = VFollowControlStateLoading;
-                if ( respond )
-                {
-                    controlState = [VFollowControl controlStateForFollowing:trendingCell.isSubscribedToTag];
-                }
-                [trendingCell.followHashtagControl setControlState:controlState animated:YES];
-                return;
-            }
-        }
-    }
 }
 
 #pragma mark - VCoachmarkDisplayer
@@ -553,44 +478,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (UIEdgeInsets)v_layoutInsets
 {
     return [self.parentViewController v_layoutInsets];
-}
-
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user 
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                    withScreenName:sourceScreen];
 }
 
 #pragma mark - VTabMenuContainedViewControllerNavigation

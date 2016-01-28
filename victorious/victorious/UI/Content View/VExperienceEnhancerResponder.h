@@ -19,13 +19,4 @@
  */
 - (void)showPurchaseViewController:(VVoteType *)voteType;
 
-/**
- Presents a login/signup view controller in the appropriate place in the view
- controller hierarchy and calls the completion block when the process
- is complete.  The BOOL parameter of the completion block indicates whether
- or not the user completed the authorization process successfully and is now
- logged in.
- */
-- (void)authorizeWithCompletion:(void(^)(BOOL))completion;
-
 @end

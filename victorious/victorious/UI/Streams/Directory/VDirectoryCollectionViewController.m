@@ -7,10 +7,7 @@
 //
 
 #import "VDirectoryCollectionViewController.h"
-#import "VDependencyManager+VObjectManager.h"
-#import "VStream+Fetcher.h"
 #import "NSString+VParseHelp.h"
-#import "VObjectManager.h"
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
@@ -20,7 +17,6 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
@@ -33,6 +29,8 @@
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
+
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
 
@@ -44,7 +42,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 @interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
-@property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 /**
@@ -57,8 +54,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @end
 
 @implementation VDirectoryCollectionViewController
-
-@synthesize collectionView = _collectionView;
 
 #pragma mark - Initializers
 
@@ -114,22 +109,25 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
     if ( sequenceID != nil )
     {
-        VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+        VSDKURLMacroReplacement *urlMacroReplacement = [[VSDKURLMacroReplacement alloc] init];
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }
     
     NSString *path = [url v_pathComponent];
-    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    NSDictionary *query = @{ @"apiPath" : path };
+    __block VStream *stream = nil;
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        [persistentStore.mainContext save:nil];
+    }];
+    
     NSObject <VDirectoryCellFactory> *cellFactory = [[VDirectoryContentCellFactory alloc] initWithDependencyManager:dependencyManager];
-    return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
-}
-
-- (void)dealloc
-{
-    _collectionView.delegate = nil;
-    _collectionView.dataSource = nil;
+    VDirectoryCollectionViewController *directoryVC = [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
+    
+    return directoryVC;
 }
 
 #pragma mark - Shared setup
@@ -161,7 +159,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
+    self.streamDataSource.paginatedDataSource.delegate = self;
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
     
@@ -269,7 +267,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return [self.marqueeController desiredSizeWithCollectionViewBounds:localCollectionView.bounds];
     }
     
-    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row]];
+    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row]];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -368,7 +366,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return (UICollectionViewCell *)[self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
     }
     
-    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
+    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)localCollectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -406,6 +404,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.collectionView setContentOffset:CGPointZero animated:YES];
+}
+
+#pragma mark - Paginated Data Source Delegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 @end

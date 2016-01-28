@@ -7,21 +7,20 @@
 //
 
 #import "VDeeplinkReceiver.h"
-#import "VAuthorizedAction.h"
 #import "VMultipleContainer.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VTabScaffoldViewController.h"
+#import "VUser.h"
+#import "victorious-Swift.h"
 
 #define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, readonly) VTabScaffoldViewController *scaffold;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deep link URL that came in before we were ready for it
 
@@ -36,12 +35,12 @@
     {
 #if FORCE_DEEPLINK
 #warning FORCE_DEEPLINK is activated.  A hardcoded deep link will automatically open with each app launch
-        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/3533"];
-//        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/15461"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-//        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/431"];
-//        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
+         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/2694"];
+        // NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
+        // NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/5618"];
+        // NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
+        // NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/3694"];
+        // NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
         [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
 #endif
     }
@@ -55,7 +54,7 @@
 
 - (BOOL)canReceiveDeeplinks
 {
-    return self.scaffold != nil;
+    return self.scaffold != nil && [VCurrentUser user] != nil;
 }
 
 - (void)queueDeeplink:(NSURL *)url
@@ -77,7 +76,7 @@
 
 - (void)receiveQueuedDeeplink
 {
-    if ( self.queuedURL != nil )
+    if ( self.queuedURL != nil && self.canReceiveDeeplinks )
     {
         [self receiveDeeplink:self.queuedURL];
         self.queuedURL = nil;
@@ -107,19 +106,7 @@
     {
         if ( handler.requiresAuthorization )
         {
-            VAuthorizationContext context = VAuthorizationContextDefault;
-            if ( [handler respondsToSelector:@selector(authorizationContext)] )
-            {
-                context = handler.authorizationContext;
-            }
-            typeof(self) __weak welf = self;
-            [self.authorizedAction performFromViewController:self.scaffold context:context completion:^(BOOL authorized)
-             {
-                 if ( authorized )
-                 {
-                     [welf executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
-                 }
-             }];
+            [self executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
         }
         else
         {
@@ -238,24 +225,13 @@
 
 - (void)showBadDeeplinkError
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                    message:NSLocalizedString(@"Missing Content Message", nil)
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles:nil];
-    [alert show];
-}
-
-#pragma mark - Authorized actions
-
-- (VAuthorizedAction *)authorizedAction
-{
-    if ( _authorizedAction == nil )
-    {
-        _authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[self.dependencyManager objectManager]
-                                                           dependencyManager:self.dependencyManager];
-    }
-    return _authorizedAction;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                                             message:NSLocalizedString(@"Missing Content Message", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self.scaffold presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

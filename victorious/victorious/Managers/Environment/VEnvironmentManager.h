@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VEnvironmentManager.h"
-#import "VEnvironment.h"
+@class VEnvironment;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  This category contains methods related to getting/setting the current server environment.
@@ -15,13 +16,13 @@
 @interface VEnvironmentManager : NSObject
 
 @property (nonatomic, strong) VEnvironment *currentEnvironment;
-
 @property (nonatomic, readonly) NSArray *allEnvironments; ///< array of VEnvironment objects
 
 + (instancetype)sharedInstance;
 
-- (BOOL)addEnvironment:(VEnvironment *)currentEnvironment;
-
+- (BOOL)addEnvironment:(VEnvironment *)environment;
 - (void)revertToPreviousEnvironment;
 
 @end
+
+NS_ASSUME_NONNULL_END

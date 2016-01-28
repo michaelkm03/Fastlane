@@ -7,104 +7,62 @@
 //
 
 #import "VStreamCollectionViewDataSource.h"
-
-//UI
 #import "VCardDirectoryCell.h"
 #import "VFooterActivityIndicatorView.h"
-
-//Managers
-#import "VObjectManager+Pagination.h"
-#import "VPaginationManager.h"
-
-//Data Models
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
-
-static char KVOContext;
-
-NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
-
-@interface VStreamCollectionViewDataSource()
-
-@property (nonatomic) BOOL isLoading;
-@property (nonatomic, strong) NSArray *visibleStreamItems;
-
-@end
+#import "victorious-Swift.h"
 
 @implementation VStreamCollectionViewDataSource
 
-- (void)dealloc
+- (instancetype)init
 {
-    [self removeKVOObservers];
+    NSAssert( NO, @"VStreamCollectionViewDataSource must be instantiated using the designated initializer that contains a `VStream` argument" );
+    return nil;
 }
 
 - (instancetype)initWithStream:(VStream *)stream
 {
-    self = [self init];
+    self = [super init];
     if ( self != nil )
     {
-        self.visibleStreamItems = @[];
-        self.stream = stream;
+        _stream = stream;
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
+        _paginatedDataSource.delegate = self;
+        _visibleItems = [[NSOrderedSet alloc] init];
     }
     return self;
 }
 
-- (void)setStream:(VStream *)stream
+- (void)setSuppressShelves:(BOOL)suppressShelves
 {
-    if (stream == _stream)
+    if ( _suppressShelves == suppressShelves )
     {
         return;
     }
-    
-    [self removeKVOObservers];
-    
-    _stream = stream;
-    
-    if ( stream != nil )
-    {
-        [stream addObserver:self
-                 forKeyPath:NSStringFromSelector(@selector(streamItems))
-                    options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                    context:&KVOContext];
-    }
-}
-
-- (void)setSuppressShelves:(BOOL)suppressShelves
-{
-    BOOL needsUpdate = _suppressShelves != suppressShelves;
     _suppressShelves = suppressShelves;
-    if ( needsUpdate )
-    {
-        [self updateVisibleStreamItems];
-    }
+    [self paginatedDataSource:self.paginatedDataSource didUpdateVisibleItemsFrom:self.visibleItems to:self.visibleItems];
 }
 
-- (void)updateVisibleStreamItems
+- (BOOL)hasLoadedLastPage
 {
-    self.visibleStreamItems = self.suppressShelves ? [self streamItemsWithoutShelves] : self.stream.streamItems.array;
-    if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
-    {
-        [self.delegate dataSource:self
-                hasNewStreamItems:self.visibleStreamItems];
-    }
-    [self.collectionView reloadData];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
-                                                        object:self];
+    return self.paginatedDataSource.hasLoadedLastPage;
 }
 
-- (NSArray *)streamItemsWithoutShelves
+- (BOOL)isLoading
 {
-    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings) {
+    return self.paginatedDataSource.isLoading;
+}
+
+- (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems
+{
+    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings)
+    {
         return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
     }];
-    return [self.stream.streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate];
-}
-
-- (void)removeKVOObservers
-{
-    [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
+    return [[NSOrderedSet alloc] initWithArray:[streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate]];
 }
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
@@ -114,68 +72,19 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return nil;
     }
     
-    return [self.visibleStreamItems objectAtIndex:indexPath.row];
+    return [self.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
     NSInteger section = self.hasHeaderCell ? 1 : 0;
-    NSUInteger index = [self.visibleStreamItems indexOfObject:streamItem];
+    NSUInteger index = [self.paginatedDataSource.visibleItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
-}
-
-- (void)removeStreamItem:(VStreamItem *)streamItem
-{
-    NSMutableOrderedSet *tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.stream.streamItems];
-    [tempSet removeObject:streamItem];
-    self.stream.streamItems = tempSet;
 }
 
 - (NSUInteger)count
 {
-    return self.visibleStreamItems.count;
-}
-
-- (void)unloadStream
-{
-    self.stream.streamItems = [[NSOrderedSet alloc] init];
-    self.stream.marqueeItems = [[NSOrderedSet alloc] init];
-}
-
-- (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
-{
-    self.isLoading = YES;
-    [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:pageType
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         if ( successBlock != nil )
-         {
-             successBlock();
-         }
-         self.isLoading = NO;
-         
-     }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( failureBlock != nil )
-         {
-             failureBlock( error );
-         }
-         self.isLoading = NO;
-     }];
-}
-
-- (BOOL)isFilterLoading
-{
-    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
-    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
-}
-
-- (BOOL)canLoadNextPage
-{
-    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
-    return [filter canLoadPageType:VPageTypeNext];
+    return self.paginatedDataSource.visibleItems.count;
 }
 
 - (NSInteger)sectionIndexForContent
@@ -197,7 +106,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return;
     }
     _hasHeaderCell = hasHeaderCell;
-    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -240,10 +148,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
-    if ( isFooter && [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
-        [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
+    if ( isFooter && [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
-        return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+        return [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]
                                                               forIndexPath:indexPath];
     }
@@ -252,17 +159,10 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return [(id <UICollectionViewDataSource>)self.delegate collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
-    return nil;
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
-    {
-        [self updateVisibleStreamItems];
-    }
+    //In case none of the above cases executed, and to prevent crash
+    NSString *failureReusableIdentifier = @"failureReusableViewIdentifier";
+    [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier];
+    return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier forIndexPath:indexPath];
 }
 
 @end

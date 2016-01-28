@@ -30,10 +30,10 @@
 @dynamic thumbnailUrl;
 @dynamic userId;
 @dynamic inStreamSequence;
-@dynamic commentMedia;
 @dynamic sequence;
 @dynamic user;
 @dynamic mediaWidth;
 @dynamic mediaHeight;
+@dynamic displayOrder;
 
 @end

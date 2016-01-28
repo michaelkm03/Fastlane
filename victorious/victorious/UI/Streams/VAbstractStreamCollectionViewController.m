@@ -10,33 +10,26 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
 #import "MBProgressHUD.h"
-#import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 #import "VScrollPaginator.h"
-#import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
-
-@property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 @property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
-@property (nonatomic, assign) BOOL isRefreshingFirstPage;
 
 @property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
@@ -120,14 +113,19 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [[VObjectManager sharedManager] mainUser] != nil;
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
+
     if ( shouldRefresh )
     {
-        [self refreshWithCompletion:nil];
-    }
-    else if ( self.isRefreshingFirstPage )
-    {
-        [self.refreshControl beginRefreshing];
+        BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+        if (isPreLoaded)
+        {
+            [self loadPreloadedStreamWithCompletion:nil];
+        }
+        else
+        {
+            [self loadPage:VPageTypeFirst completion:nil];
+        }
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -182,7 +180,7 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.visibleItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
@@ -276,7 +274,7 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self refreshWithCompletion:^
+    [self loadPage:VPageTypeFirst completion:^
      {
          [self updateRowCount];
      }];
@@ -288,65 +286,68 @@
     self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
+- (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if (self.streamDataSource.isFilterLoading)
+    if ( self.streamDataSource.isLoading )
     {
-        if ( !self.isRefreshingFirstPage )
-        {
-            [self.refreshControl endRefreshing];
-        }
+        [self.refreshControl endRefreshing];
         return;
     }
     
-    self.isRefreshingFirstPage = YES;
-    [self.refreshControl beginRefreshing];
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
+    {
+        [self.refreshControl beginRefreshing];
+    }
     
-    [self.appTimingStreamHelper startStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
-    
-    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
-    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
-     ^{
+    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
+     {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
-         BOOL viewIsVisible = self.parentViewController != nil;
-         if ( viewIsVisible )
+         if ( error != nil )
          {
-             if ( wasUserPostAllowed != self.currentStream.isUserPostAllowed.boolValue )
-             {
-                 [self updateNavigationItems];
-             }
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
          }
          
-         if (completionBlock)
+         if ( completion != nil )
          {
-             completionBlock();
+             completion();
          }
-         self.isRefreshingFirstPage = NO;
-         [self.refreshControl endRefreshing];
          
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
-     }
-                            failure:^(NSError *error)
-     {
-         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-         hud.mode = MBProgressHUDModeText;
-         hud.labelText = NSLocalizedString(@"RefreshError", @"");
-         hud.userInteractionEnabled = NO;
-         [hud hide:YES afterDelay:3.0];
-         
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
+- (void)loadPreloadedStreamWithCompletion:(void(^)(void))completion
+{
+    [self.streamDataSource loadPreloadedStream:^(NSError *_Nullable error)
+    {
+        [self.streamTrackingHelper streamDidLoad:self.currentStream];
+
+        if ( error != nil )
+        {
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
+        }
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
+        
+        [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+    }];
+}
+
 - (void)positionRefreshControl
 {
-    UIView *subView = self.refreshControl.subviews[0];
-    
-    // Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
-    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds), CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
+    UIView *subView = self.refreshControl.subviews.firstObject;
+    if (subView != nil)
+    {
+        // Since we're using the collection flow delegate method for the insets
+        // we need to manually position the frame of the refresh control.
+        subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
+                                     CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
+    }
 }
 
 #pragma mark - Bottom activity indicator footer
@@ -379,7 +380,7 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
+    const BOOL canLoadNextPage = !self.streamDataSource.hasLoadedLastPage;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
@@ -424,7 +425,6 @@
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
-    
     return CGSizeZero;
 }
 
@@ -448,29 +448,30 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
+    if ( self.collectionView.visibleCells.count == 0 ||
+         self.streamDataSource.visibleItems.count == 0 ||
+         self.streamDataSource.isLoading )
     {
         return;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
-    
-    [self.appTimingStreamHelper startStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
-    
-    [self.streamDataSource loadPage:VPageTypeNext withSuccess:
-     ^{
-         __weak typeof(self) welf = self;
-         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                        {
-                            [welf.collectionView flashScrollIndicators];
-                        });
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
-     }
-                            failure:^(NSError *error)
+    __weak typeof(self) welf = self;
+    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
      {
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
+         [welf.collectionView flashScrollIndicators];
+         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }];
+}
+
+- (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
+{
+    __weak typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [welf.collectionView flashScrollIndicators];
+                   });
 }
 
 #pragma mark - UIScrollViewDelegate

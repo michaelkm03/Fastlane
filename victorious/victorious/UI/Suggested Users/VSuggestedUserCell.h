@@ -11,7 +11,7 @@
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
 
-@class VUser;
+@class VUser, VSuggestedUser;
 
 /**
  Collection cell designed to show some user info and a child collection view of
@@ -21,6 +21,10 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, strong) VUser *user;
+/**
+ Configure the cell with a VSuggestedUser object, which contains information about
+ the user and his/her recent posts
+ */
+- (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser;
 
 @end

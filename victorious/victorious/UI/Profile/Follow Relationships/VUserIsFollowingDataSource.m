@@ -11,9 +11,7 @@
 #import "VConstants.h"
 #import "MBProgressHUD.h"
 #import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VAuthorizedAction.h"
+#import "victorious-Swift.h"
 
 @interface VUserIsFollowingDataSource ()
 
@@ -46,13 +44,13 @@
 
 - (NSString *)noContentTitle
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
+    const BOOL isCurrentUser = [[VUser currentUser] isEqual:self.user];
     return isCurrentUser ? NSLocalizedString( @"NotFollowingTitle", @"" ) : NSLocalizedString( @"ProfileNotFollowingTitle", @"" );
 }
 
 - (NSString *)noContentMessage
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
+    const BOOL isCurrentUser = [[VUser currentUser] isEqual:self.user];
     return isCurrentUser ? NSLocalizedString( @"NotFollowingMessage", @"" ) : NSLocalizedString( @"ProfileNotFollowingMessage", @"" );
 }
 

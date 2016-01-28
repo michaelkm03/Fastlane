@@ -12,8 +12,6 @@
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
-#import "VAuthorizedAction.h"
-#import "VObjectManager.h"
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
@@ -49,11 +47,6 @@ static const char kAssociatedObjectSourceViewControllerKey;
 static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 @implementation VDependencyManager (VAccessoryScreens)
-
-- (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
-{
-    [self addAccessoryScreensToNavigationItem:navigationItem fromViewController:nil];
-}
 
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
                            fromViewController:(UIViewController *)sourceViewController
@@ -303,50 +296,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         return NO;
     }
     
-    UIViewController<VNavigationDestination> *destination = menuItem.destination;
     UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
-    
-    BOOL canNavigationToDestination = YES;
-    if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] )
-    {
-        canNavigationToDestination = [destination shouldNavigateWithAlternateDestination:&destination];
-    }
-    
-    BOOL requiresAuthorization = NO;
-    VAuthorizationContext context = VAuthorizationContextDefault;
-    
-    // First check if the source requires authorization
-    id <VAccessoryNavigationSource> source = (id <VAccessoryNavigationSource>)sourceViewController;
-    if ( [source respondsToSelector:@selector(menuItem:requiresAuthorizationWithContext:)] )
-    {
-        requiresAuthorization = [source menuItem:menuItem requiresAuthorizationWithContext:&context];
-    }
-    
-    // Then check if the desination requires authorization
-    id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
-    if ( !requiresAuthorization &&
-        [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] )
-    {
-        requiresAuthorization = authorizedDestination.requiresAuthorization;
-        context = [authorizedDestination authorizationContext];
-    }
-    
-    if ( requiresAuthorization )
-    {
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                             dependencyManager:self];
-        [authorizedAction performFromViewController:sourceViewController context:context completion:^(BOOL authorized)
-         {
-             if ( authorized && canNavigationToDestination )
-             {
-                 [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
-             }
-         }];
-    }
-    else if ( canNavigationToDestination )
-    {
-        [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
-    }
+    [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
     
     return YES;
 }

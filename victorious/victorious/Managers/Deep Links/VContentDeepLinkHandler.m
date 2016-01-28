@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+Sequence.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -36,7 +34,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         NSParameterAssert( _dependencyManager != nil );
-        NSParameterAssert( [_dependencyManager objectManager] != nil );
                               
         _scaffoldViewController = [dependencyManager scaffoldViewController];
         NSParameterAssert( _scaffoldViewController != nil );
@@ -72,40 +69,45 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         return;
     }
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
-    
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    
     NSNumber *commentId = nil;
+    
     NSString *commentIDString = [url v_pathComponentAtIndex:2];
     if ( commentIDString != nil )
     {
-        commentId = @([commentIDString integerValue]);
+        // TODO: Deep link to comment is disabled until implemented with 4.0 architecture
+        // commentId = @([commentIDString integerValue]);
     }
     
     NSString *streamId = [url v_pathComponentAtIndex:3];
     
-    [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
-                                         inStreamWithStreamID:streamId
-                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.streamId = streamId;
+    context.commentId = commentId;
+    context.viewController = self.scaffoldViewController.rootNavigationController;
+    context.originDependencyManager = self.dependencyManager;
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
+    [self loadSequence:sequenceID completion:^(NSError *_Nullable error)
      {
-         [hud hide:YES];
-         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         
-         ContentViewContext *context = [[ContentViewContext alloc] init];
-         context.sequence = sequence;
-         context.streamId = streamId;
-         context.commentId = commentId;
-         context.viewController = self.scaffoldViewController.rootNavigationController;
-         context.originDependencyManager = self.dependencyManager;
-         [self.contentViewPresenter presentContentViewWithContext:context];
-         
-         completion( YES, nil );
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-         completion( NO, nil );
+         if ( error == nil )
+         {
+             [hud hide:YES];
+             
+             id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
+             [persistentStore.mainContext performBlockAndWait:^
+              {
+                  NSArray *objects = [persistentStore.mainContext v_findObjectsWithEntityName:[VSequence v_entityName]
+                                                                            queryDictionary:@{ @"remoteId" : sequenceID }];
+                  context.sequence = (VSequence *)[objects firstObject];
+              }];
+             [self.contentViewPresenter presentContentViewWithContext:context];
+         }
+         else
+         {
+             [hud hide:YES];
+             completion( NO, nil );
+         }
      }];
 }
 

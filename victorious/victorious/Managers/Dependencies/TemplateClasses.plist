@@ -109,15 +109,15 @@
 	<key>rounded.multiScreenSelector</key>
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
-	<string>VInboxViewController</string>
+	<string>VConversationListViewController</string>
 	<key>message.screen</key>
-	<string>VMessageContainerViewController</string>
+	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
 	<key>findFriends.screen</key>
 	<string>VFindFriendsViewController</string>
 	<key>currentUserProfile.screen</key>
-	<string>VUserProfileNavigationDestination</string>
+	<string>VUserProfileViewController</string>
 	<key>staticProfile.streamHeader</key>
 	<string>VStaticUserProfileHeaderViewController</string>
 	<key>floatingProfile.streamHeader</key>
@@ -171,7 +171,7 @@
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
-	<string>VUsersAndTagsSearchViewController</string>
+	<string>DiscoverSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
 	<key>explore.screen</key>

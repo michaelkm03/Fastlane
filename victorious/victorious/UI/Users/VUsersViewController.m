@@ -8,21 +8,20 @@
 
 #import "VUsersViewController.h"
 #import "UIView+AutoLayout.h"
-#import "VFollowResponder.h"
 #import "VUserCell.h"
 #import "VUserProfileViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "victorious-Swift.h"
 
-@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
+@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, PaginatedDataSourceDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
-@property (nonatomic, assign) BOOL canLoadNextPage;
 @property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
@@ -67,6 +66,12 @@
     [self.dependencyManager trackViewWillDisappear:self];
 }
 
+- (void)setUsersDataSource:(id<VUsersDataSource>)usersDataSource
+{
+    _usersDataSource = usersDataSource;
+    _usersDataSource.delegate = self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -106,12 +111,10 @@
     
     [self.noContentView resetInitialAnimationState];
     
-    self.canLoadNextPage = YES;
     [self refershControlAction:refreshControl];
     
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.extendedLayoutIncludesOpaqueBars = YES;
-    
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -119,33 +122,13 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)updateHasContent
-{
-    [self.collectionView reloadData];
-    
-    if ( self.usersDataSource.users.count == 0 )
-    {
-        self.noContentView.icon = self.usersDataSource.noContentImage;
-        self.noContentView.title = self.usersDataSource.noContentTitle;
-        self.noContentView.message = self.usersDataSource.noContentMessage;
-        
-        [self.noContentView animateTransitionIn];
-    }
-    else
-    {
-        [self.noContentView resetInitialAnimationState];
-    }
-}
-
 #pragma mark - Public
 
 - (void)refershControlAction:(UIRefreshControl *)refreshControl
 {
-    [self.usersDataSource refreshWithPageType:VPageTypeFirst completion:^(BOOL success, NSError *error)
+    [self.usersDataSource loadUsersWithPageType:VPageTypeFirst completion:^(NSError *error)
      {
-         self.canLoadNextPage = success;
          [refreshControl endRefreshing];
-         [self updateHasContent];
      }];
 }
 
@@ -191,58 +174,10 @@
 
 - (void)shouldLoadNextPage
 {
-    if ( !self.canLoadNextPage )
-    {
-        return;
-    }
-    self.canLoadNextPage = NO;
-    [self.usersDataSource refreshWithPageType:VPageTypeNext completion:^(BOOL success, NSError *error)
-     {
-         self.canLoadNextPage = success;
-         if ( success )
-         {
-             [self.collectionView reloadData];
-         }
-     }];
+    [self.usersDataSource loadUsersWithPageType:VPageTypeNext completion:nil];
 }
 
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                   withScreenName:sourceScreen];
-}
+#pragma mark - source screen logic
 
 - (NSString *)sourceScreenName
 {
@@ -252,6 +187,13 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                            @(VUsersViewContextLikers) : VFollowSourceScreenLikers
                            };
     return [dict objectForKey:@(self.usersViewContext)];
+}
+
+#pragma mark - PaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [self.collectionView v_applyChangeInSection:0 from:oldValue to:newValue];
 }
 
 @end

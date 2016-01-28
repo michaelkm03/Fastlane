@@ -14,8 +14,6 @@
 #import "VTimerManager.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VDependencyManager.h"
-#import "VObjectManager.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VUploadManager.h"
 
 @interface VAbstractMarqueeControllerTests : XCTestCase
@@ -31,12 +29,14 @@
     [super setUp];
     
     //Setup a dependencyManager with a valid objectManager to allow the marquee to fetch a stream during init
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
+#warning FIXME: New archicture
+    // [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:
                                              @{
                                                @"marqueeURL" : @"http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-                                               @"objectManager" : [VObjectManager sharedManager]
+#warning FIXME: New archicture
+                                               // @"objectManager" : [VObjectManager sharedManager]
                                                }
                                                             dictionaryOfClassesByTemplateName:nil];
     self.marquee = [[VAbstractMarqueeController alloc] initWithDependencyManager:dependencyManager];

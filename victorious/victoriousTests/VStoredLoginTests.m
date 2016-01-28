@@ -12,7 +12,7 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VStoredLogin.h"
 #import "VDummyModels.h"
-#import "VUser+RestKit.h"
+#import "victorious-swift.h"
 
 @interface VStoredLogin()
 
@@ -42,7 +42,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     SEL selector = @selector(createNewUserWithRemoteId:token:);
     self.createUserImplementation =  [VStoredLogin v_swizzleMethod:selector withBlock:^VUser *(id obj, NSNumber *remoteId, NSString *token)
                                       {
-                                          VUser *user = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+                                          VUser *user = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
                                           user.remoteId = remoteId;
                                           user.token = token;
                                           return user;
@@ -58,54 +58,62 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testSaveLoggedInUser
 {
-    VUser *lastLoggedInUser;
+    VStoredLoginInfo *storedLoginInfo = nil;
     
-    lastLoggedInUser = [self.storedLogin lastLoggedInUserFromDisk];
-    XCTAssertNil( lastLoggedInUser, @"Should return nil before a call to `saveLoggedInUserToDisk:`" );
+    storedLoginInfo = [self.storedLogin storedLoginInfo];
+    XCTAssertNil( storedLoginInfo, @"Should return nil before a call to `saveLoggedInUserToDisk:`" );
     
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
-    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
+    loggedInUser.loginType = [NSNumber numberWithInt:VLoginTypeEmail];
+    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail], @"Should NOT save the same token again." );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser], @"Should NOT save the same token again." );
     
     loggedInUser.token = @"adifferenttokendasoidsapd78ash0kd7as80das";
-    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail], @"Should save the a different token." );
+    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser], @"Should save the a different token." );
+    
+    storedLoginInfo = [self.storedLogin storedLoginInfo];
+    XCTAssertNotNil( storedLoginInfo );
+    XCTAssertEqual( storedLoginInfo.lastLoginType, (VLoginType)loggedInUser.loginType.integerValue );
+    XCTAssertEqualObjects( storedLoginInfo.userRemoteId, loggedInUser.remoteId );
+    XCTAssertEqualObjects( storedLoginInfo.token, loggedInUser.token );
     
     XCTAssert( [self.storedLogin clearLoggedInUserFromDisk] );
-    XCTAssertNil( lastLoggedInUser, @"Should return nil after a call to `clearLoggedInUserFromDisk`" );
+    storedLoginInfo = [self.storedLogin storedLoginInfo];
+    XCTAssertNil( storedLoginInfo, @"Should return nil after a call to `clearLoggedInUserFromDisk`" );
     
     XCTAssertFalse( [self.storedLogin clearLoggedInUserFromDisk], @"Shouldn't clear if already cleared." );
 }
 
 - (void)testSaveLoggedInUserInvalid
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     
     loggedInUser.remoteId = @(0);
     loggedInUser.token = kTestToken;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     
     loggedInUser.remoteId = nil;
     loggedInUser.token = kTestToken;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     
     loggedInUser.remoteId = @(32);
     loggedInUser.token = nil;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     
     loggedInUser.remoteId = @(32);
     loggedInUser.token = @"";
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
 }
 
 - (void)testLoadLastLoggedInUser
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
-    [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail];
+    [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
     
     [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
      {
@@ -113,10 +121,11 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
      }
                      executeBlock:^
      {
-         VUser *lastLoggedInUser = [self.storedLogin lastLoggedInUserFromDisk];
-         XCTAssertNotNil( lastLoggedInUser  );
-         XCTAssertEqualObjects( loggedInUser.remoteId, lastLoggedInUser.remoteId );
-         XCTAssertEqualObjects( loggedInUser.token, lastLoggedInUser.token );
+         VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
+         XCTAssertNotNil( storedLoginInfo  );
+         XCTAssertEqual( storedLoginInfo.lastLoginType, (VLoginType)loggedInUser.loginType.integerValue );
+         XCTAssertEqualObjects( storedLoginInfo.userRemoteId, loggedInUser.remoteId );
+         XCTAssertEqualObjects( storedLoginInfo.token, loggedInUser.token );
      }];
     
     [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
@@ -125,8 +134,8 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
      }
                      executeBlock:^
      {
-         VUser *lastLoggedInUser = [self.storedLogin lastLoggedInUserFromDisk];
-         XCTAssertNil( lastLoggedInUser  );
+         VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
+         XCTAssertNil( storedLoginInfo  );
      }];
 }
 
@@ -147,38 +156,39 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testLoginType
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
     
-    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    for ( NSInteger i = 0; i < 4; i++ )
     {
-        VLoginType loginType = (VLoginType)i;
+        loggedInUser.loginType = [NSNumber numberWithInteger:i];
         [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
          {
              return NO;
          }
                          executeBlock:^
          {
-             [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType];
-             VLoginType lastLoginType = [self.storedLogin lastLoginType];
-             XCTAssertEqual( lastLoginType, loginType );
+             [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
+             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
+             XCTAssertNotNil( storedLoginInfo );
+             XCTAssertEqual( storedLoginInfo.lastLoginType, (VLoginType)loggedInUser.loginType.integerValue );
              [self.storedLogin clearLoggedInUserFromDisk];
          }];
     }
     
-    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    for ( NSInteger i = 0; i < 4; i++ )
     {
-        VLoginType loginType = (VLoginType)i;
+        loggedInUser.loginType = [NSNumber numberWithInteger:i];
         [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
          {
              return YES;
          }
                          executeBlock:^
          {
-             [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType];
-             VLoginType lastLoginType = [self.storedLogin lastLoginType];
-             XCTAssertEqual( lastLoginType, VLoginTypeNone );
+             [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
+             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
+             XCTAssertNil( storedLoginInfo );
          }];
     }
 }

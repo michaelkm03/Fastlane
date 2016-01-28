@@ -6,35 +6,28 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
 #import "VImageCreationFlowController.h"
-
-// Capture
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VImageCameraViewController.h"
-#import "VImageSearchViewController.h"
-
-// Animator
 #import "VCameraToWorkspaceAnimator.h"
-
-// Edit
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
-
-// Publish
 #import "VPublishParameters.h"
-
-// Dependencies
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
+NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSearchTerm";
 
-@interface VImageCreationFlowController () <VImageCameraViewControllerDelegate>
+@interface VImageCreationFlowController () <MediaSearchViewControllerDelegate, VImageCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
 
 @end
 
@@ -46,7 +39,14 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     if (self != nil)
     {
         [self setContext:VCameraContextImageContentCreation];
-        _dependencyManager = dependencyManager;
+		_dependencyManager = dependencyManager;
+        
+        NSString *dependencyManagerSearchTerm = [dependencyManager stringForKey:VImageCreationFlowControllerDefaultSearchTermKey];
+		
+        id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:dependencyManagerSearchTerm ?: @""];
+		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
+																					   depndencyManager:dependencyManager];
+		_mediaSearchViewController.delegate = self;
     }
     return self;
 }
@@ -104,25 +104,23 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 - (NSArray *)alternateCaptureOptions
 {
-    __weak typeof(self) welf = self;
-    void (^cameraSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showCamera];
-    };
-    
-    void (^searchSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showSearch];
-    };
-    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
-                                                                         andSelectionBlock:cameraSelectionBlock];
-    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_searchbaricon"]
-                                                                         andSelectionBlock:searchSelectionBlock];
-    return @[cameraOption, searchOption];
+	__weak typeof(self) welf = self;
+	VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+																					  icon:[UIImage imageNamed:@"contententry_cameraicon"]
+																		 andSelectionBlock:^void()
+											 {
+												 __strong typeof(welf) strongSelf = welf;
+												 [strongSelf showCamera];
+											 }];
+	VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
+																					   icon:[UIImage imageNamed:@"contententry_searchbaricon"]
+																		  andSelectionBlock:^void()
+											  {
+												  __strong typeof(welf) strongSelf = welf;
+												  [strongSelf pushViewController:strongSelf.mediaSearchViewController animated:YES];
+											  }];
+	
+	return @[ cameraOption, searchOption ];
 }
 
 - (void)showCamera
@@ -134,25 +132,12 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     [self pushViewController:cameraViewController animated:YES];
 }
 
-- (void)showSearch
+#pragma mark - MediaSearchViewControllerDelegate
+
+- (void)mediaSearchResultSelected:(id<MediaSearchResult>)result
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-    
-    // Image search
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
-    __weak typeof(self) welf = self;
-    imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        __strong typeof(welf) strongSelf = welf;
-        if (finished)
-        {
-            strongSelf.source = VCreationFlowSourceSearch;
-            [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                       previewImage:previewImage];
-        }
-    };
-    [self pushViewController:imageSearchViewController
-                    animated:YES];
+	[self captureFinishedWithMediaURL:result.exportMediaURL
+						 previewImage:result.exportPreviewImage];
 }
 
 #pragma mark - VImageCameraViewControllerDelegate

@@ -7,30 +7,19 @@
 //
 
 #import "VVideoCameraViewController.h"
-
-// Frameworks
 #import <MBProgressHUD/MBProgressHUD.h>
-
-// Dependencies
 #import "VConstants.h"
 #import "NSURL+VTemporaryFiles.h"
-
-// Views + Helpers
 #import "VCaptureVideoPreviewView.h"
 #import "VCameraControl.h"
 #import "VCameraCoachMarkAnimator.h"
-
-// Capture
 #import "VCameraCaptureController.h"
 #import "UIImage+Resize.h"
 #import "VCameraVideoEncoder.h"
-
-// Permissions
 #import "VCameraPermissionsController.h"
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
-#import "VObjectManager+Private.h"
-#import "VUser+Fetcher.h"
+#import "victorious-Swift.h"
 
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kCameraScreenKey = @"videoCameraScreen";
@@ -369,7 +358,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     self.totalTimeRecorded = totalRecorded;
     
-    Float64 maxUploadDuration = [VObjectManager sharedManager].mainUser.maxUploadDurationFloat;
+    Float64 maxUploadDuration = [VCurrentUser user].maxUploadDuration.integerValue;
     CGFloat progress = ABS( totalRecorded / maxUploadDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
@@ -463,7 +452,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
                        [self updateProgressForSecond:CMTimeGetSeconds(time)];
-                       Float64 maxUploadDuration = [VObjectManager sharedManager].mainUser.maxUploadDurationFloat;
+                       Float64 maxUploadDuration = [VCurrentUser user].maxUploadDuration.integerValue;
                        if (CMTimeGetSeconds(time) >= maxUploadDuration)
                        {
                            [self endRecording:nil];

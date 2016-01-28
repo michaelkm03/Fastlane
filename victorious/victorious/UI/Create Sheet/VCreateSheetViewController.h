@@ -10,6 +10,8 @@
 #import "VHasManagedDependencies.h"
 #import "VCreationTypes.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString * const kCreationSheetWillShow = @"v_creationSheetWillShow";
 static NSString * const kCreationSheetWillHide = @"v_creationSheetWillHide";
 
@@ -39,3 +41,5 @@ static NSString * const kAnimateFromTopKey = @"animateFromTop";
 @property (weak, nonatomic) IBOutlet UIButton *dismissButton;
 
 @end
+
+NS_ASSUME_NONNULL_END

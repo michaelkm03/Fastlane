@@ -1,0 +1,26 @@
+//
+//  TrendingHashtagRequest.swift
+//  victorious
+//
+//  Created by Cody Kolodziejzyk on 11/9/15.
+//  Copyright © 2015 Victorious. All rights reserved.
+//
+
+import Foundation
+import SwiftyJSON
+
+public struct TrendingHashtagRequest: RequestType {
+    
+    public init() {}
+    
+    public var urlRequest: NSURLRequest {
+        return NSURLRequest(URL:NSURL(string: "/api/discover/hashtags")!)
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
+        guard let hashtagJSON = responseJSON["payload"].array else {
+            throw ResponseParsingError()
+        }
+        return hashtagJSON.flatMap { Hashtag(json: $0) }
+    }
+}

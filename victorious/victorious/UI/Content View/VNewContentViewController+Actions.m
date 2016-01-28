@@ -7,43 +7,22 @@
 //
 
 #import "VNewContentViewController+Actions.h"
-
-// View Categories
-#import "UIActionSheet+VBlocks.h"
-#import "UIActionSheet+VBlocks.h"
-
-//TODO: abstract this out of VC
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VObjectManager+Sequence.h"
-#import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VSequence+Fetcher.h"
-
-//Views
 #import "VNoContentView.h"
-
-// ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VUserProfileViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VAuthorizedAction.h"
-
-// Download
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "VDownloadManager.h"
-#import "VDownloadTaskInformation.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
-#import "VAsset+VCachedData.h"
-#import "VAsset+VAssetCache.h"
-
 #import "victorious-Swift.h"
 
 @interface VNewContentViewController ()
@@ -59,8 +38,6 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
-    
-    [self disableEndcardAutoplay];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     actionSheetViewController.dependencyManager = self.dependencyManager;
@@ -95,48 +72,6 @@
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
     
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        BOOL assetIsCached = [[self.viewModel.currentNode mp4Asset] assetDataIsCached];
-        
-        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:assetIsCached ? @"Downloaded" : @"Download"
-                                                                 actionIcon:nil
-                                                                 detailText:nil
-                                                                    enabled:!assetIsCached];
-        downloadItem.selectionHandler = ^(VActionItem *item)
-        {
-            VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
-            VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
-            NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
-            urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
-            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[mp4Asset cacheURLForAsset]];
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
-                                                      animated:YES];
-            hud.mode = MBProgressHUDModeAnnularDeterminate;
-            hud.labelText = @"Downloading...";
-            [downloadManager enqueueDownloadTask:downloadTask
-                                    withProgress:^(CGFloat progress)
-             {
-                 hud.progress = progress;
-                 hud.labelText = [NSString stringWithFormat:@"Downloading... %.2f%%", progress*100];
-                 VLog(@"progress: %@", @(progress));
-             }
-                                      onComplete:^(NSURL *downloadFileLocation, NSError *error)
-             {
-                 [hud hide:YES];
-                 VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
-                 [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-             }];
-            VLog(@"download video");
-            
-            [self dismissViewControllerAnimated:YES
-                                     completion:nil];
-        };
-        [actionItems addObject:downloadItem];
-    }
-#endif
-
     if (self.viewModel.sequence.permissions.canRepost)
     {
         NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
@@ -146,32 +81,22 @@
                                                                   enabled:![self.viewModel.sequence.hasReposted boolValue]];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
-             {
-                 if (!authorized)
+            if ( !contentViewController.viewModel.hasReposted)
+            {
+                [actionSheetViewController setLoading:YES forItem:item];
+                
+                [self.sequenceActionController repostActionFromViewController:contentViewController
+                                                                         node:contentViewController.viewModel.currentNode
+                                                                   completion:^(BOOL didSucceed)
                  {
-                     return;
-                 }
-                 
-                 if ( !contentViewController.viewModel.hasReposted)
-                 {
-                     [actionSheetViewController setLoading:YES forItem:item];
+                     if ( didSucceed )
+                     {
+                         contentViewController.viewModel.hasReposted = YES;
+                     }
                      
-                     [self.sequenceActionController repostActionFromViewController:contentViewController
-                                                                              node:contentViewController.viewModel.currentNode
-                                                                        completion:^(BOOL didSucceed)
-                      {
-                          if ( didSucceed )
-                          {
-                              contentViewController.viewModel.hasReposted = YES;
-                          }
-                          
-                          [contentViewController dismissViewControllerAnimated:YES completion:nil];
-                      }];
-                 }
-             }];
+                     [contentViewController dismissViewControllerAnimated:YES completion:nil];
+                 }];
+            }
         };
         repostItem.detailSelectionHandler = ^(VActionItem *item)
         {
@@ -215,25 +140,36 @@
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 UIActionSheet *confirmDeleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
-                                                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                                                                 onCancelButton:nil
-                                                                         destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
-                                                                            onDestructiveButton:^
-                                                            {
-                                                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-                                                                {
-                                                                    [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
-                                                                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                                                                     {
-                                                                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                         
-                                                                     }
-                                                                                                         failBlock:nil];
-                                                                }];
-                                                            }
-                                                                     otherButtonTitlesAndBlocks:nil, nil];
-                 [confirmDeleteActionSheet showInView:self.view];
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
+                                                                                          message:nil
+                                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+                 
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil]];
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                                     style:UIAlertActionStyleDestructive
+                                                                   handler:^(UIAlertAction *action)
+                                             {
+                                                 [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                                                   completion:^
+                                                  {
+                                                      
+                                                      DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
+                                                      [deleteOperation queueOn:deleteOperation.defaultQueue
+                                                               completionBlock:^(NSError *_Nullable error)
+                                                       {
+                                                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+                                                       }];
+                                                      self.viewModel.sequence.markForDeletion = @(YES);
+                                                      if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
+                                                      {
+                                                          [self.delegate contentViewDidDeleteContent:self];
+                                                      }
+                                                  }];
+                                             }]];
+                 
+                 [self presentViewController:alertController animated:YES completion:nil];
              }];
         };
         [actionItems addObject:deleteItem];
@@ -252,9 +188,17 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action) {
-                     [[VObjectManager sharedManager] locallyRemoveSequence:self.viewModel.sequence];
-                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
+                 {
+                     [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                       completion:^
+                      {
+                          self.viewModel.sequence.markForDeletion = @(YES);
+                          if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
+                          {
+                              [self.delegate contentViewDidFlagContent:self];
+                          }
+                      }];
                  }];
              }];
         };
@@ -302,9 +246,8 @@
     [self setupRemixActionItem:gifItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^
+      withBlock:^
      {
-         
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
                                              andDependencyManager:self.dependencyManager
@@ -331,7 +274,7 @@
     [self setupRemixActionItem:memeItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^
+      withBlock:^
      {
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
@@ -353,29 +296,20 @@
 - (void)setupRemixActionItem:(VActionItem *)remixItem
    withContentViewController:(UIViewController *)contentViewController
    actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
-    withAutorizedActionBlock:(void (^)(void))authorizedActionBlock
+                   withBlock:(void (^)(void))block
       dismissCompletionBlock:(void (^)(void))dismissCompletionBlock
 {
-    NSAssert(authorizedActionBlock != nil, @"autorized action block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
+    NSAssert(block != nil, @"block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
     NSAssert(dismissCompletionBlock != nil, @"dismiss completion block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
     
     remixItem.selectionHandler = ^(VActionItem *item)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
         
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                             dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
+        [contentViewController dismissViewControllerAnimated:YES
+                                                  completion:^
          {
-             if (!authorized)
-             {
-                 return;
-             }
-             [contentViewController dismissViewControllerAnimated:YES
-                                                       completion:^
-              {
-                  authorizedActionBlock();
-              }];
+             block();
          }];
     };
     remixItem.detailSelectionHandler = ^(VActionItem *item)

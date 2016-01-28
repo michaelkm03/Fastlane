@@ -9,7 +9,6 @@
 #import <XCTest/XCTest.h>
 #import "VTrackingManager.h"
 #import "VFirstInstallManager.h"
-#import "VObjectManager+Analytics.h"
 #import "NSObject+VMethodSwizzling.h"
 
 @interface VFirstInstallTests : XCTestCase
@@ -27,7 +26,8 @@
     
     self.trackingURLs = @[ @"url1", @"url2" ];
     
-    [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
+#warning FIXME: New architecture
+    // [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledDefaultsKey];
     XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );

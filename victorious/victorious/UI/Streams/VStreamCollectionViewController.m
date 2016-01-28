@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-
 #import "NSArray+VMap.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
@@ -16,8 +15,6 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
-#import "VAlertController.h"
-#import "VAuthorizedAction.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
@@ -29,7 +26,6 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
@@ -45,9 +41,6 @@
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
 #import "VSleekStreamCellFactory.h"
@@ -60,7 +53,6 @@
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VTabScaffoldViewController.h"
 #import "VTracking.h"
-#import "VURLMacroReplacement.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUser.h"
@@ -68,6 +60,7 @@
 #import "VSleekStreamCollectionCell.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import SDWebImage;
 
@@ -89,7 +82,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, ContentViewPresenterDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -107,6 +100,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -118,7 +112,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
-    
     streamCollection.currentStream = stream;
     return streamCollection;
 }
@@ -142,14 +135,20 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
     if ( sequenceID != nil )
     {
-        VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+        VSDKURLMacroReplacement *urlMacroReplacement = [[VSDKURLMacroReplacement alloc] init];
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }
-    NSString *path = [url v_pathComponent];
+    NSString *apiPath = [url v_pathComponent];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    __block VStream *stream = nil;
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        [persistentStore.mainContext save:nil];
+    }];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
@@ -189,6 +188,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    self.contentViewPresenter.delegate = self;
+    self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -227,13 +228,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
-    if ( self.streamDataSource == nil )
-    {
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-        self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
-    }
+    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+    self.streamDataSource.delegate = self;
+    self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
     self.marqueeCellController.stream = self.currentStream;
@@ -241,9 +238,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
     self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    
-    self.collectionView.dataSource = self.streamDataSource;
-    self.streamDataSource.collectionView = self.collectionView;
     
     self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
@@ -254,15 +248,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] init];
         self.collectionView.collectionViewLayout = flowLayout;
     }
-    
-    [self.KVOController observe:self.streamDataSource
-                        keyPath:NSStringFromSelector(@selector(visibleStreamItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(dataSourceDidChange)];
-    [self.KVOController observe:self.streamDataSource
-                        keyPath:NSStringFromSelector(@selector(hasHeaderCell))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(dataSourceDidChange)];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
@@ -368,15 +353,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     NSString *streamName = currentStream.name;
     self.navigationItem.title = streamName;
-    if ( self.streamDataSource == nil )
-    {
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
-        self.streamDataSource.delegate = self;
-    }
-    else
-    {
-        self.streamDataSource.stream = currentStream;
-    }
+    self.streamDataSource.stream = currentStream;
     [super setCurrentStream:currentStream];
 }
 
@@ -403,7 +380,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSArray *streamItems = self.streamDataSource.visibleStreamItems;
+    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -463,21 +440,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
-    
-    __weak typeof(self) weakSelf = self;
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:strongSelf.dependencyManager];
-         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
-         [strongSelf.creationFlowPresenter presentOnViewController:strongSelf];
-     }];
+    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.creationFlowPresenter.showsCreationSheetFromTop = YES;
+    [self.creationFlowPresenter presentOnViewController:self];
 }
 
 #pragma mark - VMarqueeDataDelegate
@@ -526,16 +491,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         
         if ( isShelf )
         {
-            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
-            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
             if ( [stream isKindOfClass:[HashtagShelf class]] )
             {
                 HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
-                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+                streamCollection = [self.dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
             }
             else
             {
-                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:self.dependencyManager];
             }
         }
         else
@@ -555,11 +518,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         if ( directory == nil )
         {
             //We have no directory to show, just do nothing
-            [[[UIAlertView alloc] initWithTitle:nil
-                                        message:NSLocalizedString(@"GenericFailMessage", nil)
-                                       delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                              otherButtonTitles:nil] show];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                     message:NSLocalizedString(@"GenericFailMessage", nil)
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:nil]];
+            [self presentViewController:alertController animated:YES completion:nil];
+            
             return;
         }
         
@@ -651,13 +617,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.focusHelper endFocusOnCell:cell];
 }
 
-#pragma mark - Activity indivator footer
-
-- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
-{
-    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
-}
-
 #pragma mark - VStreamCollectionDataDelegate
 
 - (void)dataSource:(VStreamCollectionViewDataSource *)dataSource hasNewStreamItems:(NSArray *)streamItems
@@ -677,7 +636,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                             atIndexPath:indexPath];
     }
     
-    VSequence *sequence = (VSequence *)[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row];
+    VSequence *sequence = (VSequence *)[self.streamDataSource.visibleItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {
@@ -711,6 +670,18 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
+#pragma mark - ContentViewPresenterDelegate
+
+- (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+}
+
+- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+}
+
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
@@ -737,42 +708,15 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    
-    __weak typeof(self) welf = self;
-    void (^completionBlock)(BOOL success) = ^void(BOOL success)
-    {
-        if (completion != nil)
-        {
-            completion(success);
-        }
-        
-    };
-    [authorization performFromViewController:self context:VAuthorizationContextDefault
-                                          completion:^(BOOL authorized)
+    [self.streamLikeHelper likeSequence:sequence
+                         triggeringView:view
+                   originViewController:self
+                      dependencyManager:self.dependencyManager
+                             completion:^void(BOOL success)
      {
-         __strong typeof(self) strongSelf = welf;
-         if ( authorized )
+         if ( completion != nil )
          {
-             CGRect likeButtonFrame = [view convertRect:view.bounds toView:strongSelf.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:strongSelf atLocation:likeButtonFrame];
-             
-             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  completionBlock( YES );
-                  
-              } failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  completionBlock( NO );
-              }];
-         }
-         else
-         {
-             completionBlock( NO );
+             completion( success );
          }
      }];
 }
@@ -789,7 +733,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && ([VObjectManager sharedManager].mainUser != nil) )
+    if ( sequence.permissions.canRepost && [VCurrentUser user] != nil )
     {
         return YES;
     }
@@ -822,16 +766,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 }
 
 #pragma mark - Actions
-
-- (void)setBackgroundImageWithURL:(NSURL *)url
-{    
-    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
-    
-    [newBackgroundView applyTintAndBlurToImageWithURL:url
-                                        withTintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    
-    self.collectionView.backgroundView = newBackgroundView;
-}
 
 - (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
@@ -993,7 +927,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+#warning FIXME: New ARchiCtuRe
+        return; //< Returning early to avoid crash
+        //self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1051,67 +987,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
     self.uploadProgressViewController.view.hidden = hidden;
     self.navigationBarShouldAutoHide = hidden;
-}
-
-#pragma mark - Notifications
-
-- (void)dataSourceDidChange
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        self.hasRefreshed = YES;
-        [self updateNoContentViewAnimated:YES];
-        
-        [self updateCellVisibilityTracking];
-        [self.marqueeCellController updateFocus];
-        [self.focusHelper updateFocus];
-    });
-}
-
-- (void)updateNoContentViewAnimated:(BOOL)animated
-{
-    if (!self.noContentView)
-    {
-        return;
-    }
-    
-    void (^noContentUpdates)(void);
-    
-    if ( self.streamDataSource.visibleStreamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
-        {
-            self.collectionView.backgroundView = self.noContentView;
-        }
-        
-        self.refreshControl.layer.zPosition = self.collectionView.backgroundView.layer.zPosition + 1;
-        
-        noContentUpdates = ^void(void)
-        {
-            self.collectionView.backgroundView.alpha = (self.hasRefreshed && self.noContentView) ? 1.0f : 0.0f;
-        };
-    }
-    else
-    {
-        noContentUpdates = ^void(void)
-        {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-            self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
-        };
-    }
-    
-    if (animated)
-    {
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:noContentUpdates
-                         completion:nil];
-    }
-    else
-    {
-        noContentUpdates();
-    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -1309,15 +1184,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     memeStream.navigationItem.title = memeStream.currentStream.name;
     
-    VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
-    if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        noMemeView.dependencyManager = self;
-    }
-    noMemeView.title = NSLocalizedString(@"NoMemersTitle", @"");
-    noMemeView.message = NSLocalizedString(@"NoMemersMessage", @"");
-    noMemeView.icon = [UIImage imageNamed:@"noMemeIcon"];
-    memeStream.noContentView = noMemeView;
+    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    noContentView.dependencyManager = self;
+    noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
+    noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
+    noContentView.icon = [UIImage imageNamed:@"noMemeIcon"];
+    memeStream.noContentView = noContentView;
     
     return memeStream;
 }
@@ -1331,15 +1203,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     gifStream.navigationItem.title = gifStream.currentStream.name;
     
-    VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
-    if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        noGifView.dependencyManager = self;
-    }
-    noGifView.title = NSLocalizedString(@"NoGiffersTitle", @"");
-    noGifView.message = NSLocalizedString(@"NoGiffersMessage", @"");
-    noGifView.icon = [UIImage imageNamed:@"noGifIcon"];
-    gifStream.noContentView = noGifView;
+    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    noContentView.dependencyManager = self;
+    noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
+    noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");
+    noContentView.icon = [UIImage imageNamed:@"noGifIcon"];
+    gifStream.noContentView = noContentView;
     
     return gifStream;
 }

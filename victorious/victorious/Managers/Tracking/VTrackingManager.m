@@ -52,6 +52,9 @@
 
 @implementation VTrackingManager
 
+@synthesize showTrackingEventAlerts = _showTrackingEventAlerts;
+@synthesize showTrackingStartEndAlerts = _showTrackingStartEndAlerts;
+
 + (VTrackingManager *)sharedInstance
 {
     static VTrackingManager *instance;
@@ -140,20 +143,23 @@
 
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
 {
-    if ( value == nil )
-    {
-        [self.sessionParameters removeObjectForKey:key];
-    }
-    else
-    {
-        self.sessionParameters[key] = value;
-    }
+    self.sessionParameters[key] = value;
+    
 #if TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
     NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", [self stringFromDictionary:self.sessionParameters] );
 #endif
 }
 
-- (void)clearSessionParameters
+- (void)clearValueForSessionParameterWithKey:(NSString *)key
+{
+    [self.sessionParameters removeObjectForKey:key];
+    
+#if TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
+    NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", [self stringFromDictionary:self.sessionParameters] );
+#endif
+}
+
+- (void)clearAllSessionParameterValues
 {
     [self.sessionParameters removeAllObjects];
 }
@@ -181,8 +187,11 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                            [[[UIAlertView alloc] initWithTitle:eventName message:[self stringFromDictionary:completeParams]
                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                        });
     }
     
@@ -263,7 +272,10 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                            [[[UIAlertView alloc] initWithTitle:@"Event Started" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                        });
         NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
     }
@@ -289,7 +301,10 @@
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                            {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                                [[[UIAlertView alloc] initWithTitle:@"Event Ended" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                            });
             NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
         }

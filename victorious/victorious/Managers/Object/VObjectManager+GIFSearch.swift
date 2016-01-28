@@ -74,14 +74,14 @@ extension VObjectManager {
     private func filterForTrending() -> VAbstractFilter {
         let path = "/api/image/trending_gifs/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
         let context = self.managedObjectStore.persistentStoreManagedObjectContext
-        return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
+        return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.v_entityName(), managedObjectContext: context )
     }
     
     private func filterForKeywords( searchText: String ) -> VAbstractFilter {
-        let charSet = NSCharacterSet.v_pathPartCharacterSet()
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
         let escapedSearchText = searchText.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
         let path = "/api/image/gif_search/\(escapedSearchText)/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
         let context = self.managedObjectStore.persistentStoreManagedObjectContext
-        return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
+        return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.v_entityName(), managedObjectContext: context )
     }
 }

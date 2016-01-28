@@ -20,17 +20,21 @@ class RequestPushNotificationPermissionOperation : Operation {
     override func start() {
         super.start()
         
-        if cancelled || VPushNotificationManager.sharedPushNotificationManager().started {
-            finishedExecuting()
-            return
+        dispatch_async( dispatch_get_main_queue() ) {
+            guard !self.cancelled && !VPushNotificationManager.sharedPushNotificationManager().started else {
+                self.finishedExecuting()
+                return
+            }
+            
+            self.beganExecuting()
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
+                name: VPushNotificationManagerDidReceiveResponse,
+                object: VPushNotificationManager.sharedPushNotificationManager())
+            VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+            
+            self.finishedExecuting()
         }
-        
-        beganExecuting()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
-            name: VPushNotificationManagerDidReceiveResponse,
-            object: VPushNotificationManager.sharedPushNotificationManager())
-        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
     }
     
     // MARK: - Notification Observer

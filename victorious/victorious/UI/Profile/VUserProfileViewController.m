@@ -8,16 +8,11 @@
 
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
-#import "VMessageContainerViewController.h"
-#import "VObjectManager+Login.h"
+#import "VConversationContainerViewController.h"
 #import "VStream+Fetcher.h"
-#import "VObjectManager+ContentCreation.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VProfileHeaderCell.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
@@ -30,7 +25,6 @@
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
 #import "VBarButton.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProfileDeeplinkHandler.h"
@@ -38,18 +32,15 @@
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"
-#import "VFollowersDataSource.h"
-#import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
-#import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
+#import "victorious-Swift.h"
+#import "VSDKURLMacroReplacement.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import MBProgressHUD;
 @import SDWebImage;
-
-static void * VUserProfileViewContext = &VUserProfileViewContext;
-static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
 static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
 
@@ -58,7 +49,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate, VFollowResponder>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNavigationViewFloatingControllerDelegate>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 @property (nonatomic, assign) BOOL isMe;
@@ -70,7 +61,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
-@property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
@@ -88,7 +78,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     viewController.dependencyManager = dependencyManager;
     [viewController addLoginStatusChangeObserver];
     
-    VUser *mainUser = [VObjectManager sharedManager].mainUser;
+    VUser *mainUser = [VCurrentUser user];
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
     if ( isCurrentUser )
     {
@@ -127,10 +117,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
     if ( remoteId != nil )
     {
+#warning FIXME: Use operations here to load local and/or network user
         return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
     }
     
-    return nil;
+    VUserProfileViewController *viewController = [self userProfileWithUser:[VCurrentUser user] andDependencyManager:dependencyManager];
+    viewController.representsMainUser = YES;
+    return viewController;
 }
 
 - (void)dealloc
@@ -152,15 +145,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
     
     [self updateProfileHeader];
+    [self loadPage:VPageTypeFirst completion:nil];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
-    
-    [self.KVOController observe:self.currentStream
-                        keyPath:@"sequences"
-                        options:NSKeyValueObservingOptionNew
-                        context:VUserProfileViewContext];
-    [self updateCollectionViewDataSource];
 }
 
 - (void)updateProfileHeader
@@ -198,7 +186,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
+    if ( !self.user.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
         [self showRefreshHUD];
         [self loadUserWithRemoteId:self.remoteId forceReload:NO];
@@ -213,6 +201,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     self.didEndViewWillAppear = YES;
+    
     [self attemptToRefreshProfileUI];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
@@ -225,6 +214,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 - (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateProfileSize];
+}
+
+- (void)updateProfileSize
 {
     CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
     height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
@@ -272,7 +267,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
     self.navigationViewfloatingController.animationEnabled = NO;
 }
@@ -317,17 +312,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return NO;
 }
 
-- (BOOL)isCurrentUser
-{
-    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
-    return loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
-}
-
 #pragma mark - Loading data
 
 - (void)reloadUserFollowCounts
 {
-    [[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
+    RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)setInitialHeaderState
@@ -337,7 +327,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    if ( self.isCurrentUser )
+    if ( self.user.isCurrentUser )
     {
         self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
     }
@@ -345,7 +335,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowingRelationship
 {
-    if ( self.isCurrentUser )
+    if ( self.user.isCurrentUser )
     {
         self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
         return;
@@ -362,7 +352,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    if ([VObjectManager sharedManager].mainUser)
+    if ( [VCurrentUser user] != nil )
     {
         header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
@@ -389,27 +379,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
 {
     self.remoteId = remoteId;
-    [[VObjectManager sharedManager] fetchUser:self.remoteId
-                                  forceReload:forceReload
-                             withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self.retryHUD hide:YES];
-         [self.retryProfileLoadButton removeFromSuperview];
-         self.retryHUD = nil;
-         self.user = [resultObjects lastObject];
-         
-         // Reload follow counts when user pulls to refresh
-         [self reloadUserFollowCounts];
-     }
-                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-         self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
-         self.retryHUD.mode = MBProgressHUDModeCustomView;
-         self.retryHUD.customView = self.retryProfileLoadButton;
-         self.retryHUD.margin = 0.0f;
-         [self.retryProfileLoadButton setUserInteractionEnabled:YES];
-     }];
+    
+    FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:remoteId.integerValue];
+    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
+    
+    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
+    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:nil];
 }
 
 - (void)retryProfileLoad
@@ -462,83 +437,64 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
+#pragma mark - Superclass Overrides
+
+- (void)loadPage:(VPageType)pageType completion:(void (^)(void))completionBlock
 {
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    if ( self.user == nil )
     {
-        if (completionBlock)
-        {
-            completionBlock();
-        }
         return;
     }
-    else
-    {
-        if ( self.user != nil )
-        {
-            void (^fullCompletionBlock)(void) = ^void(void)
-            {
-                if (self.streamDataSource.count)
-                {
-                    [self shrinkHeaderAnimated:YES];
-                }
-                if ( completionBlock != nil )
-                {
-                    completionBlock();
-                }
-                [self.profileHeaderViewController reloadProfileImage];
-                [self reloadUserFollowingRelationship];
-            };
-            [super refreshWithCompletion:fullCompletionBlock];
-        }
-    }
+    [super loadPage:pageType completion:completionBlock];
 }
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+    [self.profileHeaderViewController reloadProfileImage];
+    [self reloadUserFollowingRelationship];
+}
+
+#pragma mark -
 
 - (void)toggleFollowUser
 {
-    if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
+    long long userId = self.user.remoteId.longLongValue;
+    NSString *sourceScreenName = nil;
+    
+    RequestOperation *operation;
+    if ( self.user.isFollowedByMainUser.boolValue )
     {
-        self.profileHeaderViewController.loading = YES;
-        
-        [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn)
-        {
-            self.profileHeaderViewController.loading = NO;
-            [self reloadUserFollowingRelationship];
-        }
-        fromViewController:self
-            withScreenName:nil
-         ];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
-    else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
+    else
     {
-        [self stopObservingUserProfile];
-        self.profileHeaderViewController.loading = YES;
-        
-        [self followUser:self.user
-     withAuthorizedBlock:nil
-           andCompletion:^(VUser *userActedOn)
-        {
-            self.profileHeaderViewController.loading = NO;
-            [self reloadUserFollowingRelationship];
-        }
-      fromViewController:self
-          withScreenName:nil
-         ];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
+    
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        self.profileHeaderViewController.loading = NO;
+        [self reloadUserFollowingRelationship];
+    }];
 }
 
 #pragma mark - Login status change
 
 - (void)loginStateDidChange:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
     if ( self.representsMainUser )
     {
-        self.user = [VObjectManager sharedManager].mainUser;
-        [self updateCollectionViewDataSource];
+        self.user = [VCurrentUser user];
     }
-    else if ( [VObjectManager sharedManager].authorized )
+    else if ( [VCurrentUser user] != nil )
     {
         [self reloadUserFollowingRelationship];
     }
@@ -548,22 +504,49 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
     
+    if ( _user != nil )
+    {
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
+    }
+    
     if ( user == _user )
     {
         return;
     }
     
-    [self stopObservingUserProfile];
-    
     _user = user;
     
-    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:_user
+                        keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change) {
+                              [welf reloadUserFollowingRelationship];
+                          }];
     
-    self.currentStream = [VStream streamForUser:self.user];
+    [self.KVOController observe:self.currentStream
+                        keyPath:NSStringFromSelector(@selector(streamItems))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change) {
+                              if ( welf.streamDataSource.count != 0 )
+                              {
+                                  [welf shrinkHeaderAnimated:YES];
+                              }
+                              [self.KVOController unobserve:self keyPath:NSStringFromSelector(@selector(streamItems))];
+                          }];
+    
+    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
+    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
+        [persistentStore.mainContext save:nil];
+    }];
     
     [self updateProfileHeader];
     
@@ -578,7 +561,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return nil;
     }
-    else if ( !self.isCurrentUser )
+    else if ( !self.user.isCurrentUser )
     {
         return self.user.name;
     }
@@ -601,26 +584,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)primaryActionHandler
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-    
-    VAuthorizationContext context = self.isCurrentUser ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:context completion:^(BOOL authorized)
-     {
-         if ( !authorized )
-         {
-             return;
-         }
-         
-         if ( self.isCurrentUser )
-         {
-             [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
-         }
-         else
-         {
-             [self toggleFollowUser];
-         }
-     }];
+    if ( self.user.isCurrentUser )
+    {
+        [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
+    }
+    else
+    {
+        [self toggleFollowUser];
+    }
 }
 
 - (void)followerHandler
@@ -636,7 +607,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followingHandler
 {
-    if (self.isCurrentUser)
+    if (self.user.isCurrentUser)
     {
         [self performSegueWithIdentifier:@"toHashtagsAndFollowing" sender:self];
     }
@@ -672,28 +643,26 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)shrinkHeaderAnimated:(BOOL)animated
 {
-    if ( !animated )
-    {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
-        [self.currentProfileCell invalidateIntrinsicContentSize];
-    }
-    else
-    {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
-        CGRect newFrame = self.currentProfileCell.frame;
-        newFrame.size.height = self.currentProfileSize.height;
-        [UIView animateWithDuration:0.4f
-                              delay:0.0f
-             usingSpringWithDamping:0.95f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^
-         {
-             [self.currentProfileCell setFrame:newFrame];
-             [self.currentProfileCell layoutIfNeeded];
-         }
-                         completion:nil];
-    }
+    [self updateProfileSize];
+    CGRect newFrame = self.currentProfileCell.frame;
+    newFrame.size.height = self.currentProfileSize.height;
+    [UIView animateWithDuration:0.4f
+                          delay:0.0f
+         usingSpringWithDamping:0.95f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^
+     {
+         [self.currentProfileCell setFrame:newFrame];
+         [self.currentProfileCell invalidateIntrinsicContentSize];
+         [self.currentProfileCell layoutIfNeeded];
+         
+     } completion:nil];
+    
+    [self.collectionView performBatchUpdates:^
+     {
+         [self.collectionView invalidateIntrinsicContentSize];
+     } completion:nil];
 }
 
 #pragma mark - Scroll
@@ -715,12 +684,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
 {
     NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if ([self isDisplayingFloatingProfileHeader] && [self isCurrentUser])
+    if ([self isDisplayingFloatingProfileHeader] && self.user.isCurrentUser)
     {
         BOOL shouldHideTitle = [(VStreamNavigationViewFloatingController *)self.navigationViewfloatingController visibility] > 0.4f;
         self.navigationItem.title = shouldHideTitle ? @"" : title;
     }
-    else if ([self isCurrentUser])
+    else if (self.user.isCurrentUser)
     {
         self.navigationItem.title = title;
     }
@@ -752,11 +721,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andDependencyManager:self.dependencyManager];
-    }
-    else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
     }
@@ -771,22 +736,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
-}
-
-- (void)updateCollectionViewDataSource
-{
-    if ( ![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser )
-    {
-        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
-        self.notLoggedInDataSource.delegate = self;
-        self.collectionView.dataSource = self.notLoggedInDataSource;
-        [self.refreshControl removeFromSuperview];
-    }
-    else
-    {
-        self.collectionView.dataSource = self.streamDataSource;
-        [self.collectionView addSubview:self.refreshControl];
-    }
 }
 
 - (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass
@@ -805,44 +754,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)navigationHistoryContainsInbox
 {
-    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == VUserProfileAttributesContext && [keyPath isEqualToString:NSStringFromSelector(@selector(isFollowedByMainUser))] && !self.representsMainUser)
-    {
-        [self reloadUserFollowingRelationship];
-        [self reloadUserFollowCounts];
-        return;
-    }
-    
-    if (context != VUserProfileViewContext)
-    {
-        return;
-    }
-    
-    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
-    {
-        if ( self.streamDataSource.count != 0 )
-        {
-            [self shrinkHeaderAnimated:YES];
-        }
-    }
-    
-    [self.currentStream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems))];
+    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VConversationListViewController class]];
 }
 
 #pragma mark - VAbstractStreamCollectionViewController
 
 - (void)refresh:(UIRefreshControl *)sender
 {
-    NSNumber *mainUserId = [VObjectManager sharedManager].mainUser.remoteId;
+    NSNumber *mainUserId = [VCurrentUser user].remoteId;
     const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
     const BOOL wasTriggeredByUIElement = sender != nil;
     if ( wasTriggeredByUIElement && hasUserData )
@@ -850,25 +769,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self loadUserWithRemoteId:mainUserId forceReload:YES];
     }
     
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        return;
-    }
-    else
-    {
-        [super refresh:sender];
-    }
-}
-
-#pragma mark - VNotAuthorizedDataSourceDelegate
-
-- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
-{
-    VAuthorizedAction *authorizationAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                            dependencyManager:self.dependencyManager];
-    [authorizationAction performFromViewController:self
-                                           context:VAuthorizationContextUserProfile
-                                        completion:^(BOOL authorized) { }];
+    [super refresh:sender];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate
@@ -879,24 +780,15 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
-- (void)stopObservingUserProfile
-{
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(name))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(location))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
-}
-
 #pragma mark - VAccessoryNavigationSource
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     const BOOL didNavigateFromInbox = [self navigationHistoryContainsInbox];
-    const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
-    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    const BOOL isCurrentUserLoggedIn = [VCurrentUser user] != nil;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VCurrentUser user];
     
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         if ( didNavigateFromInbox )
         {
@@ -930,20 +822,27 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
-    
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
-        if ( isCurrentUser )
+        if ( self.user.isCurrentUser )
         {
             return NO;
         }
         else
         {
-            // Make a new container with destination's dependencyManager, and push it to the navigation controller stack
-            VDependencyManager *destinationDependencyManager = ((VMessageContainerViewController *)menuItem.destination).dependencyManager;
-            VMessageContainerViewController *destinationMessageContainerVC = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager: destinationDependencyManager];
-            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];
+            // Fetch the conversation or create a new one
+            VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
+            LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+            [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull op)
+             {
+                 VConversation *conversation = operation.loadedConversation;
+                 if ( conversation != nil )
+                 {
+                     VConversationContainerViewController *viewController = [VConversationContainerViewController newWithDependencyManager:destinationDependencyManager];
+                     viewController.conversation = conversation;
+                     [self.navigationController pushViewController:viewController animated:YES];
+                 }
+             }];
             
             return NO;
         }
@@ -972,44 +871,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reselected
 {
     [self floatingViewSelected:nil];
-}
-
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user 
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                   withScreenName:sourceScreen];
 }
 
 @end

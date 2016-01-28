@@ -8,8 +8,8 @@
 
 #import "VNotificationCell.h"
 #import "NSDate+timeSince.h"
-#import "VNotification+RestKit.h"
-#import "VUser+RestKit.h"
+#import "VNotification.h"
+#import "VUser.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager.h"
 #import "VTagStringFormatter.h"
@@ -44,7 +44,6 @@ static const CGFloat kBaselineOffset = 0.5f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.backgroundColor = [self.notification.isRead boolValue] ? [UIColor whiteColor] : [UIColor colorWithWhite:0.75 alpha:1.0];
 }
 
 - (void)setNotification:(VNotification *)notification
@@ -94,13 +93,9 @@ static const CGFloat kBaselineOffset = 0.5f;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUser *user = self.notification.user;
-    
-    //Check for nil user to avoid trying to navigate to create a profile with a nil user
-    if ( user != nil )
+    if ( self.delegate != nil )
     {
-        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
-        [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+        [self.delegate cellDidSelectProfile:self];
     }
 }
 

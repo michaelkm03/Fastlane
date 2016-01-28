@@ -6,12 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIActionSheet+VBlocks.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VFindFriendsTableViewController.h"
-#import "VObjectManager+Users.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
@@ -22,6 +20,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VAuthorizationContextProvider.h"
+#import "victorious-Swift.h"
 
 @import MessageUI;
 
@@ -219,29 +218,35 @@
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectInvite];
     
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
-                                              cancelButtonTitle:nil
-                                                 onCancelButton:nil
-                                         destructiveButtonTitle:nil
-                                            onDestructiveButton:nil
-                                     otherButtonTitlesAndBlocks:nil];
-
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
     if ([MFMailComposeViewController canSendMail])
     {
-        [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingEmail", @"")
-                            block:^{ [self inviteViaMail]; }];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"InviteUsingEmail", @"")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        [self inviteViaMail];
+                                    }]];
     }
     
     if ([MFMessageComposeViewController canSendText])
     {
-        [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingSMS", @"")
-                            block:^{ [self inviteViaMessage]; }];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"InviteUsingSMS", @"")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        [self inviteViaMessage];
+                                    }]];
     }
     
-    NSInteger cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"CancelButton", @"") block:nil];
-    sheet.cancelButtonIndex = cancelButtonIndex;
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
     
-    [sheet showInView:self.view];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Button Actions
@@ -254,12 +259,12 @@
 - (IBAction)pressedDone:(id)sender
 {
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
-    [newFriends addObjectsFromArray:[self.contactsInnerViewController         selectedUsers]];
-    [newFriends addObjectsFromArray:[self.facebookInnerViewController         selectedUsers]];
-    [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
-                               withSuccessBlock:nil
-                                      failBlock:nil];
-    
+    [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
+    [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
+
+    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -7,21 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VSequenceActionController.h" // for VDefaultVideoEdit
+#import "VSequenceActionController.h"
 
 @class VSequence, VHashtag, VUser;
 
 @protocol VSequenceActionsDelegate <NSObject>
-
 @optional
 
-/**
- Reposts the sequence.
- @param fromView A view in which to show action sheets or other views,
- such as a login prompt if the user is not signed in.
- @param completion A callback that is called after the repost is completed, its BOOL
- parameter indicating whether the repost was successful or not.
- */
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion;
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view;
@@ -38,9 +30,6 @@
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion;
 
-/**
- *  Shows any reposters for the given sequence.
- */
 - (void)showRepostersForSequence:(VSequence *)sequence;
 
 @end

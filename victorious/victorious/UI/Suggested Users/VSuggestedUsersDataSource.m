@@ -8,11 +8,10 @@
 
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUserCell.h"
-#import "VObjectManager+Discover.h"
 #import "VDependencyManager.h"
 #import "VUser.h"
-#import "VFollowResponder.h"
 #import "VSuggestedUserRetryCell.h"
+#import "victorious-Swift.h"
 
 static NSString * const kPromptTextKey = @"prompt";
 
@@ -20,7 +19,7 @@ static NSString * const kPromptTextKey = @"prompt";
 
 @property (nonatomic, strong) NSArray *suggestedUsers;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, assign) BOOL isLoadingSuggestedUsers;
+@property (nonatomic, assign) NSOperation *currentLoadOperation;
 @property (nonatomic, assign) BOOL loadedOnce;
 @property (nonatomic, strong) VSuggestedUserRetryCell *retryCell;
 
@@ -48,33 +47,30 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (void)refreshWithCompletion:(void(^)())completion
 {
-    if ( self.isLoadingSuggestedUsers )
+    if ( self.currentLoadOperation != nil )
     {
         //Already loading, don't try to load again
         return;
     }
     
-    self.isLoadingSuggestedUsers = YES;
+    SuggestedUsersOperation *operation = [[SuggestedUsersOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        NSArray<VSuggestedUser *> *suggestedUsers = operation.results;
+        if ( error != nil && suggestedUsers != nil )
+        {
+            self.loadedOnce = YES;
+            self.currentLoadOperation = nil;
+            [self updateStateOfRetryCell];
+            self.suggestedUsers = suggestedUsers;
+            if ( completion != nil )
+            {
+                completion();
+            }
+        }
+    }];
     
-    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         self.suggestedUsers = resultObjects;
-         if ( completion != nil )
-         {
-             completion();
-         }
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         if ( completion != nil )
-         {
-             completion();
-         }
-     }];
+    self.currentLoadOperation = operation;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -114,20 +110,14 @@ static NSString * const kPromptTextKey = @"prompt";
         VSuggestedUserCell *suggestedUserCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         suggestedUserCell.dependencyManager = self.dependencyManager;
-        VUser *user = self.suggestedUsers[ indexPath.row ];
-        suggestedUserCell.user = user;
+        VSuggestedUser *suggestedUser = self.suggestedUsers[ indexPath.row ];
+        [suggestedUserCell configureWithSuggestedUser:suggestedUser];
         cell = suggestedUserCell;
     }
     return cell;
 }
 
 #pragma mark - setters / getters
-
-- (void)setIsLoadingSuggestedUsers:(BOOL)isLoadingSuggestedUsers
-{
-    _isLoadingSuggestedUsers = isLoadingSuggestedUsers;
-    [self updateStateOfRetryCell];
-}
 
 - (void)setRetryCell:(VSuggestedUserRetryCell *)retryCell
 {
@@ -144,7 +134,7 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (void)updateStateOfRetryCell
 {
-    self.retryCell.state = self.isLoadingSuggestedUsers ? VSuggestedUserRetryCellStateLoading : VSuggestedUserRetryCellStateDefault;
+    self.retryCell.state = self.currentLoadOperation != nil ? VSuggestedUserRetryCellStateLoading : VSuggestedUserRetryCellStateDefault;
 }
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "VAbstractStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
@@ -16,6 +15,7 @@
 #import "VAccessoryNavigationSource.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
 #import "VContentViewOriginViewController.h"
+#import "VNoContentView.h"
 
 extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The key that identifies the stream URL path in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
@@ -27,7 +27,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuContainedViewControllerNavigation, VContentViewOriginViewController>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
-@property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
+@property (nonatomic, strong) VNoContentView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 
 @property (nonatomic, assign) BOOL canShowMarquee; ///< Defaults to YES; if NO, we won't adjust the "hasHeaderCell" variable even when a marquee is available in the stream
 

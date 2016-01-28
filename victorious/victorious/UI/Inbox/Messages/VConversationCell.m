@@ -8,20 +8,32 @@
 
 #import "VConversationCell.h"
 #import "NSDate+timeSince.h"
-#import "VConversation+RestKit.h"
-#import "VUser+RestKit.h"
-
 #import "VUserProfileViewController.h"
-
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VUser.h"
+#import "VConversation.h"
 
 const CGFloat VConversationCellHeight = 72.0f;
 static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;
 static const CGFloat kBaselineOffset = 0.5f;
 
+@interface VConversationCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
+
+@end
+
 @implementation VConversationCell
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
 
 - (void)awakeFromNib
 {
@@ -76,22 +88,14 @@ static const CGFloat kBaselineOffset = 0.5f;
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
     self.profileButton.user = conversation.user;
-
-    if (self.conversation.isRead.boolValue)
-    {
-        self.backgroundColor = [UIColor whiteColor];
-    }
-    else
-    {
-        //Could / should this be backend driven?
-        self.backgroundColor = [UIColor colorWithRed:.90 green:.91 blue:.93 alpha:1];
-    }
 }
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.conversation.user];
-    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    if ( self.delegate != nil )
+    {
+        [self.delegate cellDidSelectProfile:self];
+    }
 }
 
 @end

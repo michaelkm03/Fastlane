@@ -9,20 +9,24 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VUser;
 
 @interface VNotification : NSManagedObject
 
-@property (nonatomic, retain) NSString * body;
+@property (nonatomic, retain, nullable) NSString * body;
+@property (nonatomic, retain, nullable) NSString * deepLink;
+@property (nonatomic, retain, nullable) NSString * imageURL;
+@property (nonatomic, retain, nullable) NSNumber * isRead;
+@property (nonatomic, retain, nullable) NSString * type;
+@property (nonatomic, retain, nullable) NSDate * updatedAt;
 @property (nonatomic, retain) NSDate * createdAt;
-@property (nonatomic, retain) NSString * deepLink;
-@property (nonatomic, retain) NSString * imageURL;
-@property (nonatomic, retain) NSNumber * isRead;
-@property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSDate * updatedAt;
 @property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain) NSString * subject;
-@property (nonatomic, retain) NSNumber * displayOrder;
+@property (nonatomic, retain, null_unspecified) NSNumber * displayOrder;
 @property (nonatomic, retain) VUser *user;
 
 @end
+
+NS_ASSUME_NONNULL_END

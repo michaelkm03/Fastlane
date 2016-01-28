@@ -1,0 +1,72 @@
+//
+//  User.swift
+//  VictoriousIOSSDK
+//
+//  Created by Josh Hinman on 10/24/15.
+//  Copyright © 2015 Victorious, Inc. All rights reserved.
+//
+
+import SwiftyJSON
+
+/// The status of a user's profile information
+public enum ProfileStatus: String {
+    /// We have enough information about this user
+    case Complete = "complete"
+    
+    /// We're missing something required in this user's profile
+    case Incomplete = "incomplete"
+}
+
+/// A struct representing a user's information
+public struct User {
+    public let userID: Int
+    public let email: String?
+    public let name: String?
+    public let status: ProfileStatus?
+    public let location: String?
+    public let tagline: String?
+    public let fanLoyalty: FanLoyalty?
+    public let isCreator: Bool?
+    public let isDirectMessagingDisabled: Bool?
+    public let isFollowedByMainUser: Bool?
+    public let numberOfFollowers: Int?
+    public let numberOfFollowing: Int?
+    public let profileImageURL: String?
+    public let tokenUpdatedAt: NSDate?
+    public let previewImageAssets: [ImageAsset]?
+    public let maxVideoUploadDuration: Int?
+}
+
+extension User {
+    public init?(json: JSON) {
+        
+        // Check for "id" as either a string or a number, because the back-end is inconsistent.
+        guard let userID = Int(json["id"].stringValue) ?? json["id"].int,
+            let statusString = json["status"].string,
+            let status = ProfileStatus(rawValue: statusString) else {
+            return nil
+        }
+        self.userID = userID
+        self.status = status
+        
+        email                       = json["email"].string
+        name                        = json["name"].string
+        location                    = json["profile_location"].string
+        tagline                     = json["profile_tagline"].string
+        fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
+        isCreator                   = json["isCreator"].bool
+        isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
+        isFollowedByMainUser        = json["am_following"].bool ?? false
+        numberOfFollowers           = Int(json["number_of_followers"].stringValue)
+        numberOfFollowing           = Int(json["number_of_following"].stringValue)
+        profileImageURL             = json["profile_image"].string
+        maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
+        tokenUpdatedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
+    
+        if let previewImageAssets = json["preview"]["assets"].array {
+            self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }
+        } else {
+            self.previewImageAssets = nil
+        }
+    }
+}

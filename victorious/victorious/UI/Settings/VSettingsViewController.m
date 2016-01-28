@@ -12,12 +12,9 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VObjectManager+Login.h"
-#import "VUserManager.h"
 #import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "VObjectManager+Websites.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
@@ -26,7 +23,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
@@ -58,7 +54,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
-@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, ForceLoginOperationDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
@@ -246,7 +242,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ([VCurrentUser user] != nil)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
         self.logoutButton.style = VButtonStyleSecondary;
@@ -258,6 +254,10 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         self.logoutButton.style = VButtonStylePrimary;
         self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
     }
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadData];
+    [self.tableView endUpdates];
 }
 
 - (void)pushLikedContent
@@ -270,12 +270,21 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-    return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
+    return [VCurrentUser user] != nil && likeButtonOn;
 }
 
 - (BOOL)showChangePassword
 {
-    return [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
+    VUser *currentUer = [VCurrentUser user];
+    if ( currentUer == nil )
+    {
+        return NO;
+    }
+    else
+    {
+        VLoginType loginType = (VLoginType)currentUer.loginType.integerValue;
+        return loginType != VLoginTypeFacebook && loginType != VLoginTypeTwitter;
+    }
 }
 
 #pragma mark - TableView Delegate
@@ -315,15 +324,39 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (IBAction)logout:(id)sender
 {
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ( [VCurrentUser user] != nil )
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        [[VObjectManager sharedManager] logout];
-        [self updateLogoutButtonState];
+        // Logout first if logged in
+        LogoutOperation *operation = [[LogoutOperation alloc] init];
+        [operation queueOn:operation.defaultQueue completionBlock:^void(NSError *_Nullable error)
+        {
+            [self updateLogoutButtonState];
+        }];
     }
     
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    // Then show login prompt
+    [self showLogin];
+}
+
+- (void)showLogin
+{
+    ShowLoginOperation *operation = [[ShowLoginOperation alloc] initWithOriginViewController:self
+                                                                           dependencyManager:self.dependencyManager
+                                                                                     context:VAuthorizationContextDefault];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [self updateLogoutButtonState];
+}
+
+#pragma mark - ForceLoginOperationDelegate
+
+- (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
+{
+    [self presentViewController:loginViewController animated:true completion:nil];
+}
+
+- (void)hideLoginViewController:(void (^ __nonnull)(void))completion
+{
+    [self dismissViewControllerAnimated:YES completion:completion];
 }
 
 #pragma mark - Navigation
@@ -358,7 +391,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        BOOL shouldShow = self.showTestAlertCell && [VObjectManager sharedManager].mainUserLoggedIn;
+        BOOL shouldShow = self.showTestAlertCell && [VCurrentUser user] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
@@ -367,7 +400,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        BOOL shouldShow = self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn;
+        BOOL shouldShow = self.showPushNotificationSettings && [VCurrentUser user] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
@@ -430,12 +463,22 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                        message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                              otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                                                 message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SetupButton", @"Setup")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+                                    }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -458,15 +501,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [deviceInfo appendFormat:@"%@ %@ (%@)", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
     
     return deviceInfo;
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.cancelButtonIndex != buttonIndex)
-    {
-        // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
-    }
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate

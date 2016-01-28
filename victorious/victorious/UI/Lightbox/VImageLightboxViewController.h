@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param image The image to display in a lightbox
  */
-- (instancetype)initWithImage:(UIImage *)image;
+- (instancetype)initWithImage:(UIImage *_Nullable)image;
 
 @end
 

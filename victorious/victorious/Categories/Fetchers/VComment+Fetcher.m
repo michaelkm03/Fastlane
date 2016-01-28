@@ -7,7 +7,6 @@
 //
 
 #import "VComment+Fetcher.h"
-#import "VComment+RestKit.h"
 #import "NSString+VParseHelp.h"
 #import "VMediaAttachment.h"
 #import "NSURL+MediaType.h"
@@ -108,28 +107,14 @@
 
 - (NSURL *)mp4MediaURL
 {
-    NSString *mediaDataURLString = [self commentMediaURLForMimeType:kmp4MimeType];
-    if ( mediaDataURLString == nil && [self.mediaUrl v_isExtensionMp4] )
+    if ( [self.mediaUrl v_isExtensionMp4] )
     {
-        mediaDataURLString = self.mediaUrl;
+        return [NSURL URLWithString:self.mediaUrl];
     }
-    
-    return [NSURL URLWithString:mediaDataURLString];
-}
-
-- (NSString *)commentMediaURLForMimeType:(NSString *)mimeType
-{
-    __block NSString *mediaURLStringForMimeType = nil;
-    [self.commentMedia enumerateObjectsUsingBlock:^(VMediaAttachment *media, BOOL *stop)
-     {
-         if ([media.mimeType isEqualToString:mimeType])
-         {
-             mediaURLStringForMimeType = media.mediaURL;
-             *stop = YES;
-         }
-     }];
-    
-    return mediaURLStringForMimeType;
+    else
+    {
+        return nil;
+    }
 }
 
 @end

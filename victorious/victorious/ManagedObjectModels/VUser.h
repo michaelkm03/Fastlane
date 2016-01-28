@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VPollResult, VSequence, VUser;
+@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
 
 @interface VUser : NSManagedObject
 
@@ -32,10 +32,10 @@
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
-@property (nonatomic, retain) VConversation *conversation;
+@property (nonatomic, retain) NSOrderedSet *conversations;
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
-@property (nonatomic, retain) NSOrderedSet *hashtags;
+@property (nonatomic, retain) NSOrderedSet *followedHashtags;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
@@ -43,6 +43,9 @@
 @property (nonatomic, retain) NSSet *previewAssets;
 @property (nonatomic, retain) NSSet *repostedSequences;
 @property (nonatomic, retain) NSNumber *maxUploadDuration;
+@property (nonatomic, retain) NSNumber *loginType;
+@property (nonatomic, retain) VNotificationSettings *notificationSettings;
+@property (nonatomic, retain) NSOrderedSet *likedSequences;
 
 @end
 

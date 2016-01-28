@@ -7,21 +7,15 @@
 //
 
 #import "VReposterTableViewController.h"
-
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
-
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VSequence.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "victorious-Swift.h"
 
-#import "VFollowResponder.h"
-
-@interface VReposterTableViewController () <VFollowResponder>
+@interface VReposterTableViewController ()
 
 @property (nonatomic, strong) NSArray *reposters;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -61,7 +55,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self refreshRepostersList];
+    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,7 +69,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - Table view data source
@@ -108,49 +102,8 @@
 {
     if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
-        [self loadMoreReposters];
+        [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
     }
-}
-
-- (void)refreshRepostersList
-{
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.reposters = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self setHasReposters:(self.reposters.count>0)];
-        
-        [self.tableView reloadData];
-    };
-    
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        [self.tableView reloadData];
-        [self setHasReposters:NO];
-    };
-    
-    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
-                                                    pageType:VPageTypeFirst
-                                                   successBlock:success
-                                                      failBlock:fail];
-}
-
-- (void)loadMoreReposters
-{
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet *uniqueReposters = [NSSet setWithArray:[self.reposters arrayByAddingObjectsFromArray:resultObjects]];
-        self.reposters = [[uniqueReposters allObjects] sortedArrayUsingDescriptors:@[sort]];
-        [self setHasReposters:self.reposters.count];
-        
-        [self.tableView reloadData];
-    };
-    
-    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
-                                                    pageType:VPageTypeNext
-                                                successBlock:success
-                                                   failBlock:nil];
 }
 
 - (void)setHasReposters:(BOOL)hasReposters
@@ -182,48 +135,6 @@
              self.tableView.backgroundView = nil;
          }];
     }
-}
-
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
-{
-    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
-    
-    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
-    
-    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                   withScreenName:sourceScreen];
 }
 
 @end

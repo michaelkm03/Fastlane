@@ -10,20 +10,17 @@
 #import <XCTest/XCTest.h>
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
-#import "VNotificationSettings+Fetcher.h"
-#import "VNotificationSettings+RestKit.h"
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsViewController.h"
 #import "VTestHelpers.h"
-#import "VObjectManager.h"
-#import "VObjectManager+DeviceRegistration.h"
+#import "VNotificationSettings.h"
 #import "VAsyncTestHelper.h"
 #import "VSettingsSwitchCell.h"
 #import "VNoContentTableViewCell.h"
+#import "victorious-swift.h"
 
 @interface VNotificationSettingsViewController (UnitTests)
 
-- (void)settingsDidLoadWithResults:(NSArray *)resultObjects;
 - (void)updateSettings;
 - (void)saveSettings;
 - (void)onError:(NSError *)error;
@@ -57,7 +54,7 @@
     [self.viewController viewDidLoad];
     self.viewController.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
     
-    self.randomSettings = [VDummyModels objectWithEntityName:[VNotificationSettings entityName]
+    self.randomSettings = [VDummyModels objectWithEntityName:[VNotificationSettings v_entityName]
                                                     subclass:[VNotificationSettings class]];
     // At least one should always be yes so that it doesn't equal the default settings
     self.randomSettings.isPostFromCreatorEnabled    = @YES;
@@ -66,7 +63,7 @@
     self.randomSettings.isNewCommentOnMyPostEnabled = @( randomBool() );
     self.randomSettings.isPostFromFollowedEnabled   = @( randomBool() );
     
-    self.defaultSettings = [VDummyModels objectWithEntityName:[VNotificationSettings entityName]
+    self.defaultSettings = [VDummyModels objectWithEntityName:[VNotificationSettings v_entityName]
                                                      subclass:[VNotificationSettings class]];
     self.defaultSettings.isPostFromCreatorEnabled    = @NO;
     self.defaultSettings.isNewFollowerEnabled        = @NO;
@@ -80,38 +77,9 @@
     [super tearDown];
 }
 
-- (void)testShouldSaveOnDisappear
-{
-    __block BOOL wasSaveSettingsCalled = NO;
-    [VNotificationSettingsViewController v_swizzleMethod:@selector(saveSettings) withBlock:^void
-     {
-         wasSaveSettingsCalled = YES;
-     }
-                                            executeBlock:^
-     {
-         wasSaveSettingsCalled = NO;
-         self.viewController.didSettingsChange = NO;
-         self.viewController.settingsError = nil;
-         [self.viewController viewWillDisappear:YES];
-         XCTAssertFalse( wasSaveSettingsCalled );
-         
-         wasSaveSettingsCalled = NO;
-         self.viewController.didSettingsChange = NO;
-         self.viewController.settingsError = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
-         [self.viewController viewWillDisappear:YES];
-         XCTAssertFalse( wasSaveSettingsCalled );
-         
-         wasSaveSettingsCalled = NO;
-         self.viewController.didSettingsChange = YES;
-         self.viewController.settingsError = nil;
-         [self.viewController viewWillDisappear:YES];
-         XCTAssert( wasSaveSettingsCalled );
-     }];
-}
-
 - (void)testCreateTableViewCells
 {
-    [self.viewController settingsDidLoadWithResults:@[ self.randomSettings ]];
+    self.viewController.settings = self.randomSettings;
     
     for ( NSInteger s = 0; s < (NSInteger)self.viewController.sections.count; s++ )
     {
@@ -150,40 +118,6 @@
     indexPath = VIndexPathMake(1, 0);
     cell = [self.viewController tableView:self.viewController.tableView cellForRowAtIndexPath:indexPath];
     XCTAssertNil( cell );
-}
-
-- (void)testSaveError
-{
-    [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
-    
-    // Swizzle the setDeviceSettings: method to ensure that it calls the failure block to simulate an error
-    [VObjectManager v_swizzleMethod:@selector(setDeviceSettings:successBlock:failBlock:)
-                          withBlock:^void (VObjectManager *objManager,
-                                           VNotificationSettings *settings,
-                                           VSuccessBlock success,
-                                           VFailBlock failed)
-    {
-        failed( nil, [NSError errorWithDomain:@"" code:0 userInfo:nil] );
-    }
-                       executeBlock:^
-     {
-         __block BOOL presentWasCalled = NO;
-         // Swizzle the presentViewController method to check that the presented view controller is an alert.
-         // This proves that the alert was presented in response to the error saving the updated setttings
-         [UIViewController v_swizzleMethod:@selector(presentViewController:animated:completion:) withBlock:^void(UIViewController *presenter, UIViewController *presentee)
-          {
-              XCTAssert( [presentee isKindOfClass:[UIAlertController class]] );
-              presentWasCalled = YES;
-          }
-                              executeBlock:^
-          {
-              // Stickt the view controller in a navigation controller where the alert will be presented
-              __unused UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-              // Save the settings (swizzling above ensures it will fail)
-              [self.viewController saveSettings];
-          }];
-         XCTAssert( presentWasCalled );
-     }];
 }
 
 - (void)testUpdateSettings
@@ -238,28 +172,12 @@
     }
                                    executeBlock:^
     {
-        [self.viewController settingsDidLoadWithResults:@[ self.randomSettings ]];
+        [self.viewController setSettings:self.randomSettings];
         XCTAssertNil( self.viewController.settingsError );
         XCTAssert( self.viewController.hasValidSettings );
         XCTAssertEqualObjects( self.viewController.settings, self.randomSettings );
         [self assertSectionsAndRowsDefined];
         [self assertSectionStructureMatchesSettings:self.randomSettings  ];
-        XCTAssert( self.viewController.hasValidSettings );
-        
-        [self.viewController settingsDidLoadWithResults:@[]];
-        XCTAssertNil( self.viewController.settingsError );
-        XCTAssert( self.viewController.hasValidSettings );
-        XCTAssertEqualObjects( self.viewController.settings, self.defaultSettings );
-        [self assertSectionsAndRowsDefined];
-        [self assertSectionStructureMatchesSettings:self.defaultSettings];
-        XCTAssert( self.viewController.hasValidSettings );
-        
-        [self.viewController settingsDidLoadWithResults:@[ [NSNull null] ]];
-        XCTAssertNil( self.viewController.settingsError );
-        XCTAssert( self.viewController.hasValidSettings );
-        XCTAssertEqualObjects( self.viewController.settings, self.defaultSettings );
-        [self assertSectionsAndRowsDefined];
-        [self assertSectionStructureMatchesSettings:self.defaultSettings];
         XCTAssert( self.viewController.hasValidSettings );
     }];
 }

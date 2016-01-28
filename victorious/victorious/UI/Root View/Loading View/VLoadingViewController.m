@@ -7,28 +7,22 @@
 //
 
 #import "VLoadingViewController.h"
-
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
-#import "VEnvironment+VDataCacheID.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+VTemplateDownloaderConformance.h"
 #import "VUser.h"
 #import "VReachability.h"
 #import "VSessionTimer.h"
 #import "VTemplateDecorator.h"
 #import "VTemplateDownloadOperation.h"
-#import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
-#import "VLoginOperation.h"
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
 #import "victorious-Swift.h"
+
+@import VictoriousCommon;
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
@@ -38,7 +32,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadOperation;
 @property (nonatomic, strong) NSOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
@@ -74,25 +67,14 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.backgroundContainer addSubview:launchScreen];
     [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreen];
     
-    self.operationQueue = [[NSOperationQueue alloc] init];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
-    if (currentNetworkStatus == VNetworkStatusNotReachable)
-    {
-        [self showReachabilityNotice];
-    }
-    else
-    {
-        [self startLoading];
-    }
-    self.priorNetworkStatus = currentNetworkStatus;
+    
+    [self startLoading];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -150,13 +132,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
-    if (currentNetworkStatus == VNetworkStatusNotReachable)
+    if ( self.priorNetworkStatus == VNetworkStatusNotReachable )
     {
-        [self showReachabilityNotice];
-    }
-    else if (self.priorNetworkStatus == VNetworkStatusNotReachable)
-    {
-        [self hideReachabilityNotice];
         [self startLoading];
     }
     self.priorNetworkStatus = currentNetworkStatus;
@@ -172,17 +149,22 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     }
     self.isLoading = YES;
     
+   
+    self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[StoredLoginOperation alloc] init];
+    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[PersistenceTemplateDownloader alloc] init]
+                                                                                andDelegate:self];
+    
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
-    
-    self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[VLoginOperation alloc] init];
-    
-    [self.operationQueue addOperation:self.loginOperation];
-    
-    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
-    self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
-    self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
-    [self.templateDownloadOperation addDependency:self.loginOperation];
-    [self.operationQueue addOperation:self.templateDownloadOperation];
+    NSString *buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    TemplateCache *templateCache = [[TemplateCache alloc] initWithDataCache:[[VDataCache alloc] init] environment:environmentManager.currentEnvironment buildNumber:buildNumber];
+    self.templateDownloadOperation.templateCache = templateCache;
+
+    NSDictionary *cachedTemplate = nil;
+    NSData *cachedTemplateData = [templateCache cachedTemplateData];
+    if ( cachedTemplateData != nil )
+    {
+        cachedTemplate = [VTemplateSerialization templateConfigurationDictionaryWithData:cachedTemplateData];
+    }
     
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
@@ -190,18 +172,24 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-                           {
-                               strongSelf.isLoading = NO;
-                               strongSelf.progressHUD.taskInProgress = NO;
-                               [strongSelf.progressHUD hide:YES];
-                               [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
-                           });
+            strongSelf.isLoading = NO;
+            strongSelf.progressHUD.taskInProgress = NO;
+            [strongSelf.progressHUD hide:YES];
+            [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration ?: cachedTemplate];
         }
     }];
-    [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
-    [self.operationQueue addOperation:self.finishLoadingOperation];
+    [self.templateDownloadOperation addDependency:self.loginOperation];
+    
+    if ( cachedTemplate == nil )
+    {
+        [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
+    }
+    
+    [[Operation sharedQueue] addOperation:self.templateDownloadOperation];
+    [[Operation sharedQueue] addOperation:self.loginOperation];
+    [[NSOperationQueue mainQueue] addOperation:self.finishLoadingOperation];
+    
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     self.progressHUD.graceTime = 2.0f;
@@ -260,7 +248,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.finishLoadingOperation removeDependency:downloadOperation];
 }
 
-- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
+- (void)templateDownloadOperationFailed:(VTemplateDownloadOperation *)downloadOperation
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {

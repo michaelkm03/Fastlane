@@ -7,13 +7,13 @@
 //
 
 #import "VChangePasswordViewController.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kPlaceholderTextWhiteValue = 0.14f;
 static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
@@ -140,26 +140,24 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
         self.saveButton.enabled = NO;
         [self.saveButton showActivityIndicator];
         
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            self.saveButton.enabled = YES;
-            [self.saveButton hideActivityIndicator];
-            
-            [self.navigationController popViewControllerAnimated:YES];
-        };
-        
-        VFailBlock fail = ^(NSOperation *operation, NSError *error)
-        {
-            self.saveButton.enabled = YES;
-            [self.saveButton hideActivityIndicator];
-            
-            [self.passwordValidator showAlertInViewController:self withError:error];
-        };
-        
-        [[VObjectManager sharedManager] updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
-                                                              newPassword:self.changedPasswordTextField.text
-                                                             successBlock:success
-                                                                failBlock:fail];
+        [self updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
+                                    newPassword:self.changedPasswordTextField.text
+                                     completion:^(NSError *error) {
+                                         if ( error == nil )
+                                         {
+                                             self.saveButton.enabled = YES;
+                                             [self.saveButton hideActivityIndicator];
+                                             
+                                             [self.navigationController popViewControllerAnimated:YES];
+                                         }
+                                         else
+                                         {
+                                             self.saveButton.enabled = YES;
+                                             [self.saveButton hideActivityIndicator];
+                                             
+                                             [self.passwordValidator showAlertInViewController:self withError:error];
+                                         }
+                                     }];
     }
     else
     {

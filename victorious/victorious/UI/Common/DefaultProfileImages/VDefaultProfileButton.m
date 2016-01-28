@@ -76,6 +76,8 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
     self.imageView.layer.cornerRadius = self.bounds.size.width / 2;
     self.imageView.layer.masksToBounds = YES;
     __weak typeof(self) weakSelf = self;
+    [self setImage:[self placeholderImage]
+          forState:controlState];
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
                                                    progress:nil
@@ -83,15 +85,18 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
      {
          __strong typeof(weakSelf) strongSelf = weakSelf;
          
-         if (!image)
+         // Bail if we are no longer representing this image
+         if (![strongSelf.imageURL isEqual:imageURL])
          {
-             [strongSelf setImage:[strongSelf placeholderImage] forState:controlState];
              return;
          }
-         else
+         
+         if (!image)
          {
-             [strongSelf setImage:image forState:UIControlStateNormal];
+             return;
          }
+
+         [strongSelf setImage:image forState:UIControlStateNormal];
      }];
 }
 
@@ -176,12 +181,6 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (UIImage *)placeholderImage
 {
     NSString *imageName = @"profile_thumb";
-    UIImage *image = [UIImage imageNamed:imageName];
-    if (CGRectGetHeight(self.bounds) > image.size.height)
-    {
-        imageName = @"profile_full";
-        image = [UIImage imageNamed:imageName];
-    }
     
     // Create unique key from tint color
     NSString *tintKey = [[self.tintColor description] stringByAppendingString:imageName];
@@ -192,6 +191,13 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
     if (cachedImage != nil)
     {
         return cachedImage;
+    }
+
+    UIImage *image = [UIImage imageNamed:imageName];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        imageName = @"profile_full";
+        image = [UIImage imageNamed:imageName];
     }
     
     // Tint image and store in cache

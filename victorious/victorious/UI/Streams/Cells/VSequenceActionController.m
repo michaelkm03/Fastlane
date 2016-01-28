@@ -9,57 +9,36 @@
 #import <objc/runtime.h>
 
 #import "VSequenceActionController.h"
-
-#pragma mark - Models
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VTracking.h"
-
-#pragma mark - Controllers
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VUserProfileViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VAbstractMediaLinkViewController.h"
 #import "VTabScaffoldViewController.h"
-
-#pragma mark-  Views
 #import "VNoContentView.h"
 #import "VFacebookActivity.h"
-
-#pragma mark - Managers
-#import "VObjectManager+Login.h"
-#import "VObjectManager+ContentCreation.h"
-#import "VObjectManager+Sequence.h"
-
-#pragma mark - Categories
 #import "NSString+VParseHelp.h"
-#import "UIActionSheet+VBlocks.h"
-
-#pragma mark - Dependency Manager
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
-
-#pragma mark - Remixing
 #import "VRemixPresenter.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-#import "VAuthorizedAction.h"
-
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VUsersViewController.h"
-#import "VLikersDataSource.h"
-
 #import "victorious-Swift.h"
 
 @interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 @property (nonatomic, strong) VRemixPresenter *remixPresenter;
+@property (nonatomic, strong) SequenceActionHelper *sequenceActionHelper;
 
 @end
 
@@ -73,6 +52,15 @@
 {
     CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
     [viewController.navigationController pushViewController:commentsViewController animated:YES];
+}
+
+- (SequenceActionHelper *)sequenceActionHelper
+{
+    if ( _sequenceActionHelper == nil )
+    {
+        _sequenceActionHelper = [[SequenceActionHelper alloc] init];
+    }
+    return _sequenceActionHelper;
 }
 
 #pragma mark - User
@@ -160,19 +148,10 @@
     }
     [addedDependencies setObject:@(editState) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
-                                                                  sequenceToRemix:sequence];
-         [self.remixPresenter presentOnViewController:viewController];
-         self.viewControllerPresentingWorkspace = viewController;
-     }];
+    self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
+                                                             sequenceToRemix:sequence];
+    [self.remixPresenter presentOnViewController:viewController];
+    self.viewControllerPresentingWorkspace = viewController;
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
@@ -211,36 +190,7 @@
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    
-    __weak typeof(self) welf = self;
-    [authorization performFromViewController:viewController context:VAuthorizationContextDefault
-                                  completion:^(BOOL authorized)
-     {
-         __strong typeof(self) strongSelf = welf;
-         if ( authorized )
-         {
-             CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
-             
-             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  completion( YES );
-                  
-              } failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  completion( NO );
-              }];
-         }
-         else
-         {
-             completion( NO );
-         }
-     }];
+    [self.sequenceActionHelper likeSequence:sequence triggeringView:actionView originViewController:viewController dependencyManager:self.dependencyManager completion:completion];
 }
 
 #pragma mark - Repost
@@ -252,73 +202,15 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
-    if ([node.sequence.hasReposted boolValue])
-    {
-        if ( completion != nil )
-        {
-            completion(YES);
-        }
-        return;
-    }
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             if ( completion != nil )
-             {
-                 completion(NO);
-             }
-             return;
-         }
-         
-         // Optimistically update the data store for a successul repost
-         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-         [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         node.sequence.hasReposted = @(YES);
-         [node.sequence.managedObjectContext save:nil];
-         
-         [[VObjectManager sharedManager] repostNode:node
-                                           withName:nil
-                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              if ( completion != nil )
-              {
-                  completion( YES );
-              }
-          }
-                                          failBlock:^(NSOperation *operation, NSError *error)
-          {
-              if ( error.code == kVSequenceAlreadyReposted )
-              {
-                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-                  node.sequence.hasReposted = @(YES);
-                  [node.sequence.managedObjectContext save:nil];
-              }
-              else
-              {
-                  // Undo the repost optimistically assumed successful in the data store
-                  node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
-                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-                  node.sequence.hasReposted = @(NO);
-                  [node.sequence.managedObjectContext save:nil];
-              }
-              
-              if ( completion != nil )
-              {
-                  completion( NO );
-              }
-          }];
-     }];
+    [self.sequenceActionHelper repostNode:node completion:completion];
 }
 
 - (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
 {
     NSError *error = nil;
     [user addRepostedSequencesObject:sequence];
-    if ( ![user.managedObjectContext saveToPersistentStore:&error] )
+#warning FIXME: Redo in new architecture
+    if ( ![user.managedObjectContext save:&error] )
     {
         VLog( @"Error marking sequence as reposted for main user: %@", error );
     }
@@ -398,45 +290,29 @@
 
 #pragma mark - Flag
 
-- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(UIAlertAction *))completion
+- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(BOOL success))completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
-                                  {
-                                      [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
-                                  }, nil];
-    [actionSheet showInView:viewController.view];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Report/Flag", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
+                                }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    
+    [viewController presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(BOOL success))completion
 {
-    [[VObjectManager sharedManager] flagSequence:sequence
-                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
-         
-         [viewController presentViewController:alert animated:YES completion:nil];
-     }
-                                       failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed to flag sequence %@", sequence);
-         UIAlertController *alert;
-         if ( error.code == kVCommentAlreadyFlaggedError )
-         {
-             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
-         }
-         else
-         {
-             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"WereSorry", @"") message:NSLocalizedString(@"ErrorOccured", @"")];
-         }
-         [viewController presentViewController:alert animated:YES completion:nil];
-     }];
+    [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:completion];
 }
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message

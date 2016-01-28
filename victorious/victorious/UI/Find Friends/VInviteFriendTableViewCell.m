@@ -8,14 +8,12 @@
 
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
-#import "VObjectManager.h"
-#import "VObjectManager+Login.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "VFollowResponder.h"
 #import "VDependencyManager.h"
 #import "VDefaultProfileButton.h"
 #import "victorious-Swift.h"
+#import <KVOController/FBKVOController.h>
 
 static const CGFloat kInviteCellHeight = 50.0f;
 
@@ -62,35 +60,35 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (void)setProfile:(VUser *)profile
 {
+    
+    [self.KVOController unobserve:_profile
+                          keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
+    
     _profile = profile;
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:profile
+                        keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateFollowStatusAnimated:YES];
+     }];
     
     self.profileButton.user = profile;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
-    NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    NSInteger mainUserID = [VCurrentUser user].remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
     [self updateFollowStatusAnimated:NO];
 }
 
-- (BOOL)haveRelationship
-{
-    BOOL relationship = self.profile.isFollowedByMainUser.boolValue;
-    return relationship;
-}
-
 - (void)updateFollowStatusAnimated:(BOOL)animated
 {
-    //If we get into a weird state and the relaionships are the same don't do anything
-    
-    if (self.followUserControl.controlState == [VFollowControl controlStateForFollowing:self.haveRelationship])
-    {
-        return;
-    }
-    
-    [self.followUserControl setControlState:[VFollowControl controlStateForFollowing:self.haveRelationship]
-                                   animated:animated];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.profile.isFollowedByMainUser.boolValue];
+    [self.followUserControl setControlState:controlState animated:animated];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -109,46 +107,20 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    if ( sender.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
+    long long userId = self.profile.remoteId.longLongValue;
+    NSString *sourceScreenName = nil;
     
-    void (^authorizedBlock)() = ^
+    RequestOperation *operation;
+    if ( self.profile.isFollowedByMainUser.boolValue )
     {
-        [sender setControlState:VFollowControlStateLoading
-                       animated:YES];
-    };
-    
-    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
-    {
-        [self updateFollowStatusAnimated:YES];
-    };
-    
-    if ( sender.controlState == VFollowControlStateFollowed )
-    {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder unfollowUser:self.profile
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock
-                   fromViewController:nil
-                       withScreenName:nil];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder followUser:self.profile
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock
-                 fromViewController:nil
-                     withScreenName:nil];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
+    
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 @end

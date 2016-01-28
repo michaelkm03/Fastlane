@@ -11,6 +11,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VCreationFlowPresenter.h"
 #import "VRootViewController.h"
+#import "victorious-Swift.h"
 
 @interface VWorkspaceShimDestination () <VCoachmarkDisplayer>
 
@@ -28,14 +29,20 @@
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
+        _creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:_dependencyManager];
     }
     return self;
 }
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
-    [self.creationFlowPresenter presentOnViewController:[VRootViewController rootViewController]];
+    UIViewController *originVC = [VRootViewController rootViewController];
+    ShowCreateSheetOperation *operation = [[ShowCreateSheetOperation alloc] initWithOriginViewController:originVC dependencyManager:self.dependencyManager showCreationSheetFromTop:YES];
+    operation.mainQueueCompletionBlock = ^void(Operation *op) {
+        VCreationType creationType = ((ShowCreateSheetOperation *)op).chosenCreationType;
+        [self.creationFlowPresenter presentWorkspaceOnViewController:originVC creationType:creationType];
+    };
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
     return NO;
 }
 

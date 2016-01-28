@@ -10,7 +10,6 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VNavigationMenuItem.h"
 #import "VAuthorizationContextProvider.h"
-#import "VAuthorizedAction.h"
 #import "VNavigationTitleView.h"
 
 NSString * const VDependencyManagerTitleImageKey = @"titleImage";

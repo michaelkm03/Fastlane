@@ -7,8 +7,6 @@
 //
 
 #import "VFollowingStreamCollectionViewController.h"
-#import "VObjectManager+Login.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VAccessoryScreens.h"
@@ -32,64 +30,30 @@
 {
     [super viewDidLoad];
     
-    [self refreshWithCompletion:nil];
+    [self loadPage:VPageTypeFirst completion:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
-                                               object:[VObjectManager sharedManager]];
+                                               object:nil];
+    
+    self.noContentView.title = NSLocalizedString( @"NotFollowingTitle", @"" );
+    self.noContentView.message = NSLocalizedString( @"NotFollowingMessage", @"" );
+    self.noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLoggedInChangedNotification
-                                                  object:[VObjectManager sharedManager]];
+                                                  object:nil];
 }
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self.streamDataSource unloadStream];
-    if ( [VObjectManager sharedManager].mainUserLoggedIn )
+    [self.streamDataSource.paginatedDataSource unload];
+    if ( [VCurrentUser user] != nil )
     {
-        [self refreshWithCompletion:nil];
-    }
-}
-
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
-{
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         
-         if ( completionBlock != nil )
-         {
-             completionBlock();
-         }
-     }];
-}
-
-- (void)dataSourceDidRefresh
-{
-    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( self.noContentView == nil )
-        {
-            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
-            {
-                noContentView.dependencyManager = self.dependencyManager;
-            }
-            noContentView.title = NSLocalizedString( @"NotFollowingTitle", @"" );
-            noContentView.message = NSLocalizedString( @"NotFollowingMessage", @"" );
-            noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
-            self.noContentView = noContentView;
-        }
-        
-        self.collectionView.backgroundView = self.noContentView;
-    }
-    else
-    {
-        self.collectionView.backgroundView = nil;
+        [self loadPage:VPageTypeFirst completion:nil];
     }
 }
 

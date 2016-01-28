@@ -8,14 +8,6 @@
 
 import UIKit
 
-
-/// View Controllers conform to this protocol to handle
-/// search result navigation(e.g. tap on a user result, or hashtag result)
-@objc protocol ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser)
-    func selectedHashtag(hashtag: VHashtag)
-}
-
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate {
@@ -75,8 +67,23 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
         let urlPath = url.v_pathComponent()
-        exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-        exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        let query = ["apiPath" : urlPath]
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        var persistentStream: VStream?
+        
+        persistentStore.mainContext.performBlockAndWait {
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.v_entityName(), queryDictionary: query) as? VStream else {
+                return
+            }
+            stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+            persistentStore.mainContext.v_save()
+            persistentStream = stream
+        }
+        
+        if let stream = persistentStream {
+            exploreVC.currentStream = stream
+        }
+        
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         // Factory for trending topic shelf
@@ -92,7 +99,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewDidLoad()
         
         configureSearchBar()
-        collectionView.backgroundColor = UIColor.whiteColor()
         marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
@@ -104,11 +110,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
-        let dataSource = VStreamCollectionViewDataSource(stream: currentStream)
-        dataSource.delegate = self;
-        dataSource.collectionView = collectionView;
-        streamDataSource = dataSource
-        collectionView.dataSource = streamDataSource;
+        streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
+        if let dataSource = streamDataSource {
+            dataSource.stream = currentStream
+            dataSource.delegate = self
+            dataSource.paginatedDataSource.delegate = self.streamDataSource
+            collectionView.dataSource = dataSource
+        }
+        
         collectionView.backgroundColor = UIColor.clearColor()
         definesPresentationContext = true
     }
@@ -117,10 +126,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-        searchResultsViewController?.updateTableView()
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, cellForIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
+    override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let streamItem = streamItemFor(indexPath)
         if let shelf = streamItem as? Shelf {
             
@@ -153,21 +161,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, hasNewStreamItems streamItems: [AnyObject]!) {
-        if let streamItems = streamItems as? [VStreamItem] {
-            let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
-            for streamItem in recentItems {
-                let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            }
-        }
-        updateSectionRanges()
-        trackVisibleCells()
-    }
-    
     private func updateSectionRanges() {
         var tempRanges = [SectionRange]()
-        if let streamDataSource = streamDataSource, streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
+        if let streamDataSource = streamDataSource, let streamItems = streamDataSource.paginatedDataSource.visibleItems.array as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
@@ -214,12 +210,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return section == collectionView.numberOfSections() - 1
     }
     
-    override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
+    override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource) -> Int {
         // Total number of shelves plus one section for recent content
         return sectionRanges.count + 1
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, numberOfRowsInSection section: UInt) -> Int {
+    override func dataSource(dataSource: VStreamCollectionViewDataSource, numberOfRowsInSection section: UInt) -> Int {
         let convertedSection = Int(section)
         if convertedSection < sectionRanges.count {
             return sectionRanges[convertedSection].range.length
@@ -238,7 +234,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath)
     }
     
-    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
+    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView, inSection section: Int) -> Bool {
         // Only show activity footer if the superclass's checks, which check for being able to load more items from the stream,
         // pass and we're trying to display a footer in the last section of the collection view
         return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
@@ -289,7 +285,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         }
         
         searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
-        searchResultsViewController?.navigationDelegate = self
         searchController = UISearchController(searchResultsController: searchResultsViewController)
 
         // Configure searchController properties
@@ -395,14 +390,14 @@ private extension VDependencyManager {
 
 extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForHeaderInSection section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, heightForHeaderInSection section: Int) -> CGFloat {
         if let dependencyManager = dependencyManager where isRecentContent(section) {
             return RecentPostsExploreHeaderView.desiredHeight(dependencyManager)
         }
         return 0
     }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForFooterInSection section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, heightForFooterInSection section: Int) -> CGFloat {
         if section == collectionView.numberOfSections() - 1 {
             // We're in our dummy last section, return the preffered size for the activity indicator footer
             return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
@@ -411,8 +406,9 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     }
     
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
-        let filter = VObjectManager.sharedManager().filterForStream(currentStream)
-        let perPageNumber = filter.perPageNumber.integerValue
+        //FIXME: There might be a better fix than this. For RC1 this should be fine.
+        let paginator = StandardPaginator()
+        let perPageNumber = paginator.itemsPerPage
         let pageLocation = indexPath.row % perPageNumber
         let streamItem = streamItemFor(indexPath)
         if pageLocation == 0 {
@@ -490,8 +486,8 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     
     private func streamItemFor(indexPath: NSIndexPath) -> VStreamItem? {
         let index = streamItemIndexFor(indexPath)
-        if let streamDataSource = streamDataSource where index < streamDataSource.visibleStreamItems.count {
-            return streamDataSource.visibleStreamItems[index] as? VStreamItem
+        if let streamDataSource = streamDataSource where index < streamDataSource.paginatedDataSource.visibleItems.count {
+            return streamDataSource.paginatedDataSource.visibleItems[index] as? VStreamItem
         }
         return nil
     }
@@ -515,7 +511,7 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
         return isRecentContent(section) ? 2 : 1
     }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     
@@ -561,8 +557,6 @@ extension VExploreViewController: VHashtagSelectionResponder {
 
 extension VExploreViewController : VMarqueeSelectionDelegate {
     
-    
-    
     func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
         
         if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
@@ -602,6 +596,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+            
             if let streamDataSource = streamCollection?.streamDataSource {
                 streamDataSource.suppressShelves = stream == currentStream
             }
@@ -626,12 +621,9 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             }
             else {
                 // No directory to show, alert the user
-                UIAlertView(
-                    title: nil,
-                    message: NSLocalizedString("GenericFailMessage", comment: ""),
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment: "")
-                ).show()
+                let alertController = UIAlertController(title: nil, message: NSLocalizedString("GenericFailMessage", comment: ""), preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+                presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -666,25 +658,49 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
     }
 }
 
-extension VExploreViewController: ExploreSearchResultNavigationDelegate {
-    func selectedUser(user: VUser) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.userProfileViewControllerWithUser(user)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
-        }
-    }
-    
-    func selectedHashtag(hashtag: VHashtag) {
-        if let dependencyManager = self.dependencyManager {
-            let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
-            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
-        }
-    }
-}
-
 extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
     func reselected() {
         v_navigationController().setNavigationBarHidden(false)
         collectionView.setContentOffset(CGPointZero, animated: true)
+    }
+}
+
+extension VExploreViewController {
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
+            return
+        }
+        
+        for streamItem in recentItems {
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+        }
+        
+        updateSectionRanges()
+        trackVisibleCells()
+        collectionView.reloadData()
+    }
+}
+
+extension VExploreViewController: SearchResultsViewControllerDelegate {
+    func searchResultsViewControllerDidSelectCancel() { }
+    
+    func searchResultsViewControllerDidSelectResult(result: AnyObject) {
+        if let userResult = result as? UserSearchResultObject {
+            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
+            operation.queue() { op in
+                if let user = operation.result,
+                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
+                        self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+            
+        } else if let hashtagResult = result as? HashtagSearchResultObject {
+            let hashtag = hashtagResult.sourceResult.tag
+            if let vc = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+                navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 }

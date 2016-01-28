@@ -7,15 +7,13 @@
 //
 
 #import "VApplicationTracking.h"
-#import "VObjectManager+Private.h"
-#import "VURLMacroReplacement.h"
-#import "NSCharacterSet+VURLParts.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
 
 @import VictoriousCommon;
+@import VictoriousIOSSDK;
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -52,8 +50,9 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
-@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (nonatomic, strong) VSDKURLMacroReplacement *macroReplacement;
 @property (nonatomic, assign) NSUInteger requestCounter;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -100,25 +99,12 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
                                  VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey,
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
-        _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
         _requestCounter = NSUIntegerMax;
+        _dateFormatter = [NSDateFormatter vsdk_defaultDateFormatter];
     }
     return self;
-}
-
-- (NSDateFormatter *)dateFormatter
-{
-    static NSDateFormatter *dateFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      dateFormatter = [[NSDateFormatter alloc] init];
-                      dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-                      dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-                      dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-                  });
-    return dateFormatter;
 }
 
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
@@ -158,6 +144,7 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     }
     
     NSURLRequest *request = [self requestWithUrl:url withParameters:parameters];
+
     if ( request == nil )
     {
         return NO;
@@ -169,11 +156,6 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     });
     
     return YES;
-}
-
-- (VObjectManager *)applicationObjectManager
-{
-    return [VObjectManager sharedManager];
 }
 
 - (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters
@@ -230,9 +212,8 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         return;
     }
     
-    NSURLResponse *response = nil;
-    NSError *connectionError = nil;
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request];
+    [dataTask resume];
     
 #if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )
@@ -248,7 +229,6 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 
 - (nullable NSURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters
 {
-    VObjectManager *objectManager = [self applicationObjectManager];
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
     
@@ -268,7 +248,10 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [objectManager updateHTTPHeadersInRequest:request];
+
+#warning FIXME:
+    // [objectManager updateHTTPHeadersInRequest:request];
+    
     request.HTTPBody = nil;
     request.HTTPMethod = @"GET";
     [request v_setEventIndex:self.orderOfNextRequest];

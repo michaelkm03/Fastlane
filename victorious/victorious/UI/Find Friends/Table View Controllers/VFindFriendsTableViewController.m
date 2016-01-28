@@ -12,18 +12,16 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager.h"
-#import "VFollowResponder.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
+#import "VFollowSource.h"
+#import "victorious-Swift.h"
 
-@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate, VFollowResponder>
+@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;
 @property (nonatomic, strong) NSArray *users;
@@ -87,7 +85,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -314,15 +312,19 @@
 
 - (void)selectAllRows:(id)sender
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user)
+    {
+        return user.remoteId;
+    }];
+    
+    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
-            // Update follow/unfollow icon
             [inviteFriendCell updateFollowStatusAnimated:YES];
         }
-    };
-    [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
+    }];
 }
 
 - (IBAction)makeButtonGray:(UIButton *)sender
@@ -450,39 +452,7 @@
     return cell;
 }
 
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                   withScreenName:sourceScreen];
-}
+#pragma mark - source screen logic
 
 - (NSString *)sourceScreenName
 {

@@ -8,9 +8,7 @@
 
 #import "VInteraction.h"
 #import "VAnswer.h"
-#import "VInteractionAction.h"
 #import "VNode.h"
-#import "VRule.h"
 
 
 @implementation VInteraction

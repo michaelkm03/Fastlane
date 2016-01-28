@@ -14,6 +14,6 @@
 
 @dynamic count;
 @dynamic tag;
-@dynamic user;
+@dynamic isFollowedByMainUser;
 
 @end

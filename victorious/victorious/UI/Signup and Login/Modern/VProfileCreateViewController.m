@@ -12,21 +12,17 @@
 #import "VDependencyManager.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VUserManager.h"
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Websites.h"
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
-#import "UIAlertView+VBlocks.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
 #import "VLocationManager.h"
-
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "victorious-Swift.h"
 
 @import CoreLocation;
-@import AddressBookUI;
+@import Contacts;
 
 @interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VLocationManagerDelegate>
 
@@ -54,8 +50,6 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
-@synthesize authorizedAction; //< VAuthorizationProvider
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -71,6 +65,14 @@
     VProfileCreateViewController *viewController = (VProfileCreateViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
     return viewController;
+}
+
+- (void)setProfile:(VUser *)profile
+{
+    _profile = profile;
+    
+    self.registrationModel = [[VRegistrationModel alloc] init];
+    self.registrationModel.username = profile.name;
 }
 
 #pragma mark - UIViewController
@@ -226,18 +228,18 @@
     
     if (placemark.locality)
     {
-        [locationDictionary setObject:placemark.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+        [locationDictionary setObject:placemark.locality forKey:CNPostalAddressCityKey];
     }
     
     if (placemark.administrativeArea)
     {
-        [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+        [locationDictionary setObject:placemark.administrativeArea forKey:CNPostalAddressStateKey];
     }
 
     NSString *countryCode = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
     if (countryCode != nil)
     {
-        [locationDictionary setObject:countryCode forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        [locationDictionary setObject:countryCode forKey:CNPostalAddressISOCountryCodeKey];
     }
     
     return [locationDictionary copy];
@@ -316,18 +318,7 @@
 
 - (void)exitWithSuccess:(BOOL)success
 {
-    BOOL wasPresentedStandalone = self.navigationController == nil;
-    if ( wasPresentedStandalone )
-    {
-        [self dismissViewControllerAnimated:YES completion:^
-         {  
-            if ( self.authorizedAction != nil && success )
-            {
-                self.authorizedAction(YES);
-            }
-        }];
-    }
-    else if ( self.registrationStepDelegate != nil )
+    if ( self.registrationStepDelegate != nil )
     {
         [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
     }
@@ -335,13 +326,13 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
+                                                                             message:error.localizedDescription
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
     
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
@@ -356,27 +347,21 @@
     if ([self shouldCreateProfile])
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
-        
-        [self performProfileCreationWithRegistrationModel:self.registrationModel];
+        [self queueUpdateProfileOperationWithUsername:self.registrationModel.username
+                                      profileImageURL:self.registrationModel.profileImageURL
+                                             location:self.registrationModel.locationText
+                                           completion:^(NSError *error)
+         {
+             if ( error == nil )
+             {
+                 [self didCreateProfile];
+             }
+             else
+             {
+                 [self didFailWithError:error];
+             }
+         }];
     }
-}
-
-- (void)performProfileCreationWithRegistrationModel:(VRegistrationModel *)registrationModel
-{
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:registrationModel.username
-                                              profileImageURL:registrationModel.profileImageURL
-                                                     location:registrationModel.locationText
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self didCreateProfile];
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self didFailWithError:error];
-     }];
 }
 
 - (IBAction)takePicture:(id)sender
@@ -401,19 +386,20 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectExitCreateProfile];
     
     // Show Error Message
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                       message:NSLocalizedString(@"ProfileAborted", @"")
-                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                onCancelButton:nil
-                    otherButtonTitlesAndBlocks:nil];
-    
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^(void)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
-        [self exitWithSuccess:NO];
-    }];
-    
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                                             message:NSLocalizedString(@"ProfileAborted", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
+                                    [self exitWithSuccess:NO];
+                                }]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (BOOL)shouldCreateProfile
@@ -445,13 +431,14 @@
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
     
-    // Show Error Message
-    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                       message:errorMsg
-                                                      delegate:nil
-                                             cancelButtonTitle:nil
-                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    [alert show];
+    // Show Error Message    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                                             message:errorMsg
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];

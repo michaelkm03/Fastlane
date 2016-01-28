@@ -129,7 +129,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe(VObjectManager.sharedManager().mainUser, keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
+        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
     }
     
     override class func nibForCell() -> UINib {
@@ -148,23 +148,27 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         guard let shelf = shelf as? HashtagShelf else {
             return
         }
-        var controlState: VFollowControlState = .Unfollowed
-        if let mainUser = VObjectManager.sharedManager().mainUser
-            where mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+        let controlState: VFollowControlState
+        if VCurrentUser.user()?.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) == true {
             controlState = .Followed
+        } else {
+            controlState = .Unfollowed
         }
         followControl?.setControlState(controlState, animated: true)
     }
     
     private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject : AnyObject]?) -> Bool {
-        guard let changeInfo = changeInfo else { return false }
+        guard let changeInfo = changeInfo else {
+            return false
+        }
+        
         if let oldValue = changeInfo[NSKeyValueChangeOldKey] as? NSOrderedSet {
-            if let hashtags = VObjectManager.sharedManager().mainUser?.hashtags
+            if let hashtags = VCurrentUser.user()?.followedHashtags
                 where oldValue.isEqualToOrderedSet(hashtags) {
                     return false // Old hashtags and new hashtags are identical, don't update
             }
-        }
-        else if VObjectManager.sharedManager().mainUser?.hashtags == nil {
+       
+        } else if VCurrentUser.user()?.followedHashtags == nil {
             return false // Hashtags was nil and continues to be nil, don't update
         }
         return true
@@ -198,50 +202,18 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     //MARK: - Interaction response
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        let target: VHashtagResponder = typedResponder()
-        switch followControl.controlState {
-        case .Unfollowed:
-            if let shelf = shelf as? HashtagShelf {
-                followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.followHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] ( _:[AnyObject] ) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        strongSelf.updateFollowControlState()
-                    },
-                    failureBlock: { [weak self] (NSError) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        strongSelf.updateFollowControlState()
-                    })
-            }
-            else {
-                assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
-            }
-        case .Followed:
-            if let shelf = shelf as? HashtagShelf {
-                followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.unfollowHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] ( _:[AnyObject] ) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        strongSelf.updateFollowControlState()
-                    },
-                    failureBlock: { [weak self] (NSError) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        strongSelf.updateFollowControlState()
-                    })
-            }
-            else {
-                assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to unfollow non-HashtagShelf shelf")
-            }
-        case .Loading:
-            break
+        guard let shelf = shelf as? HashtagShelf, let currentUser = VCurrentUser.user() else {
+            fatalError("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
+        }
+        
+        let operation: RequestOperation
+        if currentUser.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) {
+            operation = UnfollowHashtagOperation( hashtag: shelf.hashtagTitle )
+        } else {
+            operation = FollowHashtagOperation( hashtag: shelf.hashtagTitle )
+        }
+        operation.queue() { error in
+            self.updateFollowControlState()
         }
     }
 }

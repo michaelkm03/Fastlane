@@ -9,17 +9,15 @@
 #import "VInboxDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+DirectMessaging.h"
-#import "VInboxViewController.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "victorious-swift.h"
 
 @import MBProgressHUD;
 
 @interface VInboxDeepLinkHandler()
 
-@property (nonatomic, weak) VInboxViewController *inboxViewController;
+@property (nonatomic, weak) VConversationListViewController *inboxViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -27,7 +25,7 @@
 @implementation VInboxDeepLinkHandler
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-             inboxViewController:(VInboxViewController *)inboxViewController
+             inboxViewController:(VConversationListViewController *)inboxViewController
 {
     self = [super init];
     if (self)
@@ -74,30 +72,22 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:scaffoldViewController.view animated:YES];
     
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-    [[VObjectManager sharedManager] conversationByID:@(conversationID)
-                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    ConversationOperation *operation = [[ConversationOperation alloc] initWithConversationID:conversationID];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
          [hud hide:YES];
          
-         VConversation *conversation = (VConversation *)[resultObjects firstObject];
-         if ( conversation == nil )
+         VConversation *conversation = (VConversation *)operation.conversation;
+         if ( error != nil || conversation == nil )
          {
-             completion( NO, nil );
+             VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
+             completion( NO, nil) ;
          }
          else
          {
              completion( YES, self.inboxViewController );
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                [self.inboxViewController displayConversationForUser:conversation.user animated:YES];
-                            });
+             [self.inboxViewController displayConversation:conversation animated:YES];
          }
-     }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-         VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
-         completion( NO, nil) ;
      }];
 }
 

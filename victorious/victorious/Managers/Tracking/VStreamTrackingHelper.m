@@ -71,13 +71,13 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 - (void)onStreamViewWillDisappearWithStream:(VStream *)stream isBeingDismissed:(BOOL)isBeingDismissed
 {
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyStreamId];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyStreamId];
     
     [self resetCellVisibilityTracking];
     
     if ( isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     }
 }
 
@@ -90,7 +90,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
-    if ( ![event.streamItem isKindOfClass:[VSequence class]] )
+    if ( ![event.streamItem isKindOfClass:[VSequence class]] && event.streamItem.remoteId != nil )
     {
         return;
     }
@@ -123,9 +123,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyTimeStamp : [NSDate date],
-                                            VTrackingKeyUrls : sequence.tracking.cellClick,
-                                        VTrackingKeyStreamId : trackingID ?: @""};
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)

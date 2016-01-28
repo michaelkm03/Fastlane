@@ -27,7 +27,7 @@
 
 @implementation VVideoLightboxViewController
 
-- (instancetype)initWithPreviewImage:(UIImage *)previewImage videoURL:(NSURL *)videoURL
+- (instancetype)initWithPreviewImage:(UIImage *_Nullable)previewImage videoURL:(NSURL *)videoURL
 {
     self = [super init];
     if ( self != nil )

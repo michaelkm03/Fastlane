@@ -8,21 +8,11 @@
 
 #import "VAppDelegate.h"
 #import "VReachability.h"
-
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
-#import "VUserManager.h"
 #import "VConstants.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
-
 #import <Crashlytics/Crashlytics.h>
-
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"
@@ -36,20 +26,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ( ![self shouldCompleteLaunch] )
+    if ([NSBundle v_isTestBundle])
     {
         return YES;
     }
-    
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-    
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
@@ -92,7 +78,7 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    VUploadManager *uploadManager = [VUploadManager sharedManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
@@ -100,17 +86,20 @@
     }
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
     if ( [VFacebookHelper canOpenURL:url] )
     {
-        return [[FBSDKApplicationDelegate sharedInstance] application:application
+        return [[FBSDKApplicationDelegate sharedInstance] application:app
                                                               openURL:url
-                                                    sourceApplication:sourceApplication
-                                                           annotation:annotation];
+                                                    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                           annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     }
     
-    [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+    [[VRootViewController rootViewController] applicationOpenURL:url
+                                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    
     return YES;
 }
 
@@ -132,7 +121,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    [self savePersistentChanges];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -146,40 +135,14 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    [self savePersistentChanges];
 }
 
-#pragma mark - Testing Helpers
-
-- (BOOL)shouldCompleteLaunch
+- (void)savePersistentChanges
 {
-    NSBundle *testBundle = [self testBundle];
-    if ( testBundle != nil )
-    {
-        NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
-        return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
-    }
-    return YES;
-}
-
-- (nullable NSBundle *)testBundle
-{
-    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-    NSString *injectBundlePath = environment[@"XCInjectBundle"];
-    
-    if ( [[injectBundlePath pathExtension] isEqualToString:@"xctest"] )
-    {
-        NSBundle *bundleInCorrectLocation = [NSBundle bundleWithPath:injectBundlePath];
-
-        if ( bundleInCorrectLocation != nil )
-        {
-            return bundleInCorrectLocation;
-        }
-        NSString *bundleName = [injectBundlePath lastPathComponent];
-        NSString *alternateBundlePath = [NSTemporaryDirectory() stringByAppendingPathComponent:bundleName];
-        return [NSBundle bundleWithPath:alternateBundlePath];
-    }
-    return nil;
+    // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    [[persistentStore mainContext] save:nil];
 }
 
 @end

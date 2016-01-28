@@ -95,7 +95,8 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               }
               
               NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-              NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+#warning FIXME: Use new architecture to replace whatever RKDictionaryFromURL... was doing
+              NSDictionary *parsedData = nil; //RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
               
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];

@@ -9,12 +9,15 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VObjectManager+Login.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "victorious-Swift.h"
+#import "NSArray+VMap.h"
 
 static NSString * const kNoLikedContentTitleKey = @"noContentTitle";
 static NSString * const kNoLikedContentSubtitleKey = @"noContentSubtitle";
 static NSString * const kNoLikedContentIconKey = @"noContentIcon";
+
+static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
 @interface VLikedContentStreamCollectionViewController ()
 
@@ -45,19 +48,22 @@ static NSString * const kNoLikedContentIconKey = @"noContentIcon";
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
-                                                 name:kLoggedInChangedNotification
-                                               object:[VObjectManager sharedManager]];
+                                                 name:kLogInChangedNotification
+                                               object:nil];
+    
+    self.noContentView.title = [self.dependencyManager stringForKey:kNoLikedContentTitleKey];
+    self.noContentView.message = [self.dependencyManager stringForKey:kNoLikedContentSubtitleKey];
+    self.noContentView.icon = [self.dependencyManager imageForKey:kNoLikedContentIconKey];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    // Remove any cells which we've unliked
-    for (VStreamItem *streamItem in self.streamItemsToRemove)
-    {
-        [self.streamDataSource removeStreamItem:streamItem];
-    }
+    NSArray<NSString *> *streamItemIDs = [self.streamItemsToRemove v_map:^NSString *(VStreamItem *streamItem) {
+        return streamItem.remoteId;
+    }];
+    Operation *operation = [[RemoveStreamItemOperation alloc] initWithStreamItemIDs:streamItemIDs];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -67,7 +73,7 @@ static NSString * const kNoLikedContentIconKey = @"noContentIcon";
     if ( self.shouldRefreshOnView )
     {
         [self.refreshControl beginRefreshing];
-        [self refreshWithCompletion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
         self.shouldRefreshOnView = NO;
     }
 }
@@ -84,49 +90,8 @@ static NSString * const kNoLikedContentIconKey = @"noContentIcon";
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self.streamDataSource unloadStream];
+    [self.streamDataSource.paginatedDataSource unload];
     self.shouldRefreshOnView = YES;
-}
-
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
-{
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         
-         if ( completionBlock != nil )
-         {
-             completionBlock();
-         }
-     }];
-}
-
-- (void)dataSourceDidRefresh
-{
-    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( self.noContentView == nil )
-        {
-            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
-            {
-                noContentView.dependencyManager = self.dependencyManager;
-                noContentView.title = [self.dependencyManager stringForKey:kNoLikedContentTitleKey];
-                noContentView.message = [self.dependencyManager stringForKey:kNoLikedContentSubtitleKey];
-                noContentView.icon = [self.dependencyManager imageForKey:kNoLikedContentIconKey];
-            }
-            
-            self.noContentView = noContentView;
-            [(VNoContentView *)self.noContentView resetInitialAnimationState];
-        }
-        
-        self.collectionView.backgroundView = self.noContentView;
-        [(VNoContentView *)self.noContentView animateTransitionIn];
-    }
-    else
-    {
-        self.collectionView.backgroundView = nil;
-    }
 }
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct AchievementConstants {
     static let animatedBadgeKey = "animatedBadge"
@@ -44,25 +45,24 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     // MARK: - Public Properties
     
-    var achievementInterstitial: AchievementInterstitial! {
+    var alert: Alert? {
         didSet {
-            if let achievementInterstitial = achievementInterstitial {
-                descriptionLabel.text = achievementInterstitial.description
-                titleLabel.text = achievementInterstitial.title
-                
-                if let fanLoyalty = achievementInterstitial.fanLoyalty {
-                    animatedBadge?.levelNumberString = String(fanLoyalty.level)
-                }
-                
-                guard let iconURL = achievementInterstitial.icons.first where iconURL.absoluteString.characters.count > 0 else {
-                    // In order to add space between the description label and the dismiss button
-                    iconImageViewHeightConstraint.constant = 23
-                    return
-                }
-                
-                iconImageView.setImageWithURL(iconURL)
-                iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
+            guard let alert = alert else {
+                return
             }
+            
+            descriptionLabel.text = alert.parameters.description
+            titleLabel.text = alert.parameters.title
+            animatedBadge?.levelNumberString = String(alert.parameters.userFanLoyalty.level)
+            
+            guard let iconURL = alert.parameters.icons.first where iconURL.absoluteString.characters.count > 0 else {
+                // In order to add space between the description label and the dismiss button
+                iconImageViewHeightConstraint.constant = 23
+                return
+            }
+            
+            iconImageView.setImageWithURL(iconURL)
+            iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
         }
     }
     
@@ -93,16 +93,20 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let  fanLoyalty = achievementInterstitial.fanLoyalty {
-            if let animatedBadge = animatedBadge {
-                let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(fanLoyalty.progressPercentage) / 100.0)
-                animatedBadge.animateProgress(duration, endPercentage: fanLoyalty.progressPercentage, completion: nil)
-            }
-
-            // Assuming this achievement contains the most up-to-date fanloyalty info,
-            // we update the user's level and level progress when the interstitial appears
-            VObjectManager.sharedManager().mainUser?.level = fanLoyalty.level
-            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = fanLoyalty.progressPercentage
+        guard let alert = alert else {
+            return
+        }
+        
+        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
+        self.animatedBadge?.animateProgress(duration,
+            endPercentage: Int(alert.parameters.userFanLoyalty.progress),
+            completion: nil)
+        
+        // Assuming this achievement contains the most up-to-date fanloyalty info,
+        // we update the user's level and level progress when the interstitial appears
+        if let currentUser = VCurrentUser.user() {
+            currentUser.level = alert.parameters.userFanLoyalty.level
+            currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
         }
     }
     
@@ -151,7 +155,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         var verticalConstraintString: String
         var views: [String : UIView]
         
-        if let animatedBadge = animatedBadge where achievementInterstitial.fanLoyalty != nil {
+        if let animatedBadge = animatedBadge {
             animatedBadge.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(animatedBadge)
             verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description]-[icon]-[button(64)]|"
@@ -159,8 +163,8 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
             
             animatedBadge.v_addWidthConstraint(60)
             containerView.v_addCenterHorizontallyConstraintsToSubview(animatedBadge)
-        }
-        else {
+        
+        } else {
             verticalConstraintString = "V:|-23-[title]-20-[description]-[icon]-[button(40)]|"
             views = ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
         }

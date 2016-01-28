@@ -38,11 +38,11 @@
 @dynamic token;
 @dynamic tokenUpdatedAt;
 @dynamic childSequences;
+@dynamic conversations;
 @dynamic comments;
-@dynamic conversation;
 @dynamic followers;
 @dynamic following;
-@dynamic hashtags;
+@dynamic followedHashtags;
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;
@@ -50,5 +50,8 @@
 @dynamic previewAssets;
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
+@dynamic loginType;
+@dynamic notificationSettings;
+@dynamic likedSequences;
 
 @end

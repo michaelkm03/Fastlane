@@ -7,58 +7,40 @@
 //
 
 #import "VTabScaffoldViewController.h"
-
-// ViewControllers + Presenters
 #import "VRootViewController.h"
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VStatusBarStyle.h"
-#import "VObjectManager+Login.h"
-
-// Views + Helpers
 #import "UIView+AutoLayout.h"
 #import "VTabScaffoldHidingHelper.h"
-
-// Deep Links
 #import "VDeeplinkHandler.h"
 #import "VContentDeepLinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
-
-// Backgrounds
 #import "VSolidColorBackground.h"
-
-// Dependencies
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VCoachmarkDisplayResponder.h"
-
-// Etc
 #import "NSArray+VMap.h"
 #import "NSURL+VPathHelper.h"
-
-// Swift Module
 #import "victorious-Swift.h"
+#import "VUser.h"
 
 static NSString * const kMenuKey = @"menu";
-static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, ForceLoginOperationDelegate, InterstitialListener>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
-
 @property (nonatomic, strong) VTabMenuShim *tabShim;
 @property (nonatomic, strong) VTabScaffoldHidingHelper *hidingHelper;
-@property (nonatomic, strong) NSOperationQueue *launchOperationQueue;
-@property (nonatomic, weak) AutoShowLoginOperation *loginOperation;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
-
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
@@ -73,11 +55,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _rootNavigationController = [[VNavigationController alloc] init];
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
-        _launchOperationQueue = [[NSOperationQueue alloc] init];
-        _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.maxConcurrentOperationCount = 1;
         [[DefaultTimingTracker sharedInstance] setDependencyManager:dependencyManager];
         _appTimingTracker = [DefaultTimingTracker sharedInstance];
     }
@@ -113,28 +94,13 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ( [VCurrentUser user] != nil )
     {
         [self configureTabBar];
     }
     
     // Make sure we're listening for interstitial events
     [[InterstitialManager sharedInstance] setInterstitialListener:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *notification)
-     {
-         if (![VObjectManager sharedManager].mainUserLoggedIn)
-         {
-             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                  dependencyManager:self.dependencyManager];
-             [authorizedAction performFromViewController: self.rootNavigationController.innerNavigationController.visibleViewController
-                                                 context:VAuthorizationContextDefault
-                                              completion:^(BOOL authorized) { }];
-         }
-     }];
 }
 
 - (void)configureTabBar
@@ -172,7 +138,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     
     if (self.presentedViewController == nil)
     {
-        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+        [[InterstitialManager sharedInstance] showNextInterstitialOnViewController:self];
     }
 }
 
@@ -235,46 +201,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
                      animated:(BOOL)animated
                    completion:(void(^)())completion
 {
-    [self checkAuthorizationOnNavigationDestination:navigationDestination
-                                         completion:^(BOOL shouldNavigate)
-     {
-         if (shouldNavigate)
-         {
-             [self _navigateToDestination:navigationDestination
-                                 animated:animated
-                               completion:completion];
-         }
-     }];
-}
-
-- (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
-                                       completion:(void(^)(BOOL shouldNavigate))completion
-{
-    NSAssert(completion != nil, @"We need a completion to inform about the authorization check success!");
-
-    if ([navigationDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)])
-    {
-        id <VAuthorizationContextProvider> authorizationContextProvider = (id <VAuthorizationContextProvider>)navigationDestination;
-        BOOL requiresAuthoriztion = [authorizationContextProvider requiresAuthorization];
-        if (requiresAuthoriztion)
-        {
-            VAuthorizationContext context = [authorizationContextProvider authorizationContext];
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
-             {
-                 completion(authorized);
-             }];
-        }
-        else
-        {
-            completion(YES);
-        }
-    }
-    else
-    {
-        completion(YES);
-    }
+    [self _navigateToDestination:navigationDestination
+                        animated:animated
+                      completion:completion];
 }
 
 - (void)_navigateToDestination:(id)navigationDestination
@@ -408,52 +337,43 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         return;
     }
     self.hasSetupFirstLaunchOperations = YES;
+
+    ForceLoginOperation *forceLoginOperation = [[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self];
     
-    // Login
-    [self queueLoginOperation];
-    [self queueFirstTimeContentOperation];
-    [self queuePushNotificationOperation];
-    
-    NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
-    {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            self.coachmarkManager.allowCoachmarks = YES;
+    NSOperation *showQueuedDeeplinkOperation = [NSBlockOperation blockOperationWithBlock:^{
+        dispatch_async( dispatch_get_main_queue(), ^{
+            // Root view controller's `deepLinkReceiver` may have queued a deep link until the user is logged in
+            // So now that login is complete, show any queued deep links
+            [[VRootViewController rootViewController].deepLinkReceiver receiveQueuedDeeplink];
         });
     }];
-    [self.launchOperationQueue addOperation:allLaunchOperationFinishedBlockOperation];
-}
-
-- (void)queueLoginOperation
-{
-    AutoShowLoginOperation *loginOperation = [[AutoShowLoginOperation alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager
-                                                                       viewControllerToPresentFrom:self];
-    self.loginOperation = loginOperation;
-    loginOperation.delegate = self;
-    [self.launchOperationQueue addOperation:loginOperation];
-}
-
-- (void)queueFirstTimeContentOperation
-{
-    NSDictionary *firstTimeContentConfiguration = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kFirstTimeContentKey];
-    VDependencyManager *firstTimeContentDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:firstTimeContentConfiguration];
-    if (firstTimeContentConfiguration != nil)
-    {
-        FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:firstTimeContentDependencyManager
+    
+    FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
                                                                                       sessionTimer:[VRootViewController rootViewController].sessionTimer];
-        [self.launchOperationQueue addOperation:videoOperation];
-    }
-}
 
-- (void)queuePushNotificationOperation
-{
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    [self.launchOperationQueue addOperation:pushNotificationOperation];
+    pushNotificationOperation.completionBlock = ^void {
+        dispatch_async( dispatch_get_main_queue(), ^{
+            self.coachmarkManager.allowCoachmarks = YES;
+        });
+    };
+    
+    // Determine execution order by setting dependencies
+    [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
+    [pushNotificationOperation addDependency:ftueVideoOperation];
+    [ftueVideoOperation addDependency:forceLoginOperation];
+    
+    // Order doesn't matter in this array, dependencies ensure order
+    NSArray *operationsToAdd = @[ pushNotificationOperation,
+                                  ftueVideoOperation,
+                                  forceLoginOperation,
+                                  showQueuedDeeplinkOperation ];
+    
+    [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 
-#pragma mark - AutoShowLoginOperationDelegate
+#pragma mark - ForceLoginOperationDelegate
 
 - (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
 {
@@ -599,7 +519,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 {
     if (self.presentedViewController == nil)
     {
-        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+        [[InterstitialManager sharedInstance] showNextInterstitialOnViewController:self];
     }
 }
 

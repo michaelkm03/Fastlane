@@ -154,7 +154,6 @@ static NSString * const __deprecated kNoUserName = @"(none)"; ///< If a user has
 static NSString * const   kMainStoryboardName                  = @"Main";
 static NSString * const   kHashTagStreamStoryboardID           = @"hashtagstream";
 
-static NSString * const   kInboxContainerID                    = @"inboxcontainer";
 static NSString * const   kMessageContainerID                  = @"messagecontainer";
 static NSString * const   kEnterResetTokenID                   = @"enterresettoken";
 

@@ -10,11 +10,9 @@
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
@@ -28,10 +26,6 @@
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
 #import "VEnvironment.h"
-#import "VFollowingHelper.h"
-#import "VHashtagHelper.h"
-#import "VHashtagResponder.h"
-#import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 #import "victorious-Swift.h"
 #import "VCrashlyticsLogTracking.h"
@@ -51,7 +45,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder, AgeGateViewControllerDelegate>
+@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, AgeGateViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -64,11 +58,9 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
-@property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 
 @end
 
@@ -220,7 +212,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.rootDependencyManager = [VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts];
     VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:self.rootDependencyManager
-                                                                                configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
+                                                                                configuration:nil
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;
 }
@@ -262,11 +254,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.applicationTracking.dependencyManager = dependencyManager;
     
     VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
-    // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
-    // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
-    // for follow actions)
-    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:scaffold.dependencyManager viewControllerToPresentOn:self];
-    self.hashtagHelper = [[VHashtagHelper alloc] init];
     
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
     self.deepLinkReceiver.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
@@ -412,9 +399,9 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
             [self openURL:deepLink];
         }
     }
-    else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
+    else if ( [deepLink.host isEqualToString:VConversationListViewControllerDeeplinkHostComponent] )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VConversationListViewControllerInboxPushReceivedNotification object:self];
     }
 }
 
@@ -480,8 +467,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
     
     [self showViewController:nil animated:NO completion:nil];
-    [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 
@@ -525,54 +510,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowHelperCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
-{
-    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
-    
-    [self.followHelper followUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:sourceViewController
-                   withScreenName:screenName];
-}
-
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
-{
-    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
-    
-    [self.followHelper unfollowUser:user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion
-                 fromViewController:sourceViewController
-                     withScreenName:screenName];
-}
-
 #pragma mark - AgeGateViewControllerDelegate
 
 - (void)continueButtonTapped:(BOOL)isAnonymousUser
 {
     [self showLoadingViewController];
-}
-
-#pragma mark - VHashtag
-
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
-{
-    [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
-}
-
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
-{
-    [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 #pragma mark - VURLSelectionResponder

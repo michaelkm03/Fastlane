@@ -8,26 +8,38 @@
 
 import Foundation
 
-class Operation: NSOperation {
+let _sharedQueue = NSOperationQueue()
+
+class Operation: NSOperation, Queuable {
+    
+    var mainQueueCompletionBlock: ((Operation)->())?
+    
+    static var sharedQueue: NSOperationQueue {
+        return _sharedQueue
+    }
+    
+    var defaultQueue: NSOperationQueue {
+        return _sharedQueue
+    }
     
     private var _executing = false
     private var _finished = false
     
     /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move into an excuting state.
-    func beganExecuting () {
+    final func beganExecuting () {
         executing = true
         finished = false
     }
     
     /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move out of an executing state and are finished doing work.
-    func finishedExecuting () {
+    final func finishedExecuting () {
         executing = false
         finished = true
     }
     
     // MARK: - KVO-able NSNotification State
     
-    override var executing : Bool {
+   final override var executing : Bool {
         get {return _executing }
         set {
             willChangeValueForKey("isExecuting")
@@ -36,7 +48,7 @@ class Operation: NSOperation {
         }
     }
     
-    override var finished : Bool {
+    final override var finished: Bool {
         get {return _finished }
         set {
             willChangeValueForKey("isFinished")
@@ -45,4 +57,17 @@ class Operation: NSOperation {
         }
     }
     
+    // MARK: - Queuable
+    
+    func queueOn( queue: NSOperationQueue, completionBlock:((Operation)->())?) {
+        self.completionBlock = {
+            if completionBlock != nil {
+                self.mainQueueCompletionBlock = completionBlock
+            }
+            dispatch_async( dispatch_get_main_queue()) {
+                self.mainQueueCompletionBlock?( self )
+            }
+        }
+        queue.addOperation( self )
+    }
 }

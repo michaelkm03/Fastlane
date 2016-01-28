@@ -7,11 +7,7 @@
 //
 
 #import "VStreamCellHeader.h"
-
-// Dependencies
 #import "VDependencyManager.h"
-
-// Views + Helpers
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
@@ -22,16 +18,10 @@
 #import "UIView+AutoLayout.h"
 #import "VTimeSinceWidget.h"
 #import "VFollowControl.h"
-#import "VFollowResponder.h"
-
-// Models
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VObjectManager.h"
-
 #import "victorious-Swift.h"
 
-// Frameworks
 @import KVOController;
 
 static const CGFloat kLeadingHeaderSpace = 11.0f;
@@ -140,7 +130,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     _sequence = sequence;
     
-    BOOL isPostedByMainUser = [self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]];
+    BOOL isPostedByMainUser = [self.sequence.user isEqual:[VCurrentUser user]];
     BOOL isAlreadyFollowingPoster = self.sequence.user.isFollowedByMainUser.boolValue;
     BOOL isAnonymousUser = [AgeGate isAnonymousUser];
     BOOL shouldShowFollowControl = !isPostedByMainUser && !isAlreadyFollowingPoster && !isAnonymousUser;
@@ -243,51 +233,26 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 - (void)updateFollowStatus
 {
-    [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue] animated:YES];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue];
+    [self.followControl setControlState:controlState animated:controlState];
 }
 
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    if ( sender.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
+    long long userId = self.sequence.user.remoteId.longLongValue;
+    NSString *sourceScreenName = VFollowSourceScreenSleekCell;
     
-    void (^authorizedBlock)() = ^
+    RequestOperation *operation;
+    if ( self.sequence.user.isFollowedByMainUser.boolValue )
     {
-        [sender setControlState:VFollowControlStateLoading
-                       animated:YES];
-    };
-    
-    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
-    {
-        [self updateFollowStatus];
-    };
-    
-    if ( sender.controlState == VFollowControlStateFollowed )
-    {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder unfollowUser:self.sequence.user
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock
-                   fromViewController:nil
-                       withScreenName:VFollowSourceScreenSleekCell];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder followUser:self.sequence.user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock
-                 fromViewController:nil
-                     withScreenName:VFollowSourceScreenSleekCell];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
+    
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 #pragma mark - Internal Methods

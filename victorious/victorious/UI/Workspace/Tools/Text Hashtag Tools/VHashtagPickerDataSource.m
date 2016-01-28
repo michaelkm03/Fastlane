@@ -11,10 +11,10 @@
 #import "VWorkspaceTool.h"
 #import "VDependencyManager.h"
 #import "VHashtagType.h"
-#import "VObjectManager+Discover.h"
 #import "NSArray+VMap.h"
 #import "VHashtag.h"
 #import "VHashtags.h"
+#import "victorious-Swift.h"
 
 @interface VHashtagPickerDataSource ()
 
@@ -80,31 +80,29 @@
 
 - (void)reloadWithCompletion:(void(^)(NSArray *tools))completion
 {
-    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         NSArray *hashtagTools = [resultObjects v_map:^VHashtagType *(VHashtag *hashtag)
-                                  {
-                                      if ( [hashtag isKindOfClass:[VHashtag class]] )
-                                      {
-                                          return [[VHashtagType alloc] initWithHashtagText:[VHashTags stringWithPrependedHashmarkFromString:hashtag.tag]];
-                                      }
-                                      else
-                                      {
-                                          return nil;
-                                      }
-                                  }];
-         if ( completion != nil )
-         {
-             completion( hashtagTools );
-         }
-     }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( completion != nil )
-         {
-             completion( nil );
-         }
-     }];
+    TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            NSArray *hashtagTools = [operation.results v_map:^VHashtagType *(HashtagSearchResultObject *hashtag)
+            {
+                return [[VHashtagType alloc] initWithHashtagText:[VHashTags stringWithPrependedHashmarkFromString:hashtag.tag]];
+            }];
+            
+            if ( completion != nil )
+            {
+                completion( hashtagTools );
+            }
+        }
+        else
+        {
+            if ( completion != nil )
+            {
+                completion( nil );
+            }
+        }
+    }];
 }
 
 @end

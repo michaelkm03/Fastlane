@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VPageType.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
 #import "VMultipleContainer.h"
@@ -35,7 +36,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
  */
 @property (nonatomic, strong, nullable) VStreamCollectionViewDataSource *streamDataSource;
 
-@property (nonatomic, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
+@property (nonatomic, null_unspecified, strong) IBOutlet UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
@@ -55,7 +56,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     A helper method to handle triggering the refresh and responding to success or failure.
  */
-- (void)refreshWithCompletion:(void(^ __nullable)(void))completionBlock;
+- (void)loadPage:(VPageType)pageType completion:(void(^ __nullable)(void))completionBlock;
 
 /**
     Intended to be called by subclasses on `collectionView:willDisplayCell:atIndexPath:` to
