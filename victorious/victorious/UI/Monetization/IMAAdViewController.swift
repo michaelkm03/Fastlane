@@ -93,10 +93,10 @@ import SafariServices
             delegate?.adDidLoadForAdViewController(self)
         case .MIDPOINT: delegate?.adDidHitMidpointInAdViewController?(self)
         case .PAUSE: break
-        case .RESUME: break
-        case .SKIPPED: break
+        case .RESUME: delegate?.adDidStartPlaybackInAdViewController?(self)
+        case .SKIPPED: delegate?.adDidFinishForAdViewController(self)
         case .STARTED: delegate?.adDidStartPlaybackInAdViewController?(self)
-        case .TAPPED: break
+        case .TAPPED: delegate?.adHadImpressionInAdViewController?(self)
         case .THIRD_QUARTILE: delegate?.adDidHitThirdQuartileInAdViewController?(self)
         }
     }
