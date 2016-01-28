@@ -997,8 +997,8 @@
 		A7AF17AC1C584BF1007BCAFE /* ShowSearchResultOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17AB1C584BF1007BCAFE /* ShowSearchResultOperation.swift */; };
 		A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17AD1C584E67007BCAFE /* VDiscoverContainerViewController.swift */; };
 		A7AF17B01C5855B7007BCAFE /* VDependencyManager+SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17AF1C5855B7007BCAFE /* VDependencyManager+SearchBar.swift */; };
-		A7AF17B21C597DD4007BCAFE /* NSIndexSet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17B11C597DD4007BCAFE /* NSIndexSet+Extensions.swift */; };
 		A7AF17B41C599331007BCAFE /* VUser+Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17B31C599331007BCAFE /* VUser+Following.swift */; };
+		A7AF17B61C59C366007BCAFE /* VUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF17B51C59C366007BCAFE /* VUsersViewController.swift */; };
 		A7AF87221C45F35800B49478 /* ConversationListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF87211C45F35800B49478 /* ConversationListDataSource.swift */; };
 		A7AF87291C4600ED00B49478 /* DeleteConversationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF87281C4600ED00B49478 /* DeleteConversationOperation.swift */; };
 		A7AF872B1C4601CC00B49478 /* MarkConversationReadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF872A1C4601CC00B49478 /* MarkConversationReadOperation.swift */; };
@@ -3336,8 +3336,8 @@
 		A7AF17AB1C584BF1007BCAFE /* ShowSearchResultOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowSearchResultOperation.swift; sourceTree = "<group>"; };
 		A7AF17AD1C584E67007BCAFE /* VDiscoverContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDiscoverContainerViewController.swift; sourceTree = "<group>"; };
 		A7AF17AF1C5855B7007BCAFE /* VDependencyManager+SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+SearchBar.swift"; sourceTree = "<group>"; };
-		A7AF17B11C597DD4007BCAFE /* NSIndexSet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexSet+Extensions.swift"; sourceTree = "<group>"; };
 		A7AF17B31C599331007BCAFE /* VUser+Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Following.swift"; sourceTree = "<group>"; };
+		A7AF17B51C59C366007BCAFE /* VUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUsersViewController.swift; sourceTree = "<group>"; };
 		A7AF87211C45F35800B49478 /* ConversationListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListDataSource.swift; sourceTree = "<group>"; };
 		A7AF87231C45FE3700B49478 /* VCellWithProfileDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellWithProfileDelegate.h; sourceTree = "<group>"; };
 		A7AF87281C4600ED00B49478 /* DeleteConversationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConversationOperation.swift; sourceTree = "<group>"; };
@@ -6684,7 +6684,6 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
-				A7AF17B11C597DD4007BCAFE /* NSIndexSet+Extensions.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7118,6 +7117,7 @@
 				A705F4471B3CC00D007DBD3C /* VUsersDataSource.h */,
 				A705F4481B3CC00D007DBD3C /* VUsersViewController.h */,
 				A705F4491B3CC00D007DBD3C /* VUsersViewController.m */,
+				A7AF17B51C59C366007BCAFE /* VUsersViewController.swift */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -10962,7 +10962,6 @@
 				A7E2918F1C3B462D00B84127 /* UnfollowHashtagOperation.swift in Sources */,
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
-				A7AF17B21C597DD4007BCAFE /* NSIndexSet+Extensions.swift in Sources */,
 				79FE18541C53180900170E5B /* VConversation+Deletable.swift in Sources */,
 				A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
@@ -11311,6 +11310,7 @@
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
+				A7AF17B61C59C366007BCAFE /* VUsersViewController.swift in Sources */,
 				A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */,
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,

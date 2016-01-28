@@ -14,7 +14,7 @@ import Foundation
     
     init( user: VUser ) {
         self.user = user
-    }
+    } 
     
     func users() -> NSOrderedSet {
         return self.visibleItems

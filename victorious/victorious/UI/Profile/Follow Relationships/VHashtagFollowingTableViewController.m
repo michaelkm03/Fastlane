@@ -52,25 +52,13 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     [self configureTableView];
     
     [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
-}
-
-- (void)updateBackground
-{
-    UIView *backgroundView = nil;
-    if ( self.paginatedDataSource.visibleItems.count == 0 && self.fetchedHashtags )
-    {
-        VNoContentView *notFollowingView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
-        if ( [notFollowingView respondsToSelector:@selector(setDependencyManager:)] )
-        {
-            notFollowingView.dependencyManager = self.dependencyManager;
-        }
-        notFollowingView.title = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
-        notFollowingView.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
-        notFollowingView.icon = [UIImage imageNamed:@"tabIconHashtag"];
-        backgroundView = notFollowingView;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    }
-    self.tableView.backgroundView = backgroundView;
+    
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
+    noContentView.dependencyManager = self.dependencyManager;
+    noContentView.title = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
+    noContentView.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
+    noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
+    self.noContentView = noContentView;
 }
 
 #pragma mark - UI setup

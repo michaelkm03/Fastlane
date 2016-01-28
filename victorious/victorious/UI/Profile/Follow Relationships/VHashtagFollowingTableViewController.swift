@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension VHashtagFollowingTableViewController {
+extension VHashtagFollowingTableViewController: PaginatedDataSourceDelegate {
     
     func loadHashtags( pageType pageType: VPageType, completion:(NSError? -> ())? ) {
         self.paginatedDataSource.delegate = self
@@ -21,11 +21,32 @@ extension VHashtagFollowingTableViewController {
             }
         )
     }
-}
-
-extension VHashtagFollowingTableViewController: PaginatedDataSourceDelegate {
+    
+    private func updateBackground() {
+        let isAlreadyShowingNoContent = tableView.backgroundView == self.noContentView
+        
+        switch self.paginatedDataSource.state {
+            
+        case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
+            guard let tableView = self.tableView else {
+                break
+            }
+            if !isAlreadyShowingNoContent {
+                self.noContentView.resetInitialAnimationState()
+                self.noContentView.animateTransitionIn()
+            }
+            tableView.backgroundView = self.noContentView
+            
+        default:
+            tableView.backgroundView = nil
+        }
+    }
 
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        self.updateBackground()
     }
 }

@@ -338,19 +338,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-/*- (void)loadUserWithRemoteId:(NSNumber *)remoteId
-{
-    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:remoteId.integerValue];
-    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
-     {
-         VUser *loadedUser = userInfoOperation.user;
-         if ( error == nil && loadedUser != nil )
-         {
-             [self setUser:loadedUser];
-         }
-     }];
-}*/
-
 - (void)attemptToRefreshProfileUI
 {
     //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile
