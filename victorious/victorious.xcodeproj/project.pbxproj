@@ -2440,8 +2440,8 @@
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPasswordResetOperationTests.swift; sourceTree = "<group>"; };
-		670334B11C49D58500E24967 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePollOperation.swift; path = "Upload Operations/CreatePollOperation.swift"; sourceTree = "<group>"; };
-		670334B21C49D58500E24967 /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateTextPostOperation.swift; path = "Upload Operations/CreateTextPostOperation.swift"; sourceTree = "<group>"; };
+		670334B11C49D58500E24967 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperation.swift; sourceTree = "<group>"; };
+		670334B21C49D58500E24967 /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostOperation.swift; sourceTree = "<group>"; };
 		670C65861C529FBA00BD7F3F /* Shelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
 		670C65881C52AC0000BD7F3F /* Usershelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Usershelf.swift; sourceTree = "<group>"; };
 		670C658A1C52AC0F00BD7F3F /* ListShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelf.swift; sourceTree = "<group>"; };
@@ -6317,14 +6317,14 @@
 			path = Pickers;
 			sourceTree = "<group>";
 		};
-		670334B01C49D51A00E24967 /* UploadOperations */ = {
+		670334B01C49D51A00E24967 /* Upload Operations */ = {
 			isa = PBXGroup;
 			children = (
 				678C43C41C5421DA00EBE83A /* CreateMediaUploadOperation.swift */,
 				670334B11C49D58500E24967 /* CreatePollOperation.swift */,
 				670334B21C49D58500E24967 /* CreateTextPostOperation.swift */,
 			);
-			name = UploadOperations;
+			path = "Upload Operations";
 			sourceTree = "<group>";
 		};
 		6727B1361BFBBCE00093AA0A /* Helpers */ = {
@@ -6401,11 +6401,11 @@
 				A746796D1BF6CC7B0026FD2E /* Helpers */,
 				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
 				A78BFC161C4858A900FBC17E /* MediaSearchResult.swift */,
-				A7078CC81BFA7D2B008FB7FF /* NavigationOperations */,
+				A7078CC81BFA7D2B008FB7FF /* Navigation Operations */,
 				794246441B7D39B000F5F879 /* Operation.swift */,
 				A76AEA311BFEAD9300E8A26F /* Queueable.swift */,
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
-				670334B01C49D51A00E24967 /* UploadOperations */,
+				670334B01C49D51A00E24967 /* Upload Operations */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -6539,9 +6539,10 @@
 			path = "Launch Operations";
 			sourceTree = "<group>";
 		};
-		A7078CC81BFA7D2B008FB7FF /* NavigationOperations */ = {
+		A7078CC81BFA7D2B008FB7FF /* Navigation Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A76363701C50511A000887C4 /* PreloadUserInfoOperation.swift */,
 				A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */,
 				A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */,
 				A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */,
@@ -6549,7 +6550,7 @@
 				A76363701C50511A000887C4 /* PreloadUserInfoOperation.swift */,
 				A7AF17AB1C584BF1007BCAFE /* ShowSearchResultOperation.swift */,
 			);
-			path = NavigationOperations;
+			path = "Navigation Operations";
 			sourceTree = "<group>";
 		};
 		A70FC0F81A2D40B400F5BBDE /* Purchases */ = {
