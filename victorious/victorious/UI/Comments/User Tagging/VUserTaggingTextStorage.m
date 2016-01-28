@@ -142,7 +142,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     if ( range.length > triggerStringLength )
     {
         NSString *searchTerm = [[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength];
-        self.userSearchViewController.searchTerm = searchTerm;
+        [self.userSearchViewController searchWithSearchterm:searchTerm];
     }
 }
 

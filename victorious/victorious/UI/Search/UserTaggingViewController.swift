@@ -19,22 +19,24 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     private let dataSource = UserSearchDataSource()
     private var dependencyManager: VDependencyManager!
     
-    var searchTerm: String? {
-        didSet {
-            if let searchTerm = searchTerm {
-                // Clear if we are starting from the beginning
-                if let lastSearchTerm = oldValue where !searchTerm.containsString(lastSearchTerm) {
-                    dataSource.unload()
-                }
-                dataSource.search(searchTerm: searchTerm, pageType: .First)
-            }
-        }
-    }
+    private(set) var searchTerm: String?
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> UserTaggingViewController {
         let viewController: UserTaggingViewController = UserTaggingViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         return viewController
+    }
+    
+    //MARK: - API
+    
+    func search(withSearchterm searchTerm:String) {
+        let lastSearchterm = self.searchTerm
+        self.searchTerm = searchTerm
+        // Clear if we are starting from the beginning
+        if let lastSearchTerm = lastSearchterm where !searchTerm.containsString(lastSearchTerm) {
+            dataSource.unload()
+        }
+        dataSource.search(searchTerm: searchTerm, pageType: .First)
     }
     
     //MARK: - UIViewController
