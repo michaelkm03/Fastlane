@@ -481,7 +481,6 @@
 		67C5C53D1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */; };
 		67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */; };
 		67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */; };
-		67CEBCCC1C472BA700A3C4A0 /* String+ThumbnailPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */; };
 		67CEBCD01C473DAA00A3C4A0 /* PollCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCF1C473DAA00A3C4A0 /* PollCreateRequestTests.swift */; };
 		67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
@@ -2538,7 +2537,6 @@
 		67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUploadManager.swift; sourceTree = "<group>"; };
 		67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateTests.swift; sourceTree = "<group>"; };
-		67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+ThumbnailPath.swift"; path = "victorious/Operations/String+ThumbnailPath.swift"; sourceTree = SOURCE_ROOT; };
 		67CEBCCF1C473DAA00A3C4A0 /* PollCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequestTests.swift; sourceTree = "<group>"; };
 		67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperationTests.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
@@ -3184,8 +3182,6 @@
 		A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoOperation.swift; sourceTree = "<group>"; };
 		A76AEAF01C038F7A00E8A26F /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
-		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
-		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
 		A76D938F1B32151B007A150D /* VContentLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentLikeButton.m; sourceTree = "<group>"; };
 		A76D93A51B321E68007A150D /* VPageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPageType.h; sourceTree = "<group>"; };
@@ -6784,8 +6780,8 @@
 		A746796D1BF6CC7B0026FD2E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */,
 				A740CA151C3F52A40038D7DF /* AuthenticationContext+CurrentUser.swift */,
+				A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */,
 				A740CA131C3F528B0038D7DF /* RequestContext+Environment.swift */,
 				A7F8437C1BFE6B72004C3D55 /* VFlaggedContent.h */,
 				A7F8437D1BFE6B72004C3D55 /* VFlaggedContent.m */,
@@ -6795,7 +6791,6 @@
 				A746796F1BF6CC9B0026FD2E /* VStoredLogin.m */,
 				A74679701BF6CC9B0026FD2E /* VStoredPassword.h */,
 				A74679711BF6CC9B0026FD2E /* VStoredPassword.m */,
-				A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -7091,15 +7086,6 @@
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
 			);
 			path = "Request Operations";
-			sourceTree = "<group>";
-		};
-		A76D93741B31E8C0007A150D /* Expression */ = {
-			isa = PBXGroup;
-			children = (
-				A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */,
-				A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */,
-			);
-			path = Expression;
 			sourceTree = "<group>";
 		};
 		A76D938D1B32151B007A150D /* Like */ = {
@@ -7981,7 +7967,6 @@
 				039D02A71A1043D300DB9236 /* Dependencies */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				A77951141B28AB6700D9DB0A /* Environment */,
-				A76D93741B31E8C0007A150D /* Expression */,
 				03CE66F019B47B590011BB9E /* Facebook */,
 				A7672B921A1BF6B40063AF46 /* First Install */,
 				A7AEF9C11A83F27600A3D3A0 /* Formatters */,
@@ -10697,7 +10682,6 @@
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
-				67CEBCCC1C472BA700A3C4A0 /* String+ThumbnailPath.swift in Sources */,
 				A76AEA351BFEB9EC00E8A26F /* VLoginType+Credentials.swift in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
 				F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */,
