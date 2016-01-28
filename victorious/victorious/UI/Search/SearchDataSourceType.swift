@@ -18,16 +18,4 @@ protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSo
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )
     
     var searchTerm: String? { get }
-    
-    var separatorStyle: UITableViewCellSeparatorStyle { get }
-}
-
-@objc protocol SearchResultsViewControllerDelegate: class {
-    
-    optional var searchController: UISearchController { get }
-    
-    /// If the search UI contains a cancel button, respond to its selection
-    optional func searchResultsViewControllerDidSelectCancel()
-    
-    func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }

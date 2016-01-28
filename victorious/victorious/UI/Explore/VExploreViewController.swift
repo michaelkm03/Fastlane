@@ -273,10 +273,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         }
     }
     
-    /// MARK: Search bar management
-    
     private func configureSearchBar() {
-        // Initialize searchResultsViewController and searchController
         guard let dependencyManager = self.dependencyManager,
               let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
               let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
@@ -288,12 +285,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         searchResultsViewController.searchResultsDelegate = self
         self.searchResultsViewController = searchResultsViewController
         
-        self.searchController = UISearchController(searchResultsController: searchResultsViewController)
-        self.searchController.searchBar.sizeToFit()
-        self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.dimsBackgroundDuringPresentation = false
-        dependencyManager.configureSearchBar(self.searchController.searchBar)
-        
         if #available(iOS 9.1, *) {
             searchController.obscuresBackgroundDuringPresentation = false
         }
@@ -302,7 +293,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     // MARK: - SearchResultsViewControllerDelegate
     
-    @objc var searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: self.searchResultsViewController)
+        searchController.searchBar.sizeToFit()
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        self.dependencyManager?.configureSearchBar(searchController.searchBar)
+        return searchController
+    }()
     
     func searchResultsViewControllerDidSelectCancel() { }
     

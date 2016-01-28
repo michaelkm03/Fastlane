@@ -27,7 +27,6 @@ class FollowHashtagOperation: RequestOperation {
             
             let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.request.hashtag ] )
             persistentHashtag.tag = self.request.hashtag
-            persistentHashtag.isFollowedByMainUser = true
             
             // Find or create the following relationship using VFollowedHashtag
             let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]

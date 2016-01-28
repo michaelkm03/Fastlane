@@ -15,16 +15,15 @@ extension DiscoverSearchViewController {
             identifier: "SearchResultsViewController")
         
         userSearchVC.dependencyManager = self.dependencyManager
-        userSearchVC.dataSource = UserSearchDataSource()
+        userSearchVC.dataSource = UserSearchDataSource(dependencyManager: dependencyManager)
         self.userSearchViewController = userSearchVC
         
         self.addChildViewController( userSearchVC )
         self.searchResultsContainerView?.addSubview( userSearchVC.view )
         self.view.v_addFitToParentConstraintsToSubview( userSearchVC.view )
         userSearchVC.didMoveToParentViewController(self)
-        userSearchVC.searchResultsDelegate = self
         
-        let usersNoContentView = VNoContentView(frame: view.bounds)
+        let usersNoContentView: VNoContentView = VNoContentView.v_fromNib()
         usersNoContentView.icon = UIImage(named: "user-icon")?.imageWithRenderingMode(.AlwaysTemplate)
         usersNoContentView.title = NSLocalizedString("No People Found In Search Title", comment:"")
         usersNoContentView.message = NSLocalizedString("No people found in search", comment:"")
@@ -44,16 +43,18 @@ extension DiscoverSearchViewController {
         self.view.v_addFitToParentConstraintsToSubview( hashtagSearchVC.view )
         hashtagSearchVC.didMoveToParentViewController(self)
         
-        let hashtagNoContentView = VNoContentView(frame: view.bounds)
+        let hashtagNoContentView: VNoContentView = VNoContentView.v_fromNib()
         hashtagNoContentView.icon = UIImage(named: "tabIconHashtag")?.imageWithRenderingMode(.AlwaysTemplate)
         hashtagNoContentView.title = NSLocalizedString("No Hashtags Found In Search Title", comment:"")
         hashtagNoContentView.message = NSLocalizedString("No hashtags found in search", comment:"")
         hashtagNoContentView.resetInitialAnimationState()
         hashtagNoContentView.setDependencyManager(self.dependencyManager)
         hashtagSearchVC.noContentView = hashtagNoContentView
-        hashtagSearchVC.searchResultsDelegate = self
     }
-    
+}
+
+extension DiscoverSearchViewController: SearchResultsViewControllerDelegate {
+
     // MARK: - SearchResultsViewControllerDelegate
     // These methods merely forward on to containing view controller that has access to
     // the active navigation controller
@@ -63,7 +64,7 @@ extension DiscoverSearchViewController {
     }
     
     func searchResultsViewControllerDidSelectCancel() {
-        self.searchResultsDelegate?.searchResultsViewControllerDidSelectCancel?()
+        self.searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
     }
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {

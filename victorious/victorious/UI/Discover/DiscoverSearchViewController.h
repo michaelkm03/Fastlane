@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-@protocol SearchResultsViewControllerDelegate, SearchResultsViewControllerDelegate;
+@protocol SearchResultsViewControllerDelegate;
 
 @class VDependencyManager, DiscoverSearchViewController, VUserSearchResultsViewController, VTagsSearchResultsViewController;
 
@@ -16,7 +16,7 @@
  A view controller that offers a promiment search bar and a segmented control that hides and shows
  various child view controllers that can display search results for various types of content.
  */
-@interface DiscoverSearchViewController : UIViewController <UISearchBarDelegate, SearchResultsViewControllerDelegate>
+@interface DiscoverSearchViewController : UIViewController
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

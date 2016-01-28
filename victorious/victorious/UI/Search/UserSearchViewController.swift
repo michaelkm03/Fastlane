@@ -30,12 +30,13 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         if let viewController = viewControllers.first,
             let searchResultsViewControler = viewController as? SearchResultsViewController {
                 
-                searchResultsViewControler.dataSource = UserSearchDataSource()
+                searchResultsViewControler.dataSource = UserSearchDataSource(dependencyManager: dependencyManager)
                 searchResultsViewControler.searchResultsDelegate = self
                 
                 searchController.searchBar.sizeToFit()
                 searchController.hidesNavigationBarDuringPresentation = false
                 searchController.dimsBackgroundDuringPresentation = false
+                searchController.searchBar.showsCancelButton = true
                 dependencyManager.configureSearchBar(searchController.searchBar)
                 
                 if #available(iOS 9.1, *) {
@@ -56,6 +57,15 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         dependencyManager.applyStyleToNavigationBar(navigationBar)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Unable to immediately make the searchBar first responder without this hack
+        dispatch_after(0.01) {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -65,7 +75,7 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
     @objc let searchController = UISearchController(searchResultsController: nil)
     
     func searchResultsViewControllerDidSelectCancel() {
-        searchResultsDelegate?.searchResultsViewControllerDidSelectCancel?()
+        searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
     }
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {

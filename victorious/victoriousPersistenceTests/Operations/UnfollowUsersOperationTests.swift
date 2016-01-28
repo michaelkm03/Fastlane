@@ -11,14 +11,14 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
-    var operation: UnFollowUsersOperation!
+    var operation: UnfollowUserOperation!
     let userID = 1
     let currentUserID = 2
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
+        operation = UnfollowUserOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }

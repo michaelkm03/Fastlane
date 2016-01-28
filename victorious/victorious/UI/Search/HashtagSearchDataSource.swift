@@ -15,16 +15,43 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     
     let dependencyManager: VDependencyManager
     
-    let separatorStyle: UITableViewCellSeparatorStyle = .None
+    weak var tableView: UITableView?
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        super.init()
+        
+        if let currentUser = VCurrentUser.user() {
+            self.KVOController.observe(currentUser,
+                keyPath: "followedHashtags",
+                options: [.New, .Old],
+                action: Selector( "onFollowedChanged:" )
+            )
+        }
+    }
+
+    func onFollowedChanged( change: [NSObject: AnyObject]! ) {
+        guard let objectChanged = ((change?[ NSKeyValueChangeNewKey ] ?? change?[ NSKeyValueChangeOldKey ]) as? NSArray)?.firstObject,
+            let hashtag = (objectChanged as? VFollowedHashtag)?.hashtag else {
+                return
+        }
+        
+        let index = visibleItems.indexOfObjectPassingTest() { (obj, idx, stop) in
+            return (obj as? HashtagSearchResultObject)?.tag == hashtag.tag
+        }
+        if index != NSNotFound,
+            let cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? VHashtagCell {
+                self.updateFollowControlState(cell.followControl, forHashtag: hashtag.tag, animated: true)
+        }
     }
     
     func registerCells( forTableView tableView: UITableView ) {
         let identifier = VHashtagCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VHashtagCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        
+        // Catch this table view and keep a weak reference for later
+        self.tableView = tableView
     }
     
     //MARK: - API
@@ -38,7 +65,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         
         loadPage( pageType,
             createOperation: {
-                return HashtagSearchOperation(searchTerm: searchTerm)!
+                return operation
             },
             completion: { (operation, error) in
                 completion?( error )
@@ -54,40 +81,38 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier = VHashtagCell.suggestedReuseIdentifier()
-        let searchResultCell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VHashtagCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VHashtagCell
         let hashtagResult = visibleItems[indexPath.row] as! HashtagSearchResultObject
-        searchResultCell.dependencyManager = self.dependencyManager
+        cell.dependencyManager = self.dependencyManager
         let hashtag = hashtagResult.sourceResult.tag
-        searchResultCell.hashtagText = hashtag
-        self.updateFollowControlState(searchResultCell.followHashtagControl, forHashtag: hashtag)
-        searchResultCell.onToggleFollowHashtag = { [weak self, weak searchResultCell] in
+        cell.hashtagText = hashtag
+        self.updateFollowControlState(cell.followControl, forHashtag: hashtag, animated: false)
+        cell.followControl?.onToggleFollow = {
             guard let currentUser = VCurrentUser.user() else {
                 return
             }
             
             let operation: RequestOperation
-            if currentUser.isCurrentUserFollowingHashtagString(hashtag) {
+            if currentUser.isFollowingHashtagString(hashtag) {
                 operation = UnfollowHashtagOperation( hashtag: hashtag )
             } else {
                 operation = FollowHashtagOperation(hashtag: hashtag)
             }
-            operation.queue() { error in
-                self?.updateFollowControlState(searchResultCell?.followHashtagControl, forHashtag: hashtag)
-            }
+            operation.queue()
         }
-        return searchResultCell
+        return cell
     }
     
-    func updateFollowControlState(followControl: VFollowControl?, forHashtag hashtag: String) {
+    func updateFollowControlState(followControl: VFollowControl?, forHashtag hashtag: String, animated: Bool = true) {
         guard let followControl = followControl, currentUser = VCurrentUser.user() else {
             return
         }
         let controlState: VFollowControlState
-        if currentUser.isCurrentUserFollowingHashtagString(hashtag) == true {
+        if currentUser.isFollowingHashtagString(hashtag) {
             controlState = .Followed
         } else {
             controlState = .Unfollowed
         }
-        followControl.setControlState(controlState, animated: true)
+        followControl.setControlState(controlState, animated: animated)
     }
 }

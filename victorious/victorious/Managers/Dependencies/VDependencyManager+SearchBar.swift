@@ -16,7 +16,6 @@ extension VDependencyManager {
     
     func configureSearchBar(searchBar: UISearchBar) {
         
-        searchBar.showsCancelButton = true
         searchBar.tintColor = self.colorForKey(VDependencyManagerSecondaryTextColorKey)
         searchBar.v_textField?.tintColor = self.colorForKey(VDependencyManagerLinkColorKey)
         searchBar.v_textField?.font = self.fontForKey(VDependencyManagerLabel3FontKey)

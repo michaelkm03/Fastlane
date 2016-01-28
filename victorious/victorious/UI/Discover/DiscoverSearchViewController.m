@@ -189,6 +189,17 @@
             return;
     }
     
+    previousSearchVC.searchResultsDelegate = nil;
+    self.currentSearchVC.searchResultsDelegate = self;
+    
+    NSString *currentSearchTerm = self.searchController.searchBar.text;
+    const BOOL isAlreadyShowingResultsForSearchTerm = self.currentSearchVC.searchTerm == currentSearchTerm;
+    const BOOL isValidSearchTerm = currentSearchTerm != nil && currentSearchTerm.length > 0;
+    if ( isValidSearchTerm && !isAlreadyShowingResultsForSearchTerm )
+    {
+        [self.currentSearchVC searchWithSearchTerm:currentSearchTerm completion:nil];
+    }
+    
     NSTimeInterval duration = previousSearchVC == nil ? 0.0f : 0.15f;
     [UIView animateWithDuration:duration animations:^
      {
@@ -218,16 +229,6 @@
         [self.currentSearchVC searchWithSearchTerm:textField.text completion:nil];
     }
     return YES;
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    if ( searchBar.text != nil && searchBar.text.length > 0 )
-    {
-        [self.currentSearchVC searchWithSearchTerm:searchBar.text completion:nil];
-    }
 }
 
 @end

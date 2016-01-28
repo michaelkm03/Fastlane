@@ -32,7 +32,7 @@ class ShowSearchResultOperation: Operation {
             let operation = FetchUserOperation(fromUser: userResult.sourceResult)
             operation.queue() { op in
                 if let user = operation.result,
-                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
+                    let vc = self.dependencyManager.userProfileViewControllerWithUser(user) {
                         self.navigationController.pushViewController(vc, animated: true)
                         self.finishedExecuting()
                 }
