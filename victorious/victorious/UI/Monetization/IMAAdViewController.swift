@@ -82,21 +82,22 @@ import SafariServices
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdEvent event: IMAAdEvent!) {
         switch event.type {
+        case .AD_BREAK_READY: break
+        case .AD_BREAK_ENDED: break
+        case .AD_BREAK_STARTED: break
+        case .CLICKED: break
+        case .COMPLETE, .ALL_ADS_COMPLETED: delegate?.adDidFinishForAdViewController(self)
+        case .FIRST_QUARTILE: delegate?.adDidHitFirstQuartileInAdViewController?(self)
         case .LOADED:
             adsManager.start()
             delegate?.adDidLoadForAdViewController(self)
-        case .STARTED:
-            delegate?.adDidStartPlaybackInAdViewController?(self)
-        case .COMPLETE:
-            delegate?.adDidFinishForAdViewController(self)
-        case .FIRST_QUARTILE:
-            delegate?.adDidHitFirstQuartileInAdViewController?(self)
-        case .MIDPOINT:
-            delegate?.adDidHitMidpointInAdViewController?(self)
-        case .THIRD_QUARTILE:
-            delegate?.adDidHitThirdQuartileInAdViewController?(self)
-        default:
-            print("IMAAdViewController received an unrecognized event \(event.typeString)")
+        case .MIDPOINT: delegate?.adDidHitMidpointInAdViewController?(self)
+        case .PAUSE: break
+        case .RESUME: break
+        case .SKIPPED: break
+        case .STARTED: delegate?.adDidStartPlaybackInAdViewController?(self)
+        case .TAPPED: break
+        case .THIRD_QUARTILE: delegate?.adDidHitThirdQuartileInAdViewController?(self)
         }
     }
 
