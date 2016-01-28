@@ -86,7 +86,6 @@
     switch (focusType)
     {
         case VFocusTypeNone:
-        case VFocusTypeTransition:
             [self.marquee disableTimer];
             [self.marquee endFocusOnAllCells];
             break;

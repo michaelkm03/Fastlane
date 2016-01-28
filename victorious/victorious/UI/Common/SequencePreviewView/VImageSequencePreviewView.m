@@ -56,7 +56,6 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-        case VFocusTypeTransition:
             [self.likeButton hide];
             break;
             

@@ -17,7 +17,6 @@ typedef NS_ENUM(NSInteger, VFocusType)
     VFocusTypeNone,
     VFocusTypeStream,
     VFocusTypeDetail,
-    VFocusTypeTransition
 };
 
 /**

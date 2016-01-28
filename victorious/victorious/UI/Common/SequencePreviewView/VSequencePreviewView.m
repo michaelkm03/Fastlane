@@ -204,8 +204,6 @@
     UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
     switch (self.focusType){
         case VFocusTypeDetail:
-            return nonDetailBackgroundColor;
-        case VFocusTypeTransition:
             return [UIColor blackColor];
         case VFocusTypeNone:
         case VFocusTypeStream:
@@ -254,9 +252,6 @@
             break;
         case VFocusTypeDetail:
             [self.likeButton show];
-            break;
-        case VFocusTypeTransition:
-            [self.likeButton hide];
             break;
     }
 }
