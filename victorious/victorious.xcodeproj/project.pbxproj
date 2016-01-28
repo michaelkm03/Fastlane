@@ -908,6 +908,7 @@
 		BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */; };
 		BF79160B1C57D68300664259 /* VImageAnimationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BF79160A1C57D68300664259 /* VImageAnimationOperation.m */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
+		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
@@ -3008,6 +3009,7 @@
 		BF7916091C57D68300664259 /* VImageAnimationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageAnimationOperation.h; sourceTree = "<group>"; };
 		BF79160A1C57D68300664259 /* VImageAnimationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperation.m; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
+		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
 		C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
@@ -6835,6 +6837,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -10022,6 +10025,7 @@
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
 				79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */,
 				0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */,
+				BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
 				A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */,

@@ -20,13 +20,15 @@ class VImageAnimationOperation: Operation {
     private var _contentMode: UIViewContentMode?
     private var currentFrame: Int
     
-    var animationSequence: NSArray?
     weak var delegate: VImageAnimationOperationDelegate?
+    
+    // Needs to be set
+    var animationSequence: NSArray?
     var animationDuration: Float
     
     var flightImage: UIImage?
-    var flightDuration: NSTimeInterval?
     var flightDestination: CGPoint?
+    var flightDuration: NSTimeInterval?
     
     var contentMode: UIViewContentMode {
         get {
@@ -49,7 +51,18 @@ class VImageAnimationOperation: Operation {
     }
     
     func isAnimating() -> Bool {
+        if completedAnimation() {
+            return false
+        }
         return currentFrame != -1
+    }
+    
+    // If nil or empty animation sequence, by default the animation is done.
+    func completedAnimation() -> Bool {
+        if animationSequence == nil || animationSequence?.count == 0 {
+            return true
+        }
+        return currentFrame == animationSequence?.count
     }
     
     func updateFrame() {
@@ -65,7 +78,7 @@ class VImageAnimationOperation: Operation {
             stopAnimating()
         }
         else if currentFrame >= 0 {
-            animationImageView.image = animationSequence?[currentFrame] as! UIImage
+            animationImageView.image = animationSequence?[currentFrame] as? UIImage
         }
         else {
             animationImageView.image = nil
@@ -80,6 +93,10 @@ class VImageAnimationOperation: Operation {
     }
     
     func beginAnimation() {
+        if animationSequence == nil {
+            stopAnimating()
+            return
+        }
         currentFrame = 0
         let frameDuration: Float = animationDuration/Float(animationSequence!.count)
         animationTimer = NSTimer(timeInterval: NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true)
@@ -89,10 +106,10 @@ class VImageAnimationOperation: Operation {
     func startAnimating() {
         if let _ = animationSequence {
             if animationSequence?.count == 0 {
-                self.stopAnimating()
+                stopAnimating()
                 return
             }
-            if let _ = flightImage {
+            else if let _ = flightImage {
                 dispatch_async(dispatch_get_main_queue(), {
                     UIView.animateWithDuration(self.flightDuration!, animations: {
                         self.animationImageView.center = self.flightDestination!
@@ -106,21 +123,22 @@ class VImageAnimationOperation: Operation {
             }
         }
         else {
+            stopAnimating()
             return
         }
     }
     
     func stopAnimating() {
-        delegate?.animation(self, didFinishAnimating: currentFrame == animationSequence?.count)
-        currentFrame = -1
+        if let _ = animationSequence {
+            delegate?.animation(self, didFinishAnimating: currentFrame == animationSequence?.count)
+        }
         animationTimer?.invalidate()
-        updateImageFrame()
-        finishedExecuting()
+        animationImageView.image = nil
         animationSequence = nil
+        finishedExecuting()
     }
     
     override func start() {
-//        NSLog("%@ start", self)
         startAnimating()
         super.start()
     }
@@ -128,10 +146,6 @@ class VImageAnimationOperation: Operation {
     override func cancel() {
         stopAnimating()
         super.cancel()
-    }
-    
-    deinit {
-//        NSLog("deinit")
     }
     
 }
