@@ -83,16 +83,19 @@
     }
     
     _focusType = focusType;
-    if ( focusType != VFocusTypeNone )
+    switch (focusType)
     {
-        [self.marquee enableTimer];
-        [self.marquee updateFocus];
-        [self.marquee updateCellVisibilityTracking];
-    }
-    else
-    {
-        [self.marquee disableTimer];
-        [self.marquee endFocusOnAllCells];
+        case VFocusTypeNone:
+        case VFocusTypeTransition:
+            [self.marquee disableTimer];
+            [self.marquee endFocusOnAllCells];
+            break;
+        case VFocusTypeStream:
+        case VFocusTypeDetail:
+            [self.marquee enableTimer];
+            [self.marquee updateFocus];
+            [self.marquee updateCellVisibilityTracking];
+            break;
     }
 }
 

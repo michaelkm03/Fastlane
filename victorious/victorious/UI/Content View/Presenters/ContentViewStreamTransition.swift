@@ -60,7 +60,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         
         let previewView = previewProvider.getPreviewView()
         self.initialPreviewViewFocusType = previewView.focusType
-        previewView.focusType = .Detail
+        previewView.focusType = .Transition
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {

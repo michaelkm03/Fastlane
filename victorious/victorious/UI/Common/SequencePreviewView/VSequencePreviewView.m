@@ -202,7 +202,15 @@
 - (UIColor *)updatedBackgroundColor
 {
     UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
-    return self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
+    switch (self.focusType){
+        case VFocusTypeDetail:
+            return nonDetailBackgroundColor;
+        case VFocusTypeTransition:
+            return [UIColor blackColor];
+        case VFocusTypeNone:
+        case VFocusTypeStream:
+            return nonDetailBackgroundColor;
+    }
 }
 
 #pragma mark - Gestures
@@ -246,6 +254,9 @@
             break;
         case VFocusTypeDetail:
             [self.likeButton show];
+            break;
+        case VFocusTypeTransition:
+            [self.likeButton hide];
             break;
     }
 }

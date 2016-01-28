@@ -115,6 +115,7 @@
     {
         case VFocusTypeStream:
         case VFocusTypeNone:
+        case VFocusTypeTransition:
             return YES;
         case VFocusTypeDetail:
             return self.videoAsset.loop.boolValue;
@@ -299,6 +300,7 @@
     switch (focusType)
     {
         case VFocusTypeNone:
+        case VFocusTypeTransition:
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
             if ( previousFocusType == VFocusTypeDetail )
