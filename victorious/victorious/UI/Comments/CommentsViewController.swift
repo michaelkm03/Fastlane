@@ -59,6 +59,16 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
+    lazy private var noContentView: VNoContentView = {
+        let noContentView: VNoContentView = VNoContentView.v_fromNib()
+        noContentView.icon = UIImage(named: "noCommentIcon")
+        noContentView.title = NSLocalizedString("NoCommentsTitle", comment:"")
+        noContentView.message = NSLocalizedString("NoCommentsMessage", comment:"")
+        noContentView.resetInitialAnimationState()
+        noContentView.setDependencyManager(self.dependencyManager)
+        return noContentView
+    }()
+    
     // MARK: - Private Properties
     private var registeredCommentReuseIdentifiers = Set<String>()
     private let scrollPaginator = VScrollPaginator()
@@ -66,7 +76,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     private var focusHelper: VCollectionViewStreamFocusHelper?
     private var modalTransitioningDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
-    private var noContentView: VNoContentView?
     private var keyboardBar: VKeyboardInputAccessoryView? {
         didSet {
             if let keyboardBar = keyboardBar {
@@ -97,19 +106,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             keyboardBar?.sequencePermissions = sequence.permissions
         }
         collectionView.accessoryView = keyboardBar
-
-        noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
-        if let noContentView = noContentView {
-            noContentView.translatesAutoresizingMaskIntoConstraints = false
-            view.insertSubview(noContentView, aboveSubview: imageView)
-            view.v_addFitToParentConstraintsToSubview(noContentView)
-            noContentView.icon = UIImage(named: "noCommentIcon")
-            noContentView.title = NSLocalizedString("NoCommentsTitle", comment:"")
-            noContentView.message = NSLocalizedString("NoCommentsMessage", comment:"")
-            noContentView.resetInitialAnimationState()
-            noContentView.setDependencyManager(dependencyManager)
-        }
-        
+    
         let mainScreen = UIScreen.mainScreen()
         let maxWidth = mainScreen.bounds.width * mainScreen.scale
         if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURLWithMaximumSize(CGSizeMake(maxWidth, CGFloat.max)) {
@@ -495,15 +492,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: - PaginatedDataSourceDelegate
     
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        self.updateCollectionView()
+    }
+    
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        
-        if let noContentView = self.noContentView {
-            if newValue.count == 0 {
-                noContentView.animateTransitionIn()
-            } else {
-                noContentView.resetInitialAnimationState()
-            }
-        }
         
         collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue)
         
@@ -511,6 +504,26 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         updateInsetForKeyboardBarState()
         dispatch_after(0.1) {
             self.collectionView.flashScrollIndicators()
+        }
+    }
+    
+    func updateCollectionView() {
+        
+        let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
+        switch self.dataSource?.state ?? .Cleared {
+            
+        case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
+            guard let collectionView = self.collectionView else {
+                break
+            }
+            if !isAlreadyShowingNoContent {
+                self.noContentView.resetInitialAnimationState()
+                self.noContentView.animateTransitionIn()
+            }
+            collectionView.backgroundView = self.noContentView
+            
+        default:
+            self.collectionView.backgroundView = nil
         }
     }
 }

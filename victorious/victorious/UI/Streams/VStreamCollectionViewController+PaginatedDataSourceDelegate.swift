@@ -21,10 +21,13 @@ extension VStreamCollectionViewController {
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        self.updateCollectionView()
+    }
+    
+    func updateCollectionView() {
         
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
-        
-        switch newState {
+        switch self.streamDataSource?.paginatedDataSource.state ?? .Cleared {
             
         case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
             guard let collectionView = self.collectionView else {
