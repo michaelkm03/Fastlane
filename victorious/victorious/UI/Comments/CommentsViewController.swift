@@ -32,6 +32,24 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         return vc
     }
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: Selector("refresh:"), forControlEvents: .ValueChanged)
+        self.collectionView.addSubview( refreshControl )
+        return refreshControl
+    }()
+    
+    private(set) var topInset: CGFloat = 0.0
+    
+    func positionRefreshControl() {
+        if let subview = refreshControl.subviews.first {
+            subview.center = CGPoint(
+                x: self.refreshControl.bounds.midX,
+                y: self.refreshControl.bounds.midY + self.topInset * 0.5
+            )
+        }
+    }
+    
     // MARK: - Public Properties
     
     var dependencyManager: VDependencyManager! {
@@ -65,7 +83,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         noContentView.title = NSLocalizedString("NoCommentsTitle", comment:"")
         noContentView.message = NSLocalizedString("NoCommentsMessage", comment:"")
         noContentView.resetInitialAnimationState()
-        noContentView.setDependencyManager(self.dependencyManager)
+        noContentView.setDependencyManager(dependencyManager)
         return noContentView
     }()
     
@@ -92,7 +110,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     @IBOutlet private weak var collectionView: VInputAccessoryCollectionView!
     @IBOutlet private weak var imageView: UIImageView!
-    private var refreshControl: UIRefreshControl?
     
     // MARK: - UIViewController
     
@@ -106,6 +123,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             keyboardBar?.sequencePermissions = sequence.permissions
         }
         collectionView.accessoryView = keyboardBar
+        
+        self.positionRefreshControl()
     
         let mainScreen = UIScreen.mainScreen()
         let maxWidth = mainScreen.bounds.width * mainScreen.scale
@@ -119,8 +138,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         self.extendedLayoutIncludesOpaqueBars = true
     }
     
-    func refresh() {
-        dataSource?.loadComments( .First )
+    func refresh(sender: AnyObject? = nil) {
+        if sender == nil {
+            self.refreshControl.beginRefreshing()
+        }
+        dataSource?.loadComments( .First ) { error in
+            self.refreshControl.endRefreshing()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -211,10 +235,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         dataSource?.loadComments( .Next )
     }
     
-    func shouldLoadPreviousPage() {
-        // FIXME: This is being called unexpectedly
-        //dataSource?.loadComments( .Previous )
-    }
+    func shouldLoadPreviousPage() { }
     
     // MARK: - VSwipeViewControllerDelegate
     
@@ -521,6 +542,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 self.noContentView.animateTransitionIn()
             }
             collectionView.backgroundView = self.noContentView
+            self.refreshControl.layer.zPosition = (collectionView.backgroundView?.layer.zPosition ?? 0) + 1
             
         default:
             self.collectionView.backgroundView = nil
