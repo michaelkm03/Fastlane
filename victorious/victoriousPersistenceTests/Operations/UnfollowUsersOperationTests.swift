@@ -39,7 +39,13 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
             followedUser.displayOrder = -1
             context.v_save()
         }
-
+        
+        XCTAssertEqual(1, objectUser.numberOfFollowers)
+        XCTAssertEqual(1, objectUser.followers.count)
+        XCTAssertEqual(1, currentUser.numberOfFollowing)
+        XCTAssertEqual(1, currentUser.following.count)
+        XCTAssertEqual(true, objectUser.isFollowedByMainUser)
+        
         queueExpectedOperation(operation: operation)
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
