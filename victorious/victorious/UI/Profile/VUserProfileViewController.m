@@ -44,9 +44,6 @@
 
 static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
 
-// According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
-static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
-
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNavigationViewFloatingControllerDelegate>
@@ -63,33 +60,42 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
+@property (nonatomic, strong, readwrite) VUser *user;
+@property (nonatomic, strong) NSNumber *userRemoteId;
+
+// If YES, this view controller is for the current user and is part of the main menu
+@property (nonatomic, assign) BOOL representsMainUser;
 
 @end
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager
-{
-    NSParameterAssert(dependencyManager != nil);
-    VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
-    viewController.dependencyManager = dependencyManager;
-    [viewController addLoginStatusChangeObserver];
-    viewController.user = aUser;
-    return viewController;
-}
-
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager; //< Set the dependencyManager before setting the profile
+    [viewController addLoginStatusChangeObserver];
+    
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
+    NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
+    
     if ( user != nil )
     {
-        return [self userProfileWithUser:user andDependencyManager:dependencyManager];
+        viewController.user = user;
+    }
+    else if ( userRemoteId != nil )
+    {
+        viewController.dependencyManager = dependencyManager;
+        viewController.userRemoteId = userRemoteId;
+        viewController.representsMainUser = YES;
+    }
+    else
+    {
+        viewController.dependencyManager = dependencyManager;
+        viewController.user = [VCurrentUser user];
+        viewController.representsMainUser = YES;
     }
     
-    VUserProfileViewController *viewController = [self userProfileWithUser:[VCurrentUser user] andDependencyManager:dependencyManager];
-    viewController.representsMainUser = YES;
     return viewController;
 }
 
@@ -138,16 +144,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self reloadUserFollowingRelationship];
     }
     
-    BOOL hasHeader = self.profileHeaderViewController != nil;
-    if ( hasHeader )
+    if ( self.profileHeaderViewController != nil )
     {
+        self.profileHeaderViewController.user = self.user;
+        self.streamDataSource.hasHeaderCell = YES;
         [self.collectionView registerClass:[VProfileHeaderCell class]
                 forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
+        
+        // Adding a header changes the structure of the collection view,
+        // so a full reload is warranted here.
+        [self.collectionView reloadData];
+        self.collectionView.alwaysBounceVertical = YES;
     }
-    
-    self.streamDataSource.hasHeaderCell = hasHeader;
-    self.profileHeaderViewController.user = self.user;
-    self.collectionView.alwaysBounceVertical = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -418,12 +426,34 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.representsMainUser )
     {
+        [self.streamDataSource unloadStream];
         self.user = [VCurrentUser user];
     }
     else if ( [VCurrentUser user] != nil )
     {
         [self updateUserFollowingRelationship];
     }
+}
+
+- (void)setUserRemoteId:(NSNumber *)userRemoteId
+{
+    if ( _userRemoteId == userRemoteId )
+    {
+        return;
+    }
+    
+    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
+    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+        VUser *user = userInfoOperation.user;
+        if ( user != nil && error == nil )
+        {
+            [self setUser:user];
+        }
+        else
+        {
+            VLog( @"Error loading user with remoteId %@ while presenting `VUserProfileViewController`", userRemoteId );
+        }
+    }];
 }
 
 - (void)setUser:(VUser *)user

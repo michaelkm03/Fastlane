@@ -20,29 +20,21 @@ class ShowSearchResultOperation: Operation {
         self.dependencyManager = dependencyManager
     }
     
-    override func start() {
-        super.start()
+    override func main() {
         dispatch_sync( dispatch_get_main_queue(), performNavigation )
     }
     
     private func performNavigation() {
-        self.beganExecuting()
         
         if let userResult = searchResult as? UserSearchResultObject {
-            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
-            operation.queue() { op in
-                if let user = operation.result,
-                    let vc = self.dependencyManager.userProfileViewControllerWithUser(user) {
-                        self.navigationController.pushViewController(vc, animated: true)
-                        self.finishedExecuting()
-                }
+            if let viewController = self.dependencyManager.userProfileViewControllerWithRemoteId(userResult.sourceResult.userID) {
+                navigationController.pushViewController(viewController, animated: true)
             }
             
         } else if let hashtagResult = searchResult as? HashtagSearchResultObject {
             let hashtag = hashtagResult.sourceResult.tag
-            if let vc = dependencyManager.hashtagStreamWithHashtag(hashtag) {
-                navigationController.pushViewController(vc, animated: true)
-                finishedExecuting()
+            if let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag) {
+                navigationController.pushViewController(viewController, animated: true)
             }
         }
     }
