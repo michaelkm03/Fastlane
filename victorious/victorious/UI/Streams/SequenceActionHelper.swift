@@ -55,13 +55,15 @@ import UIKit
                     self.showAlert(
                         title: NSLocalizedString( "ReportedTitle", comment: "" ),
                         message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                        viewController: viewController
+                        viewController: viewController,
+                        completion: completion
                     )
                 } else {
                     self.showAlert(
                         title: NSLocalizedString( "WereSorry", comment: "" ),
                         message: NSLocalizedString( "ErrorOccured", comment: "" ),
-                        viewController: viewController
+                        viewController: viewController,
+                        completion: completion
                     )
                 }
             }
@@ -71,16 +73,18 @@ import UIKit
                 self.showAlert(
                     title: NSLocalizedString( "ReportedTitle", comment: "" ),
                     message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                    viewController: viewController
+                    viewController: viewController,
+                    completion: completion
                 )
             }
-            completion?( error == nil )
         }
     }
     
-    func showAlert( title title: String, message: String, viewController: UIViewController ) {
+    func showAlert( title title: String, message: String, viewController: UIViewController, completion:((Bool) -> Void)? ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: nil))
+        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: { (action: UIAlertAction) -> Void in
+            completion?(true)
+        }))
         viewController.presentViewController( alertController, animated: true, completion: nil)
     }
 }

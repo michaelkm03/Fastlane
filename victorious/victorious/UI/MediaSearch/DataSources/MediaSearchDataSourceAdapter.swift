@@ -17,6 +17,8 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		static let AttributionHeader = "MediaSearchAttributionView" ///< Set in storyboard
 		static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
 	}
+    
+    var delegate: PaginatedDataSourceDelegate?
 	
 	/// A type used to record data source chanages that can then be applied to the collection
 	/// view in a `performBatchUpdates(_:completion)` call.
@@ -28,10 +30,6 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		var hasChanges: Bool {
 			return self.deletedSections?.count > 0 || self.insertedSections?.count > 0
 		}
-	}
-	
-	enum State: Int {
-		case None, Loading, Content, Error, NoResults
 	}
 	
 	/// A type for organizing search results into grouped sections
@@ -54,8 +52,14 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
 	}
 	
-    private(set) var isLastPage: Bool = false
-    private(set) var state = State.None
+    var hasLoadedLastPage: Bool {
+        return dataSource?.hasLoadedLastPage ?? true
+    }
+    
+    var state: DataSourceState {
+        return dataSource?.state ?? .Cleared
+    }
+    
 	private(set) var sections: [Section] = []
 	
 	private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
@@ -63,39 +67,16 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     var dataSource: MediaSearchDataSource?
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
-		
 		guard let dataSource = self.dataSource else {
 			fatalError( "Attempt to perform a search without configuring a data source" )
 		}
-		
-		guard self.state != .Loading else {
-			completion?( nil )
-			return
-		}
-		
-		self.state = .Loading
-		dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
-			
-			var result = ChangeResult()
-			if let error = error {
-				if self.isLastPage {
-					self.state = .Content
-				} else {
-					self.state = .Error
-					result.error = error
-                }
-                
-                self.isLastPage = true
-				completion?(nil)
-				
-			} else if let results = dataSource.visibleItems.array as? [MediaSearchResult] {
-				self.state = .Content
-				let result = self.updateDataSource(results, pageType: pageType)
-
-                self.isLastPage = results.count == 0
-				completion?(result)
-			}
-		}
+        let resultsBefore = self.dataSource?.visibleItems ?? NSOrderedSet()
+        dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
+            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.containsObject($0) }) as? [MediaSearchResult] where error == nil {
+                let result = self.updateDataSource(results, pageType: pageType)
+                completion?(result)
+            }
+        }
     }
 
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
@@ -153,10 +134,10 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     private func updateDataSource( results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
-            if self.sections.count == 0 && results.count > 0 {
+            if self.sections.isEmpty && results.count > 0 {
                 result.deletedSections = NSIndexSet(index: 0) // No content cell
             }
-            else if self.sections.count > 0 && results.count == 0 {
+            else if self.sections.count > 0 && results.isEmpty {
                 let range = NSRange( location: 0, length: self.sections.count )
                 result.deletedSections = NSIndexSet(indexesInRange: range)
             }
@@ -184,15 +165,15 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	// MARK: - UICollectionViewDataSource
 	
 	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.sections.count == 0 ? 1 : self.sections[ section ].count
+		return self.sections.isEmpty ? 1 : self.sections[ section ].count
 	}
 	
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-		return self.sections.count == 0 ? 1 : self.sections.count
+		return self.sections.isEmpty ? 1 : self.sections.count
 	}
 	
 	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		if self.sections.count == 0,
+		if self.sections.isEmpty,
 			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
 				self.configureNoContentCell( cell, forState: self.state )
 				return cell
@@ -228,7 +209,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-	private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: State ) {
+    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""
@@ -236,7 +217,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		case .Error:
 			cell.text = NSLocalizedString( "Error loading results", comment:"" )
 			cell.loading = false
-		case .Content where self.sections.count == 0:
+        case .NoResults:
 			cell.loading = false
 			cell.text = NSLocalizedString( "No results", comment:"" )	
 		default:

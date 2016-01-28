@@ -16,12 +16,13 @@
 #import "VEnvironmentManager.h"
 #import "VSessionTimer.h"
 
+#import <VictoriousCommon/VictoriousCommon-Swift.h>
+
 @interface VTemplateDownloadOperation ()
 
 @property (nonatomic, strong) NSOperationQueue *currentQueue;
 @property (nonatomic, strong) dispatch_queue_t privateQueue;
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
-@property (nonatomic, strong) NSUUID *currentDownloadID;
 @property (nonatomic) NSTimeInterval retryInterval;
 @property (nonatomic) BOOL cacheUsed;
 @property (nonatomic) BOOL templateDownloaded;
@@ -74,24 +75,6 @@ static char kPrivateQueueSpecific;
     NSAssert(self.currentQueue != nil, @"Can't get a current queue. Are you trying to run this operation outside of an NSOperationQueue?");
     
     __weak typeof(self) weakSelf = self;
-    NSUUID *downloadID = [[NSUUID alloc] init];
-    self.currentDownloadID = downloadID;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.templateDownloadTimeout * NSEC_PER_SEC)),
-                   self.privateQueue,
-                   ^(void)
-    {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if ( strongSelf != nil )
-        {
-            if ( !strongSelf.isCancelled &&
-                 !strongSelf.templateDownloaded &&
-                 [downloadID isEqual:strongSelf.currentDownloadID] )
-            {
-                [strongSelf downloadTimerExpired];
-            }
-        }
-    });
-    
     [self.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
     {
         if ( weakSelf.isCancelled )
@@ -133,17 +116,10 @@ static char kPrivateQueueSpecific;
     return templateConfiguration;
 }
 
-- (void)downloadTimerExpired
-{
-    [self loadTemplateFromCache];
-}
-
 - (void)downloadDidFinishWithData:(NSData *)data
 {
     dispatch_async(self.privateQueue, ^(void)
     {
-        self.currentDownloadID = nil;
-        
         NSDictionary *configuration = nil;
         if ( data != nil )
         {
@@ -151,10 +127,6 @@ static char kPrivateQueueSpecific;
         }
         if ( configuration == nil )
         {
-            if ( self.delegate != nil )
-            {
-                [self loadTemplateFromCache];
-            }
             [self retryTemplateDownload];
             return;
         }
@@ -168,12 +140,9 @@ static char kPrivateQueueSpecific;
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
                 {
-                    id<VDataCacheID> templateConfigurationCacheID = strongSelf.templateConfigurationCacheID;
-                    if ( templateConfigurationCacheID != nil && !strongSelf.isCancelled )
+                    if ( strongSelf.templateCache != nil && !strongSelf.isCancelled )
                     {
-                        [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                        [strongSelf.dataCache cacheData:data forID:templateConfigurationCacheID error:nil];
+                        [strongSelf.templateCache cacheTemplateData:data error:nil];
                         self.completedSuccessfully = YES;
                     }
                 }
@@ -195,8 +164,6 @@ static char kPrivateQueueSpecific;
                 signal();
                 return;
             }
-            
-            [self startTimerForImageDownloads];
             
             self.bulkDownloadOperation = [[VBulkDownloadOperation alloc] initWithURLs:missingURLs completion:[self downloadOperationCompletion]];
             self.bulkDownloadOperation.shouldRetry = self.shouldRetry;
@@ -234,81 +201,9 @@ static char kPrivateQueueSpecific;
                 ![strongSelf.dataCache cacheDataAtURL:downloadedFile forID:originalURL error:nil] )
             {
                 [strongSelf.saveTemplateOperation cancel];
-                if ( !strongSelf.isCancelled )
-                {
-                    dispatch_async(strongSelf.privateQueue, ^(void)
-                    {
-                        [strongSelf loadTemplateFromCache];
-                    });
-                }
             }
         }
     };
-}
-
-- (void)startTimerForImageDownloads
-{
-    __weak typeof(self) weakSelf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.imageDownloadTimeout * NSEC_PER_SEC)),
-                   self.privateQueue,
-                   ^(void)
-    {
-        typeof(weakSelf) strongSelf = weakSelf;
-        if ( strongSelf != nil )
-        {
-            if ( !strongSelf.isCancelled )
-            {
-                [strongSelf downloadTimerExpired];
-            }
-        }
-    });
-}
-
-- (void)loadTemplateFromCache
-{
-    if ( self.cacheUsed )
-    {
-        return;
-    }
-    
-    [self removeExpiredTemplateCache];
-    
-    NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
-    if ( templateData == nil )
-    {
-        if ( [self.delegate respondsToSelector:@selector(templateDownloadOperationFailedWithNoFallback:)] )
-        {
-            [self.delegate templateDownloadOperationFailedWithNoFallback:self];
-        }
-        return;
-    }
-    
-    NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-    
-    if ( template != nil )
-    {
-        self.templateConfiguration = template;
-        if ( [self.delegate respondsToSelector:@selector(templateDownloadOperationDidFallbackOnCache:)] )
-        {
-            [self.delegate templateDownloadOperationDidFallbackOnCache:self];
-        }
-        self.cacheUsed = YES;
-    }
-}
-
-- (void)removeExpiredTemplateCache
-{
-    NSAssert(self.buildNumber != nil, @"VTemplateDownloadOperation should have build number set before loading the template");
-    if ( self.buildNumber == nil )
-    {
-        return;
-    }
-    
-    NSString *oldBuildNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kTemplateBuildNumberKey];
-    if ( ![self.buildNumber isEqualToString:oldBuildNumber] )
-    {
-        [self.dataCache removeCachedDataForID:self.templateConfigurationCacheID error:nil];
-    }
 }
 
 - (NSSet *)missingReferencedURLsFromTemplate:(NSDictionary *)template
@@ -332,6 +227,10 @@ static char kPrivateQueueSpecific;
         __strong typeof(self) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
+            if ( self.cancelled )
+            {
+                return;
+            }
             strongSelf.retryInterval *= 2.0;
             [strongSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
             {

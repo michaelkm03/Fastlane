@@ -15,7 +15,16 @@
 #import "VRenderablePreviewView.h"
 #import "VVideoPreviewView.h"
 
-@class VDependencyManager, VSequenceActionController, VContentCell, VExperienceEnhancerBarCell;
+@class VDependencyManager, VSequenceActionController, VContentCell, VExperienceEnhancerBarCell, VNewContentViewController;
+
+@protocol VNewContentViewControllerDelegate <NSObject>
+@optional
+
+- (void)contentViewDidDeleteContent:(VNewContentViewController *)contentViewController;
+- (void)contentViewDidFlagContent:(VNewContentViewController *)contentViewController;
+
+@end
+
 
 /**
  *  The content view controller.
@@ -44,6 +53,8 @@
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, weak, readonly) VContentCell *contentCell;
+
+@property (nonatomic, weak, nullable) id<VNewContentViewControllerDelegate> delegate;
 
 /*
  Provides playback controls and other interactions

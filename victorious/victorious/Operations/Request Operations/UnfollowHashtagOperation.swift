@@ -25,20 +25,17 @@ class UnfollowHashtagOperation: RequestOperation {
                 return
             }
             
-            let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.request.hashtag ] )
-            persistentHashtag.tag = self.request.hashtag
-            
-            // Find or create the following relationship
-            // TODO: See if you can use just the IDs instead of the obejcts as values in this dictionary
-            let uniqueElements = [ "user" : currentUser, "hashtag" : self.request.hashtag ]
+            // Find the following relationship using VFollowedHashtag
+            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
+                followedHashtag.hashtag.isFollowedByMainUser = false
+                // TODO: Use batch delete
                 context.deleteObject( followedHashtag )
             }
-            
             context.v_save()
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
         }
+        
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
+        self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
     }
 }

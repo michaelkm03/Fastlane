@@ -8,7 +8,6 @@
 
 #import "VFindContactsTableViewController.h"
 #import "VFindFriendsTableView.h"
-#import "VObjectManager+Users.h"
 #import "VPermission.h"
 #import "VPermissionsTrackingHelper.h"
 #import "victorious-swift.h"

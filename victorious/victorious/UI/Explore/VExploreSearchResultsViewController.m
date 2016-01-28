@@ -27,29 +27,4 @@
     return viewController;
 }
 
-#pragma mark - View Lifecycle Methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-#warning FIXME:
-    //self.userSearchResultsVC.navigationDelegate = self.navigationDelegate;
-    //self.hashtagsSearchResultsVC.navigationDelegate = self.navigationDelegate;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-#warning FIXME:
-    //[self textFieldShouldClear:nil];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-#warning FIXME:
-    //[self searchWithSearchTerm:searchBar.text];
-}
-
 @end

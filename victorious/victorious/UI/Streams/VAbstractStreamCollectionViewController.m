@@ -114,9 +114,18 @@
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
+
     if ( shouldRefresh )
     {
-        [self loadPage:VPageTypeFirst completion:nil];
+        BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+        if (isPreLoaded)
+        {
+            [self loadPreloadedStreamWithCompletion:nil];
+        }
+        else
+        {
+            [self loadPage:VPageTypeFirst completion:nil];
+        }
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -309,17 +318,36 @@
      }];
 }
 
+- (void)loadPreloadedStreamWithCompletion:(void(^)(void))completion
+{
+    [self.streamDataSource loadPreloadedStream:^(NSError *_Nullable error)
+    {
+        [self.streamTrackingHelper streamDidLoad:self.currentStream];
+
+        if ( error != nil )
+        {
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
+        }
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
+        
+        [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+    }];
+}
+
 - (void)positionRefreshControl
 {
-    if ( self.refreshControl.subviews.count == 0 )
+    UIView *subView = self.refreshControl.subviews.firstObject;
+    if (subView != nil)
     {
-        return;
+        // Since we're using the collection flow delegate method for the insets
+        // we need to manually position the frame of the refresh control.
+        subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
+                                     CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
     }
-    // Since we're using the collection flow delegate method for the insets
-    // we need to manually position the frame of the refresh control.
-    UIView *subView = self.refreshControl.subviews[0];
-    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
-                                 CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer

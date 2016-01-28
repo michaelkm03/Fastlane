@@ -6,18 +6,15 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "TestFairy.h"
 #import "VAppDelegate.h"
 #import "VReachability.h"
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
+#import "VUser.h"
 #import "VConstants.h"
-#import "VObjectManager.h"
 #import "VRootViewController.h"
+#import "VStoredLogin.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -39,12 +36,14 @@
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
+#ifdef V_ENABLE_TESTFAIRY
+    [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
+    [self addLoginListener];
+#else
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+#endif
     
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-    
-    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
@@ -87,7 +86,7 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    VUploadManager *uploadManager = [VUploadManager sharedManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
@@ -153,5 +152,21 @@
     id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
+
+#ifdef V_ENABLE_TESTFAIRY
+- (void)addLoginListener
+{
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *_Nonnull notification)
+    {
+        VUser *user = [VCurrentUser user];
+        if ( user != nil )
+        {
+            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.name ?: @"",
+                                                                     TFSDKIdentityTraitEmailAddressKey: user.email ?: @"",
+                                                                     }];
+        }
+    }];
+}
+#endif
 
 @end

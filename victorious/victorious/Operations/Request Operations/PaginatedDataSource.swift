@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject {
+@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
     private(set) weak var currentOperation: NSOperation?
@@ -47,7 +47,6 @@ import VictoriousIOSSDK
     var delegate: PaginatedDataSourceDelegate?
     
     func unload() {
-        cancelCurrentOperation()
         visibleItems = NSOrderedSet()
         pagesLoaded = Set<Int>()
         state = .Cleared
@@ -59,20 +58,23 @@ import VictoriousIOSSDK
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
-    // Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
-    // operations locally on the persistent store only and does not send a network request.
+    /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
+    /// operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+            self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(results)
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?(results)
         }
     }
     
+    func refreshLocalJustFilters() {
+        self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(self.visibleItems.array)
+    }
     
-    // Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
-    // operates by sending a network request to retreive results, then parses them into the persistent store.
+    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
         guard self.currentOperation != nil else {
@@ -91,7 +93,8 @@ import VictoriousIOSSDK
             operation.results = results
             let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
             if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                let newVisibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(newVisibleItems.array)
             }
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?( newResults, error )
@@ -147,6 +150,7 @@ import VictoriousIOSSDK
             // Fetch local results if we failed because of no network
             if error == nil {
                 let results = operation.results ?? []
+                self.hasLoadedLastPage = results.isEmpty
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 
@@ -156,6 +160,7 @@ import VictoriousIOSSDK
                 
                 // Return no results
                 operation.results = []
+                self.hasLoadedLastPage = true
                 self.state = .Error
             }
             
@@ -163,6 +168,20 @@ import VictoriousIOSSDK
         }
         
         self.currentOperation = requestOperation
+    }
+    
+    //MARK: - Private
+    
+    func filterFlaggedForDeletionItemsFromResults(results: [AnyObject]) -> NSOrderedSet {
+        var itemsToDelete = [AnyObject]()
+        for visibleItem in self.visibleItems {
+            if let visibleItem = visibleItem as? Deletable where visibleItem.markedForDeletion {
+                itemsToDelete.append(visibleItem)
+            }
+        }
+        let newVisibleItems = NSMutableOrderedSet(orderedSet: self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous))
+        newVisibleItems.minusOrderedSet(NSOrderedSet(array:itemsToDelete))
+        return newVisibleItems
     }
 }
 

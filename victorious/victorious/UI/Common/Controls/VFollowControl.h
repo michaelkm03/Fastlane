@@ -13,7 +13,6 @@
 typedef NS_ENUM(NSUInteger, VFollowControlState)
 {
     VFollowControlStateUnfollowed,
-    VFollowControlStateLoading,
     VFollowControlStateFollowed
 };
 

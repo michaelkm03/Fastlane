@@ -54,5 +54,6 @@
 @dynamic recentComments;
 @dynamic isGifStyle;
 @dynamic trendingTopicName;
+@dynamic markForDeletion;
 
 @end

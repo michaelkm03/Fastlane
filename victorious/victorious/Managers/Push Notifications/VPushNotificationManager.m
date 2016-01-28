@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Login.h"
 #import "NSString+VStringWithData.h"
 #import "VPushNotificationManager.h"
 #import "VConstants.h"

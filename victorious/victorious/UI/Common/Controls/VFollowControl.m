@@ -115,8 +115,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         return;
     }
     
-    //Flip at all times EXCEPT when transitioning FROM following TO loading and TO following FROM loading.
-    BOOL shouldFlip = !( ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateFollowed ) || ( controlState == VFollowControlStateFollowed && self.controlState == VFollowControlStateLoading ) );
     void (^animationBlock)(void) = ^
     {
         self.controlState = controlState;
@@ -128,18 +126,11 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         return;
     }
     
-    if ( shouldFlip )
-    {
-        [UIView transitionWithView:self
-                          duration:kHighlightAnimationDuration
-                           options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
-                        animations:animationBlock
-                        completion:nil];
-    }
-    else
-    {
-        [self performHighlightAnimations:animationBlock];
-    }
+    [UIView transitionWithView:self
+                      duration:kHighlightAnimationDuration
+                       options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
+                    animations:animationBlock
+                    completion:nil];
 }
 
 #pragma mark - Appearance styling
@@ -149,20 +140,18 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     UIImage *backgroundImage = nil;
     UIImage *foregroundImage = self.offImage;
     UIColor *tintColor = self.selectedTintColor;
+    BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.tintUnselectedImage;
     switch ( self.controlState )
     {
-        case VFollowControlStateLoading:
-            tintColor = [tintColor colorWithAlphaComponent:kLoadingColorAlpha];
-        case VFollowControlStateFollowed: //Deliberate fallthrough!
+        case VFollowControlStateFollowed:
             foregroundImage = self.onImage;
             backgroundImage = self.selectedBackgroundImage;
             break;
             
         case VFollowControlStateUnfollowed:
-        {
-            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.tintUnselectedImage;
             tintColor = showUnselectedTintColor ? self.unselectedTintColor : self.selectedTintColor;
-        }
+            break;
+            
         default:
             break;
     }

@@ -10,7 +10,6 @@
 #import "VRealtimeCommentsViewModel.h"
 #import "VAdViewController.h"
 #import "VExperienceEnhancerController.h"
-#import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
 
 /**

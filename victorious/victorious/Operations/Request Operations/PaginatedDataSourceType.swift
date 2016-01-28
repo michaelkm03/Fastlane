@@ -35,7 +35,9 @@ import VictoriousIOSSDK
 /// Defines an object that manages PaginatedOperation instances by using them
 /// to load pages worth of data and collect them in a backing store for a tableview
 /// or collection view.
-protocol PaginatedDataSourceType: class {
+@objc protocol PaginatedDataSourceType: class {
+    
+    var hasLoadedLastPage: Bool { get }
     
     var delegate: PaginatedDataSourceDelegate? { set get }
     
@@ -49,7 +51,10 @@ protocol PaginatedDataSourceType: class {
     
     /// Clears the backing store (`visibleItems`) and calls appropriate delegate methods
     func unload()
-    
+}
+
+protocol GenericPaginatedDataSourceType: PaginatedDataSourceType {
+
     /// Uses the provided operation or a sebsequent operation create from the original operation
     /// (i.e. the one provided by calling the `createOperation` closure) to load a page of results
     /// from the network.  When finished, internal state changes and changes to the backing store

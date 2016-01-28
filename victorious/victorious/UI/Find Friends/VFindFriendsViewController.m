@@ -10,7 +10,6 @@
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VFindFriendsTableViewController.h"
-#import "VObjectManager+Users.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"

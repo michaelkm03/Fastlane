@@ -10,25 +10,4 @@
 
 @implementation VErrorMessage
 
-+ (RKObjectMapping *)objectMapping
-{
-    
-    NSDictionary *propertyMap = @{
-                                  @"error" : @"errorCode",
-                                  @"api_version" : @"api_version",
-                                  @"app_id" : @"app_id",
-                                  @"user_id" : @"user_id",
-                                  @"message" : @"errorMessages",
-                                  @"page_number" : @"page_number",
-                                  @"total_pages" : @"total_pages"
-                                  };
-    
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[VErrorMessage class]];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    
-    return mapping;
-}
-
 @end

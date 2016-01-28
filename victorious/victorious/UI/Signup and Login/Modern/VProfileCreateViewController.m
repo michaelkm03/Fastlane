@@ -13,8 +13,6 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Websites.h"
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
 #import "VButton.h"

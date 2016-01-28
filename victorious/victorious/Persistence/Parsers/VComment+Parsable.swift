@@ -29,6 +29,12 @@ extension VComment: PersistenceParsable {
             thumbnailUrl        = mediaAttachment.thumbnailURL?.absoluteString ?? thumbnailUrl
             mediaWidth          = mediaAttachment.size?.width ?? mediaWidth
             mediaHeight         = mediaAttachment.size?.height ?? mediaHeight
+            shouldAutoplay      = mediaAttachment.shouldAutoplay
+            
+            // We MUST use the MP4 asset for gifs
+            if mediaAttachment.type == .GIF {
+                mediaUrl = mediaAttachment.MP4URLForMediaAttachment()?.absoluteString
+            }
         }
         
         // Set the sequence and inStreamSequence based on the comment's sequenceID if a Sequence object isn't set

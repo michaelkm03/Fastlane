@@ -13,6 +13,10 @@
  */
 extern NSString * const VSDKURLMacroReplacementDelimiter;
 
+extern NSString * const VSDKPaginatorMacroPageNumber;
+
+extern NSString * const VSDKPaginatorMacroItemsPerPage;
+
 /**
  A class for replacing macros in a URL
  string with real values

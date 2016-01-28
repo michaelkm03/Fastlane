@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class CreatePollOperation: Operation, UploadOperation {
+final class CreatePollOperation: Operation {
     
     /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
     /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
@@ -50,7 +50,7 @@ final class CreatePollOperation: Operation, UploadOperation {
         upload(uploadManager)
     }
     
-    func upload(uploadManager: VUploadManager) {
+    private func upload(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields

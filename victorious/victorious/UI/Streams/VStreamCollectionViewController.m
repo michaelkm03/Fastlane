@@ -82,7 +82,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, ContentViewPresenterDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -145,7 +145,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     __block VStream *stream = nil;
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         [persistentStore.mainContext save:nil];
     }];
@@ -188,6 +188,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    self.contentViewPresenter.delegate = self;
     self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
@@ -490,16 +491,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         
         if ( isShelf )
         {
-            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
-            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
             if ( [stream isKindOfClass:[HashtagShelf class]] )
             {
                 HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
-                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+                streamCollection = [self.dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
             }
             else
             {
-                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:self.dependencyManager];
             }
         }
         else
@@ -669,6 +668,18 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[(VSequence *)streamItem initialImageURLs]];
         }
     }
+}
+
+#pragma mark - ContentViewPresenterDelegate
+
+- (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+}
+
+- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+{
+    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
 }
 
 #pragma mark - VSequenceActionsDelegate
@@ -916,7 +927,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[VUploadManager sharedManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;

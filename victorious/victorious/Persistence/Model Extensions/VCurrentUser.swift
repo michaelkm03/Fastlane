@@ -60,9 +60,15 @@ class VCurrentUser: NSObject {
     static func clear() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = nil
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
     }
 }
+
+
+/// Stores results of previous fetch requests to reduce the number of fetch requests that need be made
+private let fetchedHashtagCache = NSCache()
+private let fetchedUserCache = NSCache()
 
 extension VUser {
     
@@ -77,10 +83,51 @@ extension VUser {
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
     }
     
     func isCurrentUser() -> Bool {
-        return self.isEqualToUser( VCurrentUser.user() )
+        return self == VCurrentUser.user()
+    }
+    
+    func isCurrentUserFollowingHashtagString(hashtagString: String) -> Bool {
+        guard isCurrentUser() else {
+            fatalError( "This method is for the current user only" )
+        }
+        
+        if let hashtag = fetchedHashtagCache.objectForKey(hashtagString) as? VHashtag
+            where hashtag.tag == hashtagString  {
+                return hashtag.isFollowedByMainUser
+        }
+        
+        return PersistentStoreSelector.defaultPersistentStore.mainContext.v_performBlockAndWait() { context in
+            if let hashtag: VHashtag = context.v_findObjects( [ "tag" : hashtagString] ).first {
+                fetchedHashtagCache.setObject( hashtag, forKey: hashtagString)
+                return hashtag.isFollowedByMainUser
+            } else {
+                return false
+            }
+        }
+    }
+    
+    func isCurrentUserFollowingUserID( userID: Int ) -> Bool {
+        guard isCurrentUser() else {
+            fatalError( "This method is for the current user only" )
+        }
+        
+        if let user = fetchedUserCache.objectForKey(userID) as? VUser
+            where user.remoteId == userID  {
+                return user.isFollowedByMainUser?.boolValue ?? false
+        }
+        
+        return PersistentStoreSelector.defaultPersistentStore.mainContext.v_performBlockAndWait() { context in
+            if let user: VUser = context.v_findObjects( [ "tag" : userID] ).first {
+                fetchedUserCache.setObject( user, forKey: userID)
+                return user.isFollowedByMainUser?.boolValue ?? false
+            } else {
+                return false
+            }
+        }
     }
 }

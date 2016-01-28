@@ -8,7 +8,6 @@
 
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUserCell.h"
-#import "VObjectManager+Discover.h"
 #import "VDependencyManager.h"
 #import "VUser.h"
 #import "VSuggestedUserRetryCell.h"

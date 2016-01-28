@@ -20,7 +20,6 @@
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VHashtag+RestKit.h"
 #import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
@@ -63,7 +62,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     __block VStream *stream = nil;
     id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         stream.name = [NSString stringWithFormat:@"#%@", hashtag];
         [persistentStore.mainContext save:nil];
@@ -225,11 +224,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    // Becase the backend doesn't assign text posts to hashtags based on tags in the text,
-    // Text posts will allow you to view a hastag stream for hashtag that doesn't exist.
-    // If you're viewing a hashtag stream with no items, the backend returns an error if you
-    // attempt to follow it. This prevents showing the button in that case.
-    return self.streamDataSource.count > 0;
+    return YES;
 }
 
 - (UIControl *)customControlForAccessoryMenuItem:(VNavigationMenuItem *)menuItem
@@ -245,6 +240,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         return YES;
     }
     return NO;
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 @end

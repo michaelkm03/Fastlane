@@ -11,6 +11,7 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "victorious-Swift.h"
+#import "NSArray+VMap.h"
 
 static NSString * const kNoLikedContentTitleKey = @"noContentTitle";
 static NSString * const kNoLikedContentSubtitleKey = @"noContentSubtitle";
@@ -58,8 +59,11 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-#warning FIXME 4.0: Make sure to remove any cells which we've unliked
+    NSArray<NSString *> *streamItemIDs = [self.streamItemsToRemove v_map:^NSString *(VStreamItem *streamItem) {
+        return streamItem.remoteId;
+    }];
+    Operation *operation = [[RemoveStreamItemOperation alloc] initWithStreamItemIDs:streamItemIDs];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated

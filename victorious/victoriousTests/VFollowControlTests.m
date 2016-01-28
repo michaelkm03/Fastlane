@@ -33,9 +33,6 @@
     
     self.followControl.controlState = VFollowControlStateUnfollowed;
     XCTAssert(self.followControl.controlState == VFollowControlStateUnfollowed);
-    
-    self.followControl.controlState = VFollowControlStateLoading;
-    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
 }
 
 - (void)testSettingFollowStateAnimated
@@ -55,14 +52,6 @@
     [self.followControl setControlState:VFollowControlStateUnfollowed
                                animated:NO];
     XCTAssert(self.followControl.controlState == VFollowControlStateUnfollowed);
-    
-    [self.followControl setControlState:VFollowControlStateLoading
-                               animated:YES];
-    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
-    
-    [self.followControl setControlState:VFollowControlStateLoading
-                               animated:NO];
-    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
 }
 
 @end

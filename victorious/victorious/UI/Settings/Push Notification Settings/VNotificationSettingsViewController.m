@@ -10,7 +10,6 @@
 #import "VSettingsSwitchCell.h"
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
-#import "VNotificationSettings+Fetcher.h"
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"

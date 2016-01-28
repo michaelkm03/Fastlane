@@ -9,12 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class CreateTextPostOperation: Operation, UploadOperation {
+final class CreateTextPostOperation: Operation {
     
     /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
     /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
     /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
-    let request: CreateTextPostRequest!
+    let request: TextPostCreateRequest!
     let previewImage: UIImage
     let uploadManager: VUploadManager
     
@@ -31,7 +31,7 @@ final class CreateTextPostOperation: Operation, UploadOperation {
 
     init?(parameters: TextPostParameters, previewImage: UIImage, uploadManager: VUploadManager) {
         let baseURL = VEnvironmentManager.sharedInstance().currentEnvironment.baseURL
-        self.request = CreateTextPostRequest(parameters: parameters, baseURL: baseURL)
+        self.request = TextPostCreateRequest(parameters: parameters, baseURL: baseURL)
         self.previewImage = previewImage
         self.uploadManager = uploadManager
         
@@ -46,7 +46,7 @@ final class CreateTextPostOperation: Operation, UploadOperation {
         upload(uploadManager)
     }
     
-    func upload(uploadManager: VUploadManager) {
+    private func upload(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
@@ -54,13 +54,12 @@ final class CreateTextPostOperation: Operation, UploadOperation {
         
         do {
             let task = try taskCreator.createUploadTask()
-            uploadManager.enqueueUploadTask(task) { _ in
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.mainQueueCompletionBlock?(self)
-                }
-            }
+            uploadManager.enqueueUploadTask(task) { _ in }
         } catch {
             return
+        }
+        dispatch_async(dispatch_get_main_queue()) {
+            self.mainQueueCompletionBlock?(self)
         }
     }
 }

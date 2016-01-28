@@ -30,6 +30,22 @@ extension NSManagedObjectContext {
         }
     }
     
+    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
+        
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        
+        do {
+            let results = try self.executeFetchRequest( fetchRequest ) as? [NSManagedObject] ?? []
+            for result in results {
+                deleteObject( result )
+            }
+            return true
+        } catch {
+            print( "Failed to delete objects with entity name \(entityName): \(error)" )
+            return false
+        }
+    }
+    
     func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
         let object = self.v_createObjectWithEntityName( entityName )
         configurations( object )
@@ -104,5 +120,26 @@ extension NSManagedObjectContext {
             print( "Error: \(error)" )
         }
         return [NSManagedObject]()
+    }
+    
+    func v_displayOrderForNewObjectWithEntityName( entityName: String, predicate: NSPredicate? = nil ) -> Int {
+        let request = NSFetchRequest(entityName: entityName)
+        request.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+        if let predicate = predicate {
+            request.predicate = predicate
+        }
+        request.fetchBatchSize = 1
+        request.fetchLimit = 1
+        
+        do {
+            let results = try executeFetchRequest( request )
+            if let lowestDisplayOrderObject = results.first as? PaginatedObjectType {
+                let lowestDisplayOrder = (lowestDisplayOrderObject.displayOrder?.integerValue ?? 0)
+                return lowestDisplayOrder - 1
+            }
+        } catch {
+            print( "Error: \(error)" )
+        }
+        return -1
     }
 }

@@ -15,17 +15,4 @@
     return self.sourceURL.absoluteString;
 }
 
-+ (RKResponseDescriptor *)descriptor
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromDictionary:@{ @"url": NSStringFromSelector(@selector(sourceURL)),
-                                                   @"thumbnail": NSStringFromSelector(@selector(thumbnailURL))
-                                                   }];
-    return [RKResponseDescriptor responseDescriptorWithMapping:mapping
-                                                        method:RKRequestMethodAny
-                                                   pathPattern:@"/api/image/search/:keywords/:page/:per_page"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
 @end

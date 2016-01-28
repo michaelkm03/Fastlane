@@ -35,6 +35,7 @@
 #import "VDependencyManager+VTracking.h"
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
+#import "VSDKURLMacroReplacement.h"
 
 @import VictoriousIOSSDK;
 @import KVOController;
@@ -538,12 +539,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
-                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         [persistentStore.mainContext save:nil];
     }];
     
@@ -843,7 +844,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                  }
              }];
             
-            return YES;
+            return NO;
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
