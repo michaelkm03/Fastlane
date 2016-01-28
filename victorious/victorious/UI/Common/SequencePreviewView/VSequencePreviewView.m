@@ -183,6 +183,11 @@
     return [UIColor clearColor];
 }
 
+- (UIColor *)detailBackgroundColor
+{
+    return [UIColor blackColor];
+}
+
 - (void)updateBackgroundColorAnimated:(BOOL)animated
 {
     void (^animations)() = ^
@@ -201,13 +206,13 @@
 
 - (UIColor *)updatedBackgroundColor
 {
-    UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
-    switch (self.focusType){
+    switch (self.focusType)
+    {
         case VFocusTypeDetail:
-            return [UIColor blackColor];
+            return [self detailBackgroundColor];
         case VFocusTypeNone:
         case VFocusTypeStream:
-            return nonDetailBackgroundColor;
+            return self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
     }
 }
 
