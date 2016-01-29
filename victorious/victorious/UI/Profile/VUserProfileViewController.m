@@ -390,18 +390,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super loadPage:pageType completion:completionBlock];
 }
 
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
-    
-    if ( self.streamDataSource.count > 0 )
-    {
-        [self shrinkHeaderAnimated:YES];
-    }
-    [self.profileHeaderViewController reloadProfileImage];
-    [self updateUserFollowingRelationship];
-}
-
 #pragma mark -
 
 - (void)toggleFollowUser
@@ -508,6 +496,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+    [self.profileHeaderViewController reloadProfileImage];
+    [self updateUserFollowingRelationship];
 }
 
 - (NSString *)title
