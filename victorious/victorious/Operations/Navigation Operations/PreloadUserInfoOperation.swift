@@ -40,6 +40,8 @@ class PreloadUserInfoOperation: Operation {
             
             let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200)
             FollowedHashtagsOperation(paginator: paginator).queue()
+            
+            VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
         }
         
         finishedExecuting()
