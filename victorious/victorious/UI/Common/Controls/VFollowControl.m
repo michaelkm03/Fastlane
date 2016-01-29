@@ -84,17 +84,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 
 #pragma mark - UIControl
 
-- (void)setHighlighted:(BOOL)highlighted
-{
-    [super setHighlighted:highlighted];
-    
-    [self performHighlightAnimations:^
-     {
-         self.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
-         self.layer.shadowOpacity = kForcedAntiAliasingConstant;
-     }];
-}
-
 #pragma mark - Animations
 
 - (void)performHighlightAnimations:(void (^)(void))animations
