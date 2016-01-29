@@ -76,8 +76,6 @@
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = NO;
-    
     // Remove the adViewController from the view hierarchy
     [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
@@ -88,14 +86,10 @@
 
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController withError:(NSError *)error
 {
-    self.adPlaying = NO;
-
     // Remove the adViewController from the view hierarchy
     [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
-    
-    self.adPlaying = NO;
 
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {

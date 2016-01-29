@@ -50,11 +50,6 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
 /**
- Boolean that reports if an ad is currently playing
- */
-@property (nonatomic, readonly) BOOL adPlaying; ///< YES if ad video is playing
-
-/**
  Ad video player delegate object
  */
 @property (nonatomic, weak) id<VAdVideoPlayerViewControllerDelegate>delegate;
