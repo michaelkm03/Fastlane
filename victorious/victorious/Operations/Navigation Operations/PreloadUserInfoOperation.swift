@@ -30,6 +30,7 @@ class PreloadUserInfoOperation: Operation {
             UserInfoOperation(userID: userID).queue()
             PollResultSummaryByUserOperation(userID: userID).queue()
             ConversationListOperation().queue()
+            VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
         }
         
         finishedExecuting()
