@@ -67,11 +67,10 @@ extension VSequence: PersistenceParsable {
                 })
         }
         
-        if let nodes = sequence.nodes where nodes.count > 0 {
+        if let nodes = sequence.nodes where !nodes.isEmpty && (self.nodes ?? []).count == 0 {
             self.nodes = NSOrderedSet(array: nodes.flatMap {
-                let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.nodeID ])
+                let node: VNode = v_managedObjectContext.v_createObject()
                 node.populate( fromSourceModel: $0 )
-                node.sequence = self
                 return node
             })
         }
