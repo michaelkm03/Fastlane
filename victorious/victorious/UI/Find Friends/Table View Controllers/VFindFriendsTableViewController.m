@@ -249,7 +249,7 @@
 {
     if (toShow)
     {
-        VNoContentView *noFollowersView = [VNoContentView viewFromNibWithFrame:self.tableView.tableView.frame];
+        VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
         if ( [noFollowersView respondsToSelector:@selector(setDependencyManager:)] )
         {
             noFollowersView.dependencyManager = self.dependencyManager;

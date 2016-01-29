@@ -8,23 +8,6 @@
 
 import Foundation
 
-@objc protocol VUsersDataSource: NSObjectProtocol {
-    
-    func loadUsersWithPageType( pageType: VPageType, completion: (NSError? -> ())?)
-    
-    func users() -> NSOrderedSet
-    
-    func noContentTitle() -> String
-    
-    func noContentMessage() -> String
-    
-    func noContentImage() -> UIImage
-    
-    var state: DataSourceState { get }
-    
-    var delegate: PaginatedDataSourceDelegate? { get set }
-}
-
 @objc final class VLikersDataSource: PaginatedDataSource, VUsersDataSource {
     
     let sequence: VSequence

@@ -14,7 +14,7 @@
 /**
  *  Use this factory method to create VNoContentViews.
  */
-+ (instancetype)viewFromNibWithFrame:(CGRect)frame;
++ (instancetype)noContentViewWithFrame:(CGRect)frame;
 
 /**
  *  The title to display to inform the user of no content.

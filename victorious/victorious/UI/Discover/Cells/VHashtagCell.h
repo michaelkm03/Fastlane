@@ -13,9 +13,14 @@
 @interface VHashtagCell : UITableViewCell
 
 /**
+ Block to execute upon tapping on the subscribe / unsubscribe button
+ */
+@property (nonatomic, copy) void (^onToggleFollowHashtag)(void);
+
+/**
  The control for the subscribe / unsubscribe button
  */
-@property (nonatomic, weak) IBOutlet VFollowControl *followControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followHashtagControl;
 
 /**
  Hashtag property to format

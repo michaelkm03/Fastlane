@@ -33,8 +33,8 @@
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSOrderedSet *conversations;
-@property (nonatomic, retain) NSOrderedSet *followers;
-@property (nonatomic, retain) NSOrderedSet *following;
+@property (nonatomic, retain) NSSet *followers;
+@property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSOrderedSet *followedHashtags;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *notifications;

@@ -113,7 +113,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     RequestOperation *operation;
     if ( self.profile.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {

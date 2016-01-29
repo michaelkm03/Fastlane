@@ -11,35 +11,23 @@ import VictoriousIOSSDK
 
 class FetchUserOperation: Operation {
     
-    private let userID: Int
-    private let sourceUser: VictoriousIOSSDK.User?
+    private let sourceUser: VictoriousIOSSDK.User
     
     let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     var result: VUser?
     
-    init( userID: Int, sourceUser: VictoriousIOSSDK.User?) {
-        self.userID = userID
+    init( fromUser sourceUser: VictoriousIOSSDK.User) {
         self.sourceUser = sourceUser
-    }
-    
-    convenience init( sourceUser: VictoriousIOSSDK.User) {
-        self.init( userID: sourceUser.userID, sourceUser: sourceUser )
-    }
-    
-    convenience init( userID: Int) {
-        self.init( userID: userID, sourceUser: nil )
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
-        
+    
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
-            if let sourceUser = self.sourceUser {
-                persistentUser.populate(fromSourceModel: sourceUser)
-            }
+            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.sourceUser.userID ])
+            persistentUser.populate(fromSourceModel: self.sourceUser)
             context.v_save()
             
             let objectID = persistentUser.objectID

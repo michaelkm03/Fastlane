@@ -10,12 +10,8 @@ import UIKit
 
 public extension UICollectionView {
     
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
-        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false)
-    }
-    
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
+    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             UIView.performWithoutAnimation() {
@@ -35,18 +31,12 @@ public extension UICollectionView {
             let index = oldValue.indexOfObject( item )
             deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
         }
-        
-        let performChangesBlock = {
+
+        UIView.performWithoutAnimation() {
             self.performBatchUpdates({
                 self.insertItemsAtIndexPaths( insertedIndexPaths )
                 self.deleteItemsAtIndexPaths( deletedIndexPaths )
             }, completion: nil)
-        }
-        
-        if animated {
-            performChangesBlock()
-        } else {
-            UIView.performWithoutAnimation(performChangesBlock)
         }
     }
 }

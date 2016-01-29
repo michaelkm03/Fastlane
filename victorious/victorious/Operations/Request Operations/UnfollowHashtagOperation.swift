@@ -28,6 +28,8 @@ class UnfollowHashtagOperation: RequestOperation {
             // Find the following relationship using VFollowedHashtag
             let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
+                followedHashtag.hashtag.isFollowedByMainUser = false
+                // TODO: Use batch delete
                 context.deleteObject( followedHashtag )
             }
             context.v_save()

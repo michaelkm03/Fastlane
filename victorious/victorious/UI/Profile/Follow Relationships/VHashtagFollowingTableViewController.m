@@ -52,13 +52,25 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     [self configureTableView];
     
     [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
-    
-    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
-    noContentView.dependencyManager = self.dependencyManager;
-    noContentView.title = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
-    noContentView.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
-    noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
-    self.noContentView = noContentView;
+}
+
+- (void)updateBackground
+{
+    UIView *backgroundView = nil;
+    if ( self.paginatedDataSource.visibleItems.count == 0 && self.fetchedHashtags )
+    {
+        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+        if ( [notFollowingView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            notFollowingView.dependencyManager = self.dependencyManager;
+        }
+        notFollowingView.title = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
+        notFollowingView.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
+        notFollowingView.icon = [UIImage imageNamed:@"tabIconHashtag"];
+        backgroundView = notFollowingView;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    self.tableView.backgroundView = backgroundView;
 }
 
 #pragma mark - UI setup
@@ -110,12 +122,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
     VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
     NSString *hashtagText = hashtag.tag;
     [customCell setHashtagText:hashtagText];
-    [self updateFollowControl:customCell.followControl forHashtag:hashtagText];
+    [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
     customCell.dependencyManager = self.dependencyManager;
     
     __weak VHashtagCell *weakCell = customCell;
     __weak VHashtagFollowingTableViewController *weakSelf = self;
-    customCell.followControl.onToggleFollow = ^(void)
+    customCell.onToggleFollowHashtag = ^(void)
     {
         __strong VHashtagCell *strongCell = weakCell;
         __strong VHashtagFollowingTableViewController *strongSelf = weakSelf;
@@ -126,7 +138,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
         RequestOperation *operation;
-        if ([[VCurrentUser user] isFollowingHashtagString:hashtagText] )
+        if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
         {
             operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
@@ -135,7 +147,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
             operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
         }
         [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-            [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
+            [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
         }];
     };
     customCell.dependencyManager = self.dependencyManager;
@@ -146,7 +158,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
 - (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
 {
     VFollowControlState controlState;
-    if ( [[VCurrentUser user] isFollowingHashtagString:hashtag] )
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
     {
         controlState = VFollowControlStateFollowed;
     }

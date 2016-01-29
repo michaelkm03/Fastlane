@@ -24,7 +24,6 @@ class BaseRequestOperationTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
-        testStore.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()

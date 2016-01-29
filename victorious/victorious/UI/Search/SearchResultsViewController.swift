@@ -11,8 +11,6 @@ import VictoriousIOSSDK
 
 @objc protocol SearchResultsViewControllerDelegate: class {
     
-    optional var searchController: UISearchController { get }
-    
     /// If the search UI contains a cancel button, respond to its selection
     func searchResultsViewControllerDidSelectCancel()
     
@@ -21,17 +19,11 @@ import VictoriousIOSSDK
 
 class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
-    private static let defaultSearchResultCellHeight: CGFloat = 50.0
-    
-    weak var searchResultsDelegate: SearchResultsViewControllerDelegate? {
-        didSet {
-            onDidSetSearchBarDelegate()
-        }
-    }
+    weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     var dependencyManager: VDependencyManager?
     
     lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
         view.color = UIColor.blackColor().colorWithAlphaComponent(0.5)
         view.hidesWhenStopped = true
         return view
@@ -39,6 +31,12 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     var state: DataSourceState {
         return self.dataSource?.state ?? .Cleared
+    }
+    
+    var searchController: UISearchController = UISearchController() {
+        didSet {
+            searchController.searchBar.delegate = self
+        }
     }
     
     var dataSource: SearchDataSourceType? {
@@ -59,10 +57,6 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     // MARK: - Public
     
-    func reloadIndexPaths( indexPaths: [NSIndexPath] ) {
-        self.tableView.reloadRowsAtIndexPaths( indexPaths, withRowAnimation: .None)
-    }
-    
     func clear() {
         dataSource?.unload()
     }
@@ -72,13 +66,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     }
     
     func search( searchTerm searchTerm: String, completion:((NSError?)->())? = nil ) {
-        
-        // Clear if we are starting from the beginning
-        if let lastSearchTerm = dataSource?.searchTerm
-            where !searchTerm.containsString(lastSearchTerm) {
-                dataSource?.unload()
-        }
-        dataSource?.search(searchTerm: searchTerm, pageType: .First, completion:completion)
+        dataSource?.unload()
+        dataSource?.search(searchTerm: searchTerm, pageType: .First, completion: completion)
     }
     
     // MARK: - UIViewController
@@ -90,8 +79,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        searchController.searchBar.delegate = self
         dataSource?.delegate = self
-        onDidSetSearchBarDelegate()
         
         view.insertSubview(activityIndicatorView, aboveSubview: tableView)
         view.v_addCenterHorizontallyConstraintsToSubview(activityIndicatorView)
@@ -104,8 +93,13 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         updateTableView()
     }
     
-    private func onDidSetSearchBarDelegate() {
-        searchResultsDelegate?.searchController?.searchBar.delegate = self
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Unable to immediately make the searchBar first responder without this hack
+        dispatch_after(0.01) {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
     
     // MARK: - UITableViewDelegate
@@ -116,12 +110,14 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return SearchResultsViewController.defaultSearchResultCellHeight
-    }
-    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
+    // MARK: - UISearchControllerDelegate
+    
+    func didPresentSearchController(searchController: UISearchController) {
+        searchController.searchBar.becomeFirstResponder()
     }
     
     // MARK: - UISearchBarDelegate
@@ -133,21 +129,15 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
-            search( searchTerm: searchText )
+        if let searchTerm = searchBar.text {
+            search(searchTerm: searchTerm, completion:nil)
         }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.characters.isEmpty {
             clear()
-        } else {
-            search( searchTerm: searchText )
         }
-    }
-    
-    var searchTerm: String? {
-        return dataSource?.searchTerm
     }
     
     // MARK: - VScrollPaginatorDelegate
@@ -168,7 +158,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
             tableView.flashScrollIndicators()
         }
         
-        tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+        // FIXME: tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+        tableView.reloadData()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
@@ -197,7 +188,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
             return
         }
         
-        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .SingleLine : .None
+        let preferredStyle = dataSource.separatorStyle
+        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? preferredStyle : .None
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
         switch dataSource.state {
@@ -216,13 +208,8 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
             activityIndicatorView.stopAnimating()
             
         case .Loading where dataSource.visibleItems.count == 0:
+            tableView.backgroundView = nil
             activityIndicatorView.startAnimating()
-            
-        case .Cleared:
-            if searchTerm?.characters.isEmpty ?? false {
-                tableView.backgroundView = nil
-            }
-            activityIndicatorView.stopAnimating()
             
         default:
             tableView.backgroundView = nil

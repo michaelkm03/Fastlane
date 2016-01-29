@@ -14,7 +14,7 @@ import Foundation
     
     init( user: VUser ) {
         self.user = user
-    } 
+    }
     
     func users() -> NSOrderedSet {
         return self.visibleItems
@@ -25,7 +25,7 @@ import Foundation
         
         self.loadPage( pageType,
             createOperation: {
-                return UsersFollowedByUserOperation(userID: userID)
+                return UsersFollowedByUser(userID: userID)
             },
             completion:{ (operation, error) in
                 completion?( error )

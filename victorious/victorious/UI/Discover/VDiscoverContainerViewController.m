@@ -13,19 +13,24 @@
 #import "VDiscoverViewControllerProtocol.h"
 #import "VUser.h"
 #import "UIViewController+VLayoutInsets.h"
+
+// Dependency Manager
 #import "VDependencyManager.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
+
+// Users and Tags Search
 #import "DiscoverSearchViewController.h"
+
+// Transition
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VAccessoryScreens.h"
-#import "victorious-swift.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer, SearchResultsViewControllerDelegate>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
@@ -196,7 +201,6 @@
 
     DiscoverSearchViewController *searchViewController = [DiscoverSearchViewController newWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    searchViewController.searchResultsDelegate = self;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 

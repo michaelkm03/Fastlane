@@ -38,8 +38,8 @@ class FollowCountOperationTests: BaseRequestOperationTestCase {
         }
         waitForExpectationsWithTimeout(1, handler: nil)
         
-        XCTAssertEqual(followCount.followingCount, user.numberOfFollowing?.integerValue)
-        XCTAssertEqual(followCount.followersCount, user.numberOfFollowers?.integerValue)
+        XCTAssertEqual(followCount.followingCount, user.numberOfFollowing.integerValue)
+        XCTAssertEqual(followCount.followersCount, user.numberOfFollowers.integerValue)
     }
     
     func testMissingUser() {

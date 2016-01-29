@@ -118,7 +118,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {

@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="#Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R24-gj-ok1" customClass="VHashtagLabel">
@@ -32,6 +32,9 @@
                             <constraint firstAttribute="width" secondItem="rD5-fh-Jty" secondAttribute="height" multiplier="1:1" id="Daw-t7-Z87"/>
                             <constraint firstAttribute="height" constant="28" id="LHV-fs-AvC"/>
                         </constraints>
+                        <connections>
+                            <action selector="followUnfollowHashtag:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="b7Y-93-wO5"/>
+                        </connections>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -46,7 +49,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="followControl" destination="rD5-fh-Jty" id="ASo-AP-LtF"/>
+                <outlet property="followHashtagControl" destination="rD5-fh-Jty" id="oHW-IS-oNo"/>
                 <outlet property="hashTagLabel" destination="R24-gj-ok1" id="aJJ-Lh-drP"/>
             </connections>
             <point key="canvasLocation" x="351" y="391"/>

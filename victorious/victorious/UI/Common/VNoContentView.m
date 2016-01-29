@@ -32,7 +32,7 @@ static NSString * const kMessageFontKey = @"font.heading4";
 
 @implementation VNoContentView
 
-+ (instancetype)viewFromNibWithFrame:(CGRect)frame
++ (instancetype)noContentViewWithFrame:(CGRect)frame
 {
     VNoContentView *noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil] objectAtIndex:0];
     

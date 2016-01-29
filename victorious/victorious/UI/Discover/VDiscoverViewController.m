@@ -361,11 +361,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
             NSString *hashtagText = hashtag.tag;
             [customCell setHashtagText:hashtagText];
-            [self updateFollowControl:customCell.followControl forHashtag:hashtagText];
+            [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
             
             __weak VHashtagCell *weakCell = customCell;
             __weak VDiscoverViewController *weakSelf = self;
-            customCell.followControl.onToggleFollow = ^(void)
+            customCell.onToggleFollowHashtag = ^(void)
             {
                 __strong VHashtagCell *strongCell = weakCell;
                 __strong VDiscoverViewController *strongSelf = weakSelf;
@@ -376,7 +376,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                 RequestOperation *operation;
-                if ([[VCurrentUser user] isFollowingHashtagString:hashtagText] )
+                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
                 {
                     operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
@@ -385,7 +385,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                     operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
                 [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                    [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
+                    [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
                 }];
             };
             
@@ -405,7 +405,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
 {
     VFollowControlState controlState;
-    if ( [[VCurrentUser user] isFollowingHashtagString:hashtag] )
+    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
     {
         controlState = VFollowControlStateFollowed;
     }

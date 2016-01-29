@@ -23,11 +23,6 @@ typedef NS_ENUM(NSUInteger, VFollowControlState)
 @interface VFollowControl : UIControl
 
 /**
- Block to execute upon tapping on the subscribe / unsubscribe button
- */
-@property (nonatomic, copy) void (^onToggleFollow)(void);
-
-/**
     Updates the follow control to the provided following state; animates to new state
         if animated is YES.
  

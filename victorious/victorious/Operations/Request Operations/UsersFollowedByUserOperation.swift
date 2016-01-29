@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UsersFollowedByUserOperation: RequestOperation, PaginatedOperation {
+final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     
     let request: SubscribedToListRequest
     
