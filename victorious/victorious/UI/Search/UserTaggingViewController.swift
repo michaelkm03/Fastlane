@@ -29,7 +29,7 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     
     //MARK: - API
     
-    func search(withSearchterm searchTerm:String) {
+    func searchWithTerm(searchTerm:String) {
         let lastSearchterm = self.searchTerm
         self.searchTerm = searchTerm
         // Clear if we are starting from the beginning
