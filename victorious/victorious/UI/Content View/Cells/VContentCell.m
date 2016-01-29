@@ -307,8 +307,6 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    // This is also where we can preload the content video after the ad video has loaded
-
     // Set the timer again so we have a chance to see the ads playing after loading
     [self.adTimeoutTimer invalidate];
     [self scheduleAdTimeoutTimer];
