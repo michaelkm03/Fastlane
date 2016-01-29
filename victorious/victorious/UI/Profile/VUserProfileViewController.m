@@ -470,7 +470,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {

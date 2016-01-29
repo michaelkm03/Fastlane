@@ -459,7 +459,7 @@
 		67A3C9F31C4D99470068E4F5 /* TrendingHashtagOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */; };
 		67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */; };
 		67A677001C45FA9D009FEAEA /* VTextToolController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A676FF1C45FA9D009FEAEA /* VTextToolController.swift */; };
-		67A677011C4713A9009FEAEA /* UnfollowUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D6E721C385C4D00DB5F1F /* UnfollowUsersOperationTests.swift */; };
+		67A677011C4713A9009FEAEA /* UnfollowUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */; };
 		67A904A91C404D1A0016CC6B /* MainRequestExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A904A81C404D1A0016CC6B /* MainRequestExecutorTests.swift */; };
 		67A952421C443526001234B4 /* RegisterPushNotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A952411C443526001234B4 /* RegisterPushNotificationRequest.swift */; };
 		67A952441C443556001234B4 /* RegisterPushNotificationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A952431C443556001234B4 /* RegisterPushNotificationRequestTests.swift */; };
@@ -2417,7 +2417,7 @@
 		6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
 		6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundleTests.swift"; sourceTree = "<group>"; };
 		623989831C3607F200D0E4D0 /* RequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperationTests.swift; sourceTree = "<group>"; };
-		625D6E721C385C4D00DB5F1F /* UnfollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUsersOperationTests.swift; sourceTree = "<group>"; };
+		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUsersOperation.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -7172,7 +7172,7 @@
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
 				67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */,
 				6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */,
-				625D6E721C385C4D00DB5F1F /* UnfollowUsersOperationTests.swift */,
+				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
 			);
@@ -10588,7 +10588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67A677011C4713A9009FEAEA /* UnfollowUsersOperationTests.swift in Sources */,
+				67A677011C4713A9009FEAEA /* UnfollowUserOperationTests.swift in Sources */,
 				62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */,
 				795FEB171C5333B0008EDB44 /* VConversationTests.swift in Sources */,
 				678C43C71C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift in Sources */,
