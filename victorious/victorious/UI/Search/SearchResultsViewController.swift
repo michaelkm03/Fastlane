@@ -9,6 +9,14 @@
 import Foundation
 import VictoriousIOSSDK
 
+@objc protocol SearchResultsViewControllerDelegate: class {
+    
+    /// If the search UI contains a cancel button, respond to its selection
+    func searchResultsViewControllerDidSelectCancel()
+    
+    func searchResultsViewControllerDidSelectResult(result: AnyObject)
+}
+
 class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
