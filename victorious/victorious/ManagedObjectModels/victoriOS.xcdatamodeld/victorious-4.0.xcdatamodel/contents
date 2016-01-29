@@ -183,7 +183,7 @@
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
         <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
         <relationship name="nodeAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
-        <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="NodeAction" representedClassName="VNodeAction" syncable="YES">
         <attribute name="lostGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>

@@ -469,10 +469,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self shrinkHeaderAnimated:YES];
     }
-    if ( !self.representsMainUser )
-    {
-        [self.profileHeaderViewController reloadProfileImage];
-    }
+    [self.profileHeaderViewController reloadProfileImage];
 }
 
 - (NSString *)title
