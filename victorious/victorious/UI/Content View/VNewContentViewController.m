@@ -1464,7 +1464,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          if ( error == nil )
          {
-             [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerBPercentage animated:YES];
+             [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
          }
      }];
 }

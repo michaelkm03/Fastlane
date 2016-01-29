@@ -90,6 +90,7 @@ extension VContentViewViewModel {
             operation.queue() { error in
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+                completion?(error)
             }
         }
     }
