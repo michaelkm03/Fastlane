@@ -14,7 +14,7 @@ extension VDependencyManager {
     var searchIconImageName: String { return "D_search_small_icon" }
     var searchClearImageName: String { return "search_clear_icon" }
     
-    func configureSearchBar(searchBar: UISearchBar) {
+    func configureSearchBar(searchBar: UISearchBar, placeholderText: String = "") {
         
         searchBar.tintColor = self.colorForKey(VDependencyManagerSecondaryTextColorKey)
         searchBar.v_textField?.tintColor = self.colorForKey(VDependencyManagerLinkColorKey)
@@ -22,7 +22,7 @@ extension VDependencyManager {
         searchBar.v_textField?.textColor = self.colorForKey(VDependencyManagerSecondaryTextColorKey)
         searchBar.v_textField?.backgroundColor = self.colorForKey(VDependencyManagerSecondaryAccentColorKey)
         searchBar.v_textField?.attributedPlaceholder = NSAttributedString(
-            string: NSLocalizedString("Start a new conversation", comment: ""),
+            string: placeholderText,
             attributes: [NSForegroundColorAttributeName: self.colorForKey(VDependencyManagerPlaceholderTextColorKey)]
         )
         
@@ -34,13 +34,16 @@ extension VDependencyManager {
                 return
         }
         
-        searchIconImage = searchIconImage.v_tintedTemplateImageWithColor(self.colorForKey(VDependencyManagerPlaceholderTextColorKey))
+        let iconTintColor = self.colorForKey(VDependencyManagerPlaceholderTextColorKey)
+        searchIconImage = searchIconImage.v_tintedTemplateImageWithColor(iconTintColor)
         searchBar.setImage(searchIconImage, forSearchBarIcon: .Search, state: .Normal)
         
-        searchClearImageHighlighted = searchClearImageHighlighted.v_tintedTemplateImageWithColor(self.colorForKey(VDependencyManagerPlaceholderTextColorKey).colorWithAlphaComponent(0.5))
+        let highlightedColor = self.colorForKey(VDependencyManagerPlaceholderTextColorKey).colorWithAlphaComponent(0.5)
+        searchClearImageHighlighted = searchClearImageHighlighted.v_tintedTemplateImageWithColor(highlightedColor)
         searchBar.setImage(searchClearImageHighlighted, forSearchBarIcon: .Clear, state: .Highlighted)
         
-        searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(self.colorForKey(VDependencyManagerPlaceholderTextColorKey))
+        let normalColor = self.colorForKey(VDependencyManagerPlaceholderTextColorKey)
+        searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(normalColor)
         searchBar.setImage(searchClearImageNormal, forSearchBarIcon: .Clear, state: .Normal)
     }
 }

@@ -37,7 +37,8 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
                 searchController.hidesNavigationBarDuringPresentation = false
                 searchController.dimsBackgroundDuringPresentation = false
                 searchController.searchBar.showsCancelButton = true
-                dependencyManager.configureSearchBar(searchController.searchBar)
+                let placeholderText = NSLocalizedString("Start a new conversation", comment: "")
+                dependencyManager.configureSearchBar(searchController.searchBar, placeholderText: placeholderText)
                 
                 if #available(iOS 9.1, *) {
                     searchController.obscuresBackgroundDuringPresentation = false

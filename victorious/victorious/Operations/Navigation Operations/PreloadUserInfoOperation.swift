@@ -33,8 +33,8 @@ class PreloadUserInfoOperation: Operation {
             ConversationListOperation().queue()
             UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
             
-            let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
-            FollowedHashtagsOperation(request: request).queue()
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200)
+            FollowedHashtagsOperation(paginator: paginator).queue()
         }
         
         finishedExecuting()

@@ -104,6 +104,14 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
         updateTableView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        }
+    }
+    
     private func onDidSetSearchBarDelegate() {
         searchResultsDelegate?.searchController?.searchBar.delegate = self
     }

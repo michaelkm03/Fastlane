@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowSearchResultOperation: Operation {
+class ShowSearchResultOperation: NavigationOperation {
     
     let searchResult: AnyObject
     let navigationController: UINavigationController
@@ -20,12 +20,9 @@ class ShowSearchResultOperation: Operation {
         self.dependencyManager = dependencyManager
     }
     
-    override func main() {
-        dispatch_sync( dispatch_get_main_queue(), performNavigation )
-    }
-    
-    private func performNavigation() {
-        
+    override func start() {
+        super.start()
+        self.beganExecuting()
         if let userResult = searchResult as? UserSearchResultObject {
             if let viewController = self.dependencyManager.userProfileViewControllerWithRemoteId(userResult.sourceResult.userID) {
                 navigationController.pushViewController(viewController, animated: true)
@@ -37,5 +34,6 @@ class ShowSearchResultOperation: Operation {
                 navigationController.pushViewController(viewController, animated: true)
             }
         }
+        self.finishedExecuting()
     }
 }

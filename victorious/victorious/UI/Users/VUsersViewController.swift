@@ -13,10 +13,6 @@ extension VUsersViewController: PaginatedDataSourceDelegate {
     private func updateBackground() {
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
         
-        if self.usersDataSource.state == .Error {
-            print("FUCK")
-        }
-        
         switch self.usersDataSource.state {
             
         case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:

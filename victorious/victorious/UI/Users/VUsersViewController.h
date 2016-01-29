@@ -37,13 +37,14 @@ typedef NS_ENUM( NSInteger, VUsersViewContext )
  An object that loads and provides a list of users to display in the collection view.
  */
 @property (nonatomic, strong) id<VUsersDataSource> usersDataSource;
+
 /**
  The context in which this VUsersViewContext is presented as.
  */
 @property (nonatomic, assign) VUsersViewContext usersViewContext;
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionView *collectionView; //< For Swift extension
 
-@property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VNoContentView *noContentView; //< For Swift extension
 
 @end

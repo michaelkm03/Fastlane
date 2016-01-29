@@ -13,6 +13,7 @@ class UserInfoOperation: RequestOperation {
     
     let request: UserInfoRequest
     
+    /// The result (if successfuly), a user loaded from the main context
     var user: VUser?
     
     init( userID: Int ) {
