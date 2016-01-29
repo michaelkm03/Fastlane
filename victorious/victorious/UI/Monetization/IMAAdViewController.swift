@@ -93,7 +93,9 @@ import SafariServices
             delegate?.adDidLoadForAdViewController(self)
         case .MIDPOINT: delegate?.adDidHitMidpointInAdViewController?(self)
         case .PAUSE: break
-        case .RESUME: delegate?.adDidStartPlaybackInAdViewController?(self)
+        case .RESUME:
+            adsManager.pause()
+            delegate?.adDidStopPlaybackInAdViewController?(self)
         case .SKIPPED: delegate?.adDidFinishForAdViewController(self)
         case .STARTED: delegate?.adDidStartPlaybackInAdViewController?(self)
         case .TAPPED: delegate?.adHadImpressionInAdViewController?(self)
