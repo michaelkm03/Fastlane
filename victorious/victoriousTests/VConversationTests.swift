@@ -27,5 +27,4 @@ class VConversationTests: XCTestCase {
         self.conversation.markedForDeletion = false
         XCTAssertTrue(notMarkedForDeletionPredicate.evaluateWithObject(self.conversation))
     }
-
 }
