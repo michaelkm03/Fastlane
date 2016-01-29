@@ -28,9 +28,6 @@ class BaseRequestOperationTestCase: XCTestCase {
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
     }
-    
-    override func tearDown() {
-    }
 
     /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
     func queueExpectedOperation(operation operation: RequestOperation) -> XCTestExpectation {

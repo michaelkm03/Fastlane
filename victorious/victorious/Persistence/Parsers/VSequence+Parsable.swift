@@ -18,6 +18,7 @@ extension VSequence: PersistenceParsable {
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
+        isGifStyle              = sequence.isGifStyle ?? isGifStyle
         commentCount            = sequence.commentCount ?? commentCount
         gifCount                = sequence.gifCount ?? gifCount
         hasReposted             = sequence.hasReposted ?? hasReposted

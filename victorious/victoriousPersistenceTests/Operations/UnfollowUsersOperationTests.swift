@@ -17,7 +17,6 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
 
     override func setUp() {
         super.setUp()
-        continueAfterFailure = false
         operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
@@ -40,7 +39,13 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
             followedUser.displayOrder = -1
             context.v_save()
         }
-
+        
+        XCTAssertEqual(1, objectUser.numberOfFollowers)
+        XCTAssertEqual(1, objectUser.followers.count)
+        XCTAssertEqual(1, currentUser.numberOfFollowing)
+        XCTAssertEqual(1, currentUser.following.count)
+        XCTAssertEqual(true, objectUser.isFollowedByMainUser)
+        
         queueExpectedOperation(operation: operation)
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
@@ -57,8 +62,10 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
             XCTAssertEqual(0, updatedUser.followers.count)
             XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
             XCTAssertEqual(0, updatedCurrentUser.following.count)
-            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
+            
+            self.continueAfterFailure = false
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(VTrackingEventUserDidUnfollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
     }
