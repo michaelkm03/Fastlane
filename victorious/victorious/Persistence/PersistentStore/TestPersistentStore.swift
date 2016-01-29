@@ -53,15 +53,6 @@ class TestPersistentStore: NSObject, PersistentStoreType {
     }
     
     func deletePersistentStore() throws {
-        guard let coreDataMgr = TestPersistentStore.coreDataManageInstance else {
-            return
-        }
-        let url = coreDataMgr.persistentStoreURL
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL( url )
-             TestPersistentStore.coreDataManageInstance = nil
-        } catch {
-            throw PersistentStoreError.DeleteFailed(storeURL: url, error: error)
-        }
+        TestPersistentStore.coreDataManageInstance = nil
     }
 }
