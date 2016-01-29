@@ -44,6 +44,7 @@ extension VDependencyManager {
         
         let normalColor = self.colorForKey(VDependencyManagerPlaceholderTextColorKey)
         searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(normalColor)
+
         searchBar.setImage(searchClearImageNormal, forSearchBarIcon: .Clear, state: .Normal)
     }
 }

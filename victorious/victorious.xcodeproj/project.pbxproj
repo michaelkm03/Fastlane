@@ -10633,6 +10633,7 @@
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
 				A70032F61C5BF4E600AB4A57 /* FollowUsersOperationTests.swift in Sources */,
 				A60C990F1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift in Sources */,
+				A70032F61C5BF4E600AB4A57 /* FollowUsersOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,
 				67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */,
 				67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */,

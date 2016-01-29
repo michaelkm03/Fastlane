@@ -116,7 +116,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.streamDataSource.hasHeaderCell = YES;
 
     [self.collectionView registerClass:[VProfileHeaderCell class]
@@ -124,6 +124,42 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
+}
+
+
+- (void)updateProfileHeader
+{
+    if ( self.user == nil )
+    {
+        return;
+    }
+    
+    if ( self.profileHeaderViewController == nil )
+    {
+        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+        if ( self.profileHeaderViewController != nil )
+        {
+            self.profileHeaderViewController.delegate = self;
+            [self setInitialHeaderState];
+        }
+    }
+    else
+    {
+        [self reloadUserFollowingRelationship];
+    }
+    
+    if ( self.profileHeaderViewController != nil )
+    {
+        self.profileHeaderViewController.user = self.user;
+        self.streamDataSource.hasHeaderCell = YES;
+        [self.collectionView registerClass:[VProfileHeaderCell class]
+                forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
+        
+        // Adding a header changes the structure of the collection view,
+        // so a full reload is warranted here.
+        [self.collectionView reloadData];
+        self.collectionView.alwaysBounceVertical = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,7 +174,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self shrinkHeaderAnimated:NO];
     }
     [self.profileHeaderViewController reloadProfileImage];
-    self.didEndViewWillAppear = YES;
     
     [self attemptToRefreshProfileUI];
     
@@ -149,6 +184,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.navigationViewfloatingController.animationEnabled = YES;
     
     self.navigationItem.title = self.title;
+    self.didEndViewWillAppear = YES;
 }
 
 - (void)viewDidLayoutSubviews
@@ -269,9 +305,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
     [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
-    {
-        [self updateUserFollowingRelationship];
-    }];
+     {
+         [self updateUserFollowingRelationship];
+     }];
 }
 
 - (void)updateUserFollowingRelationship
@@ -340,6 +376,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self shrinkHeaderAnimated:YES];
     }
+    [self updateUserFollowingRelationship];
 }
 
 #pragma mark - Superclass Overrides
@@ -351,6 +388,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     [super loadPage:pageType completion:completionBlock];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+    [self.profileHeaderViewController reloadProfileImage];
+    [self updateUserFollowingRelationship];
 }
 
 #pragma mark -
@@ -459,20 +508,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
-}
-
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
-    
-    if ( self.streamDataSource.count > 0 )
-    {
-        [self shrinkHeaderAnimated:YES];
-    }
-    if ( !self.representsMainUser )
-    {
-        [self.profileHeaderViewController reloadProfileImage];
-    }
 }
 
 - (NSString *)title

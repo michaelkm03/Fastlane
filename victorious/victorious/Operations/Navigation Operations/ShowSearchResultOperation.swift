@@ -23,6 +23,7 @@ class ShowSearchResultOperation: NavigationOperation {
     override func start() {
         super.start()
         self.beganExecuting()
+    
         if let userResult = searchResult as? UserSearchResultObject {
             if let viewController = self.dependencyManager.userProfileViewControllerWithRemoteId(userResult.sourceResult.userID) {
                 navigationController.pushViewController(viewController, animated: true)
@@ -34,6 +35,7 @@ class ShowSearchResultOperation: NavigationOperation {
                 navigationController.pushViewController(viewController, animated: true)
             }
         }
+        
         self.finishedExecuting()
     }
 }
