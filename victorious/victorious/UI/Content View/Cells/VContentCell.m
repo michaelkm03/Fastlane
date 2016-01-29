@@ -14,7 +14,7 @@
 #import "victorious-Swift.h"
 #import "VSequencePreviewView.h"
 
-static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
+static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
 @interface VContentCell () <VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
 
@@ -24,6 +24,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
+@property (nonatomic, strong, readonly) VAdBreak *currentAdBreak;
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
@@ -241,6 +242,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdBreak:adBreak
                                                                                       player:self.videoPlayer];
+    _currentAdBreak = adBreak;
     if ( self.adVideoPlayerViewController != nil )
     {
         self.adVideoPlayerViewController.delegate = self;
@@ -269,9 +271,21 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
              self.sequencePreviewView.hidden = YES;
          }
      }];
-    
-    // This timer is added as a workaround to kill the ad video if it has not started playing
-    self.adTimeoutTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval
+}
+
+- (void)scheduleAdTimeoutTimer
+{
+    NSTimeInterval adTimeoutTimeInterval = 0;
+    if (self.currentAdBreak != nil && self.currentAdBreak.timeout != nil)
+    {
+        adTimeoutTimeInterval = self.currentAdBreak.timeout.doubleValue;
+    }
+    else
+    {
+        adTimeoutTimeInterval = kDefaultAdTimeoutTimeInterval;
+    }
+
+    self.adTimeoutTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:adTimeoutTimeInterval
                                                                         target:self
                                                                       selector:@selector(adTimerDidFire)
                                                                       userInfo:nil
@@ -293,7 +307,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    // This is where we can preload the content video after the ad video has loaded
+    // This is also where we can preload the content video after the ad video has loaded
+
+    // Set the timer again so we have a chance to see the ads playing after loading
+    [self.adTimeoutTimer invalidate];
+    [self scheduleAdTimeoutTimer];
 }
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
