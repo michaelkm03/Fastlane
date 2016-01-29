@@ -117,45 +117,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewDidLoad];
     
-    [self updateProfileHeader];
+    self.streamDataSource.hasHeaderCell = YES;
+
+    [self.collectionView registerClass:[VProfileHeaderCell class]
+            forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
-}
-
-- (void)updateProfileHeader
-{
-    if ( self.user == nil )
-    {
-        return;
-    }
-    
-    if ( self.profileHeaderViewController == nil )
-    {
-        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
-        if ( self.profileHeaderViewController != nil )
-        {
-            self.profileHeaderViewController.delegate = self;
-            [self setInitialHeaderState];
-        }
-    }
-    else
-    {
-        [self reloadUserFollowingRelationship];
-    }
-    
-    if ( self.profileHeaderViewController != nil )
-    {
-        self.profileHeaderViewController.user = self.user;
-        self.streamDataSource.hasHeaderCell = YES;
-        [self.collectionView registerClass:[VProfileHeaderCell class]
-                forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
-        
-        // Adding a header changes the structure of the collection view,
-        // so a full reload is warranted here.
-        [self.collectionView reloadData];
-        self.collectionView.alwaysBounceVertical = YES;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -165,11 +133,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
     
-    if ( self.streamDataSource.count != 0 )
+    if ( self.streamDataSource.count > 0 )
     {
-        [self shrinkHeaderAnimated:YES];
+        [self shrinkHeaderAnimated:NO];
     }
-    
+    [self.profileHeaderViewController reloadProfileImage];
     self.didEndViewWillAppear = YES;
     
     [self attemptToRefreshProfileUI];
@@ -300,7 +268,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:nil];
+    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        [self updateUserFollowingRelationship];
+    }];
 }
 
 - (void)updateUserFollowingRelationship
@@ -369,7 +340,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self shrinkHeaderAnimated:YES];
     }
-    [self updateUserFollowingRelationship];
 }
 
 #pragma mark - Superclass Overrides
@@ -381,18 +351,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     [super loadPage:pageType completion:completionBlock];
-}
-
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
-    
-    if ( self.streamDataSource.count > 0 )
-    {
-        [self shrinkHeaderAnimated:YES];
-    }
-    [self.profileHeaderViewController reloadProfileImage];
-    [self updateUserFollowingRelationship];
 }
 
 #pragma mark -
@@ -414,7 +372,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
-         [self updateUserFollowingRelationship];
      }];
 }
 
@@ -462,7 +419,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( _user != nil )
     {
-        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
         [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     }
     
@@ -481,17 +437,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                               [welf updateUserFollowingRelationship];
                           }];
     
-    [self.KVOController observe:self.currentStream
-                        keyPath:NSStringFromSelector(@selector(streamItems))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              if ( welf.streamDataSource.count != 0 )
-                              {
-                                  [welf shrinkHeaderAnimated:YES];
-                              }
-                              [self.KVOController unobserve:self keyPath:NSStringFromSelector(@selector(streamItems))];
-                          }];
-    
     NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
@@ -504,9 +449,30 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [persistentStore.mainContext save:nil];
     }];
     
+    self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+    self.profileHeaderViewController.delegate = self;
+    [self setInitialHeaderState];
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    
+    [self updateUserFollowingRelationship];
+    [self.profileHeaderViewController reloadProfileImage];
+    [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
-    [self updateProfileHeader];
     [self setupFloatingView];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+    if ( !self.representsMainUser )
+    {
+        [self.profileHeaderViewController reloadProfileImage];
+    }
 }
 
 - (NSString *)title
@@ -617,6 +583,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
      {
          [self.collectionView invalidateIntrinsicContentSize];
      } completion:nil];
+    self.collectionView.alwaysBounceVertical = YES;
 }
 
 #pragma mark - Scroll
@@ -659,16 +626,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             NSString *identifier = [VProfileHeaderCell preferredReuseIdentifier];
             VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-            [self.profileHeaderViewController willMoveToParentViewController:self];
-            headerCell.headerViewController = self.profileHeaderViewController;
             self.currentProfileCell = headerCell;
+        }
+        
+        if ( self.profileHeaderViewController != nil )
+        {
+            [self.profileHeaderViewController willMoveToParentViewController:self];
+            self.currentProfileCell.headerViewController = self.profileHeaderViewController;
             [self.profileHeaderViewController didMoveToParentViewController:self];
         }
+        
         self.currentProfileCell.hidden = self.user == nil;
         return self.currentProfileCell;
     }
-    VBaseCollectionViewCell *cell = (VBaseCollectionViewCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
-    return cell;
+    else
+    {
+        return [super dataSource:dataSource cellForIndexPath:indexPath];
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

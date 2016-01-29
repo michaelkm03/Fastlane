@@ -145,7 +145,6 @@
 - (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize
 {
     NSURL *imageURL = nil;
-    BOOL canUseHighResAsset = NO; // Until proven otherwise
     
     // Try to load high-res from server and make sure it's valid and large enough to display
     if ( self.user.previewAssets.count > 0 )
@@ -153,11 +152,9 @@
         VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
         VImageAsset *imageAsset = [assetFinder assetWithPreferredMinimumSize:minimumSize fromAssets:self.user.previewAssets];
         imageURL = [NSURL URLWithString:imageAsset.imageURL];
-        const BOOL isURLValid = imageURL != nil && imageURL.absoluteString.length > 0;
-        canUseHighResAsset = isURLValid;
     }
     
-    if ( !canUseHighResAsset )
+    if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
         // Otherwise fall back on local or low-res
         imageURL = [NSURL URLWithString:self.user.pictureUrl];

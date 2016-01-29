@@ -29,8 +29,13 @@ class PreloadUserInfoOperation: Operation {
             StreamOperation(apiPath: apiPath).queue()
             
             UserInfoOperation(userID: userID).queue()
+            
             PollResultSummaryByUserOperation(userID: userID).queue()
+            
             ConversationListOperation().queue()
+            
+            FollowCountOperation(userID: currentUser.remoteId.integerValue).queue()
+            
             UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
             
             let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200)
