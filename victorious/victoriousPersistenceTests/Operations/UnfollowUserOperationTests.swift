@@ -51,7 +51,7 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(true, objectUser.isFollowedByMainUser)
         
         queueExpectedOperation(operation: operation)
-        waitForExpectationsWithTimeout(20000) { error in
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             guard let updatedUser = self.testStore.mainContext.objectWithID(objectUser.objectID) as? VUser else {
                 XCTFail("No user to follow found after following a user")
