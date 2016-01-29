@@ -12,7 +12,7 @@ import Foundation
 /// You may freely populate this persistent store with whatever data is required for a test as well
 /// as delete any or all of its contents.
 class TestPersistentStore: NSObject, PersistentStoreType {
-
+    
     static let persistentStorePath = "victoriOS-test.sqlite"
     static let managedObjectModelName = "victoriOS"
     static let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
