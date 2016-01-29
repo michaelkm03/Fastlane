@@ -56,7 +56,7 @@ import SafariServices
         }
     }
 
-    // MARK - IMAAdsLoaderDelegate methods
+    //MARK: - IMAAdsLoaderDelegate methods
 
     func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
         self.adsManager = adsLoadedData.adsManager
@@ -78,7 +78,7 @@ import SafariServices
         delegate?.adHadErrorInAdViewController?(self, withError: error)
     }
 
-    // MARK - IMAAdsManagerDelegate methods
+    //MARK: - IMAAdsManagerDelegate methods
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdEvent event: IMAAdEvent!) {
         switch event.type {
