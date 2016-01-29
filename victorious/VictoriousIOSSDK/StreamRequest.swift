@@ -43,21 +43,19 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
         let stream: Stream
-        if responseJSON["payload"].array != nil,
+        
+        if let streamFromObject = Stream(json: responseJSON["payload"]) {
+            stream = streamFromObject
+        } else if responseJSON["payload"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"] ])) {
                 stream = streamFromItems
-        }
-        else if responseJSON["payload"]["content"].array != nil,
+        } else if responseJSON["payload"]["content"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"]["content"] ])) {
                 stream = streamFromItems
-        }
-        else if let streamFromObject = Stream(json: responseJSON["payload"]) {
-            stream = streamFromObject
-        }
-        else {
+        } else {
             throw ResponseParsingError()
         }
-        
+    
         return stream
     }
 }

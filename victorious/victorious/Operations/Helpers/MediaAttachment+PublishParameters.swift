@@ -69,7 +69,7 @@ extension MediaAttachment {
         let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
         if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
             imgData.writeToURL(tempFile, atomically: false )
-            return NSURL(fileURLWithPath: tempFile.absoluteString)
+            return tempFile
         }
         
         return nil
