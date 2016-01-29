@@ -12,12 +12,12 @@ import VictoriousIOSSDK
 class UnfollowUserOperation: RequestOperation {
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: UnFollowUserRequest
+    private let request: UnfollowUserRequest
     private let userID: Int
     
     init( userID: Int, sourceScreenName: String? ) {
         self.userID = userID
-        self.request = UnFollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
+        self.request = UnfollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
     }
     
     override func main() {
