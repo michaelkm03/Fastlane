@@ -16,7 +16,10 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     
-    private let dataSource = UserSearchDataSource()
+    private lazy var dataSource: UserSearchDataSource = {
+        return UserSearchDataSource(dependencyManager: self.dependencyManager)
+    }()
+    
     private var dependencyManager: VDependencyManager!
     
     private(set) var searchTerm: String?

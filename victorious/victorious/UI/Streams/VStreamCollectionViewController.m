@@ -1182,7 +1182,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     memeStream.navigationItem.title = memeStream.currentStream.name;
     
-    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:memeStream.view.bounds];
     noContentView.dependencyManager = self;
     noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
     noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
@@ -1201,7 +1201,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     gifStream.navigationItem.title = gifStream.currentStream.name;
     
-    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:gifStream.view.bounds];
     noContentView.dependencyManager = self;
     noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
     noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
-#import "VUsersDataSource.h"
+
+@class VNoContentView;
+@protocol VUsersDataSource;
 
 /**
  The possible context identifier that this view is presented as
@@ -39,5 +41,9 @@ typedef NS_ENUM( NSInteger, VUsersViewContext )
  The context in which this VUsersViewContext is presented as.
  */
 @property (nonatomic, assign) VUsersViewContext usersViewContext;
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+
+@property (nonatomic, strong) VNoContentView *noContentView;
 
 @end

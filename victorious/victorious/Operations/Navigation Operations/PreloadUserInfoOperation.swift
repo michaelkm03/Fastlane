@@ -23,14 +23,25 @@ class PreloadUserInfoOperation: Operation {
                 return
             }
             
+            
             let userID = currentUser.remoteId.integerValue
             let apiPath = "/api/sequence/detail_list_by_user/\(userID)/\(VSDKPaginatorMacroPageNumber)/\(VSDKPaginatorMacroItemsPerPage)"
             StreamOperation(apiPath: apiPath).queue()
             
             UserInfoOperation(userID: userID).queue()
+            
             PollResultSummaryByUserOperation(userID: userID).queue()
+            
             ConversationListOperation().queue()
+            
             VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
+            
+            UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
+            
+            FollowCountOperation(userID: currentUser.remoteId.integerValue).queue()
+            
+            let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
+            FollowedHashtagsOperation(request: request).queue()
         }
         
         finishedExecuting()

@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class PaginatedDataSource;
+@class PaginatedDataSource, VNoContentView;
 
 @interface VHashtagFollowingTableViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) PaginatedDataSource *paginatedDataSource;
+@property (nonatomic, strong) VNoContentView *noContentView;
 
 @end

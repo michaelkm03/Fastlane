@@ -1,5 +1,5 @@
 //
-//  UnFollowUserRequest.swift
+//  UnfollowUserRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/10/15.
@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Unfollow a user
-public struct UnFollowUserRequest: RequestType {
+public struct UnfollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to unfollow
     public let userID: Int

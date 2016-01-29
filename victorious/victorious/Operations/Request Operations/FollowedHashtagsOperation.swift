@@ -33,12 +33,11 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 completion()
                 return
             }
-            
+        
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
                 persistentHashtag.populate(fromSourceModel: hashtag)
-                persistentHashtag.isFollowedByMainUser = true
                 
                 let uniqueInfo = [ "user" : currentUser, "hashtag" : persistentHashtag ]
                 let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueInfo )
