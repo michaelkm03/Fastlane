@@ -50,8 +50,6 @@ class AdBreakTests: XCTestCase {
     }
 
     func testInvalid() {
-        let adBreakWithUnsupportedSystemID: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithUnsupportedSystemID")
-        XCTAssertNil(adBreakWithUnsupportedSystemID)
         let adBreakWithoutTimeout: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutTimeout")
         XCTAssertNil(adBreakWithoutTimeout)
         let adBreakWithoutAdTagAndCannedAdXML: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutAdTagAndCannedAdXML")
@@ -65,7 +63,6 @@ class AdBreakTests: XCTestCase {
         }
 
         guard let adBreak = AdBreak(url: url) else {
-            XCTFail("Failed to create an AdBreak")
             return nil
         }
 
