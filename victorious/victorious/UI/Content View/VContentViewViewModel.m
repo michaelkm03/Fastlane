@@ -117,7 +117,8 @@
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
         
-        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence];
+        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence
+                                                         dependencyManager:self.dependencyManager];
     }
     return self;
 }
