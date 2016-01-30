@@ -98,9 +98,9 @@
 {
     [super viewDidAppear:animated];
     
-    [self.searchField becomeFirstResponder];
-    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
+    
+    [self setFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -298,7 +298,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         searchController.searchBar.sizeToFit()
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
-        self.dependencyManager?.configureSearchBar(searchController.searchBar)
+        let placeholderText = NSLocalizedString( "Search people and hashtags", comment:"");
+        self.dependencyManager?.configureSearchBar(searchController.searchBar, placeholderText: placeholderText)
         return searchController
     }()
     
