@@ -23,6 +23,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, strong) AvatarLevelBadgeView *levelBadgeView;
 
 @end
 

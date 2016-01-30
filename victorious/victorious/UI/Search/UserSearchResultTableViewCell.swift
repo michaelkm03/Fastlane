@@ -17,12 +17,6 @@ class UserSearchResultTableViewCell: UITableViewCell {
         let profileURL: NSURL
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        profileButton.levelBadgeView.hidden = true
-    }
-    
     var viewData: ViewData? {
         didSet {
             if let viewData = viewData {
