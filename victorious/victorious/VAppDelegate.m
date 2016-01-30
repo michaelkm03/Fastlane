@@ -55,7 +55,7 @@
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if ( localNotification != nil )
     {
-        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
     }
     
     DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstance];
@@ -69,7 +69,7 @@
 {
     if ( [application applicationState] == UIApplicationStateInactive )
     {
-        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
     }
 }
 
@@ -80,7 +80,7 @@
 
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [[VRootViewController rootViewController] applicationDidReceiveRemoteNotification:userInfo];
+    [[VRootViewController sharedRootViewController] applicationDidReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
@@ -104,9 +104,9 @@
                                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     }
     
-    [[VRootViewController rootViewController] applicationOpenURL:url
-                                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    [[VRootViewController sharedRootViewController] applicationOpenURL:url
+                                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     
     return YES;
 }

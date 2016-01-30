@@ -7596,7 +7596,6 @@
 		A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
 			isa = PBXGroup;
 			children = (
-				795FEB151C533347008EDB44 /* VConversationTests.swift */,
 				A7EBF5241C2B8CA20080C7CF /* Info.plist */,
 				A7B0A61D1C347A01008B875C /* MainPersistentStoreTests.swift */,
 				67A904A81C404D1A0016CC6B /* MainRequestExecutorTests.swift */,
@@ -7608,6 +7607,7 @@
 				A7B0A6211C347A01008B875C /* QueueableTests.swift */,
 				A7B0A6231C347A01008B875C /* Sample Data */,
 				A7B0A62C1C347A01008B875C /* Test Helpers */,
+				795FEB151C533347008EDB44 /* VConversationTests.swift */,
 			);
 			path = victoriousPersistenceTests;
 			sourceTree = "<group>";
@@ -10640,7 +10640,6 @@
 				67A3C9F31C4D99470068E4F5 /* TrendingHashtagOperationTests.swift in Sources */,
 				678AC1731C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift in Sources */,
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
-				A70032F61C5BF4E600AB4A57 /* FollowUsersOperationTests.swift in Sources */,
 				A60C990F1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift in Sources */,
 				A70032F61C5BF4E600AB4A57 /* FollowUsersOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,

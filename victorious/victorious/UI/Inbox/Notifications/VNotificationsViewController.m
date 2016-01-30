@@ -192,7 +192,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
-        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:notification.deepLink]];
+        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:notification.deepLink]];
     }
 }
 

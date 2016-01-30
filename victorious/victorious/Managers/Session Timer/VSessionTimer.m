@@ -36,10 +36,21 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
 @property (nonatomic, readwrite) BOOL started;
 @property (nonatomic, strong) NSDate *sessionStartTime;
+@property (nonatomic, copy, readwrite) NSString *sessionID;
 
 @end
 
 @implementation VSessionTimer
+
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        [self resetSessionID];
+    }
+    return self;
+}
 
 - (void)start
 {
@@ -104,7 +115,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
     [[VTrackingManager sharedInstance] clearAllSessionParameterValues];
-    
 }
 
 - (NSUInteger)sessionDuration
@@ -114,14 +124,18 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     return duration;
 }
 
+- (void)resetSessionID
+{
+    self.sessionID = [[NSUUID UUID] UUIDString];
+}
+
 #pragma mark - Tracking
 
 - (void)trackApplicationForeground
 {
     NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStartKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-#warning: New Arhicture:
-    //[[VObjectManager sharedManager] resetSessionID];
+    [self resetSessionID];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
