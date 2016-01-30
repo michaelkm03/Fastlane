@@ -60,20 +60,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    var dataSource: CommentsDataSource? {
-        didSet {
-            if let dataSource = dataSource {
-                collectionView.dataSource = dataSource
-                dataSource.delegate = self
-            }
+    lazy var dataSource: CommentsDataSource? = {
+        if let sequence = self.sequence, let dependencyManager = self.dependencyManager {
+            let dataSource = CommentsDataSource(sequence: sequence, dependencyManager: dependencyManager)
+            self.collectionView.dataSource = dataSource
+            dataSource.delegate = self
+            return dataSource
         }
-    }
+        return nil
+    }()
     
     var sequence: VSequence? {
         didSet {
-            if let sequence = sequence {
-                dataSource = CommentsDataSource(sequence: sequence, dependencyManager: dependencyManager)
-            } else {
+            if sequence == nil {
                 dataSource = nil
             }
         }
