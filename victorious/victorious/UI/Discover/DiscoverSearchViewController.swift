@@ -51,13 +51,6 @@ extension DiscoverSearchViewController {
         hashtagNoContentView.setDependencyManager(self.dependencyManager)
         hashtagSearchVC.noContentView = hashtagNoContentView
     }
-    
-    func setFirstResponder() {
-        // Unable to immediately make the searchBar first responder without this hack
-        dispatch_after(0.01) {
-            self.searchController.searchBar.becomeFirstResponder()
-        }
-    }
 }
 
 extension DiscoverSearchViewController: SearchResultsViewControllerDelegate {
