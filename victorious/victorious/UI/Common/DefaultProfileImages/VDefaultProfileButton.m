@@ -23,7 +23,6 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, strong) UIColor *borderColor;
-@property (nonatomic, strong) AvatarLevelBadgeView *levelBadgeView;
 
 @end
 
@@ -108,7 +107,11 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 
 - (void)updateBadgeViewContent
 {
-    if ( self.levelBadgeView != nil && self.user != nil )
+    if ( self.user == nil )
+    {
+        return;
+    }
+    else if ( self.levelBadgeView != nil )
     {
         NSNumber *userLevel = self.user.level;
         NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
@@ -123,7 +126,12 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ( self.levelBadgeView != nil && self.user != nil )
+    
+    if ( self.user == nil )
+    {
+        self.levelBadgeView.hidden = YES;
+    }
+    else if ( self.levelBadgeView != nil)
     {
         CGRect currentBounds = self.bounds;
         CGFloat radius = CGRectGetWidth(currentBounds) / 2;

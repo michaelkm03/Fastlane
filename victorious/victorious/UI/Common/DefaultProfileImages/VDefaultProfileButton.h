@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VBadgeImageType.h"
 
-@class VDependencyManager, VUser;
+@class VDependencyManager, VUser, AvatarLevelBadgeView;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Defaults to small.
  */
 @property (nonatomic, assign) VLevelBadgeImageType levelBadgeImageType;
+
+@property (nonatomic, strong) AvatarLevelBadgeView *levelBadgeView;
 
 @end
 
