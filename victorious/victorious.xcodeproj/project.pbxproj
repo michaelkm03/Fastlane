@@ -20,6 +20,7 @@
 		0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */; };
 		0300AA821BF2E465000A121D /* DevicePreferencesResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 0300AA811BF2E465000A121D /* DevicePreferencesResponse.json */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
+		0308FCE71C5C2A030023C93A /* VApplicationTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709640419F0738200CE6633 /* VApplicationTrackingTests.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
 		030C827D1BF32F8500E9F14C /* DevicePreferencesAllOnResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 030C827C1BF32F8500E9F14C /* DevicePreferencesAllOnResponse.json */; };
 		030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 030E514E1AC35B5A0011C558 /* VPseudoProduct.m */; };
@@ -11671,6 +11672,7 @@
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */,
 				A7DCA5161C128A78004E35B4 /* VVoteTypeFetcherTests.m in Sources */,
+				0308FCE71C5C2A030023C93A /* VApplicationTrackingTests.m in Sources */,
 				6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */,
 				A7DCA5171C128A78004E35B4 /* VVRTCUserPostedAtFormatterTests.m in Sources */,
 				A7DCA4E71C128A78004E35B4 /* VEmailValidatorTests.m in Sources */,

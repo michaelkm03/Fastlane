@@ -39,8 +39,8 @@ static NSString * const kMacroDuration               = @"%%DURATION%%";
 static NSString * const kMacroType                   = @"%%TYPE%%";
 static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 0
-#define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
+#define APPLICATION_TRACKING_LOGGING_ENABLED 1
+#define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 1
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED || APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -154,11 +154,11 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 #if APPLICATION_TRACKING_LOGGING_ENABLED
         if ( error )
         {
-            NSLog( @"Application Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [error localizedDescription] );
+            NSLog( @"Application Tracking :: ERROR with URL %@ :: %@", requestURL.absoluteString, [error localizedDescription] );
         }
         else
         {
-            NSLog( @"Application Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
+            NSLog( @"Application Tracking :: SUCCESS with URL %@", requestURL.absoluteString );
         }
 #endif
     }];
