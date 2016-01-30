@@ -10,8 +10,9 @@
 #import "VNavigationDestination.h"
 #import "VDeeplinkHandler.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
-
 #import <UIKit/UIKit.h>
+
+@protocol SearchResultsViewControllerDelegate;
 
 @interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, VTabMenuContainedViewControllerNavigation, UINavigationControllerDelegate, VDeeplinkSupporter>
 

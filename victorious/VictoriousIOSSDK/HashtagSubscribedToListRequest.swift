@@ -31,7 +31,7 @@ public struct HashtagSubscribedToListRequest: PaginatorPageable, ResultBasedPage
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
         
-        guard let hashtagJSON = responseJSON["payload"]["tags"].array else {
+        guard let hashtagJSON = responseJSON["payload"]["tags"].array ?? responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         

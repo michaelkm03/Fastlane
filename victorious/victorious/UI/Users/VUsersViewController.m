@@ -16,12 +16,10 @@
 #import "VDependencyManager+VTracking.h"
 #import "victorious-Swift.h"
 
-@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, PaginatedDataSourceDelegate>
+@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate>
 
-@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
@@ -101,14 +99,11 @@
     [self.collectionView addSubview:refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     
-    NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil];
-    self.noContentView = nibs.firstObject;
+    self.noContentView = [VNoContentView viewFromNibWithFrame:self.collectionView.frame];
     self.noContentView.dependencyManager = self.dependencyManager;
-    [self.view addSubview:self.noContentView];
-    [self.view sendSubviewToBack:self.noContentView];
-    self.noContentView.frame = self.view.bounds;
-    [self.view v_addFitToParentConstraintsToSubview:self.noContentView];
-    
+    self.noContentView.title = [self.usersDataSource noContentTitle];
+    self.noContentView.icon = [self.usersDataSource noContentImage];
+    self.noContentView.message = [self.usersDataSource noContentMessage];
     [self.noContentView resetInitialAnimationState];
     
     [self refershControlAction:refreshControl];
@@ -187,13 +182,6 @@
                            @(VUsersViewContextLikers) : VFollowSourceScreenLikers
                            };
     return [dict objectForKey:@(self.usersViewContext)];
-}
-
-#pragma mark - PaginatedDataSourceDelegate
-
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    [self.collectionView v_applyChangeInSection:0 from:oldValue to:newValue];
 }
 
 @end

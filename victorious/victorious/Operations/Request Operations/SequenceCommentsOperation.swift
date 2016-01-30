@@ -20,7 +20,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( sequenceID: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( sequenceID: String ) {
         self.init( request: SequenceCommentsRequest(sequenceID: sequenceID) )
     }
     

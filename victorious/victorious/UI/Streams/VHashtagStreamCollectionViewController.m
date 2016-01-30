@@ -77,6 +77,13 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     streamCollection.followControl.tintUnselectedImage = YES;
     streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];
     
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:streamCollection.view.bounds];
+    noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
+    noContentView.dependencyManager = dependencyManager;
+    noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), hashtag];
+    noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
+    streamCollection.noContentView = noContentView;
+    
     if ([AgeGate isAnonymousUser])
     {
         [streamCollection.followControl removeFromSuperview];
@@ -106,10 +113,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
-    
-    self.noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
-    self.noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
-    self.noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,16 +120,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     [super viewWillAppear:animated];
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self updateUserFollowingStatus];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // Must also call here since navigation items are set after viewDidAppear:
-    [self updateUserFollowingStatus];
-    
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)hashtagsUpdated
@@ -138,15 +131,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     if ( self.navigationItem.rightBarButtonItem == nil )
     {
-        [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
-        [self updateFollowStatusAnimated:NO];
+        if ( self.streamDataSource.count > 0 )
+        {
+            [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+        }
     }
-}
-
-- (void)paginatedDataSource
-{
-    [self updateNavigationItems];
-    [self updateUserFollowingStatus];
+    [self updateFollowStatusAnimated:NO];
 }
 
 - (void)updateUserFollowingStatus
@@ -154,9 +144,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSAssert( self.selectedHashtag != nil, @"To present this view controller, there must be a selected hashtag." );
     NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", self.selectedHashtag.lowercaseString];
-    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    BOOL followingHashtag = followedHashtag != nil;
+    BOOL followingHashtag = [[VCurrentUser user] isFollowingHashtagString:self.selectedHashtag];
     if ( followingHashtag != self.followingSelectedHashtag)
     {
         self.followingSelectedHashtag = followingHashtag;
@@ -168,26 +156,19 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)toggleFollowHashtag
 {
+    RequestOperation *operation;
     if ( self.isFollowingSelectedHashtag )
     {
-        RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-    {
-            self.followingEnabled = YES;
-            self.followingSelectedHashtag = NO;
-            [self updateFollowStatusAnimated:YES];
-        }];
+        operation = [[UnfollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
     }
     else
     {
-        RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-    {
-            self.followingEnabled = YES;
-            self.followingSelectedHashtag = YES;
-            [self updateFollowStatusAnimated:YES];
-        }];
+        operation = [[FollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
     }
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+     {
+         self.followingEnabled = YES;
+     }];
 }
 
 #pragma mark - UIBarButtonItem state management
@@ -198,16 +179,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingEnabled = NO;
     }
-    
-    //If we get into a weird state and the relaionships are the same don't do anything
-    
-    if (self.followControl.controlState == [VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag])
-    {
-        return;
-    }
 
-    [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag]
-                               animated:animated];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag];
+    [self.followControl setControlState:controlState animated:animated];
 }
 
 #pragma mark - VAccessoryNavigationSource
@@ -245,7 +219,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+    [self updateNavigationItems];
 }
 
 @end

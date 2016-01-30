@@ -1,5 +1,5 @@
 //
-//  UnFollowUsersOperation.swift
+//  UnfollowUserOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/4/16.
@@ -9,15 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnFollowUsersOperation: RequestOperation {
+class UnfollowUserOperation: RequestOperation {
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: UnFollowUserRequest
+    private let request: UnfollowUserRequest
     private let userID: Int
     
     init( userID: Int, sourceScreenName: String? ) {
         self.userID = userID
-        self.request = UnFollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
+        self.request = UnfollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
     }
     
     override func main() {
@@ -35,6 +35,8 @@ class UnFollowUsersOperation: RequestOperation {
             
             let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
             if let followedUser: VFollowedUser = context.v_findObjects( uniqueElements ).first {
+                objectUser.v_removeObject(followedUser, from: "followers")
+                subjectUser.v_removeObject(followedUser, from: "following")
                 context.deleteObject( followedUser )
             }
 

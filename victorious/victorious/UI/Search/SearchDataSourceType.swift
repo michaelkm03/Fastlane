@@ -18,6 +18,4 @@ protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSo
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )
     
     var searchTerm: String? { get }
-    
-    var separatorStyle: UITableViewCellSeparatorStyle { get }
 }

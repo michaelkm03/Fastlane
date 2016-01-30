@@ -99,15 +99,6 @@
     }
 }
 
-- (void)setHasHeaderCell:(BOOL)hasHeaderCell
-{
-    if ( hasHeaderCell == _hasHeaderCell )
-    {
-        return;
-    }
-    _hasHeaderCell = hasHeaderCell;
-}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

@@ -8,23 +8,22 @@
 
 import Foundation
 
-public extension DiscoverSearchViewController {
+extension DiscoverSearchViewController {
     
     func setupSearchViewControllers() {
         let userSearchVC: SearchResultsViewController = UserSearchViewController.v_fromStoryboard( "UserSearchViewController",
             identifier: "SearchResultsViewController")
         
         userSearchVC.dependencyManager = self.dependencyManager
-        userSearchVC.dataSource = UserSearchDataSource()
+        userSearchVC.dataSource = UserSearchDataSource(dependencyManager: dependencyManager)
         self.userSearchViewController = userSearchVC
         
         self.addChildViewController( userSearchVC )
         self.searchResultsContainerView?.addSubview( userSearchVC.view )
         self.view.v_addFitToParentConstraintsToSubview( userSearchVC.view )
         userSearchVC.didMoveToParentViewController(self)
-        userSearchVC.searchResultsDelegate = self
         
-        let usersNoContentView = VNoContentView(frame: view.bounds)
+        let usersNoContentView: VNoContentView = VNoContentView.v_fromNib()
         usersNoContentView.icon = UIImage(named: "user-icon")?.imageWithRenderingMode(.AlwaysTemplate)
         usersNoContentView.title = NSLocalizedString("No People Found In Search Title", comment:"")
         usersNoContentView.message = NSLocalizedString("No people found in search", comment:"")
@@ -43,9 +42,8 @@ public extension DiscoverSearchViewController {
         self.searchResultsContainerView?.addSubview( hashtagSearchVC.view )
         self.view.v_addFitToParentConstraintsToSubview( hashtagSearchVC.view )
         hashtagSearchVC.didMoveToParentViewController(self)
-        hashtagSearchVC.searchResultsDelegate = self
         
-        let hashtagNoContentView = VNoContentView(frame: view.bounds)
+        let hashtagNoContentView: VNoContentView = VNoContentView.v_fromNib()
         hashtagNoContentView.icon = UIImage(named: "tabIconHashtag")?.imageWithRenderingMode(.AlwaysTemplate)
         hashtagNoContentView.title = NSLocalizedString("No Hashtags Found In Search Title", comment:"")
         hashtagNoContentView.message = NSLocalizedString("No hashtags found in search", comment:"")
@@ -56,25 +54,20 @@ public extension DiscoverSearchViewController {
 }
 
 extension DiscoverSearchViewController: SearchResultsViewControllerDelegate {
+
+    // MARK: - SearchResultsViewControllerDelegate
+    // These methods merely forward on to containing view controller that has access to
+    // the active navigation controller
     
-    func searchResultsViewControllerDidSelectCancel() { }
+    var searchController: UISearchController {
+        return self.searchResultsDelegate?.searchController ?? UISearchController()
+    }
+    
+    func searchResultsViewControllerDidSelectCancel() {
+        self.searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
+    }
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {
-        
-        if let userResult = result as? UserSearchResultObject {
-            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
-            operation.queue() { op in
-                if let user = operation.result,
-                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-            
-        } else if let hashtagResult = result as? HashtagSearchResultObject {
-            let hashtag = hashtagResult.sourceResult.tag
-            if let vc = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
-                navigationController?.pushViewController(vc, animated: true)
-            }
-        }
+        self.searchResultsDelegate?.searchResultsViewControllerDidSelectResult(result)
     }
 }

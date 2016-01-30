@@ -16,10 +16,11 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     
-    private let dataSource = UserSearchDataSource()
-    private var dependencyManager: VDependencyManager!
+    private lazy var dataSource: UserSearchDataSource = {
+        return UserSearchDataSource(dependencyManager: self.dependencyManager)
+    }()
     
-    private(set) var searchTerm: String?
+    private var dependencyManager: VDependencyManager!
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> UserTaggingViewController {
         let viewController: UserTaggingViewController = UserTaggingViewController.v_initialViewControllerFromStoryboard()
@@ -30,12 +31,6 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     //MARK: - API
     
     func searchWithTerm(searchTerm:String) {
-        let lastSearchterm = self.searchTerm
-        self.searchTerm = searchTerm
-        // Clear if we are starting from the beginning
-        if let lastSearchTerm = lastSearchterm where !searchTerm.containsString(lastSearchTerm) {
-            dataSource.unload()
-        }
         dataSource.search(searchTerm: searchTerm, pageType: .First)
     }
     

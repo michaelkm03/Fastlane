@@ -98,7 +98,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+    self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.title = NSLocalizedString(@"NoNotificationsTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoNotificationsMessage", @"");

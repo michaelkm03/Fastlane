@@ -66,7 +66,7 @@
     // Initialize our focus helper
     self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
     
-    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+    self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.title = NSLocalizedString(@"SAY HELLO!", @"");
     self.noContentView.message = NSLocalizedString(@"Send a message to start chatting with other members of the community.", @"");
