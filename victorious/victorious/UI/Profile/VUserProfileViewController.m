@@ -486,13 +486,20 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [persistentStore.mainContext save:nil];
     }];
     
-    self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
-    self.profileHeaderViewController.delegate = self;
-    [self setInitialHeaderState];
+    if ( _user != nil )
+    {
+        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+        self.profileHeaderViewController.delegate = self;
+        [self setInitialHeaderState];
+        [self.profileHeaderViewController reloadProfileImage];
+    }
+    else
+    {
+        self.profileHeaderViewController = nil;
+    }
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
     [self updateUserFollowingRelationship];
-    [self.profileHeaderViewController reloadProfileImage];
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
