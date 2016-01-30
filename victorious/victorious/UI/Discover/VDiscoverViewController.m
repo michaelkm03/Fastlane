@@ -13,14 +13,10 @@
 #import "VHashtagCell.h"
 #import "VDiscoverHeaderView.h"
 #import "VDiscoverSuggestedPeopleViewController.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Discover.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
 #import "VDiscoverViewControllerProtocol.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
@@ -365,11 +361,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
             NSString *hashtagText = hashtag.tag;
             [customCell setHashtagText:hashtagText];
-            [self updateFollowControl:customCell.followHashtagControl forHashtag:hashtagText];
+            [self updateFollowControl:customCell.followControl forHashtag:hashtagText];
             
             __weak VHashtagCell *weakCell = customCell;
             __weak VDiscoverViewController *weakSelf = self;
-            customCell.onToggleFollowHashtag = ^(void)
+            customCell.followControl.onToggleFollow = ^(void)
             {
                 __strong VHashtagCell *strongCell = weakCell;
                 __strong VDiscoverViewController *strongSelf = weakSelf;
@@ -380,7 +376,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                 RequestOperation *operation;
-                if ([[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtagText] )
+                if ([[VCurrentUser user] isFollowingHashtagString:hashtagText] )
                 {
                     operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
@@ -389,7 +385,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                     operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
                 }
                 [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-                    [strongSelf updateFollowControl:strongCell.followHashtagControl forHashtag:hashtagText];
+                    [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
                 }];
             };
             
@@ -409,7 +405,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)updateFollowControl:(VFollowControl *)followControl forHashtag:(NSString *)hashtag
 {
     VFollowControlState controlState;
-    if ( [[VCurrentUser user] isCurrentUserFollowingHashtagString:hashtag] )
+    if ( [[VCurrentUser user] isFollowingHashtagString:hashtag] )
     {
         controlState = VFollowControlStateFollowed;
     }

@@ -12,7 +12,6 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VPlaceholderTextView.h"
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NSURL+MediaType.h"

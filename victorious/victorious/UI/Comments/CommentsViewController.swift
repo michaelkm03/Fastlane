@@ -286,9 +286,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VTagSensitiveTextViewDelegate
     
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
-        if let tag = tag as? VUserTag {
-            let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
-            self.navigationController?.pushViewController(profileViewController, animated: true)
+        if let tag = tag as? VUserTag, let userID = tag.remoteId?.integerValue {
+            let operation = FetchUserOperation(userID: userID)
+            operation.queue() { op in
+                if let user = operation.result, let profileViewController = self.dependencyManager.userProfileViewControllerWithUser(user) {
+                    self.navigationController?.pushViewController(profileViewController, animated: true)
+                }
+            }
         }
         else {
             let justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)

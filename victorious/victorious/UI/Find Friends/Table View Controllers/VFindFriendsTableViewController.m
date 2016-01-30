@@ -12,8 +12,6 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
@@ -251,7 +249,7 @@
 {
     if (toShow)
     {
-        VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
+        VNoContentView *noFollowersView = [VNoContentView viewFromNibWithFrame:self.tableView.tableView.frame];
         if ( [noFollowersView respondsToSelector:@selector(setDependencyManager:)] )
         {
             noFollowersView.dependencyManager = self.dependencyManager;

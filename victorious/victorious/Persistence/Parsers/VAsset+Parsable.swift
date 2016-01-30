@@ -12,20 +12,20 @@ import VictoriousIOSSDK
 extension VAsset: PersistenceParsable {
     
     func populate( fromSourceModel asset: Asset ) {
-        audioMuted              = asset.audioMuted
-        backgroundColor         = asset.backgroundColor
-        backgroundImageUrl      = asset.backgroundImageUrl
-        data                    = asset.data
-        duration                = asset.duration
-        loop                    = asset.loop
-        mimeType                = asset.mimeType
-        playerControlsDisabled  = asset.playerControlsDisabled
-        remoteContentId         = asset.remoteContentID
-        remoteId                = asset.assetID
-        remotePlayback          = asset.remotePlayback
-        remoteSource            = asset.remoteSource
-        speed                   = asset.speed
-        streamAutoplay          = asset.streamAutoplay
-        type                    = asset.type.rawValue
+        audioMuted              = asset.audioMuted ?? audioMuted
+        backgroundColor         = asset.backgroundColor ?? backgroundColor
+        backgroundImageUrl      = asset.backgroundImageUrl ?? backgroundImageUrl
+        data                    = asset.data ?? data
+        duration                = asset.duration ?? duration
+        loop                    = asset.loop ?? loop
+        mimeType                = asset.mimeType ?? mimeType
+        playerControlsDisabled  = asset.playerControlsDisabled ?? playerControlsDisabled
+        remoteContentId         = asset.remoteContentID ?? remoteContentId
+        remoteId                = asset.assetID ?? remoteId
+        remotePlayback          = asset.remotePlayback ?? remotePlayback
+        remoteSource            = asset.remoteSource ?? remoteSource
+        speed                   = asset.speed ?? speed
+        streamAutoplay          = asset.streamAutoplay ?? streamAutoplay
+        type                    = asset.type.rawValue ?? type
     }
 }

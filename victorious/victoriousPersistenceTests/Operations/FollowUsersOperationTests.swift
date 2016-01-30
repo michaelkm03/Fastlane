@@ -33,6 +33,10 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         createdCurrentUser.setAsCurrentUser()
         
         let createdUserToFollow = persistentStoreHelper.createUser(remoteId: userIDOne)
+        
+        XCTAssertFalse( createdCurrentUser.isFollowingUserID(userIDOne) )
+        
+        // Execute the operation
         operation.main()
         
         guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -64,6 +68,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
             XCTFail("Can't find a follow relationship after following a user")
         }
         
+        XCTAssert( currentUser.isFollowingUserID(userIDOne) )
         XCTAssert( updatedUserToFollow.isFollowedByMainUser.boolValue )
         
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
@@ -82,25 +87,12 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         if let createdUsers: [VUser] = self.testStore.mainContext.v_findAllObjects() where createdUsers.count > 0 {
             XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
         }
-
+        
         XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
-    }
-
-    func testBatchFollowingExistentAndNonExistentUsers() {
-        operation = FollowUsersOperation(userIDs: userIDs)
-        operation.requestExecutor = testRequestExecutor
-        let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
-        let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
-        let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
-        currentUser.setAsCurrentUser()
-
-        operation.main()
-
-        assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
     }
 
     func testBatchFollowOnlyExistentUsers() {
@@ -112,7 +104,9 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         currentUser.setAsCurrentUser()
 
         operation.main()
-
+        
+        XCTAssert( currentUser.isFollowingUserID(userTwo.remoteId.integerValue) )
+        XCTAssert( currentUser.isFollowingUserID(userOne.remoteId.integerValue) )
         assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
     }
 
@@ -126,7 +120,9 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         currentUser.setAsCurrentUser()
 
         operation.main()
-
+        
+        XCTAssert( currentUser.isFollowingUserID(userTwo.remoteId.integerValue) )
+        XCTAssert( currentUser.isFollowingUserID(userOne.remoteId.integerValue) )
         assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
     }
 

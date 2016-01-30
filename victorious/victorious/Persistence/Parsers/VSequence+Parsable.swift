@@ -18,6 +18,7 @@ extension VSequence: PersistenceParsable {
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
+        isGifStyle              = sequence.isGifStyle ?? isGifStyle
         commentCount            = sequence.commentCount ?? commentCount
         gifCount                = sequence.gifCount ?? gifCount
         hasReposted             = sequence.hasReposted ?? hasReposted
@@ -29,34 +30,47 @@ extension VSequence: PersistenceParsable {
         name                    = sequence.name ?? name
         nameEmbeddedInContent   = sequence.nameEmbeddedInContent ?? nameEmbeddedInContent
         permissionsMask         = sequence.permissionsMask ?? permissionsMask
-        previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
         repostCount             = sequence.repostCount ?? repostCount
         sequenceDescription     = sequence.sequenceDescription ?? sequenceDescription
         releasedAt              = sequence.releasedAt ?? releasedAt
         trendingTopicName       = sequence.trendingTopicName ?? trendingTopicName
         isLikedByMainUser       = sequence.isLikedByMainUser ?? isLikedByMainUser
+        headline                = sequence.headline ?? headline
+        previewData             = sequence.previewData ?? previewData
+        previewType             = sequence.previewType?.rawValue
+        previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
+        itemType                = sequence.type?.rawValue
+        itemSubType             = sequence.type?.rawValue
+        releasedAt              = sequence.releasedAt ?? releasedAt
         
         if let trackingModel = sequence.tracking {
             tracking = v_managedObjectContext.v_createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
-        
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         
-        if let previewImageAssets = sequence.previewImageAssets {
+        if let parentUser = sequence.parentUser {
+            self.parentUserId = NSNumber(integer: parentUser.userID)
+            let persistentParentUser = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
+            persistentParentUser.populate(fromSourceModel: parentUser)
+            self.parentUser = persistentParentUser
+        }
+        
+        if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-            })
+                })
         }
         
-        if let nodes = sequence.nodes {
+        if let nodes = sequence.nodes where nodes.count > self.nodes?.count {
             self.nodes = NSOrderedSet(array: nodes.flatMap {
-                let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.nodeID ])
+                let node: VNode = v_managedObjectContext.v_createObject()
                 node.populate( fromSourceModel: $0 )
+                node.sequence = self
                 return node
             })
         }

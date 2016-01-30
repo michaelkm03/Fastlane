@@ -13,7 +13,37 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     
     private(set) var searchTerm: String?
     
-    let separatorStyle: UITableViewCellSeparatorStyle = .SingleLine
+    let dependencyManager: VDependencyManager
+    
+    weak var tableView: UITableView?
+    
+    required init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        super.init()
+        
+        if let currentUser = VCurrentUser.user() {
+            self.KVOController.observe(currentUser,
+                keyPath: "following",
+                options: [.New, .Old],
+                action: Selector( "onFollowedChanged:" )
+            )
+        }
+    }
+    
+    func onFollowedChanged( change: [NSObject: AnyObject]! ) {
+        guard let objectChanged = ((change?[ NSKeyValueChangeNewKey ] ?? change?[ NSKeyValueChangeOldKey ]) as? NSArray)?.firstObject,
+            let user = (objectChanged as? VFollowedUser)?.objectUser else {
+                return
+        }
+        
+        let index = visibleItems.indexOfObjectPassingTest() { (obj, idx, stop) in
+            return (obj as? UserSearchResultObject)?.sourceResult.userID == user.remoteId.integerValue
+        }
+        if index != NSNotFound,
+            let cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? UserSearchResultTableViewCell {
+                self.updateFollowControlState(cell.followControl, forUserID: user.remoteId.integerValue, animated: true)
+        }
+    }
     
     //MARK: - API
     
@@ -39,6 +69,8 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: UserSearchResultTableViewCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        
+        self.tableView = tableView
     }
     
     //MARK: - UITableViewDataSource
@@ -53,9 +85,38 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         let visibleItem = visibleItems[indexPath.row] as! UserSearchResultObject
         let userNetworkStruct = visibleItem.sourceResult
         let username = userNetworkStruct.name ?? ""
+        let userID = visibleItem.sourceResult.userID
         let profileURLString = userNetworkStruct.profileImageURL ?? ""
         let profileURL = NSURL(string: profileURLString) ?? NSURL()
+        self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
         cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:profileURL)
+        cell.dependencyManager = dependencyManager
+        cell.followControl?.onToggleFollow = {
+            guard let currentUser = VCurrentUser.user() else {
+                return
+            }
+            
+            let operation: RequestOperation
+            if currentUser.isFollowingUserID(userID) {
+                operation = UnfollowUserOperation(userID: userID, sourceScreenName: nil)
+            } else {
+                operation = FollowUsersOperation(userIDs: [userID])
+            }
+            operation.queue()
+        }
         return cell
+    }
+    
+    func updateFollowControlState(followControl: VFollowControl?, forUserID userID: Int, animated: Bool = true) {
+        guard let followControl = followControl, currentUser = VCurrentUser.user() else {
+            return
+        }
+        let controlState: VFollowControlState
+        if currentUser.isFollowingUserID(userID) {
+            controlState = .Followed
+        } else {
+            controlState = .Unfollowed
+        }
+        followControl.setControlState(controlState, animated: animated)
     }
 }

@@ -119,7 +119,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     __block VStream *stream = nil;
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         [persistentStore.mainContext save:nil];
     }];

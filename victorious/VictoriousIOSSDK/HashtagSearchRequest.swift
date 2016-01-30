@@ -53,10 +53,15 @@ public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
-        guard let hashtagStrings = responseJSON["payload"].rawValue as? [String] else {
+        
+        if let hashtagStrings = responseJSON["payload"].rawValue as? [String] {
+            return hashtagStrings.flatMap { Hashtag(tag: $0) }
+        
+        } else if let hashtags = responseJSON["payload"].array {
+            return hashtags.flatMap { Hashtag(json: $0) }
+        
+        } else {
             throw ResponseParsingError()
         }
-        
-        return hashtagStrings.flatMap { Hashtag(tag: $0) }
     }
 }

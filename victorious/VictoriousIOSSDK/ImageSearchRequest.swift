@@ -18,10 +18,10 @@ public struct ImageSearchRequest: PaginatorPageable, ResultBasedPageable {
 	public let paginator: StandardPaginator
 	
     public init( request: ImageSearchRequest, paginator: StandardPaginator ) {
-        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
+        self.init( searchTerm: request.searchTerm, paginator: paginator)
     }
 	
-	public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
+	public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
         let url = NSURL(string: "/api/image/search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)

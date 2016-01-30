@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "VDummyModels.h"
-#import "VTracking+RestKit.h"
 #import "VVoteType.h"
 
 // TODO

@@ -167,7 +167,7 @@ def setAppConfig(app_name, json_obj):
 
     # Write config file to disk
     f = open(config_file, 'w')
-    f.write(app_config)
+    f.write(app_config.encode('utf-8').strip())
     f.close()
 
     # Download any additional platform-specific app data

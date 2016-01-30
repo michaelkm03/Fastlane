@@ -209,7 +209,8 @@
 {
     NSError *error = nil;
     [user addRepostedSequencesObject:sequence];
-    if ( ![user.managedObjectContext saveToPersistentStore:&error] )
+#warning FIXME: Redo in new architecture
+    if ( ![user.managedObjectContext save:&error] )
     {
         VLog( @"Error marking sequence as reposted for main user: %@", error );
     }

@@ -19,7 +19,6 @@
 #import "VCameraPermissionsController.h"
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
-#import "VObjectManager+Private.h"
 #import "victorious-Swift.h"
 
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";

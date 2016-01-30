@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+DeviceRegistration.h"
-#import "VObjectManager+Login.h"
 #import "NSString+VStringWithData.h"
 #import "VPushNotificationManager.h"
 #import "VConstants.h"
@@ -105,9 +103,12 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
     [operation queueOn:operation.defaultQueue
        completionBlock:^(NSError *_Nullable error)
     {
-        if (error == nil && success != nil)
+        if (error == nil)
         {
-            success();
+            if (success != nil)
+            {
+                success();
+            }
         }
         else if (failure != nil)
         {

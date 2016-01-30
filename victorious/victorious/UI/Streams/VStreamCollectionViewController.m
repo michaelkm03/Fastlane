@@ -145,7 +145,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     __block VStream *stream = nil;
     id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         [persistentStore.mainContext save:nil];
     }];
@@ -927,7 +927,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[VUploadManager sharedManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1182,7 +1182,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     memeStream.navigationItem.title = memeStream.currentStream.name;
     
-    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:memeStream.view.bounds];
     noContentView.dependencyManager = self;
     noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
     noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
@@ -1201,7 +1201,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     gifStream.navigationItem.title = gifStream.currentStream.name;
     
-    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:gifStream.view.bounds];
     noContentView.dependencyManager = self;
     noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
     noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");

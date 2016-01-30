@@ -10,16 +10,14 @@
 #import <XCTest/XCTest.h>
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
-#import "VNotificationSettings+Fetcher.h"
-#import "VNotificationSettings+RestKit.h"
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsViewController.h"
 #import "VTestHelpers.h"
-#import "VObjectManager.h"
-#import "VObjectManager+DeviceRegistration.h"
+#import "VNotificationSettings.h"
 #import "VAsyncTestHelper.h"
 #import "VSettingsSwitchCell.h"
 #import "VNoContentTableViewCell.h"
+#import "victorious-swift.h"
 
 @interface VNotificationSettingsViewController (UnitTests)
 
@@ -56,7 +54,7 @@
     [self.viewController viewDidLoad];
     self.viewController.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
     
-    self.randomSettings = [VDummyModels objectWithEntityName:[VNotificationSettings entityName]
+    self.randomSettings = [VDummyModels objectWithEntityName:[VNotificationSettings v_entityName]
                                                     subclass:[VNotificationSettings class]];
     // At least one should always be yes so that it doesn't equal the default settings
     self.randomSettings.isPostFromCreatorEnabled    = @YES;
@@ -65,7 +63,7 @@
     self.randomSettings.isNewCommentOnMyPostEnabled = @( randomBool() );
     self.randomSettings.isPostFromFollowedEnabled   = @( randomBool() );
     
-    self.defaultSettings = [VDummyModels objectWithEntityName:[VNotificationSettings entityName]
+    self.defaultSettings = [VDummyModels objectWithEntityName:[VNotificationSettings v_entityName]
                                                      subclass:[VNotificationSettings class]];
     self.defaultSettings.isPostFromCreatorEnabled    = @NO;
     self.defaultSettings.isNewFollowerEnabled        = @NO;

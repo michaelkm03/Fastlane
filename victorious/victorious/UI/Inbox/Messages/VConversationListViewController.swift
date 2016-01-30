@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VConversationListViewController: SearchResultsViewControllerDelegate {
+extension VConversationListViewController {
     
     func showSearch() {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectCreateMessage)
@@ -18,7 +18,10 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
         newUserSearch.searchResultsDelegate = self
         presentViewController(newUserSearch, animated: true, completion: nil)
     }
-    
+}
+
+extension VConversationListViewController: SearchResultsViewControllerDelegate {
+
     func searchResultsViewControllerDidSelectCancel() {
         dismissViewControllerAnimated(true, completion: nil)
     }

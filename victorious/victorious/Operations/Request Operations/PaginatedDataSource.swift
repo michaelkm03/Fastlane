@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject {
+@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
     private(set) weak var currentOperation: NSOperation?
@@ -47,7 +47,6 @@ import VictoriousIOSSDK
     var delegate: PaginatedDataSourceDelegate?
     
     func unload() {
-        cancelCurrentOperation()
         visibleItems = NSOrderedSet()
         pagesLoaded = Set<Int>()
         state = .Cleared
@@ -151,6 +150,7 @@ import VictoriousIOSSDK
             // Fetch local results if we failed because of no network
             if error == nil {
                 let results = operation.results ?? []
+                self.hasLoadedLastPage = results.isEmpty
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 
@@ -160,6 +160,7 @@ import VictoriousIOSSDK
                 
                 // Return no results
                 operation.results = []
+                self.hasLoadedLastPage = true
                 self.state = .Error
             }
             

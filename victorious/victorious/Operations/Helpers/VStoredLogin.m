@@ -7,9 +7,9 @@
 //
 
 #import "VStoredLogin.h"
-#import "VUser+RestKit.h"
-#import "VObjectManager.h"
 #import "victorious-Swift.h"
+
+NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
 
 @interface VStoredLoginInfo()
 

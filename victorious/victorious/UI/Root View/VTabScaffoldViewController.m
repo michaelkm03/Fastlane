@@ -12,7 +12,6 @@
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VStatusBarStyle.h"
-#import "VObjectManager+Login.h"
 #import "UIView+AutoLayout.h"
 #import "VTabScaffoldHidingHelper.h"
 #import "VDeeplinkHandler.h"

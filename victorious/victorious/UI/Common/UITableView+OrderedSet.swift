@@ -10,8 +10,12 @@ import UIKit
 
 public extension UITableView {
     
+    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
+        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false)
+    }
+    
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
+    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
         
         guard newValue.count != 0 && oldValue.count != 0 else {
             UIView.performWithoutAnimation() {
@@ -38,9 +42,17 @@ public extension UITableView {
             deletedIndexPaths.append( NSIndexPath(forRow: oldIndex, inSection: section) )
         }
         
-        self.beginUpdates()
-        self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Bottom)
-        self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
-        self.endUpdates()
+        let performChangesBlock = {
+            self.beginUpdates()
+            self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Bottom)
+            self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
+            self.endUpdates()
+        }
+        
+        if animated {
+            performChangesBlock()
+        } else {
+            UIView.performWithoutAnimation(performChangesBlock)
+        }
     }
 }

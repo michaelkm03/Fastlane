@@ -133,6 +133,8 @@ def showProperUsage():
         print ''
         print 'search:'
         print my_name + ' dev | grep \'Ryan\'    <-- Simple case-sensitive search'
+        print my_name + ' dev | grep -i \'ryan\' <-- Simple case-insensitive search'
+        print ''
         sys.exit(1)
 
 

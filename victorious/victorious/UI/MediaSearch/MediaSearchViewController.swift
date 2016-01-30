@@ -12,7 +12,7 @@ import UIKit
 /// Delegate that handles events that originate from within a `MediaSearchViewController`
 @objc protocol MediaSearchViewControllerDelegate {
     
-    /// The user selected a GIF image and wants to proceed with it in a creation flow.
+    /// The user selected a search result and wants to proceed with it in a creation flow.
     func mediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult )
 }
 
@@ -26,9 +26,8 @@ class MediaSearchOptions: NSObject {
     }
 }
 
-/// View controller that allows users to search for GIF files using the Giphy API
-/// as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate {
+/// View controller that allows users to search for media files as part of a content creation flow.
+class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, PaginatedDataSourceDelegate {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -58,6 +57,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
             viewController.dependencyManager = depndencyManager
 			viewController.dataSourceAdapter.dataSource = dataSource
+            dataSource.delegate = viewController
             return viewController
         }
         fatalError( "Could not load MediaSearchViewController from storyboard." )
@@ -102,8 +102,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if (self.options.clearSelectionOnAppearance == true)
-        {
+        if self.options.clearSelectionOnAppearance {
             collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
         }
     }
@@ -115,24 +114,24 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 			return
 		}
 		
-		let gifSearchResulObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
+		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
 		
 		let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
 		progressHUD.mode = .Indeterminate
 		progressHUD.dimBackground = true
 		progressHUD.show(true)
 		
-		self.mediaExporter.loadMedia( gifSearchResulObject ) { (previewImage, mediaURL, error) in
+		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
 			
 			if let previewImage = previewImage, let mediaURL = mediaURL {
-				gifSearchResulObject.exportPreviewImage = previewImage
-				gifSearchResulObject.exportMediaURL = mediaURL
-				self.delegate?.mediaSearchResultSelected( gifSearchResulObject )
+				mediaSearchResultObject.exportPreviewImage = previewImage
+				mediaSearchResultObject.exportMediaURL = mediaURL
+				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
 				
 			} else {
 				let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
 				progressHUD.mode = .Text
-				progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
+				progressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
 				progressHUD.hide(true, afterDelay: 3.0)
 			}
 			
@@ -150,8 +149,23 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         if self.dataSourceAdapter.state != .Loading {
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
+                self.reloadNoContentSection()
             }
+            self.reloadNoContentSection()
         }
+    }
+    
+    func reloadNoContentSection() {
+        /// The no content cell is only visible when the data source's sections are empty
+        guard self.dataSourceAdapter.sections.isEmpty else {
+            return
+        }
+        
+        // Now reload the no content cell's section so that it is accurately reflecting
+        //  the current state of the paginated data source
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadSections( NSIndexSet(index: 0) )
+        }, completion: nil)
     }
     
     func updateViewWithResult( result: MediaSearchDataSourceAdapter.ChangeResult? ) {
@@ -160,7 +174,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 self.collectionView.applyDataSourceChanges( result )
             }, completion: nil)
         }
-        if result?.error != nil || (result?.hasChanges == false && self.dataSourceAdapter.sections.count == 0) {
+        if result?.error != nil || (result?.hasChanges == false && (self.dataSourceAdapter.dataSource?.visibleItems.count ?? 0) == 0) {
             self.collectionView.reloadData()
         }
     }
@@ -191,7 +205,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.MediaSearchNext.rawValue
     }
     
-    /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
+    /// Inserts a new section into the collection view that shows a fullsize preview video for the search result
     func showPreviewForResult( indexPath: NSIndexPath ) {
         var sectionInserted: Int?
         
@@ -226,7 +240,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }, completion:nil )
     }
     
-    /// Removes the section showing a GIF search result preview at the specified index path
+    /// Removes the section showing a search result preview at the specified index path
     func hidePreviewForResult( indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
@@ -254,11 +268,23 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 	func searchBarSearchButtonClicked(searchBar: UISearchBar) {
 		guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
 			return
-		}
+        }
+        self.clearSearch()
 		self.performSearch(searchTerm: searchTerm)
-		self.clearSearch()
 		searchBar.resignFirstResponder()
-	}
+    }
+    
+    // MARK: - PaginatedDataSourceDelegate
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        
+        // To update whether the bottom activity indicator footer shows
+        if paginatedDataSource.hasLoadedLastPage {
+            self.updateLayout()
+        }
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {}
 }
 
 /// Conveninece method to insert/delete sections during a batch update

@@ -10,7 +10,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConversationListViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VConversation+RestKit.h"
 #import "VConversationViewController.h"
 #import "VConversationContainerViewController.h"
 #import "VConversationCell.h"
@@ -105,7 +104,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+    self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
@@ -222,24 +221,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
-}
-
-#pragma mark - Overrides
-
-- (NSFetchedResultsController *)makeFetchedResultsController
-{
-    RKObjectManager *manager = [RKObjectManager sharedManager];
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
-
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
-                                                 sectionNameKeyPath:nil
-                                                          cacheName:fetchRequest.entityName];
 }
 
 #pragma mark - Message View Controller Cache

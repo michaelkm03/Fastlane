@@ -32,11 +32,9 @@ public struct Sequence: StreamItemType {
     public let previewType: AssetType?
     public let sequenceDescription: String?
     public let adBreaks: [AdBreak]?
-    public let comments: [Comment]?
     public let nodes: [Node]?
     public let parentUser: User?
     public let tracking: Tracking?
-    public let recentComments: [Comment]?
     public let isGifStyle: Bool?
     public let trendingTopicName: String?
     
@@ -93,11 +91,9 @@ extension Sequence {
         trendingTopicName       = json["trending_topic_name"].string
         parentUserID            = json["parent_user"].int
         adBreaks                = json["ad_breaks"].array?.flatMap { AdBreak(json: $0) }
-        comments                = json["comments"].array?.flatMap { Comment(json: $0) }
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])
-        recentComments          = json["recent_comments"].array?.flatMap { Comment(json: $0) }
         
         // MARK: - StreamItemType
         
