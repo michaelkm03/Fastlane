@@ -15,7 +15,6 @@
 @interface VApplicationTracking : NSObject <VTrackingDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) dispatch_queue_t requestQueue; ///< A dispatch queue on which to send HTTP requests. Default is dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
 
 /**
  Tracks event using URLS after replacing URL-embedded macros with values
