@@ -30,7 +30,6 @@
 {
     [super viewDidLoad];
     
-    [self loadPage:VPageTypeFirst completion:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification

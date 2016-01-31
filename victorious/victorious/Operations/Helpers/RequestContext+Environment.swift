@@ -14,6 +14,8 @@ extension RequestContext {
     
     init( environment: VEnvironment ) {
         let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
+        let firstInstallDeviceID = FirstInstallDeviceIDManager().generateFirstInstallDeviceID() ?? deviceID
+        let sessionID = VRootViewController.sharedRootViewController()?.sessionTimer.sessionID
         let buildNumber: String
         let version: String
         
@@ -28,6 +30,6 @@ extension RequestContext {
             version = ""
         }
         
-        self.init(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber, appVersion: version)
+        self.init(appID: environment.appID.integerValue, deviceID: deviceID, firstInstallDeviceID: firstInstallDeviceID, buildNumber: buildNumber, appVersion: version, experimentIDs: ExperimentSettings().activeExperiments ?? [], sessionID: sessionID)
     }
 }

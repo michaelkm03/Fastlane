@@ -19,10 +19,12 @@ extension VInteraction: PersistenceParsable {
         timeout         = NSNumber(double: interaction.timeout)
         type            = interaction.type
         
-        answers = NSOrderedSet( array: interaction.answers.flatMap {
-            let answer: VAnswer = self.v_managedObjectContext.v_findOrCreateObject(  [ "remoteId" : $0.answerID ] )
-            answer.populate( fromSourceModel: $0 )
-            return answer
-        })
+        if self.answers.count == 0 && !interaction.answers.isEmpty {
+            answers = NSOrderedSet( array: interaction.answers.flatMap {
+                let answer: VAnswer = self.v_managedObjectContext.v_createObject()
+                answer.populate( fromSourceModel: $0 )
+                return answer
+                })
+        }
     }
 }

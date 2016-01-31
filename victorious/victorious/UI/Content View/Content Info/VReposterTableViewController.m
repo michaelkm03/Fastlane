@@ -110,7 +110,7 @@
 {
     if (!hasReposters)
     {
-        VNoContentView *noRepostersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *noRepostersView = [VNoContentView viewFromNibWithFrame:self.tableView.frame];
         if ( [noRepostersView respondsToSelector:@selector(setDependencyManager:)] )
         {
             noRepostersView.dependencyManager = self.dependencyManager;

@@ -17,15 +17,7 @@ class BasePersistentStoreTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
+        testStore.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        do {
-            try testStore.deletePersistentStore()
-        } catch {
-            print("Failed to delete a test persistent store")
-        }
     }
 }

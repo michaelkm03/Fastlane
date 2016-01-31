@@ -7,12 +7,12 @@
 //
 
 #import "VUserTaggingTextStorage.h"
-#import "VInlineSearchTableViewController.h"
 #import "VUser.h"
 #import "VTag.h"
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
 #import "VDependencyManager.h"
+#import "victorious-swift.h"
 
 typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 {
@@ -25,12 +25,12 @@ static NSString * const kTriggerString = @"@";
 static NSString * const kThreeSpaces = @"   ";
 static NSString * const VOriginalFont = @"NSOriginalFont";
 
-@interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
+@interface VUserTaggingTextStorage () <SearchResultsViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableAttributedString *displayStorage;
 @property (nonatomic, assign) NSInteger state;
 @property (nonatomic, assign) NSRange searchTermRange; ///< This range includes the trigger character
-@property (nonatomic, strong) VInlineSearchTableViewController *searchTableViewController;
+@property (nonatomic, strong) UserTaggingViewController *userSearchViewController;
 @property (nonatomic, strong) VTagDictionary *tagDictionary;
 @property (nonatomic, strong) NSString *tagDelimiterString;
 @property (nonatomic, assign) NSRange tagSelectionRange;
@@ -113,12 +113,12 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     {
         //Search is active, let the delegate know it should show the table
         [self searchWithRange:self.searchTermRange];
-        [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.searchTableViewController];
+        [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.userSearchViewController];
     }
     else if (state == VUserTaggingTextStorageStateInactive)
     {
         //Search isn't active, let the delegate know we want to dismiss the table
-        [self.taggingDelegate userTaggingTextStorage:self wantsToDismissViewController:self.searchTableViewController];
+        [self.taggingDelegate userTaggingTextStorage:self wantsToDismissViewController:self.userSearchViewController];
     }
     
     _state = state;
@@ -141,7 +141,8 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
     if ( range.length > triggerStringLength )
     {
-        [self.searchTableViewController searchWithText:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
+        NSString *searchTerm = [[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength];
+        [self.userSearchViewController searchWithTerm:searchTerm];
     }
 }
 
@@ -448,18 +449,16 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     return _tagDelimiterString;
 }
 
-//Lazy searchTableViewController init
-- (VInlineSearchTableViewController *)searchTableViewController
+- (UserTaggingViewController *)userSearchViewController
 {
-    if ( _searchTableViewController != nil )
+    if (_userSearchViewController != nil)
     {
-        return _searchTableViewController;
+        return _userSearchViewController;
     }
     
-    _searchTableViewController = [[VInlineSearchTableViewController alloc] initWithNibName:nil bundle:nil];
-    _searchTableViewController.dependencyManager = self.dependencyManager;
-    _searchTableViewController.delegate = self;
-    return _searchTableViewController;
+    _userSearchViewController = [UserTaggingViewController newWithDependencyManager:self.dependencyManager];
+    _userSearchViewController.searchResultsDelegate = self;
+    return _userSearchViewController;
 }
 
 - (NSMutableAttributedString *)displayStorage
@@ -489,9 +488,9 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     return _paragraphStyle;
 }
 
-#pragma mark - VInlineSearchTableViewControllerDelegate
+#pragma mark - SearchResultsViewControllerDelegate
 
-- (void)user:(VUser *)user wasSelectedFromTableView:(VInlineSearchTableViewController *)vInlineSearch
+- (void)searchResultsViewControllerDidSelectResult:(VUser *)user
 {
     //Insert username into text and adjust location of cursor
     self.state = VUserTaggingTextStorageStateInactive;
@@ -507,6 +506,11 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     [self replaceCharactersInRange:self.searchTermRange withAttributedString:attributedString];
     
     self.textView.selectedRange = newSelection;
+}
+
+- (void)searchResultsViewControllerDidSelectCancel
+{
+    self.state = VUserTaggingTextStorageStateInactive;
 }
 
 - (void)dismissButtonWasPressedInTableView:(VInlineSearchTableViewController *)vInlineSearch

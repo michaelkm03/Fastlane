@@ -83,6 +83,7 @@ extension VContentViewViewModel {
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
             let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.integerValue)
             operation.queue() { error in
+                completion?(error)
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
             }

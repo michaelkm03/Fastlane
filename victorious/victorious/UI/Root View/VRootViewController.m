@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-+ (instancetype)rootViewController
++ (instancetype)sharedRootViewController
 {
     VRootViewController *rootViewController = (VRootViewController *)[[(VAppDelegate *)[[UIApplication sharedApplication] delegate] window] rootViewController];
     if ([rootViewController isKindOfClass:self])
@@ -408,7 +408,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
     if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 

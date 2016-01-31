@@ -15,6 +15,5 @@
 
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * tag;
-@property (nonatomic, assign) BOOL isFollowedByMainUser; //< Transient
 
 @end

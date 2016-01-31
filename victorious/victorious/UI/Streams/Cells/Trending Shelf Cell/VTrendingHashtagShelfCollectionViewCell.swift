@@ -149,7 +149,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             return
         }
         let controlState: VFollowControlState
-        if VCurrentUser.user()?.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) == true {
+        if VCurrentUser.user()?.isFollowingHashtagString(shelf.hashtagTitle) == true {
             controlState = .Followed
         } else {
             controlState = .Unfollowed
@@ -207,7 +207,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
         
         let operation: RequestOperation
-        if currentUser.isCurrentUserFollowingHashtagString(shelf.hashtagTitle) {
+        if currentUser.isFollowingHashtagString(shelf.hashtagTitle) {
             operation = UnfollowHashtagOperation( hashtag: shelf.hashtagTitle )
         } else {
             operation = FollowHashtagOperation( hashtag: shelf.hashtagTitle )

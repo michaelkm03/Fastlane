@@ -298,16 +298,13 @@
                     <navigationItem key="navigationItem" id="ZAL-or-M7x"/>
                     <connections>
                         <outlet property="closeButton" destination="uO5-OM-4av" id="uNw-cr-J5t"/>
-                        <outlet property="headerTopConstraint" destination="TiB-pn-YLD" id="fgF-th-OjH"/>
                         <outlet property="headerView" destination="yZS-li-WMq" id="Xbn-Vl-bkh"/>
                         <outlet property="opaqueBackgroundView" destination="CPm-F4-7pC" id="nco-d1-J9C"/>
-                        <outlet property="searchBarTopConstraint" destination="ZTI-MB-PhH" id="8o7-82-JQA"/>
                         <outlet property="searchBarTopHorizontalRule" destination="iaO-Wl-aCo" id="rSI-JP-XDh"/>
                         <outlet property="searchBarView" destination="0Rk-A9-Gp7" id="fUE-VI-H9r"/>
                         <outlet property="searchBarViewHeightConstraint" destination="Hpj-Od-RHl" id="mB3-f0-GQ9"/>
                         <outlet property="searchField" destination="VBj-A0-3vt" id="eQL-ce-jg6"/>
                         <outlet property="searchResultsContainerView" destination="REU-GT-RGj" id="cjj-gW-Ecl"/>
-                        <outlet property="searchResultsTableBottomCosntraint" destination="O1k-Ma-ucc" id="iky-87-HVx"/>
                         <outlet property="segmentedControl" destination="mmk-k6-a7m" id="241-m9-LSb"/>
                     </connections>
                 </viewController>

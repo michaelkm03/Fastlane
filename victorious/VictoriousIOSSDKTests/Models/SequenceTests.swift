@@ -53,8 +53,6 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.nameEmbeddedInContent, true)
         XCTAssertEqual( sequence.previewType, AssetType.Media )
         XCTAssertEqual( sequence.trendingTopicName, "Trending Topic!!")
-        XCTAssertEqual( sequence.comments?.count, 1 )
-        XCTAssertEqual( sequence.recentComments?.count, 1 )
     }
 
     func testInvalid() {

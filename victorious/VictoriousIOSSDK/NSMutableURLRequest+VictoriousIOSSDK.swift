@@ -32,8 +32,7 @@ public struct AuthenticationContext {
 /// expects in this case.
 private let defaultAuthenticationContext = AuthenticationContext(userID: 0, token: "")
 
-/// Encapsulates some basic information that is required in 
-/// order to execute a request to the Victorious API.
+/// Encapsulates metadata used in the execution of a request to the Victorious API.
 public struct RequestContext {
     /// An ID that identifies this application to the Victorious API
     public let appID: Int
@@ -42,17 +41,30 @@ public struct RequestContext {
     /// unavailable on your platform, any UUID that identifies this device.
     public let deviceID: String
     
+    /// The value of deviceID when the app was first installed.
+    ///
+    /// - seealso: `deviceID`
+    public let firstInstallDeviceID: String
+    
     /// The value of CFBundleVersion in the application's Info.plist file
     public let buildNumber: String
     
     /// The value of CFBundleShortVersionString in the application's Info.plist file
     public let appVersion: String
     
-    public init(appID: Int, deviceID: String, buildNumber: String, appVersion: String) {
+    /// This value should only change when the user leaves the app
+    public let sessionID: String?
+    
+    public let experimentIDs: Set<Int>
+    
+    public init(appID: Int, deviceID: String, firstInstallDeviceID: String, buildNumber: String, appVersion: String, experimentIDs: Set<Int> = [], sessionID: String? = nil) {
         self.appID = appID
         self.deviceID = deviceID
+        self.firstInstallDeviceID = firstInstallDeviceID
         self.buildNumber = buildNumber
         self.appVersion = appVersion
+        self.experimentIDs = experimentIDs
+        self.sessionID = sessionID
     }
 }
 

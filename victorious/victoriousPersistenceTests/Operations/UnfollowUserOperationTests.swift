@@ -1,5 +1,5 @@
 //
-//  UnfollowUsersOperationTests.swift
+//  UnfollowUserOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/2/16.
@@ -10,18 +10,18 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
-    var operation: UnFollowUsersOperation!
+class UnfollowUserOperationTests: BaseRequestOperationTestCase {
+    var operation: UnfollowUserOperation!
     let userID = 1
     let currentUserID = 2
-
+    
     override func setUp() {
         super.setUp()
-        operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
+        operation = UnfollowUserOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }
-
+    
     func testUnfollowingAnExistingUser() {
         let objectUser = persistentStoreHelper.createUser(remoteId: userID)
         let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
@@ -29,6 +29,11 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
         objectUser.isFollowedByMainUser = true
         objectUser.numberOfFollowers = 1
         currentUser.numberOfFollowing = 1
+
+        XCTAssertEqual(0, objectUser.followers.count)
+        XCTAssertEqual(0, currentUser.following.count)
+        XCTAssertEqual(true, objectUser.isFollowedByMainUser)
+        XCTAssertFalse( currentUser.isFollowingUserID(objectUser.remoteId.integerValue) )
 
         let uniqueElements = [ "subjectUser" : currentUser, "objectUser" : objectUser ]
         let followedUser: VFollowedUser = testStore.mainContext.v_findOrCreateObject( uniqueElements )
@@ -42,6 +47,7 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(1, currentUser.numberOfFollowing)
         XCTAssertEqual(1, currentUser.following.count)
         XCTAssertEqual(true, objectUser.isFollowedByMainUser)
+        XCTAssert( currentUser.isFollowingUserID(objectUser.remoteId.integerValue) )
         
         operation.main()
 
@@ -54,6 +60,17 @@ class UnfollowUsersOperationTests: BaseRequestOperationTestCase {
             XCTFail("No current user found after following a user")
             return
         }
+
+        XCTAssertEqual(0, updatedUser.numberOfFollowers)
+        XCTAssertEqual(0, updatedUser.followers.count)
+        XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
+        XCTAssertEqual(0, updatedCurrentUser.following.count)
+        XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
+
+        XCTAssertFalse( currentUser.isFollowingUserID(updatedUser.remoteId.integerValue) )
+
+        XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
+        XCTAssertEqual(VTrackingEventUserDidUnfollowUser, self.testTrackingManager.trackEventCalls.first?.eventName)
 
         XCTAssertEqual(0, updatedUser.numberOfFollowers)
         XCTAssertEqual(0, updatedUser.followers.count)

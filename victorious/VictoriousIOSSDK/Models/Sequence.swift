@@ -36,7 +36,6 @@ public struct Sequence: StreamItemType, JSONDeseriealizable {
     public let nodes: [Node]?
     public let parentUser: User?
     public let tracking: Tracking?
-    public let recentComments: [Comment]?
     public let isGifStyle: Bool?
     public let trendingTopicName: String?
     
@@ -97,7 +96,6 @@ extension Sequence {
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])
-        recentComments          = json["recent_comments"].array?.flatMap { Comment(json: $0) }
         
         // MARK: - StreamItemType
         

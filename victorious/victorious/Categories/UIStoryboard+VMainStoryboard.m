@@ -14,7 +14,7 @@
 
 + (UIStoryboard *)v_mainStoryboard
 {
-    UIViewController *rootViewController = [VRootViewController rootViewController];
+    UIViewController *rootViewController = [VRootViewController sharedRootViewController];
     
     if (rootViewController != nil)
     {

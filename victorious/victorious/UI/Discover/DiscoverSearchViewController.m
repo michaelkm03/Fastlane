@@ -31,15 +31,13 @@
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, assign) BOOL isKeyboardShowing;
 @property (nonatomic, assign) CGFloat keyboardHeight;
+@property (nonatomic, assign) CGFloat storyboardSearchBarHeight;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, strong) SearchResultsViewController *currentSearchVC;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
+;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchResultsTableBottomCosntraint;
 @property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
 @property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
 @property (nonatomic, weak) IBOutlet UIButton *closeButton;
@@ -65,6 +63,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.storyboardSearchBarHeight = self.searchBarViewHeightConstraint.constant;
+    [self updateSearchBarVisibility];
     
     // Setup Search Results View Controllers
     [self setupSearchViewControllers];
@@ -97,9 +98,12 @@
 {
     [super viewDidAppear:animated];
     
-    [self.searchField becomeFirstResponder];
-    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
+    
+    // Unable to immediately make the searchBar first responder without this hack
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.searchController.searchBar becomeFirstResponder];
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -130,6 +134,22 @@
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+#pragma mark - Configuration
+
+- (void)setSearchBarHidden:(BOOL)searchBarHidden
+{
+    _searchBarHidden = searchBarHidden;
+    [self updateSearchBarVisibility];
+}
+
+- (void)updateSearchBarVisibility
+{
+    if ( self.isViewLoaded )
+    {
+        self.searchBarViewHeightConstraint.constant = self.searchBarHidden ? 0.0f : self.storyboardSearchBarHeight;
+    }
 }
 
 #pragma mark - Button Actions
@@ -172,6 +192,17 @@
             return;
     }
     
+    previousSearchVC.searchResultsDelegate = nil;
+    self.currentSearchVC.searchResultsDelegate = self;
+    
+    NSString *currentSearchTerm = self.searchController.searchBar.text;
+    const BOOL isAlreadyShowingResultsForSearchTerm = self.currentSearchVC.searchTerm == currentSearchTerm;
+    const BOOL isValidSearchTerm = currentSearchTerm != nil && currentSearchTerm.length > 0;
+    if ( isValidSearchTerm && !isAlreadyShowingResultsForSearchTerm )
+    {
+        [self.currentSearchVC searchWithSearchTerm:currentSearchTerm completion:nil];
+    }
+    
     NSTimeInterval duration = previousSearchVC == nil ? 0.0f : 0.15f;
     [UIView animateWithDuration:duration animations:^
      {
@@ -201,16 +232,6 @@
         [self.currentSearchVC searchWithSearchTerm:textField.text completion:nil];
     }
     return YES;
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    if ( searchBar.text != nil && searchBar.text.length > 0 )
-    {
-        [self.currentSearchVC searchWithSearchTerm:searchBar.text completion:nil];
-    }
 }
 
 @end

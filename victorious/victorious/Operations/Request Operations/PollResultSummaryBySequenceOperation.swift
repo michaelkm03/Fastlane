@@ -30,28 +30,28 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : self.sequenceID] )
-            for pollResult in pollResults where pollResult.sequenceID != nil {
+            guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
+                return context
+            }
+            for pollResult in pollResults {
                 var uniqueElements = [String : AnyObject]()
                 if let answerID = pollResult.answerID {
                     uniqueElements[ "answerId" ] = answerID
-                }
-                if let sequenceID = pollResult.sequenceID {
-                    uniqueElements[ "sequenceId" ] = sequenceID
-                }
-                guard !uniqueElements.isEmpty else {
+                } else {
                     continue
                 }
+                uniqueElements[ "sequenceId" ] = self.sequenceID
+                
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
-                persistentResult.sequenceId = self.sequenceID
                 persistentResult.sequence = sequence
             }
             
             context.v_save()
             completion()
+            return context
         }
     }
 }
