@@ -11,6 +11,7 @@
 class TestVAdViewControllerDelegateImplementor: NSObject, VAdViewControllerDelegate {
     var adDidLoadForAdViewControllerCallCount = 0
     var adDidFinishForAdViewControllerCallCount = 0
+    var adDidStartPlaybackInAdViewControllerCallCount = 0
 
     func adDidLoadForAdViewController(adViewController: VAdViewController!) {
         adDidLoadForAdViewControllerCallCount += 1
@@ -18,5 +19,9 @@ class TestVAdViewControllerDelegateImplementor: NSObject, VAdViewControllerDeleg
 
     func adDidFinishForAdViewController(adViewController: VAdViewController!) {
         adDidFinishForAdViewControllerCallCount += 1
+    }
+
+    func adDidStartPlaybackInAdViewController(adViewController: VAdViewController!) {
+        adDidStartPlaybackInAdViewControllerCallCount += 1
     }
 }

@@ -16,6 +16,9 @@ import SafariServices
     let contentPlayhead: VIMAContentPlayhead
     let adsLoader: IMAAdsLoader
     var adsManager: IMAAdsManager?
+    var learnMoreWasTapped = false
+
+    //MARK: - Initializers
 
     init(player: VVideoPlayer, adTag: String, nibName: String? = nil, nibBundle: NSBundle? = nil) {
         self.adTag = adTag
@@ -36,6 +39,17 @@ import SafariServices
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: - View lifecycle
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if learnMoreWasTapped == true {
+            delegate?.adDidFinishForAdViewController(self)
+        }
+    }
+
+    //MARK: - VAdViewController method overrides
+
     override func startAdManager() {
         guard let view = self.view else {
             print("Can't play ads on a non existent view")
@@ -49,6 +63,8 @@ import SafariServices
         let request = IMAAdsRequest(adTagUrl: adTag, adDisplayContainer: adDisplayContainer, contentPlayhead: contentPlayhead, userContext: nil)
         adsLoader.requestAdsWithRequest(request)
     }
+
+    //MARK: - Notification handlers
 
     func contentDidFinishPlaying(notification: NSNotification) {
         if let player = notification.object as? VVideoPlayer where player === self.player {
@@ -85,7 +101,9 @@ import SafariServices
         case .AD_BREAK_READY: break
         case .AD_BREAK_ENDED: break
         case .AD_BREAK_STARTED: break
-        case .CLICKED: break
+        case .CLICKED:
+            learnMoreWasTapped = true
+            adsManager.discardAdBreak()
         case .COMPLETE, .ALL_ADS_COMPLETED: delegate?.adDidFinishForAdViewController(self)
         case .FIRST_QUARTILE: delegate?.adDidHitFirstQuartileInAdViewController?(self)
         case .LOADED:
@@ -93,9 +111,7 @@ import SafariServices
             delegate?.adDidLoadForAdViewController(self)
         case .MIDPOINT: delegate?.adDidHitMidpointInAdViewController?(self)
         case .PAUSE: break
-        case .RESUME:
-            adsManager.pause()
-            delegate?.adDidStopPlaybackInAdViewController?(self)
+        case .RESUME: break
         case .SKIPPED: delegate?.adDidFinishForAdViewController(self)
         case .STARTED: delegate?.adDidStartPlaybackInAdViewController?(self)
         case .TAPPED: delegate?.adHadImpressionInAdViewController?(self)

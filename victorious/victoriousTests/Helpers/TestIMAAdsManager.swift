@@ -9,6 +9,12 @@
 @testable import victorious
 
 class TestIMAAdsManager: IMAAdsManager {
+    var discardAdBreakCallCount = 0
+
     init(test: Bool) {
+    }
+
+    override func discardAdBreak() {
+        discardAdBreakCallCount += 1
     }
 }
