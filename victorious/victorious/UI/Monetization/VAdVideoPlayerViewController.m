@@ -15,7 +15,6 @@
 @interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
-@property (nonatomic, readwrite) BOOL adPlaying;
 @property (nonatomic, strong) VAdBreak *adBreak;
 
 @end
@@ -107,7 +106,6 @@
 
 - (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
@@ -116,7 +114,6 @@
 
 - (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
     if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStopPlaybackForAdVideoPlayerViewController:self];

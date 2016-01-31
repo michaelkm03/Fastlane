@@ -47,11 +47,6 @@
 @property (nonatomic, weak) id<VAdViewControllerDelegate> delegate;
 
 /**
- Reports if ad is currently playing
- */
-- (BOOL)isAdPlaying;
-
-/**
  Starts the ad manager
  */
 - (void)startAdManager;
