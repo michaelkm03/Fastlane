@@ -12,6 +12,10 @@ class TestVAdViewControllerDelegateImplementor: NSObject, VAdViewControllerDeleg
     var adDidLoadForAdViewControllerCallCount = 0
     var adDidFinishForAdViewControllerCallCount = 0
     var adDidStartPlaybackInAdViewControllerCallCount = 0
+    var adHadImpressionInAdViewControllerCallCount = 0
+    var adDidHitFirstQuartileInAdViewController = 0
+    var adDidHitMidpointInAdViewControllerCallCount = 0
+    var adDidHitThirdQuartileInAdViewControllerCallCount = 0
 
     func adDidLoadForAdViewController(adViewController: VAdViewController!) {
         adDidLoadForAdViewControllerCallCount += 1
@@ -23,5 +27,21 @@ class TestVAdViewControllerDelegateImplementor: NSObject, VAdViewControllerDeleg
 
     func adDidStartPlaybackInAdViewController(adViewController: VAdViewController!) {
         adDidStartPlaybackInAdViewControllerCallCount += 1
+    }
+
+    func adHadImpressionInAdViewController(adViewController: VAdViewController!) {
+        adHadImpressionInAdViewControllerCallCount += 1
+    }
+
+    func adDidHitFirstQuartileInAdViewController(adViewController: VAdViewController!) {
+        adDidHitFirstQuartileInAdViewController += 1
+    }
+
+    func adDidHitMidpointInAdViewController(adViewController: VAdViewController!) {
+        adDidHitMidpointInAdViewControllerCallCount += 1
+    }
+
+    func adDidHitThirdQuartileInAdViewController(adViewController: VAdViewController!) {
+        adDidHitThirdQuartileInAdViewControllerCallCount += 1
     }
 }
