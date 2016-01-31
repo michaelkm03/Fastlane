@@ -31,8 +31,10 @@ class IMAAdViewControllerTests: XCTestCase {
     func testAdsLoaded() {
         let loadedEvent = TestIMAAdEvent(test: true, type: .LOADED)
         XCTAssertEqual(0, delegateViewController.adDidLoadForAdViewControllerCallCount)
+        XCTAssertEqual(0, testAdsManager.startCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: loadedEvent)
         XCTAssertEqual(1, delegateViewController.adDidLoadForAdViewControllerCallCount)
+        XCTAssertEqual(1, testAdsManager.startCallCount)
     }
 
     func testAdStarted() {

@@ -10,8 +10,13 @@
 
 class TestIMAAdsManager: IMAAdsManager {
     var discardAdBreakCallCount = 0
+    var startCallCount = 0
 
     init(test: Bool) {
+    }
+
+    override func start() {
+        startCallCount += 1
     }
 
     override func discardAdBreak() {
