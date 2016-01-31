@@ -20,19 +20,23 @@ import SafariServices
 
     //MARK: - Initializers
 
-    init(player: VVideoPlayer, adTag: String, nibName: String? = nil, nibBundle: NSBundle? = nil) {
-        self.adTag = adTag
-        self.player = player
-        self.contentPlayhead = VIMAContentPlayhead(player: player)
-        self.adsLoader = IMAAdsLoader()
-        super.init(nibName: nibName, bundle: nibBundle)
+    init(player: VVideoPlayer,
+        adTag: String,
+        nibName: String? = nil,
+        nibBundle: NSBundle? = nil,
+        adsLoader: IMAAdsLoader = IMAAdsLoader()) {
+            self.adTag = adTag
+            self.player = player
+            self.contentPlayhead = VIMAContentPlayhead(player: player)
+            self.adsLoader = adsLoader
+            super.init(nibName: nibName, bundle: nibBundle)
 
-        self.adsLoader.delegate = self
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: "contentDidFinishPlaying:",
-            name: AVPlayerItemDidPlayToEndTimeNotification,
-            object: player)
+            self.adsLoader.delegate = self
+            NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: "contentDidFinishPlaying:",
+                name: AVPlayerItemDidPlayToEndTimeNotification,
+                object: player)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,11 +59,7 @@ import SafariServices
             print("Can't play ads on a non existent view")
             return
         }
-        requestAds(adTag: adTag, adContainerView: view)
-    }
-
-    private func requestAds(adTag adTag: String, adContainerView: UIView) {
-        let adDisplayContainer = IMAAdDisplayContainer(adContainer: adContainerView, companionSlots: nil)
+        let adDisplayContainer = IMAAdDisplayContainer(adContainer: view, companionSlots: nil)
         let request = IMAAdsRequest(adTagUrl: adTag, adDisplayContainer: adDisplayContainer, contentPlayhead: contentPlayhead, userContext: nil)
         adsLoader.requestAdsWithRequest(request)
     }

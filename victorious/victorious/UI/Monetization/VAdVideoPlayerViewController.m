@@ -33,7 +33,8 @@
         _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
                                                                   adTag:self.adBreak.adTag
                                                                 nibName:nil
-                                                              nibBundle:nil];
+                                                              nibBundle:nil
+                                                              adsLoader:[[IMAAdsLoader alloc] init]];
     }
     return self;
 }

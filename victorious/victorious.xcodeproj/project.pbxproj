@@ -393,6 +393,7 @@
 		627FD7E01C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DF1C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift */; };
 		627FD7E21C5DC16100680B22 /* TestIMAAdEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */; };
 		627FD7E41C5DC1A500680B22 /* TestIMAAdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */; };
+		627FD7E61C5DCD6A00680B22 /* TestIMAAdsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */; };
 		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
 		629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */; };
 		62B3CC421C5631D700FD733A /* SequenceWithAdBreak.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EEC1C54CB2000B49CB0 /* SequenceWithAdBreak.json */; };
@@ -2471,6 +2472,7 @@
 		627FD7DF1C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewControllerDelegateImplementor.swift; sourceTree = "<group>"; };
 		627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdEvent.swift; sourceTree = "<group>"; };
 		627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsManager.swift; sourceTree = "<group>"; };
+		627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsLoader.swift; sourceTree = "<group>"; };
 		629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAAdViewController.swift; sourceTree = "<group>"; };
 		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
@@ -7599,6 +7601,7 @@
 			children = (
 				A76711FE1C1B8439006568DF /* MockTimingTracker.swift */,
 				627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */,
+				627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */,
 				627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */,
 				62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */,
 				627FD7DF1C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift */,
@@ -11806,6 +11809,7 @@
 				A7D0AD321C0D453D0018C63E /* NSStringVCryptoTests.m in Sources */,
 				A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */,
 				67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */,
+				627FD7E61C5DCD6A00680B22 /* TestIMAAdsLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

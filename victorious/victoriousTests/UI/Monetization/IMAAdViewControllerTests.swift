@@ -13,12 +13,14 @@ class IMAAdViewControllerTests: XCTestCase {
     let player = VVideoView()
     let testAdTag = "http://example.com/adTag"
     let testAdsManager = TestIMAAdsManager(test: true)
+    var testAdsLoader: TestIMAAdsLoader!
     var controller: IMAAdViewController!
     var delegateViewController: TestVAdViewControllerDelegateImplementor!
 
     override func setUp() {
         super.setUp()
-        controller = IMAAdViewController(player: player, adTag: testAdTag)
+        testAdsLoader = TestIMAAdsLoader()
+        controller = IMAAdViewController(player: player, adTag: testAdTag, nibName: nil, nibBundle: nil, adsLoader: testAdsLoader)
         delegateViewController = TestVAdViewControllerDelegateImplementor()
         controller.adsManager = testAdsManager
         controller.delegate = delegateViewController
@@ -26,6 +28,11 @@ class IMAAdViewControllerTests: XCTestCase {
 
     func testInit() {
         XCTAssert(controller.adsLoader.delegate === controller)
+    }
+
+    func testStartAdManager() {
+        controller.startAdManager()
+        XCTAssertEqual(1, testAdsLoader.requestAdsWithRequestCallCount)
     }
 
     func testAdsLoaded() {
