@@ -31,15 +31,10 @@ final class PollResultSummaryBySequenceOperation: RequestOperation {
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock { context in
-            
-            guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
-                return
-            }
-            
-            let persistentPollResults = NSSet(array: pollResults.flatMap {
+            for pollResult in pollResults {
                 // Populate a persistent VPollResult object
-                guard let answerID = $0.answerID else {
-                    return nil
+                guard let answerID = pollResult.answerID else {
+                    continue
                 }
                 let uniqueElements: [String : AnyObject] = [
                     "answerId" : NSNumber(integer: answerID),
@@ -47,15 +42,10 @@ final class PollResultSummaryBySequenceOperation: RequestOperation {
                 ]
                 
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
-                persistentResult.populate(fromSourceModel:$0)
-                
-                return persistentResult
-                })
-            
-            let uniqueInfo = ["sequence" : sequence, "pollResults" : persistentPollResults]
-            let _: VSequencePollResults = context.v_findOrCreateObject(uniqueInfo)
-            
+                persistentResult.populate(fromSourceModel:pollResult)
+            }
             context.v_save()
+            
             dispatch_async(dispatch_get_main_queue()) {
                 self.results = self.fetchResults()
                 completion()
@@ -65,15 +55,10 @@ final class PollResultSummaryBySequenceOperation: RequestOperation {
     
     private func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
-                return []
-            }
-            let fetchRequest = NSFetchRequest(entityName: VSequencePollResults.v_entityName())
-            let predicate = NSPredicate(format: "sequence.remoteId == %@", argumentArray: [ sequence.remoteId])
+            let fetchRequest = NSFetchRequest(entityName: VPollResult.v_entityName())
+            let predicate = NSPredicate(format: "sequenceId == %@", argumentArray: [self.sequenceID])
             fetchRequest.predicate = predicate
-            let result = (context.v_executeFetchRequest(fetchRequest).first as? VSequencePollResults)!
-            
-            return result.pollResults.flatMap { $0 }
+            return context.v_executeFetchRequest(fetchRequest)
         }
     }
 }
