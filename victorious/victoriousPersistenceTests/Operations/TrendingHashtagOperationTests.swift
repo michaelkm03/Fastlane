@@ -15,12 +15,8 @@ class TrendingHashtagOperationTests: BaseRequestOperationTestCase {
     func testRequestExecution() {
         let operation = TrendingHashtagOperation()
         operation.requestExecutor = testRequestExecutor
-        
-        queueExpectedOperation(operation: operation)
-
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        }
+        operation.main()
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 
     func testResults() {

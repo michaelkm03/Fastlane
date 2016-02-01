@@ -104,7 +104,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+    self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");

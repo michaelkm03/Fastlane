@@ -57,7 +57,7 @@ static const CGFloat kCornderRadius = 3.0f;
     NSString *messageString = [VNotAuthorizedProfileCollectionViewCell messageString];
     NSString *titleString = [VNotAuthorizedProfileCollectionViewCell titleString];
 
-    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.noContentViewContainer.bounds];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:self.noContentViewContainer.bounds];
     noContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.noContentViewContainer addSubview:noContentView];
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];

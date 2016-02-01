@@ -163,12 +163,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
-    {
-        [self.contentCell playAd:self.viewModel.monetizationPartner
-                         details:self.viewModel.monetizationDetails];
-    }
-    
+    [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 
@@ -1508,7 +1503,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          if ( error == nil )
          {
-             [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerBPercentage animated:YES];
+             [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
          }
      }];
 }

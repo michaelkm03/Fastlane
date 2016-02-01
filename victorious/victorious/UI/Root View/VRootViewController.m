@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-+ (instancetype)rootViewController
++ (instancetype)sharedRootViewController
 {
     VRootViewController *rootViewController = (VRootViewController *)[[(VAppDelegate *)[[UIApplication sharedApplication] delegate] window] rootViewController];
     if ([rootViewController isKindOfClass:self])
@@ -258,8 +258,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
     self.deepLinkReceiver.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
     
-    [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
-    
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
@@ -410,24 +408,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
     if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 
 - (void)openURL:(NSURL *)url
 {
     [self.deepLinkReceiver receiveDeeplink:url];
-}
-
-#pragma mark - Ad Networks
-
-- (void)seedMonetizationNetworks:(NSArray *)adSystems
-{
-    for ( NSDictionary *adSystem in adSystems )
-    {
-        NSNumber *number = [adSystem valueForKey:@"ad_system"];
-        __unused VMonetizationPartner adSystem = number.integerValue;
-    }
 }
 
 - (void)startNewSession

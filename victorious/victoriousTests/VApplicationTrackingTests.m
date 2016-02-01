@@ -23,11 +23,7 @@
 
 - (NSString *)stringFromParameterValue:(id)value;
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
-- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters;
-- (void)sendRequest:(NSURLRequest *)request;
-- (VObjectManager *)applicationObjectManager;
 - (void)sessionTimerDidResetSession:(VSessionTimer *)sessionTimer;
-- (nullable NSURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters;
 
 @end
 
@@ -35,7 +31,6 @@
 @interface VApplicationTrackingTests : XCTestCase
 
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
-@property (nonatomic, assign) IMP sendRequestImp;
 
 @end
 
@@ -45,22 +40,16 @@
 {
     [super setUp];
     
-    self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
-                                                                withBlock:^(VApplicationTracking *applicationTracking, NSURLRequest *request)
-                                     {}];
-    
     self.applicationTracking = [[VApplicationTracking alloc] init];
     
     XCTAssertNotNil( self.applicationTracking.parameterMacroMapping );
-    XCTAssertNotEqual( self.applicationTracking.parameterMacroMapping.allKeys.count, (NSUInteger)0 );
+    XCTAssertNotEqual( self.applicationTracking.parameterMacroMapping.allKeys.count, 0u );
     
     [[LSNocilla sharedInstance] start];
 }
 
 - (void)tearDown
 {
-    [VApplicationTracking v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequest:)];
-
     [[LSNocilla sharedInstance] clearStubs];
     [[LSNocilla sharedInstance] stop];
     [super tearDown];
@@ -68,36 +57,84 @@
 
 - (void)testTrackEvents
 {
-    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
-    stubRequest(@"GET", @"http://www.apple.com").andReturn(200);
-    stubRequest(@"GET", @"http://www.yahoo.com").andReturn(200);
-    stubRequest(@"GET", @"http://www.google.com").andReturn(200);
+    XCTestExpectation *apple = [self expectationWithDescription:@"apple"];
+    XCTestExpectation *yahoo = [self expectationWithDescription:@"yahoo"];
+    XCTestExpectation *google = [self expectationWithDescription:@"google"];
+    
+    stubRequest(@"GET", @"http://www.apple.com").withHeader(@"X-Client-Event-Index", @"1").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [apple fulfill];
+    });
+    stubRequest(@"GET", @"http://www.yahoo.com").withHeader(@"X-Client-Event-Index", @"2").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [yahoo fulfill];
+    });
+    stubRequest(@"GET", @"http://www.google.com").withHeader(@"X-Client-Event-Index", @"3").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [google fulfill];
+    });
     
     NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 0 );
-    
+    [self waitForExpectationsWithTimeout:3 handler:nil];
+}
+
+- (void)testInvalidURLs
+{
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:nil andParameters:nil], -1 );
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:@[] andParameters:nil], -1 );
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
-    
-    urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 1 );
-    
-    urls = @[ [NSNull null], [NSNull null] ];
+
+    NSArray *urls = @[ [NSNull null], [NSNull null] ];
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 2 );
-    
-    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
 }
 
-- (void)testTrackEvent
+- (void)testOneInvalidURL
 {
-    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
-    stubRequest(@"GET", @"http://www.google.com").andReturn(200);
+    XCTestExpectation *apple = [self expectationWithDescription:@"apple"];
+    XCTestExpectation *yahoo = [self expectationWithDescription:@"yahoo"];
+    XCTestExpectation *google = [self expectationWithDescription:@"google"];
+    
+    stubRequest(@"GET", @"http://www.apple.com").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [apple fulfill];
+    });
+    stubRequest(@"GET", @"http://www.yahoo.com").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [yahoo fulfill];
+    });
+    stubRequest(@"GET", @"http://www.google.com").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [google fulfill];
+    });
+    
+    NSArray *urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 1 );
+    [self waitForExpectationsWithTimeout:3 handler:nil];
+}
+
+- (void)testTrackEventWithNilParameters
+{
+    XCTestExpectation *exepectation = [self expectationWithDescription:@""];
+    stubRequest(@"GET", @"http://www.google.com").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [exepectation fulfill];
+    });
     
     XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
-    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    [self waitForExpectationsWithTimeout:3 handler:nil];
+}
+
+- (void)testTrackEventWithEmptyDictionaryForParameters
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    stubRequest(@"GET", @"http://www.google.com").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [expectation fulfill];
+    });
     
-    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 - (void)testTrackEventNoValuesInvalid
@@ -109,67 +146,19 @@
 
 - (void)testTrackEventValues
 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    stubRequest(@"GET", @"http://www.example.com/value1/value2").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [expectation fulfill];
+    });
+
     NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
     NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
-    NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
+    NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", self.applicationTracking.parameterMacroMapping[macro1], self.applicationTracking.parameterMacroMapping[macro2]];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
     XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
-}
-
-- (void)testTrackEventValuesInvalid
-{
-    NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
-    NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
-    NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
-    
-    NSDictionary *parameters;
-    
-    parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
-    
-    parameters = @{ macro1 : @3 , macro2 : @6 };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
-    
-    parameters = @{ macro1 : [NSDate date] , macro2 : [NSDate date] };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
-    
-    parameters = @{ macro1 : @5.0f , macro2 : @10.0f };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
-}
-
-- (void)testMacroReplacement
-{
-    NSString *macro1 = self.applicationTracking.parameterMacroMapping.allValues[0];
-    NSString *macro2 = self.applicationTracking.parameterMacroMapping.allValues[1];
-    NSString *macro3 = self.applicationTracking.parameterMacroMapping.allValues[2];
-    NSString *macro4 = @"%%BRAND_NEW_UNKNOWN_MACRO%%";
-    NSString *macro5 = @"%%ANOTER NEW ONE%%";
-    
-    NSString *paramKey1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
-    NSString *paramKey3 = self.applicationTracking.parameterMacroMapping.allKeys[2];
-    
-    NSString *string = [NSString stringWithFormat:@"%@/%@/%@/%@/%@", macro1, macro2, macro3, macro4, macro5 ];
-    
-    NSString *output;
-    NSString *expected;
-    NSDictionary *parameters;
-    
-    parameters = @{ paramKey1 : @"value1",
-                    // macro2 is missing intentionally to test the removal of the macro
-                    paramKey3 : @"value3"
-                    // macro4 is missing intentionally to test the removal of the macro
-                    };
-    
-    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
-                                                      inString:string
-                                    withCorrespondingParameters:parameters];
-    expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ paramKey1 ]];
-    expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:@""];
-    expected = [expected stringByReplacingOccurrencesOfString:macro3 withString:parameters[ paramKey3 ]];
-    expected = [expected stringByReplacingOccurrencesOfString:macro4 withString:@""];
-    expected = [expected stringByReplacingOccurrencesOfString:macro5 withString:@""];
-    XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced, otherwise the macros should be removed." );
+    [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 - (void)testStringFromParameterValue
@@ -199,86 +188,37 @@
     XCTAssertEqualObjects( output, expected );
 }
 
-- (void)testUrlStringFromUrlStringNoChangeToUrl
-{
-    NSString *macro = @"%%macro%%";
-    NSString *url;
-    NSString *output;
-
-    url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
-                                                      inString:url
-                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
-    NSString *expected = @"http://www.example.com/";
-    XCTAssertEqualObjects( output, expected, @"Attempting to replace a macro not present in URL should leave URL unchanged." );
-    
-    url = @"http://www.example.com/";
-    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
-                                                      inString:url
-                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
-    XCTAssertEqualObjects( output, url, @"Attempting to replace a macro in a URL without macros should leave URL unchanged." );
-    
-    url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
-                                                      inString:url
-                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
-    expected = @"http://www.example.com/";
-    XCTAssertEqualObjects( output, expected, @"Attempting to replace a macro in a URL with the wrong macro should leave URL unchanged." );
-}
-
 - (void)testOrderAndSessionReset
 {
-    NSString *trackingURL = @"http://www.google.com";
-    VMockRequestRecorder *mockRequestRecorder = [[VMockRequestRecorder alloc] init];
-    
-    for ( NSInteger i = 0; i < 8; i++ )
+    XCTestExpectation *apple = [self expectationWithDescription:@"apple"];
+    XCTestExpectation *yahoo = [self expectationWithDescription:@"yahoo"];
+    stubRequest(@"GET", @"http://www.apple.com").withHeader(@"X-Client-Event-Index", @"1").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
     {
-        NSURLRequest *trackingRequest = [self.applicationTracking requestWithUrl:trackingURL withParameters:nil];
-        [mockRequestRecorder recordRequest:trackingRequest];
-        for ( NSInteger j = 0; j <= i; j++ )
-        {
-            NSURLRequest *request = mockRequestRecorder.requestsSent[i];
-            NSString *expected = [NSString stringWithFormat:@"%@", @(i+1)];
-            XCTAssertEqualObjects( request.allHTTPHeaderFields[ @"X-Client-Event-Index"], expected );
-        }
-    }
+        [apple fulfill];
+    });
+    stubRequest(@"GET", @"http://www.yahoo.com").withHeader(@"X-Client-Event-Index", @"1").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [yahoo fulfill];
+    });
     
+    [self.applicationTracking trackEventWithUrl:@"http://www.apple.com" andParameters:nil];
     [self.applicationTracking sessionTimerDidResetSession:nil];
-    
-    for ( NSInteger i = 0; i < 8; i++ )
-    {
-        NSURLRequest *trackingRequest = [self.applicationTracking requestWithUrl:trackingURL withParameters:nil];
-        [mockRequestRecorder recordRequest:trackingRequest];
-        for ( NSInteger j = 0; j <= i; j++ )
-        {
-            NSURLRequest *request = mockRequestRecorder.requestsSent[i];
-            NSString *expected = [NSString stringWithFormat:@"%@", @(i+1)];
-            XCTAssertEqualObjects( request.allHTTPHeaderFields[ @"X-Client-Event-Index"], expected );
-        }
-    }
+    [self.applicationTracking trackEventWithUrl:@"http://www.yahoo.com" andParameters:nil];
+    [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 - (void)testOrderStartIndexAndReset
 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
     NSString *trackingURL = @"http://www.google.com";
-    
-    VMockRequestRecorder *mockRequestRecorder = [[VMockRequestRecorder alloc] init];
-    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
-    
+    stubRequest(@"GET", @"http://www.google.com").withHeader(@"X-Client-Event-Index", @"1").andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
     {
-        NSURLRequest *request = mockRequestRecorder.requestsSent[0];
-        NSString *expected = [NSString stringWithFormat:@"%@", @(1)];
-        XCTAssertEqualObjects( request.allHTTPHeaderFields[ @"X-Client-Event-Index"], expected );
-    }
+        [expectation fulfill];
+    });
     
     self.applicationTracking.requestCounter = NSUIntegerMax;
-    
-    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
-    {
-        NSURLRequest *request = mockRequestRecorder.requestsSent[0];
-        NSString *expected = [NSString stringWithFormat:@"%@", @(1)];
-        XCTAssertEqualObjects( request.allHTTPHeaderFields[ @"X-Client-Event-Index"], expected );
-    }
+    [self.applicationTracking trackEventWithUrl:trackingURL andParameters:nil];
+    [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 @end

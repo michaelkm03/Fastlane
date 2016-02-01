@@ -43,21 +43,19 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
         let stream: Stream
-        if responseJSON["payload"].array != nil,
-            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"] ])) {
-                stream = streamFromItems
-        }
-        else if responseJSON["payload"]["content"].array != nil,
+        
+        if let streamFromObject = Stream(json: responseJSON["payload"]) {
+            stream = streamFromObject // Regular Streams
+        } else if responseJSON["payload"].array != nil,
+            let streamFromItems = Stream(json: JSON([ "id" : responseJSON["stream_id"], "items" : responseJSON["payload"] ])) {
+                stream = streamFromItems // User profile and other streams with `stream_id` in the response
+        } else if responseJSON["payload"]["content"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"]["content"] ])) {
-                stream = streamFromItems
-        }
-        else if let streamFromObject = Stream(json: responseJSON["payload"]) {
-            stream = streamFromObject
-        }
-        else {
+                stream = streamFromItems // Liked posts, and other weird responses with no `stream_id` information
+        } else {
             throw ResponseParsingError()
         }
-        
+    
         return stream
     }
 }

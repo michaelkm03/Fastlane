@@ -103,9 +103,12 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
     [operation queueOn:operation.defaultQueue
        completionBlock:^(NSError *_Nullable error)
     {
-        if (error == nil && success != nil)
+        if (error == nil)
         {
-            success();
+            if (success != nil)
+            {
+                success();
+            }
         }
         else if (failure != nil)
         {

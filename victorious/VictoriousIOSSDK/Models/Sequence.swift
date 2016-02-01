@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct Sequence: StreamItemType {
+public struct Sequence: StreamItemType, JSONDeseriealizable {
     public let sequenceID: String
     public let category: Category
     public let user: User
@@ -31,12 +31,11 @@ public struct Sequence: StreamItemType {
     public let previewData: AnyObject?
     public let previewType: AssetType?
     public let sequenceDescription: String?
-    public let adBreaks: [AdBreak]?
+    public let adBreak: AdBreak?
     public let comments: [Comment]?
     public let nodes: [Node]?
     public let parentUser: User?
     public let tracking: Tracking?
-    public let recentComments: [Comment]?
     public let isGifStyle: Bool?
     public let trendingTopicName: String?
     
@@ -92,12 +91,11 @@ extension Sequence {
         isGifStyle              = json["is_gif_style"].bool
         trendingTopicName       = json["trending_topic_name"].string
         parentUserID            = json["parent_user"].int
-        adBreaks                = json["ad_breaks"].array?.flatMap { AdBreak(json: $0) }
+        adBreak                 = AdBreak(json: json["ad_break"])
         comments                = json["comments"].array?.flatMap { Comment(json: $0) }
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])
-        recentComments          = json["recent_comments"].array?.flatMap { Comment(json: $0) }
         
         // MARK: - StreamItemType
         

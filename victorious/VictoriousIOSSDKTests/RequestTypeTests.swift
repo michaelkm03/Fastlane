@@ -8,6 +8,7 @@
 
 import SwiftyJSON
 import Nocilla
+import UIKit
 import VictoriousIOSSDK
 import XCTest
 
@@ -38,7 +39,7 @@ private class MockRequest<T>: RequestType {
 class RequestTypeTests: XCTestCase {
 
     private let mockAuthenticationContext =  AuthenticationContext(userID: 31337, token: "abcdefg")
-    private let mockRequestContext = RequestContext(appID: 1, deviceID: "57a01bb1-e97d-420e-96d1-b98966328df8", buildNumber: "1234", appVersion: "1.0")
+    private let mockRequestContext = RequestContext(appID: 1, deviceID: "57a01bb1-e97d-420e-96d1-b98966328df8", firstInstallDeviceID: "ed8ac5f2-d3dd-4ca2-a471-9c6e74f3c0d9", buildNumber: "1234", appVersion: "1.0", sessionID: "e384f969-a6c6-4b85-b8f2-ae7ef4c810f1", experimentIDs: [1])
     
     override func setUp() {
         super.setUp()
@@ -192,6 +193,25 @@ class RequestTypeTests: XCTestCase {
         }
         
         stubRequest("GET", "http://api.example.com/api/test3").andReturn(200)
+        
+        request.execute(baseURL: NSURL(string: "http://api.example.com/")!, requestContext: mockRequestContext, authenticationContext: nil)
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testOtherHeaders() {
+        
+        let callbackExpectation = expectationWithDescription("callback")
+        let request = MockRequest(requestURL: NSURL(string: "/api/test4")!) { (actualURLRequest: NSURLRequest, _, _, _) in
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Platform"], "iOS")
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-OS-Version"], UIDevice.currentDevice().systemVersion)
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-App-Version"], "1.0")
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Session-ID"], "e384f969-a6c6-4b85-b8f2-ae7ef4c810f1")
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Experiment-IDs"], "1")
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Install-Device-ID"], "ed8ac5f2-d3dd-4ca2-a471-9c6e74f3c0d9")
+            callbackExpectation.fulfill()
+        }
+        
+        stubRequest("GET", "http://api.example.com/api/test4").andReturn(200)
         
         request.execute(baseURL: NSURL(string: "http://api.example.com/")!, requestContext: mockRequestContext, authenticationContext: nil)
         waitForExpectationsWithTimeout(2, handler: nil)

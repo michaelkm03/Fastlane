@@ -9,13 +9,13 @@
 import XCTest
 @testable import victorious
 
-class VConversationTests: XCTestCase {
+class VConversationTests: BasePersistentStoreTestCase {
 
     var conversation: VConversation!
     
     override func setUp() {
         super.setUp()
-        conversation = PersistentStoreTestHelper(persistentStore:TestPersistentStore()).createConversation()
+        conversation = persistentStoreHelper.createConversation()
     }
     
     func testMarkedForDeletionPredicates() {
@@ -27,5 +27,4 @@ class VConversationTests: XCTestCase {
         self.conversation.markedForDeletion = false
         XCTAssertTrue(notMarkedForDeletionPredicate.evaluateWithObject(self.conversation))
     }
-
 }

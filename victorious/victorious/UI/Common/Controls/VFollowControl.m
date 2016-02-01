@@ -14,7 +14,6 @@ static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
-static const CGFloat kLoadingColorAlpha = 0.6f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -37,6 +36,7 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
+    
     self = [super initWithCoder:aDecoder];
     if ( self != nil )
     {
@@ -55,6 +55,14 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     return self;
 }
 
+- (void)onToggleFollow:(id)sender
+{
+    if ( self.onToggleFollow != nil )
+    {
+        self.onToggleFollow();
+    }
+}
+
 - (void)sharedInit
 {
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -70,20 +78,11 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     [self addSubview:imageView];
     [self v_addFitToParentConstraintsToSubview:imageView];
     _imageView = imageView;
+    
+    [self addTarget:self action:@selector(onToggleFollow:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - UIControl
-
-- (void)setHighlighted:(BOOL)highlighted
-{
-    [super setHighlighted:highlighted];
-    
-    [self performHighlightAnimations:^
-     {
-         self.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
-         self.layer.shadowOpacity = kForcedAntiAliasingConstant;
-     }];
-}
 
 #pragma mark - Animations
 

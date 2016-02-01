@@ -42,6 +42,7 @@ static CGFloat const kStreamViewCellHeight       = 320.0f;
 #pragma mark - Error Codes
 
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
+static NSString * const kVictoriousErrorMessageKey      = @"VictoriousErrorMessage";
 
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
@@ -165,5 +166,7 @@ static NSString * const   kPollAnswerBarStoryboardID           = @"pollanswerbar
 static NSString * const   kHashTagsContainerStoryboardID       = @"hashtagscontainer";
 static NSString * const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString * const   kKeyboardBarStoryboardID             = @"keyboardbar";
-
 static NSString * const   kProfileCreateStoryboardID           = @"profileCreate";
+
+#pragma mark - Supported Ad Networks
+static NSUInteger const kMonetizationPartnerIMA = 5;

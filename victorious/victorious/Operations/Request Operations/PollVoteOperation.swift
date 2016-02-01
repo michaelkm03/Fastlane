@@ -29,8 +29,8 @@ final class PollVoteOperation: RequestOperation {
             let pollResult: VPollResult = context.v_createObject()
             pollResult.sequenceId = String(self.request.sequenceID)
             pollResult.answerId = self.request.answerID
-            pollResult.sequence = sequence
             pollResult.count = pollResult.count.integerValue + 1
+            pollResult.sequence = sequence
             pollResult.user = user
             
             context.v_save()

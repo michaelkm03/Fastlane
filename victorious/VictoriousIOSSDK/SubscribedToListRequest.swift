@@ -35,7 +35,7 @@ public struct SubscribedToListRequest: PaginatorPageable, ResultBasedPageable {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
         
-        guard let usersJSON = responseJSON["payload"]["users"].array else {
+        guard let usersJSON = responseJSON["payload"]["users"].array ?? responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         

@@ -180,6 +180,11 @@
 
 - (UIColor *)defaultBackgroundColor
 {
+    return [UIColor clearColor];
+}
+
+- (UIColor *)detailBackgroundColor
+{
     return [UIColor blackColor];
 }
 
@@ -201,8 +206,14 @@
 
 - (UIColor *)updatedBackgroundColor
 {
-    UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
-    return self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
+    switch (self.focusType)
+    {
+        case VFocusTypeDetail:
+            return [self detailBackgroundColor];
+        case VFocusTypeNone:
+        case VFocusTypeStream:
+            return self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
+    }
 }
 
 #pragma mark - Gestures

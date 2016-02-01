@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 extension VImageAsset: PersistenceParsable {
     
     func populate( fromSourceModel imageAsset: ImageAsset ) {
-        height = imageAsset.size.height
-        imageURL = imageAsset.url.absoluteString
-        type = imageAsset.type
-        width = imageAsset.size.width
+        height = imageAsset.size.height ?? height
+        imageURL = imageAsset.url.absoluteString ?? imageURL
+        type = imageAsset.type ?? type
+        width = imageAsset.size.width ?? width
     }
 }

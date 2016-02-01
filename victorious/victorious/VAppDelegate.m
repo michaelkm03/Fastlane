@@ -6,12 +6,15 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "TestFairy.h"
 #import "VAppDelegate.h"
 #import "VReachability.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
+#import "VUser.h"
 #import "VConstants.h"
 #import "VRootViewController.h"
+#import "VStoredLogin.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -33,7 +36,12 @@
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
+#ifdef V_ENABLE_TESTFAIRY
+    [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
+    [self addLoginListener];
+#else
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+#endif
     
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
@@ -47,7 +55,7 @@
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if ( localNotification != nil )
     {
-        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
     }
     
     DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstance];
@@ -61,7 +69,7 @@
 {
     if ( [application applicationState] == UIApplicationStateInactive )
     {
-        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
     }
 }
 
@@ -72,7 +80,7 @@
 
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [[VRootViewController rootViewController] applicationDidReceiveRemoteNotification:userInfo];
+    [[VRootViewController sharedRootViewController] applicationDidReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
@@ -96,9 +104,9 @@
                                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     }
     
-    [[VRootViewController rootViewController] applicationOpenURL:url
-                                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    [[VRootViewController sharedRootViewController] applicationOpenURL:url
+                                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     
     return YES;
 }
@@ -144,5 +152,21 @@
     id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
+
+#ifdef V_ENABLE_TESTFAIRY
+- (void)addLoginListener
+{
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *_Nonnull notification)
+    {
+        VUser *user = [VCurrentUser user];
+        if ( user != nil )
+        {
+            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.name ?: @"",
+                                                                     TFSDKIdentityTraitEmailAddressKey: user.email ?: @"",
+                                                                     }];
+        }
+    }];
+}
+#endif
 
 @end

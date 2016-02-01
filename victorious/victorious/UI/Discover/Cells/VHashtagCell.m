@@ -63,8 +63,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     [super awakeFromNib];
     if ([AgeGate isAnonymousUser])
     {
-        [self.followHashtagControl removeFromSuperview];
-        self.followHashtagControl = nil;
+        [self.followControl removeFromSuperview];
+        self.followControl = nil;
     }
 }
 
@@ -83,23 +83,10 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     [self.hashTagLabel setText:text];
 }
 
-- (IBAction)followUnfollowHashtag:(id)sender
-{
-    if (self.onToggleFollowHashtag != nil)
-    {
-        self.onToggleFollowHashtag();
-    }
-}
-
-- (void)prepareForReuse
-{
-    self.followHashtagControl.alpha = 1.0f;
-}
-
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.followHashtagControl.dependencyManager = dependencyManager;
+    self.followControl.dependencyManager = dependencyManager;
     self.hashTagLabel.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.hashTagLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.hashTagLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];

@@ -11,29 +11,17 @@ import VictoriousIOSSDK
 
 extension VApplicationTracking {
     
-    func request( url url: NSURL ) -> NSURLRequest? {
-        let mutableRequest = NSMutableURLRequest(URL: url)
-        mutableRequest.HTTPBody = nil
-        mutableRequest.HTTPMethod = "GET"
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        let baseURL = currentEnvironment.baseURL
-        
-        let persistentStore: PersistentStoreType = MainPersistentStore()
-        let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VCurrentUser.user())
+    func sendRequest(url: NSURL, eventIndex: Int, completion: NSError? -> Void) {
+        let request = ApplicationTrackingRequest(trackingURL: url, eventIndex: eventIndex)
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+            MainRequestExecutor().executeRequest(request, onComplete: { (_, end) in
+                    completion(nil)
+                    end()
+                },
+                                                          onError: { (error, end) in
+                    completion(error)
+                    end()
+                })
         }
-        
-        if let requestURLString = mutableRequest.URL?.absoluteString {
-            mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
-        }
-        if let authenticationContext = authenticationContext {
-            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
-        } else {
-            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext)
-        }
-        
-        return mutableRequest.copy() as? NSURLRequest
     }
 }

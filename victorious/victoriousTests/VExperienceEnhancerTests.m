@@ -26,7 +26,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 @interface VApplicationTracking (UnitTests)
 
-- (void)sendRequest:(NSURLRequest *)request;
+- (void)sendRequest:(NSURL *)url eventIndex:(NSInteger)eventIndex completion:(void(^)(NSError *))completion;
 
 @end
 
@@ -71,7 +71,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     self.viewController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
     VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
-    OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
+    OCMStub( [myObjectMock sendRequest:OCMOCK_ANY eventIndex:1 completion:OCMOCK_ANY] );
 }
 
 - (void)tearDown

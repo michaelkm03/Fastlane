@@ -100,7 +100,6 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
-        _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
         _requestCounter = NSUIntegerMax;
         _dateFormatter = [NSDateFormatter vsdk_defaultDateFormatter];
     }
@@ -143,34 +142,27 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         return NO;
     }
     
-    NSURLRequest *request = [self requestWithUrl:url withParameters:parameters];
+    NSURL *requestURL = [self urlByReplacingMacrosInURL:url withParameters:parameters];
 
-    if ( request == nil )
+    if ( requestURL == nil )
     {
         return NO;
     }
     
-    dispatch_async( self.requestQueue, ^(void)
+    [self sendRequest:requestURL eventIndex:[self orderOfNextRequest] completion:^(NSError *error)
     {
-        [self sendRequest:request];
-    });
-    
-    return YES;
-}
-
-- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters
-{
-    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:parameters.count];
-    for (NSString *parameter in parameters.keyEnumerator)
-    {
-        NSString *macro = self.parameterMacroMapping[parameter];
-        if ( macro != nil )
+#if APPLICATION_TRACKING_LOGGING_ENABLED
+        if ( error )
         {
-            replacementsDictionary[macro] = [self stringFromParameterValue:parameters[parameter]];
+            NSLog( @"Application Tracking :: ERROR with URL %@ :: %@", requestURL.absoluteString, [error localizedDescription] );
         }
-    }
-    
-    return [self.macroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:originalString];
+        else
+        {
+            NSLog( @"Application Tracking :: SUCCESS with URL %@", requestURL.absoluteString );
+        }
+#endif
+    }];
+    return YES;
 }
 
 - (NSString *)stringFromParameterValue:(id)value
@@ -205,57 +197,33 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     return stringValue;
 }
 
-- (void)sendRequest:(NSURLRequest *)request
-{
-    if ( request == nil )
-    {
-        return;
-    }
-    
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request];
-    [dataTask resume];
-    
-#if APPLICATION_TRACKING_LOGGING_ENABLED
-    if ( connectionError )
-    {
-        NSLog( @"Application Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
-    }
-    else
-    {
-        NSLog( @"Application Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
-    }
-#endif
-}
-
-- (nullable NSURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters
+- (nullable NSURL *)urlByReplacingMacrosInURL:(NSString *)urlString withParameters:(NSDictionary *)parameters
 {
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
+    VSessionTimer *sessionTimer = [VRootViewController sharedRootViewController].sessionTimer;
     
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     
-    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
-                                                           inString:urlString
-                                        withCorrespondingParameters:completeParameters.copy];
-    
-    NSURL *url = [NSURL URLWithString:urlWithMacrosReplaced];
-    if ( urlString == nil )
+    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:parameters.count];
+    for (NSString *parameter in parameters.keyEnumerator)
     {
-#if APPLICATION_TRACKING_LOGGING_ENABLED
-        NSLog( @"Application Tracking :: ERROR :: Invalid URL %@.", urlString );
-#endif
-        return nil;
+        NSString *macro = self.parameterMacroMapping[parameter];
+        if ( macro != nil )
+        {
+            replacementsDictionary[macro] = [self stringFromParameterValue:parameters[parameter]];
+        }
     }
+    NSString *urlWithMacrosReplaced = [self.macroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:urlString];
+    NSURL *url = [NSURL URLWithString:urlWithMacrosReplaced];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-
-#warning FIXME:
-    // [objectManager updateHTTPHeadersInRequest:request];
+#if APPLICATION_TRACKING_LOGGING_ENABLED
+    if ( url == nil )
+    {
+        NSLog( @"Application Tracking :: ERROR :: Invalid URL %@.", urlString );
+    }
+#endif
     
-    request.HTTPBody = nil;
-    request.HTTPMethod = @"GET";
-    [request v_setEventIndex:self.orderOfNextRequest];
-    return request;
+    return url;
 }
 
 // Adds template-driven tracking URLs that are not context-specific and read from dependency manager
@@ -286,7 +254,6 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    
     if ([AgeGate isAnonymousUser] && ![AgeGate isTrackingEventAllowedForEventName:eventName])
     {
         return;
