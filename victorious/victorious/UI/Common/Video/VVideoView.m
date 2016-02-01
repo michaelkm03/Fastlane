@@ -119,7 +119,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                  }
              }
          }];
-        
+
         self.videoUtils = [[VVideoUtils alloc] init];
     }
     

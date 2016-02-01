@@ -47,7 +47,13 @@ extension VSequence: PersistenceParsable {
             tracking = v_managedObjectContext.v_createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
-        
+
+        if let adBreak = sequence.adBreak {
+            let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
+            persistentAdBreak.populate(fromSourceModel: adBreak)
+            self.adBreak = persistentAdBreak
+        }
+
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         

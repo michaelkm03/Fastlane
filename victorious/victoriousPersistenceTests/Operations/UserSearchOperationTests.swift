@@ -27,12 +27,8 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
             return
         }
         operation.requestExecutor = testRequestExecutor
-
-        queueExpectedOperation(operation: operation)
-
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        }
+        operation.main()
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 
     func testInitializationFail() {
