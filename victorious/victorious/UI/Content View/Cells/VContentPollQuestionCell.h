@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@interface VContentPollQuestionCell : VBaseCollectionViewCell
+@interface VContentPollQuestionCell : VBaseCollectionViewCell <UITextViewDelegate>
 
 /**
  *  Computes the needed size of the cell based on appropriate parameters.
@@ -27,5 +27,7 @@
  *  An attributed string of the question this question cell represents.
  */
 @property (nonatomic, copy) NSAttributedString *question;
+- (void)startScroll;
+- (void)setGradient;
 
 @end
