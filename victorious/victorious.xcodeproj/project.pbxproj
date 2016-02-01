@@ -462,6 +462,7 @@
 		6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6775E75A1C17C318007765B9 /* AgeGate.swift */; };
 		677AF6431C44A80E00B178EE /* TextPostCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */; };
 		677AF6451C44A82A00B178EE /* TextPostCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */; };
+		677B29A81C5FE56800535C04 /* VSequencePollResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B29A71C5FE56800535C04 /* VSequencePollResults.m */; };
 		67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */; };
 		67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
 		67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
@@ -2481,7 +2482,7 @@
 		62575EEE1C54CB2000B49CB0 /* SequenceWithoutID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SequenceWithoutID.json; path = Sequence/SequenceWithoutID.json; sourceTree = "<group>"; };
 		62575EEF1C54CB2000B49CB0 /* SequenceWithoutUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SequenceWithoutUser.json; path = Sequence/SequenceWithoutUser.json; sourceTree = "<group>"; };
 		62575EFF1C54CD9400B49CB0 /* VSequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VSequenceTests.swift; path = Models/VSequenceTests.swift; sourceTree = "<group>"; };
-		625D6E721C385C4D00DB5F1F /* UnfollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUsersOperationTests.swift; sourceTree = "<group>"; };
+		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		627FD7DD1C5DB54100680B22 /* IMAAdViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IMAAdViewControllerTests.swift; path = UI/Monetization/IMAAdViewControllerTests.swift; sourceTree = "<group>"; };
 		627FD7DF1C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewControllerDelegateImplementor.swift; sourceTree = "<group>"; };
 		627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdEvent.swift; sourceTree = "<group>"; };
@@ -2491,7 +2492,6 @@
 		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		62B509731C5492C1008C8D38 /* AdBreakTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdBreakTests.swift; sourceTree = "<group>"; };
-		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewController.swift; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -2561,6 +2561,8 @@
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
 		677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequest.swift; sourceTree = "<group>"; };
 		677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequestTests.swift; sourceTree = "<group>"; };
+		677B29A61C5FE56800535C04 /* VSequencePollResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePollResults.h; sourceTree = "<group>"; };
+		677B29A71C5FE56800535C04 /* VSequencePollResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePollResults.m; sourceTree = "<group>"; };
 		67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
@@ -8196,6 +8198,8 @@
 				F0FC97BB1B58547A0098AFCB /* VSequence.m */,
 				A763635E1C5036BE000887C4 /* VSequenceLiker.h */,
 				A763635F1C5036BE000887C4 /* VSequenceLiker.m */,
+				677B29A61C5FE56800535C04 /* VSequencePollResults.h */,
+				677B29A71C5FE56800535C04 /* VSequencePollResults.m */,
 				F0FC97821B545DB90098AFCB /* VStream.h */,
 				F0FC97831B545DB90098AFCB /* VStream.m */,
 				F07557E41B73B49F00BB2648 /* VStreamItem.h */,
@@ -11558,6 +11562,7 @@
 				A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */,
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,
 				C38211421B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift in Sources */,
+				677B29A81C5FE56800535C04 /* VSequencePollResults.m in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,
