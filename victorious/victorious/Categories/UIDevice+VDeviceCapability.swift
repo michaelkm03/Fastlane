@@ -16,7 +16,12 @@ enum DeviceType {
 }
 
 @objc enum VDeviceRating: Int{
-    case Unknown = 0, Bad, NotGreat, Average, Fast, LightningFast
+    case Unknown = 0,
+    Bad,
+    NotGreat,
+    Average,
+    Fast,
+    LightningFast
 }
 
 private let kiPodConstant = "iPod"

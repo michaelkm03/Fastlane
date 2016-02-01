@@ -137,7 +137,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
     
     NSNumber *unlockLevel = enhancerForIndexPath.voteType.unlockLevel ?: [NSNumber numberWithInt:0];
-    NSInteger userLevel = [VCurrentUser user].level.integerValue;
+//    NSInteger userLevel = [VCurrentUser user].level.integerValue;
+    NSInteger userLevel = 10000;
     [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel.integerValue andUserLevel:userLevel];
     
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
@@ -211,13 +212,15 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else
     {
-        NSBlockOperation *experienceEnhancerOp = [NSBlockOperation blockOperationWithBlock:^{
+        NSBlockOperation *experienceEnhancerOp = [NSBlockOperation blockOperationWithBlock:^
+        {
             // Increment the vote count
             if ( [enhancerForIndexPath vote] )
             {
                 // Restart cooldown
                 [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
-                dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
                     [experienceEnhancerCell startCooldown];
                 });
                 

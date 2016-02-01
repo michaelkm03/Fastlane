@@ -885,41 +885,68 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
 {
-    VImageAnimationOperation *animationOp = [[VImageAnimationOperation alloc] initWithFrame:self.contentCell.bounds];
+    VImageAnimationOperation *animationOp = [[VImageAnimationOperation alloc] initWithAnimationDuration:enhancer.animationDuration];
     animationOp.delegate = self;
-    animationOp.animationDuration = enhancer.animationDuration;
-    animationOp.contentMode = enhancer.voteType.contentMode;
+    UIImageView *animationImageView;
     
     if (enhancer.isBallistic)
     {
         CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
-        animationOp.animationImageView.frame = animationFrameSize;
+        animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-        animationOp.animationImageView.center = convertedCenterForAnimation;
-        CGRect frame = self.contentCell.frame;
-        CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(frame));
-        CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(frame));
+        animationImageView.center = convertedCenterForAnimation;
+        animationImageView.image = enhancer.voteType.iconImage;
+        animationImageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        //animate to here
+        CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(animationFrameSize));
+        CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(animationFrameSize));
         CGPoint newCenter = CGPointMake(randomLocationX, randomLocationY);
-        [animationOp addFlightFor:enhancer.flightDuration destination:newCenter image:enhancer.flightImage];
+        
+        CGFloat flightDuration = enhancer.flightDuration;
+        
+        typedef void (^CompletionBlock)();
+        animationOp.ballisticAnimationBlock = ^void(CompletionBlock completion)
+        {
+            [UIView animateWithDuration:flightDuration
+                             animations:^
+             {
+                 animationImageView.center = newCenter;
+             }
+                             completion:^(BOOL finished)
+            {
+                completion();
+                             }];
+        };
+
     }
-    
+    else
+    {
+        animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+        animationImageView.contentMode = enhancer.voteType.contentMode;
+    }
+    animationOp.animationImageView = animationImageView;
     
     __weak typeof(animationOp) wAnimationOp = animationOp;
     __weak typeof(enhancer) wEnhancer = enhancer;
     __weak typeof(self) welf = self;
+    __weak typeof(animationImageView) wAnimationImageView = animationImageView;
     
     // Load images from disk, might take some time since animations may be large
     
-    NSOperation *readFromDiskOp = [NSBlockOperation blockOperationWithBlock:^{
+    NSOperation *readFromDiskOp = [NSBlockOperation blockOperationWithBlock:^
+    {
         __strong typeof(wAnimationOp) sAnimationOp = wAnimationOp;
         __strong typeof(wEnhancer) sEnhancer = wEnhancer;
         __strong typeof(welf) sself = welf;
+        __strong typeof(wAnimationImageView) sAnimationImageView = wAnimationImageView;
         
         NSArray *images = sEnhancer.voteType.images;
         sAnimationOp.animationSequence = images;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [sself.contentCell.contentView addSubview:animationOp.animationImageView];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [sself.contentCell.contentView addSubview:sAnimationImageView];
         });
     }];
     
@@ -930,9 +957,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)animation:(VImageAnimationOperation *)animation didFinishAnimating:(BOOL)completed
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [animation.animationImageView removeFromSuperview];
-    });
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       [animation.animationImageView removeFromSuperview];
+                   });
+}
+
+- (void)animation:(VImageAnimationOperation *)animation updatedToImage:(UIImage *)image
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       animation.animationImageView.image = image;
+                   });
 }
 
 #pragma mark - UICollectionViewDelegate

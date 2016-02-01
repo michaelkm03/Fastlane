@@ -9,45 +9,36 @@
 import UIKit
 
 @objc protocol VImageAnimationOperationDelegate {
-//    Should remove imageview after this call
+    // Should remove imageview after this call
     func animation(animation: VImageAnimationOperation, didFinishAnimating completed:Bool)
+    
+    // Should update UIImageView
+    func animation(animation: VImageAnimationOperation, updatedToImage image:UIImage?)
 }
 
 class VImageAnimationOperation: Operation {
-    private(set) var animationImageView: UIImageView
     
-    private var animationTimer: NSTimer?
-    private var _contentMode: UIViewContentMode?
-    private var currentFrame: Int
     
     weak var delegate: VImageAnimationOperationDelegate?
     
-    // Needs to be set
-    var animationSequence: NSArray?
+    var animationImageView: UIImageView
     var animationDuration: Float
-    
-    var flightImage: UIImage?
-    var flightDestination: CGPoint?
-    var flightDuration: NSTimeInterval?
-    
-    var contentMode: UIViewContentMode {
-        get {
-            return self._contentMode!
-        }
-        set {
-            self._contentMode = newValue
-            animationImageView.contentMode = contentMode
-        }
-    }
-    
-    init(frame: CGRect) {
-        animationImageView = UIImageView(frame: frame)
-        animationDuration = 1
+    private var currentFrame: Int
+    private var animationTimer: NSTimer?
+    private var _animationSequence: NSArray
+    var ballisticAnimationBlock: (( ()->() )->(Void))?
+
+    required init(animationDuration duration: Float) {
+        _animationSequence = NSArray()
+        animationImageView = UIImageView()
+        animationDuration = duration
         currentFrame = -1
         animationTimer = nil
-        _contentMode = nil
-        animationSequence = nil
         super.init()
+    }
+    
+    func setAnimationSequence(animationSequence: NSArray) {
+        _animationSequence = animationSequence
     }
     
     func isAnimating() -> Bool {
@@ -59,10 +50,10 @@ class VImageAnimationOperation: Operation {
     
     // If nil or empty animation sequence, by default the animation is done.
     func completedAnimation() -> Bool {
-        if animationSequence == nil || animationSequence?.count == 0 {
+        if _animationSequence.count == 0 {
             return true
         }
-        return currentFrame == animationSequence?.count
+        return currentFrame == _animationSequence.count
     }
     
     func updateFrame() {
@@ -74,67 +65,43 @@ class VImageAnimationOperation: Operation {
         if cancelled {
             stopAnimating()
         }
-        if currentFrame == animationSequence?.count {
+        if completedAnimation() {
             stopAnimating()
         }
-        else if currentFrame >= 0 {
-            animationImageView.image = animationSequence?[currentFrame] as? UIImage
-        }
         else {
-            animationImageView.image = nil
+            let image: UIImage? = _animationSequence[currentFrame] as? UIImage
+            delegate?.animation(self, updatedToImage: image)
         }
-    }
-    
-    func addFlightFor(flightDuration: NSTimeInterval, destination:CGPoint, image: UIImage) {
-        self.flightImage = image
-        self.animationImageView.image = image
-        self.flightDuration = flightDuration
-        self.flightDestination = destination
     }
     
     func beginAnimation() {
-        if animationSequence == nil {
-            stopAnimating()
-            return
+        if let _ = ballisticAnimationBlock {
+            ballisticAnimationBlock!({
+                self.currentFrame = 0
+                NSRunLoop.mainRunLoop().addTimer(self.animationTimer!, forMode: NSDefaultRunLoopMode)
+            })
         }
-        currentFrame = 0
-        let frameDuration: Float = animationDuration/Float(animationSequence!.count)
-        animationTimer = NSTimer(timeInterval: NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(animationTimer!, forMode: NSDefaultRunLoopMode)
+        else {
+            currentFrame = 0
+            NSRunLoop.mainRunLoop().addTimer(animationTimer!, forMode: NSDefaultRunLoopMode)
+        }
     }
     
     func startAnimating() {
-        if let _ = animationSequence {
-            if animationSequence?.count == 0 {
-                stopAnimating()
-                return
-            }
-            else if let _ = flightImage {
-                dispatch_async(dispatch_get_main_queue(), {
-                    UIView.animateWithDuration(self.flightDuration!, animations: {
-                        self.animationImageView.center = self.flightDestination!
-                        }, completion: { completed in
-                            self.beginAnimation()
-                    })
-                })
-            }
-            else {
-                beginAnimation()
-            }
+        if _animationSequence.count == 0 {
+            stopAnimating()
         }
         else {
-            stopAnimating()
-            return
+            let frameDuration: Float = animationDuration/Float(_animationSequence.count)
+            animationTimer = NSTimer(timeInterval: NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true)
+            beginAnimation()
         }
     }
     
     func stopAnimating() {
-        if let _ = animationSequence {
-            delegate?.animation(self, didFinishAnimating: currentFrame == animationSequence?.count)
-        }
-        animationTimer?.invalidate()
-        animationImageView.image = nil
-        animationSequence = nil
+        let finishedAnimation: Bool = currentFrame == _animationSequence.count
+        delegate?.animation(self, didFinishAnimating:finishedAnimation)
+        animationTimer!.invalidate()
         finishedExecuting()
     }
     
