@@ -137,8 +137,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
     
     NSNumber *unlockLevel = enhancerForIndexPath.voteType.unlockLevel ?: [NSNumber numberWithInt:0];
-//    NSInteger userLevel = [VCurrentUser user].level.integerValue;
-    NSInteger userLevel = 10000;
+    NSInteger userLevel = [VCurrentUser user].level.integerValue;
     [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel.integerValue andUserLevel:userLevel];
     
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
