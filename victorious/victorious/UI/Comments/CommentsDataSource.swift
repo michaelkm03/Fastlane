@@ -34,7 +34,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
                 self.KVOController.unobserve( self.sequence )
                 self.KVOController.observe( self.sequence,
                     keyPath: "comments",
-                    options: [.Initial],
+                    options: [],
                     action: Selector("onCommentsChanged:")
                 )
             }
@@ -42,11 +42,6 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func onCommentsChanged( change: [NSObject : AnyObject]? ) {
-        guard let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind == .Setting else {
-                return
-        }
-        
         self.refreshLocal(
             createOperation: {
                 return FetchCommentsOperation(sequenceID: self.sequence.remoteId)

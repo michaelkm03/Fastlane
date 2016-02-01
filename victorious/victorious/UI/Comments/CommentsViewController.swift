@@ -23,6 +23,8 @@ extension VDependencyManager {
 }
 
 class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
+    
+    private static let kDefaultBackgroundColorAlpha: CGFloat = 0.35
 
     // MARK: - Factory Method
     
@@ -110,7 +112,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: Outlets
     
     @IBOutlet private weak var collectionView: VInputAccessoryCollectionView!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var backgroundImageView: UIImageView!
     
     // MARK: - UIViewController
     
@@ -129,9 +131,15 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
         let mainScreen = UIScreen.mainScreen()
         let maxWidth = mainScreen.bounds.width * mainScreen.scale
-        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURLWithMaximumSize(CGSizeMake(maxWidth, CGFloat.max)) {
-            
-            imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
+        if let instreamPreviewURL = self.sequence?.inStreamPreviewImageURLWithMaximumSize(CGSizeMake(maxWidth, CGFloat.max))
+            where !instreamPreviewURL.absoluteString.characters.isEmpty {
+                self.backgroundImageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
+                self.backgroundImageView.backgroundColor = UIColor.clearColor()
+        
+        } else {
+            self.backgroundImageView.image = nil
+            let templateColor = self.dependencyManager.colorForKey(VDependencyManagerSecondaryAccentColorKey)
+            self.backgroundImageView.backgroundColor = templateColor.colorWithAlphaComponent(CommentsViewController.kDefaultBackgroundColorAlpha)
         }
         self.refresh()
         
@@ -159,6 +167,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if AgeGate.isAnonymousUser() {
             collectionView.accessoryView?.hidden = true
         }
+        self.updateInsetForKeyboardBarState()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -502,10 +511,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
-        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
         
         focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
+        
         dispatch_after(0.1) {
             self.collectionView.flashScrollIndicators()
         }

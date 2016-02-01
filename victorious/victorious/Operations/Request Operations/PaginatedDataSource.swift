@@ -15,7 +15,8 @@ import VictoriousIOSSDK
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentOperation: NSOperation?
+    private(set) weak var currentPaginatedOperation: NSOperation?
+    private(set) weak var currentLocalOperation: NSOperation?
     
     private(set) var hasLoadedLastPage: Bool = false
     
@@ -53,20 +54,25 @@ import VictoriousIOSSDK
     }
     
     func cancelCurrentOperation() {
-        currentOperation?.cancel()
-        currentOperation = nil
+        currentPaginatedOperation?.cancel()
+        currentPaginatedOperation = nil
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     /// operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
+        guard currentLocalOperation == nil else {
+            return
+        }
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
             self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(results)
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+            self.currentLocalOperation = nil
             completion?(results)
         }
+        self.currentLocalOperation = operation
     }
     
     func refreshLocalJustFilters() {
@@ -77,7 +83,7 @@ import VictoriousIOSSDK
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
-        guard self.currentOperation != nil else {
+        guard self.currentPaginatedOperation != nil else {
             return
         }
         
@@ -124,9 +130,9 @@ import VictoriousIOSSDK
         case .First:
             operationToQueue = createOperation()
         case .Next:
-            operationToQueue = (currentOperation as? T)?.next()
+            operationToQueue = (currentPaginatedOperation as? T)?.next()
         case .Previous:
-            operationToQueue = (currentOperation as? T)?.prev()
+            operationToQueue = (currentPaginatedOperation as? T)?.prev()
         }
         
         // Return early if there is no operation to queue, i.e. no work to do
@@ -167,7 +173,7 @@ import VictoriousIOSSDK
             completion?( operation: operation, error: error )
         }
         
-        self.currentOperation = requestOperation
+        self.currentPaginatedOperation = requestOperation
     }
     
     //MARK: - Private
