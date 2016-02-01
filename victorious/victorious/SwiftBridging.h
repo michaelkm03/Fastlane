@@ -176,6 +176,7 @@
 #import "VSequence.h"
 #import "VSequenceLiker.h"
 #import "VSequencePermissions.h"
+#import "VSequencePollResults.h"
 #import "VSequencePreviewView.h"
 #import "VSessionTimer.h"
 #import "VSettingsSwitchCell.h"

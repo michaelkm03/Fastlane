@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
+final class PollResultSummaryBySequenceOperation: RequestOperation {
     
     let request: PollResultSummaryRequest
     
@@ -30,28 +30,54 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock { context in
             
             guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
-                return context
-            }
-            for pollResult in pollResults {
-                var uniqueElements = [String : AnyObject]()
-                if let answerID = pollResult.answerID {
-                    uniqueElements[ "answerId" ] = answerID
-                } else {
-                    continue
-                }
-                uniqueElements[ "sequenceId" ] = self.sequenceID
-                
-                let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
-                persistentResult.populate(fromSourceModel:pollResult)
-                persistentResult.sequence = sequence
+                return
             }
             
+            let persistentPollResults = NSSet(array: pollResults.flatMap {
+                // Populate a persistent VPollResult object
+                guard let answerID = $0.answerID else {
+                    return nil
+                }
+                let uniqueElements: [String : AnyObject] = [
+                    "answerId" : answerID,
+                    "sequenceId" : self.sequenceID
+                ]
+                
+                let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
+                persistentResult.populate(fromSourceModel:$0)
+                persistentResult.sequence = sequence
+                
+                return persistentResult
+                })
+            
+            let uniqueInfo = ["sequence" : sequence, "pollResults" : persistentPollResults]
+            let results: VSequencePollResults = context.v_findOrCreateObject(uniqueInfo)
+            results.sequence = sequence
+            results.pollResults = persistentPollResults as! Set<VPollResult>
+            
+            
             context.v_save()
-            completion()
-            return context
+            dispatch_async(dispatch_get_main_queue()) {
+                self.results = self.fetchResults()
+                completion()
+            }
+        }
+    }
+    
+    private func fetchResults() -> [AnyObject] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
+                return []
+            }
+            let fetchRequest = NSFetchRequest(entityName: VSequencePollResults.v_entityName())
+            let predicate = NSPredicate(format: "sequence.remoteId == %@", argumentArray: [ sequence.remoteId])
+            fetchRequest.predicate = predicate
+            let result = (context.v_executeFetchRequest(fetchRequest).first as? VSequencePollResults)!
+            
+            return result.pollResults.flatMap { $0 }
         }
     }
 }

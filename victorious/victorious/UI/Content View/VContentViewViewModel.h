@@ -61,6 +61,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) VUser *user;
 @property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
+
 /**
  *  The corresponding sequence for this view model.
  */
@@ -127,6 +128,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) NSString *numberOfVotersText;
 @property (nonatomic, strong) CommentsDataSource *commentsDataSource;
 @property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
+@property (nonatomic, strong) NSArray *pollResults;
 
 /**
  Set a comment ID using this property after initializtion to scroll to and highlight
