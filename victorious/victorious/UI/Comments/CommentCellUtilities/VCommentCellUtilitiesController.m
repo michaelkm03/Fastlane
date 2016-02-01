@@ -16,8 +16,6 @@
 #import "VSequencePermissions.h"
 #import "victorious-Swift.h"
 
-#import "victorious-Swift.h"
-
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 @interface VCommentCellUtilitiesController()
@@ -113,19 +111,27 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     
     switch ( config.type )
     {
-        case VCommentCellUtilityTypeFlag:{
-            [self flagComment:self.comment];
-            [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                             message:NSLocalizedString(@"ReportCommentMessage", @"")
-                             handler:nil];
+        case VCommentCellUtilityTypeFlag: {
+            NSInteger commentID = self.comment.remoteId.integerValue;
+            FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID:commentID];
+            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+             {
+                 [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                  message:NSLocalizedString(@"ReportCommentMessage", @"")
+                                  handler:nil];
+             }];
             break;
         }
         case VCommentCellUtilityTypeEdit:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditComment];
             [self.delegate editComment:self.comment];
             break;
-        case VCommentCellUtilityTypeDelete:
-            [self deleteComment:self.comment];
+            
+        case VCommentCellUtilityTypeDelete: {
+            NSInteger commentID = self.comment.remoteId.integerValue;
+            DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID:commentID removalReason:nil];
+            [operation queueOn:operation.defaultQueue completionBlock:nil];
+        }
             break;
         case VCommentCellUtilityTypeReply:
             [self.delegate replyToComment:self.comment];

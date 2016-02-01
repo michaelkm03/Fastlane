@@ -262,6 +262,19 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
+- (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
+{
+    VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+    NSInteger conversationID = conversation.remoteId.integerValue;
+    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
+    
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+     {
+         [self removeCachedViewControllerForUser:conversation.user];
+         [self.dataSource refreshLocal];
+     }];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView
@@ -271,13 +284,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
                                                                             title:NSLocalizedString(@"Delete", nil)
                                                                           handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull indexPath)
                                           {
-                                              VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-                                              conversation.markedForDeletion = YES;
-                                              [self.dataSource refreshLocal];
-                                              [self removeCachedViewControllerForUser:conversation.user];
-                                              RequestOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
-                                              [operation queueOn:[operation defaultQueue]
-                                                 completionBlock:nil];
+                                              [self deleteConversationAtIndexPath:indexPath];
                                           }];
     return @[deleteAction];
 }

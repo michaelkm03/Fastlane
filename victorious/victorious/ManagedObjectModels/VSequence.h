@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
 @property (nonatomic, retain) NSNumber * isGifStyle;
 @property (nonatomic, retain, nullable) NSString * trendingTopicName;
-@property (nonatomic, retain) NSNumber *markForDeletion;
+@property (nonatomic, retain) NSNumber *markedForDeletion;
 
 @end
 

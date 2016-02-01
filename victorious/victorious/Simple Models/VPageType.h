@@ -10,8 +10,7 @@
 
 /**
  To handle loading paginated results, many methods will accept a parameter
- of this type to load subsequent pages of an `VAbstractFilter` instance that
- tracks the state of a series of paginated requests.
+ of this type to load subsequent pages of paginated requests.
  */
 typedef NS_ENUM( NSUInteger, VPageType )
 {

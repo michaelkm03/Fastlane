@@ -161,7 +161,7 @@
                                                        {
                                                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                        }];
-                                                      self.viewModel.sequence.markForDeletion = @(YES);
+                                                      self.viewModel.sequence.markedForDeletion = @(YES);
                                                       if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
                                                       {
                                                           [self.delegate contentViewDidDeleteContent:self];
@@ -193,7 +193,7 @@
                      [self.presentingViewController dismissViewControllerAnimated:YES
                                                                        completion:^
                       {
-                          self.viewModel.sequence.markForDeletion = @(YES);
+                          self.viewModel.sequence.markedForDeletion = @(YES);
                           if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
                           {
                               [self.delegate contentViewDidFlagContent:self];

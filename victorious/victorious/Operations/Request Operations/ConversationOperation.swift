@@ -9,11 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-// Because messages may exist without a remoteId, we need to check equality differently:
-func ==(lhs: VMessage, rhs: VMessage) -> Bool {
-    return lhs.postedAt == rhs.postedAt && lhs.text == rhs.text && lhs.conversation == rhs.conversation
-}
-
 final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     let conversationID: Int

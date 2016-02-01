@@ -1,26 +1,27 @@
 //
-//  FlagCommentOperation.swift
+//  DeleteCommentOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/24/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 2/1/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
-import VictoriousIOSSDK
 
-class FlagCommentOperation: RequestOperation {
+class DeleteCommentOperation: RequestOperation {
     
-    var request: FlagCommentRequest
+    var request: DeleteCommentRequest
     
     private let flaggedContent = VFlaggedContent()
     
-    init( commentID: Int ) {
-        self.request = FlagCommentRequest(commentID: commentID)
+    init( commentID: Int, removalReason: String?) {
+        self.request = DeleteCommentRequest(commentID: commentID, removalReason: removalReason)
     }
     
     override func main() {
-        flaggedContent.addRemoteId( String(self.request.commentID), toFlaggedItemsWithType: .Comment)
+        // We're also going to flag it locally so that we can filter it from backend responses
+        // while parsing in the future.
+        flaggedContent.addRemoteId( String(request.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -32,7 +33,7 @@ class FlagCommentOperation: RequestOperation {
             }
         }
         
-        // Execute request with callbacks
+        // Execute request with callbacksC
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError)
     }
     

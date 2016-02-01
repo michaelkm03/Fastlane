@@ -11,13 +11,28 @@ import Foundation
 /// Conforming classes can be marked for deletion in a two-phase process.
 /// This is to assist calling code of the persistence layer which may be
 /// retaining a `Deletable` class.
-protocol Deletable: class {
+/*protocol Deletable: class {
 
-    var markedForDeletion: Bool { get set }
+    var markedForDeletion: NSNumber { get set }
     
     /// When an object has been marked for deletion this predicate should evaluate to true
-    static var markedForDeletionPredicate: NSPredicate{ get }
+    static var markedForDeletionPredicate: NSPredicate { get }
     
     /// When an object has *not* been marked for deletion this predicate should evaluate to true
-    static var notMarkedForDeletionPredicate: NSPredicate{ get }
+    static var notMarkedForDeletionPredicate: NSPredicate { get }
 }
+
+extension Deletable {
+    
+    static var markedForDeletionPredicate: NSPredicate {
+        return NSPredicate(format: "%K == YES", "markedForDeletion")
+    }
+    
+    static var notMarkedForDeletionPredicate: NSPredicate{
+        return NSPredicate(format: "%K == NO", "markedForDeletion")
+    }
+}
+
+extension VConversation: Deletable { }
+extension VComment: Deletable { }
+// TODO: extension VSequence: Deletable { }*/

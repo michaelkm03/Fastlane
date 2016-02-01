@@ -22,8 +22,8 @@ class DeleteConversationOperation: RequestOperation {
         // Make the deletion change optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let uniqueElements = [ "remoteId" : self.request.conversationID ]
-            let conversation: VConversation? = context.v_findObjects(uniqueElements).first
-            if let conversation = conversation {
+            if let conversation: VConversation = context.v_findObjects(uniqueElements).first {
+                conversation.markedForDeletion = true
                 context.deleteObject(conversation)
                 context.v_save()
             }

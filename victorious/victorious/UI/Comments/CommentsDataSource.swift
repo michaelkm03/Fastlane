@@ -29,24 +29,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
             },
             completion: { (operation, error) in
                 completion?(error)
-                
-                // Start observing after we've loaded once
-                self.KVOController.unobserve( self.sequence )
-                self.KVOController.observe( self.sequence,
-                    keyPath: "comments",
-                    options: [],
-                    action: Selector("onCommentsChanged:")
-                )
             }
-        )
-    }
-    
-    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
-        self.refreshLocal(
-            createOperation: {
-                return FetchCommentsOperation(sequenceID: self.sequence.remoteId)
-            },
-            completion: nil
         )
     }
     

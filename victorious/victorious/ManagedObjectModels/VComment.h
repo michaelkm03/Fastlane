@@ -9,40 +9,36 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VMediaAttachment, VSequence, VUser;
 
 @interface VComment : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * assetOrientation;
-@property (nonatomic, retain) NSNumber * dislikes;
-@property (nonatomic, retain) NSNumber * flags;
-@property (nonatomic, retain) NSNumber * likes;
-@property (nonatomic, retain) NSString * mediaType;
-@property (nonatomic, retain) NSString * mediaUrl;
-@property (nonatomic, retain) NSNumber * parentId;
+@property (nonatomic, retain, nullable) NSNumber * assetOrientation;
+@property (nonatomic, retain, nullable) NSNumber * dislikes;
+@property (nonatomic, retain, nullable) NSNumber * flags;
+@property (nonatomic, retain, nullable) NSNumber * likes;
+@property (nonatomic, retain, nullable) NSString * mediaType;
+@property (nonatomic, retain, nullable) NSString * mediaUrl;
+@property (nonatomic, retain, nullable) NSNumber * parentId;
 @property (nonatomic, retain) NSDate * postedAt;
-@property (nonatomic, retain) NSNumber * realtime;
+@property (nonatomic, retain, nullable) NSNumber * realtime;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceId;
-@property (nonatomic, retain) NSNumber * shouldAutoplay;
-@property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * thumbnailUrl;
-@property (nonatomic, retain) NSNumber * userId;
-@property (nonatomic, retain) VSequence *inStreamSequence;
+@property (nonatomic, retain, nullable) NSNumber * shouldAutoplay;
+@property (nonatomic, retain, nullable) NSString * text;
+@property (nonatomic, retain, nullable) NSString * thumbnailUrl;
+@property (nonatomic, retain, nullable) NSNumber * userId;
+@property (nonatomic, retain, nullable) VSequence *inStreamSequence;
 
-@property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, retain) VUser *user;
-@property (nonatomic, retain) NSNumber *mediaWidth;
-@property (nonatomic, retain) NSNumber *mediaHeight;
-@property (nonatomic, retain) NSNumber * displayOrder;
-
-@end
-
-@interface VComment (CoreDataGeneratedAccessors)
-
-- (void)addCommentMediaObject:(VMediaAttachment *)value;
-- (void)removeCommentMediaObject:(VMediaAttachment *)value;
-- (void)addCommentMedia:(NSSet *)values;
-- (void)removeCommentMedia:(NSSet *)values;
+@property (nonatomic, retain, nullable) VSequence *sequence;
+@property (nonatomic, retain, null_unspecified) VUser *user;
+@property (nonatomic, retain, nullable) NSNumber *mediaWidth;
+@property (nonatomic, retain, nullable) NSNumber *mediaHeight;
+@property (nonatomic, retain, null_unspecified) NSNumber *displayOrder;
+@property (nonatomic, strong) NSNumber *markedForDeletion;
 
 @end
+
+NS_ASSUME_NONNULL_END
