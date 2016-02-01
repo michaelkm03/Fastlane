@@ -61,7 +61,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) VUser *user;
 @property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
-
 /**
  *  The corresponding sequence for this view model.
  */
