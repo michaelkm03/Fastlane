@@ -42,22 +42,18 @@ final class PollResultSummaryBySequenceOperation: RequestOperation {
                     return nil
                 }
                 let uniqueElements: [String : AnyObject] = [
-                    "answerId" : answerID,
+                    "answerId" : NSNumber(integer: answerID),
                     "sequenceId" : self.sequenceID
                 ]
                 
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:$0)
-                persistentResult.sequence = sequence
                 
                 return persistentResult
                 })
             
             let uniqueInfo = ["sequence" : sequence, "pollResults" : persistentPollResults]
-            let results: VSequencePollResults = context.v_findOrCreateObject(uniqueInfo)
-            results.sequence = sequence
-            results.pollResults = persistentPollResults as! Set<VPollResult>
-            
+            let _: VSequencePollResults = context.v_findOrCreateObject(uniqueInfo)
             
             context.v_save()
             dispatch_async(dispatch_get_main_queue()) {
