@@ -24,6 +24,9 @@
 
 @interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate, VHasManagedDependencies>
 
+// Only visible for swift compatibility
++ (NSCache *)imageMemoryCache;
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -227,3 +227,6 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+#import "VVoteType.h"
+#import "VExperienceEnhancer.h"
+#import "VVoteResult.h"
