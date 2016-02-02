@@ -30,7 +30,7 @@ private let kiPhoneConstant = "iPhone"
 
 
 extension UIDevice {
-    func numberOfConcurrentAnimationsSupported() -> VDeviceRating {
+    func v_numberOfConcurrentAnimationsSupported() -> VDeviceRating {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)

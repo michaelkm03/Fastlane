@@ -18,28 +18,14 @@ import UIKit
 
 class VImageAnimationOperation: Operation {
     
-    
     weak var delegate: VImageAnimationOperationDelegate?
     
-    var animationImageView: UIImageView
-    var animationDuration: Float
-    private var currentFrame: Int
-    private var animationTimer: NSTimer?
-    private var _animationSequence: NSArray
+    var animationImageView: UIImageView = UIImageView()
+    var animationDuration: Float = 0
+    var animationSequence = [UIImage]()
+    private var currentFrame: Int = -1
+    private var animationTimer: NSTimer = NSTimer()
     var ballisticAnimationBlock: (( ()->() )->(Void))?
-
-    required init(animationDuration duration: Float) {
-        _animationSequence = NSArray()
-        animationImageView = UIImageView()
-        animationDuration = duration
-        currentFrame = -1
-        animationTimer = nil
-        super.init()
-    }
-    
-    func setAnimationSequence(animationSequence: NSArray) {
-        _animationSequence = animationSequence
-    }
     
     func isAnimating() -> Bool {
         if completedAnimation() {
@@ -50,58 +36,60 @@ class VImageAnimationOperation: Operation {
     
     // If nil or empty animation sequence, by default the animation is done.
     func completedAnimation() -> Bool {
-        if _animationSequence.count == 0 {
+        if animationSequence.isEmpty {
             return true
         }
-        return currentFrame == _animationSequence.count
+        return currentFrame == animationSequence.count
     }
     
     func updateFrame() {
-        currentFrame++
         updateImageFrame()
+        currentFrame++
     }
     
     func updateImageFrame() {
         if cancelled {
             stopAnimating()
         }
-        if completedAnimation() {
+        else if completedAnimation() {
             stopAnimating()
         }
         else {
-            let image: UIImage? = _animationSequence[currentFrame] as? UIImage
+            let image: UIImage? = animationSequence[currentFrame]
             delegate?.animation(self, updatedToImage: image)
         }
     }
     
     func beginAnimation() {
-        if let _ = ballisticAnimationBlock {
-            ballisticAnimationBlock!({
+        if let ballisticAnimationBlock = ballisticAnimationBlock {
+            ballisticAnimationBlock(){
                 self.currentFrame = 0
-                NSRunLoop.mainRunLoop().addTimer(self.animationTimer!, forMode: NSDefaultRunLoopMode)
-            })
+                NSRunLoop.mainRunLoop().addTimer(self.animationTimer, forMode: NSDefaultRunLoopMode)
+            }
         }
         else {
-            currentFrame = 0
-            NSRunLoop.mainRunLoop().addTimer(animationTimer!, forMode: NSDefaultRunLoopMode)
+            NSRunLoop.mainRunLoop().addTimer(animationTimer, forMode: NSDefaultRunLoopMode)
         }
     }
     
     func startAnimating() {
-        if _animationSequence.count == 0 {
+        currentFrame = 0
+        if animationSequence.isEmpty {
             stopAnimating()
         }
         else {
-            let frameDuration: Float = animationDuration/Float(_animationSequence.count)
+            let frameDuration: Float = animationDuration/Float(animationSequence.count)
             animationTimer = NSTimer(timeInterval: NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true)
             beginAnimation()
         }
     }
     
     func stopAnimating() {
-        let finishedAnimation: Bool = currentFrame == _animationSequence.count
-        delegate?.animation(self, didFinishAnimating:finishedAnimation)
-        animationTimer!.invalidate()
+        if isAnimating() {
+            let finishedAnimation: Bool = currentFrame == animationSequence.count
+            delegate?.animation(self, didFinishAnimating:finishedAnimation)
+        }
+        animationTimer.invalidate()
         finishedExecuting()
     }
     

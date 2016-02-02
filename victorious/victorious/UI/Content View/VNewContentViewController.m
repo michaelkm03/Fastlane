@@ -335,7 +335,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.experienceEnhancerSetupQueue = [NSOperationQueue new];
     self.experienceEnhancerCompletionQueue = [NSOperationQueue new];
     
-    self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] numberOfConcurrentAnimationsSupported];
+    self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -880,7 +880,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
 {
-    VImageAnimationOperation *animationOp = [[VImageAnimationOperation alloc] initWithAnimationDuration:enhancer.animationDuration];
+    VImageAnimationOperation *animationOp = [[VImageAnimationOperation alloc] init];
+    animationOp.animationDuration = enhancer.animationDuration;
     animationOp.delegate = self;
     UIImageView *animationImageView;
     

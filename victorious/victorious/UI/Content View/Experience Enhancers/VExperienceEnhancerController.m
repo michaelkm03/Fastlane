@@ -121,12 +121,7 @@
         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
         
         NSArray *images = voteType.images;
-        if ( images == nil || images.count == 0 )
-        {
-            // This effectively marks it as invalid and it will not display
-            // until the required images are loaded
-        }
-        else
+        if ( images != nil && images.count > 0 )
         {
             enhancer.flightImage = [images firstObject];
         }
