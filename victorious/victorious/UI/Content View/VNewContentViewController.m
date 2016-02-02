@@ -105,7 +105,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
-@property (nonatomic, strong) NSOperationQueue *experienceEnhancerSetupQueue;
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
 
 @end
@@ -332,7 +331,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.videoPlayerDidFinishPlayingOnce = NO;
     
-    self.experienceEnhancerSetupQueue = [NSOperationQueue new];
     self.experienceEnhancerCompletionQueue = [NSOperationQueue new];
     
     self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
@@ -429,7 +427,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     //Cancels all animations
     [self.experienceEnhancerCell.experienceEnhancerBar.operationQueue cancelAllOperations];
     [self.experienceEnhancerCompletionQueue cancelAllOperations];
-    [self.experienceEnhancerSetupQueue cancelAllOperations];
     
     [self.dependencyManager trackViewWillDisappear:self];
     
@@ -894,7 +891,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         animationImageView.image = enhancer.voteType.iconImage;
         animationImageView.contentMode = UIViewContentModeScaleAspectFill;
         
-        //animate to here
+        /// Animate to here
         CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(animationFrameSize));
         CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(animationFrameSize));
         CGPoint newCenter = CGPointMake(randomLocationX, randomLocationY);
@@ -910,9 +907,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                  animationImageView.center = newCenter;
              }
                              completion:^(BOOL finished)
-            {
-                completion();
-                             }];
+             {
+                 completion();
+             }];
         };
 
     }
@@ -923,33 +920,23 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     animationOp.animationImageView = animationImageView;
     
-    __weak typeof(animationOp) wAnimationOp = animationOp;
-    __weak typeof(enhancer) wEnhancer = enhancer;
     __weak typeof(self) welf = self;
-    __weak typeof(animationImageView) wAnimationImageView = animationImageView;
-    
-    // Load images from disk, might take some time since animations may be large
-    
-    NSOperation *readFromDiskOp = [NSBlockOperation blockOperationWithBlock:^
-    {
-        __strong typeof(wAnimationOp) sAnimationOp = wAnimationOp;
-        __strong typeof(wEnhancer) sEnhancer = wEnhancer;
-        __strong typeof(welf) sself = welf;
-        __strong typeof(wAnimationImageView) sAnimationImageView = wAnimationImageView;
-        
-        NSArray *images = sEnhancer.voteType.images;
-        sAnimationOp.animationSequence = images;
-        
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [sself.contentCell.contentView addSubview:sAnimationImageView];
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray *images = enhancer.voteType.images;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            animationOp.animationSequence = images;
+            [welf animationOperationDidFinishLoadingDependencies:animationOp];
         });
-    }];
-    
-    [animationOp addDependency:readFromDiskOp];
-    [self.experienceEnhancerSetupQueue addOperation:readFromDiskOp];
+    });
+}
+
+- (void)animationOperationDidFinishLoadingDependencies:(VImageAnimationOperation *)animationOp
+{
+    [self.contentCell.contentView addSubview:animationOp.animationImageView];
     [self.experienceEnhancerCompletionQueue addOperation:animationOp];
 }
+
+#pragma mark - VImageAnimationOperationDelegate
 
 - (void)animation:(VImageAnimationOperation *)animation didFinishAnimating:(BOOL)completed
 {
@@ -1553,8 +1540,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [super didReceiveMemoryWarning];
     
-    //    Cancels all animations/setup
-    [self.experienceEnhancerSetupQueue cancelAllOperations];
+    /// Cancels all animations/setup
     [self.experienceEnhancerCompletionQueue cancelAllOperations];
     
 }
