@@ -13,25 +13,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nS-29-KFi">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auh-ev-nDj" customClass="VScrollingTextContainerView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="9nS-29-KFi" firstAttribute="leading" secondItem="415-7j-xek" secondAttribute="leading" id="22I-HK-qsY"/>
-                <constraint firstItem="9nS-29-KFi" firstAttribute="top" secondItem="415-7j-xek" secondAttribute="top" id="SqL-Rq-Lgh"/>
-                <constraint firstAttribute="trailing" secondItem="9nS-29-KFi" secondAttribute="trailing" id="om6-IB-amQ"/>
-                <constraint firstAttribute="bottom" secondItem="9nS-29-KFi" secondAttribute="bottom" id="vpI-2g-eZn"/>
+                <constraint firstAttribute="bottom" secondItem="auh-ev-nDj" secondAttribute="bottom" id="Pm3-f5-SpP"/>
+                <constraint firstAttribute="trailing" secondItem="auh-ev-nDj" secondAttribute="trailing" id="Xzi-ir-ZvY"/>
+                <constraint firstItem="auh-ev-nDj" firstAttribute="leading" secondItem="415-7j-xek" secondAttribute="leading" id="Zca-N7-pF5"/>
+                <constraint firstItem="auh-ev-nDj" firstAttribute="top" secondItem="415-7j-xek" secondAttribute="top" id="rpQ-IF-ASX"/>
             </constraints>
             <connections>
-                <outlet property="questionTextView" destination="9nS-29-KFi" id="BcI-lu-S3n"/>
+                <outlet property="scrollingTextContainerView" destination="auh-ev-nDj" id="Tej-hX-ZXQ"/>
             </connections>
             <point key="canvasLocation" x="39" y="15"/>
         </collectionViewCell>

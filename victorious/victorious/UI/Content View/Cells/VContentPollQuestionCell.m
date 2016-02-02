@@ -7,17 +7,16 @@
 //
 
 #import "VContentPollQuestionCell.h"
+#import "VScrollingTextView.h"
+#import "VScrollingTextContainerView.h"
 
 static CGFloat const kMinimumCellHeight = 90.0f;
 static CGFloat const kMaximumCellHeight = 120.0f;
-static CGFloat const kScrollBoundary = 20.0f;
 static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @interface VContentPollQuestionCell ()
 
-@property (weak, nonatomic) IBOutlet UITextView *questionTextView;
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic) BOOL scrollDown;
+@property (weak, nonatomic) IBOutlet VScrollingTextContainerView *scrollingTextContainerView;
 
 @end
 
@@ -63,93 +62,20 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
     return sizedPoll;
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+- (void)setQuestion:(NSAttributedString *)question
 {
-    [self stopScroll];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [self startScroll];
-}
-
-- (void)awakeFromNib
-{
-    self.questionTextView.delegate = self;
+    _question = [question copy];
+    [self.scrollingTextContainerView.textView setQuestion:question];
 }
 
 - (void)setGradient
 {
-    UIColor *backgroundColor = [UIColor darkGrayColor];
-    UIColor *zeroAlphaBackgroundColor = [backgroundColor colorWithAlphaComponent:0.0];
-    
-    CGSize size = self.bounds.size;
-    CGFloat gradientHeight = size.height/4;
-    
-    CAGradientLayer *topGradient = [CAGradientLayer layer];
-    topGradient.frame = CGRectMake(0, 0, size.width, gradientHeight);
-    topGradient.colors = [NSArray arrayWithObjects:(id)[backgroundColor CGColor], (id)[zeroAlphaBackgroundColor CGColor], nil];
-    
-    CAGradientLayer *bottomGradient = [CAGradientLayer layer];
-    bottomGradient.frame = CGRectMake(0, size.height - gradientHeight, size.width, gradientHeight);
-    bottomGradient.colors = [NSArray arrayWithObjects:(id)[zeroAlphaBackgroundColor CGColor], (id)[backgroundColor CGColor], nil];
-    
-    [self.layer addSublayer:topGradient];
-    [self.layer addSublayer:bottomGradient];
-}
-
-- (void)stopScroll
-{
-    [self.timer invalidate];
+    [self.scrollingTextContainerView setGradient:0.2 direction:VGradientTypeVertical colors:@[[UIColor clearColor], [UIColor blackColor], [UIColor blackColor], [UIColor clearColor]]];
 }
 
 - (void)startScroll
 {
-    if (self.timer)
-    {
-        [self.timer invalidate];
-    }
-    if (self.questionTextView.contentSize.height > kMaximumCellHeight)
-    {
-        self.timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES];
-        self.scrollDown = YES;
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
-    }
-}
-
-- (void)autoscrollTimerFired
-{
-    CGFloat yOffset = self.questionTextView.contentOffset.y;
-    if (self.scrollDown)
-    {
-        yOffset += 2;
-        CGFloat maxOffset = self.questionTextView.contentSize.height - self.questionTextView.bounds.size.height + kScrollBoundary;
-        if (yOffset > maxOffset)
-        {
-            yOffset = maxOffset;
-            self.scrollDown = NO;
-        }
-    }
-    else
-    {
-        yOffset -= 10;
-        if (yOffset < -kScrollBoundary)
-        {
-            yOffset = -kScrollBoundary;
-            self.scrollDown = YES;
-        }
-    }
-    
-    [self.questionTextView setContentOffset:CGPointMake(0, yOffset) animated:YES];
-    
-}
-
-- (void)setQuestion:(NSAttributedString *)question
-{
-    _question = [question copy];
-    self.questionTextView.attributedText = _question;
-    self.questionTextView.textAlignment = NSTextAlignmentCenter;
-//    self.questionLabel.attributedText = _question;
+    [self.scrollingTextContainerView.textView startScrollWithScrollSpeed:2];
 }
 
 @end

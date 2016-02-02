@@ -1314,6 +1314,8 @@
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
+		BF026FD91C6117A9002A30B1 /* VScrollingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */; };
+		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
@@ -2486,7 +2488,7 @@
 		62575EEE1C54CB2000B49CB0 /* SequenceWithoutID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SequenceWithoutID.json; path = Sequence/SequenceWithoutID.json; sourceTree = "<group>"; };
 		62575EEF1C54CB2000B49CB0 /* SequenceWithoutUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SequenceWithoutUser.json; path = Sequence/SequenceWithoutUser.json; sourceTree = "<group>"; };
 		62575EFF1C54CD9400B49CB0 /* VSequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VSequenceTests.swift; path = Models/VSequenceTests.swift; sourceTree = "<group>"; };
-		625D6E721C385C4D00DB5F1F /* UnfollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUsersOperationTests.swift; sourceTree = "<group>"; };
+		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		627FD7DD1C5DB54100680B22 /* IMAAdViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IMAAdViewControllerTests.swift; path = UI/Monetization/IMAAdViewControllerTests.swift; sourceTree = "<group>"; };
 		627FD7DF1C5DC10000680B22 /* TestVAdViewControllerDelegateImplementor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewControllerDelegateImplementor.swift; sourceTree = "<group>"; };
 		627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdEvent.swift; sourceTree = "<group>"; };
@@ -2496,7 +2498,6 @@
 		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		62B509731C5492C1008C8D38 /* AdBreakTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdBreakTests.swift; sourceTree = "<group>"; };
-		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewController.swift; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -3737,6 +3738,10 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextView.h; sourceTree = "<group>"; };
+		BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextView.m; sourceTree = "<group>"; };
+		BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextContainerView.h; sourceTree = "<group>"; };
+		BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextContainerView.m; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
 		C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
@@ -4842,6 +4847,10 @@
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
 				A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */,
+				BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */,
+				BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */,
+				BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */,
+				BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -11147,6 +11156,7 @@
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
+				BF026FD91C6117A9002A30B1 /* VScrollingTextView.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
@@ -11242,6 +11252,7 @@
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */,
+				BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */,
 				A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */,
 				A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */,
 				D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */,

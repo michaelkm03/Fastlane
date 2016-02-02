@@ -767,8 +767,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionPollQuestion:
         {
             VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            [paragraphStyle setAlignment:NSTextAlignmentCenter];
+
             questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @""
-                                                                    attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                                                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                                                 NSParagraphStyleAttributeName: paragraphStyle
+                                                                                 }];
             [questionCell setGradient];
             [questionCell startScroll];
             return questionCell;
