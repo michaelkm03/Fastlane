@@ -53,6 +53,11 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.nameEmbeddedInContent, true)
         XCTAssertEqual( sequence.previewType, AssetType.Media )
         XCTAssertEqual( sequence.trendingTopicName, "Trending Topic!!")
+        XCTAssertEqual( sequence.voteTypes?.count, 5)
+        XCTAssertEqual( sequence.voteTypes?.first?.voteID, "16")
+        XCTAssertEqual( sequence.voteTypes?.first?.voteCount, 2)
+        XCTAssertEqual( sequence.voteTypes?.last?.voteID, "8")
+        XCTAssertEqual( sequence.voteTypes?.last?.voteCount, 3)
     }
 
     func testInvalid() {

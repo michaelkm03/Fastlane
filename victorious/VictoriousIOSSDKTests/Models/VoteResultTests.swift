@@ -13,7 +13,7 @@ import SwiftyJSON
 class VoteResultTests: XCTestCase {
     
     func testValid() {
-        let mockID = 101
+        let mockID = "101"
         let mockCount = 102
         let validJSON = JSON(["id": mockID, "count": mockCount])
         
@@ -22,15 +22,15 @@ class VoteResultTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(voteResult.voteID, Int64(mockID))
-        XCTAssertEqual(voteResult.voteCount, Int64(mockCount))
+        XCTAssertEqual(voteResult.voteID, mockID)
+        XCTAssertEqual(voteResult.voteCount, mockCount)
     }
     
     func testInvalid() {
         let invalidJSONArray = [
             JSON(["id": false, "count": 101]),
             JSON(["id": 102, "count": "Nonsense count"]),
-            JSON(["id": 103]),
+            JSON(["id": "103"]),
             JSON(["count": 104]),
             JSON([])
         ]
