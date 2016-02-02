@@ -471,6 +471,8 @@
 		67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
 		67803E1E1C24D5C5008CEC73 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		67803E1F1C24D5C5008CEC73 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
+		6780537A1C60838800894821 /* VoteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678053791C60838800894821 /* VoteResult.swift */; };
+		6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6780537B1C6086AD00894821 /* VoteResultTests.swift */; };
 		67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */; };
@@ -2578,6 +2580,8 @@
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
 		677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequest.swift; sourceTree = "<group>"; };
 		677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequestTests.swift; sourceTree = "<group>"; };
+		678053791C60838800894821 /* VoteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResult.swift; sourceTree = "<group>"; };
+		6780537B1C6086AD00894821 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
@@ -5417,6 +5421,7 @@
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				670C65981C52C49900BD7F3F /* UserShelfTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				6780537B1C6086AD00894821 /* VoteResultTests.swift */,
 				A7BAD63C1BF144800076D3B7 /* StreamTests.swift */,
 			);
 			path = Models;
@@ -5527,6 +5532,7 @@
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 				670C65881C52AC0000BD7F3F /* Usershelf.swift */,
+				678053791C60838800894821 /* VoteResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -10491,6 +10497,7 @@
 				A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				795271021C348C8900BD41F1 /* UserSearchRequest.swift in Sources */,
+				6780537A1C60838800894821 /* VoteResult.swift in Sources */,
 				79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */,
 				C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */,
 				C3D6FA921BF58399006DEE19 /* CommentAddRequest.swift in Sources */,
@@ -10640,6 +10647,7 @@
 				A7DCA51C1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift in Sources */,
 				672828001C45ED6400B02909 /* AdditionalAssertions.swift in Sources */,
 				C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */,
+				6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */,
 				A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */,

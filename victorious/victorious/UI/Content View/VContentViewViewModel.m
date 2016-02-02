@@ -410,7 +410,7 @@
         return nil;
     }
     
-    for (VPollResult *result in self.sequence.pollResults.allObjects)
+    for (VPollResult *result in self.pollResults)
     {
         if ([result.answerId isEqualToNumber:[self answerA].remoteId])
         {
@@ -427,7 +427,7 @@
         return nil;
     }
     
-    for (VPollResult *result in self.sequence.pollResults.allObjects)
+    for (VPollResult *result in self.pollResults)
     {
         if ([result.answerId isEqualToNumber:[self answerB].remoteId])
         {
@@ -440,7 +440,7 @@
 - (NSInteger)totalVotes
 {
     NSInteger totalVotes = 0;
-    for (VPollResult *pollResult in self.sequence.pollResults)
+    for (VPollResult *pollResult in self.pollResults)
     {
         totalVotes = totalVotes + [pollResult.count integerValue];
     }

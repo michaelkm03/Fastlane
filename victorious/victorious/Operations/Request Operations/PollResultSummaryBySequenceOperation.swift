@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
+final class PollResultSummaryBySequenceOperation: RequestOperation {
     
     let request: PollResultSummaryRequest
     
@@ -30,28 +30,35 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            
-            guard let sequence: VSequence = context.v_findObjects( ["remoteId" : self.sequenceID] ).first else {
-                return context
-            }
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock { context in
             for pollResult in pollResults {
-                var uniqueElements = [String : AnyObject]()
-                if let answerID = pollResult.answerID {
-                    uniqueElements[ "answerId" ] = answerID
-                } else {
+                // Populate a persistent VPollResult object
+                guard let answerID = pollResult.answerID else {
                     continue
                 }
-                uniqueElements[ "sequenceId" ] = self.sequenceID
+                let uniqueElements: [String : AnyObject] = [
+                    "answerId" : NSNumber(integer: answerID),
+                    "sequenceId" : self.sequenceID
+                ]
                 
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
-                persistentResult.sequence = sequence
             }
-            
             context.v_save()
-            completion()
-            return context
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.results = self.fetchResults()
+                completion()
+            }
+        }
+    }
+    
+    private func fetchResults() -> [AnyObject] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VPollResult.v_entityName())
+            let predicate = NSPredicate(format: "sequenceId == %@", argumentArray: [self.sequenceID])
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest(fetchRequest)
         }
     }
 }

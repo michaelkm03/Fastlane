@@ -45,7 +45,6 @@
 @dynamic likers;
 @dynamic nodes;
 @dynamic parentUser;
-@dynamic pollResults;
 @dynamic recentUser;
 @dynamic reposters;
 @dynamic tracking;
