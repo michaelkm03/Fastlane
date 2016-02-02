@@ -27,10 +27,10 @@ extension VStream: PersistenceParsable {
                 })
         }
         
-        let streamItems = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
-        self.v_addObjects( streamItems, to: "streamItems" )
+        let streamChildren = VStreamChild.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
+        self.v_addObjects( streamChildren, to: "streamChildren" )
         
-        let marqueeItems = VStreamItem.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
-        self.v_addObjects(marqueeItems, to: "marqueeItems")
+        let marqueeChildren = VStreamChild.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
+        self.v_addObjects( marqueeChildren, to: "marqueeChildren")
     }
 }
