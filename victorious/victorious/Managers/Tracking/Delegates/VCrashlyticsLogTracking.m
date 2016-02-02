@@ -36,7 +36,6 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
         return;
     }
     
-
     NSMutableArray *trackingLogComponents = [[NSMutableArray alloc] init];
     [parameters enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop)
     {
@@ -71,6 +70,9 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
      */
     NSString *trackingLog = [NSString stringWithFormat:@"%@ - %@", eventName, [trackingLogComponents componentsJoinedByString:@", "]];
     CLSLog(@"%@", trackingLog);
+#if V_ENABLE_TESTFAIRY
+    TFLog(@"%@", trackingLog);
+#endif
 }
 
 @end
