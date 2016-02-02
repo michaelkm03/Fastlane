@@ -217,12 +217,7 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self sendMessageWithText:text
-            publishParameters:publishParameters
-               inConversation:self.conversation completion:^
-     {
-         [self.innerViewController scrollToBottomAnimated:YES];
-     }];
+    [self sendMessageWithText:text publishParameters:publishParameters inConversation:self.conversation completion:nil];
     
     [keyboardBar clearKeyboardBar];
 }

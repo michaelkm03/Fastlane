@@ -18,7 +18,16 @@ extension VConversationViewController: PaginatedDataSourceDelegate {
                 self.reloadForPreviousPage()
           
             } else {
+                // Some tricky stuff to make sure the table view's content size is updated enough
+                // so that the scroll to bottom actually works
+                CATransaction.begin()
+                CATransaction.setCompletionBlock() {
+                    dispatch_after(0.0) {
+                        self.scrollToBottomAnimated(true)
+                    }
+                }
                 self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+                CATransaction.commit()
             }
    
         } else {
