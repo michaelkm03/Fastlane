@@ -64,7 +64,7 @@ extension VSequence: PersistenceParsable {
             self.parentUser = persistentParentUser
         }
         
-        if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
+        if let previewImageAssets = sequence.previewImageAssets where !previewImageAssets.isEmpty {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
@@ -72,16 +72,16 @@ extension VSequence: PersistenceParsable {
                 })
         }
         
-        if let nodes = sequence.nodes where nodes.count > self.nodes?.count {
+        if let nodes = sequence.nodes where !nodes.isEmpty {
             self.nodes = NSOrderedSet(array: nodes.flatMap {
                 let node: VNode = v_managedObjectContext.v_createObject()
                 node.populate( fromSourceModel: $0 )
                 node.sequence = self
                 return node
-            })
+                })
         }
         
-        if let voteResults = sequence.voteTypes where voteResults.count > 0 {
+        if let voteResults = sequence.voteTypes where !voteResults.isEmpty {
             self.voteResults = Set<VVoteResult>(voteResults.flatMap {
                 guard let id = Int($0.voteID) else {
                     return nil
