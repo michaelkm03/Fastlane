@@ -80,5 +80,22 @@ extension VSequence: PersistenceParsable {
                 return node
             })
         }
+        
+        if let voteResults = sequence.voteTypes where voteResults.count > 0 {
+            self.voteResults = Set<VVoteResult>(voteResults.flatMap {
+                guard let id = Int($0.voteID) else {
+                    return nil
+                }
+                let uniqueElements: [String : AnyObject] = [
+                    "sequence.remoteId" : remoteId,
+                    "remoteId" : NSNumber(integer: id)
+                ]
+                
+                let persistentVoteResult: VVoteResult = self.v_managedObjectContext.v_findOrCreateObject(uniqueElements)
+                persistentVoteResult.sequence = self
+                persistentVoteResult.count = $0.voteCount
+                return persistentVoteResult
+                })
+        }
     }
 }
