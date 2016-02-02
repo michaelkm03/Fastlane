@@ -425,7 +425,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillDisappear:animated];
     //Cancels all animations
-    [self.experienceEnhancerCell.experienceEnhancerBar.operationQueue cancelAllOperations];
     [self.experienceEnhancerCompletionQueue cancelAllOperations];
     
     [self.dependencyManager trackViewWillDisappear:self];
@@ -884,34 +883,46 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (enhancer.isBallistic)
     {
-        CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
-        animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
+        animationImageView = [[UIImageView alloc] init];
+        
+        CGRect animationBounds = self.contentCell.bounds;
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-        animationImageView.center = convertedCenterForAnimation;
+
         animationImageView.image = enhancer.voteType.iconImage;
         animationImageView.contentMode = UIViewContentModeScaleAspectFill;
         
         /// Animate to here
-        CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(animationFrameSize));
-        CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(animationFrameSize));
+        CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(animationBounds));
+        CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(animationBounds));
         CGPoint newCenter = CGPointMake(randomLocationX, randomLocationY);
-        
         CGFloat flightDuration = enhancer.flightDuration;
+        
+        __weak typeof(animationOp) weakAnimationOp = animationOp;
         
         typedef void (^CompletionBlock)();
         animationOp.ballisticAnimationBlock = ^void(CompletionBlock completion)
         {
-            [UIView animateWithDuration:flightDuration
-                             animations:^
-             {
-                 animationImageView.center = newCenter;
-             }
-                             completion:^(BOOL finished)
-             {
-                 completion();
-             }];
-        };
+            
+            UIImage *iconImage = [weakAnimationOp.animationSequence firstObject];
+            CGRect animationFrameSize = CGRectMake(0, 0, iconImage.size.width, iconImage.size.height);
+            
+            animationImageView.frame = animationFrameSize;
+            animationImageView.center = convertedCenterForAnimation;
 
+            
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [UIView animateWithDuration:flightDuration
+                                                animations:^
+                                {
+                                    animationImageView.center = newCenter;
+                                }
+                                                completion:^(BOOL finished)
+                                {
+                                    completion();
+                                }];
+                           });
+        };
     }
     else
     {

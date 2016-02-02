@@ -43,7 +43,6 @@
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
 @property (nonatomic, assign) NSTimeInterval cooldownDuration; // <- in seconds
-@property (nonatomic, strong) UIImage *flightImage;
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
 @property (nonatomic, readonly) NSDate *lastVoted;

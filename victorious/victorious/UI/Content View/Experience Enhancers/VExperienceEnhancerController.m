@@ -119,13 +119,7 @@
         VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
         NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
-        
-        NSArray *images = voteType.images;
-        if ( images != nil && images.count > 0 )
-        {
-            enhancer.flightImage = [images firstObject];
-        }
-        
+
         // Get icon image synhronously (we need it right away)
         NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
         NSString *key = voteType.voteTypeID;
