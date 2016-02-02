@@ -36,7 +36,7 @@
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
-#ifdef V_ENABLE_TESTFAIRY
+#if V_ENABLE_TESTFAIRY
     [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
     [self addLoginListener];
 #else
