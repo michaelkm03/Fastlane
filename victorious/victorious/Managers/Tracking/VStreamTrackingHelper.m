@@ -96,17 +96,18 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
+    NSArray *trackingURLs = sequence.tracking.cellView;
     
-    if ( sequence == nil || stream == nil )
+    if ( sequence == nil || stream == nil || trackingURLs.count == 0 )
     {
         return;
     }
     
     NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId ?: @"",
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellView,
-                              VTrackingKeyStreamId : trackingID ?: @""};
+                              VTrackingKeyUrls : trackingURLs,
+                              VTrackingKeyStreamId : trackingID ?: @"" };
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
                                           eventId:sequence.remoteId];

@@ -33,6 +33,12 @@ class FlagConversationOperation: FetcherOperation {
                 context.v_save()
             }
         }
+        
+        // For deletions, force a save to the main context to make sure changes are propagated
+        // to calling code (a view controller)
+        self.persistentStore.mainContext.v_performBlockAndWait() { context in
+            context.v_save()
+        }
     }
 }
 

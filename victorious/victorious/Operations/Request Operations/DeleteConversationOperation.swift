@@ -24,17 +24,16 @@ class DeleteConversationOperation: FetcherOperation {
     }
     
     override func main() {
-        // We're also going to flag it locally so that we can filter it from backend responses
-        // while parsing in the future.
         flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let uniqueElements = [ "remoteId" : self.conversationID ]
-            if let conversation: VConversation = context.v_findObjects( uniqueElements ).first {
-                context.deleteObject( conversation )
-                context.v_save()
-                self.persistentStore.mainContext.v_save()
+            guard let conversation: VConversation = context.v_findObjects( uniqueElements ).first else {
+                return
             }
+            context.deleteObject( conversation )
+            context.v_save()
+            self.persistentStore.mainContext.v_save()
         }
     }
 }

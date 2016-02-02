@@ -54,7 +54,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         )
     }
     
-    func deleteSequence( completion completion: ((NSError?)->())? = nil ) {
+    func deleteSequence( completion completion: (([AnyObject]?, NSError?)->())? = nil ) {
         DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
             completion?( error )
         }

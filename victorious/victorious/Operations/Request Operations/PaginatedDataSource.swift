@@ -206,6 +206,7 @@ private extension NSOrderedSet {
             }
             return true
         }
-        return self.filteredOrderedSetUsingPredicate( predicate )
+        let results = self.filteredOrderedSetUsingPredicate( predicate )
+        return results
     }
 }

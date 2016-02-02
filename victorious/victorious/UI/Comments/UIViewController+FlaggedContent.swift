@@ -10,7 +10,7 @@ import Foundation
 
 extension UIViewController {
     
-    func v_showFlaggedCommentAlert( completion completion: (()->())? = nil ) {
+    func v_showFlaggedCommentAlert( completion completion: (Bool->())? = nil ) {
         v_showAlert(
             title: NSLocalizedString( "ReportedTitle", comment:""),
             message: NSLocalizedString( "ReportCommentMessage", comment:""),
@@ -18,7 +18,7 @@ extension UIViewController {
         )
     }
     
-    func v_showFlaggedConversationAlert( completion completion: (()->())? = nil ) {
+    func v_showFlaggedConversationAlert( completion completion: (Bool->())? = nil ) {
         v_showAlert(
             title: NSLocalizedString( "ReportedTitle", comment:""),
             message: NSLocalizedString( "ReportUserMessage", comment:""),
@@ -26,7 +26,7 @@ extension UIViewController {
         )
     }
     
-    func v_showFlaggedContentAlert( completion completion: (()->())? = nil ) {
+    func v_showFlaggedContentAlert( completion completion: (Bool->())? = nil ) {
         v_showAlert(
             title: NSLocalizedString( "ReportedTitle", comment:""),
             message: NSLocalizedString( "ReportContentMessage", comment:""),
@@ -34,7 +34,7 @@ extension UIViewController {
         )
     }
     
-    func v_showErrorAlert( completion completion: (()->())? = nil ) {
+    func v_showErrorAlert( completion completion: (Bool->())? = nil ) {
         v_showAlert(
             title: NSLocalizedString( "WereSorry", comment:""),
             message: NSLocalizedString( "ErrorOccured", comment:""),
@@ -42,10 +42,10 @@ extension UIViewController {
         )
     }
     
-    func v_showAlert( title title: String, message: String, completion: (()->())? = nil ) {
+    func v_showAlert( title title: String, message: String, completion: (Bool->())? = nil ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment:""), style: .Cancel) { action in
-            completion?()
+            completion?(true)
         }
         alertController.addAction( cancelAction )
         self.presentViewController(alertController, animated: true, completion: nil)

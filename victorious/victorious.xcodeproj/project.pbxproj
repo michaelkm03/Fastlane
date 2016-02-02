@@ -612,7 +612,6 @@
 		79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */; };
 		79F8B4A11C3DD3EA00313976 /* User+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F8B4A01C3DD3EA00313976 /* User+Tests.swift */; };
 		79FE184E1C53098D00170E5B /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
-		79FE18501C53150400170E5B /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE184F1C53150400170E5B /* Deletable.swift */; };
 		79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */; };
 		79FE18581C53188700170E5B /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18571C53188700170E5B /* Keyable.swift */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
@@ -2717,7 +2716,6 @@
 		79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+Parsable.swift"; sourceTree = "<group>"; };
 		79F8B4A01C3DD3EA00313976 /* User+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Tests.swift"; sourceTree = "<group>"; };
-		79FE184F1C53150400170E5B /* Deletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
 		79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VConversation+Keyable.swift"; sourceTree = "<group>"; };
 		79FE18571C53188700170E5B /* Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
@@ -7754,7 +7752,6 @@
 		A7EBF5641C2F3BF40080C7CF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				79FE184F1C53150400170E5B /* Deletable.swift */,
 				79FE18571C53188700170E5B /* Keyable.swift */,
 				A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */,
 				5A75EADB1C57653200B08056 /* VPublishParameters.h */,
@@ -10930,7 +10927,6 @@
 				03CA69621C5485200039BD01 /* PersistenceTemplateDownloader.swift in Sources */,
 				A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */,
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
-				79FE18501C53150400170E5B /* Deletable.swift in Sources */,
 				F06B41CF1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift in Sources */,
 				A7EBF53C1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift in Sources */,
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
