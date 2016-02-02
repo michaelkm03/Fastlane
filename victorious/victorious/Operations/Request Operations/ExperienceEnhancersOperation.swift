@@ -62,7 +62,7 @@ class ExperienceEnhancersOperation: Operation {
         }
     }
     
-    func resultForVoteType(voteType: VVoteType, withSequenceObjectID sequenceObjectID: NSManagedObjectID, fromContext: NSManagedObjectContext) -> VVoteResult? {
+    private func resultForVoteType(voteType: VVoteType, withSequenceObjectID sequenceObjectID: NSManagedObjectID, fromContext: NSManagedObjectContext) -> VVoteResult? {
         guard let sequence = fromContext.objectWithID(sequenceObjectID) as? VSequence,
             voteResultsSet = sequence.voteResults as? Set<VVoteResult> else {
                 return nil
