@@ -17,6 +17,8 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     
     private var registeredCommentReuseIdentifiers = Set<String>()
     
+    let activityFooterDataSource = ActivityFooterCollectionDataSource()
+    
     init(sequence: VSequence, dependencyManager: VDependencyManager) {
         self.sequence = sequence
         self.dependencyManager = dependencyManager
@@ -62,27 +64,54 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     
     // MARK: - UICollectionViewDataSource
     
+    func registerCells(collectionView: UICollectionView) {
+        activityFooterDataSource.registerCells(collectionView)
+    }
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return visibleItems.count ?? 0
+        if section == 0 {
+            return visibleItems.count ?? 0
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, numberOfItemsInSection: section)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let comment = visibleItems[indexPath.item] as! VComment
-        let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(comment)
-        if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
-            collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
-            registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
+        if indexPath.section == 0 {
+            let comment = visibleItems[indexPath.item] as! VComment
+            let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(comment)
+            if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
+                collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
+                registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
+            }
+            return collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath)
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
         }
-        return collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
         return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: "MediaSearchActivityFooter", forIndexPath: indexPath )
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if indexPath.section == 0 {
+            let comment = visibleItems[ indexPath.item ] as! VComment
+            let size = VContentCommentsCell.sizeWithFullWidth( collectionView.bounds.width,
+                comment: comment,
+                hasMedia: (comment.commentMediaType() != .NoMedia),
+                dependencyManager: dependencyManager
+            )
+            return CGSize(width: collectionView.bounds.width, height: size.height)
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
+        }
     }
 }

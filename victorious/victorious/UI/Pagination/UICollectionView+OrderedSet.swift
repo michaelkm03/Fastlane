@@ -21,7 +21,7 @@ public extension UICollectionView {
             let performChangesBlock = {
                 self.reloadSections( NSIndexSet(index: section) )
             }
-            if animated {
+            if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {
                 performChangesBlock()
             } else {
                 UIView.performWithoutAnimation(performChangesBlock)

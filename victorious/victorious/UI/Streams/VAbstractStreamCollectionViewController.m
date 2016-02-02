@@ -299,10 +299,10 @@
         return;
     }
     
-    /*if ( !self.streamDataSource.hasHeaderCell )
+    if ( !self.streamDataSource.hasHeaderCell )
     {
         [self.refreshControl beginRefreshing];
-    }*/
+    }
     
     [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
      {

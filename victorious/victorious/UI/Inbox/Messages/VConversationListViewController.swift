@@ -50,6 +50,9 @@ extension VConversationListViewController: PaginatedDataSourceDelegate {
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
         self.updateTableView()
+        
+        self.dataSource.activityFooterDataSource.hidden = !paginatedDataSource.shouldShowNextPageActivity
+        self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
     
     func updateTableView() {
@@ -74,3 +77,4 @@ extension VConversationListViewController: PaginatedDataSourceDelegate {
         }
     }
 }
+

@@ -6,8 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
+/// +FlaggedContent
 extension UIViewController {
     
     func v_showFlaggedCommentAlert( completion completion: (Bool->())? = nil ) {

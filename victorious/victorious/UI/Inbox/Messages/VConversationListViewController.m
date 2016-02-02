@@ -30,6 +30,7 @@
 #import "victorious-swift.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
+static const CGFloat kActivityFooterHeight = 50.0f;
 
 @interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate>
 
@@ -113,6 +114,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
+    [self.refreshControl beginRefreshing];
     [self refresh];
 }
 

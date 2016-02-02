@@ -12,6 +12,8 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
     
     let dependencyManager: VDependencyManager
     
+    let activityFooterDataSource = ActivityFooterTableDataSource()
+    
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
     }
@@ -37,29 +39,48 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         })
     }
     
-    // MARK: - UITableViewDataSource
-    
     func registerCells( tableView: UITableView ) {
         let identifier = VConversationCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VConversationCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        
+        activityFooterDataSource.registerCells(tableView)
     }
     
+    // MARK: - UITableViewDataSource
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return visibleItems.count
+        if section == 0 {
+            return self.visibleItems.count
+        } else {
+            return activityFooterDataSource.tableView(tableView, numberOfRowsInSection: section)
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 72.0
+        if indexPath.section == 0 {
+            return 72.0
+        } else {
+            return activityFooterDataSource.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        }
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
-        let identifier = VConversationCell.suggestedReuseIdentifier()
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VConversationCell
-        let conversation = visibleItems[ indexPath.row ] as! VConversation
-        cell.conversation = conversation
-        cell.dependencyManager = self.dependencyManager
-        cell.backgroundColor = conversation.isRead!.boolValue ? UIColor.whiteColor() : UIColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1.0)
-        return cell
+        if indexPath.section == 0 {
+            let identifier = VConversationCell.suggestedReuseIdentifier()
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VConversationCell
+            let conversation = visibleItems[ indexPath.row ] as! VConversation
+            cell.conversation = conversation
+            cell.dependencyManager = self.dependencyManager
+            cell.backgroundColor = conversation.isRead!.boolValue ? UIColor.whiteColor() : UIColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1.0)
+            return cell
+            
+        } else {
+            return activityFooterDataSource.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        }
     }
 }

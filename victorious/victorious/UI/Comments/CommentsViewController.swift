@@ -119,6 +119,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.dataSource?.registerCells( collectionView )
+        
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
@@ -222,10 +224,17 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        guard indexPath.section == 0 else {
+            return
+        }
+        
         focusHelper?.endFocusOnCell(cell)
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        guard indexPath.section == 0 else {
+            return
+        }
         
         let cell = cell as! VContentCommentsCell
         let comment = dataSource?.visibleItems[indexPath.item] as! VComment
@@ -256,15 +265,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let comment = dataSource?.visibleItems[ indexPath.item ] as? VComment else {
-            fatalError( "Unable to find comment to display" )
-        }
-        
-        let size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
-            comment: comment,
-            hasMedia: (comment.commentMediaType() != .NoMedia),
-            dependencyManager: dependencyManager)
-        return CGSize(width: view.bounds.width, height: size.height)
+        return dataSource?.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath) ?? CGSize.zero
     }
 
     // MARK: - VScrollPaginatorDelegate
@@ -517,6 +518,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        
+        if let dataSource = self.dataSource {
+            dataSource.activityFooterDataSource.hidden = !paginatedDataSource.shouldShowNextPageActivity
+            self.collectionView.reloadSections(NSIndexSet(index: 1))
+        }
+        
         self.updateCollectionView()
     }
     

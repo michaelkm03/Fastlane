@@ -28,6 +28,10 @@ import VictoriousIOSSDK
         }
     }
     
+    var shouldShowNextPageActivity: Bool {
+        return state == .Loading && visibleItems.count > 0 && !hasLoadedLastPage
+    }
+    
     // Tracks page numbers already loaded to prevent re-loading pages unecessarily
     private var pagesLoaded = Set<Int>()
     
