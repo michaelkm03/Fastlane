@@ -9,10 +9,10 @@
 import UIKit
 
 @objc protocol VImageAnimationOperationDelegate {
-    // Should remove imageview after this call
+    /// Should remove imageview after this call
     func animation(animation: VImageAnimationOperation, didFinishAnimating completed:Bool)
     
-    // Should update UIImageView
+    /// Should update UIImageView
     func animation(animation: VImageAnimationOperation, updatedToImage image:UIImage?)
 }
 
@@ -34,12 +34,14 @@ class VImageAnimationOperation: Operation {
         return currentFrame != -1
     }
     
-    // If nil or empty animation sequence, by default the animation is done.
+    /// If nil or empty animation sequence, by default the animation is done.
     func completedAnimation() -> Bool {
         if animationSequence.isEmpty {
             return true
         }
-        return currentFrame == animationSequence.count
+        else {
+            return currentFrame == animationSequence.count
+        }
     }
     
     func updateFrame() {
@@ -102,5 +104,4 @@ class VImageAnimationOperation: Operation {
         stopAnimating()
         super.cancel()
     }
-    
 }
