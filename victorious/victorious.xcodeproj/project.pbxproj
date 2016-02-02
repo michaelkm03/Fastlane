@@ -129,6 +129,8 @@
 		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349FD4C1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift */; };
+		034BA92E1C60272000C23D7E /* VLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034BA92D1C60272000C23D7E /* VLog.swift */; };
+		034BA9311C602B7F00C23D7E /* VTFLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 034BA9301C602B7F00C23D7E /* VTFLog.m */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0352FC691B729B0300DB6EAB /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
@@ -2024,6 +2026,9 @@
 		0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettings.swift; sourceTree = "<group>"; };
 		034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsTests.swift; sourceTree = "<group>"; };
 		0349FD4C1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+UploadManager.swift"; sourceTree = "<group>"; };
+		034BA92D1C60272000C23D7E /* VLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLog.swift; sourceTree = "<group>"; };
+		034BA92F1C602B7F00C23D7E /* VTFLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTFLog.h; sourceTree = "<group>"; };
+		034BA9301C602B7F00C23D7E /* VTFLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTFLog.m; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -7974,6 +7979,7 @@
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
+				6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */,
 				794246431B7D39A200F5F879 /* Operations */,
 				A789F7141BF11F4900F5C87B /* Persistence */,
 				03C185CD19B4308400E27D05 /* Protocols */,
@@ -7986,7 +7992,9 @@
 				D800A6161AEEAA0F00F1A06A /* VCompatibility.h */,
 				0314D07719B4685C00FA363C /* VConstants.h */,
 				0314D07819B4685C00FA363C /* VConstants.m */,
-				6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */,
+				034BA92D1C60272000C23D7E /* VLog.swift */,
+				034BA92F1C602B7F00C23D7E /* VTFLog.h */,
+				034BA9301C602B7F00C23D7E /* VTFLog.m */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -11663,7 +11671,9 @@
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
+				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
 				A7E2918B1C3B403C00B84127 /* UnfollowUserOperation.swift in Sources */,
+				034BA9311C602B7F00C23D7E /* VTFLog.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */,
@@ -13604,7 +13614,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS";
+				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DDEBUG";
 				ProductPrefix = "debug-";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
