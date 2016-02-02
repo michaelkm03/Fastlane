@@ -2029,6 +2029,14 @@
 		034BA92D1C60272000C23D7E /* VLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLog.swift; sourceTree = "<group>"; };
 		034BA92F1C602B7F00C23D7E /* VTFLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTFLog.h; sourceTree = "<group>"; };
 		034BA9301C602B7F00C23D7E /* VTFLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTFLog.m; sourceTree = "<group>"; };
+		034BA9321C61422C00C23D7E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9331C61423000C23D7E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9341C61423200C23D7E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9351C61423500C23D7E /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9361C61423800C23D7E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9371C61423B00C23D7E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9381C61423E00C23D7E /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9391C61424000C23D7E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VCardSeeMoreDirectoryCell.strings"; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -12095,6 +12103,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				6728C0E71C6133020005A29F /* Base */,
+				034BA9321C61422C00C23D7E /* es */,
+				034BA9331C61423000C23D7E /* fr */,
+				034BA9341C61423200C23D7E /* de */,
+				034BA9351C61423500C23D7E /* pt */,
+				034BA9361C61423800C23D7E /* ja */,
+				034BA9371C61423B00C23D7E /* ko */,
+				034BA9381C61423E00C23D7E /* vi */,
+				034BA9391C61424000C23D7E /* zh-Hant */,
 			);
 			name = VCardSeeMoreDirectoryCell.xib;
 			sourceTree = "<group>";
