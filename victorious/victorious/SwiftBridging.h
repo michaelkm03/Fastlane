@@ -194,6 +194,7 @@
 #import "VStreamItemPreviewView.h"
 #import "VSuggestedUsersDataSource.h"
 #import "VSwipeView.h"
+#import "VTFLog.h"
 #import "VTOSViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VTag.h"
