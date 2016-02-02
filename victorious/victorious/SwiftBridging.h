@@ -205,6 +205,7 @@
 #import "VTextPostTextView.h"
 #import "VTextSequencePreviewView.h"
 #import "VTextToolController.h"
+#import "VTFLog.h"
 #import "VThemeManager.h"
 #import "VTickerPickerViewController.h"
 #import "VTimerManager.h"

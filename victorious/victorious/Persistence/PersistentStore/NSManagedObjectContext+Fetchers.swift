@@ -16,17 +16,18 @@ extension NSManagedObjectContext {
             try self.save()
         } catch {
             if let object = (error as NSError).userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
-                print( "\t- Validation failed on object \(object.dynamicType)." )
+                VLog( "\t- Validation failed on object \(object.dynamicType)." )
             }
             if let detailedErrors = (error as NSError).userInfo[ "NSDetailedErrors" ] as? [NSError] {
                 for detailedError in detailedErrors {
                     if let validationField = detailedError.userInfo[ "NSValidationErrorKey" ] as? String,
                         let object = detailedError.userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
-                            print( "\t- Missing value for non-optional field \"\(validationField)\" on object \(object.dynamicType)." )
+                            VLog( "\t- Missing value for non-optional field \"\(validationField)\" on object \(object.dynamicType)." )
                     }
                 }
             }
-            fatalError( "Failed to save object: \(userInfo[ "NSValidationErrorKey" ])" )
+            VLog( "Failed to save object: \((error as NSError).localizedDescription)" )
+            assertionFailure()
         }
     }
     
@@ -41,7 +42,7 @@ extension NSManagedObjectContext {
             }
             return true
         } catch {
-            print( "Failed to delete objects with entity name \(entityName): \(error)" )
+            VLog( "Failed to delete objects with entity name \(entityName): \(error)" )
             return false
         }
     }
@@ -117,7 +118,7 @@ extension NSManagedObjectContext {
                 return results
             }
         } catch {
-            print( "Error: \(error)" )
+            VLog( "Error: \(error)" )
         }
         return [NSManagedObject]()
     }
@@ -138,7 +139,7 @@ extension NSManagedObjectContext {
                 return lowestDisplayOrder - 1
             }
         } catch {
-            print( "Error: \(error)" )
+            VLog( "Error: \(error)" )
         }
         return -1
     }
