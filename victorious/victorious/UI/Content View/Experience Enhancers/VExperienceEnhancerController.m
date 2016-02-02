@@ -71,7 +71,6 @@
 
 - (void)setup
 {
-    // Using ivars here since the getters for these block on privateQueue
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
     NSArray *voteTypes = [self.dependencyManager voteTypes];
     

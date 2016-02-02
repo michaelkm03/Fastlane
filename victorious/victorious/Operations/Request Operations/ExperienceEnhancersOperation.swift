@@ -63,19 +63,12 @@ class ExperienceEnhancersOperation: Operation {
     }
     
     func resultForVoteType(voteType: VVoteType, withSequenceObjectID sequenceObjectID: NSManagedObjectID, fromContext: NSManagedObjectContext) -> VVoteResult? {
-        //TODO: This should be a find or create
         guard let sequence = fromContext.objectWithID(sequenceObjectID) as? VSequence,
-            voteResultsSet = sequence.voteResults,
-            voteResults = Array(voteResultsSet) as? [VVoteResult] else {
-            return nil
+            voteResultsSet = sequence.voteResults as? Set<VVoteResult> else {
+                return nil
         }
         
-        for voteResult in voteResults {
-            if voteResult.remoteId == voteType.voteTypeID {
-                return voteResult
-            }
-        }
-        return nil
+        return voteResultsSet.filter { $0.remoteId.stringValue == voteType.voteTypeID }.first
     }
     
 }
