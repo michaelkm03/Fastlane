@@ -113,7 +113,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
-    [self.dataSource refreshLocal];
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,17 +122,14 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
-    [self.tableView setContentOffset:CGPointZero];
 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
-    
-    // Reload local results for any changes (virtually immediate)
-    [self.dataSource refreshLocal];
-    
-    // Reload first page from network (some network latency)
-    [self refresh];
+    if ( self.hasLoadedOnce )
+    {
+        [self.dataSource refreshLocal];
+    }
     
     [self updateTableView];
 }
@@ -165,6 +162,15 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (void)refresh
+{
+    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
+     {
+         [self.refreshControl endRefreshing];
+         [self updateTableView];
+     }];
 }
 
 #pragma mark - Properties
@@ -336,15 +342,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
         detailVC.messageCountCoordinator = self.messageCountCoordinator;
         [rootInnerNavigationController pushViewController:detailVC animated:YES];
     }
-}
-
-- (void)refresh
-{
-    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
-     {
-         [self.refreshControl endRefreshing];
-         [self updateTableView];
-     }];
 }
 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl

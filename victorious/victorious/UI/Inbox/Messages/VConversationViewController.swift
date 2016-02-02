@@ -10,8 +10,29 @@ import Foundation
 
 extension VConversationViewController: PaginatedDataSourceDelegate {
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {        
-        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated:true)
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        if self.hasLoadedOnce {
+            
+            if self.isLoadingNextPage {
+                // Because we're scrolling up in this view controller, we need to do a bit of
+                // careful reloading and scroll position adjustment when loading next pages
+                let oldContentSize = self.tableView.contentSize
+                let oldOffset = self.tableView.contentOffset
+                self.tableView.reloadData()  //< Must call `reloadData` to get contentSize to update instantly
+                let newContentSize = self.tableView.contentSize
+                let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
+                self.tableView.setContentOffset(newOffset, animated:false)
+          
+            } else {
+                self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            }
+   
+        } else {
+            self.tableView.reloadData()
+            self.scrollToBottomAnimated(false)
+        }
+        self.hasLoadedOnce = true
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
@@ -50,12 +71,6 @@ extension VConversationViewController {
     
     // MARK: - Managing scroll position
     
-    func maintainVisualScrollFromOffset(offset: CGPoint, contentSize: CGSize) {
-        let newContentSize = self.tableView.contentSize
-        let newOffset = CGPoint(x: 0, y: offset.y + (newContentSize.height - contentSize.height) )
-        self.tableView.setContentOffset(newOffset, animated:false)
-    }
-    
     func scrollToBottomAnimated(animated: Bool) {
         let height = self.tableView.contentSize.height + self.tableView.contentInset.top + self.tableView.contentInset.bottom - CGRectGetHeight(self.tableView.bounds)
         let yValue = max(height, 0)
@@ -81,7 +96,7 @@ extension VConversationViewController {
     func onUpdate() {
         self.dataSource.refreshRemote() { (results, error) in
             if !results.isEmpty {
-                self.scrollToBottomAnimated( self.viewHasAppeared )
+                self.scrollToBottomAnimated( true )
             }
         }
     }

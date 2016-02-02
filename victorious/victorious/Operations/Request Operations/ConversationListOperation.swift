@@ -31,6 +31,8 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
         let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
         
+        NSThread.sleepForTimeInterval(2.0)
+        
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in unflaggedResults {

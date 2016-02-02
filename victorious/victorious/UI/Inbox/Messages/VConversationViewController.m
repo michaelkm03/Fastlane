@@ -31,7 +31,6 @@
 @property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (nonatomic, assign, readwrite) BOOL viewHasAppeared;
 
 @end
 
@@ -71,28 +70,18 @@
     self.noContentView.title = NSLocalizedString(@"SAY HELLO!", @"");
     self.noContentView.message = NSLocalizedString(@"Send a message to start chatting with other members of the community.", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self refresh];
-}
-
-- (void)refresh
-{
-    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSError *_Nullable error)
+    
+    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.messageCountCoordinator markConversationRead:self.conversation];
-         
-         if ( error != nil )
-         {
-             [self.focusHelper updateFocus];
-         }
-         
-         [self scrollToBottomAnimated:self.viewHasAppeared];
-         [self updateTableView];
          [self.focusHelper updateFocus];
+         
+         if ( !self.hasLoadedOnce )
+         {
+             [self.tableView reloadData];
+             [self scrollToBottomAnimated:NO];
+         }
+         self.hasLoadedOnce = YES;
      }];
 }
 
@@ -104,8 +93,6 @@
     
     // Update cell focus
     [self.focusHelper updateFocus];
-    
-    self.viewHasAppeared = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -130,19 +117,21 @@
     
     // End focus on cells
     [self.focusHelper endFocusOnAllCells];
-    
-    self.viewHasAppeared = NO;
 }
 
 #pragma mark - Pagination
 
 - (void)shouldLoadPreviousPage
 {
-    CGPoint oldOffset = self.tableView.contentOffset;
-    CGSize oldContentSize = self.tableView.contentSize;
-    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSError *_Nullable error)
+    if ( [self.dataSource isLoading] )
+    {
+        return;
+    }
+    
+    self.isLoadingNextPage = YES;
+    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self maintainVisualScrollFromOffset:oldOffset contentSize:oldContentSize];
+         self.isLoadingNextPage = NO;
      }];
 }
 
