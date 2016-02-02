@@ -5390,7 +5390,6 @@
 		03314F461BE40F0100EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6780537B1C6086AD00894821 /* VoteResultTests.swift */,
 				62B509731C5492C1008C8D38 /* AdBreakTests.swift */,
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
 				C3D956141BF4321100069FD6 /* CommentTests.swift */,
@@ -5408,6 +5407,7 @@
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				670C65981C52C49900BD7F3F /* UserShelfTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				6780537B1C6086AD00894821 /* VoteResultTests.swift */,
 				A7BAD63C1BF144800076D3B7 /* StreamTests.swift */,
 			);
 			path = Models;
