@@ -12,6 +12,7 @@
 
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
+#import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 #import "DiscoverSearchViewController.h"
 #import "INVector3.h"
 #import "NSDate+timeSince.h"
@@ -30,6 +31,7 @@
 #import "UIView+AutoLayout.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "UIViewController+VRootNavigationController.h"
+#import "VAdVideoPlayerViewController.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VAbstractStreamCollectionViewController.h"

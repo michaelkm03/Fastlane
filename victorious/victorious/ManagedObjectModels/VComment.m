@@ -35,6 +35,5 @@
 @dynamic mediaWidth;
 @dynamic mediaHeight;
 @dynamic displayOrder;
-@dynamic markedForDeletion;
 
 @end

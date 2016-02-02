@@ -70,6 +70,15 @@ extension RequestType {
 #endif
         mutableRequest.vsdk_setPlatformHeader()
         mutableRequest.vsdk_setAppVersionHeaderValue(requestContext.appVersion)
+        mutableRequest.vsdk_setIdentiferForVendorHeader(firstInstallDeviceID: requestContext.firstInstallDeviceID)
+        
+        if let sessionID = requestContext.sessionID {
+            mutableRequest.vsdk_setSessionIDHeaderValue(sessionID)
+        }
+        if !requestContext.experimentIDs.isEmpty {
+            let experiments = requestContext.experimentIDs.map { String($0) }.joinWithSeparator( "," )
+            mutableRequest.vsdk_setExperimentsHeaderValue(experiments)
+        }
         
         let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
             

@@ -116,7 +116,7 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 {
     if ( [url v_isThisAppGenericScheme] )
     {
-        [[VRootViewController rootViewController] openURL:url];
+        [[VRootViewController sharedRootViewController] openURL:url];
         return nil;
     }
     else if ( [url v_hasCustomScheme] )

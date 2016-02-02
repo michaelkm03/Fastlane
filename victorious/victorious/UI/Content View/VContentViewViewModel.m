@@ -23,8 +23,6 @@
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
-#import "VAdBreak.h"
-#import "VAdBreakFallback.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
@@ -40,9 +38,6 @@
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
-@property (nonatomic, strong) NSMutableArray *adChain;
-@property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
-@property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -113,10 +108,6 @@
         {
             _currentAsset = [_currentNode imageAsset];
         }
-        
-        // Set the default ad chain index
-        self.currentAdChainIndex = 0;
-        
         _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence
                                                          dependencyManager:self.dependencyManager];
     }
@@ -147,34 +138,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark - Create the ad chain
-
-- (void)setupAdChain
-{
-    if ( self.adChain != nil )
-    {
-        return;
-    }
-    
-    self.adChain = [[NSMutableArray alloc] init];
-    NSOrderedSet *adBreakSet = self.sequence.adBreaks;
-    
-    for (VAdBreak *ad in adBreakSet)
-    {
-        NSOrderedSet *fallbackSet = ad.fallbacks;
-        for (VAdBreakFallback *item in fallbackSet)
-        {
-            [self.adChain addObject:item];
-        }
-    }
-    
-    // Grab the preroll
-    VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
-    int adSystemPartner = [[breakItem adSystem] intValue];
-    self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
-    self.monetizationDetails = self.adChain;
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize
@@ -213,16 +176,6 @@
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     return request;
 }
-
-/*
-- (VAdSystem)adSystem
-{
-    VAdBreak *adBreak = self.sequence.adBreaks;
-    NSNumber *system_type = adBreak.adSystem;
-    VAdSystem ad_system = [system_type intValue];
-    return ad_system;
-}
-*/
 
 - (VUser *)user
 {

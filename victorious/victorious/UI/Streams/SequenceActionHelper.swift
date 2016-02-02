@@ -52,39 +52,15 @@ import UIKit
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
                 
                 if error.code == Int(kVCommentAlreadyFlaggedError) {
-                    self.showAlert(
-                        title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                        message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                        viewController: viewController,
-                        completion: completion
-                    )
+                    viewController.v_showFlaggedConversationAlert()
                 } else {
-                    self.showAlert(
-                        title: NSLocalizedString( "WereSorry", comment: "" ),
-                        message: NSLocalizedString( "ErrorOccured", comment: "" ),
-                        viewController: viewController,
-                        completion: completion
-                    )
+                    viewController.v_showErrorAlert()
                 }
             }
             else {
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                
-                self.showAlert(
-                    title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                    message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                    viewController: viewController,
-                    completion: completion
-                )
+                viewController.v_showFlaggedConversationAlert()
             }
         }
-    }
-    
-    func showAlert( title title: String, message: String, viewController: UIViewController, completion:((Bool) -> Void)? ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: { (action: UIAlertAction) -> Void in
-            completion?(true)
-        }))
-        viewController.presentViewController( alertController, animated: true, completion: nil)
     }
 }

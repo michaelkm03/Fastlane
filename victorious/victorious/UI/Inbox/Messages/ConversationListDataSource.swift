@@ -8,38 +8,16 @@
 
 import UIKit
 
-class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
-    
-    private lazy var paginatedDataSource: PaginatedDataSource = {
-        let dataSource = PaginatedDataSource()
-        dataSource.delegate = self
-        return dataSource
-    }()
+class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
     
     let dependencyManager: VDependencyManager
-    
-    var delegate: PaginatedDataSourceDelegate?
     
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
     }
     
-    private(set) var visibleItems = NSOrderedSet() {
-        didSet {
-            self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
-        }
-    }
-    
-    var state: DataSourceState {
-        return self.paginatedDataSource.state
-    }
-    
-    func unload() {
-        self.paginatedDataSource.unload()
-    }
-    
     func loadConversations( pageType: VPageType, completion:((NSError?)->())? = nil ) {
-        self.paginatedDataSource.loadPage( pageType,
+        self.loadPage( pageType,
             createOperation: {
                 return ConversationListOperation()
             },
@@ -54,19 +32,9 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
         guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
             return
         }
-        self.paginatedDataSource.refreshLocal( createOperation: {
+        self.refreshLocal( createOperation: {
             return FetchConverationListOperation(userID: userID)
         })
-    }
-    
-    // MARK: - PaginatedDataSourceDelegate
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.visibleItems = newValue
-    }
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
-        self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
     // MARK: - UITableViewDataSource

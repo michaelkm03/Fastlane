@@ -9,9 +9,8 @@
 #import "VBaseCollectionViewCell.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
-#import "VMonetizationPartner.h"
 
-@class VSequencePreviewView, VContentCell;
+@class VSequencePreviewView, VContentCell, VAdBreak;
 
 @protocol VContentCellDelegate
 
@@ -62,7 +61,7 @@
 /**
  Creates the appropraite ad video player and UI for the parameters provided.
  */
-- (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
+- (void)playAdWithAdBreak:(VAdBreak *)adBreak;
 
 /**
  Puts the cell into a state where dismissal of its parent view collection view and view controller

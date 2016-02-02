@@ -161,12 +161,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
-    {
-        [self.contentCell playAd:self.viewModel.monetizationPartner
-                         details:self.viewModel.monetizationDetails];
-    }
-    
+    [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 
@@ -1285,9 +1280,25 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.textEntryView startEditing];
 }
 
-- (UIViewController *)viewControllerForAlerts
+- (void)deleteComment:(VComment *)comment
 {
-    return self;
+    NSInteger commentID = comment.remoteId.integerValue;
+    DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+     {
+         [self.viewModel.commentsDataSource removeDeletedItems];
+     }];
+}
+
+- (void)flagComment:(VComment *)comment
+{
+    NSInteger commentID = comment.remoteId.integerValue;
+    FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+     {
+         [self.viewModel.commentsDataSource removeDeletedItems];
+         [self v_showFlaggedCommentAlertWithCompletion:nil];
+     }];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

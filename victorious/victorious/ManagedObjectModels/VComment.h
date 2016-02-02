@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSNumber *mediaWidth;
 @property (nonatomic, retain, nullable) NSNumber *mediaHeight;
 @property (nonatomic, retain, null_unspecified) NSNumber *displayOrder;
-@property (nonatomic, strong) NSNumber *markedForDeletion;
 
 @end
 

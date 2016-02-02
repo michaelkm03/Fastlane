@@ -19,15 +19,16 @@ class FetcherOperation: NSOperation, Queuable {
     
     var defaultQueue: NSOperationQueue { return FetcherOperation.sharedQueue }
     
-    var mainQueueCompletionBlock: (([AnyObject])->())?
+    var mainQueueCompletionBlock: (([AnyObject]?, NSError?)->())?
     
-    func queueOn( queue: NSOperationQueue, completionBlock:(([AnyObject])->())?) {
+    func queueOn( queue: NSOperationQueue, completionBlock:(([AnyObject]?, NSError?)->())?) {
         self.completionBlock = {
             if completionBlock != nil {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?(self.results)
+                let errorOperations = self.dependencies.flatMap { ($0 as? ErrorOperation)?.error }
+                self.mainQueueCompletionBlock?( self.results, errorOperations.first )
             }
         }
         queue.addOperation( self )

@@ -9,7 +9,37 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DeleteConversationOperation: RequestOperation {
+class DeleteConversationOperation: FetcherOperation {
+    
+    let conversationID: Int
+    
+    private let flaggedContent = VFlaggedContent()
+    
+    init(conversationID: Int) {
+        self.conversationID = conversationID
+        super.init()
+        
+        let remoteOperation = DeleteConversationRemoteOperation(conversationID: conversationID)
+        remoteOperation.queueAfter( self )
+    }
+    
+    override func main() {
+        // We're also going to flag it locally so that we can filter it from backend responses
+        // while parsing in the future.
+        flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
+        
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            let uniqueElements = [ "remoteId" : self.conversationID ]
+            if let conversation: VConversation = context.v_findObjects( uniqueElements ).first {
+                context.deleteObject( conversation )
+                context.v_save()
+                self.persistentStore.mainContext.v_save()
+            }
+        }
+    }
+}
+
+class DeleteConversationRemoteOperation: RequestOperation {
     
     let request: DeleteConversationRequest
     
@@ -18,17 +48,6 @@ class DeleteConversationOperation: RequestOperation {
     }
     
     override func main() {
-        
-        // Make the deletion change optimistically
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.request.conversationID ]
-            if let conversation: VConversation = context.v_findObjects(uniqueElements).first {
-                conversation.markedForDeletion = true
-                context.deleteObject(conversation)
-                context.v_save()
-            }
-        }
-        
         requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

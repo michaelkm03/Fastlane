@@ -21,10 +21,7 @@ class AcknowledgeAlertOperationTests: BaseRequestOperationTestCase {
     }
     
     func testExecutesRequest() {
-        queueExpectedOperation(operation: operation)
-        
-        waitForExpectationsWithTimeout(1) { error in
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        }
+        operation.main()
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 }

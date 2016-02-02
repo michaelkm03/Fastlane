@@ -11,6 +11,8 @@
 
 @class VSessionTimer;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  ViewControllers that will be contained by the rootViewController can conform 
  *  to this protocol to be notified about events.
@@ -45,11 +47,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 @property (nonatomic, strong, readonly) VDeeplinkReceiver *deepLinkReceiver;
 
 /**
- NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 
- set as the main window's rootViewController property. If no such instance exists,
+ Returns the instance of VRootViewController that is set as the main 
+ window's rootViewController property. If no such instance exists,
  returns nil.
  */
-+ (instancetype)rootViewController;
++ (nullable VRootViewController *)sharedRootViewController;
 
 /**
  Please call this method from UIApplicationDelegate's method of the same name.
@@ -59,7 +61,7 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 /**
  Please call this method from UIApplicationDelegate's method of the same name.
  */
-- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
 
 /**
  Handles local (user) notifications received by the application.  Designed to be called or forwarded
@@ -80,3 +82,5 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 - (void)presentForceUpgradeScreen;
 
 @end
+
+NS_ASSUME_NONNULL_END

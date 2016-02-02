@@ -9,22 +9,23 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagConversationOperation: RequestOperation {
-    
-    let request: FlagConversationRequest
+class FlagConversationOperation: FetcherOperation {
     
     let conversationID: Int
+    
     private let flaggedContent = VFlaggedContent()
     
     init(conversationID: Int, mostRecentMessageID: Int) {
         self.conversationID = conversationID
-        self.request = FlagConversationRequest(mostRecentMessageID: mostRecentMessageID)
+        super.init()
+        
+        let remoteOperation = FlagConversationRemoteOperation(conversationID: conversationID, mostRecentMessageID: mostRecentMessageID)
+        remoteOperation.queueAfter( self )
     }
     
     override func main() {
         flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
         
-        // Perform data changes optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             let uniqueElements = [ "remoteId" : self.conversationID ]
             if let conversation: VConversation = context.v_findObjects(uniqueElements).first {
@@ -32,7 +33,18 @@ class FlagConversationOperation: RequestOperation {
                 context.v_save()
             }
         }
-        
+    }
+}
+
+class FlagConversationRemoteOperation: RequestOperation {
+    
+    let request: FlagConversationRequest
+    
+    init(conversationID: Int, mostRecentMessageID: Int) {
+        self.request = FlagConversationRequest(mostRecentMessageID: mostRecentMessageID)
+    }
+    
+    override func main() {
         requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

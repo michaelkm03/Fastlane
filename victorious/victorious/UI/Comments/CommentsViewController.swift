@@ -25,8 +25,6 @@ extension VDependencyManager {
 class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
     
     private static let kDefaultBackgroundColorAlpha: CGFloat = 0.35
-    
-    private var hasLoadedOnce: Bool = false
 
     // MARK: - Factory Method
     
@@ -44,34 +42,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }()
     
     private(set) var topInset: CGFloat = 0.0
-    
-    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
-        guard let sequence = self.sequence where hasLoadedOnce else {
-            return
-        }
-        
-        guard let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) else {
-                return
-        }
-        
-        if kind == .Removal {
-           /* if let indexSet = change?[ NSKeyValueChangeIndexesKey ] as? NSIndexSet,
-                let index = indexSet.map({ $0 as Int }).first
-                where index < sequence.comments.count,
-                let comment = sequence.comments[ index ] as? VComment {
-                    self.dataSource?.removeVisibleItem( comment )
-                }*/
-            
-        } else {
-            dataSource?.refreshLocal(
-                createOperation: {
-                    return FetchCommentsOperation(sequenceID: sequence.remoteId)
-                },
-                completion: nil
-            )
-        }
-    }
     
     func positionRefreshControl() {
         if let subview = refreshControl.subviews.first {
@@ -107,11 +77,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             if sequence == nil {
                 dataSource = nil
             }
-            self.KVOController.observe( self.sequence,
-                keyPath: "comments",
-                options: [],
-                action: Selector("onCommentsChanged:")
-            )
         }
     }
     
@@ -187,7 +152,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             self.refreshControl.beginRefreshing()
         }
         dataSource?.loadComments( .First ) { error in
-            self.hasLoadedOnce = true
             self.refreshControl.endRefreshing()
         }
     }
@@ -345,6 +309,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
+    // MARK: - VCommentCellUtilitiesDelegate
+    
     func editComment(comment: VComment) {
         let editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
         editViewController.transitioningDelegate = modalTransitioningDelegate
@@ -363,8 +329,17 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         keyboardBar?.startEditing()
     }
     
-    func viewControllerForAlerts() -> UIViewController {
-        return self
+    func flagComment(comment: VComment) {
+        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue() { error in
+            self.dataSource?.removeDeletedItems()
+            self.v_showFlaggedCommentAlert()
+        }
+    }
+    
+    func deleteComment(comment: VComment) {
+        DeleteCommentOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { error in
+            self.dataSource?.removeDeletedItems()
+        }
     }
     
     // MARK: - VEditCommentViewControllerDelegate

@@ -17,6 +17,10 @@ class FlagCommentOperation: RequestOperation {
     
     init( commentID: Int ) {
         self.request = FlagCommentRequest(commentID: commentID)
+        super.init()
+        
+        let remoteOperation = FlagCommentRemoteOperation(commentID: commentID)
+        remoteOperation.queueAfter( self )
     }
     
     override func main() {
@@ -31,8 +35,19 @@ class FlagCommentOperation: RequestOperation {
                 context.v_save()
             }
         }
-        
-        // Execute request with callbacks
+    }
+}
+
+
+class FlagCommentRemoteOperation: RequestOperation {
+    
+    var request: FlagCommentRequest
+    
+    init( commentID: Int ) {
+        self.request = FlagCommentRequest(commentID: commentID)
+    }
+    
+    override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError)
     }
     

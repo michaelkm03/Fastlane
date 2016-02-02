@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * previewType;
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
-@property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
+@property (nonatomic, retain, nullable) VAdBreak * adBreak;
 @property (nonatomic, retain) NSOrderedSet * comments;
 @property (nonatomic, retain, nullable) NSSet * likers;
 @property (nonatomic, retain, nullable) NSOrderedSet * nodes;
@@ -51,22 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
 @property (nonatomic, retain) NSNumber * isGifStyle;
 @property (nonatomic, retain, nullable) NSString * trendingTopicName;
-@property (nonatomic, retain) NSNumber *markedForDeletion;
 
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
 
-- (void)insertObject:(VAdBreak *)value inAdBreaksAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromAdBreaksAtIndex:(NSUInteger)idx;
-- (void)insertAdBreaks:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeAdBreaksAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInAdBreaksAtIndex:(NSUInteger)idx withObject:(VAdBreak *)value;
-- (void)replaceAdBreaksAtIndexes:(NSIndexSet *)indexes withAdBreaks:(NSArray *)values;
-- (void)addAdBreaksObject:(VAdBreak *)value;
-- (void)removeAdBreaksObject:(VAdBreak *)value;
-- (void)addAdBreaks:(NSOrderedSet *)values;
-- (void)removeAdBreaks:(NSOrderedSet *)values;
 - (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;
 - (void)insertComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;

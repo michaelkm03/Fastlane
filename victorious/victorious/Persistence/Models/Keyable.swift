@@ -11,7 +11,6 @@ import Foundation
 struct Victorious: Keyable {
     enum Keys: String {
         case displayOrder
-        case markedForDeletion
     }
 }
 

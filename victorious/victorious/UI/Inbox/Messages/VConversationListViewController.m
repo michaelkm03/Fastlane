@@ -94,8 +94,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.scrollPaginator.delegate = self;
     
     self.dataSource = [[ConversationListDataSource alloc] initWithDependencyManager:self.dependencyManager];
-    [self.dataSource registerCells:self.tableView];
     self.dataSource.delegate = self;
+    [self.dataSource registerCells:self.tableView];
     self.tableView.dataSource = self.dataSource;
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
@@ -267,11 +267,10 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
     NSInteger conversationID = conversation.remoteId.integerValue;
     DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
-    
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
+         [self.dataSource removeDeletedItems];
          [self removeCachedViewControllerForUser:conversation.user];
-         [self.dataSource refreshLocal];
      }];
 }
 

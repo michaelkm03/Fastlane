@@ -44,7 +44,7 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
 extension VConversationListViewController: PaginatedDataSourceDelegate {
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue)
+        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

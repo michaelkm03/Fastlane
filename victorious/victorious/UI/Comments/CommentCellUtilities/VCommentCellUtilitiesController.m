@@ -84,20 +84,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];
 }
 
-#pragma mark - Server actions
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void (^)(UIAlertAction *))handler
-{
-    UIViewController *viewControllerForAlerts = [self.delegate viewControllerForAlerts];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                              style:UIAlertActionStyleDefault
-                                            handler:handler]];
-    [viewControllerForAlerts presentViewController:alert animated:YES completion:nil];
-}
-
 - (BOOL)commentIsFlaggable:(VComment *)comment
 {
     return ![comment.userId isEqualToNumber:[VCurrentUser user].remoteId];;
@@ -112,14 +98,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     switch ( config.type )
     {
         case VCommentCellUtilityTypeFlag: {
-            NSInteger commentID = self.comment.remoteId.integerValue;
-            FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID:commentID];
-            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-             {
-                 [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                  message:NSLocalizedString(@"ReportCommentMessage", @"")
-                                  handler:nil];
-             }];
+            [self.delegate flagComment:self.comment];
             break;
         }
         case VCommentCellUtilityTypeEdit:
@@ -128,9 +107,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
             break;
             
         case VCommentCellUtilityTypeDelete: {
-            NSInteger commentID = self.comment.remoteId.integerValue;
-            DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID:commentID removalReason:nil];
-            [operation queueOn:operation.defaultQueue completionBlock:nil];
+            [self.delegate deleteComment:self.comment];
         }
             break;
         case VCommentCellUtilityTypeReply:

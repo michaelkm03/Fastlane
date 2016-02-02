@@ -13,6 +13,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     private let sequence: VSequence
     
     private let dependencyManager: VDependencyManager
+    private var hasLoadedOnce: Bool = false
     
     private var registeredCommentReuseIdentifiers = Set<String>()
     
@@ -20,6 +21,25 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         self.sequence = sequence
         self.dependencyManager = dependencyManager
         super.init()
+        
+        self.KVOController.observe( self.sequence,
+            keyPath: "comments",
+            options: [],
+            action: Selector("onCommentsChanged:")
+        )
+    }
+    
+    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
+        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
+            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
+                return
+        }
+        self.refreshLocal(
+            createOperation: {
+                return FetchCommentsOperation(sequenceID: sequence.remoteId)
+            },
+            completion: nil
+        )
     }
     
     func loadComments( pageType: VPageType, completion:((NSError?)->())? = nil ) {
@@ -28,6 +48,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
                 return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
             completion: { (operation, error) in
+                self.hasLoadedOnce = true
                 completion?(error)
             }
         )

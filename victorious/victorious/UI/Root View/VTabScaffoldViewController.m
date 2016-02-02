@@ -344,13 +344,13 @@ static NSString * const kMenuKey = @"menu";
         dispatch_async( dispatch_get_main_queue(), ^{
             // Root view controller's `deepLinkReceiver` may have queued a deep link until the user is logged in
             // So now that login is complete, show any queued deep links
-            [[VRootViewController rootViewController].deepLinkReceiver receiveQueuedDeeplink];
+            [[VRootViewController sharedRootViewController].deepLinkReceiver receiveQueuedDeeplink];
         });
     }];
     
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
-                                                                                      sessionTimer:[VRootViewController rootViewController].sessionTimer];
+                                                                                      sessionTimer:[VRootViewController sharedRootViewController].sessionTimer];
 
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
     pushNotificationOperation.completionBlock = ^void {

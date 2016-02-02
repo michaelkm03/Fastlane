@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "victorious-Swift.h"
 
 /* Defines an object that records sent requests */
 @interface VMockRequestRecorder : NSObject

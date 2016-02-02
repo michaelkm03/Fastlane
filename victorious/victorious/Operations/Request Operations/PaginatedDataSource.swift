@@ -66,23 +66,20 @@ import VictoriousIOSSDK
             return
         }
         let operation: FetcherOperation = createOperation()
-        operation.queue() { results in
-            for obj in results {
-                if (obj as? NSManagedObject)?.managedObjectContext == nil {
-                    print( "FOUND ONE" )
-                }
+        operation.queue() { (results, error) in
+            if let results = results where error == nil {
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                self.currentLocalOperation = nil
+                completion?(results)
             }
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
-            //self.visibleItems =  self.filterFlaggedForDeletionItemsFromResults(results)
-            self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-            self.currentLocalOperation = nil
-            completion?(results)
         }
         self.currentLocalOperation = operation
     }
     
-    func refreshLocalJustFilters() {
-        //self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(self.visibleItems.array)
+    func removeDeletedItems() {
+        self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
+        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
@@ -199,7 +196,16 @@ private extension NSOrderedSet {
             output = NSOrderedSet(array: objects + self.array)
         }
         
-        let predicate = NSPredicate(format: "hasBeenDeleted == YES")
-        return output.filteredOrderedSetUsingPredicate( predicate )
+        return output.v_orderedSetFitleredForDeletedObjects()
+    }
+    
+    func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {
+        let predicate = NSPredicate() { (object, dictionary) -> Bool in
+            if let managedObject = object as? NSManagedObject {
+                return managedObject.hasBeenDeleted == false
+            }
+            return true
+        }
+        return self.filteredOrderedSetUsingPredicate( predicate )
     }
 }

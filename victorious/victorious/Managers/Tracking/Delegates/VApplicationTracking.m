@@ -200,7 +200,7 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 - (nullable NSURL *)urlByReplacingMacrosInURL:(NSString *)urlString withParameters:(NSDictionary *)parameters
 {
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
+    VSessionTimer *sessionTimer = [VRootViewController sharedRootViewController].sessionTimer;
     
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     

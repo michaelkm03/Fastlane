@@ -86,7 +86,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 vsdk_argumentArray: [ conversation ],
                 vsdk_paginator: self.request.paginator )
             
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results
@@ -112,7 +112,7 @@ class FetchConverationOperation: FetcherOperation {
                 vsdk_argumentArray: [ self.userID ],
                 vsdk_paginator: self.paginator )
             
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results

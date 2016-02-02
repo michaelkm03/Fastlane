@@ -674,12 +674,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
 {
-    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+    [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
 - (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
 {
-    [self.streamDataSource.paginatedDataSource refreshLocalJustFilters];
+    [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
 #pragma mark - VSequenceActionsDelegate

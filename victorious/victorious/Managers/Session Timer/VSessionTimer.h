@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VSessionTimer;
 
 extern NSString * const VSessionTimerNewSessionShouldStart; ///< Notification that is posted when the user has returned to the app after some time away
@@ -25,12 +27,15 @@ extern NSString * const VSessionTimerNewSessionShouldStart; ///< Notification th
  */
 @interface VSessionTimer : NSObject <VHasManagedDependencies>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 @property (nonatomic, readonly) BOOL started; ///< returns YES if -start has already been called
 @property (nonatomic, readonly) NSUInteger sessionDuration; ///< Length of the current (if active) or most recently ended session in milliseconds
-@property (nonatomic, weak) id<VSessionTimerDelegate> delegate;
+@property (nonatomic, copy, readonly) NSString *sessionID; ///< A unique string that identifies this session
+@property (nonatomic, weak, nullable) id<VSessionTimerDelegate> delegate;
 
 - (void)start; ///< Start monitoring application state
 - (BOOL)shouldNewSessionStartNow; ///< Returns YES if enough time has passed for a new session to start
 
 @end
+
+NS_ASSUME_NONNULL_END

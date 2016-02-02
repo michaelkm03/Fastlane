@@ -10,36 +10,31 @@
 #import "VConstants.h"
 #import "VAdViewController.h"
 #import "UIView+AutoLayout.h"
+#import "victorious-Swift.h"
 
 @interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
-@property (nonatomic, strong) VAdViewController *adViewController;
-@property (nonatomic, readwrite) BOOL adPlaying;
-@property (nonatomic, strong) NSArray *adDetails;
+@property (nonatomic, strong) VAdBreak *adBreak;
 
 @end
 
 @implementation VAdVideoPlayerViewController
 
-- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+- (instancetype)initWithAdBreak:(VAdBreak *)adBreak
+               player:(id<VVideoPlayer>)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSAssert(details != nil, @"%@ needs a details array in order to initialize.", [VAdVideoPlayerViewController class]);
-        
-        _adDetails = details;
-        _monetizationPartner = monetizationPartner;
-        
-        // When ads are supported again, switch on the `monitizationPartner` value to
-        // provide a view controller for the `adViewController` property.
-        _adViewController = nil;
-        
-        if ( _adViewController == nil )
-        {
-            return nil;
-        }
+        NSAssert(adBreak != nil, @"%@ needs an adBreak in order to initialize.", [VAdVideoPlayerViewController class]);
+        NSAssert(player != nil, @"%@ needs a player in order to initialize.", [VAdVideoPlayerViewController class]);
+        _adBreak = adBreak;
+        _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
+                                                                  adTag:self.adBreak.adTag
+                                                                nibName:nil
+                                                              nibBundle:nil
+                                                              adsLoader:[[IMAAdsLoader alloc] init]];
     }
     return self;
 }
@@ -65,7 +60,6 @@
 - (void)start
 {
     self.adViewController.delegate = self;
-    self.adViewController.adServerMonetizationDetails = self.adDetails;
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
     [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];
@@ -82,8 +76,6 @@
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = NO;
-    
     // Remove the adViewController from the view hierarchy
     [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
@@ -92,16 +84,12 @@
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
-- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
+- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController withError:(NSError *)error
 {
-    self.adPlaying = NO;
-
     // Remove the adViewController from the view hierarchy
     [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
-    
-    self.adPlaying = NO;
 
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {
@@ -119,7 +107,6 @@
 
 - (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
@@ -128,7 +115,6 @@
 
 - (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
     if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStopPlaybackForAdVideoPlayerViewController:self];
