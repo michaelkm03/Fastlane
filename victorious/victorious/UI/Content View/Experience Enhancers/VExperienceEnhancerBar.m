@@ -72,7 +72,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     layout.minimumInteritemSpacing = 15.0f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
     self.enabled = YES;
-    _operationQueue = [NSOperationQueue new];
 }
 
 - (void)dealloc
