@@ -69,7 +69,7 @@ extension VSequence: PersistenceParsable {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-                })
+            })
         }
         
         if let nodes = sequence.nodes where !nodes.isEmpty {
@@ -78,7 +78,7 @@ extension VSequence: PersistenceParsable {
                 node.populate( fromSourceModel: $0 )
                 node.sequence = self
                 return node
-                })
+            })
         }
         
         if let voteResults = sequence.voteTypes where !voteResults.isEmpty {
@@ -95,7 +95,7 @@ extension VSequence: PersistenceParsable {
                 persistentVoteResult.sequence = self
                 persistentVoteResult.count = $0.voteCount
                 return persistentVoteResult
-                })
+            })
         }
     }
 }
