@@ -43,10 +43,10 @@ class DeleteSequenceOperation: FetcherOperation {
 
 class DeleteSequenceRemoteOperation: RequestOperation {
     
-    let request: FlagSequenceRequest
+    let request: DeleteSequenceRequest
     
     init( sequenceID: String ) {
-        self.request = FlagSequenceRequest(sequenceID: sequenceID)
+        self.request = DeleteSequenceRequest(sequenceID: sequenceID)
     }
     
     override func main() {
