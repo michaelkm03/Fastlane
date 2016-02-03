@@ -60,6 +60,8 @@ protocol Queuable {
     /// Returns an array of operations which are dependencies of the receiver on the provided queue.
     func dependentOperationsInQueue( queue: NSOperationQueue ) -> [NSOperation]
     
+    func dependentOperationsInQueues( queues: [NSOperationQueue] ) -> [NSOperation]
+    
     /// Returns an array of operations which are dependencies of the receiver on
     /// the shared queue for the type of the receiver.
     func dependentOperationsInQueue() -> [NSOperation]
@@ -75,7 +77,8 @@ extension Queuable where Self : NSOperation {
     }
     
     func queueAfter( operation: NSOperation, queue: NSOperationQueue ) {
-        for dependentOperation in (operation as? Self)?.dependentOperationsInQueue( queue ) ?? [] {
+        let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
+        for dependentOperation in dependentOperations {
             dependentOperation.addDependency( self )
         }
         addDependency( operation )
@@ -92,7 +95,11 @@ extension Queuable where Self : NSOperation {
     }
     
     func dependentOperationsInQueue( queue: NSOperationQueue ) -> [NSOperation] {
-        return queue.operations.filter { $0.dependencies.contains(self) }
+        return dependentOperationsInQueues( [queue] )
+    }
+    
+    func dependentOperationsInQueues( queues: [NSOperationQueue] ) -> [NSOperation] {
+        return queues.reduce( [NSOperation](), combine: { $0 + $1.operations.filter { $0.dependencies.contains(self) } } )
     }
     
     func dependentOperationsInQueue() -> [NSOperation] {
