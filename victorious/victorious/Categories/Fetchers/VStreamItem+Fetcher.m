@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem.h"
+#import "VStreamItem+Fetcher.h"
 #import "victorious-Swift.h"
 
 //Type values

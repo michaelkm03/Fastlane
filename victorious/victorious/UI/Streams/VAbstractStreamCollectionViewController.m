@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VNavigationController.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 #import "VScrollPaginator.h"

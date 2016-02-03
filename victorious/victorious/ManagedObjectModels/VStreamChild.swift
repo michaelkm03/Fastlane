@@ -1,5 +1,5 @@
 //
-//  VStreamChild.swift
+//  VStreamItem.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/1/16.
@@ -12,7 +12,7 @@ import CoreData
 class VStreamChild: NSManagedObject {
     
     @NSManaged var streamItem: VStreamItem
-    @NSManaged var streamParent: VStreamItem
-    @NSManaged var marqueeParent: VStreamItem
+    @NSManaged var streamParent: VStream
+    @NSManaged var marqueeParent: VStream
     @NSManaged var displayOrder: NSNumber!
 }

@@ -9,7 +9,7 @@
 #import "VInsetMarqueeController.h"
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VInsetMarqueeStreamItemCell.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
 static NSUInteger const kAnimationSteps = 44;
 static NSUInteger const kAnimationBounces = 1;

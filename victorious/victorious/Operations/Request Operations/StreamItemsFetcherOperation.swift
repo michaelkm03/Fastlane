@@ -21,7 +21,7 @@ class StreamItemsFetcherOperation: FetcherOperation {
             guard let stream = context.objectWithID(self.streamObjectID) as? VStream else {
                 return
             }
-            self.results = stream.streamItems.array as? [VStreamItem] ?? []
+            self.results = stream.streamItems
         }
     }
 }

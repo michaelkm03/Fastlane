@@ -8,7 +8,6 @@
 
 #import "VInsetMarqueeStreamItemCell.h"
 #import "UIImageView+VLoadingAnimations.h"
-#import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
 #import <objc/runtime.h>

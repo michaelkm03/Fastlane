@@ -13,7 +13,6 @@
 #import "VImageStreamPreviewView.h"
 #import "VFailureStreamPreviewView.h"
 #import "VTextStreamPreviewView.h"
-#import "VStreamItem+Fetcher.h"
 #import "VAsset.h"
 
 @implementation VStreamPreviewView

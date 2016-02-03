@@ -9,7 +9,6 @@
 #import "VBlurredMarqueeCollectionViewCell.h"
 #import "VBlurredMarqueeStreamItemCell.h"
 #import "VBlurredMarqueeController.h"
-#import "VStreamItem+Fetcher.h"
 #import "VCrossFadingImageView.h"
 #import "VCrossFadingMarqueeLabel.h"
 #import "VStream.h"

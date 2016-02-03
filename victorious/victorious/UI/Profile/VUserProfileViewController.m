@@ -10,7 +10,7 @@
 #import "VUser.h"
 #import "VProfileEditViewController.h"
 #import "VConversationContainerViewController.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VConversationListViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VDependencyManager+VNavigationMenuItem.h"

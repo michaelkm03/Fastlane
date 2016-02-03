@@ -8,7 +8,7 @@
 
 #import "VNewContentViewController+Actions.h"
 #import "VStream.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
 #import "VUser.h"

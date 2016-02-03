@@ -12,7 +12,7 @@
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VConstants.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import "VHashtagStreamCollectionViewController.h"

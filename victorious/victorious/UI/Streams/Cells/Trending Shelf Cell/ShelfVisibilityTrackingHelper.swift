@@ -33,16 +33,16 @@ class ShelfVisibilityTrackingHelper {
                     return
                 }
                 
-                let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem
+                let streamItem = shelf.streamItems[indexPath.row]
                 
                 // If this shelf item is a stream, track the first sequence
                 if let stream = streamItem as? VStream {
-                    if let firstSequence = stream.streamItems.firstObject as? VSequence {
+                    if let firstSequence = stream.streamItems.first as? VSequence {
                         let event = StreamCellContext(streamItem: firstSequence, stream: shelf, fromShelf: false)
                         streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                     }
-                }
-                else if let streamItem = streamItem {
+                    
+                } else {
                     let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
                     streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                 }

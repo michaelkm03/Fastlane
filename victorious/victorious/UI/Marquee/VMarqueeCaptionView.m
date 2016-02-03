@@ -7,7 +7,6 @@
 //
 
 #import "VMarqueeCaptionView.h"
-#import "VStreamItem+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VEditorializationItem.h"
 #import "victorious-Swift.h"

@@ -9,7 +9,7 @@
 #import "VDiscoverViewController.h"
 #import "VDiscoverContainerViewController.h"
 #import "VDiscoverSuggestedPeopleSectionCell.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VHashtagCell.h"
 #import "VDiscoverHeaderView.h"
 #import "VDiscoverSuggestedPeopleViewController.h"

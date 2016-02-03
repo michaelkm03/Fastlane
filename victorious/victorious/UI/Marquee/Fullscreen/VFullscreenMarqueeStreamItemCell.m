@@ -9,7 +9,6 @@
 #import "VFullscreenMarqueeStreamItemCell.h"
 
 // Stream Support
-#import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 

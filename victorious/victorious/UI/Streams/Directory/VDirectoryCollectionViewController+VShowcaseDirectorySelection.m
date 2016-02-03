@@ -8,7 +8,6 @@
 
 #import "VDirectoryCollectionViewController+VShowcaseDirectorySelection.h"
 #import "VStream.h"
-#import "VStreamItem+Fetcher.h"
 #import "victorious-Swift.h"
 
 @implementation VDirectoryCollectionViewController (VShowcaseDirectorySelection)

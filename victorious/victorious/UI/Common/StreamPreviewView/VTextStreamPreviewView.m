@@ -10,7 +10,7 @@
 
 // Models + Helpers
 #import "VNode+Fetcher.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"

@@ -41,22 +41,21 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             streamItemVisibilityTrackingHelper.shelf = shelf
             
-            if let items = shelf?.streamItems,
-                let streamItems = items.array as? [VStreamItem] {
-                    for (index, streamItem) in streamItems.enumerate() {
-                        if index == streamItems.count - 1 {
-                            
-                            let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-                            
-                        }
-                        else {
-                            
-                            let reuseIdentifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier:reuseIdentifier)
-                            
-                        }
+            if let streamItems = shelf?.streamItems {
+                for (index, streamItem) in streamItems.enumerate() {
+                    if index == streamItems.count - 1 {
+                        
+                        let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                        collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+                        
                     }
+                    else {
+                        
+                        let reuseIdentifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier:reuseIdentifier)
+                        
+                    }
+                }
             }
             updateFollowControlState()
             self.collectionView.reloadData()
@@ -110,7 +109,7 @@ extension VTrendingShelfCollectionViewCell: TrackableShelf {
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = shelf?.streamItems.array as? [VStreamItem] {
+        if let streamItems = shelf?.streamItems {
             let streamItem = streamItems[indexPath.row]
             let isShowMoreCell = indexPath.row == streamItems.count - 1
             let T = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self

@@ -24,13 +24,13 @@ extension VStream: PersistenceParsable {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-                })
+            })
         }
         
-        let streamChildren = VStreamChild.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
+        let streamChildren = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
         self.v_addObjects( streamChildren, to: "streamChildren" )
         
-        let marqueeChildren = VStreamChild.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
+        let marqueeChildren = VStreamItem.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
         self.v_addObjects( marqueeChildren, to: "marqueeChildren")
     }
 }

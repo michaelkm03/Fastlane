@@ -12,7 +12,7 @@
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VTracking.h"
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"

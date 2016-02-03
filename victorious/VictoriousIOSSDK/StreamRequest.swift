@@ -45,13 +45,22 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         let stream: Stream
         
         if let streamFromObject = Stream(json: responseJSON["payload"]) {
-            stream = streamFromObject // Regular Streams
+            
+            // Regular Streams
+            stream = streamFromObject
+            
         } else if responseJSON["payload"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : responseJSON["stream_id"], "items" : responseJSON["payload"] ])) {
-                stream = streamFromItems // User profile and other streams with `stream_id` in the response
+                
+                // User profile and other streams with `stream_id` in the response
+                stream = streamFromItems
+                
         } else if responseJSON["payload"]["content"].array != nil,
             let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"]["content"] ])) {
-                stream = streamFromItems // Liked posts, and other weird responses with no `stream_id` information
+                
+                // Liked posts, and other weird responses with no `stream_id` information
+                stream = streamFromItems
+                
         } else {
             throw ResponseParsingError()
         }

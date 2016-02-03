@@ -44,7 +44,7 @@
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
 #import "VSleekStreamCellFactory.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCellTracking.h"
 #import "VStreamCollectionViewController.h"
@@ -778,7 +778,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         ContentViewContext *context = [[ContentViewContext alloc] init];
         
-        NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
+        NSString *streamID = event.stream.shelfId.length > 0 && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
         
         UICollectionView *collectionView = event.collectionView;
         NSIndexPath *indexPath = event.indexPath;

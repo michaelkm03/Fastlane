@@ -10,7 +10,6 @@
 
 // Models + Helpers
 #import "VStream.h"
-#import "VStreamItem+Fetcher.h"
 
 // Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"

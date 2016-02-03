@@ -11,7 +11,7 @@
 #import "VAbstractMarqueeStreamItemCell.h"
 #import "VTimerManager.h"
 #import "VStreamItem.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager+VHighlightContainer.h"

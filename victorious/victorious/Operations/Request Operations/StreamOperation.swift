@@ -39,12 +39,11 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             
             // Parse stream items
             var displayOrder = self.request.paginator.displayOrderCounterStart
-            let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
-            for streamItem in streamItems {
-                streamItem.displayOrder = displayOrder++
+            for streamItem in persistentStream.streamItems {
+                //streamItem.displayOrder = displayOrder++
                 streamItem.streamId = stream.streamID
             }
-            persistentStream.v_addObjects(streamItems, to: "streamItems")
+            //persistentStream.v_addObjects(streamItems, to: "streamItems")
             context.v_save()
             dispatch_async( dispatch_get_main_queue() ) {
                 self.results = self.fetchResults()
@@ -82,7 +81,7 @@ class StreamFetcherOperation: FetcherOperation {
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            //fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
                 vsdk_format: "ANY self.streams.apiPath = %@",
                 vsdk_argumentArray: [ self.apiPath ],

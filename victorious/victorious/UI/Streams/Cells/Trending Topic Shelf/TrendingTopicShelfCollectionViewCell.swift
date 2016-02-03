@@ -52,13 +52,12 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: Shelf? {
         didSet {
-            if ( shelf == oldValue ) {
-                if let newStreamItems = streamItems(shelf), let oldStreamItems = streamItems(oldValue) {
-                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                        //The shelf AND its content are the same, no need to update
-                        return
-                    }
-                }
+            if shelf == oldValue,
+                let newStreamItems = shelf?.streamItems,
+                let oldStreamItems = oldValue?.streamItems
+                where newStreamItems == oldStreamItems {
+                    //The shelf AND its content are the same, no need to update
+                    return
             }
             
             if let shelf = shelf {
@@ -111,12 +110,6 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TrendingTopicContentCollectionViewCell.self))
     }
     
-    // MARK: Helpers
-    
-    private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
-        return shelf?.streamItems
-    }
-    
     /// The optimal size for this cell.
     ///
     /// :param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
@@ -144,11 +137,11 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
 extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return streamItems(shelf)?.count ?? 0
+        return shelf?.streamItems.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = streamItems(shelf)?.array as? [VSequence] {
+        if let streamItems = shelf?.streamItems as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.colorCache = colorCache
@@ -169,7 +162,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         let responder: VHashtagSelectionResponder = typedResponder()
-        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VSequence] {
+        if let streamItems = shelf?.streamItems as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let hashtag = streamItem.trendingTopicName ?? ""
             responder.hashtagSelected(hashtag)

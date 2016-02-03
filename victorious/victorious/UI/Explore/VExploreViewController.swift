@@ -596,8 +596,13 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         // Navigating to a sequence
         if let sequence = event.streamItem as? VSequence {
-            let isFromShelf = event.stream.hasShelfID() && event.fromShelf
-            let streamId = isFromShelf ? event.stream.shelfId : event.stream.streamId
+            
+            let streamId: String?
+            if event.fromShelf, let shelfId = event.stream.shelfId where !shelfId.characters.isEmpty {
+                streamId = shelfId
+            } else {
+                streamId = event.stream.streamId
+            }
             
             let context = ContentViewContext()
             context.originDependencyManager = dependencyManager

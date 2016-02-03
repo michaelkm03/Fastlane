@@ -12,7 +12,6 @@
 #import "VCrossFadingMarqueeLabel.h"
 #import "VCrossFadingImageView.h"
 #import "VTimerManager.h"
-#import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
