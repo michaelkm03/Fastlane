@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSSet * previewImageAssets;
 @property (nonatomic, retain, nullable) NSSet * streams;
 @property (nonatomic, retain, nullable) NSDate * releasedAt;
-@property (nonatomic, retain, null_unspecified) NSNumber * displayOrder;
+
+//@property (nonatomic, retain, null_unspecified) NSNumber * displayOrder;
 
 @end
 

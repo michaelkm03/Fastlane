@@ -275,13 +275,12 @@
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shelfId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamChild" syncable="YES"/>
-        <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamChild" syncable="YES"/>
     </entity>
     <entity name="StreamChild" representedClassName=".VStreamChild" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" syncable="YES"/>
-        <relationship name="stream" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" syncable="YES"/>
-        <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="streamChildren" inverseEntity="StreamItem" syncable="YES"/>
+        <relationship name="marqueParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="marqueeChildren" inverseEntity="StreamItem" syncable="YES"/>
+        <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="streamChild" inverseEntity="StreamItem" syncable="YES"/>
+        <relationship name="streamParent" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="streamChildren" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="-1" indexed="YES" syncable="YES"/>
@@ -295,10 +294,11 @@
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="editorializations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EditorializationItem" inverseName="streamItem" inverseEntity="EditorializationItem" syncable="YES"/>
-        <relationship name="marqueeChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamChild" syncable="YES"/>
+        <relationship name="marqueeChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamChild" inverseName="marqueParent" inverseEntity="StreamChild" syncable="YES"/>
         <relationship name="previewImageAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="streamItems" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="previewTextPostAsset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="streamItems" inverseEntity="Asset" syncable="YES"/>
-        <relationship name="streamChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamChild" inverseName="streamItem" inverseEntity="StreamChild" syncable="YES"/>
+        <relationship name="streamChild" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamChild" inverseName="streamItem" inverseEntity="StreamChild" syncable="YES"/>
+        <relationship name="streamChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamChild" inverseName="streamParent" inverseEntity="StreamChild" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -391,12 +391,12 @@
         <element name="Sequence" positionX="0" positionY="0" width="128" height="585"/>
         <element name="SequenceLiker" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Shelf" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="Stream" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="StreamItem" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="Stream" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="StreamChild" positionX="9" positionY="153" width="128" height="105"/>
+        <element name="StreamItem" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
         <element name="User" positionX="0" positionY="0" width="128" height="570"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="StreamChild" positionX="9" positionY="153" width="128" height="90"/>
     </elements>
 </model>

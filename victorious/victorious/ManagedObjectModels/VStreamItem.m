@@ -27,6 +27,6 @@
 @dynamic previewImageAssets;
 @dynamic streams;
 @dynamic releasedAt;
-@dynamic displayOrder;
+//@dynamic displayOrder;
 
 @end

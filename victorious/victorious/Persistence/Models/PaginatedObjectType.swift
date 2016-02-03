@@ -21,7 +21,7 @@ protocol PaginatedObjectType: class {
 
 extension VComment: PaginatedObjectType {}
 extension VMessage: PaginatedObjectType {}
-extension VStreamItem: PaginatedObjectType {}
+extension VStreamChild: PaginatedObjectType {}
 extension VConversation: PaginatedObjectType {}
 extension VFollowedHashtag: PaginatedObjectType {}
 extension VFollowedUser: PaginatedObjectType {}

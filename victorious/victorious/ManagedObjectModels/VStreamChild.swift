@@ -10,7 +10,9 @@ import Foundation
 import CoreData
 
 class VStreamChild: NSManagedObject {
+    
     @NSManaged var streamItem: VStreamItem
-    @NSManaged var stream: VStream
+    @NSManaged var streamParent: VStreamItem
+    @NSManaged var marqueeParent: VStreamItem
     @NSManaged var displayOrder: NSNumber!
 }
