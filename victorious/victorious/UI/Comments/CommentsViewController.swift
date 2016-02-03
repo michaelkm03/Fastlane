@@ -147,6 +147,16 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         self.edgesForExtendedLayout = .Bottom
         self.extendedLayoutIncludesOpaqueBars = true
+        self.automaticallyAdjustsScrollViewInsets = false
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if self.v_navigationController() == nil && self.topInset != self.topLayoutGuide.length {
+            self.topInset = self.topLayoutGuide.length
+           self.collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     func refresh(sender: AnyObject? = nil) {
@@ -154,7 +164,15 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             self.refreshControl.beginRefreshing()
         }
         dataSource?.loadComments( .First ) { error in
-            self.refreshControl.endRefreshing()
+            if sender == nil {
+                // Don't animate on first load
+                UIView.performWithoutAnimation() {
+                    self.refreshControl.endRefreshing()
+                }
+            } else {
+                // Don't if user manually pulled to refresh
+                self.refreshControl.endRefreshing()
+            }
         }
     }
     
@@ -520,8 +538,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
         
         if let dataSource = self.dataSource {
-            dataSource.activityFooterDataSource.hidden = !paginatedDataSource.shouldShowNextPageActivity
-            self.collectionView.reloadSections(NSIndexSet(index: 1))
+            let wasHidden = dataSource.activityFooterDataSource.hidden
+            let canScroll = collectionView.contentSize.height > collectionView.bounds.height
+            let shouldHide = !paginatedDataSource.shouldShowNextPageActivity || !canScroll
+            dataSource.activityFooterDataSource.hidden = shouldHide
+            if wasHidden != shouldHide {
+                collectionView.reloadSections(NSIndexSet(index: 1))
+            }
         }
         
         self.updateCollectionView()
