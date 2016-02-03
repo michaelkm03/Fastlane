@@ -34,7 +34,7 @@ class CreateMediaUploadOperation: Operation {
     }
     
     private func upload(uploadManager: VUploadManager) {
-        guard let mediaURL = formFields["media_data"] where !mediaURL.absoluteString.isEmpty else {
+        guard let mediaURL = formFields["media_data"] as? NSURL where !mediaURL.absoluteString.isEmpty else {
             uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
@@ -50,7 +50,9 @@ class CreateMediaUploadOperation: Operation {
             uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
-
+        
+        let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
+        
         dispatch_async(dispatch_get_main_queue()) {
             self.uploadCompletion(nil)
             self.mainQueueCompletionBlock?(self)

@@ -48,7 +48,27 @@
         "likes": 5,
         "memes": 6,
         "quotes": 7,
-        "reposted_by_following": 8
+        "reposted_by_following": 8,
+        "votetypes": [{
+                      "id": "16",
+                      "count": 2
+                      },
+                      {
+                      "id": "14",
+                      "count": 1
+                      },
+                      {
+                      "id": "12",
+                      "count": 2
+                      },
+                      {
+                      "id": "10",
+                      "count": 2
+                      },
+                      {
+                      "id": "8",
+                      "count": 3
+                      }],
     },
     "is_complete" : true,
     "trending_topic_name" : "Trending Topic!!",

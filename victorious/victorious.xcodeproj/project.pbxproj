@@ -167,7 +167,6 @@
 		035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D11B1EA33400E910A7 /* Quicksand-Regular.ttf */; };
 		035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */; };
 		035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */; };
-		035B267D1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */; };
 		035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 035CD7891BA222DE008A01EB /* Explore.storyboard */; };
 		035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */; };
 		035FA77C1AE1B42E0002EE63 /* menuItemsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */; };
@@ -438,6 +437,7 @@
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
+		6728C0E81C6133020005A29F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */; };
@@ -472,6 +472,8 @@
 		67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
 		67803E1E1C24D5C5008CEC73 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		67803E1F1C24D5C5008CEC73 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
+		6780537A1C60838800894821 /* VoteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678053791C60838800894821 /* VoteResult.swift */; };
+		6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6780537B1C6086AD00894821 /* VoteResultTests.swift */; };
 		67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */; };
@@ -2030,6 +2032,14 @@
 		034BA92D1C60272000C23D7E /* VLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLog.swift; sourceTree = "<group>"; };
 		034BA92F1C602B7F00C23D7E /* VTFLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTFLog.h; sourceTree = "<group>"; };
 		034BA9301C602B7F00C23D7E /* VTFLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTFLog.m; sourceTree = "<group>"; };
+		034BA9321C61422C00C23D7E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9331C61423000C23D7E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9341C61423200C23D7E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9351C61423500C23D7E /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9361C61423800C23D7E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9371C61423B00C23D7E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9381C61423E00C23D7E /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		034BA9391C61424000C23D7E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VCardSeeMoreDirectoryCell.strings"; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -2537,6 +2547,7 @@
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
+		6728C0E71C6133020005A29F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCardSeeMoreDirectoryCell.xib; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
@@ -2566,6 +2577,8 @@
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
 		677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequest.swift; sourceTree = "<group>"; };
 		677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequestTests.swift; sourceTree = "<group>"; };
+		678053791C60838800894821 /* VoteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResult.swift; sourceTree = "<group>"; };
+		6780537B1C6086AD00894821 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
@@ -5405,6 +5418,7 @@
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				670C65981C52C49900BD7F3F /* UserShelfTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				6780537B1C6086AD00894821 /* VoteResultTests.swift */,
 				A7BAD63C1BF144800076D3B7 /* StreamTests.swift */,
 			);
 			path = Models;
@@ -5515,6 +5529,7 @@
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 				670C65881C52AC0000BD7F3F /* Usershelf.swift */,
+				678053791C60838800894821 /* VoteResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9041,7 +9056,7 @@
 				A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */,
 				A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */,
 				A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */,
-				035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */,
+				6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */,
 			);
 			path = "Card Directory Cell";
 			sourceTree = "<group>";
@@ -9919,6 +9934,7 @@
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
 				F06B41C71B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib in Resources */,
 				035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */,
+				6728C0E81C6133020005A29F /* VCardSeeMoreDirectoryCell.xib in Resources */,
 				A7D378641AF308B3007FF197 /* component.json in Resources */,
 				F0E0F1B81AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib in Resources */,
 				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
@@ -9981,7 +9997,6 @@
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
-				035B267D1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib in Resources */,
 				035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */,
@@ -10461,6 +10476,7 @@
 				A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				795271021C348C8900BD41F1 /* UserSearchRequest.swift in Sources */,
+				6780537A1C60838800894821 /* VoteResult.swift in Sources */,
 				79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */,
 				C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */,
 				C3D6FA921BF58399006DEE19 /* CommentAddRequest.swift in Sources */,
@@ -10610,6 +10626,7 @@
 				A7DCA51C1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift in Sources */,
 				672828001C45ED6400B02909 /* AdditionalAssertions.swift in Sources */,
 				C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */,
+				6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */,
 				A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */,
@@ -11934,13 +11951,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-			);
-			name = VCardSeeMoreDirectoryCell.xib;
-			sourceTree = "<group>";
-		};
 		035CD7891BA222DE008A01EB /* Explore.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -12099,6 +12109,22 @@
 				034033841BD085A1000A8137 /* zh-Hant */,
 			);
 			name = Workspace.storyboard;
+			sourceTree = "<group>";
+		};
+		6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6728C0E71C6133020005A29F /* Base */,
+				034BA9321C61422C00C23D7E /* es */,
+				034BA9331C61423000C23D7E /* fr */,
+				034BA9341C61423200C23D7E /* de */,
+				034BA9351C61423500C23D7E /* pt */,
+				034BA9361C61423800C23D7E /* ja */,
+				034BA9371C61423B00C23D7E /* ko */,
+				034BA9381C61423E00C23D7E /* vi */,
+				034BA9391C61424000C23D7E /* zh-Hant */,
+			);
+			name = VCardSeeMoreDirectoryCell.xib;
 			sourceTree = "<group>";
 		};
 		D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */ = {
