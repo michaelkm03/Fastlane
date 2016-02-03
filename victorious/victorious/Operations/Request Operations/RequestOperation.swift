@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-class RequestOperation: NSOperation, Queuable {
+class RequestOperation: NSOperation, Queuable, ErrorOperation {
     
     internal(set) var results: [AnyObject]?
     
@@ -29,13 +29,17 @@ class RequestOperation: NSOperation, Queuable {
     
     // MARK: - Queuable
     
+    var error: NSError? {
+        return self.requestExecutor.error
+    }
+    
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
         self.completionBlock = {
             if completionBlock != nil {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?(self.requestExecutor.error)
+                self.mainQueueCompletionBlock?( self.error )
             }
         }
         queue.addOperation( self )

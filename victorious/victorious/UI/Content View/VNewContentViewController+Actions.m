@@ -151,22 +151,7 @@
                                                                      style:UIAlertActionStyleDestructive
                                                                    handler:^(UIAlertAction *action)
                                              {
-                                                 [self.presentingViewController dismissViewControllerAnimated:YES
-                                                                                                   completion:^
-                                                  {
-                                                      
-                                                      DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
-                                                      [deleteOperation queueOn:deleteOperation.defaultQueue
-                                                               completionBlock:^(NSError *_Nullable error)
-                                                       {
-                                                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                       }];
-                                                      self.viewModel.sequence.markForDeletion = @(YES);
-                                                      if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
-                                                      {
-                                                          [self.delegate contentViewDidDeleteContent:self];
-                                                      }
-                                                  }];
+                                                 [self onSequenceDeleted];
                                              }]];
                  
                  [self presentViewController:alertController animated:YES completion:nil];
@@ -190,10 +175,8 @@
              {
                  [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
                  {
-                     [self.presentingViewController dismissViewControllerAnimated:YES
-                                                                       completion:^
+                     [self.presentingViewController dismissViewControllerAnimated:YES completion:^
                       {
-                          self.viewModel.sequence.markForDeletion = @(YES);
                           if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
                           {
                               [self.delegate contentViewDidFlagContent:self];
@@ -219,6 +202,22 @@
     }
     
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
+}
+
+- (void)onSequenceDeleted
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:^
+     {
+         DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
+         [deleteOperation queueOn:deleteOperation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+          {
+              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+              if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])
+              {
+                  [self.delegate contentViewDidDeleteContent:self];
+              }
+          }];
+     }];
 }
 
 - (void)addRemixToActionItems:(NSMutableArray *)actionItems

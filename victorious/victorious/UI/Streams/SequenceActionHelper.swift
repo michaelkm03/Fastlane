@@ -16,6 +16,7 @@ import UIKit
             UnlikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
                 completion?( error == nil )
             }
+            
         } else {
             LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
@@ -34,9 +35,11 @@ import UIKit
     
     func repostNode( node: VNode, completion: ((Bool) -> Void)?) {
         RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { error in
-            if let _ = error {
-                let params = [ VTrackingKeyErrorMessage : error?.localizedDescription ?? "" ]
+            
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
+                
             } else {
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
             }
@@ -46,45 +49,22 @@ import UIKit
     
     func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
         
-        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { error in
+        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
+           
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
                 
                 if error.code == Int(kVCommentAlreadyFlaggedError) {
-                    self.showAlert(
-                        title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                        message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                        viewController: viewController,
-                        completion: completion
-                    )
+                    viewController.v_showFlaggedConversationAlert(completion: completion)
                 } else {
-                    self.showAlert(
-                        title: NSLocalizedString( "WereSorry", comment: "" ),
-                        message: NSLocalizedString( "ErrorOccured", comment: "" ),
-                        viewController: viewController,
-                        completion: completion
-                    )
+                    viewController.v_showErrorAlert(completion: completion)
                 }
-            }
-            else {
+           
+            } else {
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                
-                self.showAlert(
-                    title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                    message: NSLocalizedString( "ReportContentMessage", comment: "" ),
-                    viewController: viewController,
-                    completion: completion
-                )
+                viewController.v_showFlaggedConversationAlert(completion: completion)
             }
         }
-    }
-    
-    func showAlert( title title: String, message: String, viewController: UIViewController, completion:((Bool) -> Void)? ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: { (action: UIAlertAction) -> Void in
-            completion?(true)
-        }))
-        viewController.presentViewController( alertController, animated: true, completion: nil)
     }
 }

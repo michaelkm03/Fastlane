@@ -9,6 +9,7 @@
 import Foundation
 
 public struct DeleteCommentRequest: RequestType {
+    
     public let commentID: Int
     public let removalReason: String?
     

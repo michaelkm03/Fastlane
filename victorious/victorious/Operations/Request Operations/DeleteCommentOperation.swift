@@ -1,34 +1,36 @@
 //
-//  FlagCommentOperation.swift
+//  DeleteCommentOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/24/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 2/1/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-class FlagCommentOperation: RequestOperation {
+class DeleteCommentOperation: FetcherOperation {
     
-    var request: FlagCommentRequest
+    let commentID: Int
     
     private let flaggedContent = VFlaggedContent()
     
-    init( commentID: Int ) {
-        self.request = FlagCommentRequest(commentID: commentID)
+    init(commentID: Int, removalReason: String?) {
+        self.commentID = commentID
         super.init()
         
-        let remoteOperation = FlagCommentRemoteOperation(commentID: commentID)
-        remoteOperation.queueAfter( self )
+        let remoteOperation = DeleteCommentRemoteOperation(commentID: commentID, removalReason: removalReason)
+        remoteOperation.queueAfter(self)
     }
     
     override func main() {
-        flaggedContent.addRemoteId( String(self.request.commentID), toFlaggedItemsWithType: .Comment)
+        // We're also going to flag it locally so that we can filter it from backend responses
+        // while parsing in the future.
+        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.request.commentID ]
+            let uniqueElements = [ "remoteId" : self.commentID ]
             if let comment: VComment = context.v_findObjects( uniqueElements ).first {
                 comment.sequence?.commentCount -= 1
                 context.deleteObject( comment )
@@ -38,13 +40,12 @@ class FlagCommentOperation: RequestOperation {
     }
 }
 
-
-class FlagCommentRemoteOperation: RequestOperation {
+class DeleteCommentRemoteOperation: RequestOperation {
     
-    var request: FlagCommentRequest
+    var request: DeleteCommentRequest
     
-    init( commentID: Int ) {
-        self.request = FlagCommentRequest(commentID: commentID)
+    init( commentID: Int, removalReason: String?) {
+        self.request = DeleteCommentRequest(commentID: commentID, removalReason: removalReason)
     }
     
     override func main() {

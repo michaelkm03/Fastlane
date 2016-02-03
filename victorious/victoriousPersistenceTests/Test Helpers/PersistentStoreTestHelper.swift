@@ -36,7 +36,6 @@ struct PersistentStoreTestHelper {
             sequence.isRemix = true
             sequence.isRepost = true
             sequence.likeCount = 1
-            sequence.markForDeletion = false
             sequence.memeCount = 1
             sequence.nameEmbeddedInContent = true
             sequence.permissionsMask = 1
@@ -58,7 +57,6 @@ struct PersistentStoreTestHelper {
         conversation.remoteId = 0
         conversation.lastMessageText = ""
         conversation.isRead = false
-        conversation.markForDeletion = false
         conversation.postedAt = NSDate()
         conversation.messages = NSOrderedSet()
         return conversation

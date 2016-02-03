@@ -63,17 +63,15 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [VComment] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "sequence.remoteId == %@",
-                vsdk_argumentArray: [self.sequenceID],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            let predicate = NSPredicate(format: "sequence.remoteId == %@", self.sequenceID )
+            let paginatorPredicate = self.request.paginator.paginatorPredicate
+            fetchRequest.predicate = predicate + paginatorPredicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VComment]
+            return results
         }
     }
 }
@@ -92,12 +90,9 @@ class FetchCommentsOperation: FetcherOperation {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "sequence.remoteId == %@",
-                vsdk_argumentArray: [self.sequenceID],
-                vsdk_paginator: self.paginator
-            )
-            fetchRequest.predicate = predicate
+            let predicate = NSPredicate(format: "sequence.remoteId == %@", self.sequenceID )
+            let paginatorPredicate = self.paginator.paginatorPredicate
+            fetchRequest.predicate = predicate + paginatorPredicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VComment]
             return results
         }

@@ -9,8 +9,9 @@
 import Foundation
 
 /// An interface for dealing with classes that have a standard set of predicates.
-protocol PredicateModelType: class {
+/*protocol PredicateModelType: class {
     
     static var defaultPredicate: NSPredicate { get }
     
 }
+*/
