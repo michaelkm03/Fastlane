@@ -23,7 +23,8 @@ class VSequenceTests: BasePersistentStoreTestCase {
         }
         let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: 1)
         persistentSequenceModel.populate(fromSourceModel: sequenceModel)
-        XCTAssert(persistentSequenceModel.adBreak != nil)
+        XCTAssertNotNil(persistentSequenceModel.adBreak)
+        XCTAssertEqual(persistentSequenceModel.voteResults?.count, 5)
     }
 
     private func createAdSequenceFromJSON(fileName fileName: String) -> Sequence? {

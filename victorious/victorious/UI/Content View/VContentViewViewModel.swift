@@ -14,7 +14,9 @@ extension VContentViewViewModel {
     func loadNetworkData() {
         
         if self.sequence.isPoll() {
-            PollResultSummaryBySequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
+            let operation = PollResultSummaryBySequenceOperation(sequenceID: self.sequence.remoteId)
+            operation.queue { _ in
+                self.pollResults = operation.results
                 self.delegate?.didUpdatePoll()
             }
         }

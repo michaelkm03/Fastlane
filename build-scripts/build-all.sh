@@ -14,7 +14,7 @@ MD5=$(git rev-parse HEAD 2> /dev/null)
 shift 2
 
 usage(){
-    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] [--vams_environment <environment>] <app name(s)>"
+    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] [--swiftflags <swift flags>] [--vams_environment <environment>] <app name(s)>"
     exit 1
 }
 
@@ -35,12 +35,20 @@ fi
 if [ "$1" == "--macros" ]; then
     shift
     MACROS=$1
-    MACROS_COMMAND="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $MACROS"
     shift
 else
     MACROS=""
-    MACROS_COMMAND=""
 fi
+MACROS_COMMAND="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $MACROS"
+
+if [ "$1" == "--swiftflags" ]; then
+    shift
+    SWIFTFLAGS=$1
+    shift
+else
+    SWIFTFLAGS=""
+fi
+SWIFTFLAGS_COMMAND="OTHER_SWIFT_FLAGS=\$OTHER_SWIFT_FLAGS $SWIFTFLAGS"
 
 if [ "$1" == "--vams_environment" ]; then
     shift
@@ -91,13 +99,8 @@ build(){
     xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
     # Build
-    if [ "$MACROS_COMMAND" == "" ]; then
-        xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND archive
-    else
-        xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
-    fi
+    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+               -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" "$SWIFTFLAGS_COMMAND" archive
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then
         pushd ../victorious.xcarchive/dSYMs > /dev/null
@@ -117,6 +120,7 @@ build(){
     /usr/libexec/PlistBuddy -x -c "Add :configuration string $CONFIGURATION" "$BUILDINFO_PLIST"
     /usr/libexec/PlistBuddy -x -c "Add :prefix string $SPECIAL_PREFIX" "$BUILDINFO_PLIST"
     /usr/libexec/PlistBuddy -x -c "Add :macros string $MACROS" "$BUILDINFO_PLIST"
+    /usr/libexec/PlistBuddy -x -c "Add :swiftflags string $SWIFTFLAGS" "$BUILDINFO_PLIST"
 }
 
 SKIP_BUILD="no"
@@ -126,8 +130,9 @@ if [ "$MD5" != "" -a -d "victorious.xcarchive" -a -f "$BUILDINFO_PLIST" ]; then
     PREVIOUS_CONFIGURATION=$(/usr/libexec/PlistBuddy -c "Print :configuration" "$BUILDINFO_PLIST")
     PREVIOUS_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :prefix" "$BUILDINFO_PLIST")
     PREVIOUS_MACROS=$(/usr/libexec/PlistBuddy -c "Print :macros" "$BUILDINFO_PLIST")
+    PREVIOUS_SWIFTFLAGS=$(/usr/libexec/PlistBuddy -c "Print :swiftflags" "$BUILDINFO_PLIST")
 
-    if [ "$PREVIOUS_MD5" == "$MD5" -a "$PREVIOUS_SCHEME" == "$SCHEME" -a "$PREVIOUS_CONFIGURATION" == "$CONFIGURATION" -a "$PREVIOUS_PREFIX" == "$SPECIAL_PREFIX" -a "$PREVIOUS_MACROS" == "$MACROS" ]; then
+    if [ "$PREVIOUS_MD5" == "$MD5" -a "$PREVIOUS_SCHEME" == "$SCHEME" -a "$PREVIOUS_CONFIGURATION" == "$CONFIGURATION" -a "$PREVIOUS_PREFIX" == "$SPECIAL_PREFIX" -a "$PREVIOUS_MACROS" == "$MACROS" -a "$PREVIOUS_SWIFTFLAGS" == "$SWIFTFLAGS" ]; then
         SKIP_BUILD="yes"
     fi
 fi

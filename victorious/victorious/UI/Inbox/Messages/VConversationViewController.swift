@@ -53,7 +53,8 @@ extension VConversationViewController {
     
     func maintainVisualScrollFromOffset(offset: CGPoint, contentSize: CGSize) {
         let newContentSize = self.tableView.contentSize
-        let newOffset = CGPoint(x: 0, y: offset.y + (newContentSize.height - contentSize.height) )
+        let diffHeight = newContentSize.height - contentSize.height
+        let newOffset = CGPoint(x: 0, y: diffHeight)
         self.tableView.setContentOffset(newOffset, animated:false)
     }
     

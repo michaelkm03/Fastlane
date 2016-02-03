@@ -21,16 +21,12 @@ final class PollVoteOperation: RequestOperation {
         
         // Peform optimistic changes before the request is executed
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let user = VCurrentUser.user(inManagedObjectContext: context),
-                let sequence: VSequence = context.v_findObjects( [ "remoteId" : self.request.sequenceID ] ).first else {
-                    return
+            guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
             }
             
-            let pollResult: VPollResult = context.v_createObject()
-            pollResult.sequenceId = String(self.request.sequenceID)
-            pollResult.answerId = self.request.answerID
+            let pollResult: VPollResult = context.v_findOrCreateObject(["sequenceId": self.request.sequenceID, "answerId" : NSNumber(integer: self.request.answerID)])
             pollResult.count = pollResult.count.integerValue + 1
-            pollResult.sequence = sequence
             pollResult.user = user
             
             context.v_save()
