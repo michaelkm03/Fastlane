@@ -670,7 +670,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 return 0;
                 break;
             case VContentViewSectionAllComments:
-                return (NSInteger)self.viewModel.sequence.comments.count;
+                return (NSInteger)self.viewModel.commentsDataSource.visibleItems.count;
                 break;
             case VContentViewSectionCount:
                 return 0;
