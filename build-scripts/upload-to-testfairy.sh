@@ -53,13 +53,13 @@ UPLOADER_VERSION=1.09
 TESTFAIRY_API_KEY="61e501eea8b80b5596c7e17c9fea4739ec6e8a86"
 
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
-AUTO_UPDATE="off"
+AUTO_UPDATE="on"
 
 # The maximum recording duration for every test. 
-MAX_DURATION="10m"
+MAX_DURATION="24h"
 
 # Is video recording enabled for this build. valid values:  "on", "off", "wifi" 
-VIDEO="off"
+VIDEO="wifi"
 
 # Comment text will be included in the email sent to testers
 COMMENT=""
@@ -91,7 +91,7 @@ verify_tools
 verify_settings
 
 /bin/echo "Uploading ${IPA_FILENAME} to TestFairy..."
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${IPA_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${IPA_FILENAME}" -F video="${VIDEO}" -F options=shake -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
