@@ -58,4 +58,11 @@ class URLEncodedStringTests: XCTestCase {
         XCTAssertNotNil(actualBody.rangeOfString("mockIDs[]=2"))
         XCTAssertNotNil(actualBody.rangeOfString("test=yes"))
     }
+    
+    // Reserved characters according to https://www.ietf.org/rfc/rfc2396.txt
+    func testReservedCharacters() {
+        let mockValues = ["reserved": ";/?:@&=+,$"] as NSDictionary
+        let encoded = mockValues.vsdk_urlEncodedString()
+        XCTAssertEqual(encoded, "reserved=%3B%2F%3F%3A%40%26%3D%2B%2C%24")
+    }
 }

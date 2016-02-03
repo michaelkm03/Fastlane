@@ -14,7 +14,7 @@ private let arrayValueSeperator = "[]"
 
 private let queryPartAllowedCharacterSet: NSCharacterSet = {
     let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
-    mutableCharacterSet.removeCharactersInString("?&=@")
+    mutableCharacterSet.removeCharactersInString(";/?:@&=+,$")
     return mutableCharacterSet.copy() as! NSCharacterSet
 }()
 
