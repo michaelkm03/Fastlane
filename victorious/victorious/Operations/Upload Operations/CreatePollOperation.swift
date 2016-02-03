@@ -51,6 +51,7 @@ final class CreatePollOperation: Operation {
     }
     
     private func upload(uploadManager: VUploadManager) {
+        let formFields = self.formFields
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
@@ -62,6 +63,14 @@ final class CreatePollOperation: Operation {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.mainQueueCompletionBlock?(self)
                 }
+            }
+            
+            if let answer1media = formFields["answer1_media"] as? NSURL {
+                // "try?" instead of "try" because if this delete fails, we don't want to fall through to the catch block; let's keep going and delete the other file at least.
+                let _ = try? NSFileManager.defaultManager().removeItemAtURL(answer1media)
+            }
+            if let answer2media = formFields["answer2_media"] as? NSURL {
+                let _ = try? NSFileManager.defaultManager().removeItemAtURL(answer2media)
             }
         } catch {
             return

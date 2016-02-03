@@ -16,7 +16,6 @@
 @property (nonatomic, retain) NSNumber * answerId;
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * sequenceId;
-@property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 
 @end

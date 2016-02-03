@@ -16,7 +16,6 @@
 @dynamic answerId;
 @dynamic count;
 @dynamic sequenceId;
-@dynamic sequence;
 @dynamic user;
 
 @end

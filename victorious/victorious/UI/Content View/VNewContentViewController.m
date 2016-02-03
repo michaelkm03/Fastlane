@@ -1458,7 +1458,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         if ( error == nil )
         {
-            [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+            [self didUpdatePoll];
         }
     }];
 }
@@ -1469,7 +1469,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          if ( error == nil )
          {
-             [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
+             [self didUpdatePoll];
          }
      }];
 }
