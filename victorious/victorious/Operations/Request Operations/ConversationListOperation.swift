@@ -27,7 +27,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
             return
         }
         
-        // Filter flagged conversations here so that they never even make it into the persistent store
+        // Filter flagged conversations here so that they never even make it into the persistent store O
         let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
         let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
         
