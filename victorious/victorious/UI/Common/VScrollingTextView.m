@@ -27,6 +27,8 @@ static CGFloat const kScrollBoundary = 20.0f;
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         self.delegate = self;
+        self.editable = NO;
+        self.showsVerticalScrollIndicator = NO;
     }
     return self;
 }
