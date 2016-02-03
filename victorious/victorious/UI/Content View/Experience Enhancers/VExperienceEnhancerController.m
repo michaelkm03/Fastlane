@@ -19,8 +19,6 @@
 
 @interface VExperienceEnhancerController ()
 
-@property (nonatomic, strong) dispatch_queue_t privateQueue;
-
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
@@ -73,73 +71,36 @@
 
 - (void)setup
 {
-    self.privateQueue = dispatch_queue_create("com.victorious.VExperienceEnhancerController.privateQueue", DISPATCH_QUEUE_SERIAL);
+    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
+    NSArray *voteTypes = [self.dependencyManager voteTypes];
     
-    dispatch_async(self.privateQueue, ^
-    {
-        // Using ivars here since the getters for these block on privateQueue
-        _sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-        NSArray *voteTypes = [self.dependencyManager voteTypes];
-        
-        NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes
-                                                                           sequence:_sequence];
-        _experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
-
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [self.enhancerBar reloadData];
-            [self.delegate experienceEnhancersDidUpdate];
-            
-            // Pre-load any purchaseable products that might not have already been cached
-            // This is also called from VSettingsManager during app initialization, so ideally
-            // most of the purchaseable products are already fetched from the App Store.
-            // If not, we'll cache them now.
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(purchaseManagedDidUpdate:)
-                                                         name:VPurchaseManagerProductsDidUpdateNotification
-                                                       object:nil];
-            NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-            
-            self.purchaseManager = [VPurchaseManager sharedInstance];
-            if ( !self.purchaseManager.isPurchaseRequestActive )
-            {
-                [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-            }
-
-            self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
-        });
-    });
-}
-
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
-{
-    NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
-    for ( VVoteType *voteType in voteTypes )
-    {
-        VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
-        NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
-        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
-
-        // Get icon image synhronously (we need it right away)
-        NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
-        NSString *key = voteType.voteTypeID;
-        if ( [imageMemoryCache objectForKey:key] )
-        {
-            enhancer.iconImage = [imageMemoryCache objectForKey:key];
-        }
-        else
-        {
-            enhancer.iconImage = voteType.iconImage;
-            if ( enhancer.iconImage != nil )
-            {
-                [imageMemoryCache setObject:enhancer.iconImage forKey:key];
-            }
-        }
-        
-        [experienceEnhanders addObject:enhancer];
-    }
-    
-    return [NSArray arrayWithArray:experienceEnhanders];
+    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequence:self.sequence
+                                                                                                             voteTypes:voteTypes];
+    [experienceEnhancerOperation queueOn:experienceEnhancerOperation.defaultQueue
+                         completionBlock:^(Operation *_Nonnull operation)
+     {
+         self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancerOperation.experienceEnhancers];
+         [self.enhancerBar reloadData];
+         [self.delegate experienceEnhancersDidUpdate];
+         
+         // Pre-load any purchaseable products that might not have already been cached
+         // This is also called from VSettingsManager during app initialization, so ideally
+         // most of the purchaseable products are already fetched from the App Store.
+         // If not, we'll cache them now.
+         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                  selector:@selector(purchaseManagedDidUpdate:)
+                                                      name:VPurchaseManagerProductsDidUpdateNotification
+                                                    object:nil];
+         NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+         
+         self.purchaseManager = [VPurchaseManager sharedInstance];
+         if ( !self.purchaseManager.isPurchaseRequestActive )
+         {
+             [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+         }
+         
+         self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+     }];
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
@@ -169,20 +130,6 @@
     self.experienceEnhancers = [self validExperienceEnhancers:self.experienceEnhancers];
     [self.enhancerBar reloadData];
     [self.delegate experienceEnhancersDidUpdate];
-}
-
-- (VVoteResult *)resultForVoteType:(VVoteType *)voteType fromSequence:(VSequence *)sequence
-{
-    __block VVoteResult *outputResult = nil;
-    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
-     {
-         if ( [result.remoteId isEqual:voteType.voteTypeID] )
-         {
-             outputResult = result;
-             *stop = YES;
-         }
-     }];
-    return outputResult;
 }
 
 - (NSArray *)validExperienceEnhancers:(NSArray *)experientEnhancers
@@ -216,38 +163,6 @@
 }
 
 #pragma mark - Property Accessors
-
-- (VSequence *)sequence
-{
-    __block VSequence *sequence = nil;
-    
-    dispatch_sync(self.privateQueue, ^
-    {
-        sequence = _sequence;
-    });
-    
-    return sequence;
-}
-
-- (void)setExperienceEnhancers:(NSArray *)experienceEnhancers
-{
-    dispatch_sync(self.privateQueue, ^
-    {
-        _experienceEnhancers = experienceEnhancers;
-    });
-}
-
-- (NSArray *)experienceEnhancers
-{
-    __block NSArray *enhancers = nil;
-    
-    dispatch_sync(self.privateQueue, ^
-    {
-        enhancers = _experienceEnhancers;
-    });
-    
-    return enhancers;
-}
 
 - (void)setEnhancerBar:(VExperienceEnhancerBar *)enhancerBar
 {
