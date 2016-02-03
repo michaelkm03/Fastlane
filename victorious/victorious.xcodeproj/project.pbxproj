@@ -4837,6 +4837,10 @@
 				D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */,
 				D888B5281A86FC7800B34149 /* VRadialGradientView.h */,
 				D888B5291A86FC7800B34149 /* VRadialGradientView.m */,
+				BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */,
+				BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */,
+				BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */,
+				BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */,
 				A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */,
 				A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
@@ -4847,10 +4851,6 @@
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
 				A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */,
-				BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */,
-				BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */,
-				BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */,
-				BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
