@@ -17,6 +17,7 @@ static CGFloat const kScrollBoundary = 20.0f;
 @property (nonatomic) BOOL scrollDown;
 @property (nonatomic, strong) VLinearGradientView *gradient;
 @property (nonatomic) CGFloat scrollSpeed;
+
 @end
 
 @implementation VScrollingTextView
@@ -24,7 +25,8 @@ static CGFloat const kScrollBoundary = 20.0f;
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.backgroundColor = [UIColor clearColor];
         self.delegate = self;
         self.editable = NO;
