@@ -428,8 +428,6 @@ static char KVOContext;
     self.didPublish = YES;
     
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
-    [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
     if (self.completionHandler)
     {
         self.completionHandler(VCreatePollViewControllerResultDone);
