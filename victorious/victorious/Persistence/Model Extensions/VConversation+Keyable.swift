@@ -18,7 +18,5 @@ extension VConversation: Keyable {
         case lastMessageContentType
         case messages
         case user
-        case displayOrder
-        case markForDeletion
     }
 }

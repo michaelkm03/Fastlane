@@ -60,9 +60,14 @@
     [self.commentsUtilitiesDelegate editComment:comment];
 }
 
-- (UIViewController *)viewControllerForAlerts
+- (void)deleteComment:(VComment *)comment
 {
-    return [self.commentsUtilitiesDelegate viewControllerForAlerts];
+    [self.commentsUtilitiesDelegate deleteComment:comment];
+}
+
+- (void)flagComment:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate flagComment:comment];
 }
 
 @end

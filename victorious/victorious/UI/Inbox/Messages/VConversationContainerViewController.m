@@ -128,18 +128,13 @@ static const NSUInteger kCharacterLimit = 1024;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
     FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
                                                                                  mostRecentMessageID:mostRecentMessageID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
-                                                                           preferredStyle:UIAlertControllerStyleAlert];
-         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                             style:UIAlertActionStyleCancel
-                                                           handler:^(UIAlertAction *_Nonnull action)
-                                     {
-                                         [self.navigationController popViewControllerAnimated:YES];
-                                     }]];
-         [self presentViewController:alertController animated:YES completion:nil];
+         [self.innerViewController.dataSource removeDeletedItems];
+         [self v_showFlaggedConversationAlertWithCompletion:^(BOOL success)
+          {
+              [self.navigationController popViewControllerAnimated:YES];
+          }];
      }];
 }
 
@@ -222,12 +217,7 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self sendMessageWithText:text
-            publishParameters:publishParameters
-               inConversation:self.conversation completion:^
-     {
-         [self.innerViewController scrollToBottomAnimated:YES];
-     }];
+    [self sendMessageWithText:text publishParameters:publishParameters inConversation:self.conversation completion:nil];
     
     [keyboardBar clearKeyboardBar];
 }

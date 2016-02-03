@@ -9,7 +9,36 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DeleteConversationOperation: RequestOperation {
+class DeleteConversationOperation: FetcherOperation {
+    
+    let conversationID: Int
+    
+    private let flaggedContent = VFlaggedContent()
+    
+    init(conversationID: Int) {
+        self.conversationID = conversationID
+        super.init()
+        
+        let remoteOperation = DeleteConversationRemoteOperation(conversationID: conversationID)
+        remoteOperation.queueAfter( self )
+    }
+    
+    override func main() {
+        flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
+        
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            let uniqueElements = [ "remoteId" : self.conversationID ]
+            guard let conversation: VConversation = context.v_findObjects( uniqueElements ).first else {
+                return
+            }
+            context.deleteObject( conversation )
+            context.v_save()
+            self.persistentStore.mainContext.v_save()
+        }
+    }
+}
+
+class DeleteConversationRemoteOperation: RequestOperation {
     
     let request: DeleteConversationRequest
     
@@ -18,17 +47,6 @@ class DeleteConversationOperation: RequestOperation {
     }
     
     override func main() {
-        
-        // Make the deletion change optimistically
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.request.conversationID ]
-            let conversation: VConversation? = context.v_findObjects(uniqueElements).first
-            if let conversation = conversation {
-                context.deleteObject(conversation)
-                context.v_save()
-            }
-        }
-        
         requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

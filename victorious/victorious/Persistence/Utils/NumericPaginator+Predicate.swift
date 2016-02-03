@@ -11,11 +11,9 @@ import VictoriousIOSSDK
 
 extension NumericPaginator {
     
-    func paginatorPredicate() -> NSPredicate {
+    var paginatorPredicate: NSPredicate {
         let arguments = [self.displayOrderRangeStart, self.displayOrderRangeEnd]
         return NSPredicate(format: "displayOrder >= %@ && displayOrder < %@", argumentArray: arguments)
     }
-
 }
-
     

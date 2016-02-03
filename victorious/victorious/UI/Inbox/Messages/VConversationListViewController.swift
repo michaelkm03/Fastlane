@@ -44,11 +44,20 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
 extension VConversationListViewController: PaginatedDataSourceDelegate {
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue)
+        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+        self.hasLoadedOnce = true
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
         self.updateTableView()
+        
+        let wasHidden = dataSource.activityFooterDataSource.hidden
+        let canScroll = tableView.contentSize.height > tableView.bounds.height
+        let shouldHide = !paginatedDataSource.shouldShowNextPageActivity || !canScroll
+        dataSource.activityFooterDataSource.hidden = shouldHide
+        if wasHidden != shouldHide {
+            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+        }
     }
     
     func updateTableView() {
@@ -73,3 +82,4 @@ extension VConversationListViewController: PaginatedDataSourceDelegate {
         }
     }
 }
+

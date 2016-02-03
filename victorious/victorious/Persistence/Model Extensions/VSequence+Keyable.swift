@@ -11,7 +11,6 @@ import Foundation
 extension VSequence: Keyable {
     
     enum Keys: String {
-        case markForDeletion
         case streams
     }
 }

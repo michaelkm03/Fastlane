@@ -8,13 +8,40 @@
 
 import Foundation
 
-class CommentsDataSource : PaginatedDataSource {
+class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     
     private let sequence: VSequence
     
-    init(sequence: VSequence) {
+    private let dependencyManager: VDependencyManager
+    private var hasLoadedOnce: Bool = false
+    
+    private var registeredCommentReuseIdentifiers = Set<String>()
+    
+    let activityFooterDataSource = ActivityFooterCollectionDataSource()
+    
+    init(sequence: VSequence, dependencyManager: VDependencyManager) {
         self.sequence = sequence
+        self.dependencyManager = dependencyManager
         super.init()
+        
+        self.KVOController.observe( self.sequence,
+            keyPath: "comments",
+            options: [],
+            action: Selector("onCommentsChanged:")
+        )
+    }
+    
+    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
+        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
+            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
+                return
+        }
+        self.refreshLocal(
+            createOperation: {
+                return FetchCommentsOperation(sequenceID: sequence.remoteId)
+            },
+            completion: nil
+        )
     }
     
     func loadComments( pageType: VPageType, completion:((NSError?)->())? = nil ) {
@@ -23,36 +50,68 @@ class CommentsDataSource : PaginatedDataSource {
                 return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
             completion: { (operation, error) in
+                self.hasLoadedOnce = true
                 completion?(error)
-                
-                // Start observing after we've loaded once
-                self.KVOController.unobserve( self.sequence )
-                self.KVOController.observe( self.sequence,
-                    keyPath: "comments",
-                    options: [.Initial],
-                    action: Selector("onCommentsChanged:")
-                )
             }
         )
     }
     
-    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
-        guard let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind == .Setting else {
-                return
-        }
-        
-        self.refreshLocal(
-            createOperation: {
-                return FetchCommentsOperation(sequenceID: self.sequence.remoteId)
-            },
-            completion: nil
-        )
-    }
-    
-    func deleteSequence( completion completion: ((NSError?)->())? = nil ) {
+    func deleteSequence( completion completion: (([AnyObject]?, NSError?)->())? = nil ) {
         DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
             completion?( error )
+        }
+    }
+    
+    // MARK: - UICollectionViewDataSource
+    
+    func registerCells(collectionView: UICollectionView) {
+        activityFooterDataSource.registerCells(collectionView)
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section == 0 {
+            return visibleItems.count ?? 0
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, numberOfItemsInSection: section)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        if indexPath.section == 0 {
+            let comment = visibleItems[indexPath.item] as! VComment
+            let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(comment)
+            if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
+                collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
+                registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
+            }
+            return collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath)
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: "MediaSearchActivityFooter", forIndexPath: indexPath )
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if indexPath.section == 0 {
+            let comment = visibleItems[ indexPath.item ] as! VComment
+            let size = VContentCommentsCell.sizeWithFullWidth( collectionView.bounds.width,
+                comment: comment,
+                hasMedia: (comment.commentMediaType() != .NoMedia),
+                dependencyManager: dependencyManager
+            )
+            return CGSize(width: collectionView.bounds.width, height: size.height)
+        } else {
+            return activityFooterDataSource.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
         }
     }
 }

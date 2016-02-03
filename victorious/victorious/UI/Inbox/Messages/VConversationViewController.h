@@ -21,8 +21,9 @@
 @property (nonatomic, assign) UIEdgeInsets focusAreaInset;
 @property (nonatomic, strong) ConversationDataSource *dataSource;
 @property (nonatomic, strong) VNoContentView *noContentView;
-@property (nonatomic, assign, readonly) BOOL viewHasAppeared;
 @property (nonatomic, strong) VTimerManager *timer;
+@property (nonatomic, assign) BOOL hasLoadedOnce;
+@property (nonatomic, assign) BOOL isLoadingNextPage;
 
 /**
  Creates a new instance of VConversationViewController by passing in an instance of VDependencyManager

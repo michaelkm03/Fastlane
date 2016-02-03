@@ -64,6 +64,8 @@
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
 
+@import KVOController;
+
 #define HANDOFFENABLED 0
 
 static NSString * const kPollBallotIconKey = @"orIcon";
@@ -865,13 +867,36 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                                    forIndexPath:indexPath];
                 self.handleView = handleView;
             }
-            self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
             
             return self.handleView;
         }
         case VContentViewSectionCount:
             return nil;
     }
+}
+
+- (void)setHandleView:(VSectionHandleReusableView *)handleView
+{
+    VSectionHandleReusableView *oldValue = _handleView;
+    _handleView = handleView;
+    
+    if ( oldValue != nil )
+    {
+        [self.KVOController unobserve:self.viewModel.sequence
+                              keyPath:@"commentCount"];
+    }
+    if ( _handleView != nil )
+    {
+        [self.KVOController observe:self.viewModel.sequence
+                            keyPath:@"commentCount"
+                            options:NSKeyValueObservingOptionInitial
+                             action:@selector(commentCountUpdated:)];
+    }
+}
+
+- (void)commentCountUpdated:(NSDictionary *)change
+{
+    self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
 }
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
@@ -1323,9 +1348,25 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.textEntryView startEditing];
 }
 
-- (UIViewController *)viewControllerForAlerts
+- (void)deleteComment:(VComment *)comment
 {
-    return self;
+    NSInteger commentID = comment.remoteId.integerValue;
+    DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+     {
+         [self.viewModel.commentsDataSource removeDeletedItems];
+     }];
+}
+
+- (void)flagComment:(VComment *)comment
+{
+    NSInteger commentID = comment.remoteId.integerValue;
+    FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+     {
+         [self.viewModel.commentsDataSource removeDeletedItems];
+         [self v_showFlaggedCommentAlertWithCompletion:nil];
+     }];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

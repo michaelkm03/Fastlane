@@ -24,6 +24,7 @@ extern NSString * const VConversationListViewControllerInboxPushReceivedNotifica
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 @property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, assign) BOOL hasLoadedOnce;
 
 @property (strong, nonatomic) VNoContentView *noContentView;
 @property (strong, nonatomic) ConversationListDataSource *dataSource;

@@ -31,7 +31,6 @@
 #import "UIView+AutoLayout.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "UIViewController+VRootNavigationController.h"
-#import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VAbstractStreamCollectionViewController.h"

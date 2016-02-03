@@ -9,11 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-// Because messages may exist without a remoteId, we need to check equality differently:
-func ==(lhs: VMessage, rhs: VMessage) -> Bool {
-    return lhs.postedAt == rhs.postedAt && lhs.text == rhs.text && lhs.conversation == rhs.conversation
-}
-
 final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     let conversationID: Int
@@ -91,7 +86,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 vsdk_argumentArray: [ conversation ],
                 vsdk_paginator: self.request.paginator )
             
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results
@@ -117,7 +112,7 @@ class FetchConverationOperation: FetcherOperation {
                 vsdk_argumentArray: [ self.userID ],
                 vsdk_paginator: self.paginator )
             
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results

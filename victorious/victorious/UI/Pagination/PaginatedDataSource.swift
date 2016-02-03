@@ -15,7 +15,8 @@ import VictoriousIOSSDK
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentOperation: NSOperation?
+    private(set) weak var currentPaginatedOperation: NSOperation?
+    private(set) weak var currentLocalOperation: NSOperation?
     
     private(set) var hasLoadedLastPage: Bool = false
     
@@ -25,6 +26,10 @@ import VictoriousIOSSDK
                 self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
             }
         }
+    }
+    
+    var shouldShowNextPageActivity: Bool {
+        return state == .Loading && visibleItems.count > 0 && !hasLoadedLastPage
     }
     
     // Tracks page numbers already loaded to prevent re-loading pages unecessarily
@@ -53,31 +58,39 @@ import VictoriousIOSSDK
     }
     
     func cancelCurrentOperation() {
-        currentOperation?.cancel()
-        currentOperation = nil
+        currentPaginatedOperation?.cancel()
+        currentPaginatedOperation = nil
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     /// operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
-        let operation: FetcherOperation = createOperation()
-        operation.queue() { results in
-            self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(results)
-            self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-            completion?(results)
+        guard currentLocalOperation == nil else {
+            return
         }
+        let operation: FetcherOperation = createOperation()
+        operation.queue() { (results, error) in
+            if let results = results where error == nil {
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                self.currentLocalOperation = nil
+                completion?(results)
+            }
+        }
+        self.currentLocalOperation = operation
     }
     
-    func refreshLocalJustFilters() {
-        self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(self.visibleItems.array)
+    func removeDeletedItems() {
+        self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
+        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
-        guard self.currentOperation != nil else {
+        guard self.currentPaginatedOperation != nil else {
             return
         }
         
@@ -93,8 +106,7 @@ import VictoriousIOSSDK
             operation.results = results
             let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
             if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
-                let newVisibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
-                self.visibleItems = self.filterFlaggedForDeletionItemsFromResults(newVisibleItems.array)
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
             }
             self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             completion?( newResults, error )
@@ -124,9 +136,9 @@ import VictoriousIOSSDK
         case .First:
             operationToQueue = createOperation()
         case .Next:
-            operationToQueue = (currentOperation as? T)?.next()
+            operationToQueue = (currentPaginatedOperation as? T)?.next()
         case .Previous:
-            operationToQueue = (currentOperation as? T)?.prev()
+            operationToQueue = (currentPaginatedOperation as? T)?.prev()
         }
         
         // Return early if there is no operation to queue, i.e. no work to do
@@ -167,37 +179,38 @@ import VictoriousIOSSDK
             completion?( operation: operation, error: error )
         }
         
-        self.currentOperation = requestOperation
-    }
-    
-    //MARK: - Private
-    
-    func filterFlaggedForDeletionItemsFromResults(results: [AnyObject]) -> NSOrderedSet {
-        var itemsToDelete = [AnyObject]()
-        for visibleItem in self.visibleItems {
-            if let visibleItem = visibleItem as? Deletable where visibleItem.markedForDeletion {
-                itemsToDelete.append(visibleItem)
-            }
-        }
-        let newVisibleItems = NSMutableOrderedSet(orderedSet: self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous))
-        newVisibleItems.minusOrderedSet(NSOrderedSet(array:itemsToDelete))
-        return newVisibleItems
+        self.currentPaginatedOperation = requestOperation
     }
 }
 
 private extension NSOrderedSet {
     
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
+        let output: NSOrderedSet
+        
         switch pageType {
             
         case .First: //< reset
-            return NSOrderedSet(array: objects)
+            output = NSOrderedSet(array: objects)
             
         case .Next: //< apend
-            return NSOrderedSet(array: self.array + objects)
+            output = NSOrderedSet(array: self.array + objects)
             
         case .Previous: //< prepend
-            return NSOrderedSet(array: objects + self.array)
+            output = NSOrderedSet(array: objects + self.array)
         }
+        
+        return output.v_orderedSetFitleredForDeletedObjects()
+    }
+    
+    func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {
+        let predicate = NSPredicate() { (object, dictionary) -> Bool in
+            if let managedObject = object as? NSManagedObject {
+                return managedObject.hasBeenDeleted == false
+            }
+            return true
+        }
+        let results = self.filteredOrderedSetUsingPredicate( predicate )
+        return results
     }
 }
