@@ -23,7 +23,10 @@ final class CreateTextPostOperation: Operation {
         var dict: [NSObject : AnyObject] = [ : ]
         
         dict["content"] = parameters.content
-        dict["background_image"] = parameters.backgroundImageURL ?? ""
+        
+        if let backgroundImageURL = parameters.backgroundImageURL {
+            dict["background_image"] = backgroundImageURL
+        }
         dict["background_color"] = parameters.backgroundColor?.v_hexString() ?? ""
         
         return dict
@@ -47,6 +50,7 @@ final class CreateTextPostOperation: Operation {
     }
     
     private func upload(uploadManager: VUploadManager) {
+        let formFields = self.formFields
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
@@ -55,6 +59,10 @@ final class CreateTextPostOperation: Operation {
         do {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in }
+            
+            if let backgroundImageURL = formFields["background_image"] as? NSURL {
+                try NSFileManager.defaultManager().removeItemAtURL(backgroundImageURL)
+            }
         } catch {
             return
         }
