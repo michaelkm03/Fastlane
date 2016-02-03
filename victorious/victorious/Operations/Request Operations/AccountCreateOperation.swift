@@ -51,7 +51,7 @@ class AccountCreateOperation: RequestOperation {
                 
                 // Reload from main context to continue login process
                 guard let user = context.objectWithID(userObjectID) as? VUser else {
-                    assert( false, "Cannot retrieve user by objectID." )
+                    assertionFailure( "Cannot retrieve user by objectID." )
                     return
                 }
                 user.setAsCurrentUser()
