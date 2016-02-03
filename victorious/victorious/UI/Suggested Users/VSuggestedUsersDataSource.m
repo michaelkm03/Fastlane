@@ -57,7 +57,7 @@ static NSString * const kPromptTextKey = @"prompt";
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         NSArray<VSuggestedUser *> *suggestedUsers = operation.results;
-        if ( error != nil && suggestedUsers != nil )
+        if ( error == nil && suggestedUsers != nil )
         {
             self.loadedOnce = YES;
             self.currentLoadOperation = nil;
