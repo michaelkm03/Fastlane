@@ -55,7 +55,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         } else {
             throw ResponseParsingError()
         }
-    
+        
         return stream
     }
 }

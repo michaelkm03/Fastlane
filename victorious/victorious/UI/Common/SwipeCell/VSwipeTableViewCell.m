@@ -60,9 +60,4 @@
     [self.commentsUtilitiesDelegate replyToComment:comment];
 }
 
-- (UIViewController *)viewControllerForAlerts
-{
-    return [self.commentsUtilitiesDelegate viewControllerForAlerts];
-}
-
 @end

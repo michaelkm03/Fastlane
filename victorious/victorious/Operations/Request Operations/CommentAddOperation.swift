@@ -96,7 +96,7 @@ class CreateCommentOperation: FetcherOperation {
             
             let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
             sequence.comments = NSOrderedSet(array: allComments)
-            sequence.commentCount = allComments.count
+            sequence.commentCount += 1
             
             context.v_save()
             return comment.objectID

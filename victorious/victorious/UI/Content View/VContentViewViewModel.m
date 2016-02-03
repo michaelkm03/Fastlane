@@ -108,8 +108,8 @@
         {
             _currentAsset = [_currentNode imageAsset];
         }
-
-        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence];
+        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence
+                                                         dependencyManager:self.dependencyManager];
     }
     return self;
 }

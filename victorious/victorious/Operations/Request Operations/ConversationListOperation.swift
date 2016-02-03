@@ -50,8 +50,9 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.request.paginator.paginatorPredicate(), VConversation.defaultPredicate])
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: Victorious.Keys.displayOrder.rawValue, ascending: true) ]
+            let hasRemoteIdPredicate = NSPredicate(format: "remoteId != nil")
+            fetchRequest.predicate = self.request.paginator.paginatorPredicate + hasRemoteIdPredicate
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
@@ -70,9 +71,11 @@ class FetchConverationListOperation: FetcherOperation {
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: VConversation.Keys.displayOrder.rawValue, ascending: true) ]
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [self.paginator.paginatorPredicate() , VConversation.defaultPredicate])
-            return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: Victorious.Keys.displayOrder.rawValue, ascending: true) ]
+            let hasMessagesPredicate = NSPredicate(format: "messages.@count > 0")
+            fetchRequest.predicate = self.paginator.paginatorPredicate + hasMessagesPredicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+            return results
         }
     }
 }

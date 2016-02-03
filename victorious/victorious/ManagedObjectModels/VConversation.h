@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "VAbstractFilter.h"
 
 @class VMessage, VUser;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VConversation : VAbstractFilter
+@interface VConversation: NSManagedObject
 
 @property (nonatomic, retain, nullable) NSNumber * isRead;
 @property (nonatomic, retain, nullable) NSString * lastMessageText;
@@ -24,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSOrderedSet *messages;
 @property (nonatomic, retain, nullable) VUser *user;
 @property (nonatomic, retain, null_unspecified) NSNumber * displayOrder; // This will be nonnull once the rest of the Core Data models are audited
-@property (nonatomic, strong) NSNumber *markForDeletion;
 
 @end
 
