@@ -21,14 +21,13 @@ class AnonymousLoginOperation: Operation {
         
         beganExecuting()
         
-        guard let retriedIDString = AgeGate.anonymousUserID(),
-            let anonymousID = Int(retriedIDString) else {
-                return
+        guard let anonymousID = AgeGate.anonymousUserID() else {
+            return
         }
         let anonymousToken = AgeGate.anonymousUserToken()
         let anonymousLoginType = VLoginType.Anonymous
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             let user: VUser = context.v_findOrCreateObject([ "remoteId" : anonymousID ])
             user.loginType = anonymousLoginType.rawValue
             user.token = anonymousToken

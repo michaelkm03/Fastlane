@@ -52,9 +52,10 @@ import Foundation
         }
     }
     
-    static func anonymousUserID() -> String? {
-        if let userID = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.anonymousUserID) as? String {
-            return userID
+    static func anonymousUserID() -> Int? {
+        if let userIDFromPlist = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.anonymousUserID) as? String,
+            let userID = Int(userIDFromPlist) {
+                return userID
         } else {
             return nil
         }
