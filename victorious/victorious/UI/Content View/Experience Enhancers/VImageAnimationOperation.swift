@@ -50,10 +50,7 @@ class VImageAnimationOperation: Operation {
     }
     
     func updateImageFrame() {
-        if cancelled {
-            stopAnimating()
-        }
-        else if completedAnimation() {
+        if cancelled || completedAnimation() {
             stopAnimating()
         }
         else {
@@ -87,10 +84,9 @@ class VImageAnimationOperation: Operation {
     }
     
     func stopAnimating() {
-        if isAnimating() {
-            let finishedAnimation: Bool = currentFrame == animationSequence.count
-            delegate?.animation(self, didFinishAnimating:finishedAnimation)
-        }
+        delegate?.animation(self, updatedToImage: nil)
+        let finishedAnimation: Bool = currentFrame == animationSequence.count
+        delegate?.animation(self, didFinishAnimating:finishedAnimation)
         animationTimer.invalidate()
         finishedExecuting()
     }
