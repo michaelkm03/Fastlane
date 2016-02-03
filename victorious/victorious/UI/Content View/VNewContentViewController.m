@@ -64,6 +64,8 @@
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
 
+@import KVOController;
+
 #define HANDOFFENABLED 0
 
 static NSString * const kPollBallotIconKey = @"orIcon";
@@ -859,13 +861,36 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                                    forIndexPath:indexPath];
                 self.handleView = handleView;
             }
-            self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
             
             return self.handleView;
         }
         case VContentViewSectionCount:
             return nil;
     }
+}
+
+- (void)setHandleView:(VSectionHandleReusableView *)handleView
+{
+    VSectionHandleReusableView *oldValue = _handleView;
+    _handleView = handleView;
+    
+    if ( oldValue != nil )
+    {
+        [self.KVOController unobserve:self.viewModel.sequence
+                              keyPath:@"commentCount"];
+    }
+    if ( _handleView != nil )
+    {
+        [self.KVOController observe:self.viewModel.sequence
+                            keyPath:@"commentCount"
+                            options:NSKeyValueObservingOptionInitial
+                             action:@selector(commentCountUpdated:)];
+    }
+}
+
+- (void)commentCountUpdated:(NSDictionary *)change
+{
+    self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
 }
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
