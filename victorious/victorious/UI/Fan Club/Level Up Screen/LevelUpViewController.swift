@@ -188,26 +188,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         }
     }
     
-    private func upgradeBadgeNumber() {
-        UIView.animateWithDuration(0.1,
-            delay: 0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.4,
-            options: [],
-            animations: {
-                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) in
-                self.badgeView?.resetProgress(true)
-                UIView.animateWithDuration(0.1,
-                    delay: 0,
-                    options: .CurveLinear,
-                    animations: {
-                        self.badgeView?.transform = CGAffineTransformIdentity
-                    },
-                    completion: nil)
-        }
-    }
-    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
