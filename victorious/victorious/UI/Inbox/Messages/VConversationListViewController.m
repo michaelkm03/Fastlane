@@ -410,6 +410,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         [self.messageCountCoordinator updateUnreadMessageCount];
         [self updateBadges];
+        [self.tableView reloadData];
     }];
 }
 
