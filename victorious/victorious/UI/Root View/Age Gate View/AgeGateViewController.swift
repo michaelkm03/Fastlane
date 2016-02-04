@@ -135,6 +135,7 @@ class AgeGateViewController: UIViewController {
         let ppText = NSAttributedString(string: NSLocalizedString("privacy policy", comment: ""), attributes: legalAttributesUnderline)
         
         legalPromptLabel.text = legalPrompt
+        legalPromptLabel.textColor = UIColor.lightTextColor()
         tosButton.setAttributedTitle(tosText, forState: .Normal)
         privacyButton.setAttributedTitle(ppText, forState: .Normal)
         
