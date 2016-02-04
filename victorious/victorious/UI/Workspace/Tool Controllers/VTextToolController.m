@@ -83,7 +83,7 @@
     {
         if ( renderedAssetURL != nil )
         {
-            [self publishTextPost:self.mediaURL completion:completion];
+            [self publishTextPost:renderedAssetURL completion:completion];
         }
         else
         {

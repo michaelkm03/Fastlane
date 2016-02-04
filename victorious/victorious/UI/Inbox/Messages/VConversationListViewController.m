@@ -130,7 +130,12 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     if ( self.hasLoadedOnce )
     {
-        [self.dataSource refreshLocal];
+        // This will do a fast local refresh to update the order of conversations
+        // as well as visible `lastMessageText`.
+        [self.dataSource refreshLocalWithCompletion:^(NSArray *_Nonnull results)
+         {
+             [self.tableView reloadData];
+         }];
     }
     
     [self updateTableView];
@@ -373,7 +378,16 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)shouldLoadNextPage
 {
-    [self.dataSource loadConversations:VPageTypeNext completion:nil];
+    if ( [self.dataSource isLoading] )
+    {
+        return;
+    }
+    
+    self.isLoadingNextPage = YES;
+    [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *_Nullable error)
+     {
+         self.isLoadingNextPage = NO;
+     }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
