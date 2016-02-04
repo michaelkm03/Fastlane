@@ -35,13 +35,6 @@ class ExperienceEnhancersOperation: Operation {
                 let existingVoteCount = voteResult?.count.unsignedIntegerValue
                 let enhancer = VExperienceEnhancer(voteType: voteType, voteCount: existingVoteCount ?? 0)
                 
-                if let images = voteType.images as? [UIImage] {
-                    enhancer.animationSequence = images
-                    enhancer.flightImage = images.first
-                } else {
-                    enhancer.iconImage = nil
-                }
-                
                 // Get icon image synhronously (we need it right away)
                 let imageCache = VExperienceEnhancerController.imageMemoryCache()
                 let key = voteType.voteTypeID
