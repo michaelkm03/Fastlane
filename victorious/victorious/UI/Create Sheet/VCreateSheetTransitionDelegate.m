@@ -55,9 +55,6 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
     
     if (isPresentation)
     {
-        // Hide tab bar
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCreationSheetWillShow object:nil];
-        
         // Layout collection view so we can animate cells
         UICollectionView *collectionView = animatingViewController.collectionView;
         [collectionView layoutIfNeeded];
@@ -145,7 +142,8 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
 {
     VCreateSheetAnimator *animatedTransitioner = [[VCreateSheetAnimator alloc] init];
     animatedTransitioner.presentation = YES;
-    animatedTransitioner.fromTop = [[self.dependencyManager numberForKey:kAnimateFromTopKey] boolValue];
+    NSNumber *animateFromTopNumber = [self.dependencyManager numberForKey:kAnimateFromTopKey];
+    animatedTransitioner.fromTop = animateFromTopNumber != nil ? [animateFromTopNumber boolValue] : NO;
     return animatedTransitioner;
 }
 
