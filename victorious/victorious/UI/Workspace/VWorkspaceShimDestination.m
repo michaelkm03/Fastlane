@@ -37,7 +37,7 @@
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     UIViewController *originVC = [VRootViewController sharedRootViewController];
-    ShowCreateSheetOperation *operation = [[ShowCreateSheetOperation alloc] initWithOriginViewController:originVC dependencyManager:self.dependencyManager showCreationSheetFromTop:YES];
+    ShowCreateSheetOperation *operation = [[ShowCreateSheetOperation alloc] initWithOriginViewController:originVC dependencyManager:self.dependencyManager];
     operation.mainQueueCompletionBlock = ^void(Operation *op) {
         VCreationType creationType = ((ShowCreateSheetOperation *)op).chosenCreationType;
         [self.creationFlowPresenter presentWorkspaceOnViewController:originVC creationType:creationType];
