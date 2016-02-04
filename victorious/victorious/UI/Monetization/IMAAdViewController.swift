@@ -10,13 +10,12 @@ import GoogleInteractiveMediaAds
 import SafariServices
 
 /// Provides an integration with Google IMA Ad system
-@objc class IMAAdViewController: VAdViewController, IMAAdsLoaderDelegate, IMAAdsManagerDelegate {
+@objc class IMAAdViewController: VAdViewController, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
     let adTag: String
     let player: VVideoPlayer
     let contentPlayhead: VIMAContentPlayhead
     let adsLoader: IMAAdsLoader
     var adsManager: IMAAdsManager?
-    var learnMoreWasTapped = false
 
     //MARK: - Initializers
 
@@ -41,15 +40,6 @@ import SafariServices
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    //MARK: - View lifecycle
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if learnMoreWasTapped == true {
-            delegate?.adDidFinishForAdViewController(self)
-        }
     }
 
     //MARK: - VAdViewController method overrides
@@ -83,6 +73,7 @@ import SafariServices
         adsManagerInstance.delegate = self
         let adsRenderingSettings = IMAAdsRenderingSettings()
         adsRenderingSettings.webOpenerPresentingController = self
+        adsRenderingSettings.webOpenerDelegate = self
         adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
     }
 
@@ -102,7 +93,6 @@ import SafariServices
         case .AD_BREAK_ENDED: break
         case .AD_BREAK_STARTED: break
         case .CLICKED:
-            learnMoreWasTapped = true
             adsManager.discardAdBreak()
         case .COMPLETE, .ALL_ADS_COMPLETED: delegate?.adDidFinishForAdViewController(self)
         case .FIRST_QUARTILE: delegate?.adDidHitFirstQuartileInAdViewController?(self)
@@ -131,5 +121,11 @@ import SafariServices
     }
 
     func adsManagerDidRequestContentResume(adsManager: IMAAdsManager!) {
+    }
+
+    //MARK: - IMAWebOpenerDelegate
+
+    func webOpenerDidCloseInAppBrowser(webOpener: NSObject) {
+        delegate?.adDidFinishForAdViewController(self)
     }
 }

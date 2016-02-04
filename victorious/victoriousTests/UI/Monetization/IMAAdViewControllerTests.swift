@@ -58,7 +58,7 @@ class IMAAdViewControllerTests: XCTestCase {
         XCTAssertEqual(1, testAdsManager.discardAdBreakCallCount)
 
         XCTAssertEqual(0, delegateViewController.adDidFinishForAdViewControllerCallCount)
-        controller.viewDidAppear(false)
+        controller.webOpenerDidCloseInAppBrowser(NSObject())
         XCTAssertEqual(1, delegateViewController.adDidFinishForAdViewControllerCallCount)
     }
 
