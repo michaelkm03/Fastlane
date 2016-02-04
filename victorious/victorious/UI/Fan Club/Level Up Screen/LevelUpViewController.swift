@@ -103,7 +103,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             }
             
             let currentLevel = alert.parameters.userFanLoyalty.level
-            badgeView?.levelNumberString = String(currentLevel - 1)
+            badgeView?.levelNumberString = String(currentLevel)
             titleLabel.text = alert.parameters.title
             descriptionLabel.text = alert.parameters.description
             icons = alert.parameters.icons
