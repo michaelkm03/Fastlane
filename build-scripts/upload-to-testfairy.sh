@@ -27,7 +27,7 @@ usage() {
 	echo
 }
 
-while getopts :a:t:u:d:r:c:vn opt; do
+while getopts :a:t:u:d:r:c:o:vn opt; do
    case $opt in
      a ) APPNAME=`basename "$OPTARG"` ;;
      t ) TESTER_GROUPS="$OPTARG"      ;;
