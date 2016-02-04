@@ -7,10 +7,9 @@
 //
 
 #import "VTwitterManager.h"
-
 #import "TWAPIManager.h"
-
 #import "VTwitterAccountsHelper.h"
+#import "victorious-Swift.h"
 
 @import Accounts;
 
@@ -95,9 +94,8 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               }
               
               NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-#warning FIXME: Use new architecture to replace whatever RKDictionaryFromURL... was doing
-              NSDictionary *parsedData = nil; //RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
-              
+              NSDictionary *parsedData = [self parseQueryComponenetsWithUrlString:[@"http://twitter.com?" stringByAppendingString:responseStr]];
+
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];
               self.twitterId = [parsedData objectForKey:@"user_id"];
