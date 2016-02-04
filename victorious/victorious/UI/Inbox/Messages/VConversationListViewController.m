@@ -385,7 +385,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     self.isLoadingNextPage = YES;
     [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *_Nullable error)
-    {
+     {
          self.isLoadingNextPage = NO;
      }];
 }
