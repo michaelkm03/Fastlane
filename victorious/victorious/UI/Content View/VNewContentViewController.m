@@ -69,7 +69,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, PaginatedDataSourceDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, PaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -106,6 +106,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
+@property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
 
 @end
 
@@ -330,6 +331,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.view.backgroundColor = [UIColor blackColor];
     
     self.videoPlayerDidFinishPlayingOnce = NO;
+    
+    self.experienceEnhancerCompletionQueue = [NSOperationQueue new];
+    
+    self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -362,7 +367,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    
     [self trackVideoViewStart];
 }
 
@@ -421,6 +425,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    //Cancels all animations
+    [self.experienceEnhancerCompletionQueue cancelAllOperations];
     
     [self.dependencyManager trackViewWillDisappear:self];
     
@@ -904,56 +910,93 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
 {
-    if ( enhancer.isBallistic )
+    VImageAnimationOperation *animationOp = [[VImageAnimationOperation alloc] init];
+    animationOp.animationDuration = enhancer.animationDuration;
+    animationOp.delegate = self;
+    UIImageView *animationImageView;
+    
+    if (enhancer.isBallistic)
     {
-        CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
-        animationImageView.contentMode = UIViewContentModeScaleAspectFit;
+        animationImageView = [[UIImageView alloc] init];
         
+        CGRect animationBounds = self.contentCell.bounds;
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-        animationImageView.center = convertedCenterForAnimation;
-        animationImageView.image = enhancer.flightImage;
-        [self.view addSubview:animationImageView];
+
+        animationImageView.image = enhancer.voteType.iconImage;
+        animationImageView.contentMode = UIViewContentModeScaleAspectFill;
         
-        [UIView animateWithDuration:enhancer.flightDuration
-                              delay:0.0f
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^
-         {
-             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
-             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
-             animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
-         }
-                         completion:^(BOOL finished)
-         {
-             animationImageView.animationDuration = enhancer.animationDuration;
-             animationImageView.animationImages = enhancer.animationSequence;
-             animationImageView.animationRepeatCount = 1;
-             animationImageView.image = nil;
-             [animationImageView startAnimating];
-             
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                            {
-                                [animationImageView removeFromSuperview];
-                            });
-         }];
+        /// Animate to here
+        CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(animationBounds));
+        CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(animationBounds));
+        CGPoint newCenter = CGPointMake(randomLocationX, randomLocationY);
+        CGFloat flightDuration = enhancer.flightDuration;
+        
+        __weak typeof(animationOp) weakAnimationOp = animationOp;
+        
+        typedef void (^CompletionBlock)();
+        animationOp.ballisticAnimationBlock = ^void(CompletionBlock completion)
+        {
+            
+            UIImage *iconImage = [weakAnimationOp.animationSequence firstObject];
+            CGRect animationFrameSize = CGRectMake(0, 0, iconImage.size.width, iconImage.size.height);
+            
+            animationImageView.frame = animationFrameSize;
+            animationImageView.center = convertedCenterForAnimation;
+
+            
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [UIView animateWithDuration:flightDuration
+                                                animations:^
+                                {
+                                    animationImageView.center = newCenter;
+                                }
+                                                completion:^(BOOL finished)
+                                {
+                                    completion();
+                                }];
+                           });
+        };
     }
     else
     {
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
-        animationImageView.animationDuration = enhancer.animationDuration;
-        animationImageView.animationImages = enhancer.animationSequence;
-        animationImageView.animationRepeatCount = 1;
-        animationImageView.contentMode = enhancer.contentMode;
-        
-        [self.contentCell.contentView addSubview:animationImageView];
-        [animationImageView startAnimating];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                       {
-                           [animationImageView removeFromSuperview];
-                       });
+        animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+        animationImageView.contentMode = enhancer.voteType.contentMode;
     }
+    animationOp.animationImageView = animationImageView;
+    
+    __weak typeof(self) welf = self;
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray *images = enhancer.voteType.images;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            animationOp.animationSequence = images;
+            [welf animationOperationDidFinishLoadingDependencies:animationOp];
+        });
+    });
+}
+
+- (void)animationOperationDidFinishLoadingDependencies:(VImageAnimationOperation *)animationOp
+{
+    [self.contentCell.contentView addSubview:animationOp.animationImageView];
+    [self.experienceEnhancerCompletionQueue addOperation:animationOp];
+}
+
+#pragma mark - VImageAnimationOperationDelegate
+
+- (void)animation:(VImageAnimationOperation *)animation didFinishAnimating:(BOOL)completed
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       [animation.animationImageView removeFromSuperview];
+                   });
+}
+
+- (void)animation:(VImageAnimationOperation *)animation updatedToImage:(UIImage *)image
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       animation.animationImageView.image = image;
+                   });
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -1550,6 +1593,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     self.closeButton.alpha = 1.0f;
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+}
+
+#pragma mark - Memory Warning
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    
+    /// Cancels all animations/setup
+    [self.experienceEnhancerCompletionQueue cancelAllOperations];
+    
 }
 
 #pragma mark - PaginatedDataSourceDelegate

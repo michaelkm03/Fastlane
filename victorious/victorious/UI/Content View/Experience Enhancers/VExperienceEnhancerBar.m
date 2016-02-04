@@ -71,7 +71,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.minimumInteritemSpacing = 15.0f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    
     self.enabled = YES;
 }
 
@@ -216,7 +215,10 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         {
             // Restart cooldown
             [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
-            [experienceEnhancerCell startCooldown];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [experienceEnhancerCell startCooldown];
+            });
             
             // Call the selection block (configured in VNewContentViewController) to play the animations
             if ( self.selectionBlock != nil )
@@ -233,6 +235,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         }
     }
 }
+
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
