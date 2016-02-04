@@ -28,22 +28,37 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
     }
     
-    func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+    func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
         
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // Parse stream
-            let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
-            persistentStream.populate(fromSourceModel: stream)
+            let stream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
+            stream.populate(fromSourceModel: sourceStream)
             
-            // Parse stream items
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            for streamItem in persistentStream.streamItems {
-                //streamItem.displayOrder = displayOrder++
-                streamItem.streamId = stream.streamID
+            guard let sourceStreamItems = sourceStream.items else {
+                self.results = []
+                completion()
+                return
             }
-            //persistentStream.v_addObjects(streamItems, to: "streamItems")
+            
+            // Assign display order to stream children that were parsed in `populate` method above
+            var displayOrder = self.request.paginator.displayOrderCounterStart
+            let predicate = NSPredicate() { (object, bindings) in
+                guard let streamChild = object as? VStreamChild else {
+                    return false
+                }
+                return sourceStreamItems.contains() { streamChild.streamItem.remoteId == $0.streamItemID }
+            }
+            let parsedStreamChildren = stream.streamChildren.filteredOrderedSetUsingPredicate( predicate )
+            for object in parsedStreamChildren {
+                guard let child = object as? VStreamChild else {
+                    continue
+                }
+                child.displayOrder = displayOrder++
+            }
+            
             context.v_save()
             dispatch_async( dispatch_get_main_queue() ) {
                 self.results = self.fetchResults()
@@ -54,16 +69,15 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            let fetchRequest = NSFetchRequest(entityName: VStreamChild.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "ANY self.streams.apiPath = %@",
-                vsdk_argumentArray: [ self.apiPath ],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = predicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItem]
-            return results
+            
+            let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
+            let paginationPredicate = self.request.paginator.paginatorPredicate()
+            fetchRequest.predicate = paginationPredicate + streamItemPredicate
+            
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamChild]
+            return results.map { $0.streamItem }
         }
     }
 }
@@ -80,16 +94,15 @@ class StreamFetcherOperation: FetcherOperation {
     
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
-            //fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "ANY self.streams.apiPath = %@",
-                vsdk_argumentArray: [ self.apiPath ],
-                vsdk_paginator: self.paginator
-            )
-            fetchRequest.predicate = predicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
-            return results
+            let fetchRequest = NSFetchRequest(entityName: VStreamChild.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            
+            let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
+            let paginationPredicate = self.paginator.paginatorPredicate()
+            fetchRequest.predicate = paginationPredicate + streamItemPredicate
+            
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamChild]
+            return results.map { $0.streamItem }
         }
     }
 }

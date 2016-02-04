@@ -104,9 +104,7 @@ extension VListRecentShelfCollectionViewCell { // TrackableShelf methods
     
     override func streamItemAt(indexPath indexPath: NSIndexPath) -> VStreamItem? {
         if let shelf = shelf where indexPath.row < shelf.streamItems.count {
-            if let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                return streamItem
-            }
+            return shelf.streamItems[indexPath.row]
         }
         return nil
     }
@@ -116,7 +114,8 @@ extension VListRecentShelfCollectionViewCell { // TrackableShelf methods
 extension VListRecentShelfCollectionViewCell { // UICollectionViewDelegate methods
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+        if let shelf = shelf {
+            let streamItem = shelf.streamItems[indexPath.row]
             self.navigateTo(streamItem, fromShelf: shelf)
         }
         else {

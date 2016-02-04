@@ -13,6 +13,7 @@
 #import "VImageViewContainer.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamItemPreviewView.h"
+#import "VStreamItem+Fetcher.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 static const CGFloat kVisibilitySpan = 1.9f;

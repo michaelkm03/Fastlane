@@ -101,10 +101,15 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         return;
     }
     
+    NSArray *urls = (NSArray *)sequence.tracking.cellView;
+#warning FIX THIS STUFF
+    // FIXME: Uncomment this: NSAssert( urls != nil, @"Cannot send tracking event because tracking URLs are missing." );
+    urls = urls ?: @[];//< FIXME: Remvoe this
+    
     NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellView,
+                              VTrackingKeyUrls : urls,
                               VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
@@ -120,10 +125,15 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     
+    NSArray *urls = (NSArray *)sequence.tracking.cellClick;
+#warning FIX THIS STUFF
+    // FIXME: Uncomment this: NSAssert( urls != nil, @"Cannot send tracking event because tracking URLs are missing." );
+    urls = urls ?: @[];//< FIXME: Remvoe this
+    
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyUrls : urls,
                               VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
@@ -190,7 +200,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     self.didTrackViewDidAppear = YES;
     
-    if (stream.isHashtagStream)
+    const BOOL isHashtagStream = stream.hashtag != nil;
+    
+    if (isHashtagStream)
     {
         NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
                                   VTrackingKeyStreamId : stream.trackingIdentifier ?: @"",
@@ -206,7 +218,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     
     // Be sure to set context AFTER the events above, so that the above events contain
     // any previous context, and the new context below affects subsequent events
-    NSString *context = [stream isHashtagStream] ? VTrackingValueHashtagStream : VTrackingValueStream;
+    NSString *context = isHashtagStream ? VTrackingValueHashtagStream : VTrackingValueStream;
     [[VTrackingManager sharedInstance] setValue:context forSessionParameterWithKey:VTrackingKeyContext];
 }
 

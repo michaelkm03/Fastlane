@@ -21,11 +21,17 @@ extension VStream {
 
 extension VSequence {
     
-    var streamItems: [VStreamItem] {
+    /*var streamItems: [VStreamItem] {
         return []
     }
     
     var marqueeItems: [VStreamItem] {
         return []
+    }*/
+    
+    var tracking: VTracking? {
+        // FIXME: Delete this getter and have calling code read this from the stream's streamChild, not the stream item
+        // This is only here to keep shit compiling
+        return (self.streamChildrenInSream.first as? VStreamChild)?.tracking
     }
 }

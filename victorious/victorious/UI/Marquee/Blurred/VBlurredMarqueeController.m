@@ -21,6 +21,7 @@
 #import "VStreamItemPreviewView.h"
 #import "UIView+VViewRendering.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VStream.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
 static const CGFloat kOffsetOvershoot = 20.0f;

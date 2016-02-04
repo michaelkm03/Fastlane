@@ -11,15 +11,15 @@ import VictoriousIOSSDK
 
 extension VStream: PersistenceParsable {
     
-    func populate( fromSourceModel stream: Stream ) {
-        remoteId            = stream.streamID
-        itemType            = stream.type?.rawValue ?? itemType
-        itemSubType         = stream.subtype?.rawValue ?? itemSubType
-        name                = stream.name ?? name
-        count               = stream.postCount ?? count
-        previewImagesObject = stream.previewImagesObject
+    func populate( fromSourceModel sourceStream: Stream ) {
+        remoteId                = sourceStream.streamID
+        itemType                = sourceStream.type?.rawValue ?? itemType
+        itemSubType             = sourceStream.subtype?.rawValue ?? itemSubType
+        name                    = sourceStream.name ?? name
+        count                   = sourceStream.postCount ?? count
+        previewImagesObject     = sourceStream.previewImagesObject ?? previewImagesObject
         
-        if let previewImageAssets = stream.previewImageAssets {
+        if let previewImageAssets = sourceStream.previewImageAssets {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
@@ -27,10 +27,84 @@ extension VStream: PersistenceParsable {
             })
         }
         
-        let streamChildren = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
-        self.v_addObjects( streamChildren, to: "streamChildren" )
+        // Parse out the marquee items
+        var displayOrder = 0
+        let sourceMarqueeItems = sourceStream.marqueeItems ?? []
+        let marqueeItems = VStream.persistentStreamItems(fromStreamItems: sourceMarqueeItems, context: v_managedObjectContext)
+        for marqueeItem in marqueeItems {
+            let uniqueInfo = [ "marqueeParent" : self, "streamItem" : marqueeItem]
+            let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
+            child.displayOrder = displayOrder++
+            self.v_addObject( child, to: "marqueeChildren" )
+        }
         
-        let marqueeChildren = VStreamItem.parseMarqueeItems(fromStream: stream, inManagedObjectContext: self.v_managedObjectContext)
-        self.v_addObjects( marqueeChildren, to: "marqueeChildren")
+        // Parse out the streamItems
+        let sourceStreamItems = sourceStream.items ?? []
+        let streamItems = VStream.persistentStreamItems(fromStreamItems: sourceStreamItems, context: v_managedObjectContext)
+        for streamItem in streamItems {
+            let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
+            let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
+            self.v_addObject( child, to: "streamChildren" )
+        }
+    }
+    
+    static func persistentStreamItems(fromStreamItems items: [StreamItemType], context: NSManagedObjectContext) -> [VStreamItem] {
+        
+        let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
+        let unflaggedItems = items.filter { !flaggedIds.contains( $0.streamItemID ) }
+        return unflaggedItems.flatMap { item in
+            let uniqueElements: [String : AnyObject] = [ "remoteId" : item.streamItemID ]
+            
+            switch item.type {
+                
+            case .Some(.Sequence):
+                guard let sequence = item as? Sequence else { return nil }
+                let persistentSequence = context.v_findOrCreateObject( uniqueElements ) as VSequence
+                persistentSequence.populate( fromSourceModel: sequence )
+                return persistentSequence
+                
+            case .Some(.Stream):
+                guard let stream = item as? Stream else { return nil }
+                let persistentStream = context.v_findOrCreateObject(uniqueElements) as VStream
+                persistentStream.populate( fromSourceModel: stream )
+                return persistentStream
+                
+            case .Some(.Shelf):
+                return shelf(fromStreamItem: item, withUniqueIdentifier: uniqueElements, context: context)
+                
+            default:
+                return nil
+            }
+        }
+    }
+    
+    private static func shelf(fromStreamItem item: StreamItemType, withUniqueIdentifier identifier: [String : AnyObject], context: NSManagedObjectContext) -> Shelf? {
+    
+        switch item.subtype {
+            
+        case .Some(.User):
+            guard let userShelf = item as? VictoriousIOSSDK.UserShelf else { return nil }
+            let persistentUserShelf = context.v_findOrCreateObject(identifier) as UserShelf
+            persistentUserShelf.populate(fromSourceShelf: userShelf)
+            return persistentUserShelf
+            
+        case .Some(.Hashtag):
+            guard let hashtagShelf = item as? VictoriousIOSSDK.HashtagShelf else { return nil }
+            let persistentHashtagShelf = context.v_findOrCreateObject(identifier) as HashtagShelf
+            persistentHashtagShelf.populate(fromSourceShelf: hashtagShelf)
+            return persistentHashtagShelf
+            
+        case .Some(.Playlist):
+            guard let listShelf = item as? VictoriousIOSSDK.ListShelf else { return nil }
+            let persistentListShelf = context.v_findOrCreateObject(identifier) as ListShelf
+            persistentListShelf.populate(fromSourceShelf: listShelf)
+            return persistentListShelf
+            
+        default:
+            guard let shelf = item as? VictoriousIOSSDK.Shelf else { return nil }
+            let persistentShelf = context.v_findOrCreateObject(identifier) as Shelf
+            persistentShelf.populate(fromSourceShelf: shelf)
+            return persistentShelf
+        }
     }
 }

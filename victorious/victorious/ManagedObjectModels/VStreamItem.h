@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VEditorializationItem, VStream, VImageAsset, VAsset;
+@class VEditorializationItem, VStream, VImageAsset, VAsset, VStreamChild;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,35 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSSet * editorializations;
 @property (nonatomic, retain, nullable) NSSet * marquees;
 @property (nonatomic, retain, nullable) NSSet * previewImageAssets;
-@property (nonatomic, retain, nullable) NSSet * streams;
 @property (nonatomic, retain, nullable) NSDate * releasedAt;
-
-//@property (nonatomic, retain, null_unspecified) NSNumber * displayOrder;
+@property (nonatomic, retain) NSSet * streamChildrenInSream; //< VStreamChild
 
 @end
-
-@interface VStreamItem (CoreDataGeneratedAccessors)
-
-- (void)addEditorializationsObject:(VEditorializationItem *)value;
-- (void)removeEditorializationsObject:(VEditorializationItem *)value;
-- (void)addEditorializations:(NSSet *)values;
-- (void)removeEditorializations:(NSSet *)values;
-
-- (void)addMarqueesObject:(VStream *)value;
-- (void)removeMarqueesObject:(VStream *)value;
-- (void)addMarquees:(NSSet *)values;
-- (void)removeMarquees:(NSSet *)values;
-
-- (void)addPreviewImageAssetsObject:(VImageAsset *)value;
-- (void)removePreviewAssetsObject:(VImageAsset *)value;
-- (void)addPreviewAssets:(NSSet *)values;
-- (void)removePreviewAssets:(NSSet *)values;
-
-- (void)addStreamsObject:(VStream *)value;
-- (void)removeStreamsObject:(VStream *)value;
-- (void)addStreams:(NSSet *)values;
-- (void)removeStreams:(NSSet *)values;
 
 NS_ASSUME_NONNULL_END
-
-@end

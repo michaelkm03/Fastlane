@@ -219,7 +219,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView
-                                                withStreamItems:[self.streamDataSource.stream.streamItems array]];
+                                                withStreamItems:self.streamDataSource.stream.streamItems];
     }
     else
     {

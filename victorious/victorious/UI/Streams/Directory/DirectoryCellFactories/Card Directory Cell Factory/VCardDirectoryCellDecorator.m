@@ -13,6 +13,7 @@
 #import "VDependencyManager.h"
 #import "VCardSeeMoreDirectoryCell.h"
 #import "VTagStringFormatter.h"
+#import "VStream.h"
 
 @implementation VCardDirectoryCellDecorator
 

@@ -8,6 +8,10 @@
 
 import Foundation
 
+func ==(lhs: StreamItemType, rhs: StreamItemType) -> Bool {
+    return lhs.streamItemID == rhs.streamItemID
+}
+
 public enum StreamContentType: String {
     case Sequence       = "sequence"
     case Stream         = "stream"

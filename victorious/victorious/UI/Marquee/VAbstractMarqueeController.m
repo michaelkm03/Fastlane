@@ -116,8 +116,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (NSArray *)marqueeItems
 {
-    NSOrderedSet *marqueeItems = self.shelf.streamItems ?: self.stream.marqueeItems;
-    return [marqueeItems array];
+    return self.shelf.streamItems ?: self.stream.marqueeItems;
 }
 
 - (CGFloat)pageWidth

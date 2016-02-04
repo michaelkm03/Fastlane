@@ -7,14 +7,10 @@
 //
 
 #import "VImageStreamPreviewView.h"
-
-// Models + Helpers
+#import "VStreamItem+Fetcher.h"
 #import "VStream.h"
-
-// Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 

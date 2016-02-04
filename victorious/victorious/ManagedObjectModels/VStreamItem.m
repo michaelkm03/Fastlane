@@ -25,8 +25,7 @@
 @dynamic editorializations;
 @dynamic marquees;
 @dynamic previewImageAssets;
-@dynamic streams;
 @dynamic releasedAt;
-//@dynamic displayOrder;
+@dynamic streamChildrenInSream;
 
 @end

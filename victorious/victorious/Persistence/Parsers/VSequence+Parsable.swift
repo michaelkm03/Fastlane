@@ -42,11 +42,6 @@ extension VSequence: PersistenceParsable {
         itemType                = sequence.type?.rawValue
         itemSubType             = sequence.type?.rawValue
         releasedAt              = sequence.releasedAt ?? releasedAt
-        
-        /*if let trackingModel = sequence.tracking {
-            tracking = v_managedObjectContext.v_createObject() as VTracking
-            tracking?.populate(fromSourceModel: trackingModel)
-        }*/
 
         if let adBreak = sequence.adBreak {
             let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak

@@ -108,7 +108,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     
     if ( self.hasLoadedOnce )
     {
-        // FIXME: Remove this line and use the original proper reload logic described below
         [self.tableView reloadData];
         
         // Only refresh suggested users if main user has followed someone since the last time they visited

@@ -167,6 +167,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)setupKVOControllerWithExperienceEnhancer:(VExperienceEnhancer *)enhancer atIndex:(NSUInteger)index
 {
+    [self.KVOController unobserve:enhancer];
+     
     typeof(self) __weak welf = self;
     [self.KVOController observe:enhancer
                         keyPath:NSStringFromSelector(@selector(voteCount))
