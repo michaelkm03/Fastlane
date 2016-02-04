@@ -10,16 +10,14 @@ import UIKit
 
 @objc class ShowCreateSheetOperation: Operation {
     
-    private let showCreationSheetFromTop: Bool
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     
     var chosenCreationType: VCreationType = .Unknown
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, showCreationSheetFromTop: Bool = false ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        self.showCreationSheetFromTop = showCreationSheetFromTop
         
         super.init()
         
@@ -43,8 +41,7 @@ import UIKit
                 return
             }
             
-            let addedDependencies = [ "animateFromTop" : self.showCreationSheetFromTop ]
-            if let createSheet = self.dependencyManager.templateValueOfType( VCreateSheetViewController.self, forKey:"createSheet", withAddedDependencies:addedDependencies ) as? VCreateSheetViewController {
+            if let createSheet = self.dependencyManager.templateValueOfType( VCreateSheetViewController.self, forKey:"createSheet" ) as? VCreateSheetViewController {
                 
                 createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
                     self.chosenCreationType = chosenCreationType

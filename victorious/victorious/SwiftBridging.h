@@ -121,7 +121,6 @@
 #import "VImageAssetFinder.h"
 #import "VImageLightboxViewController.h"
 #import "VImageSequencePreviewView.h"
-#import "VInlineSearchTableViewController.h"
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VInsetMarqueeController.h"
 #import "VInsetMarqueeStreamItemCell.h"

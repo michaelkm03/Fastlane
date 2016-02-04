@@ -39,7 +39,6 @@
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VImageLightboxViewController.h"
-#import "VInlineSearchTableViewController.h"
 #import "VKeyboardInputAccessoryView.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VMediaAttachmentPresenter.h"

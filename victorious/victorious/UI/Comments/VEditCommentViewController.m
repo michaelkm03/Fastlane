@@ -10,15 +10,16 @@
 #import "VComment.h"
 #import "VThemeManager.h"
 #import "VUserTaggingTextStorage.h"
-#import "VInlineSearchTableViewController.h"
+#import "VStreamItem+Fetcher.h"
 #import "UIView+AutoLayout.h"
 #import "victorious-Swift.h"
 
-static const NSInteger kCharacterLimit = 255;
-static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
-static const CGFloat kTextViewInsetsVertical    = 18.0f;
-static const CGFloat kTextViewToViewRatioMax    =  0.4f;
-static const CGFloat kSearchTableAnimationDuration = 0.3f;
+static const NSInteger kCharacterLimit                  = 255;
+static const CGFloat kSearchTableDesiredMinimumHeight   = 100;
+static const CGFloat kTextViewInsetsHorizontal          = 15.0f;
+static const CGFloat kTextViewInsetsVertical            = 18.0f;
+static const CGFloat kTextViewToViewRatioMax            = 0.4f;
+static const CGFloat kSearchTableAnimationDuration      = 0.3f;
 
 @implementation VCommentTextView
 
