@@ -7,12 +7,7 @@
 //
 
 #import "VContentPollQuestionCell.h"
-#import "VScrollingTextView.h"
 #import "VScrollingTextContainerView.h"
-
-static CGFloat const kMinimumCellHeight = 90.0f;
-static CGFloat const kMaximumCellHeight = 120.0f;
-static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @interface VContentPollQuestionCell ()
 
@@ -62,20 +57,19 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
     return sizedPoll;
 }
 
-- (void)setQuestion:(NSAttributedString *)question
+- (void)setQuestion:(NSString *)question withAttributes:(NSDictionary *)attributes
 {
-    _question = [question copy];
-    [self.scrollingTextContainerView.textView setQuestion:question];
-}
-
-- (void)setGradient
-{
-    [self.scrollingTextContainerView setGradient:0.2 direction:VGradientTypeVertical colors:@[[UIColor clearColor], [UIColor blackColor], [UIColor blackColor], [UIColor clearColor]]];
-}
-
-- (void)startScroll
-{
-    [self.scrollingTextContainerView.textView startScrollWithScrollSpeed:2];
+    [self.scrollingTextContainerView setText:question withAttributes:attributes];
+    
+    [self.scrollingTextContainerView setGradient:0.2
+                                       direction:VGradientTypeVertical
+                                          colors:@[
+                                                   [UIColor clearColor],
+                                                   [UIColor blackColor],
+                                                   [UIColor blackColor],
+                                                   [UIColor clearColor]
+                                                   ]];
+    [self.scrollingTextContainerView startScrollWithScrollSpeed:10];
 }
 
 @end

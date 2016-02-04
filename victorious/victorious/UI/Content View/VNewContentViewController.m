@@ -554,6 +554,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Private Mehods
 
+- (NSDictionary *)attributesForPollQuestion
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    return @{
+             NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+             NSForegroundColorAttributeName: [UIColor whiteColor],
+             NSParagraphStyleAttributeName: paragraphStyle
+             };
+}
+
 - (void)updateInsetsForKeyboardBarState
 {
     // Adjust focus area for keyboard bar
@@ -774,18 +785,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionPollQuestion:
         {
             VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
-
-            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-            [paragraphStyle setAlignment:NSTextAlignmentCenter];
-
-            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @""
-                                                                    attributes:@{
-                                                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                                                                 NSForegroundColorAttributeName: [UIColor whiteColor],
-                                                                                 NSParagraphStyleAttributeName: paragraphStyle
-                                                                                 }];
-            [questionCell setGradient];
-            [questionCell startScroll];
+            [questionCell setQuestion:self.viewModel.sequence.name ?: @"" withAttributes:[self attributesForPollQuestion]];
             return questionCell;
         }
         case VContentViewSectionExperienceEnhancers:
@@ -1023,7 +1023,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionPollQuestion:
             return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
-                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                          attributes:[self attributesForPollQuestion]
                                                          maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];;
         case VContentViewSectionExperienceEnhancers:
         {

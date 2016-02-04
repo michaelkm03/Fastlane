@@ -1323,9 +1323,8 @@
 		BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
-		BF026FD91C6117A9002A30B1 /* VScrollingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */; };
-		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
 		BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */; };
+		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
@@ -3763,11 +3762,9 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextView.h; sourceTree = "<group>"; };
-		BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextView.m; sourceTree = "<group>"; };
+		BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAnimationOperation.swift; sourceTree = "<group>"; };
 		BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextContainerView.h; sourceTree = "<group>"; };
 		BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextContainerView.m; sourceTree = "<group>"; };
-		BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAnimationOperation.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
@@ -4859,10 +4856,6 @@
 				D888B5291A86FC7800B34149 /* VRadialGradientView.m */,
 				BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */,
 				BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */,
-				BF026FD71C6117A9002A30B1 /* VScrollingTextView.h */,
-				BF026FD81C6117A9002A30B1 /* VScrollingTextView.m */,
-				A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */,
-				A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
@@ -11176,7 +11169,6 @@
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
-				BF026FD91C6117A9002A30B1 /* VScrollingTextView.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */,
 				62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */,

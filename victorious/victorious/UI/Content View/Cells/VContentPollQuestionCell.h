@@ -24,12 +24,6 @@
                       attributes:(NSDictionary *)attributes
                      maximumSize:(CGSize)maxSize;
 
-/**
- *  An attributed string of the question this question cell represents.
- */
-@property (nonatomic, copy) NSAttributedString *question;
-
-- (void)startScroll;
-- (void)setGradient;
+- (void)setQuestion:(NSString *)question withAttributes:(NSDictionary *)attributes;
 
 @end
