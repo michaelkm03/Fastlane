@@ -9,7 +9,6 @@
 #import "VTwitterManager.h"
 #import "TWAPIManager.h"
 #import "VTwitterAccountsHelper.h"
-#import "victorious-Swift.h"
 
 @import Accounts;
 
@@ -94,7 +93,12 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               }
               
               NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-              NSDictionary *parsedData = [self parseQueryComponenetsWithUrlString:[@"http://twitter.com?" stringByAppendingString:responseStr]];
+              NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString: [@"http://twitter.com?" stringByAppendingString:responseStr]];
+              NSArray *queryItems = [urlComponents queryItems];
+              NSMutableDictionary *parsedData = [[NSMutableDictionary alloc] init];
+              [queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem *queryItem, NSUInteger idx, BOOL * _Nonnull stop) {
+                  parsedData[queryItem.name] = queryItem.value;
+              }];
 
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];
