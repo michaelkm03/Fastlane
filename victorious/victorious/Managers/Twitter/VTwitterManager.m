@@ -96,9 +96,10 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString: [@"http://twitter.com?" stringByAppendingString:responseStr]];
               NSArray *queryItems = [urlComponents queryItems];
               NSMutableDictionary *parsedData = [[NSMutableDictionary alloc] init];
-              [queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem *queryItem, NSUInteger idx, BOOL * _Nonnull stop) {
+              for(NSURLQueryItem *queryItem in queryItems)
+              {
                   parsedData[queryItem.name] = queryItem.value;
-              }];
+              }
 
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];
