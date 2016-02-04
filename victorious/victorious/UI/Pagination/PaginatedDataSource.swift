@@ -49,7 +49,7 @@ import VictoriousIOSSDK
     
     // MARK: - Public API
     
-    var delegate: PaginatedDataSourceDelegate?
+    weak var delegate: PaginatedDataSourceDelegate?
     
     func unload() {
         visibleItems = NSOrderedSet()
