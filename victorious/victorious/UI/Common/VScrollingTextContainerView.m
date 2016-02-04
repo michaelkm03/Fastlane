@@ -36,7 +36,6 @@
     }
     else
     {
-        /// if gradientDirection == VGradientTypeHorizontal
         self.gradientView.startPoint = CGPointMake(0, 0.5f);
         self.gradientView.endPoint = CGPointMake(1, 0.5f);
     }
