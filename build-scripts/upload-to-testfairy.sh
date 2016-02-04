@@ -3,36 +3,44 @@
 # Uploads a single app in the 'products' folder to TestFairy.
 ###########
 
-APPNAME=`basename "$1"`
-
-# Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
-# This parameter is optional, leave empty if not required
-TESTER_GROUPS=$2
-
-# Should email testers about new version. Set to "off" to disable email notifications.
-if [ "$3" == "--notify" ]; then
-    NOTIFY="on"
-    shift
-else
-    NOTIFY="off"
-fi
-
-# Should the download URL be sent to VAMS
-if [ "$3" == "--vams" ]; then
-    VAMS="on"
-else
-    VAMS="off"
-fi
+# default values for optional parameters
+TESTER_GROUPS=""
+AUTO_UPDATE="on"
+MAX_DURATION="10m"
+VIDEO="off"
+COMMENT=""
+VAMS="off"
+NOTIFY="off"
+OPTIONS=""
 
 usage() {
-	echo "Usage: upload-to-testfairy.sh <App Name> <Tester Groups> [--notify] [--vams]"
+	echo "Usage: upload-to-testfairy.sh -a <App Name> [ -t <Tester Groups> ] [ -u <Auto Update> ] [ -d <Duration> ] [ -r <Video> ] [ -c <Comment> ] [ -o <Options> ] [ -vn ] "
 	echo
-	echo -e "  <App Name>\t\tThe name of the .ipa in the products folder of the app to upload."
-	echo -e "  <Tester Groups> \tComma-separated list (no spaces) of tester groups from TestFairy account to whom this build will be shared."
-	echo -e "  --notify\t\tNotify invited testers via e-mail."
-	echo -e "  --vams\t\tSend the download URL to VAMS."
+	echo -e "  <App Name>\tThe name of the .ipa in the products folder of the app to upload."
+	echo -e "  <Groups>\tComma-separated list (no spaces) of tester groups from TestFairy account to whom this build will be shared."
+	echo -e "  -n\t\tNotify invited testers via e-mail."
+	echo -e "  -v\t\tSend the download URL to VAMS."
+	echo -e "  -u\t\t\"on\" or \"off\": whether this app should auto-update on testers' devices"
+	echo -e "  -d\t\tMaximum recording duration for a test session"
+	echo -e "  -r\t\t\"on\", \"off\", or \"wifi\": whether video recording is enabled for this build"
+	echo -e "  -c\t\tComment text to be included in the email sent to testers"
 	echo
 }
+
+while getopts :a:t:u:d:r:c:vn opt; do
+   case $opt in
+     a ) APPNAME=`basename "$OPTARG"` ;;
+     t ) TESTER_GROUPS="$OPTARG"      ;;
+     u ) AUTO_UPDATE="$OPTARG"        ;;
+     d ) MAX_DURATION="$OPTARG"       ;;
+     r ) VIDEO="$OPTARG"              ;;
+     c ) COMMENT="$OPTARG"            ;;
+     o ) OPTIONS="$OPTARG"            ;;
+     v ) VAMS="on"                    ;;
+     n ) NOTIFY="on"                  ;;
+    \? ) usage; exit 1                ;;
+  esac
+done
 
 if [[ "$APPNAME" == "" ]]; then
 	usage
@@ -51,18 +59,6 @@ UPLOADER_VERSION=1.09
 
 # TestFairy API_KEY here for build.server@getvictorious.com
 TESTFAIRY_API_KEY="61e501eea8b80b5596c7e17c9fea4739ec6e8a86"
-
-# If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
-AUTO_UPDATE="on"
-
-# The maximum recording duration for every test. 
-MAX_DURATION="24h"
-
-# Is video recording enabled for this build. valid values:  "on", "off", "wifi" 
-VIDEO="wifi"
-
-# Comment text will be included in the email sent to testers
-COMMENT=""
 
 # locations of various tools
 CURL=curl
@@ -91,7 +87,7 @@ verify_tools
 verify_settings
 
 /bin/echo "Uploading ${IPA_FILENAME} to TestFairy..."
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${IPA_FILENAME}" -F video="${VIDEO}" -F options=shake -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${IPA_FILENAME}" -F video="${VIDEO}" -F options="${OPTIONS}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
