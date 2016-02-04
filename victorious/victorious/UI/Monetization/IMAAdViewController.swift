@@ -120,7 +120,7 @@ import SafariServices
     }
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdError error: IMAAdError!) {
-        print("IMAAdsManager has an error: \(error.message)")
+        VLog("IMAAdsManager has an error: \(error.message)")
         let nsError = NSError(domain: kVictoriousErrorDomain,
             code: error.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : error.message])

@@ -1601,13 +1601,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)contentCellDidEndPlayingAd:(VContentCell *)cell
 {
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    }];
 }
 
 - (void)contentCellDidStartPlayingAd:(VContentCell *)cell
 {
     self.closeButton.alpha = 1.0f;
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    }];
 }
 
 #pragma mark - Memory Warning
