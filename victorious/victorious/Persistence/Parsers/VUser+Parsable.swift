@@ -26,6 +26,9 @@ extension VUser: PersistenceParsable {
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
+        levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
+        level                       = user.fanLoyalty?.level ?? level
+        levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage        
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
