@@ -28,11 +28,4 @@ extension VAsset: PersistenceParsable {
         streamAutoplay          = asset.streamAutoplay ?? streamAutoplay
         type                    = asset.type.rawValue ?? type
     }
-    
-    func populate( fromTextPostAsset asset: TextPostAsset) {
-        type                    = asset.type.rawValue ?? type
-        data                    = asset.data ?? data
-        backgroundColor         = asset.backgroundColor ?? backgroundColor
-        backgroundImageUrl      = asset.backgroundImageURL ?? backgroundImageUrl
-    }
 }

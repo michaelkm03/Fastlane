@@ -74,7 +74,7 @@ extension VSequence: PersistenceParsable {
         
         if let textPostAsset = sequence.previewTextPostAsset {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
-            persistentAsset.populate(fromTextPostAsset: textPostAsset)
+            persistentAsset.populate(fromSourceModel: textPostAsset)
             previewTextPostAsset = persistentAsset
         }
         

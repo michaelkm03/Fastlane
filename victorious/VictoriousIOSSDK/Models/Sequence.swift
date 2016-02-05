@@ -46,7 +46,7 @@ public struct Sequence: StreamItemType, JSONDeseriealizable {
         return self.sequenceID
     }
     public let previewImagesObject: AnyObject?
-    public let previewTextPostAsset: TextPostAsset?
+    public let previewTextPostAsset: Asset?
     public let previewImageAssets: [ImageAsset]?  
     public let type: StreamContentType?
     public let subtype: StreamContentType?
@@ -102,7 +102,7 @@ extension Sequence {
         // MARK: - StreamItemType
         
         previewImagesObject     = json["preview_image"].object
-        previewTextPostAsset    = TextPostAsset(json: json["preview"])
+        previewTextPostAsset    = Asset(json: json["preview"])
         previewImageAssets      = (json["preview"]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
     }
 }

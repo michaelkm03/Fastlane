@@ -29,7 +29,7 @@ extension VStream: PersistenceParsable {
         
         if let textPostAsset = stream.previewTextPostAsset {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
-            persistentAsset.populate(fromTextPostAsset: textPostAsset)
+            persistentAsset.populate(fromSourceModel: textPostAsset)
             previewTextPostAsset = persistentAsset
         }
         
