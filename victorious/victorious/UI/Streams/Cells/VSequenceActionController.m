@@ -261,11 +261,11 @@
         VTracking *tracking;
         if ( streamID == nil )
         {
-            tracking = sequence.trackingForStandaloneSequence;
+            tracking = sequence.streamItemPointerForStandloneStreamItem.tracking;
         }
         else
         {
-            tracking = [sequence trackingDataWithStreamID:streamID];
+            tracking = [sequence streamItemPointerWithStreamID:streamID].tracking;
         }
         NSAssert( tracking != nil, @"Cannot track 'share' event because tracking data is missing." );
         

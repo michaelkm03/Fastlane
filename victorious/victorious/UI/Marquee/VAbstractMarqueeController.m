@@ -90,18 +90,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     if ( shelf == _shelf )
     {
-        if ( shelf.hasNewEditorializations )
-        {
-            //Need to refresh marquee items since editorializations have changed
-            shelf.hasNewEditorializations = NO;
-            [self marqueeItemsUpdated];
-        }
         return;
     }
     
     [self.KVOController unobserve:_shelf];
     _shelf = shelf;
-    shelf.hasNewEditorializations = NO;
     [self reset];
     [self.KVOController observe:_shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
@@ -332,7 +325,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.context = context;
-    [cell setupWithStreamItem:item fromStreamWithApiPath:self.currentStream.apiPath];
+    [cell setupWithStreamItem:item fromStreamWithStreamID:self.currentStream.remoteId];
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];

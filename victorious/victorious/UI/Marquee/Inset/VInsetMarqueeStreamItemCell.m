@@ -24,12 +24,12 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 
 @interface VInsetMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet VMarqueeCaptionView *marqueeCaptionView; //The label displaying the title of the content
-@property (nonatomic, weak) IBOutlet UIView *gradientContainer; //The view containing the black gradient behind the titleLabel
-@property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
-@property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
-@property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *centerLabelConstraint; //Must be strong so that we can turn it on and off as needed
+@property (nonatomic, weak) IBOutlet VMarqueeCaptionView *marqueeCaptionView; //< The label displaying the title of the content
+@property (nonatomic, weak) IBOutlet UIView *gradientContainer; //< The view containing the black gradient behind the titleLabel
+@property (nonatomic, strong) CAGradientLayer *gradientLayer; //< The gradient displayed in the gradient container
+@property (nonatomic, weak) IBOutlet UIView *overlayContainer; //< An overlay to apply to the imageView
+@property (nonatomic, weak) IBOutlet UIView *contentContainer; //< The container for all variable cell content, will have shadow applied to it
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *centerLabelConstraint; //< Must be strong so that we can turn it on and off as needed
 
 @end
 
@@ -56,12 +56,12 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     return CGSizeMake(side, side);
 }
 
-- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithStreamID:(NSString *)StreamID
 {
-    [super setupWithStreamItem:streamItem fromStreamWithApiPath:apiPath];
+    [super setupWithStreamItem:streamItem fromStreamWithStreamID:StreamID];
     if ( streamItem != nil )
     {
-        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithApiPath:apiPath];
+        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithStreamID:StreamID];
         BOOL hasHeadline = self.marqueeCaptionView.hasHeadline;
         self.centerLabelConstraint.active = hasHeadline;
         self.marqueeCaptionView.captionLabel.textAlignment = hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;

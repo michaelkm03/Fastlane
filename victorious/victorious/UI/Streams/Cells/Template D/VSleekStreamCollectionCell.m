@@ -27,7 +27,6 @@
 #import "VInStreamCommentsController.h"
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
-#import "VEditorializationItem.h"
 #import "VStream.h"
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
@@ -69,7 +68,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) BOOL needsRefresh;
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
-@property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
@@ -211,8 +209,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 {
     _stream = stream;
     
-    self.previewView.trackingData = [self.sequence trackingDataWithStreamID:self.stream.remoteId];
-    [self updateListicleForSequence:self.sequence andStream:self.stream];
+    VStreamItemPointer *streamItemPointer = [self.sequence streamItemPointerWithStreamID:self.stream.remoteId];
+    self.previewView.trackingData = streamItemPointer.tracking;
+    if ( streamItemPointer.headline.length > 0 )
+    {
+        self.listicleView.hidden = NO;
+        self.listicleView.headlineText = streamItemPointer.headline;
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -437,19 +440,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 + (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
 {
     return sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText] && dependencyManager != nil;
-}
-
-- (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
-{
-    // Headline depends on both the sequence AND the stream
-    NSString *apiPath = stream.apiPath;
-    self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
-    BOOL hasHeadline = self.editorialization.headline.length > 0;
-    if (hasHeadline && (self.editorialization.headline != nil))
-    {
-        self.listicleView.hidden = NO;
-        self.listicleView.headlineText = self.editorialization.headline;
-    }
 }
 
 - (void)prepareForReuse

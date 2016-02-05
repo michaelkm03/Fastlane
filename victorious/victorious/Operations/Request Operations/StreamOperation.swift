@@ -42,7 +42,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 
                 // Using a list of streamIDs that we've just received from the network,
                 // get the corresponding persistent stream items from the stream
-                let persistentStreamItems = stream.streamPointers(forStreamItemIDs: streamIDs)
+                let persistentStreamItems = stream.streamItemPointers(forStreamItemIDs: streamIDs)
                 
                 // Assign display order to stream children that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart

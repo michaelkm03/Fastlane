@@ -18,6 +18,8 @@ extension VStream: PersistenceParsable {
         name                    = sourceStream.name ?? name
         count                   = sourceStream.postCount ?? count
         previewImagesObject     = sourceStream.previewImagesObject ?? previewImagesObject
+        trackingIdentifier      = sourceStream.trackingIdentifier ?? trackingIdentifier
+        isUserPostAllowed       = sourceStream.isUserPostAllowed ?? isUserPostAllowed
         
         if let previewImageAssets = sourceStream.previewImageAssets {
             self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
@@ -56,7 +58,7 @@ extension VStream: PersistenceParsable {
         }
     }
     
-    static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStreamID: String, context: NSManagedObjectContext) -> [VStreamItem] {
+    private static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStreamID: String, context: NSManagedObjectContext) -> [VStreamItem] {
         
         let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
         let unflaggedItems = items.filter { !flaggedIds.contains( $0.streamItemID ) }

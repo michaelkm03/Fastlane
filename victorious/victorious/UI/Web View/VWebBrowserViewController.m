@@ -147,7 +147,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     {
         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
         
-        VTracking *tracking = self.sequence.trackingForStandaloneSequence;
+        VTracking *tracking = self.sequence.streamItemPointerForStandloneStreamItem.tracking;
         NSAssert( tracking != nil,
                  @"Cannot track 'viewStart' event in `VWebBrowserViewController` because tracking data is missing." );
         

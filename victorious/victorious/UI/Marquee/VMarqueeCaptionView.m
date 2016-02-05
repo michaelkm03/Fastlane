@@ -8,7 +8,6 @@
 
 #import "VMarqueeCaptionView.h"
 #import "VDependencyManager.h"
-#import "VEditorializationItem.h"
 #import "victorious-Swift.h"
 
 static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
@@ -21,23 +20,23 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
 @property (nonatomic, strong) UIFont *headlineFont;
 @property (nonatomic, readwrite) BOOL hasHeadline;
 @property (nonatomic, readwrite) VStreamItem *marqueeItem;
-@property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) NSString *headline;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionLabelMinimumHeightConstraint;
 
 @end
 
 @implementation VMarqueeCaptionView
 
-- (void)setupWithMarqueeItem:(VStreamItem *)marqueeItem fromStreamWithApiPath:(NSString *)apiPath
+- (void)setupWithMarqueeItem:(VStreamItem *)marqueeItem fromStreamWithStreamID:(NSString *)streamID
 {
     BOOL firstItem = self.marqueeItem == nil;
     self.marqueeItem = marqueeItem;
     
-    self.editorialization = [marqueeItem editorializationForStreamWithApiPath:apiPath];
+    VStreamItemPointer *streamItemPointer = [self.marqueeItem streamItemPointerWithStreamID:streamID];
+    self.headline = streamItemPointer.headline;
     
-    BOOL hasHeadline = self.editorialization.marqueeHeadline.length > 0;
-    self.hasHeadline = hasHeadline;
-    if ( !hasHeadline && firstItem )
+    self.hasHeadline = self.headline.length > 0;
+    if ( !self.hasHeadline && firstItem )
     {
         [self updateDividerConstraints];
     }
@@ -89,7 +88,7 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
 
 - (void)updateLabelText
 {
-    NSString *captionText = self.hasHeadline ? self.editorialization.marqueeHeadline : self.marqueeItem.name;
+    NSString *captionText = self.hasHeadline ? self.headline : self.marqueeItem.name;
     
     if (captionText != nil )
     {

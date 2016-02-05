@@ -46,13 +46,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 @implementation VFullscreenMarqueeStreamItemCell
 
-- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithStreamID:(NSString *)streamID
 {
-    [super setupWithStreamItem:streamItem fromStreamWithApiPath:apiPath];
+    [super setupWithStreamItem:streamItem fromStreamWithStreamID:streamID];
     
     if ( streamItem != nil )
     {
-        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithApiPath:apiPath];
+        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithStreamID:streamID];
     }
     
     //Timer for marquee details auto-hiding

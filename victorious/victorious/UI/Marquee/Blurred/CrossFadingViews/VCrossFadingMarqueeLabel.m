@@ -37,10 +37,9 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     self.marqueeCaptionViews = nil;
 }
 
-- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithApiPath:(NSString *)apiPath
+- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithStreamID:(NSString *)streamID
 {
     [self reset];
-    self.streamApiPath = apiPath;
     self.marqueeItems = marqueeItems;
     [self populateCaptionViews];
 }
@@ -52,7 +51,7 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     {
         VMarqueeCaptionView *captionView = [[[NSBundle mainBundle] loadNibNamed:kCaptionViewNibName owner:self options:nil] firstObject];
         captionView.dependencyManager = self.dependencyManager;
-        [captionView setupWithMarqueeItem:marqueeItem fromStreamWithApiPath:self.streamApiPath];
+        [captionView setupWithMarqueeItem:marqueeItem fromStreamWithStreamID:self.streamApiPath];
         [self addSubview:captionView];
         [self v_addPinToLeadingTrailingToSubview:captionView];
         [self v_addCenterVerticallyConstraintsToSubview:captionView];

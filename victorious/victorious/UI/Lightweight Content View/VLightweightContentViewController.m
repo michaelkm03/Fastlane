@@ -112,7 +112,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              
              self.sequence = sequence;
              self.mediaUrl = asset.dataURL;
-             VTracking *trackingData = sequence.trackingForStandaloneSequence;
+             VTracking *trackingData = sequence.streamItemPointerForStandloneStreamItem.tracking;
              [self.videoPlayerViewController enableTrackingWithTrackingItem:trackingData streamID:nil];
              [self showVideo];
          }];
@@ -220,7 +220,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         self.hasVideoPlayed = YES;
         
-        VTracking *tracking = self.sequence.trackingForStandaloneSequence;
+        VTracking *tracking = self.sequence.streamItemPointerForStandloneStreamItem.tracking;
         NSAssert( tracking != nil, @"Cannot track 'cellView' event because tracking data is missing." );
         
         NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;

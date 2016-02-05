@@ -7,13 +7,11 @@
 //
 
 #import "VStreamItem.h"
-#import "VEditorializationItem.h"
 #import "VStream.h"
 
 
 @implementation VStreamItem
 
-@dynamic headline;
 @dynamic name;
 @dynamic previewImagesObject;
 @dynamic previewTextPostAsset;
@@ -21,7 +19,6 @@
 @dynamic streamContentType;
 @dynamic itemType;
 @dynamic itemSubType;
-@dynamic editorializations;
 @dynamic marquees;
 @dynamic previewImageAssets;
 @dynamic releasedAt;

@@ -42,21 +42,23 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
+        let payload = payloadJSONByAddingTopLevelProperties(from: responseJSON)
+        
         let stream: Stream
         
-        if let streamFromObject = Stream(json: responseJSON["payload"]) {
+        if let streamFromObject = Stream(json:payload) {
             
             // Regular Streams
             stream = streamFromObject
             
-        } else if responseJSON["payload"].array != nil,
-            let streamFromItems = Stream(json: JSON([ "id" : responseJSON["stream_id"], "items" : responseJSON["payload"] ])) {
+        } else if payload.array != nil,
+            let streamFromItems = Stream(json: JSON([ "id" : responseJSON["stream_id"], "items" : payload ])) {
                 
                 // User profile and other streams with `stream_id` in the response
                 stream = streamFromItems
                 
-        } else if responseJSON["payload"]["content"].array != nil,
-            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"]["content"] ])) {
+        } else if payload["content"].array != nil,
+            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : payload["content"] ])) {
                 
                 // Liked posts, and other weird responses with no `stream_id` information
                 stream = streamFromItems
@@ -66,5 +68,15 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         }
         
         return stream
+    }
+    
+    private func payloadJSONByAddingTopLevelProperties(from responseJSON: JSON) -> JSON {
+        var payload = responseJSON["payload"]
+        
+        payload["shelf_id"]             = responseJSON["shelf_id"]
+        payload["stream_id"]            = responseJSON["stream_id"]
+        payload["ugc_post_allowed"]     = responseJSON["ugc_post_allowed"]
+        
+        return payload
     }
 }

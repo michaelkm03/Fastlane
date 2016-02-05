@@ -17,9 +17,24 @@ func ==(lhs: VStreamItemPointer, rhs: VStreamItemPointer) -> Bool {
 
 class VStreamItemPointer: NSManagedObject {
     
+    @NSManaged var headline: String?
     @NSManaged var streamItem: VStreamItem
-    @NSManaged var streamParent: VStream
-    @NSManaged var marqueeParent: VStream
+    @NSManaged var streamParent: VStream?
+    @NSManaged var marqueeParent: VStream?
     @NSManaged var displayOrder: NSNumber!
     @NSManaged var tracking: VTracking?
+}
+
+extension VStreamItemPointer: PersistenceParsable {
+    
+    func populate( fromSourceModel sourceSequence: Sequence ) {
+        
+        headline = sourceSequence.headline ?? headline
+        
+        if let trackingData = sourceSequence.tracking {
+            let tracking = v_managedObjectContext.v_createObject() as VTracking
+            tracking.populate(fromSourceModel: trackingData)
+            self.tracking = tracking
+        }
+    }
 }

@@ -95,7 +95,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
-    VTracking *tracking = [sequence trackingDataWithStreamID:stream.remoteId];
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     NSAssert( tracking != nil, @"Cannot track 'cellView' event because tracking data is missing." );
     
     if ( sequence == nil || stream == nil || tracking == nil )
@@ -122,7 +122,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     
-    VTracking *tracking = [sequence trackingDataWithStreamID:stream.remoteId];
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     NSAssert( tracking != nil, @"Cannot track 'cellClick' because tracking data is missing." );
     
     if ( sequence == nil || stream == nil || tracking == nil )

@@ -19,6 +19,8 @@ public struct Stream: StreamItemType {
     public let items: [StreamItemType]?
     public let marqueeItems: [StreamItemType]?
     public let streamContentType: StreamContentType?
+    public let trackingIdentifier: String?
+    public let isUserPostAllowed: Bool?
     
     // MARK: - StreamItemType
     
@@ -48,6 +50,8 @@ extension Stream {
         title                       = json["title"].string
         postCount                   = json["postCount"].int ?? json["count"].int
         streamUrl                   = json["streamUrl"].string
+        trackingIdentifier          = json["stream_id"].string
+        isUserPostAllowed           = json["ugc_post_allowed"].bool
         
         items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
             switch $0["type"].stringValue {
