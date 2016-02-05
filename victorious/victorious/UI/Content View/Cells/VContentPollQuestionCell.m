@@ -57,9 +57,10 @@
     return sizedPoll;
 }
 
-- (void)setQuestion:(NSString *)question withAttributes:(NSDictionary *)attributes
+- (void)setQuestion:(NSAttributedString *)question
 {
-    [self.scrollingTextContainerView setText:question withAttributes:attributes];
+    _question = [question copy];
+    self.scrollingTextContainerView.text = question;
     
     [self.scrollingTextContainerView setGradient:0.2
                                        direction:VGradientTypeVertical

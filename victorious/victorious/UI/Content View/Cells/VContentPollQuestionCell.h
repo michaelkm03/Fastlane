@@ -7,7 +7,6 @@
 //
 
 #import "VBaseCollectionViewCell.h"
-#import "VScrollingTextContainerView.h"
 
 @interface VContentPollQuestionCell : VBaseCollectionViewCell
 
@@ -24,6 +23,9 @@
                       attributes:(NSDictionary *)attributes
                      maximumSize:(CGSize)maxSize;
 
-- (void)setQuestion:(NSString *)question withAttributes:(NSDictionary *)attributes;
+/**
+ *  An attributed string of the question this question cell represents.
+ */
+@property (nonatomic, copy) NSAttributedString *question;
 
 @end

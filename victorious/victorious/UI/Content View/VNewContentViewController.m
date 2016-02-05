@@ -785,7 +785,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionPollQuestion:
         {
             VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
-            [questionCell setQuestion:self.viewModel.sequence.name ?: @"" withAttributes:[self attributesForPollQuestion]];
+            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @"" attributes:[self attributesForPollQuestion]];
             return questionCell;
         }
         case VContentViewSectionExperienceEnhancers:

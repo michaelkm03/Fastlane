@@ -7,6 +7,7 @@
 //
 
 #import "VScrollingTextContainerView.h"
+#import "VTimerManager.h"
 
 static CGFloat const kGradientOffset = 20.0f;
 static CGFloat const kScrollBoundary = 20.0f;
@@ -26,14 +27,7 @@ static CGFloat const kTimerInterval = 0.1f;
  */
 @property (nonatomic, strong) UIScrollView *scrollView;
 
-/**
- *  An attributed string of the question this question cell represents.
- */
-@property (nonatomic, strong) NSAttributedString *text;
-
-@property (nonatomic, copy) NSDictionary *textAttributes;
-
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) VTimerManager *timer;
 @property (nonatomic) BOOL scrollDown;
 @property (nonatomic) CGFloat scrollSpeed;
 
@@ -171,9 +165,8 @@ static CGFloat const kTimerInterval = 0.1f;
     }
     if (self.scrollView.contentSize.height > kMaximumCellHeight)
     {
-        self.timer = [NSTimer timerWithTimeInterval:kTimerInterval target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES];
         self.scrollDown = YES;
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+        self.timer = [VTimerManager addTimerManagerWithTimeInterval:kTimerInterval target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES toRunLoop:[NSRunLoop mainRunLoop] withRunMode:NSDefaultRunLoopMode];
     }
 }
 
@@ -196,13 +189,12 @@ static CGFloat const kTimerInterval = 0.1f;
     [self.timer invalidate];
 }
 
-#pragma mark - Setters
+#pragma mark - Scrollview Attributes
 
-- (void)setText:(NSString *)text withAttributes:(NSDictionary *)attributes
+- (void)setText:(NSAttributedString *)text
 {
-    _text = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-    _textAttributes = attributes;
-    self.label.attributedText = self.text;
+    _text = [text copy];
+    self.label.attributedText = text;
 }
 
 - (void)setGradient:(CGFloat)gradient direction:(VGradientType)gradientDirection colors:(NSArray <UIColor *> *)colors
