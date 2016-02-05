@@ -258,9 +258,16 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
-        VTracking *tracking = streamID == nil ? sequence.trackingWithoutStreamData : [sequence trackingDataWithStreamID:streamID];
-        NSAssert( tracking != nil,
-                 @"Cannot track 'share' event because tracking data is missing." );
+        VTracking *tracking;
+        if ( streamID == nil )
+        {
+            tracking = sequence.trackingForStandaloneSequence;
+        }
+        else
+        {
+            tracking = [sequence trackingDataWithStreamID:streamID];
+        }
+        NSAssert( tracking != nil, @"Cannot track 'share' event because tracking data is missing." );
         
         if ( completed )
         {
