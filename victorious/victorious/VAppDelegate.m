@@ -40,7 +40,10 @@
     [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
     [self addLoginListener];
 #else
-    [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+    if (![AgeGate isAgeGateEnabled])
+    {
+        [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+    }
 #endif
     
     [[VReachability reachabilityForInternetConnection] startNotifier];
