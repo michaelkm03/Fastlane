@@ -1,5 +1,5 @@
 //
-//  VStreamItem.swift
+//  VStreamItemPointer.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/1/16.
@@ -9,13 +9,13 @@
 import Foundation
 import CoreData
 
-func ==(lhs: VStreamChild, rhs: VStreamChild) -> Bool {
+func ==(lhs: VStreamItemPointer, rhs: VStreamItemPointer) -> Bool {
     return lhs.streamItem == rhs.streamItem
         && lhs.marqueeParent == rhs.marqueeParent
         && lhs.streamParent == rhs.streamParent
 }
 
-class VStreamChild: NSManagedObject {
+class VStreamItemPointer: NSManagedObject {
     
     @NSManaged var streamItem: VStreamItem
     @NSManaged var streamParent: VStream

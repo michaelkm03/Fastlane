@@ -13,11 +13,11 @@ extension VSequence {
     /// Provides a `VTracking` object configured specific to the sequence's place in the stream
     /// that corresponds to the provided `streamID`.
     func trackingData(streamID streamID: String) -> VTracking? {
-        guard let streamChildren = self.valueForKey("streamChildrenInSream") as? Set<VStreamChild> else {
+        guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
             return nil
         }
-        let matchingStreamChildren = streamChildren.filter { $0.streamParent.remoteId == streamID }
-        guard let streamChild = matchingStreamChildren.first else {
+        let matchingStreamItemPointerren = streamItemPointers.filter { $0.streamParent.remoteId == streamID }
+        guard let streamChild = matchingStreamItemPointerren.first else {
             return nil
         }
         return streamChild.tracking
@@ -28,11 +28,11 @@ extension VSequence {
     /// `VStream` instance with a valid `remoteId` for the sequence, please use `trackingData(streamID:)`
     /// instead of this method.
     func trackingWithoutStreamData() -> VTracking? {
-        guard let streamChildren = self.valueForKey("streamChildrenInSream") as? Set<VStreamChild> else {
+        guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
             return nil
         }
-        let matchingStreamChildren = streamChildren .filter { $0.streamParent == nil && $0.marqueeParent == nil }
-        guard let streamChild = matchingStreamChildren.first else {
+        let matchingStreamItemPointerren = streamItemPointers .filter { $0.streamParent == nil && $0.marqueeParent == nil }
+        guard let streamChild = matchingStreamItemPointerren.first else {
             return nil
         }
         return streamChild.tracking

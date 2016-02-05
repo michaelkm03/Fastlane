@@ -10,13 +10,13 @@ import Foundation
 
 extension VStream {
     
-    /// Maps the ordered set of VStreamChild into an array of VStreamItem
+    /// Maps the ordered set of VStreamItemPointer into an array of VStreamItem
     var streamItems: [VStreamItem] {
-        return self.streamChildren.flatMap { ($0 as? VStreamChild)?.streamItem }
+        return self.streamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
     
-    /// Maps the ordered set of VStreamChild into an array of VStreamItem
+    /// Maps the ordered set of VStreamItemPointer into an array of VStreamItem
     var marqueeItems: [VStreamItem] {
-        return self.marqueeChildren.flatMap { ($0 as? VStreamChild)?.streamItem }
+        return self.marqueeItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
 }

@@ -37,9 +37,9 @@ extension VStream: PersistenceParsable {
         )
         for marqueeItem in marqueeItems {
             let uniqueInfo = [ "marqueeParent" : self, "streamItem" : marqueeItem]
-            let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
+            let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
             child.displayOrder = displayOrder++
-            self.v_addObject( child, to: "marqueeChildren" )
+            self.v_addObject( child, to: "marqueeItemPointers" )
         }
         
         // Parse out the streamItems
@@ -51,8 +51,8 @@ extension VStream: PersistenceParsable {
         )
         for streamItem in streamItems {
             let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
-            let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
-            self.v_addObject( child, to: "streamChildren" )
+            let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
+            self.v_addObject( child, to: "streamItemPointers" )
         }
     }
     

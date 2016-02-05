@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VStreamChild;
+@class VStreamItemPointer;
 
 @interface VTracking : NSManagedObject
 
@@ -25,6 +25,6 @@
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id viewStart;
 @property (nonatomic, retain) id share;
-@property (nonatomic, retain) VStreamChild *streamChild;
+@property (nonatomic, retain) VStreamItemPointer *streamChild;
 
 @end

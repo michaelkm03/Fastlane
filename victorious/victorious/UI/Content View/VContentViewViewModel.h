@@ -136,7 +136,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 
 /**
  Contains tracking data necessary any of the lifecycle or interation events that occur
- during the lifetime of this instance.  Tracking ultimate comes from VStreamChild objects,
+ during the lifetime of this instance.  Tracking ultimate comes from VStreamItemPointer objects,
  so this property must be set from the stream which the sequence came.
  */
 @property (nonatomic, strong) VTracking *trackingData;

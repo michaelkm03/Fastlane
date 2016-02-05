@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VEditorializationItem, VStream, VImageAsset, VAsset, VStreamChild;
+@class VEditorializationItem, VStream, VImageAsset, VAsset, VStreamItemPointer;
 
 NS_ASSUME_NONNULL_BEGIN
 

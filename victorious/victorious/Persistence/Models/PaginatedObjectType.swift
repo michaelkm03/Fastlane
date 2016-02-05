@@ -21,7 +21,7 @@ import Foundation
 
 extension VComment: PaginatedObjectType {}
 extension VMessage: PaginatedObjectType {}
-extension VStreamChild: PaginatedObjectType {}
+extension VStreamItemPointer: PaginatedObjectType {}
 extension VConversation: PaginatedObjectType {}
 extension VFollowedHashtag: PaginatedObjectType {}
 extension VFollowedUser: PaginatedObjectType {}
