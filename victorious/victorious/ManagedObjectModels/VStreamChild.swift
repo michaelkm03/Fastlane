@@ -9,6 +9,12 @@
 import Foundation
 import CoreData
 
+func ==(lhs: VStreamChild, rhs: VStreamChild) -> Bool {
+    return lhs.streamItem == rhs.streamItem
+        && lhs.marqueeParent == rhs.marqueeParent
+        && lhs.streamParent == rhs.streamParent
+}
+
 class VStreamChild: NSManagedObject {
     
     @NSManaged var streamItem: VStreamItem
@@ -16,5 +22,4 @@ class VStreamChild: NSManagedObject {
     @NSManaged var marqueeParent: VStream
     @NSManaged var displayOrder: NSNumber!
     @NSManaged var tracking: VTracking?
-    @NSManaged var streamId: String?
 }
