@@ -22,7 +22,6 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @property (nonatomic, readonly, strong) UILabel *label;
 
-
 /**
  *  An attributed string that the label will display.
  */
