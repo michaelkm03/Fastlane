@@ -117,11 +117,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewDidLoad];
 
-    self.streamDataSource.hasHeaderCell = YES;
     [self initializeProfileHeader];
-
-    [self.collectionView registerClass:[VProfileHeaderCell class]
-            forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -152,6 +148,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.profileHeaderViewController != nil )
     {
         self.profileHeaderViewController.user = self.user;
+        self.streamDataSource.hasHeaderCell = YES;
         [self.collectionView registerClass:[VProfileHeaderCell class]
                 forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
         
@@ -165,9 +162,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.view.backgroundColor = backgroundColor;
     
     if ( self.streamDataSource.count > 0 )
     {
