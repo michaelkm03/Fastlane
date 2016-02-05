@@ -22,7 +22,7 @@ public struct HashtagShelf: StreamItemType {
     public let type: StreamContentType?
     public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
-    public let previewTextPostAsset: String?
+    public let previewTextPostAsset: TextPostAsset?
     public let previewImageAssets: [ImageAsset]?
     public let releasedAt: NSDate?
 }
