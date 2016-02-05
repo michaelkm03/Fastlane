@@ -118,7 +118,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
 
     self.streamDataSource.hasHeaderCell = YES;
-    [self updateProfileHeader];
+    [self initializeProfileHeader];
 
     [self.collectionView registerClass:[VProfileHeaderCell class]
             forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
@@ -128,7 +128,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 
-- (void)updateProfileHeader
+- (void)initializeProfileHeader
 {
     if ( self.user == nil )
     {
@@ -152,7 +152,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.profileHeaderViewController != nil )
     {
         self.profileHeaderViewController.user = self.user;
-        self.streamDataSource.hasHeaderCell = YES;
         [self.collectionView registerClass:[VProfileHeaderCell class]
                 forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
         
@@ -306,11 +305,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
     [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
-         [self updateUserFollowingRelationship];
+         [self updateProfileHeaderState];
      }];
 }
 
-- (void)updateUserFollowingRelationship
+- (void)updateProfileHeaderState
 {
     if ( self.user.isCurrentUser )
     {
@@ -376,7 +375,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self shrinkHeaderAnimated:YES];
     }
-    [self updateUserFollowingRelationship];
 }
 
 #pragma mark - Superclass Overrides
@@ -425,7 +423,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else if ( [VCurrentUser user] != nil )
     {
-        [self updateUserFollowingRelationship];
+        [self updateProfileHeaderState];
     }
 }
 
@@ -472,7 +470,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change) {
-                              [welf updateUserFollowingRelationship];
+                              [welf updateProfileHeaderState];
                           }];
     
     NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
@@ -489,7 +487,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
-    [self updateUserFollowingRelationship];
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
@@ -503,7 +500,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self shrinkHeaderAnimated:YES];
     }
-    [self updateUserFollowingRelationship];
 }
 
 - (NSString *)title
