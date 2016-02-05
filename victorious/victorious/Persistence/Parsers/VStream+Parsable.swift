@@ -26,7 +26,7 @@ extension VStream: PersistenceParsable {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-            })
+                })
         }
         
         // Parse out the marquee items
@@ -68,13 +68,17 @@ extension VStream: PersistenceParsable {
             switch item.type {
                 
             case .Some(.Sequence):
-                guard let sequence = item as? Sequence else { return nil }
+                guard let sequence = item as? Sequence else {
+                    return nil
+                }
                 let persistentSequence = context.v_findOrCreateObject( uniqueElements ) as VSequence
                 persistentSequence.populate( fromSourceModel: (sequence, parentStreamID) )
                 return persistentSequence
                 
             case .Some(.Stream):
-                guard let stream = item as? Stream else { return nil }
+                guard let stream = item as? Stream else {
+                    return nil
+                }
                 let persistentStream = context.v_findOrCreateObject(uniqueElements) as VStream
                 persistentStream.populate( fromSourceModel: stream )
                 return persistentStream
@@ -89,29 +93,37 @@ extension VStream: PersistenceParsable {
     }
     
     private static func shelf(fromStreamItem item: StreamItemType, withUniqueIdentifier identifier: [String : AnyObject], context: NSManagedObjectContext) -> Shelf? {
-    
+        
         switch item.subtype {
             
         case .Some(.User):
-            guard let userShelf = item as? VictoriousIOSSDK.UserShelf else { return nil }
+            guard let userShelf = item as? VictoriousIOSSDK.UserShelf else {
+                return nil
+            }
             let persistentUserShelf = context.v_findOrCreateObject(identifier) as UserShelf
             persistentUserShelf.populate(fromSourceShelf: userShelf)
             return persistentUserShelf
             
         case .Some(.Hashtag):
-            guard let hashtagShelf = item as? VictoriousIOSSDK.HashtagShelf else { return nil }
+            guard let hashtagShelf = item as? VictoriousIOSSDK.HashtagShelf else {
+                return nil
+            }
             let persistentHashtagShelf = context.v_findOrCreateObject(identifier) as HashtagShelf
             persistentHashtagShelf.populate(fromSourceShelf: hashtagShelf)
             return persistentHashtagShelf
             
         case .Some(.Playlist):
-            guard let listShelf = item as? VictoriousIOSSDK.ListShelf else { return nil }
+            guard let listShelf = item as? VictoriousIOSSDK.ListShelf else {
+                return nil
+            }
             let persistentListShelf = context.v_findOrCreateObject(identifier) as ListShelf
             persistentListShelf.populate(fromSourceShelf: listShelf)
             return persistentListShelf
             
         default:
-            guard let shelf = item as? VictoriousIOSSDK.Shelf else { return nil }
+            guard let shelf = item as? VictoriousIOSSDK.Shelf else {
+                return nil
+            }
             let persistentShelf = context.v_findOrCreateObject(identifier) as Shelf
             persistentShelf.populate(fromSourceShelf: shelf)
             return persistentShelf

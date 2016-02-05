@@ -44,7 +44,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 // get the corresponding persistent stream items from the stream
                 let persistentStreamItems = stream.streamItemPointers(forStreamItemIDs: streamIDs)
                 
-                // Assign display order to stream children that were parsed in `populate` method above
+                // Assign display order to stream item pointers that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart
                 for object in persistentStreamItems {
                     guard let child = object as? VStreamItemPointer else {

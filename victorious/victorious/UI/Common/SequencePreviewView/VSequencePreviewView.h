@@ -63,9 +63,8 @@
 - (void)updateBackgroundColorAnimated:(BOOL)animated;
 
 /**
- Contains tracking data necessary any of the lifecycle or interation events that occur
- during the lifetime of this instance.  Tracking ultimate comes from VStreamItemPointer objects,
- so this property must be set from the stream which the sequence came.
+ Stores tracking data necessary to track events that occur during the receiver's lifecycle.
+ To enable tracking, it is required that this property be set by calling code.
  */
 @property (nonatomic, strong) VTracking *trackingData;
 

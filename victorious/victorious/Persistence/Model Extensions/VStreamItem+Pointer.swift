@@ -8,8 +8,8 @@
 
 import Foundation
 
-/// The extensions in this file provide helpers for the necessarily
-/// complex relationship between VStream, VStreamItem and VStreamItemPointer.
+/// The extensions in this file provide helpers for the necessarily complex
+/// relationship between VStream, VStreamItem and VStreamItemPointer.
 
 extension VStream {
     
@@ -38,23 +38,28 @@ extension VStream {
 
 extension VStreamItem {
     
-    /// Provides a `VTracking` object most appropriate sequence in the context
-    /// of the provided stream. If the caller legimiately has no reference to a
-    /// stream or streamID (such as a deeplinked sequence or the lightweight content
-    /// view sequence), use `trackingForStandloneSequence` instead.
+    /// Provides a `VStreamItemPointer` for the receiver in the stream that corresponds
+    /// to the provided `streamID`.  If the caller legimiately has no reference
+    /// to a stream or streamID (such as a deeplinked sequence or the lightweight
+    /// content view sequence), use `streamItemPointerForStandloneStreamItem` instead.
     func streamItemPointer(streamID streamID: String) -> VStreamItemPointer? {
         return self.streamItemPointer(forStreamID: streamID)
     }
     
-    /// Provides a `VTracking` for standalone sequences, i.e. those that did
-    /// not come from a stream or a marquee.  If the caller has a reference to
-    /// a stream or streamID, use `trackingData(streamID:)` to retrieve the most
-    /// appropriate VTracking instance.
+    /// Provides a `VStreamItemPointer` or the receiver as a stand alone stream item,
+    // i.e. one that did not come from a stream or a marquee.  If the caller has a reference
+    /// to a stream or streamID, use `streamItemPointer(streamID:)` to retrieve the most
+    /// appropriate `VStreamItemPointer` instance.
     func streamItemPointerForStandloneStreamItem() -> VStreamItemPointer? {
         return self.streamItemPointer(forStreamID: nil)
     }
     
     private func streamItemPointer(forStreamID streamID: String?) -> VStreamItemPointer? {
+        // By using `valueForKey` with `streamItemPointersInSream` as a string accesses
+        // the corresponding attributes in CoreData.  The reason for this is to prevent 
+        // `streamItemPointersInSream` from being misused if exposed as a property in code
+        // on `VStreamItem`.  The functions of this extension should be the only available
+        // method for retriving stream item pointers to ensure that it is done correctly.
         guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
             return nil
         }

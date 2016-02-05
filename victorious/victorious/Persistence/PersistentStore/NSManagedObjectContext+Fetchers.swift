@@ -97,7 +97,7 @@ extension NSManagedObjectContext {
     func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName)
-        request.returnsObjectsAsFaults = true
+        request.returnsObjectsAsFaults = false
         
         if let queryDictionary = queryDictionary {
             let arguments = NSMutableArray()
