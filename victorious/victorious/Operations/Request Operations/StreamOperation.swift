@@ -37,26 +37,21 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             let stream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
             stream.populate(fromSourceModel: sourceStream)
             
-            guard let sourceStreamItems = sourceStream.items else {
-                self.results = []
-                completion()
-                return
-            }
-            
-            // Assign display order to stream children that were parsed in `populate` method above
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            let predicate = NSPredicate() { (object, bindings) in
-                guard let streamChild = object as? VStreamItemPointer else {
-                    return false
+            // If there are any stream items returned from the network:
+            if let streamIDs = sourceStream.items?.flatMap({ $0.streamItemID }) where !streamIDs.isEmpty {
+                
+                // Using a list of streamIDs that we've just received from the network,
+                // get the corresponding persistent stream items from the stream
+                let persistentStreamItems = stream.streamPointers(forStreamItemIDs: streamIDs)
+                
+                // Assign display order to stream children that were parsed in `populate` method above
+                var displayOrder = self.request.paginator.displayOrderCounterStart
+                for object in persistentStreamItems {
+                    guard let child = object as? VStreamItemPointer else {
+                        continue
+                    }
+                    child.displayOrder = displayOrder++
                 }
-                return sourceStreamItems.contains() { streamChild.streamItem.remoteId == $0.streamItemID }
-            }
-            let parsedStreamItemPointerren = stream.streamItemPointers.filteredOrderedSetUsingPredicate( predicate )
-            for object in parsedStreamItemPointerren {
-                guard let child = object as? VStreamItemPointer else {
-                    continue
-                }
-                child.displayOrder = displayOrder++
             }
             
             context.v_save()
@@ -73,7 +68,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             
             let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
-            let paginationPredicate = self.request.paginator.paginatorPredicate()
+            let paginationPredicate = self.request.paginator.paginatorPredicate
             fetchRequest.predicate = paginationPredicate + streamItemPredicate
             
             let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]
@@ -98,7 +93,7 @@ class StreamFetcherOperation: FetcherOperation {
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             
             let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
-            let paginationPredicate = self.paginator.paginatorPredicate()
+            let paginationPredicate = self.paginator.paginatorPredicate
             fetchRequest.predicate = paginationPredicate + streamItemPredicate
             
             let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]

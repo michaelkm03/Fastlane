@@ -18,8 +18,13 @@ public extension UICollectionView {
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
-            UIView.performWithoutAnimation() {
+            let performChangesBlock = {
                 self.reloadSections( NSIndexSet(index: section) )
+            }
+            if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {
+                performChangesBlock()
+            } else {
+                UIView.performWithoutAnimation(performChangesBlock)
             }
             return
         }

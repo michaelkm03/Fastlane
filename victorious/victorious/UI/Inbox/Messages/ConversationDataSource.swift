@@ -20,27 +20,61 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return dataSource
     }()
     
-    let dependencyManager: VDependencyManager
-    let conversation: VConversation
-    
-    var delegate: PaginatedDataSourceDelegate?
-    
-    init( conversation: VConversation, dependencyManager: VDependencyManager ) {
-        self.dependencyManager = dependencyManager
-        self.conversation = conversation
-    }
-    
     private(set) var visibleItems = NSOrderedSet() {
         didSet {
             self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
         }
     }
     
+    func isLoading() -> Bool {
+        return self.paginatedDataSource.isLoading()
+    }
+    
+    var delegate: PaginatedDataSourceDelegate?
+    
     var state: DataSourceState {
         return self.paginatedDataSource.state
     }
     
-    func loadMessages( pageType pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func removeDeletedItems() {
+        self.paginatedDataSource.removeDeletedItems()
+    }
+    
+    private var hasLoadedOnce: Bool = false
+    
+    let dependencyManager: VDependencyManager
+    let conversation: VConversation
+    
+    init( conversation: VConversation, dependencyManager: VDependencyManager ) {
+        self.dependencyManager = dependencyManager
+        self.conversation = conversation
+        super.init()
+        
+        self.KVOController.observe( conversation,
+            keyPath: "messages",
+            options: [],
+            action: Selector("onConversationChanged:")
+        )
+    }
+    
+    func onConversationChanged( change: [NSObject : AnyObject]? ) {
+        guard let userID = self.conversation.user?.remoteId?.integerValue else {
+            return
+        }
+        
+        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
+            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
+                return
+        }
+        self.paginatedDataSource.refreshLocal(
+            createOperation: {
+                return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
+            },
+            completion: nil
+        )
+    }
+    
+    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
         guard let conversationID = self.conversation.remoteId?.integerValue else {
             return
         }
@@ -49,30 +83,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
                 return ConversationOperation(conversationID: conversationID)
             },
             completion: { (operation, error) in
-                completion?(error)
-                
-                // Start observing after we've loaded once
-                self.KVOController.unobserve( self.conversation )
-                self.KVOController.observe( self.conversation,
-                    keyPath: "messages",
-                    options: [.Initial],
-                    action: Selector("onMessagesChanged:")
-                )
+                self.hasLoadedOnce = true
+                completion?(operation?.results, error)
             }
-        )
-    }
-    
-    func onMessagesChanged( change: [NSObject : AnyObject]? ) {
-        guard let userID = self.conversation.user?.remoteId.integerValue,
-            let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind == .Setting else {
-                return
-        }
-        self.paginatedDataSource.refreshLocal(
-            createOperation: {
-                return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
-            },
-            completion: nil
         )
     }
     
@@ -86,23 +99,10 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         }
     }
     
-    private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
-        cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
-        cell.messageTextAndMediaView?.text = message.text
-        cell.messageTextAndMediaView?.message = message
-        cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
-        cell.profileImageOnRight = message.sender?.isCurrentUser() ?? false
-        cell.selectionStyle = .None
-        
-        if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
-            cell.profileImageView?.setProfileImageURL(imageURL)
-        }
-    }
-    
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
+        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder?.compare($1.displayOrder) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
@@ -128,5 +128,20 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         let message = visibleItems[ indexPath.row ] as! VMessage
         decorateCell( cell, withMessage: message )
         return cell
+    }
+    
+    // MARK: - Private helpers
+    
+    private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
+        cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
+        cell.messageTextAndMediaView?.text = message.text
+        cell.messageTextAndMediaView?.message = message
+        cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
+        cell.profileImageOnRight = message.sender?.isCurrentUser() ?? false
+        cell.selectionStyle = .None
+        
+        if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
+            cell.profileImageView?.setProfileImageURL(imageURL)
+        }
     }
 }

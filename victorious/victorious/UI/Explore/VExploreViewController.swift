@@ -642,22 +642,3 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.reloadData()
     }
 }
-
-private extension VDependencyManager {
-    
-    var textFont: UIFont {
-        return fontForKey(VDependencyManagerLabel3FontKey)
-    }
-    
-    var textColor: UIColor {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
-    }
-    
-    var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerSecondaryAccentColorKey)
-    }
-    
-    var placeHolderColor: UIColor {
-        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
-    }
-}

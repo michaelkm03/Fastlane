@@ -10,9 +10,31 @@ import Foundation
 
 extension VConversationViewController: PaginatedDataSourceDelegate {
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {        
-        //self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue)
-        self.tableView.reloadData()
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        if self.hasLoadedOnce {
+            
+            if self.isLoadingNextPage {
+                self.reloadForPreviousPage()
+          
+            } else {
+                // Some tricky stuff to make sure the table view's content size is updated enough
+                // so that the scroll to bottom actually works
+                CATransaction.begin()
+                CATransaction.setCompletionBlock() {
+                    dispatch_after(0.0) {
+                        self.scrollToBottomAnimated(true)
+                    }
+                }
+                self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+                CATransaction.commit()
+            }
+   
+        } else {
+            self.tableView.reloadData()
+            self.scrollToBottomAnimated(false)
+        }
+        self.hasLoadedOnce = true
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
@@ -51,9 +73,18 @@ extension VConversationViewController {
     
     // MARK: - Managing scroll position
     
-    func maintainVisualScrollFromOffset(offset: CGPoint, contentSize: CGSize) {
+    func reloadForPreviousPage() {
+        
+        // Because we're scrolling up in this view controller, we need to do a bit of
+        // careful reloading and scroll position adjustment when loading next pages
+        let oldContentSize = self.tableView.contentSize
+        let oldOffset = self.tableView.contentOffset
+        
+        //Must call reloadData() to get contentSize to update instantly
+        self.tableView.reloadData()
+        
         let newContentSize = self.tableView.contentSize
-        let newOffset = CGPoint(x: 0, y: offset.y + (newContentSize.height - contentSize.height) )
+        let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
         self.tableView.setContentOffset(newOffset, animated:false)
     }
     
@@ -82,7 +113,7 @@ extension VConversationViewController {
     func onUpdate() {
         self.dataSource.refreshRemote() { (results, error) in
             if !results.isEmpty {
-                self.scrollToBottomAnimated( self.viewHasAppeared )
+                self.scrollToBottomAnimated( true )
             }
         }
     }

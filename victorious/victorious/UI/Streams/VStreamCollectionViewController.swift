@@ -1,5 +1,5 @@
 //
-//  VStreamCollectionViewController+PaginatedDataSourceDelegate.swift
+//  VStreamCollectionViewController.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/11/16.
@@ -13,21 +13,21 @@ extension VStreamCollectionViewController {
     // MARK: - PaginatedDataSourceDelegate
 
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        // TODO: Let's try to use the commented out version instead of reloadData
-        
-//        guard let contentSection = self.streamDataSource?.sectionIndexForContent()
-//            where contentSection < self.collectionView.numberOfSections() else {
-//                return
-//        }
-//        self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue)
-        collectionView.reloadData()
+        guard let contentSection = self.streamDataSource?.sectionIndexForContent()
+            where contentSection < self.collectionView.numberOfSections() else {
+                return
+        }
+        self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue, animated: true)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        self.updateCollectionView()
+    }
+    
+    func updateCollectionView() {
         
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
-        
-        switch newState {
+        switch self.streamDataSource?.paginatedDataSource.state ?? .Cleared {
             
         case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
             guard let collectionView = self.collectionView else {

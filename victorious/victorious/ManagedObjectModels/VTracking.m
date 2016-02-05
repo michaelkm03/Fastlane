@@ -24,6 +24,5 @@
 @dynamic videoStall;
 @dynamic viewStart;
 @dynamic share;
-@dynamic streamChild;
 
 @end

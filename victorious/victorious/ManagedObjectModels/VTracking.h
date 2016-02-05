@@ -25,6 +25,5 @@
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id viewStart;
 @property (nonatomic, retain) id share;
-@property (nonatomic, retain) VStreamItemPointer *streamChild;
 
 @end

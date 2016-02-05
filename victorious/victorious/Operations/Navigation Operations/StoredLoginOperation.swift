@@ -21,10 +21,12 @@ class StoredLoginOperation: Operation {
         }
         
         let defaults = NSUserDefaults.standardUserDefaults()
+        let accountIdentifier: String? = defaults.stringForKey(kAccountIdentifierDefaultsKey)
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
             
+            // First, try to use a valid stored token to bypass login
             let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
                 let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
                 user.loginType = info.lastLoginType.rawValue
@@ -38,23 +40,30 @@ class StoredLoginOperation: Operation {
             user.setAsCurrentUser()
             
             PreloadUserInfoOperation().queueAfter(self)
-      
+            
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
-            let accountIdentifier = defaults.stringForKey(kAccountIdentifierDefaultsKey),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
                 
+                // Next, if login with a stored token failed, use any stored credentials to login automatically
                 let accountCreateRequest = AccountCreateRequest(credentials: credentials)
                 let operation = AccountCreateOperation(
                     request: accountCreateRequest,
                     loginType: loginType,
                     accountIdentifier: accountIdentifier
                 )
-                operation.queueAfter(self)
+                
+                // We want to queue AccountCreateOperation next and to transfer all of
+                // self's dependencies to it--bassically inserting a new operation into
+                // the dependency chain.
+                let dependentOperations = dependentOperationsInQueues( [Operation.sharedQueue, NSOperationQueue.mainQueue()] )
+                for dependentOperation in dependentOperations {
+                    dependentOperation.addDependency( operation )
+                }
+                operation.queue()
       
         } else {
-            // Nothing to do here without a stored token or credentials to log in.
-            // Subsequent operations in the queue will handle logging in the user
-            // after this operation completes without creating a valid user object.
+            // Or finally, just let this operation finish up without doing anthing.
+            // Subsequent operations in the queue will handle logging in the user.
         }
     }
 }

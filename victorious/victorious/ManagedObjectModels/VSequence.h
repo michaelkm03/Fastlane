@@ -42,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSSet * likers;
 @property (nonatomic, retain, nullable) NSOrderedSet * nodes;
 @property (nonatomic, retain, nullable) VUser * parentUser;
-@property (nonatomic, retain, nullable) NSSet * pollResults;
 @property (nonatomic, retain, nullable) VUser * recentUser;
 @property (nonatomic, retain) NSOrderedSet * reposters;
 @property (nonatomic, retain) VUser * user;
@@ -50,7 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
 @property (nonatomic, retain) NSNumber * isGifStyle;
 @property (nonatomic, retain, nullable) NSString * trendingTopicName;
-@property (nonatomic, retain) NSNumber *markForDeletion;
 
 @end
 

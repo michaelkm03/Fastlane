@@ -17,29 +17,30 @@ public extension UITableView {
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
         
-        guard newValue.count != 0 && oldValue.count != 0 else {
-            UIView.performWithoutAnimation() {
+        guard !(newValue.count == 0 || oldValue.count == 0) else {
+            let performChangesBlock = {
+                self.beginUpdates()
                 self.reloadSections( NSIndexSet(index: section), withRowAnimation: .None)
+                self.endUpdates()
+            }
+            if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {
+                performChangesBlock()
+            } else {
+                UIView.performWithoutAnimation(performChangesBlock)
             }
             return
         }
         
         var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue  {
-            let newIndex = newValue.indexOfObject( item )
-            if oldValue.indexOfObject(item) == newIndex {
-                continue
-            }
-            insertedIndexPaths.append( NSIndexPath(forRow: newIndex, inSection: section) )
+        for item in newValue where !oldValue.containsObject( item ) {
+            let index = newValue.indexOfObject( item )
+            insertedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
         var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue {
-            let oldIndex = oldValue.indexOfObject( item )
-            if oldIndex == newValue.indexOfObject(item) {
-                continue
-            }
-            deletedIndexPaths.append( NSIndexPath(forRow: oldIndex, inSection: section) )
+        for item in oldValue where !newValue.containsObject( item ) {
+            let index = oldValue.indexOfObject( item )
+            deletedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
         let performChangesBlock = {

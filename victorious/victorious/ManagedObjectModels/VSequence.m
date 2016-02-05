@@ -43,7 +43,6 @@
 @dynamic likers;
 @dynamic nodes;
 @dynamic parentUser;
-@dynamic pollResults;
 @dynamic recentUser;
 @dynamic reposters;
 @dynamic user;
@@ -51,6 +50,5 @@
 @dynamic recentComments;
 @dynamic isGifStyle;
 @dynamic trendingTopicName;
-@dynamic markForDeletion;
 
 @end

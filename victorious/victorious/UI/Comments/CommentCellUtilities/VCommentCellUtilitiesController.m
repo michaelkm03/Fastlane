@@ -16,8 +16,6 @@
 #import "VSequencePermissions.h"
 #import "victorious-Swift.h"
 
-#import "victorious-Swift.h"
-
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 @interface VCommentCellUtilitiesController()
@@ -86,20 +84,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];
 }
 
-#pragma mark - Server actions
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void (^)(UIAlertAction *))handler
-{
-    UIViewController *viewControllerForAlerts = [self.delegate viewControllerForAlerts];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                              style:UIAlertActionStyleDefault
-                                            handler:handler]];
-    [viewControllerForAlerts presentViewController:alert animated:YES completion:nil];
-}
-
 - (BOOL)commentIsFlaggable:(VComment *)comment
 {
     return ![comment.userId isEqualToNumber:[VCurrentUser user].remoteId];;
@@ -113,19 +97,18 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     
     switch ( config.type )
     {
-        case VCommentCellUtilityTypeFlag:{
-            [self flagComment:self.comment];
-            [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                             message:NSLocalizedString(@"ReportCommentMessage", @"")
-                             handler:nil];
+        case VCommentCellUtilityTypeFlag: {
+            [self.delegate flagComment:self.comment];
             break;
         }
         case VCommentCellUtilityTypeEdit:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditComment];
             [self.delegate editComment:self.comment];
             break;
-        case VCommentCellUtilityTypeDelete:
-            [self deleteComment:self.comment];
+            
+        case VCommentCellUtilityTypeDelete: {
+            [self.delegate deleteComment:self.comment];
+        }
             break;
         case VCommentCellUtilityTypeReply:
             [self.delegate replyToComment:self.comment];

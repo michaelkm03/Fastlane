@@ -30,6 +30,7 @@
 #import "victorious-swift.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
+static const CGFloat kActivityFooterHeight = 50.0f;
 
 @interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate>
 
@@ -94,8 +95,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.scrollPaginator.delegate = self;
     
     self.dataSource = [[ConversationListDataSource alloc] initWithDependencyManager:self.dependencyManager];
-    [self.dataSource registerCells:self.tableView];
     self.dataSource.delegate = self;
+    [self.dataSource registerCells:self.tableView];
     self.tableView.dataSource = self.dataSource;
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
@@ -113,7 +114,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
-    [self.dataSource refreshLocal];
+    [self.refreshControl beginRefreshing];
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,17 +124,19 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
-    [self.tableView setContentOffset:CGPointZero];
 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
-    
-    // Reload local results for any changes (virtually immediate)
-    [self.dataSource refreshLocal];
-    
-    // Reload first page from network (some network latency)
-    [self refresh];
+    if ( self.hasLoadedOnce )
+    {
+        // This will do a fast local refresh to update the order of conversations
+        // as well as visible `lastMessageText`.
+        [self.dataSource refreshLocalWithCompletion:^(NSArray *_Nonnull results)
+         {
+             [self.tableView reloadData];
+         }];
+    }
     
     [self updateTableView];
 }
@@ -165,6 +169,15 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (void)refresh
+{
+    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
+     {
+         [self.refreshControl endRefreshing];
+         [self updateTableView];
+     }];
 }
 
 #pragma mark - Properties
@@ -262,6 +275,18 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
+- (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
+{
+    VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+    NSInteger conversationID = conversation.remoteId.integerValue;
+    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+     {
+         [self.dataSource removeDeletedItems];
+         [self removeCachedViewControllerForUser:conversation.user];
+     }];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView
@@ -271,13 +296,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
                                                                             title:NSLocalizedString(@"Delete", nil)
                                                                           handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull indexPath)
                                           {
-                                              VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-                                              conversation.markedForDeletion = YES;
-                                              [self.dataSource refreshLocal];
-                                              [self removeCachedViewControllerForUser:conversation.user];
-                                              RequestOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
-                                              [operation queueOn:[operation defaultQueue]
-                                                 completionBlock:nil];
+                                              [self deleteConversationAtIndexPath:indexPath];
                                           }];
     return @[deleteAction];
 }
@@ -332,15 +351,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
 }
 
-- (void)refresh
-{
-    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
-     {
-         [self.refreshControl endRefreshing];
-         [self updateTableView];
-     }];
-}
-
 - (IBAction)refresh:(UIRefreshControl *)refreshControl
 {
     [self refresh];
@@ -368,7 +378,16 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)shouldLoadNextPage
 {
-    [self.dataSource loadConversations:VPageTypeNext completion:nil];
+    if ( [self.dataSource isLoading] )
+    {
+        return;
+    }
+    
+    self.isLoadingNextPage = YES;
+    [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *_Nullable error)
+     {
+         self.isLoadingNextPage = NO;
+     }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

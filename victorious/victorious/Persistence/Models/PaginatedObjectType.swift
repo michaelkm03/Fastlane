@@ -27,7 +27,3 @@ extension VFollowedHashtag: PaginatedObjectType {}
 extension VFollowedUser: PaginatedObjectType {}
 extension VNotification: PaginatedObjectType {}
 extension VSequenceLiker: PaginatedObjectType {}
-
-func ==(lhs: VUser, rhs: VUser) -> Bool {
-    return lhs.remoteId == rhs.remoteId
-}

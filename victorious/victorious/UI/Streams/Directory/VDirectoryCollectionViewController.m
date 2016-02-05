@@ -409,8 +409,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
-    NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
+    [self.collectionView reloadData];
 }
 
 @end

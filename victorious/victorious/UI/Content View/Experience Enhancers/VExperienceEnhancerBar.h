@@ -42,7 +42,6 @@ extern const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 @property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter);
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 - (void)reloadData;
 
 @end

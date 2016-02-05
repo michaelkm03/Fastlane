@@ -9,8 +9,9 @@
 #import "VKeyboardBarContainerViewController.h"
 #import "VConversationViewController.h"
 #import "VConstants.h"
-#import "VInlineSearchTableViewController.h"
+#import "VStreamItem+Fetcher.h"
 
+static const CGFloat kSearchTableDesiredMinimumHeight = 100;
 static const CGFloat kKeyboardBarInitialHeight = 55.0f;
 static const CGFloat kConversationTableViewInitialHeight = 44.0f;
 

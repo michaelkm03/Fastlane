@@ -103,7 +103,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             }
             
             let currentLevel = alert.parameters.userFanLoyalty.level
-            badgeView?.levelNumberString = String(currentLevel - 1)
+            badgeView?.levelNumberString = String(currentLevel)
             titleLabel.text = alert.parameters.title
             descriptionLabel.text = alert.parameters.description
             icons = alert.parameters.icons
@@ -185,26 +185,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         if let currentUser = VCurrentUser.user() {
             currentUser.level = alert.parameters.userFanLoyalty.level
             currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
-        }
-    }
-    
-    private func upgradeBadgeNumber() {
-        UIView.animateWithDuration(0.1,
-            delay: 0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.4,
-            options: [],
-            animations: {
-                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) in
-                self.badgeView?.resetProgress(true)
-                UIView.animateWithDuration(0.1,
-                    delay: 0,
-                    options: .CurveLinear,
-                    animations: {
-                        self.badgeView?.transform = CGAffineTransformIdentity
-                    },
-                    completion: nil)
         }
     }
     

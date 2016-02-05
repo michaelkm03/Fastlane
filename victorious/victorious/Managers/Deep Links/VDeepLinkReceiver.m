@@ -153,7 +153,7 @@
                 }
                 else
                 {
-                    [self.scaffold navigateToDestination:destination animated:NO];
+                    [self.scaffold navigateToDestination:destination animated:YES];
                 }
                 parentDestination = destination;
             }

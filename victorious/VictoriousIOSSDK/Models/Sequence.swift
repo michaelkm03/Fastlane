@@ -20,6 +20,7 @@ public struct Sequence: StreamItemType, JSONDeseriealizable {
     public let likeCount: Int?
     public let memeCount: Int?
     public let repostCount: Int?
+    public let voteTypes: [VoteResult]?
     public let hasReposted: Bool?
     public let isComplete: Bool?
     public let isLikedByMainUser: Bool?
@@ -85,6 +86,7 @@ extension Sequence {
         memeCount               = json["sequence_counts"]["memes"].int
         repostCount             = json["sequence_counts"]["reposts"].int
         likeCount               = json["sequence_counts"]["likes"].int
+        voteTypes               = json["sequence_counts"]["votetypes"].array?.flatMap { VoteResult(json: $0) }
         previewType             = AssetType(rawValue:json["preview"]["type"].stringValue)
         previewData             = json["preview"]["data"].object
         hasReposted             = json["has_reposted"].bool

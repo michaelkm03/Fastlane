@@ -60,17 +60,18 @@ extension VSequence: PersistenceParsable {
                 let stream: VStream = context.v_findOrCreateObject([ "remoteId" : streamID])
                 uniqueInfo = ["streamItem" : self, "streamParent" : stream, "marqueeParent" : "nil"]
             } else {
-                // If no streaID was provided, parse out a VStreamItemPointer with no stream parents
-                // to hold it.  This will be made available for tracking code that has no stream context,
+                // If no `streaID` was provided, parse out an "empty" VStreamItemPointer--i.e. that points
+                // to a VStreamItem but has no associated stream- or marqueeParent.
+                // This is made available for tracking code that has no stream context,
                 // such as a deeplinked sequence or the lightweight content view sequence.
                 uniqueInfo = ["streamItem" : self, "streamParent" : "nil", "marqueeParent" : "nil"]
             }
-            let streamChild: VStreamItemPointer = context.v_findOrCreateObject( uniqueInfo )
-            streamChild.streamItem = self
+            let streamPointer: VStreamItemPointer = context.v_findOrCreateObject( uniqueInfo )
+            streamPointer.streamItem = self
             
             let tracking = context.v_createObject() as VTracking
             tracking.populate(fromSourceModel: trackingData)
-            streamChild.tracking = tracking
+            streamPointer.tracking = tracking
         }
 
         self.user = context.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
@@ -100,6 +101,23 @@ extension VSequence: PersistenceParsable {
                 return node
             }
             self.nodes = NSOrderedSet(array: persistentNodes)
+        }
+        
+        if let voteResults = sequence.voteTypes where !voteResults.isEmpty {
+            self.voteResults = Set<VVoteResult>(voteResults.flatMap {
+                guard let id = Int($0.voteID) else {
+                    return nil
+                }
+                let uniqueElements: [String : AnyObject] = [
+                    "sequence.remoteId" : remoteId,
+                    "remoteId" : NSNumber(integer: id)
+                ]
+                
+                let persistentVoteResult: VVoteResult = self.v_managedObjectContext.v_findOrCreateObject(uniqueElements)
+                persistentVoteResult.sequence = self
+                persistentVoteResult.count = $0.voteCount
+                return persistentVoteResult
+            })
         }
     }
 }

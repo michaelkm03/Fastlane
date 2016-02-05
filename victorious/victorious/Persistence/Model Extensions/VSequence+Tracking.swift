@@ -10,31 +10,33 @@ import Foundation
 
 extension VSequence {
     
-    /// Provides a `VTracking` object configured specific to the sequence's place in the stream
-    /// that corresponds to the provided `streamID`.
+    /// Provides a `VTracking` object most appropriate sequence in the context
+    /// of the provided stream. If the caller legimiately has no reference to a
+    /// stream or streamID (such as a deeplinked sequence or the lightweight content
+    /// view sequence), use `trackingForStandloneSequence` instead.
     func trackingData(streamID streamID: String) -> VTracking? {
         guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
             return nil
         }
         let matchingStreamItemPointerren = streamItemPointers.filter { $0.streamParent.remoteId == streamID }
-        guard let streamChild = matchingStreamItemPointerren.first else {
+        guard let streamPointer = matchingStreamItemPointerren.first else {
             return nil
         }
-        return streamChild.tracking
+        return streamPointer.tracking
     }
     
-    /// Provides a `VTracking` object for tracking code that has no stream context,
-    /// such as a deeplinked sequence or the lightweight content view sequence.  If there is
-    /// `VStream` instance with a valid `remoteId` for the sequence, please use `trackingData(streamID:)`
-    /// instead of this method.
-    func trackingWithoutStreamData() -> VTracking? {
+    /// Provides a `VTracking` for standalone sequences, i.e. those that did
+    /// not come from a stream or a marquee.  If the caller has a reference to
+    /// a stream or streamID, use `trackingData(streamID:)` to retrieve the most
+    /// appropriate VTracking instance.
+    func trackingForStandaloneSequence() -> VTracking? {
         guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
             return nil
         }
         let matchingStreamItemPointerren = streamItemPointers .filter { $0.streamParent == nil && $0.marqueeParent == nil }
-        guard let streamChild = matchingStreamItemPointerren.first else {
+        guard let streamPointer = matchingStreamItemPointerren.first else {
             return nil
         }
-        return streamChild.tracking
+        return streamPointer.tracking
     }
 }

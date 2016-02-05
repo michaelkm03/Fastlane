@@ -8,6 +8,12 @@
 
 import Foundation
 
+struct Victorious: Keyable {
+    enum Keys: String {
+        case displayOrder
+    }
+}
+
 protocol Keyable {
     typealias Keys
 }

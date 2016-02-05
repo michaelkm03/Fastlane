@@ -13,28 +13,42 @@ class FlagCommentOperation: RequestOperation {
     
     var request: FlagCommentRequest
     
-    private let commentID: Int
     private let flaggedContent = VFlaggedContent()
     
     init( commentID: Int ) {
-        self.commentID = commentID
         self.request = FlagCommentRequest(commentID: commentID)
+        super.init()
+        
+        let remoteOperation = FlagCommentRemoteOperation(commentID: commentID)
+        remoteOperation.queueAfter( self )
     }
     
     override func main() {
-        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
+        flaggedContent.addRemoteId( String(self.request.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.commentID ]
+            let uniqueElements = [ "remoteId" : self.request.commentID ]
             if let comment: VComment = context.v_findObjects( uniqueElements ).first {
+                comment.sequence?.commentCount -= 1
                 context.deleteObject( comment )
                 context.v_save()
             }
         }
-        
-        // Execute request with callbacks
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError)
+    }
+}
+
+
+class FlagCommentRemoteOperation: RequestOperation {
+    
+    var request: FlagCommentRequest
+    
+    init( commentID: Int ) {
+        self.request = FlagCommentRequest(commentID: commentID)
+    }
+    
+    override func main() {
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError)
     }
     
     private func onError( error: NSError, completion:()->() ) {
