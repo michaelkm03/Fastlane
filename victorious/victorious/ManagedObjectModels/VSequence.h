@@ -45,7 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSSet * pollResults;
 @property (nonatomic, retain, nullable) VUser * recentUser;
 @property (nonatomic, retain) NSOrderedSet * reposters;
-//@property (nonatomic, retain, nullable) VTracking * tracking;
 @property (nonatomic, retain) VUser * user;
 @property (nonatomic, retain, nullable) NSSet * voteResults;
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
@@ -53,60 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * trendingTopicName;
 @property (nonatomic, retain) NSNumber *markForDeletion;
 
-@end
-
-@interface VSequence (CoreDataGeneratedAccessors)
-
-- (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;
-- (void)insertComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeCommentsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInCommentsAtIndex:(NSUInteger)idx withObject:(VComment *)value;
-- (void)replaceCommentsAtIndexes:(NSIndexSet *)indexes withComments:(NSArray *)values;
-- (void)addCommentsObject:(VComment *)value;
-- (void)removeCommentsObject:(VComment *)value;
-- (void)addComments:(NSOrderedSet *)values;
-- (void)removeComments:(NSOrderedSet *)values;
-- (void)addLikersObject:(VUser *)value;
-- (void)removeLikersObject:(VUser *)value;
-- (void)addLikers:(NSSet *)values;
-- (void)removeLikers:(NSSet *)values;
-
-- (void)insertObject:(VNode *)value inNodesAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromNodesAtIndex:(NSUInteger)idx;
-- (void)insertNodes:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeNodesAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInNodesAtIndex:(NSUInteger)idx withObject:(VNode *)value;
-- (void)replaceNodesAtIndexes:(NSIndexSet *)indexes withNodes:(NSArray *)values;
-- (void)addNodesObject:(VNode *)value;
-- (void)removeNodesObject:(VNode *)value;
-- (void)addNodes:(NSOrderedSet *)values;
-- (void)removeNodes:(NSOrderedSet *)values;
-- (void)addPollResultsObject:(VPollResult *)value;
-- (void)removePollResultsObject:(VPollResult *)value;
-- (void)addPollResults:(NSSet *)values;
-- (void)removePollResults:(NSSet *)values;
-
-- (void)addRepostersObject:(VUser *)value;
-- (void)removeRepostersObject:(VUser *)value;
-- (void)addReposters:(NSOrderedSet *)values;
-- (void)removeReposters:(NSOrderedSet *)values;
-
-- (void)addVoteResultsObject:(VVoteResult *)value;
-- (void)removeVoteResultsObject:(VVoteResult *)value;
-- (void)addVoteResults:(NSSet *)values;
-- (void)removeVoteResults:(NSSet *)values;
-
-- (void)insertObject:(VComment *)value inRecentCommentsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromRecentCommentsAtIndex:(NSUInteger)idx;
-- (void)insertRecentComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeRecentCommentsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInRecentCommentsAtIndex:(NSUInteger)idx withObject:(VComment *)value;
-- (void)replaceRecentCommentsAtIndexes:(NSIndexSet *)indexes withRecentComments:(NSArray *)values;
-- (void)addRecentCommentsObject:(VComment *)value;
-- (void)removeRecentCommentsObject:(VComment *)value;
-- (void)addRecentComments:(NSOrderedSet *)values;
-- (void)removeRecentComments:(NSOrderedSet *)values;
 @end
 
 NS_ASSUME_NONNULL_END

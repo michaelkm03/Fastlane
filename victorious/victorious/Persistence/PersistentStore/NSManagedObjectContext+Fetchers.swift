@@ -83,8 +83,8 @@ extension NSManagedObjectContext {
         
         } else {
             let object = self.v_createObjectWithEntityName( entityName )
-            for (key, value) in queryDictionary where !(value is [String : AnyObject]) && !(key.containsString(".")) {
-                object.setValue(value, forKey: key)
+            for (key, value) in queryDictionary where (value as? String) != "nil" && !(value is [String : AnyObject]) && !(key.containsString(".")) {
+                object.setValue( value, forKey: key)
             }
             return object
         }
@@ -97,7 +97,7 @@ extension NSManagedObjectContext {
     func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName)
-        request.returnsObjectsAsFaults = false
+        request.returnsObjectsAsFaults = true
         
         if let queryDictionary = queryDictionary {
             let arguments = NSMutableArray()

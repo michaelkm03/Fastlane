@@ -601,7 +601,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             if event.fromShelf, let shelfId = event.stream.shelfId where !shelfId.characters.isEmpty {
                 streamId = shelfId
             } else {
-                streamId = event.stream.streamId
+                streamId = event.stream.remoteId
             }
             
             let context = ContentViewContext()

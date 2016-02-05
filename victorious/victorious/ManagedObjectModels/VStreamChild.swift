@@ -16,4 +16,5 @@ class VStreamChild: NSManagedObject {
     @NSManaged var marqueeParent: VStream
     @NSManaged var displayOrder: NSNumber!
     @NSManaged var tracking: VTracking?
+    @NSManaged var streamId: String?
 }

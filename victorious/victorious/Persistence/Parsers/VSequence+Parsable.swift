@@ -11,10 +11,11 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel streamItem: StreamItemType ) {
-        guard let sequence = streamItem as? Sequence else {
-            return
-        }
+    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamID: String?) ) {
+        
+        let sequence = sourceModel.sequence
+        let streamID = sourceModel.streamID
+        
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
@@ -40,40 +41,65 @@ extension VSequence: PersistenceParsable {
         previewType             = sequence.previewType?.rawValue
         previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
         itemType                = sequence.type?.rawValue
-        itemSubType             = sequence.type?.rawValue
+        itemSubType             = sequence.subtype?.rawValue
         releasedAt              = sequence.releasedAt ?? releasedAt
+        
+        guard let context = self.managedObjectContext else {
+            return
+        }
 
         if let adBreak = sequence.adBreak {
-            let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
+            let persistentAdBreak = context.v_createObject() as VAdBreak
             persistentAdBreak.populate(fromSourceModel: adBreak)
             self.adBreak = persistentAdBreak
         }
+        
+        if let trackingData = sequence.tracking {
+            let uniqueInfo: [String : NSObject]
+            if let streamID = streamID {
+                let stream: VStream = context.v_findOrCreateObject([ "remoteId" : streamID])
+                uniqueInfo = ["streamItem" : self, "streamParent" : stream, "marqueeParent" : "nil"]
+            } else {
+                // If no streaID was provided, parse out a VStreamChild with no stream parents
+                // to hold it.  This will be made available for tracking code that has no stream context,
+                // such as a deeplinked sequence or the lightweight content view sequence.
+                uniqueInfo = ["streamItem" : self, "streamParent" : "nil", "marqueeParent" : "nil"]
+            }
+            let streamChild: VStreamChild = context.v_findOrCreateObject( uniqueInfo )
+            streamChild.streamItem = self
+            
+            let tracking = context.v_createObject() as VTracking
+            tracking.populate(fromSourceModel: trackingData)
+            streamChild.tracking = tracking
+        }
 
-        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
+        self.user = context.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         
         if let parentUser = sequence.parentUser {
             self.parentUserId = NSNumber(integer: parentUser.userID)
-            let persistentParentUser = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
+            let persistentParentUser = context.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
             persistentParentUser.populate(fromSourceModel: parentUser)
             self.parentUser = persistentParentUser
         }
         
         if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
-            self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
+                let imageAsset: VImageAsset = context.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-                })
+            }
+            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
         if let nodes = sequence.nodes where nodes.count > self.nodes?.count {
-            self.nodes = NSOrderedSet(array: nodes.flatMap {
-                let node: VNode = v_managedObjectContext.v_createObject()
+            let persistentNodes: [VNode] = nodes.flatMap {
+                let node: VNode = context.v_createObject()
                 node.populate( fromSourceModel: $0 )
                 node.sequence = self
                 return node
-            })
+            }
+            self.nodes = NSOrderedSet(array: persistentNodes)
         }
     }
 }

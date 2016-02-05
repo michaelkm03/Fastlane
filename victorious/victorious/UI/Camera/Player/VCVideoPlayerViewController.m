@@ -55,7 +55,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
-@property (nonatomic, strong) VTracking *trackingItem;
+@property (nonatomic, strong) VTracking *trackingData;
 @property (nonatomic, strong) NSString *streamID;
 
 @property (nonatomic, assign) float rateBeforeScrubbing;
@@ -554,7 +554,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ( self.isTrackingEnabled )
         {
             NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingItem.videoComplete25,
+                                      VTrackingKeyUrls : self.trackingData.videoComplete25,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete25 parameters:params];
         }
@@ -569,7 +569,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ( self.isTrackingEnabled )
         {
             NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingItem.videoComplete50,
+                                      VTrackingKeyUrls : self.trackingData.videoComplete50,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete50 parameters:params];
         }
@@ -584,7 +584,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ( self.isTrackingEnabled )
         {
             NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingItem.videoComplete75,
+                                      VTrackingKeyUrls : self.trackingData.videoComplete75,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete75 parameters:params];
         }
@@ -598,7 +598,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ( self.isTrackingEnabled )
         {
             NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingItem.videoComplete100,
+                                      VTrackingKeyUrls : self.trackingData.videoComplete100,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
         }
@@ -825,7 +825,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
                                   VTrackingKeyFromTime : @( CMTimeGetSeconds( self.sliderTouchInteractionStartTime ) ),
                                   VTrackingKeyToTime : @( CMTimeGetSeconds( currentTime) ),
-                                  VTrackingKeyUrls : self.trackingItem.videoSkip,
+                                  VTrackingKeyUrls : self.trackingData.videoSkip,
                                   VTrackingKeyStreamId : self.streamID };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
     }
@@ -866,7 +866,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ( self.isTrackingEnabled )
         {
             NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingItem.videoComplete100,
+                                      VTrackingKeyUrls : self.trackingData.videoComplete100,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
         }
@@ -1032,7 +1032,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if ( self.isTrackingEnabled )
                 {
                     NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                              VTrackingKeyUrls : self.trackingItem.videoStall,
+                                              VTrackingKeyUrls : self.trackingData.videoStall,
                                               VTrackingKeyStreamId : self.streamID };
                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStall parameters:params];
                 }
@@ -1075,25 +1075,26 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (BOOL)isTrackingEnabled
 {
-    return self.trackingItem != nil;
+    return self.trackingData != nil;
 }
 
-- (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem streamID:(NSString *)streamID
+- (void)enableTrackingWithTrackingItem:(VTracking *)trackingData streamID:(NSString *)streamID
 {
-    if ( trackingItem == nil )
+    if ( trackingData == nil )
     {
         return;
     }
     
-    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] );
+    NSAssert( [trackingData isKindOfClass:[VTracking class]] && trackingData != nil,
+             @"Cannot track video events in VCVideoPlayerViewController because tracking data is missing or invalid." );
     
-    self.trackingItem = trackingItem;
+    self.trackingData = trackingData;
     self.streamID = streamID ?: @"";
 }
 
 - (void)disableTracking
 {
-    self.trackingItem = nil;
+    self.trackingData = nil;
 }
 
 - (NSString *)streamID

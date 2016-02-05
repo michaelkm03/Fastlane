@@ -236,12 +236,11 @@
 
 #pragma mark - Share
 
-- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node
-{
-    [self shareFromViewController:viewController sequence:sequence node:node completion:nil];
-}
-
-- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
+- (void)shareFromViewController:(UIViewController *)viewController
+                       sequence:(VSequence *)sequence
+                           node:(VNode *)node
+                       streamID:(NSString *)streamID
+                     completion:(void(^)())completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
     
@@ -259,18 +258,23 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
+        VTracking *tracking = streamID == nil ? sequence.trackingWithoutStreamData : [sequence trackingDataWithStreamID:streamID];
+        NSAssert( tracking != nil,
+                 @"Cannot track 'share' event because tracking data is missing." );
+        
         if ( completed )
         {
             NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
                                       VTrackingKeyShareDestination : activityType ?: @"",
-                                      VTrackingKeyUrls : sequence.tracking.share ?: @[] };
+                                      VTrackingKeyUrls : tracking.share ?: @[]
+                                      };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         }
         else if ( activityError != nil )
         {
             NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
                                       VTrackingKeyShareDestination : activityType ?: @"",
-                                      VTrackingKeyUrls : sequence.tracking.share ?: @[],
+                                      VTrackingKeyUrls : tracking.share ?: @[],
                                       VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
         }

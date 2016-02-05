@@ -101,15 +101,13 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         return;
     }
     
-    NSArray *urls = (NSArray *)sequence.tracking.cellView;
-#warning FIX THIS STUFF
-    // FIXME: Uncomment this: NSAssert( urls != nil, @"Cannot send tracking event because tracking URLs are missing." );
-    urls = urls ?: @[];//< FIXME: Remvoe this
+    VTracking *tracking = [sequence trackingDataWithStreamID:stream.remoteId];
+    NSAssert( tracking != nil, @"Cannot track 'cellView' event because tracking data is missing." );
     
     NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : urls,
+                              VTrackingKeyUrls : tracking.cellView,
                               VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
@@ -125,15 +123,13 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     
-    NSArray *urls = (NSArray *)sequence.tracking.cellClick;
-#warning FIX THIS STUFF
-    // FIXME: Uncomment this: NSAssert( urls != nil, @"Cannot send tracking event because tracking URLs are missing." );
-    urls = urls ?: @[];//< FIXME: Remvoe this
-    
+    VTracking *tracking = [sequence trackingDataWithStreamID:stream.remoteId];
+    NSAssert( tracking != nil, @"Cannot track 'cellClick' because tracking data is missing." );
+
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : urls,
+                              VTrackingKeyUrls : tracking.cellClick,
                               VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
@@ -141,7 +137,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     {
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
-            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
+            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:tracking.viewStop];
             event.context = context;
             event.autoPlay = YES;
             event.currentTime = info[VTrackingKeyTimeCurrent];

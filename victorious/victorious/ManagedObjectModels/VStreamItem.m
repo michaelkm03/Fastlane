@@ -19,13 +19,11 @@
 @dynamic previewTextPostAsset;
 @dynamic remoteId;
 @dynamic streamContentType;
-@dynamic streamId;
 @dynamic itemType;
 @dynamic itemSubType;
 @dynamic editorializations;
 @dynamic marquees;
 @dynamic previewImageAssets;
 @dynamic releasedAt;
-@dynamic streamChildrenInSream;
 
 @end

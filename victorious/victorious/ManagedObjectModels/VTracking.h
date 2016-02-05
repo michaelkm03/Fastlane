@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VSequence, VVoteType;
+@class VStreamChild;
 
 @interface VTracking : NSManagedObject
 
@@ -25,7 +25,6 @@
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id viewStart;
 @property (nonatomic, retain) id share;
-@property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, retain) VVoteType *voteType;
+@property (nonatomic, retain) VStreamChild *streamChild;
 
 @end

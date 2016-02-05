@@ -210,6 +210,8 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)setStream:(VStream *)stream
 {
     _stream = stream;
+    
+    self.previewView.trackingData = [self.sequence trackingDataWithStreamID:self.stream.remoteId];
     [self updateListicleForSequence:self.sequence andStream:self.stream];
 }
 

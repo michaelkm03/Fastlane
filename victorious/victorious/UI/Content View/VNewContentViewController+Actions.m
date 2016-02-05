@@ -122,7 +122,9 @@
          {
              [self.sequenceActionController shareFromViewController:contentViewController
                                                       sequence:contentViewController.viewModel.sequence
-                                                          node:contentViewController.viewModel.currentNode];
+                                                          node:contentViewController.viewModel.currentNode
+                                                             streamID:self.viewModel.streamId
+                                                         completion:nil];
          }];
     };
     shareItem.selectionHandler = shareHandler;

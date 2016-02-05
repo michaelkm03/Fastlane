@@ -36,7 +36,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         NSString *sequenceID = [sequenceURL lastPathComponent];
         if (sequenceID != nil)
         {
-            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID];
+            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID streamID:nil];
             [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
              {
                  VSequence *sequence = operation.result;

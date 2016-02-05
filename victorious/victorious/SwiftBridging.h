@@ -118,6 +118,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder+PollAssets.h"
+#import "VStreamCollectionViewDataSource.h"
 #import "VImageAssetFinder.h"
 #import "VImageLightboxViewController.h"
 #import "VImageSequencePreviewView.h"

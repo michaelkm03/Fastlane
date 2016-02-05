@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VCommentMediaType.h"
 
-@class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment;
+@class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment, VStream;
 
 typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 {
@@ -87,11 +87,8 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 - (void)shareFromViewController:(UIViewController *)viewController
                        sequence:(VSequence *)sequence
                            node:(VNode *)node
+                       streamID:(NSString *)streamID
                      completion:(void(^)())completion;
-
-- (void)shareFromViewController:(UIViewController *)viewController
-                       sequence:(VSequence *)sequence
-                           node:(VNode *)node;
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController
                            sequence:(VSequence *)sequence

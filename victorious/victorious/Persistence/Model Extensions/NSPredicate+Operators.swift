@@ -8,10 +8,10 @@
 
 import Foundation
 
-func +(lhs: NSPredicate, rhs: NSPredicate) -> NSCompoundPredicate {
+func +(lhs: NSPredicate, rhs: NSPredicate) -> NSPredicate {
     return NSCompoundPredicate(andPredicateWithSubpredicates: [lhs, rhs])
 }
 
-func +=(inout lhs: NSCompoundPredicate, rhs: [NSPredicate]) -> NSCompoundPredicate {
+func +=(inout lhs: NSCompoundPredicate, rhs: [NSPredicate]) -> NSPredicate {
     return NSCompoundPredicate(andPredicateWithSubpredicates: rhs)
 }

@@ -30,7 +30,11 @@ extension VStream: PersistenceParsable {
         // Parse out the marquee items
         var displayOrder = 0
         let sourceMarqueeItems = sourceStream.marqueeItems ?? []
-        let marqueeItems = VStream.persistentStreamItems(fromStreamItems: sourceMarqueeItems, context: v_managedObjectContext)
+        let marqueeItems = VStream.persistentStreamItems(
+            fromStreamItems: sourceMarqueeItems,
+            parentStreamID: sourceStream.streamID,
+            context: v_managedObjectContext
+        )
         for marqueeItem in marqueeItems {
             let uniqueInfo = [ "marqueeParent" : self, "streamItem" : marqueeItem]
             let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
@@ -40,7 +44,11 @@ extension VStream: PersistenceParsable {
         
         // Parse out the streamItems
         let sourceStreamItems = sourceStream.items ?? []
-        let streamItems = VStream.persistentStreamItems(fromStreamItems: sourceStreamItems, context: v_managedObjectContext)
+        let streamItems = VStream.persistentStreamItems(
+            fromStreamItems: sourceStreamItems,
+            parentStreamID: sourceStream.streamID,
+            context: v_managedObjectContext
+        )
         for streamItem in streamItems {
             let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
             let child: VStreamChild = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
@@ -48,7 +56,7 @@ extension VStream: PersistenceParsable {
         }
     }
     
-    static func persistentStreamItems(fromStreamItems items: [StreamItemType], context: NSManagedObjectContext) -> [VStreamItem] {
+    static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStreamID: String, context: NSManagedObjectContext) -> [VStreamItem] {
         
         let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
         let unflaggedItems = items.filter { !flaggedIds.contains( $0.streamItemID ) }
@@ -60,7 +68,7 @@ extension VStream: PersistenceParsable {
             case .Some(.Sequence):
                 guard let sequence = item as? Sequence else { return nil }
                 let persistentSequence = context.v_findOrCreateObject( uniqueElements ) as VSequence
-                persistentSequence.populate( fromSourceModel: sequence )
+                persistentSequence.populate( fromSourceModel: (sequence, parentStreamID) )
                 return persistentSequence
                 
             case .Some(.Stream):

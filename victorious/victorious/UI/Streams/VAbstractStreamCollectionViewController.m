@@ -72,7 +72,7 @@
     self.navigationBarShouldAutoHide = YES;
     
     id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
-    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
+    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.remoteId
                                                                    timingTracker:timingTracker];
 }
 

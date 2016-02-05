@@ -59,6 +59,7 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
+        _trackingData = [_sequence trackingDataWithStreamID:_streamId];
         _dependencyManager = context.destinationDependencyManager;
         
         id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];

@@ -15,7 +15,6 @@
 #import "VUser.h"
 #import "VVoteResult.h"
 
-
 @implementation VSequence
 
 @dynamic category;
@@ -47,7 +46,6 @@
 @dynamic pollResults;
 @dynamic recentUser;
 @dynamic reposters;
-//@dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
 @dynamic recentComments;
