@@ -17,6 +17,7 @@ extension VStream {
     
     /// Maps the ordered set of VStreamItemPointer into an array of VStreamItem
     var marqueeItems: [VStreamItem] {
+        print( "Marquee items: \(self.marqueeItemPointers.count)" )
         return self.marqueeItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
 }
