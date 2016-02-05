@@ -15,13 +15,50 @@ enum DeviceType {
     case Other
 }
 
+
+/*
+ *
+ *        Device                  Processor (Ghz, Type, Cores)    RAM                 Version                 Device Rating
+ *
+ *        -iPhone-
+ *        iPhone 5                1.3 Ghz A6 (2)                  1GB                 5                       Decent
+ *        iPhone 5C               1.3 Ghz A6 (2)                  1GB                 5                       Decent
+ *        iPhone 5S               1.3 Ghz A7 (2)                  1GB                 6                       Average
+ *        iPhone 6                1.4 Ghz A8 (2)                  1GB                 7                       Fast
+ *        iPhone 6+               1.4 Ghz A8 (2)                  1GB                 7                       Fast
+ *        iPhone 6S               1.85 Ghz A9 (2)                 2GB                 8                       Lightning Fast
+ *        iPhone 6S+              1.85 Ghz A9 (2)                 2GB                 8                       Lightning Fast
+ *        iPhone 7 (and onwards)  ...                             ...                 >8                      Lightning Fast
+ *
+ *
+ *        -iPod Touch-
+ *        iPod Touch 5G           1.0 Ghz A5 (2)                  512 MB              5                       Slow
+ *        iPod Touch 6G           1.4 Ghz A8 (2)                  1 GB                6                       Average
+ *        iPod Touch 7G (and onwards)...                          ...                 >6                      Fast
+ *
+ *
+ *        -iPad (Regular, Mini, Pro)-
+ *        iPad 2nd Gen            1.0 Ghz A5 (2)                  512 MB              2                       Slow
+ *        iPad Mini 1             1.0 Ghz A5 (2)                  512 MB              2                       Slow
+ *        iPad 3rd Gen            1.0 Ghz A5X (2)                 1 GB                3                       Decent
+ *        iPad 4th Gen            1.4 Ghz A6X (2)                 1 GB                3                       Decent
+ *        iPad Air                1.4 Ghz A7 (2)                  1 GB                4                       Average
+ *        iPad Mini 2             1.3 Ghz A7 (2)                  1 GB                4                       Average
+ *        iPad Mini 3             1.3 Ghz A7 (2)                  1 GB                4                       Average
+ *        iPad Air 2              1.5 Ghz A8X (3)                 2 GB                5                       Lightning Fast
+ *        iPad Mini 4             1.5 Ghz A8 (2)                  2 GB                5                       Fast
+ *        iPad Pro                2.26 Ghz A9X (2)                4 GB                6                       Lightning Fast
+ *
+ */
+
 @objc enum VDeviceRating: Int{
-    case Unknown = 0,
-    Bad,
-    NotGreat,
-    Average,
-    Fast,
-    LightningFast
+    case Unknown = 1,
+    Slow = 3,
+    Decent = 5,
+    Average = 8,
+    Great = 13,
+    Fast = 15,
+    LightningFast = 25
 }
 
 private let kiPodConstant = "iPod"
@@ -44,11 +81,17 @@ extension UIDevice {
             identifier = identifier.componentsSeparatedByString(",")[0]
             let version: Int? = Int(identifier)
             if let _ = version {
-                if version >= 7 {
+                if version == 5 {
+                    return VDeviceRating.Slow
+                }
+                else if version == 6 {
                     return VDeviceRating.Average
                 }
+                else if version > 6 {
+                    return VDeviceRating.Fast
+                }
                 else {
-                    return VDeviceRating.Bad
+                    return VDeviceRating.Unknown
                 }
             }
         }
@@ -57,11 +100,23 @@ extension UIDevice {
             identifier = identifier.componentsSeparatedByString(",")[0]
             let version: Int? = Int(identifier)
             if let _ = version {
-                if version >= 5 {
+                if version == 2 {
+                    return VDeviceRating.Slow
+                }
+                else if version == 3 {
+                    return VDeviceRating.Decent
+                }
+                else if version == 4 {
+                    return VDeviceRating.Average
+                }
+                else if version == 5 {
                     return VDeviceRating.Fast
                 }
+                else if version > 5 {
+                    return VDeviceRating.LightningFast
+                }
                 else {
-                    return VDeviceRating.Average
+                    return VDeviceRating.Unknown
                 }
             }
         }
@@ -70,18 +125,24 @@ extension UIDevice {
             identifier = identifier.componentsSeparatedByString(",")[0]
             let version: Int? = Int(identifier)
             if let _ = version {
-                if version >= 7 {
-                    return VDeviceRating.LightningFast
+                if version == 5 {
+                    return VDeviceRating.Decent
                 }
-                else if version >= 5 {
+                else if version == 6 {
+                    return VDeviceRating.Average
+                }
+                else if version == 5 {
                     return VDeviceRating.Fast
                 }
+                else if version >= 8 {
+                    return VDeviceRating.LightningFast
+                }
                 else {
-                    return VDeviceRating.Bad
+                    return VDeviceRating.Unknown
                 }
             }
         }
-        //Other, return 0
+        //Other, return 1
         return VDeviceRating.Unknown
     }
 }
