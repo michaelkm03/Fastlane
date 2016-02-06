@@ -410,6 +410,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
+    self.profileHeaderViewController = nil;
     if ( self.representsMainUser )
     {
         [self.streamDataSource unloadStream];
@@ -458,6 +459,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     _user = user;
+    [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;
     [self.KVOController observe:_user
