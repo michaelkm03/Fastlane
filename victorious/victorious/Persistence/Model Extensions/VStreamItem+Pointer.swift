@@ -43,7 +43,7 @@ extension VStreamItem {
     /// to a stream or streamID (such as a deeplinked sequence or the lightweight
     /// content view sequence), use `streamItemPointerForStandloneStreamItem` instead.
     func streamItemPointer(streamID streamID: String) -> VStreamItemPointer? {
-        return self.streamItemPointer(forStreamID: streamID)
+        return self.streamItemPointerForStreamID(streamID)
     }
     
     /// Provides a `VStreamItemPointer` or the receiver as a stand alone stream item,
@@ -51,16 +51,16 @@ extension VStreamItem {
     /// to a stream or streamID, use `streamItemPointer(streamID:)` to retrieve the most
     /// appropriate `VStreamItemPointer` instance.
     func streamItemPointerForStandloneStreamItem() -> VStreamItemPointer? {
-        return self.streamItemPointer(forStreamID: nil)
+        return self.streamItemPointerForStreamID(nil)
     }
     
-    private func streamItemPointer(forStreamID streamID: String?) -> VStreamItemPointer? {
-        // By using `valueForKey` with `streamItemPointersInSream` as a string accesses
+    private func streamItemPointerForStreamID(streamID: String?) -> VStreamItemPointer? {
+        // By using `valueForKey` with `streamItemPointersInStream` as a string accesses
         // the corresponding attributes in CoreData.  The reason for this is to prevent 
-        // `streamItemPointersInSream` from being misused if exposed as a property in code
+        // `streamItemPointersInStream` from being misused if exposed as a property in code
         // on `VStreamItem`.  The functions of this extension should be the only available
         // method for retriving stream item pointers to ensure that it is done correctly.
-        guard let streamItemPointers = self.valueForKey("streamItemPointersInSream") as? Set<VStreamItemPointer> else {
+        guard let streamItemPointers = self.valueForKey("streamItemPointersInStream") as? Set<VStreamItemPointer> else {
             return nil
         }
         let filter: VStreamItemPointer->Bool
