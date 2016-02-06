@@ -36,7 +36,13 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
                 XCTFail("We should have results here")
                 return
             }
-            XCTAssertEqual(firstResult.remoteId.integerValue, self.testUserID)
+
+            guard let remoteId = firstResult.remoteId?.integerValue else {
+                XCTFail("First result should have a removeId")
+                return
+            }
+
+            XCTAssertEqual(remoteId, self.testUserID)
         }
     }
 

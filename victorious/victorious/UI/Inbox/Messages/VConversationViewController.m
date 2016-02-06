@@ -85,6 +85,16 @@
      }];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ( self.hasLoadedOnce )
+    {
+        [self.dataSource refreshRemote:nil];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
