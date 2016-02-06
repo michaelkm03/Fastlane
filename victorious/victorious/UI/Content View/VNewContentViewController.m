@@ -163,7 +163,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 
@@ -776,16 +775,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 [superview addSubview:previewView];
                 [superview v_addFitToParentConstraintsToSubview:previewView];
             }
-            
+
             previewView.detailDelegate = self;
             self.sequencePreviewView = previewView;
-            
+
             // Setup relationships for polls
             if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
             {
                 self.pollAnswerReceiver = (id<VPollResultReceiver>)previewView;
             }
-            
+
             // Setup relationships for video playback
             if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
             {
@@ -794,7 +793,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:self.videoPlayer];
             }
-            
+
+            if(self.viewModel.sequence.adBreak != nil)
+            {
+                [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
+            }
+            else
+            {
+                [self.videoPlayer playFromStart];
+            }
+
             return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
