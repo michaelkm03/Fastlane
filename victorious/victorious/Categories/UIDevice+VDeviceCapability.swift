@@ -79,18 +79,15 @@ extension UIDevice {
         if identifier.hasPrefix(kiPodConstant) {
             identifier = identifier.stringByReplacingOccurrencesOfString(kiPodConstant, withString: "")
             identifier = identifier.componentsSeparatedByString(",")[0]
-            let version: Int? = Int(identifier)
-            if let _ = version {
-                if version == 5 {
+            if let version = Int(identifier) {
+                switch version {
+                case 5:
                     return VDeviceRating.Slow
-                }
-                else if version == 6 {
+                case 6:
                     return VDeviceRating.Average
-                }
-                else if version > 6 {
+                case 6..<Int.max:
                     return VDeviceRating.Fast
-                }
-                else {
+                default:
                     return VDeviceRating.Unknown
                 }
             }
@@ -98,24 +95,19 @@ extension UIDevice {
         else if identifier.hasPrefix(kiPadConstant) {
             identifier = identifier.stringByReplacingOccurrencesOfString(kiPadConstant, withString: "")
             identifier = identifier.componentsSeparatedByString(",")[0]
-            let version: Int? = Int(identifier)
-            if let _ = version {
-                if version == 2 {
+            if let version = Int(identifier) {
+                switch version {
+                case 2:
                     return VDeviceRating.Slow
-                }
-                else if version == 3 {
+                case 3:
                     return VDeviceRating.Decent
-                }
-                else if version == 4 {
+                case 4:
                     return VDeviceRating.Average
-                }
-                else if version == 5 {
+                case 5:
                     return VDeviceRating.Fast
-                }
-                else if version > 5 {
+                case 6..<Int.max:
                     return VDeviceRating.LightningFast
-                }
-                else {
+                default:
                     return VDeviceRating.Unknown
                 }
             }
@@ -123,21 +115,17 @@ extension UIDevice {
         else if identifier.hasPrefix(kiPhoneConstant) {
             identifier = identifier.stringByReplacingOccurrencesOfString(kiPhoneConstant, withString: "")
             identifier = identifier.componentsSeparatedByString(",")[0]
-            let version: Int? = Int(identifier)
-            if let _ = version {
-                if version == 5 {
+            if let version = Int(identifier) {
+                switch version {
+                case 5:
                     return VDeviceRating.Decent
-                }
-                else if version == 6 {
+                case 6:
                     return VDeviceRating.Average
-                }
-                else if version == 5 {
+                case 7:
                     return VDeviceRating.Fast
-                }
-                else if version >= 8 {
+                case 8..<Int.max:
                     return VDeviceRating.LightningFast
-                }
-                else {
+                default:
                     return VDeviceRating.Unknown
                 }
             }
