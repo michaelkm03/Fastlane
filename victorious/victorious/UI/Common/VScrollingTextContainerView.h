@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VLinearGradientView.h"
+
+@class VLinearGradientView;
 
 typedef enum : NSUInteger {
     VGradientTypeVertical,

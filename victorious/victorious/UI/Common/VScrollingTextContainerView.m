@@ -8,6 +8,7 @@
 
 #import "VScrollingTextContainerView.h"
 #import "VTimerManager.h"
+#import "VLinearGradientView.h"
 
 static CGFloat const kGradientOffset = 20.0f;
 static CGFloat const kScrollBoundary = 20.0f;
