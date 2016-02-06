@@ -22,11 +22,12 @@ extension VStream: PersistenceParsable {
         isUserPostAllowed       = sourceStream.isUserPostAllowed ?? isUserPostAllowed
         
         if let previewImageAssets = sourceStream.previewImageAssets {
-            self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
+            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-                })
+            }
+            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
         // Parse out the marquee items
@@ -55,6 +56,12 @@ extension VStream: PersistenceParsable {
             let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
             let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
             self.v_addObject( child, to: "streamItemPointers" )
+        }
+        
+        if let textPostAsset = sourceStream.previewTextPostAsset {
+            let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
+            persistentAsset.populate(fromSourceModel: textPostAsset)
+            previewTextPostAsset = persistentAsset
         }
     }
     

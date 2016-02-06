@@ -5427,10 +5427,9 @@
 		03314F4A1BE40F0100EE74FD /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				62575EC11C54BD0A00B49CB0 /* AdBreak */,
-				62575EE21C54CAF100B49CB0 /* Sequence */,
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
 				0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */,
+				62575EC11C54BD0A00B49CB0 /* AdBreak */,
 				A7039CF71C24A9270023DE6F /* Alert.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
 				A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */,
@@ -5469,6 +5468,7 @@
 				C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */,
 				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
+				62575EE21C54CAF100B49CB0 /* Sequence */,
 				A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */,
 				A7EF1BD91BF2761E00D429DE /* Stream-Invalid.json */,
 				A7EF1BDA1BF2761E00D429DE /* Stream.json */,

@@ -19,7 +19,7 @@ class ImageAssetTests: XCTestCase {
                 return
         }
         guard let imageAsset = ImageAsset(json: JSON(data: mockData)) else {
-            XCTFail("User initializer failed")
+            XCTFail("ImageAsset initializer failed")
             return
         }
         XCTAssertEqual(imageAsset.size, CGSizeMake(320, 180))

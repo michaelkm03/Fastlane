@@ -76,6 +76,12 @@ extension VSequence: PersistenceParsable {
             self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
+        if let textPostAsset = sequence.previewTextPostAsset {
+            let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
+            persistentAsset.populate(fromSourceModel: textPostAsset)
+            previewTextPostAsset = persistentAsset
+        }
+        
         if let nodes = sequence.nodes where nodes.count > self.nodes?.count {
             let persistentNodes: [VNode] = nodes.flatMap {
                 let node: VNode = context.v_createObject()

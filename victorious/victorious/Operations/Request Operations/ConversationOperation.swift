@@ -56,6 +56,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 messagesLoaded.append( newMessage )
             }
             conversation.v_addObjects( messagesLoaded, to: "messages" )
+            conversation.lastMessageText = messagesLoaded.first?.text ?? conversation.lastMessageText
             
             do {
                 try context.save()
