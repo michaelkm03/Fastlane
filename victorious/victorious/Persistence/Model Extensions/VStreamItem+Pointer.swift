@@ -13,19 +13,19 @@ import Foundation
 
 extension VStream {
     
-    /// Maps stream items (as StreamItemPointer) into an array of the VStreamItems to which they point
+    /// Maps stream items (instance sof  StreamItemPointer) into an array of the VStreamItems to which they point
     var streamItems: [VStreamItem] {
         return self.streamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
     
-    /// Maps marquee items (as VStreamItemPointer) into an array of the VStreamItems to which they point
+    /// Maps marquee items (instance sof VStreamItemPointer) into an array of the VStreamItems to which they point
     var marqueeItems: [VStreamItem] {
         return self.marqueeItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
     
     /// Filters the receiver's `streamItemPointers` for those whose `streamItem` is contained
     /// within the provided list of streamItemIDs.
-    func streamItemPointers(forStreamItemIDs streamItemIDs: [String]) -> NSOrderedSet {
+    func streamItemPointersForStreamItemIDs(streamItemIDs: [String]) -> NSOrderedSet {
         let predicate = NSPredicate() { (object, bindings) in
             guard let streamItemPointer = object as? VStreamItemPointer else {
                 return false
