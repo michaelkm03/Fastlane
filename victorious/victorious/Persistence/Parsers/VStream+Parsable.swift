@@ -27,6 +27,12 @@ extension VStream: PersistenceParsable {
                 })
         }
         
+        if let textPostAsset = stream.previewTextPostAsset {
+            let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
+            persistentAsset.populate(fromSourceModel: textPostAsset)
+            previewTextPostAsset = persistentAsset
+        }
+        
         let streamItems = VStreamItem.parseStreamItems( fromStream: stream, inManagedObjectContext: self.v_managedObjectContext )
         self.v_addObjects( streamItems, to: "streamItems" )
         

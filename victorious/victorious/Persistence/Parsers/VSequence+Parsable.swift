@@ -40,7 +40,7 @@ extension VSequence: PersistenceParsable {
         previewType             = sequence.previewType?.rawValue
         previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
         itemType                = sequence.type?.rawValue
-        itemSubType             = sequence.type?.rawValue
+        itemSubType             = sequence.subtype?.rawValue
         releasedAt              = sequence.releasedAt ?? releasedAt
         
         if let trackingModel = sequence.tracking {
@@ -70,6 +70,12 @@ extension VSequence: PersistenceParsable {
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
             })
+        }
+        
+        if let textPostAsset = sequence.previewTextPostAsset {
+            let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
+            persistentAsset.populate(fromSourceModel: textPostAsset)
+            previewTextPostAsset = persistentAsset
         }
         
         if let nodes = sequence.nodes where !nodes.isEmpty {

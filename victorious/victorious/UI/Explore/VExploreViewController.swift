@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate, VMarqueeSelectionDelegate, CHTCollectionViewDelegateWaterfallLayout, VHashtagSelectionResponder, SearchResultsViewControllerDelegate {
+class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate, VMarqueeSelectionDelegate, CHTCollectionViewDelegateWaterfallLayout, VHashtagSelectionResponder, SearchResultsViewControllerDelegate, VTabMenuContainedViewControllerNavigation {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"

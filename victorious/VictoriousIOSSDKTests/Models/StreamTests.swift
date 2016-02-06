@@ -35,7 +35,7 @@ class StreamTests: XCTestCase {
         XCTAssertEqual( stream.items?.filter { $0 is Sequence }.count, 2)
         XCTAssertEqual( stream.items?.filter { $0 is Stream }.count, 1)
         XCTAssertEqual( (stream.previewImagesObject as! [String]).count, 3 )
-        XCTAssertEqual( stream.previewTextPostAsset, "http://media-dev-public.s3-website-us-west-1.amazonaws.com/f4c9b9fc3564e4af36e61e5b1ce78ec2/thumbnail-00001.jpg" )
+        XCTAssertNil( stream.previewTextPostAsset )
         XCTAssertNil( stream.previewImageAssets )
     }
     
