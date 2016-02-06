@@ -9,6 +9,10 @@
 #import "VContentPollQuestionCell.h"
 #import "VScrollingTextContainerView.h"
 
+static CGFloat const kMinimumCellHeight = 70.0f;
+static CGFloat const kMaximumCellHeight = 100.0f;
+static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
+
 @interface VContentPollQuestionCell ()
 
 @property (weak, nonatomic) IBOutlet VScrollingTextContainerView *scrollingTextContainerView;
@@ -60,6 +64,7 @@
 - (void)setQuestion:(NSAttributedString *)question
 {
     _question = [question copy];
+    self.scrollingTextContainerView.maxHeight = kMaximumCellHeight;
     self.scrollingTextContainerView.text = question;
     
     [self.scrollingTextContainerView setGradient:0.2

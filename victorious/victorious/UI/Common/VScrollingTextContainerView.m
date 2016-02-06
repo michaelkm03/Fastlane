@@ -80,7 +80,7 @@ static CGFloat const kTimerInterval = 0.1f;
     
     /// If the label's height is greater than the max cell height, we add an offset and allow for scrolling
     /// Otherwise, we don't allow for scrolling
-    if (self.label.frame.size.height > kMaximumCellHeight)
+    if (self.label.frame.size.height > self.maxHeight)
     {
         labelFrame.origin.y = kGradientOffset;
         self.label.frame = labelFrame;
@@ -163,7 +163,7 @@ static CGFloat const kTimerInterval = 0.1f;
     {
         [self.timer invalidate];
     }
-    if (self.scrollView.contentSize.height > kMaximumCellHeight)
+    if (self.scrollView.contentSize.height > self.maxHeight)
     {
         self.scrollDown = YES;
         self.timer = [VTimerManager addTimerManagerWithTimeInterval:kTimerInterval target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES toRunLoop:[NSRunLoop mainRunLoop] withRunMode:NSDefaultRunLoopMode];

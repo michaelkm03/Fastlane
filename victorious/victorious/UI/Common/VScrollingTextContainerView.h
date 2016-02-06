@@ -14,13 +14,14 @@ typedef enum : NSUInteger {
     VGradientTypeHorizontal
 } VGradientType;
 
-static CGFloat const kMinimumCellHeight = 70.0f;
-static CGFloat const kMaximumCellHeight = 100.0f;
-static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
-
 @interface VScrollingTextContainerView : UIView <UIScrollViewDelegate>
 
 @property (nonatomic, readonly, strong) UILabel *label;
+
+/*
+ * Maximum height of the container view
+ */
+@property (nonatomic) CGFloat maxHeight;
 
 /**
  *  An attributed string that the label will display.
