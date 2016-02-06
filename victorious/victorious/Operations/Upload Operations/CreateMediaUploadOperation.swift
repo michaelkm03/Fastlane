@@ -78,10 +78,10 @@ class CreateMediaUploadOperation: Operation {
             dict["text_tool_type"] = textToolType
         }
         if let parentNodeID = publishParameters.parentNodeID where !parentNodeID.isEqualToNumber(NSNumber(int: 0)) {
-            dict["parent_node_id"] = parentNodeID
+            dict["parent_node_id"] = String(parentNodeID)
         }
         if let parentSequenceID = publishParameters.parentSequenceID where !parentSequenceID.isEmpty {
-            dict["parent_sequence_id"] = parentSequenceID
+            dict["parent_sequence_id"] = String(parentSequenceID)
         }
         switch publishParameters.captionType {
         case .Meme:
