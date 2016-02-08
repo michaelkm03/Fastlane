@@ -24,7 +24,7 @@ class VImageAnimationOperation: Operation {
     var animationDuration: Float = 0
     var animationSequence = [UIImage]()
     private var currentFrame: Int = -1
-    private var animationTimer: NSTimer = NSTimer()
+    private var animationTimer: VTimerManager = VTimerManager()
     var ballisticAnimationBlock: (( ()->() )->(Void))?
     
     func isAnimating() -> Bool {
@@ -60,14 +60,16 @@ class VImageAnimationOperation: Operation {
     }
     
     func beginAnimation() {
+        
+        let frameDuration: Float = animationDuration/Float(animationSequence.count)
         if let ballisticAnimationBlock = ballisticAnimationBlock {
             ballisticAnimationBlock(){
                 self.currentFrame = 0
-                NSRunLoop.mainRunLoop().addTimer(self.animationTimer, forMode: NSDefaultRunLoopMode)
+                VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
             }
         }
         else {
-            NSRunLoop.mainRunLoop().addTimer(animationTimer, forMode: NSDefaultRunLoopMode)
+            VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
         }
     }
     
@@ -77,8 +79,6 @@ class VImageAnimationOperation: Operation {
             stopAnimating()
         }
         else {
-            let frameDuration: Float = animationDuration/Float(animationSequence.count)
-            animationTimer = NSTimer(timeInterval: NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true)
             beginAnimation()
         }
     }
