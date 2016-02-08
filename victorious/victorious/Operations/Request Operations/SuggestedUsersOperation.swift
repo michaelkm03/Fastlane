@@ -27,7 +27,7 @@ class SuggestedUsersOperation: RequestOperation {
                 user.populate(fromSourceModel: sourceModel.user)
                 let recentSequences: [VSequence] = sourceModel.recentSequences.flatMap {
                     let sequence: VSequence = context.v_findOrCreateObject(["remoteId": $0.sequenceID])
-                    sequence.populate(fromSourceModel: $0)
+                    sequence.populate(fromSourceModel: ($0, nil) )
                     return sequence
                 }
                 return VSuggestedUser( user: user, recentSequences: recentSequences )

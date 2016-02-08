@@ -10,7 +10,7 @@
 #import "VUser.h"
 #import "VProfileEditViewController.h"
 #import "VConversationContainerViewController.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VConversationListViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
@@ -474,17 +474,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                               [welf updateUserFollowingRelationship];
                           }];
     
-    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
-    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
-                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
-    NSDictionary *query = @{ @"apiPath" : apiPath };
-    
-    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
-    [persistentStore.mainContext performBlockAndWait:^void {
-        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
-        [persistentStore.mainContext save:nil];
-    }];
+    self.currentStream = [self createUserProfileStreamWithUserID:_user.remoteId.stringValue];
     
     if ( _user != nil )
     {
@@ -503,6 +493,24 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
+}
+
+- (VStream *)createUserProfileStreamWithUserID:(NSString *)userID
+{
+    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
+    NSString *escapedRemoteId = [(userID ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    __block VStream *stream;
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName]
+                                                                            queryDictionary:query];
+        [persistentStore.mainContext save:nil];
+    }];
+    return stream;
 }
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue

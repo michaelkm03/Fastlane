@@ -11,7 +11,7 @@
 #import "VFocusable.h"
 #import "VSequencePreviewViewProtocols.h"
 
-@class VSequence;
+@class VSequence, VTracking;
 
 /**
  *  VSequencePreviewView is a class cluster for previewing a sequence. A concrete subclass is provided
@@ -61,5 +61,11 @@
 - (void)setGesturesEnabled:(BOOL)enabled;
 
 - (void)updateBackgroundColorAnimated:(BOOL)animated;
+
+/**
+ Stores tracking data necessary to track events that occur during the receiver's lifecycle.
+ To enable tracking, it is required that this property be set by calling code.
+ */
+@property (nonatomic, strong) VTracking *trackingData;
 
 @end

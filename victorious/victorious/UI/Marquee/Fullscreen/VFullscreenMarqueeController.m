@@ -8,7 +8,7 @@
 
 #import "VFullscreenMarqueeController.h"
 
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 
 #import "VStreamCollectionViewDataSource.h"

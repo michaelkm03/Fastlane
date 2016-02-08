@@ -72,8 +72,8 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
 extension VListRecentShelfCollectionViewCell { // UICollectionViewDataSource methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-            let streamItem = streamItems[indexPath.row]
+        if let shelf = shelf {
+            let streamItem = shelf.streamItems[indexPath.row]
             let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
                 cell.streamItem = streamItem
@@ -104,9 +104,7 @@ extension VListRecentShelfCollectionViewCell { // TrackableShelf methods
     
     override func streamItemAt(indexPath indexPath: NSIndexPath) -> VStreamItem? {
         if let shelf = shelf where indexPath.row < shelf.streamItems.count {
-            if let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                return streamItem
-            }
+            return shelf.streamItems[indexPath.row]
         }
         return nil
     }
@@ -116,7 +114,8 @@ extension VListRecentShelfCollectionViewCell { // TrackableShelf methods
 extension VListRecentShelfCollectionViewCell { // UICollectionViewDelegate methods
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+        if let shelf = shelf {
+            let streamItem = shelf.streamItems[indexPath.row]
             self.navigateTo(streamItem, fromShelf: shelf)
         }
         else {

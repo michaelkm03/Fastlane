@@ -11,10 +11,11 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel streamItem: StreamItemType ) {
-        guard let sequence = streamItem as? Sequence else {
-            return
-        }
+    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamID: String?) ) {
+        
+        let sequence = sourceModel.sequence
+        let streamID = sourceModel.streamID
+        
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
@@ -35,7 +36,6 @@ extension VSequence: PersistenceParsable {
         releasedAt              = sequence.releasedAt ?? releasedAt
         trendingTopicName       = sequence.trendingTopicName ?? trendingTopicName
         isLikedByMainUser       = sequence.isLikedByMainUser ?? isLikedByMainUser
-        headline                = sequence.headline ?? headline
         previewData             = sequence.previewData ?? previewData
         previewType             = sequence.previewType?.rawValue
         previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
@@ -43,33 +43,37 @@ extension VSequence: PersistenceParsable {
         itemSubType             = sequence.subtype?.rawValue
         releasedAt              = sequence.releasedAt ?? releasedAt
         
-        if let trackingModel = sequence.tracking {
-            tracking = v_managedObjectContext.v_createObject() as VTracking
-            tracking?.populate(fromSourceModel: trackingModel)
+        guard let context = self.managedObjectContext else {
+            return
         }
+        
+        let streamItemPointer = self.parseStreamItemPointer(forStreamWithStreamID: streamID)
+        streamItemPointer.populate(fromSourceModel: sequence)
+        streamItemPointer.streamItem = self
 
         if let adBreak = sequence.adBreak {
-            let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
+            let persistentAdBreak = context.v_createObject() as VAdBreak
             persistentAdBreak.populate(fromSourceModel: adBreak)
             self.adBreak = persistentAdBreak
         }
 
-        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
+        self.user = context.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         
         if let parentUser = sequence.parentUser {
             self.parentUserId = NSNumber(integer: parentUser.userID)
-            let persistentParentUser = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
+            let persistentParentUser = context.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
             persistentParentUser.populate(fromSourceModel: parentUser)
             self.parentUser = persistentParentUser
         }
         
-        if let previewImageAssets = sequence.previewImageAssets where !previewImageAssets.isEmpty {
-            self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+        if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
+            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
+                let imageAsset: VImageAsset = context.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
-            })
+            }
+            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
         if let textPostAsset = sequence.previewTextPostAsset {
@@ -78,13 +82,14 @@ extension VSequence: PersistenceParsable {
             previewTextPostAsset = persistentAsset
         }
         
-        if let nodes = sequence.nodes where !nodes.isEmpty {
-            self.nodes = NSOrderedSet(array: nodes.flatMap {
-                let node: VNode = v_managedObjectContext.v_createObject()
+        if let nodes = sequence.nodes where nodes.count > self.nodes?.count {
+            let persistentNodes: [VNode] = nodes.flatMap {
+                let node: VNode = context.v_createObject()
                 node.populate( fromSourceModel: $0 )
                 node.sequence = self
                 return node
-            })
+            }
+            self.nodes = NSOrderedSet(array: persistentNodes)
         }
         
         if let voteResults = sequence.voteTypes where !voteResults.isEmpty {
@@ -103,5 +108,24 @@ extension VSequence: PersistenceParsable {
                 return persistentVoteResult
             })
         }
+    }
+}
+
+private extension VStreamItem {
+    
+    func parseStreamItemPointer(forStreamWithStreamID streamID: String?) -> VStreamItemPointer {
+        let uniqueInfo: [String : NSObject]
+        if let streamID = streamID {
+            // If we have a `streamID`, create VStreamItemPointer for that stream
+            let stream: VStream = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : streamID])
+            uniqueInfo = ["streamItem" : self, "streamParent" : stream, "marqueeParent" : "nil"]
+        } else {
+            // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
+            // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
+            // This is made available for calling code that has no reference to a stream,
+            // such as a deeplinked sequence or the lightweight content view sequence.
+            uniqueInfo = ["streamItem" : self, "streamParent" : "nil", "marqueeParent" : "nil"]
+        }
+        return v_managedObjectContext.v_findOrCreateObject( uniqueInfo )
     }
 }

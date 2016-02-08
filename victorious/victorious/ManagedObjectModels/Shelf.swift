@@ -14,7 +14,6 @@ class Shelf: VStream {
 
     @NSManaged var title: String
     @NSManaged var streamUrl: String
-    @NSManaged var hasNewEditorializations: Bool
     
     func populate(fromSourceShelf sourceShelf: StreamItemType) {
         guard let shelf = sourceShelf as? VictoriousIOSSDK.Shelf else { return }
@@ -23,6 +22,5 @@ class Shelf: VStream {
         
         title = shelf.title ?? ""
         streamUrl = shelf.streamUrl ?? ""
-        //TODO: Handle the `hasNewEditorializations` logic.
     }
 }

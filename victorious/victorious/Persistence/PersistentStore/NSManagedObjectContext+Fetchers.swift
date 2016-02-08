@@ -15,26 +15,29 @@ extension NSManagedObjectContext {
         do {
             try self.save()
         } catch {
-            if let object = (error as NSError).userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
-                VLog( "\t- Validation failed on object \(object.dynamicType)." )
-            }
-            if let detailedErrors = (error as NSError).userInfo[ "NSDetailedErrors" ] as? [NSError] {
+            var message = "\n\n *** FAILED TO SAVE! ***\n"
+            let userInfo = (error as NSError).userInfo
+            var managedObject: NSManagedObject?
+            if let detailedErrors = userInfo[ "NSDetailedErrors" ] as? [NSError] {
                 for detailedError in detailedErrors {
                     if let validationField = detailedError.userInfo[ "NSValidationErrorKey" ] as? String,
                         let object = detailedError.userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
-                            VLog( "\t- Missing value for non-optional field \"\(validationField)\" on object \(object.dynamicType)." )
+                            managedObject = object
+                            message += "\n - Missing value for non-optional field \"\(validationField)\" on object \(managedObject?.dynamicType)."
                     }
                 }
             }
-            VLog( "Failed to save object: \((error as NSError).localizedDescription)" )
+            else if let validationField = userInfo[ "NSValidationErrorKey" ] as? String,
+                let object = userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
+                    managedObject = object
+                    message += "\n - Missing value for non-optional field \"\(validationField)\" on object \(managedObject?.dynamicType)."
+            }
+            VLog(message + "\n\n")
             assertionFailure()
         }
     }
     
-    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
-        
-        let fetchRequest = NSFetchRequest(entityName: entityName)
-        
+    func v_deleteObjects( fetchRequest: NSFetchRequest ) -> Bool {
         do {
             let results = try self.executeFetchRequest( fetchRequest ) as? [NSManagedObject] ?? []
             for result in results {
@@ -42,9 +45,13 @@ extension NSManagedObjectContext {
             }
             return true
         } catch {
-            VLog( "Failed to delete objects with entity name \(entityName): \(error)" )
+            VLog( "Failed to delete objects with entity name \(fetchRequest.entityName): \(error)" )
             return false
         }
+    }
+    
+    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
+        return v_deleteObjects( NSFetchRequest(entityName: entityName) )
     }
     
     func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
@@ -77,8 +84,8 @@ extension NSManagedObjectContext {
         
         } else {
             let object = self.v_createObjectWithEntityName( entityName )
-            for (key, value) in queryDictionary where !(value is [String : AnyObject]) && !(key.containsString(".")) {
-                object.setValue(value, forKey: key)
+            for (key, value) in queryDictionary where (value as? String) != "nil" && !(value is [String : AnyObject]) && !(key.containsString(".")) {
+                object.setValue( value, forKey: key)
             }
             return object
         }

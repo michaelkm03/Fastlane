@@ -431,15 +431,21 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         return;
     }
     
+    if ( self.queuedNotificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        self.queuedNotificationID = nil;
+    }
+    
 #ifdef V_SWITCH_ENVIRONMENTS
     NSNumber *environmentError = notification.userInfo[ VEnvironmentDidFailToLoad ];
     if ( environmentError.boolValue )
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:@"Error while launching on custom environment.\nReverting back to default." preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)
-        {
-            [alert dismissViewControllerAnimated:YES completion:nil];
-        }]];
+                          {
+                              [alert dismissViewControllerAnimated:YES completion:nil];
+                          }]];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
                            [self presentViewController:alert animated:YES completion:nil];
@@ -447,14 +453,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 #endif
     
-    if ( self.queuedNotificationID != nil )
-    {
-        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
-        self.queuedNotificationID = nil;
-    }
-    
-    [self showViewController:nil animated:NO completion:nil];
-    [self showLoadingViewController];
+    PrunePersistentStoreOperation *operation = [[PrunePersistentStoreOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+     {
+         [self showViewController:nil animated:NO completion:nil];
+         [self showLoadingViewController];
+     }];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification

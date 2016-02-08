@@ -7,7 +7,6 @@
 //
 
 #import "VStreamTrackingHelper.h"
-#import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
@@ -96,18 +95,20 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
-    NSArray *trackingURLs = sequence.tracking.cellView;
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     
-    if ( sequence == nil || stream == nil || trackingURLs.count == 0 )
+    if ( sequence == nil || stream == nil || tracking == nil )
     {
+        VLog( @"Cannot track 'cellView' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
+             sequence.remoteId, stream.remoteId, tracking.cellView);
         return;
     }
     
     NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId ?: @"",
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : trackingURLs,
-                              VTrackingKeyStreamId : trackingID ?: @"" };
+                              VTrackingKeyUrls : tracking.cellView,
+                              VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
                                           eventId:sequence.remoteId];
@@ -121,11 +122,19 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     
+    if ( sequence == nil || stream == nil || tracking == nil )
+    {
+        VLog( @"Cannot track 'cellClick' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
+             sequence.remoteId, stream.remoteId, tracking.cellClick);
+        return;
+    }
+
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyUrls : tracking.cellClick,
                               VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
@@ -133,7 +142,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     {
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
-            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
+            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:tracking.viewStop];
             event.context = context;
             event.autoPlay = YES;
             event.currentTime = info[VTrackingKeyTimeCurrent];
@@ -192,7 +201,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     self.didTrackViewDidAppear = YES;
     
-    if (stream.isHashtagStream)
+    const BOOL isHashtagStream = stream.hashtag != nil;
+    
+    if (isHashtagStream)
     {
         NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
                                   VTrackingKeyStreamId : stream.trackingIdentifier ?: @"",
@@ -208,7 +219,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     
     // Be sure to set context AFTER the events above, so that the above events contain
     // any previous context, and the new context below affects subsequent events
-    NSString *context = [stream isHashtagStream] ? VTrackingValueHashtagStream : VTrackingValueStream;
+    NSString *context = isHashtagStream ? VTrackingValueHashtagStream : VTrackingValueStream;
     [[VTrackingManager sharedInstance] setValue:context forSessionParameterWithKey:VTrackingKeyContext];
 }
 

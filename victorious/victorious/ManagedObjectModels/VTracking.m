@@ -24,7 +24,5 @@
 @dynamic videoStall;
 @dynamic viewStart;
 @dynamic share;
-@dynamic sequence;
-@dynamic voteType;
 
 @end

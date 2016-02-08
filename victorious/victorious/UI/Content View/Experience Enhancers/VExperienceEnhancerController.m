@@ -218,7 +218,7 @@
 
 - (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown
 {
-    NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL( VExperienceEnhancer *experienceEnhancer, NSDictionary *bindings)
+    NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *experienceEnhancer, NSDictionary *bindings)
                                     {
                                         return experienceEnhancer.cooldownDate != nil;
                                     }];

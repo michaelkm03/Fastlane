@@ -12,7 +12,6 @@
 #import "VCrossFadingMarqueeLabel.h"
 #import "VCrossFadingImageView.h"
 #import "VTimerManager.h"
-#import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
@@ -22,6 +21,7 @@
 #import "VStreamItemPreviewView.h"
 #import "UIView+VViewRendering.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VStream.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
 static const CGFloat kOffsetOvershoot = 20.0f;
@@ -113,7 +113,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[marqueeItems indexOfObject:streamItem]];
     }
     
-    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.currentStream.apiPath];
+    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithStreamID:self.currentStream.remoteId];
     self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value

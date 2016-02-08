@@ -7,7 +7,6 @@
 //
 
 #import "VStreamItem+Fetcher.h"
-#import "VEditorializationItem.h"
 #import "victorious-Swift.h"
 
 //Type values
@@ -139,46 +138,6 @@ NSString * const VStreamItemSubTypeStream = @"stream";
         return ((VSequence *)self).inStreamPreviewImageURL;
     }
     return [self previewImageUrl];
-}
-
-- (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath
-{
-    NSManagedObjectContext *context = self.managedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VEditorializationItem v_entityName]];
-    NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", @"apiPath", apiPath, @"streamItemId", self.remoteId];
-    [request setPredicate:idFilter];
-    NSError *error = nil;
-    VEditorializationItem *editorializationItem = [[context executeFetchRequest:request error:&error] firstObject];
-    if (error != nil)
-    {
-        VLog(@"Error occured in editorializationForStreamWithApiPath: %@", error);
-    }
-    
-    if ( editorializationItem == nil )
-    {
-        //Create a new one if it doesn't exist
-        editorializationItem = [NSEntityDescription insertNewObjectForEntityForName:[VEditorializationItem v_entityName]
-                                               inManagedObjectContext:context];
-        editorializationItem.apiPath = apiPath;
-        editorializationItem.streamItemId = self.remoteId;
-        
-#warning FIXME: Redo this whoe method in the new architecture
-        [editorializationItem.managedObjectContext save:nil];
-    }
-    
-    return editorializationItem;
-}
-
-- (BOOL)hasEqualTitlesAsStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath inMarquee:(BOOL)inMarquee
-{
-    //Check marquees to see if we do after all
-    VEditorializationItem *oldItem = [self editorializationForStreamWithApiPath:apiPath];
-    NSString *oldHeadline = inMarquee ? oldItem.marqueeHeadline : oldItem.headline;
-    BOOL headlinesAreNil = oldItem.marqueeHeadline == nil && streamItem.headline == nil;
-    BOOL namesAreNil = self.name == nil && streamItem.name == nil;
-    BOOL headlinesAreSame = [oldHeadline isEqualToString:streamItem.headline];
-    BOOL namesAreSame = [self.name isEqualToString:streamItem.name];
-    return (headlinesAreNil || headlinesAreSame) && (namesAreNil || namesAreSame);
 }
 
 @end

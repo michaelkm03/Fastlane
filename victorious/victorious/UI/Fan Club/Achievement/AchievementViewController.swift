@@ -61,7 +61,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
                 return
             }
             
-            iconImageView.setImageWithURL(iconURL)
+            iconImageView.sd_setImageWithURL(iconURL)
             iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
         }
     }

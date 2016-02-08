@@ -443,7 +443,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         if ( !self.videoPlayerDidFinishPlayingOnce )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
+            NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
+            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.trackingData.viewStop ?: @[],
                                       VTrackingKeyStreamId : self.viewModel.streamId,
                                       VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
@@ -522,20 +523,22 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)trackNonVideoViewStart
 {
+    NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyUrls : self.viewModel.trackingData.viewStart ?: @[],
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 - (void)trackVideoViewStart
 {
+    NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyUrls : self.viewModel.trackingData.viewStart ?: @[],
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }

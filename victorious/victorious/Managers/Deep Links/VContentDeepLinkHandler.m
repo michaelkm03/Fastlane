@@ -88,7 +88,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     context.originDependencyManager = self.dependencyManager;
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
-    [self loadSequence:sequenceID completion:^(NSError *_Nullable error)
+    [self loadSequence:sequenceID streamID:nil completion:^(NSError *_Nullable error)
      {
          if ( error == nil )
          {

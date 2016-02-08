@@ -9,7 +9,6 @@
 #import "VShowcaseDirectoryCellFactory.h"
 #import "VShowcaseDirectoryCell.h"
 #import "VDependencyManager.h"
-#import "VStreamItem+Fetcher.h"
 #import "VStream.h"
 #import "VDirectoryCollectionFlowLayout.h"
 

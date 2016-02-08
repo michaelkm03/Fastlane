@@ -59,7 +59,7 @@
     [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
-- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithStreamID:(NSString *)streamID
 {
     self.streamItem = streamItem;
 }

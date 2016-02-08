@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VNavigationController.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VScrollPaginator.h"
 #import "VFooterActivityIndicatorView.h"
@@ -71,7 +71,7 @@
     self.navigationBarShouldAutoHide = YES;
     
     id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
-    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
+    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.remoteId
                                                                    timingTracker:timingTracker];
 }
 

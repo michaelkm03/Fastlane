@@ -92,7 +92,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     if ( self.mediaUrl == nil )
     {
         NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-        SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
+        SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId streamID:nil];
         [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
          {
              if ( error != nil )
@@ -112,7 +112,8 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              
              self.sequence = sequence;
              self.mediaUrl = asset.dataURL;
-             [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
+             VTracking *trackingData = sequence.streamItemPointerForStandloneStreamItem.tracking;
+             [self.videoPlayerViewController enableTrackingWithTrackingItem:trackingData streamID:nil];
              [self showVideo];
          }];
         
@@ -219,11 +220,15 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         self.hasVideoPlayed = YES;
         
+        VTracking *tracking = self.sequence.streamItemPointerForStandloneStreamItem.tracking;
+        NSAssert( tracking != nil, @"Cannot track 'cellView' event because tracking data is missing." );
+        
         NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.sequence.remoteId,
-                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime) };
+                                  VTrackingKeyUrls :tracking.viewStart ?: @[],
+                                  VTrackingKeyLoadTime : @(videoLoadTime)
+                                  };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
 }

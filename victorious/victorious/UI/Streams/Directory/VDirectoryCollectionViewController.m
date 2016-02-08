@@ -12,7 +12,6 @@
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
 #import "VDirectoryCellUpdateableFactory.h"
-#import "VStreamItem+Fetcher.h"
 #import "VStreamItem.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
@@ -325,7 +324,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     {
         [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
-        NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
+        NSString *streamId = self.marqueeController.stream.shelfId.length && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.remoteId;
         ContentViewContext *context = [[ContentViewContext alloc] init];
         context.sequence = (VSequence *)streamItem;
         context.streamId = streamId;
