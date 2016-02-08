@@ -25,7 +25,9 @@ class VImageAnimationOperation: Operation {
     var animationSequence = [UIImage]()
     private var currentFrame: Int = -1
     private var animationTimer: VTimerManager = VTimerManager()
-    var ballisticAnimationBlock: (( ()->() )->(Void))?
+    var ballisticAnimationBlock: (( ()->() )->(Void)) = { completion in
+        completion()
+    }
     
     func isAnimating() -> Bool {
         if completedAnimation() {
@@ -62,13 +64,7 @@ class VImageAnimationOperation: Operation {
     func beginAnimation() {
         
         let frameDuration: Float = animationDuration/Float(animationSequence.count)
-        if let ballisticAnimationBlock = ballisticAnimationBlock {
-            ballisticAnimationBlock(){
-                self.currentFrame = 0
-                VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
-            }
-        }
-        else {
+        ballisticAnimationBlock() {
             VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
         }
     }
