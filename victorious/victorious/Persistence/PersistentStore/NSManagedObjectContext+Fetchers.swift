@@ -37,10 +37,7 @@ extension NSManagedObjectContext {
         }
     }
     
-    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
-        
-        let fetchRequest = NSFetchRequest(entityName: entityName)
-        
+    func v_deleteObjects( fetchRequest: NSFetchRequest ) -> Bool {
         do {
             let results = try self.executeFetchRequest( fetchRequest ) as? [NSManagedObject] ?? []
             for result in results {
@@ -48,9 +45,13 @@ extension NSManagedObjectContext {
             }
             return true
         } catch {
-            VLog( "Failed to delete objects with entity name \(entityName): \(error)" )
+            VLog( "Failed to delete objects with entity name \(fetchRequest.entityName): \(error)" )
             return false
         }
+    }
+    
+    func v_deleteAllObjectsWithEntityName( entityName: String ) -> Bool {
+        return v_deleteObjects( NSFetchRequest(entityName: entityName) )
     }
     
     func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
