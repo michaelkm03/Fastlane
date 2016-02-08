@@ -843,6 +843,7 @@
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
 		A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */; };
+		A75486DA1C691B07003024D8 /* PrunePersistentStoreOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -3098,6 +3099,7 @@
 		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+PublishParameters.swift"; sourceTree = "<group>"; };
+		A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrunePersistentStoreOperation.swift; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
 		A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -7244,6 +7246,7 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
+				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -11509,6 +11512,7 @@
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
 				A7B1330B1C604CE9006EC4F5 /* ErrorOperation.swift in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
+				A75486DA1C691B07003024D8 /* PrunePersistentStoreOperation.swift in Sources */,
 				A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */,
 				7979A02E1C18AC9800455FF8 /* VTOSViewController.swift in Sources */,
 				A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */,

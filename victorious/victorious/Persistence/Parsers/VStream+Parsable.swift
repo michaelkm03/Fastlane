@@ -45,6 +45,8 @@ extension VStream: PersistenceParsable {
             self.v_addObject( child, to: "marqueeItemPointers" )
         }
         
+        print( "BEFORE Stream '\(remoteId)': \(streamItemPointers.count) stream item pointers." )
+        
         // Parse out the streamItems
         let sourceStreamItems = sourceStream.items ?? []
         let streamItems = VStream.persistentStreamItems(
@@ -57,6 +59,8 @@ extension VStream: PersistenceParsable {
             let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
             self.v_addObject( child, to: "streamItemPointers" )
         }
+        print( streamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.remoteId })
+        print( "AFTER Stream '\(remoteId)': \(streamItemPointers.count) stream item pointers." )
         
         if let textPostAsset = sourceStream.previewTextPostAsset {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()

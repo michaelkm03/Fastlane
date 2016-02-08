@@ -9,12 +9,6 @@
 import Foundation
 import CoreData
 
-func ==(lhs: VStreamItemPointer, rhs: VStreamItemPointer) -> Bool {
-    return lhs.streamItem == rhs.streamItem
-        && lhs.marqueeParent == rhs.marqueeParent
-        && lhs.streamParent == rhs.streamParent
-}
-
 class VStreamItemPointer: NSManagedObject {
     
     @NSManaged var headline: String?

@@ -67,7 +67,7 @@
                                              [contentViewController.navigationController pushViewController:vc animated:YES];
                                          }];
                                     }];
-
+    
     [actionItems addObject:descriptionItem];
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
@@ -118,12 +118,12 @@
     void (^shareHandler)(VActionItem *item) = ^void(VActionItem *item)
     {
         [contentViewController dismissViewControllerAnimated:YES
-                                 completion:^
+                                                  completion:^
          {
              [self.sequenceActionController shareFromViewController:contentViewController
-                                                      sequence:contentViewController.viewModel.sequence
-                                                          node:contentViewController.viewModel.currentNode
-                                                             streamID:self.viewModel.streamId
+                                                           sequence:contentViewController.viewModel.sequence
+                                                               node:contentViewController.viewModel.currentNode
+                                                           streamID:self.viewModel.streamId
                                                          completion:nil];
          }];
     };
@@ -176,15 +176,15 @@
                                                       completion:^
              {
                  [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
-                 {
-                     [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-                      {
-                          if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
-                          {
-                              [self.delegate contentViewDidFlagContent:self];
-                          }
-                      }];
-                 }];
+                  {
+                      [self.presentingViewController dismissViewControllerAnimated:YES completion:^
+                       {
+                           if ([self.delegate respondsToSelector:@selector(contentViewDidFlagContent:)])
+                           {
+                               [self.delegate contentViewDidFlagContent:self];
+                           }
+                       }];
+                  }];
              }];
         };
         [actionItems addObject:flagItem];
@@ -247,7 +247,7 @@
     [self setupRemixActionItem:gifItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withBlock:^
+                     withBlock:^
      {
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
@@ -260,8 +260,8 @@
         dismissCompletionBlock:^
      {
          [self.sequenceActionController showGiffersOnNavigationController:contentViewController.navigationController
-                                                                  sequence:self.viewModel.sequence
-                                                      andDependencyManager:self.dependencyManager];
+                                                                 sequence:self.viewModel.sequence
+                                                     andDependencyManager:self.dependencyManager];
      }];
     return gifItem;
 }
@@ -275,7 +275,7 @@
     [self setupRemixActionItem:memeItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withBlock:^
+                     withBlock:^
      {
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
@@ -288,8 +288,8 @@
         dismissCompletionBlock:^
      {
          [self.sequenceActionController showMemersOnNavigationController:contentViewController.navigationController
-                                                                  sequence:self.viewModel.sequence
-                                                      andDependencyManager:self.dependencyManager];
+                                                                sequence:self.viewModel.sequence
+                                                    andDependencyManager:self.dependencyManager];
      }];
     return memeItem;
 }
