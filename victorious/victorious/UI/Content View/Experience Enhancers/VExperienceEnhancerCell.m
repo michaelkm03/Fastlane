@@ -80,7 +80,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
                           delay:0.0f
          usingSpringWithDamping:1.0f
           initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
          self.ballisticIconView.alpha = highlighted ? 0.5f : 1.0f;
