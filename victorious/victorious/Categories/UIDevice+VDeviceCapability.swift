@@ -68,6 +68,11 @@ private let kiPhoneConstant = "iPhone"
 
 extension UIDevice {
     func v_numberOfConcurrentAnimationsSupported() -> VDeviceRating {
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            return VDeviceRating.LightningFast
+        
+        #else
+        
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -132,5 +137,6 @@ extension UIDevice {
         }
         //Other, return 1
         return VDeviceRating.Unknown
+        #endif
     }
 }
