@@ -74,10 +74,7 @@ static CGFloat const kTimerInterval = 0.1f;
     CGRect frame = self.bounds;
     
     CGRect labelFrame = self.label.frame;
-    labelFrame.size.width = frame.size.width;
-    self.label.frame = labelFrame;
-    [self.label sizeToFit];
-    labelFrame = self.label.frame;
+    labelFrame.size.height = [self.label sizeThatFits:CGSizeMake(frame.size.width, CGFLOAT_MAX)].height;
     
     /// If the label's height is greater than the max cell height, we add an offset and allow for scrolling
     /// Otherwise, we don't allow for scrolling
@@ -86,7 +83,7 @@ static CGFloat const kTimerInterval = 0.1f;
         labelFrame.origin.y = kGradientOffset;
         self.label.frame = labelFrame;
         
-        CGSize contentSize = frame.size;
+        CGSize contentSize = labelFrame.size;
         contentSize.height += 2*kGradientOffset;
         self.scrollView.contentSize = contentSize;
         
@@ -167,20 +164,8 @@ static CGFloat const kTimerInterval = 0.1f;
     if (self.scrollView.contentSize.height > self.maxHeight)
     {
         self.scrollDown = YES;
-        self.timer = [VTimerManager addTimerManagerWithTimeInterval:kTimerInterval target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES toRunLoop:[NSRunLoop mainRunLoop] withRunMode:NSDefaultRunLoopMode];
+        self.timer = [VTimerManager addTimerManagerWithTimeInterval:kTimerInterval target:self selector:@selector(autoscrollTimerFired) userInfo:nil repeats:YES toRunLoop:[NSRunLoop mainRunLoop] withRunMode:NSRunLoopCommonModes];
     }
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self stopScroll];
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self startScroll];
 }
 
 #pragma mark - Dealloc
