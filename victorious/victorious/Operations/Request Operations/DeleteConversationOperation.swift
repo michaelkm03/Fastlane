@@ -33,7 +33,10 @@ class DeleteConversationOperation: FetcherOperation {
             }
             context.deleteObject( conversation )
             context.v_save()
-            self.persistentStore.mainContext.v_save()
+        }
+        
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            context.v_save()
         }
     }
 }
