@@ -68,6 +68,8 @@ private let kiPhoneConstant = "iPhone"
 
 extension UIDevice {
     func v_numberOfConcurrentAnimationsSupported() -> VDeviceRating {
+        
+        // This detects the iOS simulator
         #if (arch(i386) || arch(x86_64)) && os(iOS)
             return VDeviceRating.LightningFast
         
