@@ -95,12 +95,12 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
-    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
-    NSAssert( tracking != nil, @"Cannot track 'cellView' event because tracking data is missing." );
     
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     if ( sequence == nil || stream == nil || tracking == nil )
     {
-        return;
+        VLog( @"Cannot track 'cellView' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
+             sequence.remoteId, stream.remoteId, tracking.cellView);
     }
     
     NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
@@ -123,11 +123,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VStream *stream = context.stream;
     
     VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
-    NSAssert( tracking != nil, @"Cannot track 'cellClick' because tracking data is missing." );
-    
     if ( sequence == nil || stream == nil || tracking == nil )
     {
-        return;
+        VLog( @"Cannot track 'cellClick' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
+             sequence.remoteId, stream.remoteId, tracking.cellClick);
     }
 
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
