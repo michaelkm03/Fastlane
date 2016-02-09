@@ -23,7 +23,6 @@ class PrunePersistentStoreOperation: FetcherOperation {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             
             context.v_deleteAllObjectsWithEntityName( VStreamItemPointer.v_entityName() )
-            context.v_deleteAllObjectsWithEntityName( VSequence.v_entityName() )
             
             context.v_deleteAllObjectsWithEntityName( VComment.v_entityName() )
             context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )

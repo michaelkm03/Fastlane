@@ -280,9 +280,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [self.KVOController unobserve:_sequence];
+    if (_sequence == sequence)
+    {
+        return;
+    }
     
     _sequence = sequence;
+    [self.KVOController unobserve:_sequence];
     
     [self.KVOController observe:_sequence
                         keyPath:@"comments"
@@ -294,10 +298,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                         options:NSKeyValueObservingOptionNew
                          action:@selector(commentsUpdated)];
     
-    [self updatePreviewViewForSequence:sequence];
-    self.headerView.sequence = sequence;
-    self.sleekActionView.sequence = sequence;
-    [self updateCaptionViewForSequence:sequence];
+    [self updatePreviewViewForSequence:_sequence];
+    self.headerView.sequence = _sequence;
+    self.sleekActionView.sequence = _sequence;
+    [self updateCaptionViewForSequence:_sequence];
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
@@ -305,7 +309,8 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                            NSStringFromSelector(@selector(commentCount)),
                            NSStringFromSelector(@selector(likeCount)),
                            NSStringFromSelector(@selector(isLikedByMainUser)) ];
-    [self.KVOController observe:self.sequence keyPaths:keyPaths
+    [self.KVOController observe:_sequence
+                       keyPaths:keyPaths
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                           block:^(id observer, id object, NSDictionary *change)
      {
@@ -315,15 +320,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              return;
          }
          
-         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf updateCountsTextViewForSequence:_sequence];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.likeButton
-                                                      selected:sequence.isLikedByMainUser.boolValue];
+                                                      selected:_sequence.isLikedByMainUser.boolValue];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
-                                                      selected:sequence.hasReposted.boolValue];
+                                                      selected:_sequence.hasReposted.boolValue];
      }];
     
-    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
-    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
+    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:_sequence]];
+    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:_sequence]];
 }
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
