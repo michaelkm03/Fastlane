@@ -12,31 +12,24 @@ private let keySeparator = "&"
 private let valueSeparator = "="
 private let arrayValueSeperator = "[]"
 
-private let queryPartAllowedCharacterSet: NSCharacterSet = {
-    let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
-    mutableCharacterSet.removeCharactersInString(";/?:@&=+,$")
-    return mutableCharacterSet.copy() as! NSCharacterSet
-}()
-
 extension NSDictionary {
     public func vsdk_urlEncodedString() -> String {
         let encodedString = NSMutableString()
         for (key, value) in self {
-            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
                 
                 // Checks for an array value and encodes it appropriately
                 if let valueArray = value as? NSArray {
                     for value in valueArray {
-                        if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+                        if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
                             encodedString.appendURLParameter(key, value: value, useArraySeperator: true)
                         }
                     }
                 }
-                else if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+                else if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
                     encodedString.appendURLParameter(key, value: value)
                 }
             }
-            
         }
         return encodedString as String
     }
@@ -70,9 +63,3 @@ extension NSMutableURLRequest {
     }
 }
 
-extension NSCharacterSet {
-    /// Returns the character set for characters allowed in a query URL component.
-    public static var vsdk_queryPartAllowedCharacterSet: NSCharacterSet {
-        return queryPartAllowedCharacterSet
-    }
-}

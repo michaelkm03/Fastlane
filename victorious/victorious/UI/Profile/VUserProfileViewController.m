@@ -480,7 +480,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (VStream *)createUserProfileStreamWithUserID:(NSString *)userID
 {
-    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
+    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartAllowedCharacterSet];
     NSString *escapedRemoteId = [(userID ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
                          escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
