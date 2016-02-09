@@ -38,6 +38,7 @@ static const CGFloat kActivityFooterHeight = 50.0f;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, strong) VConversation *queuedConversation;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, weak) UIViewController *selectedConversationViewController;
 
 @end
 
@@ -114,8 +115,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
-    [self.refreshControl beginRefreshing];
-    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,16 +127,22 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
-    if ( self.hasLoadedOnce )
+    const BOOL isReturningFromMessage = self.selectedConversationViewController != nil;
+    if ( isReturningFromMessage )
     {
-        // This will do a fast local refresh to update the order of conversations
-        // as well as visible `lastMessageText`.
+        // Any sending/receiving messages that happens while a conversation detail is shown
+        // will all be cached locally, so only a local refresh is needed
         [self.dataSource refreshLocalWithCompletion:^(NSArray *_Nonnull results)
          {
              [self.tableView reloadData];
          }];
     }
+    else
+    {
+        [self refresh];
+    }
     
+    self.selectedConversationViewController = nil;
     [self updateTableView];
 }
 
@@ -152,7 +157,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     if ( self.queuedConversation != nil )
     {
-        [self displayConversation:self.queuedConversation animated:YES];
+        [self showConversation:self.queuedConversation animated:YES];
         self.queuedConversation = nil;
     }
 }
@@ -177,6 +182,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];
+         [self.messageCountCoordinator updateUnreadMessageCount];
+         [self updateBadges];
      }];
 }
 
@@ -316,7 +323,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     if (conversation.user)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
-        [self displayConversation:conversation animated:YES];
+        [self showConversation:conversation animated:YES];
     }
 }
 
@@ -327,7 +334,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - Actions
 
-- (void)displayConversation:(VConversation *)conversation animated:(BOOL)animated
+- (void)showConversation:(VConversation *)conversation animated:(BOOL)animated
 {
     VConversationContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
     detailVC.conversation = conversation;
@@ -349,6 +356,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
         detailVC.messageCountCoordinator = self.messageCountCoordinator;
         [rootInnerNavigationController pushViewController:detailVC animated:YES];
     }
+    
+    self.selectedConversationViewController = detailVC;
 }
 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl
@@ -383,11 +392,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
         return;
     }
     
-    self.isLoadingNextPage = YES;
-    [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *_Nullable error)
-     {
-         self.isLoadingNextPage = NO;
-     }];
+    self.shouldAnimateDataSourceChanges = NO;
+    [self.dataSource loadConversations:VPageTypeNext completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -420,11 +426,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
-    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
-    {
-        [self.messageCountCoordinator updateUnreadMessageCount];
-        [self updateBadges];
-    }];
+    [self refresh];
 }
 
 - (void)updateBadges
