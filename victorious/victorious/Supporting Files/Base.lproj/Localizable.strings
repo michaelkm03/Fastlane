@@ -279,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ at %@";//e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Report/Flag";
-"REPOSTERS"             =   "Reposters"; // Title for a list of users who have reposted something
+"REPOSTS"               =   "Reposts";
 "Repost"                =   "Repost";
 "Reposted"              =   "Reposted";
 

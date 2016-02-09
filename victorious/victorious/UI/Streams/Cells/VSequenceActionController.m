@@ -218,8 +218,8 @@
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithSequence:sequence
-                                                                            dependencyManager:self.dependencyManager];
+    VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithDependencyManager:self.dependencyManager];
+    vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 

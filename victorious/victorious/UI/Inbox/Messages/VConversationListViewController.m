@@ -38,7 +38,6 @@ static const CGFloat kActivityFooterHeight = 50.0f;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, strong) VConversation *queuedConversation;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (nonatomic, assign) BOOL needsRemoteRefreshOnAppearance;
 
 @end
 
@@ -129,12 +128,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
-    if ( self.needsRemoteRefreshOnAppearance )
-    {
-        [self refresh];
-        self.needsRemoteRefreshOnAppearance = NO;
-    }
-    else if ( self.hasLoadedOnce )
+    if ( self.hasLoadedOnce )
     {
         // This will do a fast local refresh to update the order of conversations
         // as well as visible `lastMessageText`.
@@ -413,9 +407,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    self.hasLoadedOnce = NO;
-    self.needsRemoteRefreshOnAppearance = YES;
-    
     if ( [VCurrentUser user] != nil )
     {
         [self.messageCountCoordinator updateUnreadMessageCount];

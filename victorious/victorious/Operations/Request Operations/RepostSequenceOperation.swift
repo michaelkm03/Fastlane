@@ -30,7 +30,7 @@ class RepostSequenceOperation: RequestOperation {
             let node:VNode = context.v_findOrCreateObject( [ "remoteId" : self.nodeID ] )
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
-            user.v_addObject(node.sequence, to: "repostedSequences")
+            user.repostedSequences.insert( node.sequence )
             
             context.v_save()
         }
