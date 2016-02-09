@@ -443,7 +443,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         if ( !self.videoPlayerDidFinishPlayingOnce )
         {
-            NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
+            if ( self.viewModel.trackingData == nil )
+            {
+                VLog( @"Cannot track events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+                return;
+            }
             NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.trackingData.viewStop ?: @[],
                                       VTrackingKeyStreamId : self.viewModel.streamId,
                                       VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
@@ -523,7 +527,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)trackNonVideoViewStart
 {
-    NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
+    if ( self.viewModel.trackingData == nil )
+    {
+        VLog( @"Cannot track `viewStart` events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+        return;
+    }
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
@@ -534,7 +542,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)trackVideoViewStart
 {
-    NSAssert( self.viewModel.trackingData != nil, @"Cannot track events without a valid `trackingData`" );
+    if ( self.viewModel.trackingData == nil )
+    {
+        VLog( @"Cannot track `viewStart` events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+        return;
+    }
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
