@@ -268,8 +268,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func configureSearchBar() {
         guard let dependencyManager = self.dependencyManager,
-              let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
-              let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
+            let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+            let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
                 return
         }
         
