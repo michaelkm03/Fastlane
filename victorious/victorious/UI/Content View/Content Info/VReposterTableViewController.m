@@ -13,23 +13,27 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VScrollPaginator.h"
 #import "victorious-Swift.h"
 
-@interface VReposterTableViewController ()
+@interface VReposterTableViewController () <VScrollPaginatorDelegate, PaginatedDataSourceDelegate>
 
-@property (nonatomic, strong) NSArray *reposters;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) RepostersDataSource *dataSource;
 
 @end
 
 @implementation VReposterTableViewController
 
-- (id)initWithDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithSequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
     {
         _dependencyManager = dependencyManager;
+        _dataSource = [[RepostersDataSource alloc] initWithSequence:sequence dependencyManager:dependencyManager];
     }
     return self;
 }
@@ -38,24 +42,37 @@
 {
     [super viewDidLoad];
     
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
+    
+    self.tableView.dataSource = self.dataSource;
+    self.tableView.delegate = self;
+    self.dataSource.delegate = self;
+    [self.dataSource registerCells:self.tableView];
+    
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeAll;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    self.title = NSLocalizedString(@"REPOSTS", nil);
-    
+    self.title = NSLocalizedString(@"REPOSTERS", nil);
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    self.reposters = [[NSArray alloc] init];
+    // Removes the separaters for empty rows
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell] forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
+    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.frame];
+    noContentView.title = NSLocalizedString(@"NoRepostersTitle", @"");
+    noContentView.message = NSLocalizedString(@"NoRepostersMessage", @"");
+    noContentView.icon = [UIImage imageNamed:@"noRepostsIcon"];
+    noContentView.dependencyManager = self.dependencyManager;
+    self.noContentView = noContentView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
+    [self.dataSource loadRepostersWithPageType:VPageTypeFirst];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -72,68 +89,71 @@
     [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
 }
 
-#pragma mark - Table view data source
+#pragma mark - VScrollPaginatorDelegate
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)shouldLoadNextPage
 {
-    return [self.reposters count];
+    [self.dataSource loadRepostersWithPageType:VPageTypeNext];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)shouldLoadPreviousPage
 {
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
-    cell.profile = self.reposters[indexPath.row];
-    cell.dependencyManager = self.dependencyManager;
-    
-    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    return 50.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    VUser *selectedUser = self.reposters[ indexPath.row ];
+    VUser *selectedUser = self.dataSource.visibleItems[ indexPath.row ];
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:selectedUser];
     NSAssert( self.navigationController != nil, @"View controller must be in a navigation controller." );
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+#pragma mark - PaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum DataSourceState)oldState to:(enum DataSourceState)newState
 {
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
-    }
+    [self updateTableView];
 }
 
-- (void)setHasReposters:(BOOL)hasReposters
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
-    if (!hasReposters)
+    [self.tableView v_applyChangeInSection:0 from:oldValue to:newValue];
+}
+
+#pragma mark - private
+
+- (void)updateTableView
+{
+    self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? UITableViewCellSeparatorStyleSingleLine : UITableViewCellSeparatorStyleNone;
+    
+    switch ( [self.dataSource state] )
     {
-        VNoContentView *noRepostersView = [VNoContentView viewFromNibWithFrame:self.tableView.frame];
-        if ( [noRepostersView respondsToSelector:@selector(setDependencyManager:)] )
-        {
-            noRepostersView.dependencyManager = self.dependencyManager;
+        case DataSourceStateError:
+        case DataSourceStateNoResults: {
+            if ( self.tableView.backgroundView != self.noContentView )
+            {
+                self.tableView.backgroundView = self.noContentView;
+                [self.noContentView resetInitialAnimationState];
+                [self.noContentView animateTransitionIn];
+            }
+            break;
         }
-        self.tableView.backgroundView = noRepostersView;
-        noRepostersView.title = NSLocalizedString(@"NoRepostersTitle", @"");
-        noRepostersView.message = NSLocalizedString(@"NoRepostersMessage", @"");
-        noRepostersView.icon = [UIImage imageNamed:@"noRepostsIcon"];
-        
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    }
-    else
-    {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        [UIView animateWithDuration:0.2f
-                         animations:^
-         {
-             self.tableView.backgroundView.alpha = 0.0f;
-         }
-                         completion:^(BOOL finished)
-         {
-             self.tableView.backgroundView = nil;
-         }];
+            
+        default:
+            [UIView animateWithDuration:0.5f animations:^void
+             {
+                 self.tableView.backgroundView = nil;
+             }];
+            break;
     }
 }
 

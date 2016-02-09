@@ -728,7 +728,6 @@
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
 		A71F41F31C0409C400131BE6 /* SequenceRepostersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F41F21C0409C400131BE6 /* SequenceRepostersRequest.swift */; };
 		A71F41F51C040A1A00131BE6 /* SequenceRepostersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F41F41C040A1A00131BE6 /* SequenceRepostersRequestTests.swift */; };
-		A71F41FB1C040D4D00131BE6 /* VReposterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F41FA1C040D4D00131BE6 /* VReposterTableViewController.swift */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */; };
 		A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
@@ -844,6 +843,7 @@
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
 		A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */; };
 		A75486DA1C691B07003024D8 /* PrunePersistentStoreOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */; };
+		A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486E01C695B4F003024D8 /* RepostersDataSource.swift */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -2922,7 +2922,6 @@
 		A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+LocalNotification.swift"; sourceTree = "<group>"; };
 		A71F41F21C0409C400131BE6 /* SequenceRepostersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostersRequest.swift; sourceTree = "<group>"; };
 		A71F41F41C040A1A00131BE6 /* SequenceRepostersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostersRequestTests.swift; sourceTree = "<group>"; };
-		A71F41FA1C040D4D00131BE6 /* VReposterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VReposterTableViewController.swift; sourceTree = "<group>"; };
 		A72004FA1A02FEC000285A9C /* sampleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage.png; sourceTree = "<group>"; };
 		A720054A1A030D9300285A9C /* VTrackingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingConstants.h; sourceTree = "<group>"; };
 		A720054B1A030D9300285A9C /* VTrackingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingConstants.m; sourceTree = "<group>"; };
@@ -3101,6 +3100,7 @@
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+PublishParameters.swift"; sourceTree = "<group>"; };
 		A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrunePersistentStoreOperation.swift; sourceTree = "<group>"; };
+		A75486E01C695B4F003024D8 /* RepostersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostersDataSource.swift; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
 		A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -4924,7 +4924,7 @@
 			children = (
 				0314D36819B46B5E00FA363C /* VReposterTableViewController.h */,
 				0314D36919B46B5E00FA363C /* VReposterTableViewController.m */,
-				A71F41FA1C040D4D00131BE6 /* VReposterTableViewController.swift */,
+				A75486E01C695B4F003024D8 /* RepostersDataSource.swift */,
 			);
 			path = "Content Info";
 			sourceTree = "<group>";
@@ -11065,6 +11065,7 @@
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
+				A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
@@ -11733,7 +11734,6 @@
 				A76AEA361BFEB9EC00E8A26F /* VLoginType+Tracking.swift in Sources */,
 				F03C135D1B698F7000287F4C /* VComment.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
-				A71F41FB1C040D4D00131BE6 /* VReposterTableViewController.swift in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				79B719011C56E95800578012 /* VSequence+Keyable.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
