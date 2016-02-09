@@ -65,12 +65,23 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
-        guard let apiPath = url.v_pathComponent() else {
-            fatalError("Failed to load stream for an explore view controller!")
+        let urlPath = url.v_pathComponent()
+        let query = ["apiPath" : urlPath]
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        var persistentStream: VStream?
+        
+        persistentStore.mainContext.performBlockAndWait {
+            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.v_entityName(), queryDictionary: query) as? VStream else {
+                return
+            }
+            stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+            persistentStore.mainContext.v_save()
+            persistentStream = stream
         }
-        let stream = createStreamWithAPIPath(apiPath)
-        stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
-        exploreVC.currentStream = stream
+        
+        if let stream = persistentStream {
+            exploreVC.currentStream = stream
+        }
         
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
@@ -79,14 +90,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
         exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
         return exploreVC
-    }
-    
-    private static func createStreamWithAPIPath(apiPath: String) -> VStream {
-        return PersistentStoreSelector.defaultPersistentStore.mainContext.v_performBlockAndWait { context in
-            let stream: VStream = context.v_findOrCreateObject(["apiPath" : apiPath])
-            context.v_save()
-            return stream
-        }
     }
     
     /// MARK: - View Controller LifeCycle
@@ -268,8 +271,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func configureSearchBar() {
         guard let dependencyManager = self.dependencyManager,
-              let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
-              let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
+            let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+            let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
                 return
         }
         
@@ -544,7 +547,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
                 }
             }
         }
-        // Navigating to a single stream
+            // Navigating to a single stream
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
@@ -560,7 +563,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             streamViewController.targetStreamItem = streamItem
             navigationController?.pushViewController(streamViewController, animated: true)
         }
-        // else Show the stream of streams
+            // else Show the stream of streams
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType (
                 VDirectoryCollectionViewController.self,
@@ -608,7 +611,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             context.placeholderImage = image
             self.contentPresenter.presentContentView(context: context)
         }
-        // Navigating to a stream
+            // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
