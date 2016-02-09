@@ -27,35 +27,34 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     private func loadCurrentItem() {
-        guard let item = currentItem else {
-            print( "Cannot play video without setting a `VVideoPlayerItem`" )
-            return
+        guard let item = currentItem,
+            let videoId = item.remoteContentId else {
+                assertionFailure( "Cannot play video without setting a `VVideoPlayerItem` with a valid `remoteContentId` property." )
+                return
         }
         
-        playerView.alpha = 0.0
-        delegate?.videoPlayerDidStartBuffering?(self)
-        playerView.userInteractionEnabled = false
-        
-        // See https://developers.google.com/youtube/player_parameters for complete list
-        let playerVars = [
-            "controls" : NSNumber(integer: 0),
-            "rel" : NSNumber(integer: 0),
-            "playsinline" : NSNumber(integer: 1),
-            "autohide" : NSNumber(integer: 1),
-            "showinfo" : NSNumber(integer: 0),
-            "fs" : NSNumber(integer: 0),
-            "modestbranding" : NSNumber(integer: 1),
-            "enablejsapi" : NSNumber(integer: 1),
-            "iv_load_policy" : NSNumber(integer: 3), ///< Removes annotations
-        ]
         playerView.delegate = self
-        
-        guard let videoId = item.remoteContentId else {
-            fatalError( "Remote content ID is required for this video player." )
-        }
-        
-        playerView.hidden = true
+        playerView.hidden = false
+        playerView.alpha = 1.0
+        playerView.userInteractionEnabled = false
         playerView.loadWithVideoId( videoId, playerVars: playerVars )
+        delegate?.videoPlayerDidStartBuffering?(self)
+        playerView.playVideo()
+    }
+    
+    private var playerVars: [NSObject: AnyObject] {
+        // See https://developers.google.com/youtube/player_parameters for complete list
+        return [
+            "controls"          : NSNumber(integer: 0),
+            "rel"               : NSNumber(integer: 0),
+            "playsinline"       : NSNumber(integer: 1),
+            "autohide"          : NSNumber(integer: 1),
+            "showinfo"          : NSNumber(integer: 0),
+            "fs"                : NSNumber(integer: 0),
+            "modestbranding"    : NSNumber(integer: 1),
+            "enablejsapi"       : NSNumber(integer: 1),
+            "iv_load_policy"    : NSNumber(integer: 3), ///< Removes annotations
+        ]
     }
     
     // MARK: - VVideoPlayer
