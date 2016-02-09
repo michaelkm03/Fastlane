@@ -318,7 +318,11 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)updateQuartileTracking
 {
-    NSAssert( self.trackingData != nil, @"Cannot track events without setting the `trackingData` property." );
+    if ( self.trackingData == nil )
+    {
+        VLog( @"Cannot track video events without a valid `trackingData`" );
+        return;
+    }
     
     const float percent = (self.videoPlayer.currentTimeSeconds / self.videoPlayer.durationSeconds) * 100.0f;
     if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
