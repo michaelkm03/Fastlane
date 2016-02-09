@@ -271,8 +271,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func configureSearchBar() {
         guard let dependencyManager = self.dependencyManager,
-            let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
-            let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
+        let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+        let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
                 return
         }
         
@@ -547,7 +547,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
                 }
             }
         }
-            // Navigating to a single stream
+        // Navigating to a single stream
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
@@ -563,7 +563,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             streamViewController.targetStreamItem = streamItem
             navigationController?.pushViewController(streamViewController, animated: true)
         }
-            // else Show the stream of streams
+        // else Show the stream of streams
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType (
                 VDirectoryCollectionViewController.self,
@@ -611,7 +611,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             context.placeholderImage = image
             self.contentPresenter.presentContentView(context: context)
         }
-            // Navigating to a stream
+        // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
