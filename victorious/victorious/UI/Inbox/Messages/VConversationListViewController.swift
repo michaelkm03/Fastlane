@@ -34,7 +34,7 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
         let operation = LoadUserConversationOperation(sourceUser: userResult.sourceResult)
         operation.queue() { op in
             if let conversation = operation.loadedConversation {
-                self.displayConversation(conversation, animated: true)
+                self.showConversation(conversation, animated: true)
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }

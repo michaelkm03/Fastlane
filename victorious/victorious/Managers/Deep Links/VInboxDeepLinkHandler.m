@@ -86,7 +86,7 @@
          else
          {
              completion( YES, self.inboxViewController );
-             [self.inboxViewController displayConversation:conversation animated:YES];
+             [self.inboxViewController showConversation:conversation animated:YES];
          }
      }];
 }
