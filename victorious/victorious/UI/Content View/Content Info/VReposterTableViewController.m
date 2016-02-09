@@ -138,7 +138,8 @@
     switch ( [self.dataSource state] )
     {
         case DataSourceStateError:
-        case DataSourceStateNoResults: {
+        case DataSourceStateNoResults:
+        {
             if ( self.tableView.backgroundView != self.noContentView )
             {
                 self.tableView.backgroundView = self.noContentView;

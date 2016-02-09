@@ -21,7 +21,7 @@ import VictoriousIOSSDK
 
 class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
-    static let defaultSearchResultCellHeight: CGFloat = 50.0
+    private static let defaultSearchResultCellHeight: CGFloat = 50.0
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate? {
         didSet {
