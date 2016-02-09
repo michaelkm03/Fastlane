@@ -17,7 +17,7 @@
 #import "VUser.h"
 #import "victorious-Swift.h"
 
-#define FORCE_DEEPLINK 1
+#define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
@@ -42,7 +42,7 @@
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/5618"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
-         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/318"];
+//         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/3694"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
         [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
 #endif
