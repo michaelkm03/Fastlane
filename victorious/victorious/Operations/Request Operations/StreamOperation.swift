@@ -79,28 +79,10 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                     return
                 }
                 
-                var streamItems = [VStreamItem]()
-                for id in persistentStreamItemIDs {
-                    if let streamItem = context.objectWithID(id) as? VStreamItem {
-                        streamItems.append( streamItem )
-                    }
+                self.results = persistentStreamItemIDs.flatMap {
+                    context.objectWithID($0) as? VStreamItem
                 }
-                self.results = streamItems
             }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            
-            let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
-            let paginationPredicate = self.request.paginator.paginatorPredicate
-            fetchRequest.predicate = paginationPredicate + streamItemPredicate
-            
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]
-            return results.map { $0.streamItem }
         }
     }
 }
