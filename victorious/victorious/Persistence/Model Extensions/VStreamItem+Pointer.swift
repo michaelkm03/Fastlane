@@ -26,15 +26,12 @@ extension VStream {
     /// Filters the receiver's `streamItemPointers` for those whose `streamItem` is contained
     /// within the provided list of streamItemIDs.
     func streamItemPointersForStreamItemIDs(streamItemIDs: [String]) -> NSOrderedSet {
-        let results = NSMutableOrderedSet()
-        var i = 0
-        for streamItemID in streamItemIDs {
-            let matchingObjects = self.streamItemPointers.filter { ($0 as? VStreamItemPointer)?.streamItem.remoteId == streamItemID }
-            if let object = matchingObjects.first {
-                results.insertObject(object, atIndex: i++)
+        let filteredPointers = streamItemIDs.flatMap { id in
+            self.streamItemPointers.filter { pointer in
+                pointer.streamItem.remoteId == id
             }
         }
-        return results.copy() as! NSOrderedSet
+        return NSOrderedSet(array: filteredPointers)
     }
 }
 
