@@ -107,16 +107,10 @@
 
 - (void)dealloc
 {
-    if ( [self.navigationController.viewControllers indexOfObject:self] == NSNotFound )
-    {
-        // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
-        NSInteger conversationID = self.conversation.remoteId.integerValue;
-        Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithConversationID:conversationID];
-        [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull error)
-         {
-             [self.dataSource removeDeletedItems];
-         }];
-    }
+    // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
+    NSInteger conversationID = self.conversation.remoteId.integerValue;
+    Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithConversationID:conversationID];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
