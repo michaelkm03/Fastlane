@@ -30,6 +30,14 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
             return
         }
         
+        /// Check if the conversation has been flagged for deletion
+        /// If so, exit early and do not fetch the conversation
+        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
+        if flaggedIDs.contains(self.conversationID) {
+            self.completionBlock?()
+            return
+        }
+        
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     

@@ -1097,7 +1097,6 @@
 		A7C565E61C442FEA00E4DF6A /* VNotification+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565E51C442FEA00E4DF6A /* VNotification+Parsable.swift */; };
 		A7C565E81C4438AF00E4DF6A /* NotificationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */; };
 		A7C565EA1C4450CD00E4DF6A /* VStreamCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565E91C4450CD00E4DF6A /* VStreamCollectionViewController.swift */; };
-		A7C565EC1C44569B00E4DF6A /* VNotificationsViewController+PaginatedDataSourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565EB1C44569B00E4DF6A /* VNotificationsViewController+PaginatedDataSourceDelegate.swift */; };
 		A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */; };
 		A7C565EF1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565EE1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift */; };
 		A7C565F11C4486E400E4DF6A /* MarkAllNotificationsReadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565F01C4486E400E4DF6A /* MarkAllNotificationsReadOperation.swift */; };
@@ -3508,7 +3507,6 @@
 		A7C565E51C442FEA00E4DF6A /* VNotification+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotification+Parsable.swift"; sourceTree = "<group>"; };
 		A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsDataSource.swift; sourceTree = "<group>"; };
 		A7C565E91C4450CD00E4DF6A /* VStreamCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewController.swift; sourceTree = "<group>"; };
-		A7C565EB1C44569B00E4DF6A /* VNotificationsViewController+PaginatedDataSourceDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationsViewController+PaginatedDataSourceDelegate.swift"; sourceTree = "<group>"; };
 		A7C565EE1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadNotificationsCountOperation.swift; sourceTree = "<group>"; };
 		A7C565F01C4486E400E4DF6A /* MarkAllNotificationsReadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkAllNotificationsReadOperation.swift; sourceTree = "<group>"; };
 		A7C565F41C44A17500E4DF6A /* VSuggestedUsersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedUsersDataSource.m; sourceTree = "<group>"; };
@@ -5016,7 +5014,6 @@
 				0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */,
 				035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */,
 				035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */,
-				A7C565EB1C44569B00E4DF6A /* VNotificationsViewController+PaginatedDataSourceDelegate.swift */,
 				A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */,
 			);
 			path = Notifications;
@@ -11354,7 +11351,6 @@
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */,
 				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
-				A7C565EC1C44569B00E4DF6A /* VNotificationsViewController+PaginatedDataSourceDelegate.swift in Sources */,
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
