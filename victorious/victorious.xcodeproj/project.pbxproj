@@ -7235,6 +7235,7 @@
 				5A6F11D61C410000000BF7F3 /* ImageSearchOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A778CB6B1C474DA0007DF0C2 /* LoadUserConversationOperation.swift */,
+				6221034A1C65699100A77A73 /* LoginOperation.swift */,
 				798AA5901C3B033D00D267C3 /* LogoutOperation.swift */,
 				A7C565F01C4486E400E4DF6A /* MarkAllNotificationsReadOperation.swift */,
 				A7AF872A1C4601CC00B49478 /* MarkConversationReadOperation.swift */,
@@ -7244,6 +7245,7 @@
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
+				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
 				67A952451C444DAB001234B4 /* RegisterPushNotificationOperation.swift */,
 				A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
@@ -7271,8 +7273,6 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
-				6221034A1C65699100A77A73 /* LoginOperation.swift */,
-				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -7349,6 +7349,7 @@
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
+				A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
@@ -7365,7 +7366,6 @@
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
-				A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -7790,9 +7790,9 @@
 				A7B0A61D1C347A01008B875C /* MainPersistentStoreTests.swift */,
 				67A904A81C404D1A0016CC6B /* MainRequestExecutorTests.swift */,
 				6236F8721C3602E300746476 /* Managers */,
+				62575EFE1C54CD3D00B49CB0 /* Models */,
 				A7B0A61E1C347A01008B875C /* NSManagedObject+Extensions_Tests.swift */,
 				A77723E21C3482A0002351B5 /* Operations */,
-				62575EFE1C54CD3D00B49CB0 /* Models */,
 				A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */,
 				A7B0A6201C347A01008B875C /* PersistentStoreContextTests.swift */,
 				A7B0A6211C347A01008B875C /* QueueableTests.swift */,
