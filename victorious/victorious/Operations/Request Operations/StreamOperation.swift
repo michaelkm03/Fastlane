@@ -73,10 +73,6 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
             self.persistentStore.mainContext.v_performBlock() { context in
                 
-                if let stream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first {
-                    print( "\n\nStream: \((stream.apiPath! as NSString).substringToIndex(20))... now has \(stream.streamItemPointers.count) stream item pointers.")
-                }
-                
                 defer { completion() }
                 guard persistentStreamItemPointers.count > 0 else {
                     self.results = []

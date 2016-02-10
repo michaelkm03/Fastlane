@@ -32,8 +32,8 @@ class DeleteSequenceOperation: FetcherOperation {
             deletePointer.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
             context.v_deleteObjects(deletePointer)
             
-            // Then take care of the sequence (stream item) itself
-            let deleteSequence = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            // Then take care of the sequence itself
+            let deleteSequence = NSFetchRequest(entityName: VSequence.v_entityName())
             deleteSequence.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
             context.v_deleteObjects(deleteSequence)
             
