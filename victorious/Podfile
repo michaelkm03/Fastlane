@@ -17,7 +17,6 @@ target :victorious do
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
     pod 'CHTCollectionViewWaterfallLayout'
-    pod 'youtube-ios-player-helper'
     link_with 'victorious'
 
     target :test do
