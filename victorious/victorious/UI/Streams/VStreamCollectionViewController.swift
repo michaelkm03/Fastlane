@@ -18,6 +18,9 @@ extension VStreamCollectionViewController {
                 return
         }
         self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue, animated: true)
+        
+        // Updating focus now will resume playback of autoplay videos and GIFs when collection
+        // view animations move cells in or out of view as items are inserted or deleted
         self.focusHelper.updateFocus()
     }
     

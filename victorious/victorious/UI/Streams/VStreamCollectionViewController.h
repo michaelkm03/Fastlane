@@ -54,6 +54,9 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  */
 @property (readonly, nonatomic) VSequenceActionController *sequenceActionController;
 
+/**
+ Exposed for Swift.  Don't touch unless you know what you're doing :)
+ */
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 /**
