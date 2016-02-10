@@ -114,21 +114,27 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info
+- (BOOL)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info error:(NSError **)error
 {
     if ( ![context.streamItem isKindOfClass:[VSequence class]] )
     {
-        return;
+        return NO;
     }
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
-    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     
-    if ( sequence == nil || stream == nil || tracking == nil )
+    if ( sequence == nil )
+    {
+        *error = [[NSError alloc] initWithDomain:@"ContentUnvailableErrorDomain" code:-1 userInfo:nil];
+        return NO;
+    }
+    
+    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
+    if ( stream == nil || tracking == nil )
     {
         VLog( @"Cannot track 'cellClick' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
              sequence.remoteId, stream.remoteId, tracking.cellClick);
-        return;
+        return NO;
     }
 
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
@@ -151,6 +157,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
+    
+    return YES;
 }
 
 #pragma mark - State management for StreamDidAppear event

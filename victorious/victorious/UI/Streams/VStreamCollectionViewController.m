@@ -772,10 +772,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(event.streamItem != nil);
-    NSParameterAssert(self.currentStream != nil);
+    NSError *error;
+    if ( ![self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil error:&error] )
+    {
+        // TODO: This stops a crash, but must eventually show an error
+        NSLog( @"Error showing sequence: Content is unavailable" );
+        [self.streamDataSource.paginatedDataSource removeDeletedItems];
+        return;
+    }
     
-    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:trackingInfo];
+    NSParameterAssert(self.currentStream != nil);
     
     if ( [event.streamItem isKindOfClass:[VSequence class]] )
     {
