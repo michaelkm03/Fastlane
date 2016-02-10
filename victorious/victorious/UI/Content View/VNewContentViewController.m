@@ -755,55 +755,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
-            self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-            self.contentCell.delegate = self;
-            
-            id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
-            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
-            [provider setHasRelinquishedPreviewView:YES];
-            VSequencePreviewView *previewView = [provider getPreviewView];
-            
-            if ( previewView == nil )
-            {
-                // Create a new sequence preview if we haven't been given one from the context
-                previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
-                UIView *superview = [receiver getTargetSuperview];
-                previewView.frame = superview.bounds;
-                [previewView setDependencyManager:self.dependencyManager];
-                [previewView setStreamItem:self.viewModel.sequence];
-                previewView.focusType = VFocusTypeDetail;
-                [superview addSubview:previewView];
-                [superview v_addFitToParentConstraintsToSubview:previewView];
-            }
 
-            previewView.detailDelegate = self;
-            self.sequencePreviewView = previewView;
-
-            // Setup relationships for polls
-            if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
+            self.sequencePreviewView = [ContentCellSetupHelper setupWithContentCell:self.contentCell
+                                                             contentPreviewProvider:(id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider
+                                                                contentCellDelegate:self
+                                                                     detailDelegate:self
+                                                           videoPreviewViewDelegate:self
+                                                                            adBreak:self.viewModel.sequence.adBreak];
+            if ( [self.sequencePreviewView conformsToProtocol:@protocol(VPollResultReceiver)] )
             {
-                self.pollAnswerReceiver = (id<VPollResultReceiver>)previewView;
+                self.pollAnswerReceiver = (id<VPollResultReceiver>)self.sequencePreviewView;
             }
-
-            // Setup relationships for video playback
-            if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
-            {
-                id<VVideoPreviewView> videoPreviewView = (id<VVideoPreviewView>)previewView;
-                self.videoPlayer = videoPreviewView.videoPlayer;
-                videoPreviewView.delegate = self;
-                [receiver setVideoPlayer:self.videoPlayer];
-            }
-
-            if(self.viewModel.sequence.adBreak != nil)
-            {
-                [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
-            }
-            else
-            {
-                [self.videoPlayer playFromStart];
-            }
-
-            return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
         {

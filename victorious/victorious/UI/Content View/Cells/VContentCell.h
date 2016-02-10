@@ -9,6 +9,7 @@
 #import "VBaseCollectionViewCell.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
+#import "VAdVideoPlayerViewController.h"
 
 @class VSequencePreviewView, VContentCell, VAdBreak;
 
@@ -51,6 +52,8 @@
 @property (nonatomic, assign, readonly) BOOL isPlayingAd;
 
 @property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
+
+@property (nonatomic, strong, readonly) VAdVideoPlayerViewController *adVideoPlayerViewController;
 
 /**
  Properly rotates itself and subcomponents based on the rotation of the collection view.
