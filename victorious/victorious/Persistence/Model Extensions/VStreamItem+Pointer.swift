@@ -29,7 +29,7 @@ extension VStream {
         let filteredPointers = streamItemIDs.flatMap { id in
             self.streamItemPointers.filter { pointer in
                 pointer.streamItem.remoteId == id
-            }
+            }.first
         }
         return NSOrderedSet(array: filteredPointers)
     }
