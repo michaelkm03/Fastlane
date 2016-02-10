@@ -96,7 +96,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-victorious/SDWebImage.framework"
   install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
-  install_framework "Pods-victorious/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious/Bolts.framework"
@@ -111,7 +110,6 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious/SDWebImage.framework"
   install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
-  install_framework "Pods-victorious/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious/Bolts.framework"
@@ -126,7 +124,6 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious/SDWebImage.framework"
   install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
-  install_framework "Pods-victorious/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious/Bolts.framework"
@@ -141,7 +138,6 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious/SDWebImage.framework"
   install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
-  install_framework "Pods-victorious/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious/Bolts.framework"
@@ -156,5 +152,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious/SDWebImage.framework"
   install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
-  install_framework "Pods-victorious/youtube_ios_player_helper.framework"
 fi

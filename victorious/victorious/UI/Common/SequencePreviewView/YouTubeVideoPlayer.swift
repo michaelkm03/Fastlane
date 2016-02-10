@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import youtube_ios_player_helper
 
 class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
