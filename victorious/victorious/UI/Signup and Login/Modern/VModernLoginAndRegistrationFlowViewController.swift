@@ -47,7 +47,13 @@ extension VModernLoginAndRegistrationFlowViewController {
         return operation
     }
     
-    func queueLoginOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
+    func queueLoginOperation(email email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
+        let operation = LoginOperation(email: email, password: password)
+        operation.queue( completion )
+        return operation
+    }
+    
+    func queueAccountCreateOperation(email email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
         let operation = AccountCreateOperation( request: accountCreateRequest, loginType: .Email, accountIdentifier: email )
         operation.queue( completion )

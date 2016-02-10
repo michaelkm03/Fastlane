@@ -448,8 +448,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             }
             else
             {
-                completion(NO, error);
                 [weakSelf dismissLoadingScreen];
+                completion(NO, error);
             }
         }];
     }];
@@ -467,7 +467,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     __weak typeof(self) weakSelf = self;
     [self showLoadingScreenWithCompletion:^{
-         [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+         [weakSelf queueAccountCreateOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
              if ( error == nil )
              {
                  BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
