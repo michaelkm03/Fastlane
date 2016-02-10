@@ -33,11 +33,10 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
         
         playerView.delegate = self
-        playerView.hidden = false
-        playerView.alpha = 1.0
+        playerView.alpha = 0.0
         playerView.userInteractionEnabled = false
-        playerView.loadWithVideoId( videoId, playerVars: playerVars )
         delegate?.videoPlayerDidStartBuffering?(self)
+        playerView.loadWithVideoId( videoId, playerVars: playerVars )
         playerView.playVideo()
     }
     
