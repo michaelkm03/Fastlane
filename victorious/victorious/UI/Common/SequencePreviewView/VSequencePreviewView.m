@@ -272,7 +272,9 @@
 {
     const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
     BOOL willShowLikeButton = isLikeButtonTemplateEnabled && shouldShowLikeButton;
-    
+
+    [self.KVOController unobserve:self.sequence];
+
     if (willShowLikeButton)
     {
         __weak typeof(self) welf = self;
@@ -291,7 +293,6 @@
     }
     else
     {
-        [self.KVOController unobserve:self.sequence];
         self.likeButton.hidden = YES;
     }
 }

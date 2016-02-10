@@ -285,8 +285,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         return;
     }
     
-    _sequence = sequence;
     [self.KVOController unobserve:_sequence];
+    
+    _sequence = sequence;
     
     [self.KVOController observe:_sequence
                         keyPath:@"comments"
