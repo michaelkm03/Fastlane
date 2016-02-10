@@ -72,7 +72,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
         let resultsBefore = self.dataSource?.visibleItems ?? NSOrderedSet()
         dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
-            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.containsObject($0) }) as? [MediaSearchResult] where error == nil {
+            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.containsObject($0) }) as? [MediaSearchResult] {
                 let result = self.updateDataSource(results, pageType: pageType)
                 completion?(result)
             }

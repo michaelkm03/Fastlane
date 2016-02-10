@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UIView *supplementaryHeaderView;
 @property (nonatomic, strong) UIView *statusBarBackgroundView;
 @property (nonatomic, strong) UIViewController *displayedViewController; ///< The view controller currently on the top of the nav stack, as far as we know
+@property (nonatomic, strong) NSMutableSet *containedViewControllers; ///< View controllers that are contained within this view controller's nav stack, as far as we know
 @property (nonatomic) BOOL wantsStatusBarHidden;
 @property (nonatomic) UIStatusBarStyle statusBarStyle;
 
@@ -49,6 +50,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     {
         _innerNavigationController = [[UINavigationController alloc] init];
         _innerNavigationController.delegate = self;
+        _containedViewControllers = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -69,6 +71,10 @@ static const CGFloat kStatusBarHeight = 20.0f;
 - (void)dealloc
 {
     _innerNavigationController.delegate = nil;
+    for (UIViewController *containedViewController in [_containedViewControllers copy])
+    {
+        [containedViewController v_setNavigationController:nil];
+    }
 }
 
 - (UIStatusBarStyle)defaultStatusBarStyle
@@ -556,7 +562,16 @@ static char kNavigationControllerKey;
 
 - (void)v_setNavigationController:(VNavigationController *)navigationController
 {
+    VNavigationController *previousNavigationController = [self v_navigationController];
+    
+    if ( previousNavigationController == navigationController )
+    {
+        return;
+    }
+    
+    [previousNavigationController.containedViewControllers removeObject:self];
     objc_setAssociatedObject(self, &kNavigationControllerKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
+    [navigationController.containedViewControllers addObject:self];
 }
 
 @end

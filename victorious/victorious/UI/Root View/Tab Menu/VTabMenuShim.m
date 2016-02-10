@@ -70,11 +70,11 @@
         }
         
         VNavigationDestinationContainerViewController *shimViewController = [[VNavigationDestinationContainerViewController alloc] initWithNavigationDestination:menuItem.destination];
-        VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
         
         if ([menuItem.destination isKindOfClass:[UIViewController class]])
         {
             UIViewController *viewController = (UIViewController *)menuItem.destination;
+            VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
             [containedNavigationController.innerNavigationController pushViewController:viewController animated:NO];
             shimViewController.containedViewController = containedNavigationController;
         }

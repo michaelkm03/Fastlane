@@ -29,7 +29,6 @@ PODS:
   - SDWebImage/Core (3.7.4)
   - SwiftyJSON (2.3.2)
   - TTTAttributedLabel (1.13.4)
-  - youtube-ios-player-helper (0.1.5)
 
 DEPENDENCIES:
   - CCHLinkTextView
@@ -44,7 +43,6 @@ DEPENDENCIES:
   - SDWebImage
   - SwiftyJSON
   - TTTAttributedLabel
-  - youtube-ios-player-helper
 
 EXTERNAL SOURCES:
   Nocilla:
@@ -69,6 +67,5 @@ SPEC CHECKSUMS:
   SDWebImage: 247edd7dd80dd6124197b0d6a17846fe9d1df968
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
-  youtube-ios-player-helper: 8706bb155ffee74fbe5f2f5cf41c2dafe60dc155
 
 COCOAPODS: 0.39.0
