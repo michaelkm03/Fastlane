@@ -105,9 +105,8 @@
     [self.focusHelper updateFocus];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)dealloc
 {
-    // If the view controller is being popped to go back
     if ( [self.navigationController.viewControllers indexOfObject:self] == NSNotFound )
     {
         // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
@@ -118,7 +117,10 @@
              [self.dataSource removeDeletedItems];
          }];
     }
-    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     [self endLiveUpdates];
