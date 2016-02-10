@@ -6,6 +6,16 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+@objc class ContentCellSetupResult: NSObject {
+    let previewView: VSequencePreviewView
+    let videoPlayer: VVideoPlayer?
+
+    init(previewView: VSequencePreviewView, videoPlayer: VVideoPlayer? = nil) {
+        self.previewView = previewView
+        self.videoPlayer = videoPlayer
+    }
+}
+
 /// Helper class that sets up a contentCell
 @objc class ContentCellSetupHelper: NSObject {
     class func setup(contentCell contentCell: VContentCell,
@@ -13,7 +23,7 @@
         contentCellDelegate: VContentCellDelegate,
         detailDelegate: VSequencePreviewViewDetailDelegate,
         videoPreviewViewDelegate: VVideoPreviewViewDelegate,
-        adBreak: VAdBreak?) -> VSequencePreviewView {
+        adBreak: VAdBreak?) -> ContentCellSetupResult {
 
             contentCell.minSize = CGSize(width: contentCell.minSize.width, height: VShrinkingContentLayoutMinimumContentHeight)
             contentCell.delegate = contentCellDelegate
@@ -22,8 +32,10 @@
             let previewView = contentPreviewProvider.getPreviewView()
             previewView.detailDelegate = detailDelegate
 
+            var videoPlayerToReturn: VVideoPlayer? = nil
             if let videoPreviewView = previewView as? VVideoPreviewView {
                 let videoPlayer = videoPreviewView.videoPlayer
+                videoPlayerToReturn = videoPlayer
                 videoPreviewView.delegate = videoPreviewViewDelegate
 
                 if let receiver = contentCell as? VContentPreviewViewReceiver {
@@ -37,6 +49,6 @@
                 }
             }
 
-            return previewView
+            return ContentCellSetupResult(previewView: previewView, videoPlayer: videoPlayerToReturn)
     }
 }

@@ -756,12 +756,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
 
-            self.sequencePreviewView = [ContentCellSetupHelper setupWithContentCell:self.contentCell
-                                                             contentPreviewProvider:(id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider
-                                                                contentCellDelegate:self
-                                                                     detailDelegate:self
-                                                           videoPreviewViewDelegate:self
-                                                                            adBreak:self.viewModel.sequence.adBreak];
+            ContentCellSetupResult *result = [ContentCellSetupHelper setupWithContentCell:self.contentCell
+                                                                   contentPreviewProvider:(id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider
+                                                                      contentCellDelegate:self
+                                                                           detailDelegate:self
+                                                                 videoPreviewViewDelegate:self
+                                                                                  adBreak:self.viewModel.sequence.adBreak];
+            self.sequencePreviewView = result.previewView;
+            self.videoPlayer = result.videoPlayer;
             if ( [self.sequencePreviewView conformsToProtocol:@protocol(VPollResultReceiver)] )
             {
                 self.pollAnswerReceiver = (id<VPollResultReceiver>)self.sequencePreviewView;
