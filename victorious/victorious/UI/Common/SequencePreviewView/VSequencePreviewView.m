@@ -271,11 +271,10 @@
 - (void)showLikeButton:(BOOL)shouldShowLikeButton
 {
     const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
-    BOOL willShowLikeButton = isLikeButtonTemplateEnabled && shouldShowLikeButton;
 
     [self.KVOController unobserve:self.sequence];
 
-    if (willShowLikeButton)
+    if ( isLikeButtonTemplateEnabled && shouldShowLikeButton )
     {
         __weak typeof(self) welf = self;
         NSArray *keyPaths = @[ NSStringFromSelector(@selector(hasReposted)),
