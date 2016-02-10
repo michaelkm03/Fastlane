@@ -9,11 +9,11 @@
 #import "VCardDirectoryCellDecorator.h"
 #import "VCardDirectoryCell.h"
 #import "VStreamItem+Fetcher.h"
-#import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VCardSeeMoreDirectoryCell.h"
 #import "VTagStringFormatter.h"
+#import "VStream.h"
 
 @implementation VCardDirectoryCellDecorator
 

@@ -12,6 +12,7 @@
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "UIImage+Resize.h"
+#import "VStreamItem+Fetcher.h"
 #import "VTextSequencePreviewView.h"
 
 typedef void (^ResizingCompletion)(UIImage *image, BOOL didDownload, NSInteger index);

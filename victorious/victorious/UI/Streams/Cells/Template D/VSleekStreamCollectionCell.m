@@ -27,7 +27,6 @@
 #import "VInStreamCommentsController.h"
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
-#import "VEditorializationItem.h"
 #import "VStream.h"
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
@@ -69,7 +68,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) BOOL needsRefresh;
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
-@property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
@@ -210,7 +208,24 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)setStream:(VStream *)stream
 {
     _stream = stream;
-    [self updateListicleForSequence:self.sequence andStream:self.stream];
+    
+    [self updateListicle];
+}
+
+- (void)updateListicle
+{
+    VStreamItemPointer *streamItemPointer = [self.sequence streamItemPointerWithStreamID:self.stream.remoteId];
+    self.previewView.trackingData = streamItemPointer.tracking;
+    if ( streamItemPointer.headline.length > 0 )
+    {
+        self.listicleView.hidden = NO;
+        self.listicleView.headlineText = streamItemPointer.headline;
+    }
+    else
+    {
+        self.listicleView.hidden = YES;
+        self.listicleView.headlineText = nil;
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -265,6 +280,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)setSequence:(VSequence *)sequence
 {
+    if (_sequence == sequence)
+    {
+        return;
+    }
+    
     [self.KVOController unobserve:_sequence];
     
     _sequence = sequence;
@@ -279,10 +299,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                         options:NSKeyValueObservingOptionNew
                          action:@selector(commentsUpdated)];
     
-    [self updatePreviewViewForSequence:sequence];
-    self.headerView.sequence = sequence;
-    self.sleekActionView.sequence = sequence;
-    [self updateCaptionViewForSequence:sequence];
+    [self updatePreviewViewForSequence:_sequence];
+    self.headerView.sequence = _sequence;
+    self.sleekActionView.sequence = _sequence;
+    [self updateCaptionViewForSequence:_sequence];
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
@@ -290,7 +310,8 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                            NSStringFromSelector(@selector(commentCount)),
                            NSStringFromSelector(@selector(likeCount)),
                            NSStringFromSelector(@selector(isLikedByMainUser)) ];
-    [self.KVOController observe:self.sequence keyPaths:keyPaths
+    [self.KVOController observe:_sequence
+                       keyPaths:keyPaths
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                           block:^(id observer, id object, NSDictionary *change)
      {
@@ -300,15 +321,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              return;
          }
          
-         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf updateCountsTextViewForSequence:_sequence];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.likeButton
-                                                      selected:sequence.isLikedByMainUser.boolValue];
+                                                      selected:_sequence.isLikedByMainUser.boolValue];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
-                                                      selected:sequence.hasReposted.boolValue];
+                                                      selected:_sequence.hasReposted.boolValue];
      }];
     
-    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
-    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
+    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:_sequence]];
+    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:_sequence]];
 }
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
@@ -435,19 +456,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 + (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
 {
     return sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText] && dependencyManager != nil;
-}
-
-- (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
-{
-    // Headline depends on both the sequence AND the stream
-    NSString *apiPath = stream.apiPath;
-    self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
-    BOOL hasHeadline = self.editorialization.headline.length > 0;
-    if (hasHeadline && (self.editorialization.headline != nil))
-    {
-        self.listicleView.hidden = NO;
-        self.listicleView.headlineText = self.editorialization.headline;
-    }
 }
 
 - (void)prepareForReuse

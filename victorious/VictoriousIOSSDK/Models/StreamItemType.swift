@@ -33,7 +33,7 @@ public protocol StreamItemType {
     var streamItemID: String { get }
     var releasedAt: NSDate? { get }
     var previewImagesObject: AnyObject? { get }
-    var previewTextPostAsset: String? { get }
+    var previewTextPostAsset: Asset? { get }
     var previewImageAssets: [ImageAsset]? { get}
     var type: StreamContentType? { get }
     var subtype: StreamContentType? { get }

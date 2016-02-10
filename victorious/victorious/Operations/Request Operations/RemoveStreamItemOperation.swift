@@ -28,8 +28,7 @@ class RemoveStreamItemOperation: Operation {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             for streamItemID in self.streamItemIDs {
                 if let streamItem: VStreamItem = context.v_findObjects([ "remoteId" : streamItemID ]).first,
-                    let streamID = streamItem.streamId,
-                    let stream: VStream = context.v_findObjects([ "remoteId" : streamID ]).first {
+                    let stream: VStream = context.v_findObjects([ "remoteId" : streamItem.remoteId ]).first {
                         stream.v_removeObject( streamItem, from: "streamItems" )
                         context.deleteObject( streamItem )
                 }

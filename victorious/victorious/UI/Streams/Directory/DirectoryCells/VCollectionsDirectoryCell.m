@@ -9,7 +9,6 @@
 #import "VCollectionsDirectoryCell.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "VStreamItem+Fetcher.h"
-#import "VStream+Fetcher.h"
 #import "VDependencyManager.h"
 #import "UIView+MotionEffects.h"
 

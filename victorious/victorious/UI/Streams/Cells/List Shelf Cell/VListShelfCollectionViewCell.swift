@@ -58,8 +58,8 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            if let shelf = shelf as? ListShelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-                for streamItem in streamItems {
+            if let shelf = shelf as? ListShelf {
+                for streamItem in shelf.streamItems {
                     collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
                 }
                 

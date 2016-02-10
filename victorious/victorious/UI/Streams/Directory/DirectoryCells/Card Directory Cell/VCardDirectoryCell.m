@@ -10,7 +10,6 @@
 #import "VExtendedView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
-#import "VStreamItem+Fetcher.h"
 #import "VStream.h"
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"

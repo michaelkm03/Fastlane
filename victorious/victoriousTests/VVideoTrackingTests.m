@@ -21,7 +21,7 @@
 @interface VVideoTrackingTests : XCTestCase
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayer;
-@property (nonatomic, strong) VTracking *trackingItem;
+@property (nonatomic, strong) VTracking *trackingData;
 
 @end
 
@@ -32,7 +32,7 @@
     [super setUp];
     
     self.videoPlayer = [[VCVideoPlayerViewController alloc] init];
-    self.trackingItem = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
+    self.trackingData = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
 }
 
 - (void)tearDown
@@ -42,7 +42,7 @@
 
 - (void)testEnableTracking
 {
-    XCTAssertNoThrow( [self.videoPlayer enableTrackingWithTrackingItem:self.trackingItem streamID:nil] );
+    XCTAssertNoThrow( [self.videoPlayer enableTrackingWithTrackingItem:self.trackingData streamID:nil] );
     XCTAssert( self.videoPlayer.isTrackingEnabled );
 }
 

@@ -44,7 +44,7 @@
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
 #import "VSleekStreamCellFactory.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCellTracking.h"
 #import "VStreamCollectionViewController.h"
@@ -219,7 +219,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView
-                                                withStreamItems:[self.streamDataSource.stream.streamItems array]];
+                                                withStreamItems:self.streamDataSource.stream.streamItems];
     }
     else
     {
@@ -723,7 +723,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
+    [self.sequenceActionController shareFromViewController:self
+                                                  sequence:sequence
+                                                      node:[sequence firstNode]
+                                                  streamID:self.streamDataSource.stream.remoteId
+                                                completion:nil];
 }
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -778,7 +782,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         ContentViewContext *context = [[ContentViewContext alloc] init];
         
-        NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
+        NSString *streamID = event.stream.shelfId.length > 0 && event.fromShelf ? event.stream.shelfId : event.stream.remoteId;
         
         UICollectionView *collectionView = event.collectionView;
         NSIndexPath *indexPath = event.indexPath;

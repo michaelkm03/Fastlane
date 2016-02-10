@@ -12,7 +12,7 @@
 #import "VUser.h"
 #import "VHashtag.h"
 #import "MBProgressHUD.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"

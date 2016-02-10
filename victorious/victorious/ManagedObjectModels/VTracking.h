@@ -9,23 +9,25 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VSequence, VVoteType;
+@class VStreamItemPointer;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VTracking : NSManagedObject
 
-@property (nonatomic, retain) id cellClick;
-@property (nonatomic, retain) id cellView;
-@property (nonatomic, retain) id videoComplete25;
-@property (nonatomic, retain) id videoComplete50;
-@property (nonatomic, retain) id videoComplete75;
-@property (nonatomic, retain) id videoComplete100;
-@property (nonatomic, retain) id viewStop;
-@property (nonatomic, retain) id videoError;
-@property (nonatomic, retain) id videoSkip;
-@property (nonatomic, retain) id videoStall;
-@property (nonatomic, retain) id viewStart;
-@property (nonatomic, retain) id share;
-@property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, retain) VVoteType *voteType;
+@property (nonatomic, retain, nullable) id cellClick;
+@property (nonatomic, retain, nullable) id cellView;
+@property (nonatomic, retain, nullable) id videoComplete25;
+@property (nonatomic, retain, nullable) id videoComplete50;
+@property (nonatomic, retain, nullable) id videoComplete75;
+@property (nonatomic, retain, nullable) id videoComplete100;
+@property (nonatomic, retain, nullable) id viewStop;
+@property (nonatomic, retain, nullable) id videoError;
+@property (nonatomic, retain, nullable) id videoSkip;
+@property (nonatomic, retain, nullable) id videoStall;
+@property (nonatomic, retain, nullable) id viewStart;
+@property (nonatomic, retain, nullable) id share;
 
 @end
+
+NS_ASSUME_NONNULL_END

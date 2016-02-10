@@ -163,15 +163,15 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if sender == nil {
             self.refreshControl.beginRefreshing()
         }
-        dataSource?.loadComments( .First ) { error in
+        dataSource?.loadComments( .First ) { [weak self]error in
             if sender == nil {
                 // Don't animate on first load
                 UIView.performWithoutAnimation() {
-                    self.refreshControl.endRefreshing()
+                    self?.refreshControl.endRefreshing()
                 }
             } else {
                 // Don't if user manually pulled to refresh
-                self.refreshControl.endRefreshing()
+                self?.refreshControl.endRefreshing()
             }
         }
     }
@@ -315,9 +315,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         if let tag = tag as? VUserTag, let userID = tag.remoteId?.integerValue {
             let operation = FetchUserOperation(userID: userID)
-            operation.queue() { op in
-                if let user = operation.result, let profileViewController = self.dependencyManager.userProfileViewControllerWithUser(user) {
-                    self.navigationController?.pushViewController(profileViewController, animated: true)
+            operation.queue() { [weak self] op in
+                guard let strongSelf = self else {
+                    return
+                }
+                if let user = operation.result, let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(user) {
+                    strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
                 }
             }
         }

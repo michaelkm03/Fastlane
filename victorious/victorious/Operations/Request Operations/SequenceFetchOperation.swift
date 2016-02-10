@@ -13,10 +13,13 @@ class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
     var result: VSequence?
+    let streamID: String?
     
-    init( sequenceID: String ) {
+    init( sequenceID: String, streamID: String? ) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
+        self.streamID = streamID
         super.init()
+        
         self.qualityOfService = .UserInitiated
     }
     
@@ -27,8 +30,8 @@ class SequenceFetchOperation: RequestOperation {
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
-            persistentSequence.populate(fromSourceModel: sequence)
+            let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : sequence.sequenceID ])
+            persistentSequence.populate(fromSourceModel: (sequence, self.streamID) )
             context.v_save()
             
             let persistentSequenceID = persistentSequence.objectID

@@ -443,7 +443,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         if ( !self.videoPlayerDidFinishPlayingOnce )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
+            if ( self.viewModel.trackingData == nil )
+            {
+                VLog( @"Cannot track events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+                return;
+            }
+            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.trackingData.viewStop ?: @[],
                                       VTrackingKeyStreamId : self.viewModel.streamId,
                                       VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
@@ -522,20 +527,30 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)trackNonVideoViewStart
 {
+    if ( self.viewModel.trackingData == nil )
+    {
+        VLog( @"Cannot track `viewStart` events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+        return;
+    }
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyUrls : self.viewModel.trackingData.viewStart ?: @[],
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 - (void)trackVideoViewStart
 {
+    if ( self.viewModel.trackingData == nil )
+    {
+        VLog( @"Cannot track `viewStart` events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
+        return;
+    }
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyUrls : self.viewModel.trackingData.viewStart ?: @[],
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
@@ -553,6 +568,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 }
 
 #pragma mark - Private Mehods
+
+- (NSDictionary *)attributesForPollQuestion
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    return @{
+             NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+             NSForegroundColorAttributeName: [UIColor whiteColor],
+             NSParagraphStyleAttributeName: paragraphStyle
+             };
+}
 
 - (void)updateInsetsForKeyboardBarState
 {
@@ -774,8 +800,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionPollQuestion:
         {
             VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
-            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @""
-                                                                    attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
+            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @"" attributes:[self attributesForPollQuestion]];
             return questionCell;
         }
         case VContentViewSectionExperienceEnhancers:
@@ -1013,7 +1038,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionPollQuestion:
             return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
-                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                          attributes:[self attributesForPollQuestion]
                                                          maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];;
         case VContentViewSectionExperienceEnhancers:
         {

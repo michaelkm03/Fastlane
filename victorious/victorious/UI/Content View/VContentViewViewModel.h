@@ -135,4 +135,10 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
  */
 @property (nonatomic, strong) NSNumber *deepLinkCommentId;
 
+/**
+ Stores tracking data necessary to track events that occur during the receiver's lifecycle.
+ To enable tracking, it is required that this property be set by calling code.
+ */
+@property (nonatomic, strong) VTracking *trackingData;
+
 @end

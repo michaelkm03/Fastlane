@@ -7,13 +7,15 @@
 //
 
 #import "VContentPollQuestionCell.h"
+#import "VScrollingTextContainerView.h"
 
-static CGFloat const kMinimumCellHeight = 90.0f;
+static CGFloat const kMinimumCellHeight = 70.0f;
+static CGFloat const kMaximumCellHeight = 100.0f;
 static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @interface VContentPollQuestionCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *questionLabel;
+@property (weak, nonatomic) IBOutlet VScrollingTextContainerView *scrollingTextContainerView;
 
 @end
 
@@ -51,8 +53,8 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                               attributes:attributes
                                                  context:[[NSStringDrawingContext alloc] init]];
-    
-    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, VCEIL((CGRectGetHeight(boundingRect))) + kLabelInset.top + kLabelInset.bottom));
+    CGFloat minHeight = MIN(kMaximumCellHeight, VCEIL((CGRectGetHeight(boundingRect))) + kLabelInset.top + kLabelInset.bottom);
+    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, minHeight));
 
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];
@@ -62,7 +64,18 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 - (void)setQuestion:(NSAttributedString *)question
 {
     _question = [question copy];
-    self.questionLabel.attributedText = _question;
+    self.scrollingTextContainerView.maxHeight = kMaximumCellHeight;
+    self.scrollingTextContainerView.text = question;
+    
+    [self.scrollingTextContainerView setGradient:0.2
+                                       direction:VGradientTypeVertical
+                                          colors:@[
+                                                   [UIColor clearColor],
+                                                   [UIColor blackColor],
+                                                   [UIColor blackColor],
+                                                   [UIColor clearColor]
+                                                   ]];
+    [self.scrollingTextContainerView startScrollWithScrollSpeed:10];
 }
 
 @end

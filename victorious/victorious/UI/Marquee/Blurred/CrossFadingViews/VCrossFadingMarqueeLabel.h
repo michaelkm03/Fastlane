@@ -16,7 +16,7 @@
  */
 @interface VCrossFadingMarqueeLabel : VAbstractCrossFadingView
 
-- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithApiPath:(NSString *)apiPath;
+- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithStreamID:(NSString *)streamID;
 
 /**
     An array of stream items whose captions or headlines will

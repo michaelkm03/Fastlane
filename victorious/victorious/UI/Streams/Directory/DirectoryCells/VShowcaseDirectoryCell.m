@@ -11,13 +11,12 @@
 #import "VCardSeeMoreDirectoryCell.h"
 #import "VCardDirectoryCellDecorator.h"
 #import "VDependencyManager.h"
-
-// Models
-#import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
+#import "VStream.h"
 #import "VCompatibility.h"
+#import "victorious-Swift.h"
 
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
@@ -212,7 +211,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     VStream *stream = [self stream];
     if ( stream != nil )
     {
-        NSOrderedSet *streamItems = stream.streamItems;
+        NSArray<VStreamItem *> *streamItems = stream.streamItems;
         if ( (NSUInteger)indexPath.row < streamItems.count )
         {
             streamItem = streamItems[indexPath.row];

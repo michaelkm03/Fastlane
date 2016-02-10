@@ -15,7 +15,6 @@
 #import "VUser.h"
 #import "VVoteResult.h"
 
-
 @implementation VSequence
 
 @dynamic category;
@@ -40,14 +39,12 @@
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic adBreak;
-// TODO: Coments (and any other paginated to-many relationship) can be an unordered set now since we will always be ordering through fretch requests and pagination
 @dynamic comments;
 @dynamic likers;
 @dynamic nodes;
 @dynamic parentUser;
 @dynamic recentUser;
 @dynamic reposters;
-@dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
 @dynamic recentComments;

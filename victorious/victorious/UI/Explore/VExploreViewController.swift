@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate, VMarqueeSelectionDelegate, CHTCollectionViewDelegateWaterfallLayout, VHashtagSelectionResponder, SearchResultsViewControllerDelegate {
+class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate, VMarqueeSelectionDelegate, CHTCollectionViewDelegateWaterfallLayout, VHashtagSelectionResponder, SearchResultsViewControllerDelegate, VTabMenuContainedViewControllerNavigation {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
@@ -65,23 +65,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         exploreVC.dependencyManager = dependencyManager
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
-        let urlPath = url.v_pathComponent()
-        let query = ["apiPath" : urlPath]
-        let persistentStore = PersistentStoreSelector.defaultPersistentStore
-        var persistentStream: VStream?
-        
-        persistentStore.mainContext.performBlockAndWait {
-            guard let stream = persistentStore.mainContext.v_findOrCreateObjectWithEntityName(VStream.v_entityName(), queryDictionary: query) as? VStream else {
-                return
-            }
-            stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
-            persistentStore.mainContext.v_save()
-            persistentStream = stream
+        guard let apiPath = url.v_pathComponent() else {
+            fatalError("Failed to load stream for an explore view controller!")
         }
-        
-        if let stream = persistentStream {
-            exploreVC.currentStream = stream
-        }
+        let stream = createStreamWithAPIPath(apiPath)
+        stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        exploreVC.currentStream = stream
         
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
@@ -90,6 +79,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
         exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
         return exploreVC
+    }
+    
+    private static func createStreamWithAPIPath(apiPath: String) -> VStream {
+        return PersistentStoreSelector.defaultPersistentStore.mainContext.v_performBlockAndWait { context in
+            let stream: VStream = context.v_findOrCreateObject(["apiPath" : apiPath])
+            context.v_save()
+            return stream
+        }
     }
     
     /// MARK: - View Controller LifeCycle
@@ -271,8 +268,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func configureSearchBar() {
         guard let dependencyManager = self.dependencyManager,
-              let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
-              let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
+            let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+            let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
                 return
         }
         
@@ -596,8 +593,13 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         // Navigating to a sequence
         if let sequence = event.streamItem as? VSequence {
-            let isFromShelf = event.stream.hasShelfID() && event.fromShelf
-            let streamId = isFromShelf ? event.stream.shelfId : event.stream.streamId
+            
+            let streamId: String?
+            if event.fromShelf, let shelfId = event.stream.shelfId where !shelfId.characters.isEmpty {
+                streamId = shelfId
+            } else {
+                streamId = event.stream.remoteId
+            }
             
             let context = ContentViewContext()
             context.originDependencyManager = dependencyManager

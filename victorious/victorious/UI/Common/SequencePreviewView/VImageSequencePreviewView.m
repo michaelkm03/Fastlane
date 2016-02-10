@@ -10,6 +10,7 @@
 #import "VSequence+Fetcher.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
+#import "VStreamItem+Fetcher.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 

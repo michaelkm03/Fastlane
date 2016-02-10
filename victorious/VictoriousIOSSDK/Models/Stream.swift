@@ -19,6 +19,8 @@ public struct Stream: StreamItemType {
     public let items: [StreamItemType]?
     public let marqueeItems: [StreamItemType]?
     public let streamContentType: StreamContentType?
+    public let trackingIdentifier: String?
+    public let isUserPostAllowed: Bool?
     
     // MARK: - StreamItemType
     
@@ -28,7 +30,7 @@ public struct Stream: StreamItemType {
     public let type: StreamContentType?
     public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
-    public let previewTextPostAsset: String?
+    public let previewTextPostAsset: Asset?
     public let previewImageAssets: [ImageAsset]?
     public let releasedAt: NSDate?
 }
@@ -48,6 +50,8 @@ extension Stream {
         title                       = json["title"].string
         postCount                   = json["postCount"].int ?? json["count"].int
         streamUrl                   = json["streamUrl"].string
+        trackingIdentifier          = json["stream_id"].string
+        isUserPostAllowed           = json["ugc_post_allowed"].bool
         
         items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
             switch $0["type"].stringValue {
@@ -80,7 +84,7 @@ extension Stream {
         
         // MARK: - StreamItemType
         
-        previewTextPostAsset    = json["preview"].string
+        previewTextPostAsset    = Asset(json: json["preview"])
         previewImageAssets      = json["preview"]["assets"].array?.flatMap { ImageAsset(json: $0) }
         
         let previewImage = json["preview_image"]

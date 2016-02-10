@@ -34,7 +34,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 @property (nonatomic, assign) VVideoState state;
 @property (nonatomic, strong) NSURL *assetURL;
-@property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, assign) BOOL wasPlayingBeforeScrubbingStarted;
 
@@ -174,7 +173,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.state = VVideoStateNotStarted;
     
     self.videoAsset = [self.sequence.firstNode httpLiveStreamingAsset];
-    self.trackingItem = self.sequence.tracking;
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.muted = self.videoAsset.audioMuted.boolValue;
@@ -320,26 +318,32 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)updateQuartileTracking
 {
+    if ( self.trackingData == nil )
+    {
+        VLog( @"Cannot track video events without a valid `trackingData`" );
+        return;
+    }
+    
     const float percent = (self.videoPlayer.currentTimeSeconds / self.videoPlayer.durationSeconds) * 100.0f;
     if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
     {
         self.didPlay25 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:self.trackingItem.videoComplete25];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:self.trackingData.videoComplete25];
     }
     else if (percent >= 50.0f && percent < 75.0f && !self.didPlay50)
     {
         self.didPlay50 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:self.trackingItem.videoComplete50];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:self.trackingData.videoComplete50];
     }
     else if (percent >= 75.0f && percent < 95.0f && !self.didPlay75)
     {
         self.didPlay75 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:self.trackingItem.videoComplete75];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:self.trackingData.videoComplete75];
     }
     else if (percent >= 95.0f && !self.didPlay100)
     {
         self.didPlay100 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:self.trackingItem.videoComplete100];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:self.trackingData.videoComplete100];
     }
 }
 

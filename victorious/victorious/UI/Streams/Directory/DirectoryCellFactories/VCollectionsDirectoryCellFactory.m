@@ -11,7 +11,7 @@
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
-#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VDirectoryCollectionFlowLayout.h"
 
 static const CGFloat kPlaylistCellHeight = 140.0f;

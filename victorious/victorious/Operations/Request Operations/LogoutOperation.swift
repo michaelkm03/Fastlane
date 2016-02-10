@@ -16,6 +16,8 @@ class LogoutOperation: RequestOperation {
     override init() {
         super.init()
         self.qualityOfService = .UserInitiated
+        
+        PrunePersistentStoreOperation().queueBefore(self)
     }
     
     override func main() {
@@ -39,13 +41,6 @@ class LogoutOperation: RequestOperation {
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
             VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
-        }
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
-            context.v_deleteAllObjectsWithEntityName( VNotification.v_entityName() )
-            context.v_deleteAllObjectsWithEntityName( VPollResult.v_entityName() )
-            context.v_save()
         }
         
         // And finally, clear the user.  Don't do this early because

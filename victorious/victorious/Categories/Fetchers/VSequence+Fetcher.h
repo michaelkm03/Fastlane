@@ -7,7 +7,6 @@
 //
 
 #import "VSequence.h"
-#import "VStreamItem+Fetcher.h"
 #import "VSequencePermissions.h"
 
 @class VAsset;
