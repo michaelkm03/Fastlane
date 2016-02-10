@@ -15,6 +15,8 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     private let apiPath: String
     
+    private var persistentStreamItemIDs: [NSManagedObjectID]?
+    
     required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
         self.request = request
@@ -46,26 +48,48 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             stream.populate(fromSourceModel: sourceStream)
             
             // If there are any stream items returned from the network:
-            if let streamIDs = sourceStream.items?.flatMap({ $0.streamItemID }) where !streamIDs.isEmpty {
+            let persistentStreamItemPointers: NSOrderedSet
+            if let streamItemIDs = sourceStream.items?.flatMap({ $0.streamItemID }) where !streamItemIDs.isEmpty {
                 
                 // Using a list of streamIDs that we've just received from the network,
                 // get the corresponding persistent stream items from the stream
-                let persistentStreamItems = stream.streamItemPointersForStreamItemIDs(streamIDs)
+                persistentStreamItemPointers = stream.streamItemPointersForStreamItemIDs(streamItemIDs)
                 
                 // Assign display order to stream item pointers that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart
-                for object in persistentStreamItems {
-                    guard let child = object as? VStreamItemPointer else {
+                for object in persistentStreamItemPointers {
+                    guard let pointer = object as? VStreamItemPointer else {
                         continue
                     }
-                    child.displayOrder = displayOrder++
+                    pointer.displayOrder = displayOrder++
                 }
+                
+            } else {
+                persistentStreamItemPointers = []
             }
             
             context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
+            
+            let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
+            self.persistentStore.mainContext.v_performBlock() { context in
+                
+                if let stream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first {
+                    print( "\n\nStream: \((stream.apiPath! as NSString).substringToIndex(20))... now has \(stream.streamItemPointers.count) stream item pointers.")
+                }
+                
+                defer { completion() }
+                guard persistentStreamItemPointers.count > 0 else {
+                    self.results = []
+                    return
+                }
+                
+                var streamItems = [VStreamItem]()
+                for id in persistentStreamItemIDs {
+                    if let streamItem = context.objectWithID(id) as? VStreamItem {
+                        streamItems.append( streamItem )
+                    }
+                }
+                self.results = streamItems
             }
         }
     }

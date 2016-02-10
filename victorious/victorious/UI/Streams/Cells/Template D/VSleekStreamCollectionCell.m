@@ -514,7 +514,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
-    NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
+    NSArray *comments = [self inStreamCommentsArrayForSequence:sequence] ?: @[];
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
                                 VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager,

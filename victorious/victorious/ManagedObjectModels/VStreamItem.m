@@ -22,5 +22,6 @@
 @dynamic marquees;
 @dynamic previewImageAssets;
 @dynamic releasedAt;
+@dynamic parentStreamItemPointers;
 
 @end

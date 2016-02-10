@@ -26,10 +26,17 @@ class FlagSequenceOperation: FetcherOperation {
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
-                return
-            }
-            context.deleteObject( sequence )
+            
+            // First, batch delete any pointers to remove the sequence from ALL streams
+            let deletePointer = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            deletePointer.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deletePointer)
+            
+            // Then take care of the sequence (stream item) itself
+            let deleteSequence = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            deleteSequence.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteSequence)
+            
             context.v_save()
         }
         

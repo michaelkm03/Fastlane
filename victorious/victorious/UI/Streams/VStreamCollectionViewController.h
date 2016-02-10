@@ -22,7 +22,7 @@ extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A 
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height of the "create content" button
 
-@class VStreamCollectionViewDataSource;
+@class VStreamCollectionViewDataSource, VCollectionViewStreamFocusHelper;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuContainedViewControllerNavigation, VContentViewOriginViewController>
 
@@ -53,6 +53,8 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  *  represented by cells within this collection view controller.
  */
 @property (readonly, nonatomic) VSequenceActionController *sequenceActionController;
+
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 /**
  Allows a context that instantiates a VUserProfileViewController to provide a class (possibly itself)

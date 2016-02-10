@@ -18,6 +18,7 @@ extension VStreamCollectionViewController {
                 return
         }
         self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue, animated: true)
+        self.focusHelper.updateFocus()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

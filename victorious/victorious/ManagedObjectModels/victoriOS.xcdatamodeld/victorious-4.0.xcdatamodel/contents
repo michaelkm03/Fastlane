@@ -269,15 +269,15 @@
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="parentStreamItemPointers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItemPointer" inverseName="streamItem" inverseEntity="StreamItemPointer" syncable="YES"/>
         <relationship name="previewImageAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="streamItems" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="previewTextPostAsset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="streamItems" inverseEntity="Asset" syncable="YES"/>
-        <relationship name="streamItemPointersInStream" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItemPointer" inverseName="streamItem" inverseEntity="StreamItemPointer" syncable="YES"/>
     </entity>
     <entity name="StreamItemPointer" representedClassName=".VStreamItemPointer" syncable="YES">
         <attribute name="displayOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItemPointers" inverseEntity="Stream" syncable="YES"/>
-        <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="streamItemPointersInStream" inverseEntity="StreamItem" syncable="YES"/>
+        <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="parentStreamItemPointers" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItemPointers" inverseEntity="Stream" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="streamItemPointer" inverseEntity="Tracking" syncable="YES"/>
     </entity>
