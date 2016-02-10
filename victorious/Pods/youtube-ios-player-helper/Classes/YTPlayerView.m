@@ -690,9 +690,9 @@ NSString static *const kYTPlayerStaticProxyRegexPattern = @"^https://content.goo
   // in case of using Swift and embedded frameworks, resources included not in main bundle,
   // but in framework bundle
   if (!path) {
-      path = [[[self class] frameworkBundle] pathForResource:@"YTPlayerView-iframe-player"
-                                                     ofType:@"html"
-                                                inDirectory:@"Assets"];
+path = [[[self class] frameworkBundle] pathForResource:@"YTPlayerView-iframe-player"
+                                             ofType:@"html"
+                                        inDirectory:@"Assets"];
   }
     
   NSString *embedHTMLTemplate =
