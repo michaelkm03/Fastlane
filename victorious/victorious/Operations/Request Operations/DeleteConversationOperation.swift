@@ -26,7 +26,6 @@ class DeleteConversationOperation: FetcherOperation {
     override func main() {
         
         /// By adding the conversation to FlaggedContent, we are blocking that user from messaging us again.
-        /// TODO: Add deletion flagging 
         flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
