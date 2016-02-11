@@ -13,17 +13,21 @@ class TestContentVideoPreviewViewProvider: NSObject, VContentPreviewViewProvider
     let videoPlayer: VVideoPlayer
     let containerView: UIView
     let restorePreviewView: UIView
+    let videoPreviewView: VVideoSequencePreviewView
     var hasRelinquishedPreviewView = false
 
-    init(videoPlayer: VVideoPlayer, containterView: UIView = UIView(), restorePreviewView: UIView = UIView()) {
-        self.videoPlayer = videoPlayer
-        self.containerView = containterView
-        self.restorePreviewView = restorePreviewView
-        super.init()
+    init(videoPlayer: VVideoPlayer,
+        containterView: UIView = UIView(),
+        restorePreviewView: UIView = UIView(),
+        videoPreviewView: VVideoSequencePreviewView = VVideoSequencePreviewView()) {
+            self.videoPlayer = videoPlayer
+            self.containerView = containterView
+            self.restorePreviewView = restorePreviewView
+            self.videoPreviewView = videoPreviewView
+            super.init()
     }
 
     func getPreviewView() -> VSequencePreviewView {
-        let videoPreviewView = VVideoSequencePreviewView()
         videoPreviewView.videoPlayer = videoPlayer
         return videoPreviewView
     }
@@ -96,6 +100,28 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         testVideoPreviewViewDelegate = TestVideoPreviewViewDelegate()
         previewViewProvider = TestContentVideoPreviewViewProvider(videoPlayer: testVideoPlayer)
         contentCell = VContentCell()
+    }
+
+    func testContentCellSetup() {
+        let result = ContentCellSetupHelper.setup(contentCell: contentCell,
+            contentPreviewProvider: previewViewProvider,
+            contentCellDelegate: testContentCellDelegate,
+            detailDelegate: testDetailDelegate,
+            videoPreviewViewDelegate: testVideoPreviewViewDelegate,
+            adBreak: nil)
+        XCTAssertEqual(contentCell.minSize.height, VShrinkingContentLayoutMinimumContentHeight)
+        guard let contentCellDelegate = contentCell.delegate else {
+            XCTFail("Failed to get a delegate of a content cell after setting it up")
+            return
+        }
+        XCTAssert(contentCellDelegate === testContentCellDelegate)
+        XCTAssertEqual(true, previewViewProvider.hasRelinquishedPreviewView)
+        guard let detailDelegate = previewViewProvider.getPreviewView().detailDelegate else {
+            XCTFail("Failed to get a preview view detail delegate after setting up a content cell")
+            return
+        }
+        XCTAssert(detailDelegate === testDetailDelegate)
+        XCTAssertNotNil(result.videoPlayer)
     }
 
     func testPlayingAd() {
