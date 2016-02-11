@@ -124,7 +124,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VStream *stream = context.stream;
     VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
     
-    if ( stream == nil || tracking == nil )
+    if ( sequence == nil || stream == nil || tracking == nil )
     {
         VLog( @"Cannot track 'cellClick' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
              sequence.remoteId, stream.remoteId, tracking.cellClick);
@@ -151,8 +151,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
-    
-    return;
 }
 
 #pragma mark - State management for StreamDidAppear event

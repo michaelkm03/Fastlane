@@ -69,16 +69,10 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             
             let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
             self.persistentStore.mainContext.v_performBlock() { context in
-                
-                defer { completion() }
-                guard persistentStreamItemPointers.count > 0 else {
-                    self.results = []
-                    return
-                }
-                
                 self.results = persistentStreamItemIDs.flatMap {
                     context.objectWithID($0) as? VStreamItem
                 }
+                completion()
             }
         }
     }

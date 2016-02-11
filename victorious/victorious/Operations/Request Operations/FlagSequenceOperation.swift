@@ -27,10 +27,14 @@ class FlagSequenceOperation: FetcherOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // First, batch delete any pointers to remove the sequence from ALL streams
-            let deletePointer = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            deletePointer.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
-            context.v_deleteObjects(deletePointer)
+            // First, batch delete any "pointer" models t
+            let deleteStreamItemPointers = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            deleteStreamItemPointers.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteStreamItemPointers)
+            
+            let deleteLikers = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
+            deleteLikers.predicate = NSPredicate(format:"sequence.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteLikers)
             
             // Then take care of the sequence itself
             let deleteSequence = NSFetchRequest(entityName: VSequence.v_entityName())
