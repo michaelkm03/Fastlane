@@ -1574,6 +1574,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)contentCellDidEndPlayingAd:(VContentCell *)cell
 {
+    self.textEntryView.userInteractionEnabled = true;
     [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }];
@@ -1582,6 +1583,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)contentCellDidStartPlayingAd:(VContentCell *)cell
 {
     self.closeButton.alpha = 1.0f;
+    self.textEntryView.userInteractionEnabled = false;
     [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
     }];
