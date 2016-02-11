@@ -317,10 +317,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          [twitterManager refreshTwitterTokenFromViewController:self
                                                completionBlock:^(BOOL success, NSError *error)
           {
+              if (error == nil)
+              {
               weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
                                                                   accessSecret:twitterManager.secret
                                                                      twitterID:twitterManager.twitterId
                                                                     identifier:twitterManager.identifier];
+              }
+              else
+              {
+                  [self handleTwitterLoginError:error];
+              }
           }];
      }];
     
