@@ -16,16 +16,18 @@ public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
     
     /// The conversation for this request
     public let conversationID: Int
+    public let userID: Int?
     private static let descPathParameter = "desc"
     
     public let paginator: StandardPaginator
     
     public init(request: ConversationRequest, paginator: StandardPaginator) {
-        self.init( conversationID: request.conversationID, paginator: paginator)
+        self.init( conversationID: request.conversationID, userID: request.userID, paginator: paginator)
     }
     
-    public init(conversationID: Int, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(conversationID: Int, userID: Int?, paginator: StandardPaginator = StandardPaginator() ) {
         self.conversationID = conversationID
+        self.userID = userID
         self.paginator = paginator
     }
 

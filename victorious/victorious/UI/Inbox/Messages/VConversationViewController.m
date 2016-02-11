@@ -81,6 +81,10 @@
              [self.tableView reloadData];
              [self scrollToBottomAnimated:NO];
          }
+         else
+         {
+             [self updateTableView];
+         }
          self.hasLoadedOnce = YES;
      }];
 }
@@ -93,6 +97,8 @@
     {
         [self.dataSource refreshRemote:nil];
     }
+    
+    [self updateTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -108,8 +114,8 @@
 - (void)dealloc
 {
     // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
-    NSInteger conversationID = self.conversation.remoteId.integerValue;
-    Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithConversationID:conversationID];
+    NSInteger userID = self.conversation.user.remoteId.integerValue;
+    Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithUserID:userID];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 

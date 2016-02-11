@@ -723,6 +723,7 @@
 		A716F3EB1C050A15003068A2 /* RequestErrorTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3EA1C050A15003068A2 /* RequestErrorTypeTests.swift */; };
 		A716F3EC1C05110D003068A2 /* PollResultSummaryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */; };
 		A719B3DF1C64397100537B45 /* VStreamItem+Pointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A719B3DE1C64397100537B45 /* VStreamItem+Pointer.swift */; };
+		A71A3FD81C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71A3FD71C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
@@ -2917,6 +2918,7 @@
 		A719B3DE1C64397100537B45 /* VStreamItem+Pointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamItem+Pointer.swift"; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
+		A71A3FD71C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteUnusedLocalConversationOperation.swift; sourceTree = "<group>"; };
 		A71DAF231B695FC200E0BE53 /* AutomationId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationId.swift; sourceTree = "<group>"; };
 		A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationScheduler.swift; sourceTree = "<group>"; };
 		A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+LocalNotification.swift"; sourceTree = "<group>"; };
@@ -7195,6 +7197,7 @@
 				A70033141C5FF36D00AB4A57 /* DeleteCommentOperation.swift */,
 				A7AF87281C4600ED00B49478 /* DeleteConversationOperation.swift */,
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
+				A71A3FD71C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				031DE6001C54BCAB0063492B /* Executor */,
@@ -7224,6 +7227,7 @@
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
+				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
 				67A952451C444DAB001234B4 /* RegisterPushNotificationOperation.swift */,
 				A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
@@ -7251,7 +7255,6 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
-				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -11403,6 +11406,7 @@
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
+				A71A3FD81C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
