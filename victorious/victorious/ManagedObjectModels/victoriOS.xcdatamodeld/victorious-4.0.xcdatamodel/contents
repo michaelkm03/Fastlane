@@ -241,7 +241,7 @@
     </entity>
     <entity name="SequenceLiker" representedClassName="VSequenceLiker" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <relationship name="sequence" maxCount="1" deletionRule="Cascade" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="likedSequences" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
@@ -277,7 +277,7 @@
         <attribute name="displayOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItemPointers" inverseEntity="Stream" syncable="YES"/>
-        <relationship name="streamItem" maxCount="1" deletionRule="Cascade" destinationEntity="StreamItem" inverseName="parentStreamItemPointers" inverseEntity="StreamItem" syncable="YES"/>
+        <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="parentStreamItemPointers" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItemPointers" inverseEntity="Stream" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="streamItemPointer" inverseEntity="Tracking" syncable="YES"/>
     </entity>

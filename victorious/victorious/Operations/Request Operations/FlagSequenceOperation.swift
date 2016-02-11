@@ -27,19 +27,19 @@ class FlagSequenceOperation: FetcherOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // First, batch delete any "pointer" models t
-            let deleteStreamItemPointers = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            deleteStreamItemPointers.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
-            context.v_deleteObjects(deleteStreamItemPointers)
+            // Delete any "pointer" (a.k.a. "join table") models to sever relationships
+            let deleteStreamItemPointersRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            deleteStreamItemPointersRequest.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteStreamItemPointersRequest)
             
-            let deleteLikers = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
-            deleteLikers.predicate = NSPredicate(format:"sequence.remoteId == %@", self.sequenceID)
-            context.v_deleteObjects(deleteLikers)
+            let deleteLikersRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
+            deleteLikersRequest.predicate = NSPredicate(format:"sequence.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteLikersRequest)
             
             // Then take care of the sequence itself
-            let deleteSequence = NSFetchRequest(entityName: VSequence.v_entityName())
-            deleteSequence.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
-            context.v_deleteObjects(deleteSequence)
+            let deleteSequenceRequest = NSFetchRequest(entityName: VSequence.v_entityName())
+            deleteSequenceRequest.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteSequenceRequest)
             
             context.v_saveAndBubbleToParentContext()
         }
