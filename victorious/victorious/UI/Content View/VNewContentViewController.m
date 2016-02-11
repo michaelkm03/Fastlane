@@ -768,6 +768,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 self.pollAnswerReceiver = (id<VPollResultReceiver>)self.sequencePreviewView;
             }
+            return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
         {
