@@ -31,9 +31,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {
                 
-                /// uniqueElements should only have ["remoteId" : result.notificationID]
-                /// Waiting on backend to give different remoteId's for notifications:
-                /// https://jira.victorious.com/browse/API-3939
+                /// Determining uniqueness based on time of creation and subject of the notification
                 let uniqueElements : [String : AnyObject] = [
                     "createdAt" : result.createdAt,
                     "subject" : result.subject
