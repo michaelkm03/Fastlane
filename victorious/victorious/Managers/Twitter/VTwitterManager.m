@@ -21,6 +21,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
 @property (nonatomic, strong) NSString *oauthToken;
 @property (nonatomic, strong) NSString *secret;
 @property (nonatomic, strong) NSString *twitterId;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) VTwitterAccountsHelper *accountsHelper;
 
 @end
@@ -53,8 +54,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
     return self.secret != nil && self.oauthToken != nil && self.twitterId != nil;
 }
 
-- (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                       fromViewController:(UIViewController *)viewController
+- (void)refreshTwitterTokenFromViewController:(UIViewController *)viewController
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
     [self.accountsHelper selectTwitterAccountWithViewControler:viewController
@@ -65,6 +65,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
              self.oauthToken = nil;
              self.secret = nil;
              self.twitterId = nil;
+             self.identifier = nil;
              
              if ( completionBlock != nil )
              {
@@ -83,6 +84,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
                   self.oauthToken = nil;
                   self.secret = nil;
                   self.twitterId = nil;
+                  self.identifier = nil;
                   
                   if ( completionBlock != nil )
                   {
@@ -104,6 +106,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];
               self.twitterId = [parsedData objectForKey:@"user_id"];
+              self.identifier = twitterAccount.identifier;
               
               if ( completionBlock != nil )
               {
