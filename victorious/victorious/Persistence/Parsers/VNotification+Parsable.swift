@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 extension VNotification: PersistenceParsable {
     
     func populate(fromSourceModel sourceModel: Notification) {
-        remoteId        = sourceModel.notificationID
         createdAt       = sourceModel.createdAt
         subject         = sourceModel.subject
         updatedAt       = sourceModel.updatedAt ?? updatedAt
