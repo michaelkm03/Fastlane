@@ -322,14 +322,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     else if ( streamItem.isContent )
     {
-        NSError *error;
-        if ( ![self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil error:&error] )
-        {
-            // TODO: This stops a crash, but must eventually show an error
-            NSLog( @"Error showing sequence: Content is unavailable" );
-            [self.streamDataSource.paginatedDataSource removeDeletedItems];
-            return;
-        }
+        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
         NSString *streamId = self.marqueeController.stream.shelfId.length && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.remoteId;
         ContentViewContext *context = [[ContentViewContext alloc] init];

@@ -37,13 +37,7 @@ class DeleteSequenceOperation: FetcherOperation {
             deleteSequence.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
             context.v_deleteObjects(deleteSequence)
             
-            context.v_save()
-        }
-        
-        // For deletions, force a save to the main context to make sure changes are propagated
-        // to calling code (a view controller)
-        self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            context.v_save()
+            context.v_saveAndBubbleToParentContext()
         }
     }
 }

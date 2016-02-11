@@ -52,7 +52,7 @@
 /**
  Call this when a stream cell is selected and another view will be presented/pushed to show its content.
  */
-- (BOOL)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info error:(NSError **)error;
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info;
 
 /**
  Call this after a stream has been fetched from the server and all information necessary

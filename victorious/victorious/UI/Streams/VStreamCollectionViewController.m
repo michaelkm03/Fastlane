@@ -263,11 +263,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
     if ( self.streamDataSource.count != 0 )
     {
-        /*
-         We already have marquee content so we need to restart the timer to make sure the marquee continues
-         to rotate in case it's timer has been invalidated by the presentation of another viewController
-         */
+        // We already have marquee content so we need to restart the timer to make sure the marquee continues
+        // to rotate in case it's timer has been invalidated by the presentation of another viewController
         [self.marqueeCellController enableTimer];
+        
+        [self.streamDataSource.paginatedDataSource removeDeletedItems];
     }
     
     if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
@@ -772,16 +772,18 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
-    NSError *error;
-    if ( ![self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil error:&error] )
+    NSParameterAssert(event.streamItem != nil);
+    NSParameterAssert(self.currentStream != nil);
+    
+    // If the use is able to execercise super-human speed and tap a deleted sequence before the
+    // this view controller can remove it in `viewWillAppear:`, return early to prevent
+    // the inevitable crash later on.
+    if ( event.streamItem.hasBeenDeleted )
     {
-        // TODO: This stops a crash, but must eventually show an error
-        NSLog( @"Error showing sequence: Content is unavailable" );
-        [self.streamDataSource.paginatedDataSource removeDeletedItems];
         return;
     }
     
-    NSParameterAssert(self.currentStream != nil);
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:trackingInfo];
     
     if ( [event.streamItem isKindOfClass:[VSequence class]] )
     {
