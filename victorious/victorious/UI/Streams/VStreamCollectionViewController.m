@@ -266,8 +266,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         // We already have marquee content so we need to restart the timer to make sure the marquee continues
         // to rotate in case it's timer has been invalidated by the presentation of another viewController
         [self.marqueeCellController enableTimer];
-        
-        [self.streamDataSource.paginatedDataSource removeDeletedItems];
     }
     
     if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
