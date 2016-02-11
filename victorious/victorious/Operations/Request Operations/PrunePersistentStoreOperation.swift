@@ -22,14 +22,13 @@ class PrunePersistentStoreOperation: FetcherOperation {
         // Perform on main context for high-priority, thread-blocking results:
         persistentStore.mainContext.v_performBlockAndWait() { context in
             
-            // Delete any "pointer" (a.k.a. "join table") objects.  This will clear
-            // streams (including profile streams) and remove relationships such as
-            // liked and followed content, users and hashtags without deleting any
-            // "real" objects themselves, such as users, sequences or hashtags.
+            // Delete stream pointers to remove all stream items from all streams.
+            // This wipes the slate clean for a new user to come along and re-load
+            // streams specific to their them.
             
             context.v_deleteAllObjectsWithEntityName( VStreamItemPointer.v_entityName() )
             
-            // Now delete any and all other objects that only exist for a current user.
+            // Delete any and all other objects that only exist for a current user.
             // This prevents old conversations or notificaitons from appearing after logout.
             
             context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
