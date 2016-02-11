@@ -57,7 +57,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
                        fromViewController:(UIViewController *)viewController
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
-    [_accountsHelper selectTwitterAccountWithViewControler:viewController
+    [self.accountsHelper selectTwitterAccountWithViewControler:viewController
                                                 completion:^(ACAccount *twitterAccount)
      {
          if ( twitterAccount == nil )
@@ -96,7 +96,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString: [@"http://twitter.com?" stringByAppendingString:responseStr]];
               NSArray *queryItems = [urlComponents queryItems];
               NSMutableDictionary *parsedData = [[NSMutableDictionary alloc] init];
-              for(NSURLQueryItem *queryItem in queryItems)
+              for (NSURLQueryItem *queryItem in queryItems)
               {
                   parsedData[queryItem.name] = queryItem.value;
               }
