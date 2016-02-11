@@ -776,8 +776,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSParameterAssert(self.currentStream != nil);
     
     // If a user is able to execercise super-human speed and tap a deleted sequence before the
-    // this view controller can remove it by calling `removeDeletedItems` from `viewWillAppear:`,
-    // return early and do nothing to prevent the inevitable crash later on.
+    // this view controller's super class can remove it by calling `removeDeletedItems` from
+    // `viewWillAppear:`, return early to prevent the inevitable crash later on.
     if ( event.streamItem.hasBeenDeleted )
     {
         return;
