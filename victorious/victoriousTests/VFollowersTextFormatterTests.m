@@ -49,7 +49,7 @@
     XCTAssertEqualObjects( label, @"1K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:2500];
-    XCTAssertEqualObjects( label, @"2K.5 Followers" );
+    XCTAssertEqualObjects( label, @"2.5K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:5180];
     XCTAssertEqualObjects( label, @"5.1K Followers" );

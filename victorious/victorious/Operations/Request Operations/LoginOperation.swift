@@ -2,7 +2,7 @@
 //  LoginOperation.swift
 //  victorious
 //
-//  Created by Alex Tamoykin on 2/5/16.
+//  Created by Tian Lan on 2/10/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
