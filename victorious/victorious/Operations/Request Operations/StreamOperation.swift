@@ -57,10 +57,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 
                 // Assign display order to stream item pointers that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart
-                for object in persistentStreamItemPointers {
-                    guard let pointer = object as? VStreamItemPointer else {
-                        continue
-                    }
+                for pointer in persistentStreamItemPointers.flatMap({ $0 as? VStreamItemPointer }) {
                     pointer.displayOrder = displayOrder++
                 }
                 
