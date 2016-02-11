@@ -278,7 +278,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     NSTimeInterval adTimeoutTimeInterval = 0;
     if (self.currentAdBreak != nil && self.currentAdBreak.timeout != nil)
     {
-        adTimeoutTimeInterval = self.currentAdBreak.timeout.doubleValue;
+        adTimeoutTimeInterval = self.currentAdBreak.timeout.doubleValue / 1000;
     }
     else
     {
