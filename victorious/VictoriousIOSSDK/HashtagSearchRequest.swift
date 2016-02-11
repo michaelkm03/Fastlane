@@ -29,7 +29,7 @@ public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     // param: - searchTerm must be a urlPathPart percent encoded string
     public init?(searchTerm: String, context: SearchContext? = nil, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
         
-        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
         guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet),
             let url = NSURL(string: "/api/hashtag/search/\(escapedSearchTerm)") else {
                 return nil
