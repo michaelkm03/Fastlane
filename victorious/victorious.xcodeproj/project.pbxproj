@@ -639,7 +639,6 @@
 		A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */; };
 		A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */; };
 		A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */; };
-		A68107331C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */; };
 		A685A5D31B6801CF00389DA5 /* VInputAccessoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685A5D21B6801CF00389DA5 /* VInputAccessoryCollectionView.swift */; };
 		A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */; };
 		A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */; };
@@ -2792,7 +2791,6 @@
 		A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLibraryFolderControl.xib; sourceTree = "<group>"; };
 		A680CE8D1B62ECA2005934FF /* VCameraToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraToWorkspaceAnimator.m; sourceTree = "<group>"; };
-		A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+PredicateModelType.swift"; sourceTree = "<group>"; };
 		A685A5D21B6801CF00389DA5 /* VInputAccessoryCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VInputAccessoryCollectionView.swift; sourceTree = "<group>"; };
 		A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
 		A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
@@ -7931,7 +7929,6 @@
 				A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */,
 				A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */,
 				A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */,
-				A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */,
 				A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */,
 				A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */,
 				A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */,
@@ -11530,7 +11527,6 @@
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
 				672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
-				A68107331C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				A76712191C209E11006568DF /* VEditCommentViewController.swift in Sources */,
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
