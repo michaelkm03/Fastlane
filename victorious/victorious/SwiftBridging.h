@@ -232,3 +232,4 @@
 #import "VVoteType.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+#import "YTPlayerView.h"

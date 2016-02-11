@@ -270,18 +270,15 @@ static NSString * const kMenuKey = @"menu";
     
     if (self.willSelectContainerViewController != nil)
     {
-        VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-        if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
+        if (self.willSelectContainerViewController.containedViewController == nil)
         {
-            if (self.willSelectContainerViewController.containedViewController == nil)
-            {
-                [navigationController.innerNavigationController pushViewController:viewController animated:NO];
-                [self.willSelectContainerViewController setContainedViewController:navigationController];
-            }
-            [self.internalTabBarController setSelectedViewController:self.willSelectContainerViewController];
-            [self setNeedsStatusBarAppearanceUpdate];
-            self.willSelectContainerViewController = nil;
+            VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+            [navigationController.innerNavigationController pushViewController:viewController animated:NO];
+            [self.willSelectContainerViewController setContainedViewController:navigationController];
         }
+        [self.internalTabBarController setSelectedViewController:self.willSelectContainerViewController];
+        [self setNeedsStatusBarAppearanceUpdate];
+        self.willSelectContainerViewController = nil;
     }
     else if ( [self.internalTabBarController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
     {

@@ -342,6 +342,8 @@
 		03EE1DE01C4D77B200C25287 /* NSURL+DefaultScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */; };
 		03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */; };
 		03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2F7941B560B8E00F2EF16 /* sampleImage2.png */; };
+		03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 03F61E691C6ADF0700EEA8F9 /* Assets.bundle */; };
+		03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */; };
 		03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F6E2691AB79E090017826E /* Workspace.storyboard */; };
 		03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */; };
 		03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */; };
@@ -637,7 +639,6 @@
 		A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */; };
 		A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */; };
 		A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */; };
-		A68107331C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */; };
 		A685A5D31B6801CF00389DA5 /* VInputAccessoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685A5D21B6801CF00389DA5 /* VInputAccessoryCollectionView.swift */; };
 		A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */; };
 		A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */; };
@@ -2443,6 +2444,9 @@
 		03F2F7631B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03F2F7691B55829200F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Discover.strings; sourceTree = "<group>"; };
 		03F2F7941B560B8E00F2EF16 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage2.png; sourceTree = "<group>"; };
+		03F61E691C6ADF0700EEA8F9 /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Assets.bundle; sourceTree = "<group>"; };
+		03F61E6A1C6ADF0700EEA8F9 /* YTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTPlayerView.h; sourceTree = "<group>"; };
+		03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTPlayerView.m; sourceTree = "<group>"; };
 		03F6E2681AB79E090017826E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Workspace.storyboard; sourceTree = "<group>"; };
 		03F6E26A1AB79E100017826E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Workspace.strings; sourceTree = "<group>"; };
 		03F6E26B1AB79E130017826E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Workspace.strings; sourceTree = "<group>"; };
@@ -2787,7 +2791,6 @@
 		A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLibraryFolderControl.xib; sourceTree = "<group>"; };
 		A680CE8D1B62ECA2005934FF /* VCameraToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraToWorkspaceAnimator.m; sourceTree = "<group>"; };
-		A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+PredicateModelType.swift"; sourceTree = "<group>"; };
 		A685A5D21B6801CF00389DA5 /* VInputAccessoryCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VInputAccessoryCollectionView.swift; sourceTree = "<group>"; };
 		A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
 		A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
@@ -6208,6 +6211,7 @@
 				792D46C81BD953F500DE662A /* Reveal.framework */,
 				03388EEC1C582F9A00D59A05 /* TestFairySDK */,
 				03C185AD19B42E5D00E27D05 /* TWAPIManager */,
+				03F61E681C6ADF0700EEA8F9 /* youtube-ios-player-helper */,
 			);
 			path = "3rd Party SDKs";
 			sourceTree = "<group>";
@@ -6319,6 +6323,16 @@
 				03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */,
 			);
 			path = "Swizzling Support";
+			sourceTree = "<group>";
+		};
+		03F61E681C6ADF0700EEA8F9 /* youtube-ios-player-helper */ = {
+			isa = PBXGroup;
+			children = (
+				03F61E691C6ADF0700EEA8F9 /* Assets.bundle */,
+				03F61E6A1C6ADF0700EEA8F9 /* YTPlayerView.h */,
+				03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */,
+			);
+			path = "youtube-ios-player-helper";
 			sourceTree = "<group>";
 		};
 		3B85CC77EBE2E15F24627208 /* Pods */ = {
@@ -7915,7 +7929,6 @@
 				A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */,
 				A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */,
 				A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */,
-				A68107321C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift */,
 				A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */,
 				A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */,
 				A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */,
@@ -9956,6 +9969,7 @@
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
+				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
 				03645B0D1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
@@ -11316,6 +11330,7 @@
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
 				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
+				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */,
@@ -11513,7 +11528,6 @@
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
 				672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
-				A68107331C54564B005E6FD1 /* NSManagedObject+PredicateModelType.swift in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				A76712191C209E11006568DF /* VEditCommentViewController.swift in Sources */,
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,

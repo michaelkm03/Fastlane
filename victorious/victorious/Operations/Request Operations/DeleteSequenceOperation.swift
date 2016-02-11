@@ -26,17 +26,22 @@ class DeleteSequenceOperation: FetcherOperation {
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
-                return
-            }
-            context.deleteObject( sequence )
-            context.v_save()
-        }
-        
-        // For deletions, force a save to the main context to make sure changes are propagated
-        // to calling code (a view controller)
-        self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            context.v_save()
+            
+            // Delete any "pointer" (a.k.a. "join table") models to sever relationships
+            let deleteStreamItemPointersRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            deleteStreamItemPointersRequest.predicate = NSPredicate(format:"streamItem.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteStreamItemPointersRequest)
+            
+            let deleteLikersRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
+            deleteLikersRequest.predicate = NSPredicate(format:"sequence.remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteLikersRequest)
+            
+            // Then take care of the sequence itself
+            let deleteSequenceRequest = NSFetchRequest(entityName: VSequence.v_entityName())
+            deleteSequenceRequest.predicate = NSPredicate(format:"remoteId == %@", self.sequenceID)
+            context.v_deleteObjects(deleteSequenceRequest)
+            
+            context.v_saveAndBubbleToParentContext()
         }
     }
 }

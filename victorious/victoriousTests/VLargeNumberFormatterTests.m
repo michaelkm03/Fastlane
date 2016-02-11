@@ -51,7 +51,7 @@
 - (void)testThousands
 {
     NSInteger number = 5658;
-    NSString *desired = @"5K";
+    NSString *desired = @"5.6K";
     NSString *actual = [self.formatter stringForInteger:number];
     XCTAssertEqualObjects(desired, actual);
 }
@@ -59,7 +59,7 @@
 - (void)testAlmostMillion
 {
     NSInteger number = 999999;
-    NSString *desired = @"999K";
+    NSString *desired = @"999.9K";
     NSString *actual = [self.formatter stringForInteger:number];
     XCTAssertEqualObjects(desired, actual);
 }
@@ -75,7 +75,7 @@
 - (void)testMillions
 {
     NSInteger number = 6525845;
-    NSString *desired = @"6M";
+    NSString *desired = @"6.5M";
     NSString *actual = [self.formatter stringForInteger:number];
     XCTAssertEqualObjects(desired, actual);
 }
@@ -83,7 +83,7 @@
 - (void)testAlmostBillion
 {
     NSInteger number = 999999999;
-    NSString *desired = @"999M";
+    NSString *desired = @"999.9M";
     NSString *actual = [self.formatter stringForInteger:number];
     XCTAssertEqualObjects(desired, actual);
 }
