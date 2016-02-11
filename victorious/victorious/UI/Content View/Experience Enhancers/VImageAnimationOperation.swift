@@ -42,7 +42,7 @@ class VImageAnimationOperation: Operation {
             return true
         }
         else {
-            return currentFrame == animationSequence.count
+            return currentFrame >= animationSequence.count
         }
     }
     
