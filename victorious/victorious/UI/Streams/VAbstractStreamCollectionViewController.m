@@ -112,6 +112,13 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
+    if ( self.streamDataSource.count != 0 )
+    {
+        // This is HIGHLY important to call on `viewDidAppear:` because any deleted sequences
+        // that are still being displayed in the stream are ticking timebombs waiting to crash.
+        [self.streamDataSource.paginatedDataSource removeDeletedItems];
+    }
+    
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
 
     if ( shouldRefresh )

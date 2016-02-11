@@ -98,7 +98,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
-@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 @property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
@@ -264,10 +263,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
     if ( self.streamDataSource.count != 0 )
     {
-        /*
-         We already have marquee content so we need to restart the timer to make sure the marquee continues
-         to rotate in case it's timer has been invalidated by the presentation of another viewController
-         */
+        // We already have marquee content so we need to restart the timer to make sure the marquee continues
+        // to rotate in case it's timer has been invalidated by the presentation of another viewController
         [self.marqueeCellController enableTimer];
     }
     
@@ -775,6 +772,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
+    
+    // If a user is able to execercise super-human speed and tap a deleted sequence before the
+    // this view controller's super class can remove it by calling `removeDeletedItems` from
+    // `viewWillAppear:`, return early to prevent the inevitable crash later on.
+    if ( event.streamItem.hasBeenDeleted )
+    {
+        return;
+    }
     
     [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:trackingInfo];
     
