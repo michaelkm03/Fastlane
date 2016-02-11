@@ -121,6 +121,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     [super viewWillAppear:animated];
     
+    [self.dataSource removeDeletedItems];
+    
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
 
