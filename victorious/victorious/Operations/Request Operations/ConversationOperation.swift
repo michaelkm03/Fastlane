@@ -35,6 +35,15 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         
         // If we have a valid conversationID, reload it remotely first
         if let conversationID = self.conversationID where conversationID > 0 {
+            
+            /// Check if the conversation has been flagged (deleted)
+            /// If so, exit early and do not fetch the conversation
+            let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
+            if flaggedIDs.contains(conversationID) {
+                self.completionBlock?()
+                return
+            }
+            
             requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
             
         } else {

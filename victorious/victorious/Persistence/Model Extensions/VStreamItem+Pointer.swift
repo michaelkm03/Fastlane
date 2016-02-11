@@ -26,13 +26,12 @@ extension VStream {
     /// Filters the receiver's `streamItemPointers` for those whose `streamItem` is contained
     /// within the provided list of streamItemIDs.
     func streamItemPointersForStreamItemIDs(streamItemIDs: [String]) -> NSOrderedSet {
-        let predicate = NSPredicate() { (object, bindings) in
-            guard let streamItemPointer = object as? VStreamItemPointer else {
-                return false
-            }
-            return streamItemIDs.contains() { streamItemPointer.streamItem.remoteId == $0 }
+        let filteredPointers = streamItemIDs.flatMap { id in
+            self.streamItemPointers.filter { pointer in
+                pointer.streamItem.remoteId == id
+            }.first
         }
-        return self.streamItemPointers.filteredOrderedSetUsingPredicate( predicate )
+        return NSOrderedSet(array: filteredPointers)
     }
 }
 
@@ -55,12 +54,7 @@ extension VStreamItem {
     }
     
     private func streamItemPointerForStreamID(streamID: String?) -> VStreamItemPointer? {
-        // By using `valueForKey` with `streamItemPointersInStream` as a string accesses
-        // the corresponding attributes in CoreData.  The reason for this is to prevent 
-        // `streamItemPointersInStream` from being misused if exposed as a property in code
-        // on `VStreamItem`.  The functions of this extension should be the only available
-        // method for retriving stream item pointers to ensure that it is done correctly.
-        guard let streamItemPointers = self.valueForKey("streamItemPointersInStream") as? Set<VStreamItemPointer> else {
+        guard let streamItemPointers = self.parentStreamItemPointers as? Set<VStreamItemPointer> else {
             return nil
         }
         let filter: VStreamItemPointer->Bool

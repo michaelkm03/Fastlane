@@ -27,7 +27,8 @@ static const int  kMultiplier = 1000;
     {
         self.formatter = [[NSNumberFormatter alloc] init];
         self.formatter.numberStyle = NSNumberFormatterDecimalStyle;
-        self.formatter.maximumFractionDigits = 2;
+        self.formatter.roundingMode = NSNumberFormatterRoundDown;
+        self.formatter.maximumFractionDigits = 1;
     }
     return self;
 }
@@ -35,14 +36,15 @@ static const int  kMultiplier = 1000;
 - (NSString *)stringForInteger:(NSInteger)integer
 {
     int exponent = 0;
+    CGFloat decimalNumber = (CGFloat)integer;
 
-    while ((integer >= kMultiplier) && (exponent < kMaxUnits))
+    while ((decimalNumber >= kMultiplier) && (exponent < kMaxUnits))
     {
-        integer /= kMultiplier;
+        decimalNumber /= kMultiplier;
         exponent++;
     }
     
-    return [NSString stringWithFormat:@"%@%c", [self.formatter stringFromNumber:@(integer)], kUnits[exponent]];
+    return [NSString stringWithFormat:@"%@%c", [self.formatter stringFromNumber:@(decimalNumber)], kUnits[exponent]];
 }
 
 @end
