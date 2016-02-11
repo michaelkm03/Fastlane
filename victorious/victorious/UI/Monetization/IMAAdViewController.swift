@@ -80,6 +80,7 @@ import SafariServices
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
         let imaError = adErrorData.adError
+        VLog("Failed to load ads with error: \(imaError.message)")
         let error = NSError(domain: kVictoriousErrorDomain,
             code: imaError.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : imaError.message])
