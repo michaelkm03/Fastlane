@@ -415,8 +415,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    self.hasLoadedOnce = NO;
-    
     if ( [VCurrentUser user] != nil )
     {
         [self.messageCountCoordinator updateUnreadMessageCount];
