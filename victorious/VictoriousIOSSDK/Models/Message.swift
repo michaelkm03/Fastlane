@@ -14,10 +14,10 @@ public struct Message {
     public struct CreationParameters {
         public let text: String
         public let recipientID: Int
-        public let conversationID: Int
+        public let conversationID: Int?
         public let mediaAttachment: MediaAttachment?
         
-        public init(text: String, recipientID: Int, conversationID: Int, mediaAttachment: MediaAttachment?) {
+        public init(text: String, recipientID: Int, conversationID: Int?, mediaAttachment: MediaAttachment?) {
             self.text = text
             self.recipientID = recipientID
             self.conversationID = conversationID
