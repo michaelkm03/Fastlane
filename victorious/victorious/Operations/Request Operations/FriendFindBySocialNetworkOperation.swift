@@ -27,7 +27,7 @@ class FriendFindBySocialNetworkOperation: RequestOperation {
     }
     
     func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
-        let fetcherOperation = FoundFriendsFetcherOperation(users: results)
+        let fetcherOperation = FoundFriendsFetcherOperation(users: results, persistentStore: self.persistentStore)
         fetcherOperation.queue { _ in
             self.results = fetcherOperation.results
             completion()
@@ -35,11 +35,15 @@ class FriendFindBySocialNetworkOperation: RequestOperation {
     }
 }
 
+/// This operation is used to fetch local persistent results for
+/// the network user models we get from FriendFind operations
 class FoundFriendsFetcherOperation: FetcherOperation {
     let networkUsers: [User]
 
-    init(users: [User]) {
+    init(users: [User], persistentStore: PersistentStoreType) {
         self.networkUsers = users
+        super.init()
+        self.persistentStore = persistentStore
     }
     
     override func main() {

@@ -28,7 +28,7 @@ class FriendFindByEmailOperation: RequestOperation {
     }
     
     func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
-        let fetcherOperation = FoundFriendsFetcherOperation(users: results)
+        let fetcherOperation = FoundFriendsFetcherOperation(users: results, persistentStore: self.persistentStore)
         fetcherOperation.queue { _ in
             self.results = fetcherOperation.results
             completion()
