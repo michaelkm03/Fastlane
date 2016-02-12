@@ -18,7 +18,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
 	}
     
-    var delegate: PaginatedDataSourceDelegate?
+    var delegate: VPaginatedDataSourceDelegate?
 	
 	/// A type used to record data source chanages that can then be applied to the collection
 	/// view in a `performBatchUpdates(_:completion)` call.
@@ -56,7 +56,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
         return dataSource?.hasLoadedLastPage ?? true
     }
     
-    var state: DataSourceState {
+    var state: VDataSourceState {
         return dataSource?.state ?? .Cleared
     }
     
@@ -209,7 +209,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: DataSourceState ) {
+    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""

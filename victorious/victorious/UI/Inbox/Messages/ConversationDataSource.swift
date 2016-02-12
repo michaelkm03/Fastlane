@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
+class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
     
@@ -30,9 +30,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return self.paginatedDataSource.isLoading()
     }
     
-    var delegate: PaginatedDataSourceDelegate?
+    var delegate: VPaginatedDataSourceDelegate?
     
-    var state: DataSourceState {
+    var state: VDataSourceState {
         return self.paginatedDataSource.state
     }
     
@@ -102,14 +102,14 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         )
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder?.compare($1.displayOrder) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
