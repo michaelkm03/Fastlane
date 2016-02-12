@@ -448,7 +448,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             }
             else
             {
-                [weakSelf dismissLoadingScreen];
                 completion(NO, error);
             }
         }];
@@ -484,7 +483,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
              else
              {
                  completion(NO, NO, error);
-                 [weakSelf dismissLoadingScreen];
              }
          }];
      }];
@@ -728,6 +726,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [self popToViewController:[self.loginScreens firstObject]
                      animated:YES];
+}
+
+- (void)LoginErrorAlertAcknowledged
+{
+    [self dismissLoadingScreen];
 }
 
 #pragma mark - Loading Screen Delegate
