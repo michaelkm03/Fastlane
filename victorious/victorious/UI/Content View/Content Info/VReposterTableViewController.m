@@ -16,7 +16,7 @@
 #import "VScrollPaginator.h"
 #import "victorious-Swift.h"
 
-@interface VReposterTableViewController () <VScrollPaginatorDelegate, PaginatedDataSourceDelegate>
+@interface VReposterTableViewController () <VScrollPaginatorDelegate, VPaginatedDataSourceDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
@@ -119,7 +119,7 @@
 
 #pragma mark - PaginatedDataSourceDelegate
 
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum DataSourceState)oldState to:(enum DataSourceState)newState
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
 {
     [self updateTableView];
 }
@@ -137,8 +137,8 @@
     
     switch ( [self.dataSource state] )
     {
-        case DataSourceStateError:
-        case DataSourceStateNoResults:
+        case VDataSourceStateError:
+        case VDataSourceStateNoResults:
         {
             if ( self.tableView.backgroundView != self.noContentView )
             {

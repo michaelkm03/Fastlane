@@ -20,9 +20,9 @@ import Foundation
     
     func noContentImage() -> UIImage
     
-    var state: DataSourceState { get }
+    var state: VDataSourceState { get }
     
-    var delegate: PaginatedDataSourceDelegate? { get set }
+    var delegate: VPaginatedDataSourceDelegate? { get set }
 }
 
 @objc final class VLikersDataSource: PaginatedDataSource, VUsersDataSource {

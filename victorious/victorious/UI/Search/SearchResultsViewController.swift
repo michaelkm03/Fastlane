@@ -19,7 +19,7 @@ import VictoriousIOSSDK
     func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }
 
-class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
+class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate {
     
     private static let defaultSearchResultCellHeight: CGFloat = 50.0
     
@@ -37,7 +37,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
         return view
     }()
     
-    var state: DataSourceState {
+    var state: VDataSourceState {
         return self.dataSource?.state ?? .Cleared
     }
     
@@ -168,7 +168,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
         dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
@@ -179,7 +179,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
         tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         
         updateTableView()
     }

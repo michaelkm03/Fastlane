@@ -159,6 +159,7 @@
 #import "VNotificationSettingsViewController.h"
 #import "VNotificationsViewController.h"
 #import "VPageType.h"
+#import "VPaginatedDataSourceDelegate.h"
 #import "VPhotoFilter.h"
 #import "VPollResult.h"
 #import "VPrivacyPoliciesViewController.h"

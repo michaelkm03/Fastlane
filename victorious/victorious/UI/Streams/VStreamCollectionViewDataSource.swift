@@ -54,9 +54,9 @@ extension VStreamCollectionViewDataSource {
     }
 }
 
-extension VStreamCollectionViewDataSource: PaginatedDataSourceDelegate {
+extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         if suppressShelves {
             let filteredArray = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType == VStreamItemTypeShelf }
             self.visibleItems = NSOrderedSet(array: filteredArray)
@@ -66,7 +66,7 @@ extension VStreamCollectionViewDataSource: PaginatedDataSourceDelegate {
         self.delegate?.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
