@@ -28,34 +28,10 @@ class FriendFindByEmailOperation: RequestOperation {
     }
     
     func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
-        
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var persistentUsers = [VUser]()
-            for foundFriend in results {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
-                persistentUser.populate(fromSourceModel: foundFriend)
-                persistentUsers.append(persistentUser)
-            }
-            context.v_save()
-            self.resultObjectIDs = persistentUsers.map { $0.objectID }
-            
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            var mainQueueUsers = [VUser]()
-            for foundFriendObjectID in self.resultObjectIDs {
-                let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
-                if let mainQueuePersistentUser = mainQueuePersistentUser {
-                    mainQueueUsers.append(mainQueuePersistentUser)
-                }
-            }
-            return mainQueueUsers
+        let fetcherOperation = FoundFriendsFetcherOperation(users: results)
+        fetcherOperation.queue { _ in
+            self.results = fetcherOperation.results
+            completion()
         }
     }
 }

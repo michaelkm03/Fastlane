@@ -73,6 +73,14 @@
             completionBlock(nil, error);
         }
     }];*/
+    NSString *facebookToken = [[FBSDKAccessToken currentAccessToken] tokenString];
+    FriendFindBySocialNetworkOperation *operation = [[FriendFindBySocialNetworkOperation alloc] initWithPlatformName:@"facebook" token:facebookToken];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+        if (completionBlock)
+        {
+            completionBlock(operation.results, error);
+        }
+    }];
 }
 
 - (NSString *)headerTextForNewFriendsSection

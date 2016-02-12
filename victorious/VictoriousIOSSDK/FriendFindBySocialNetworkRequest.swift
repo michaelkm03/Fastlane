@@ -22,20 +22,15 @@ public struct FriendFindBySocialNetworkRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/friend/find")!)
-        var params: [String : String]
+        var url = NSURL(string: "/api/friend/find")
         
         switch socialNetwork {
         case let .Facebook(platform, token):
-            params = [
-                "social_network" : platform,
-                "token" : token
-            ]
+            url = url?.URLByAppendingPathComponent(platform)
+            url = url?.URLByAppendingPathComponent(token)
         }
         
-        request.vsdk_addURLEncodedFormPost(params)
-        
-        return request
+        return NSURLRequest(URL: url!)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
