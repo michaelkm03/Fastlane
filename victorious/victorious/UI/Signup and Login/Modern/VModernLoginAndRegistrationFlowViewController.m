@@ -319,10 +319,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
           {
               if (error == nil)
               {
-              weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                  accessSecret:twitterManager.secret
-                                                                     twitterID:twitterManager.twitterId
-                                                                    identifier:twitterManager.identifier];
+                  weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                      accessSecret:twitterManager.secret
+                                                                         twitterID:twitterManager.twitterId
+                                                                        identifier:twitterManager.identifier];
               }
               else
               {
@@ -338,8 +338,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)handleTwitterLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
+    if (error.code == VTwitterManagerErrorCanceled)
+    {
+        return;
+    }
     
-    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
+    if ( ![error.domain isEqualToString:NSURLErrorDomain] )
     {
         UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
                                                                                        message:NSLocalizedString(@"TwitterTroubleshooting", @"")

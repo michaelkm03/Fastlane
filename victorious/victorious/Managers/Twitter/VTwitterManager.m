@@ -58,7 +58,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
     [self.accountsHelper selectTwitterAccountWithViewControler:viewController
-                                                completion:^(ACAccount *twitterAccount)
+                                                    completion:^(ACAccount *twitterAccount)
      {
          if ( twitterAccount == nil )
          {
