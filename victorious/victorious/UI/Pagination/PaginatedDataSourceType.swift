@@ -9,29 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-@objc enum DataSourceState: Int {
-    case Loading
-    case Cleared
-    case NoResults
-    case Results
-    case Error
-}
-
-/// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
-@objc protocol PaginatedDataSourceDelegate: NSObjectProtocol {
-    
-    /// Called from a `PaginateddataSource` instance when new objects have been fetched and added to its backing store.
-    /// The `oldValue` and `newValue` parameters are designed to allow calling code to
-    /// precisely reload only what has changed instead of useing `reloadData()`.
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource,
-        didUpdateVisibleItemsFrom oldValue: NSOrderedSet,
-        to newValue: NSOrderedSet)
-    
-    optional func paginatedDataSource( paginatedDataSource: PaginatedDataSource,
-        didChangeStateFrom oldState: DataSourceState,
-        to newState: DataSourceState)
-}
-
 /// Defines an object that manages PaginatedOperation instances by using them
 /// to load pages worth of data and collect them in a backing store for a tableview
 /// or collection view.
@@ -39,10 +16,10 @@ import VictoriousIOSSDK
     
     var hasLoadedLastPage: Bool { get }
     
-    var delegate: PaginatedDataSourceDelegate? { set get }
+    var delegate: VPaginatedDataSourceDelegate? { set get }
     
     /// The current state, which should be represented any UI
-    var state: DataSourceState { get }
+    var state: VDataSourceState { get }
     
     /// The backing store for a collection or table view, i.e. what to show
     var visibleItems: NSOrderedSet { get }

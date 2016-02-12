@@ -2423,6 +2423,7 @@
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
 		03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VDataCacheTests.cachedData; sourceTree = "<group>"; };
 		03E910821B96B032009CC937 /* TrendingTopicGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicGradientView.swift; sourceTree = "<group>"; };
+		03EBF62F1C6D4FB300B938FB /* VPaginatedDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginatedDataSourceDelegate.h; sourceTree = "<group>"; };
 		03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultScheme.swift"; sourceTree = "<group>"; };
 		03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultSchemeTests.swift"; sourceTree = "<group>"; };
 		03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProvidesNavigationMenuItemBadge.h; sourceTree = "<group>"; };
@@ -7659,6 +7660,7 @@
 				A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */,
 				A7B133561C6178FD006EC4F5 /* VNoContentView.h */,
 				A7B133571C6178FD006EC4F5 /* VNoContentView.m */,
+				03EBF62F1C6D4FB300B938FB /* VPaginatedDataSourceDelegate.h */,
 				A7B133581C6178FD006EC4F5 /* VScrollPaginator.h */,
 				A7B133591C6178FD006EC4F5 /* VScrollPaginator.m */,
 			);
