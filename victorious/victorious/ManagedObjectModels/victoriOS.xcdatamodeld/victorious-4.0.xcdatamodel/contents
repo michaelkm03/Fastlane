@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10147" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -172,7 +172,7 @@
     </entity>
     <entity name="Notification" representedClassName="VNotification" syncable="YES">
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="createdAt" transient="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" syncable="YES"/>
         <attribute name="deepLink" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayOrder" attributeType="Integer 64" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
