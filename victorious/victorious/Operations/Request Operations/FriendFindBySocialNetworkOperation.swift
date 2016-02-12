@@ -30,3 +30,7 @@ class FriendFindBySocialNetworkOperation: RequestOperation {
         
     }
 }
+
+class FoundFriendsFetcherOperation: FetcherOperation {
+    
+}
