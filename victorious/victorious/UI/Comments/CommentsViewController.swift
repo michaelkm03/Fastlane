@@ -22,7 +22,7 @@ extension VDependencyManager {
     }
 }
 
-class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
+class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, VPaginatedDataSourceDelegate {
     
     private static let kDefaultBackgroundColorAlpha: CGFloat = 0.35
 
@@ -536,9 +536,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         keyboardBar?.attachmentsBarHidden = false
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         
         if let dataSource = self.dataSource {
             let wasHidden = dataSource.activityFooterDataSource.hidden

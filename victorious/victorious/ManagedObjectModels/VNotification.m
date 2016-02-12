@@ -19,7 +19,6 @@
 @dynamic isRead;
 @dynamic type;
 @dynamic updatedAt;
-@dynamic remoteId;
 @dynamic subject;
 @dynamic displayOrder;
 @dynamic user;

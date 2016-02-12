@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension VHashtagFollowingTableViewController: PaginatedDataSourceDelegate {
+extension VHashtagFollowingTableViewController: VPaginatedDataSourceDelegate {
     
     func loadHashtags( pageType pageType: VPageType, completion:(NSError? -> ())? ) {
         self.paginatedDataSource.delegate = self
@@ -42,11 +42,11 @@ extension VHashtagFollowingTableViewController: PaginatedDataSourceDelegate {
         }
     }
 
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateBackground()
     }
 }

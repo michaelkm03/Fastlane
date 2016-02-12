@@ -621,9 +621,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.setContentOffset(CGPointZero, animated: true)
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
         guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
             return

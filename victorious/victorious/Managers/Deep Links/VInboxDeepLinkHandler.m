@@ -71,8 +71,8 @@
     UIViewController *scaffoldViewController = (UIViewController *)[self.dependencyManager scaffoldViewController];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:scaffoldViewController.view animated:YES];
     
-    NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-    ConversationOperation *operation = [[ConversationOperation alloc] initWithConversationID:conversationID];
+    NSNumber *conversationID = @([url v_firstNonSlashPathComponent].integerValue);
+    ConversationOperation *operation = [[ConversationOperation alloc] initWithConversationID:conversationID userID:nil];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
          [hud hide:YES];

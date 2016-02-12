@@ -10,9 +10,9 @@ import UIKit
 
 extension VStreamCollectionViewController {
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
 
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public override func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         guard let contentSection = self.streamDataSource?.sectionIndexForContent()
             where contentSection < self.collectionView.numberOfSections() else {
                 return
@@ -24,7 +24,7 @@ extension VStreamCollectionViewController {
         self.focusHelper.updateFocus()
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    public override func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateCollectionView()
     }
     

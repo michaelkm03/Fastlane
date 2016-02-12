@@ -20,7 +20,7 @@ import VictoriousIOSSDK
     
     private(set) var hasLoadedLastPage: Bool = false
     
-    private(set) var state: DataSourceState = .Cleared {
+    private(set) var state: VDataSourceState = .Cleared {
         didSet {
             if oldValue != state {
                 self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
@@ -49,7 +49,7 @@ import VictoriousIOSSDK
     
     // MARK: - Public API
     
-    weak var delegate: PaginatedDataSourceDelegate?
+    weak var delegate: VPaginatedDataSourceDelegate?
     
     func unload() {
         visibleItems = NSOrderedSet()

@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
+class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
     
@@ -30,9 +30,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return self.paginatedDataSource.isLoading()
     }
     
-    var delegate: PaginatedDataSourceDelegate?
+    var delegate: VPaginatedDataSourceDelegate?
     
-    var state: DataSourceState {
+    var state: VDataSourceState {
         return self.paginatedDataSource.state
     }
     
@@ -75,12 +75,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        guard let conversationID = self.conversation.remoteId?.integerValue else {
-            return
-        }
+        
+        let userID: Int? = self.conversation.user?.remoteId.integerValue
+        let conversationID: Int? = self.conversation.remoteId?.integerValue
+        
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
-                return ConversationOperation(conversationID: conversationID)
+                return ConversationOperation(conversationID: conversationID, userID: userID)
             },
             completion: { (operation, error) in
                 self.hasLoadedOnce = true
@@ -90,23 +91,25 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
-        if let conversationID = self.conversation.remoteId?.integerValue {
-            self.paginatedDataSource.refreshRemote(createOperation: {
-                    return ConversationOperation(conversationID: conversationID)
-                },
-                completion: completion
-            )
-        }
+        let userID: Int? = self.conversation.user?.remoteId.integerValue
+        let conversationID: Int? = self.conversation.remoteId?.integerValue
+        
+        self.paginatedDataSource.refreshRemote(
+            createOperation: {
+                return ConversationOperation(conversationID: conversationID, userID: userID)
+            },
+            completion: completion
+        )
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder?.compare($1.displayOrder) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
