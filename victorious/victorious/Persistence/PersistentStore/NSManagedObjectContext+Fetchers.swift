@@ -11,6 +11,18 @@ import CoreData
 
 extension NSManagedObjectContext {
     
+    /// Performs a save to the receiver and subsequently the reciever's `parentContext`,
+    /// if defined. Also catches any exceptions, throws an assertion failure and
+    /// logs detailed error messages to the console.
+    func v_saveAndBubbleToParentContext() {
+        v_save()
+        parentContext?.v_performBlockAndWait() { context in
+            context.v_save()
+        }
+    }
+    
+    /// Performs a save to the receiver and catches any exceptions, throws an assertion
+    /// failure and logs detailed error messages to the console.
     func v_save() {
         do {
             try self.save()

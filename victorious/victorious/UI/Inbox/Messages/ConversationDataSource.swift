@@ -75,12 +75,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        guard let conversationID = self.conversation.remoteId?.integerValue else {
-            return
-        }
+        
+        let userID: Int? = self.conversation.user?.remoteId.integerValue
+        let conversationID: Int? = self.conversation.remoteId?.integerValue
+        
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
-                return ConversationOperation(conversationID: conversationID)
+                return ConversationOperation(conversationID: conversationID, userID: userID)
             },
             completion: { (operation, error) in
                 self.hasLoadedOnce = true
@@ -90,13 +91,15 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
-        if let conversationID = self.conversation.remoteId?.integerValue {
-            self.paginatedDataSource.refreshRemote(createOperation: {
-                    return ConversationOperation(conversationID: conversationID)
-                },
-                completion: completion
-            )
-        }
+        let userID: Int? = self.conversation.user?.remoteId.integerValue
+        let conversationID: Int? = self.conversation.remoteId?.integerValue
+        
+        self.paginatedDataSource.refreshRemote(
+            createOperation: {
+                return ConversationOperation(conversationID: conversationID, userID: userID)
+            },
+            completion: completion
+        )
     }
     
     // MARK: - PaginatedDataSourceDelegate

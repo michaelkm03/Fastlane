@@ -15,6 +15,8 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     private let apiPath: String
     
+    private var persistentStreamItemIDs: [NSManagedObjectID]?
+    
     required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
         self.request = request
@@ -46,41 +48,32 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             stream.populate(fromSourceModel: sourceStream)
             
             // If there are any stream items returned from the network:
-            if let streamIDs = sourceStream.items?.flatMap({ $0.streamItemID }) where !streamIDs.isEmpty {
+            let persistentStreamItemPointers: NSOrderedSet
+            if let streamItemIDs = sourceStream.items?.flatMap({ $0.streamItemID }) where !streamItemIDs.isEmpty {
                 
                 // Using a list of streamIDs that we've just received from the network,
                 // get the corresponding persistent stream items from the stream
-                let persistentStreamItems = stream.streamItemPointersForStreamItemIDs(streamIDs)
+                persistentStreamItemPointers = stream.streamItemPointersForStreamItemIDs(streamItemIDs)
                 
                 // Assign display order to stream item pointers that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart
-                for object in persistentStreamItems {
-                    guard let child = object as? VStreamItemPointer else {
-                        continue
-                    }
-                    child.displayOrder = displayOrder++
+                for pointer in persistentStreamItemPointers.flatMap({ $0 as? VStreamItemPointer }) {
+                    pointer.displayOrder = displayOrder++
                 }
+                
+            } else {
+                persistentStreamItemPointers = []
             }
             
             context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
+            
+            let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = persistentStreamItemIDs.flatMap {
+                    context.objectWithID($0) as? VStreamItem
+                }
                 completion()
             }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            
-            let streamItemPredicate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
-            let paginationPredicate = self.request.paginator.paginatorPredicate
-            fetchRequest.predicate = paginationPredicate + streamItemPredicate
-            
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]
-            return results.map { $0.streamItem }
         }
     }
 }

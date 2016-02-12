@@ -17,6 +17,9 @@
 //delegateFinish values: -1 = not completed, 0 = initial state, 1 = completed
 @property (nonatomic, strong) XCTestExpectation *expectation;
 
+@property (nonatomic) NSInteger numberOfDelegateCallbacks;
+@property (nonatomic) NSInteger expectedNumberOfDelegateCallbacks;
+
 @end
 
 @implementation VImageAnimationOperationTests
@@ -28,7 +31,11 @@
         XCTAssert(completed);
         if (completed)
         {
-            [self.expectation fulfill];
+            self.numberOfDelegateCallbacks++;
+            if (self.numberOfDelegateCallbacks == self.expectedNumberOfDelegateCallbacks)
+            {
+                [self.expectation fulfill];
+            }
         }
     }
     else if(self.delegateFinish == -1)
@@ -36,7 +43,11 @@
         XCTAssertFalse(completed);
         if (!completed)
         {
-            [self.expectation fulfill];
+            self.numberOfDelegateCallbacks--;
+            if (self.numberOfDelegateCallbacks == self.expectedNumberOfDelegateCallbacks)
+            {
+                [self.expectation fulfill];
+            }
         }
     }
 }
@@ -44,7 +55,6 @@
 - (void)animation:(VImageAnimationOperation *)animation updatedToImage:(UIImage *)image
 {
     self.expectedDelegateUpdateCallbacks--;
-    NSLog(@"update: %ld", (long)self.expectedDelegateUpdateCallbacks);
 }
 
 - (void)setUp
@@ -76,6 +86,7 @@
 - (void)testValidAnimationSequence
 {
     self.expectation = [self expectationWithDescription:@"Valid animation sequence"];
+    self.expectedNumberOfDelegateCallbacks = 1;
     
     NSArray *animationSequence = [NSArray arrayWithObjects:[UIImage new], [UIImage new], [UIImage new], [UIImage new], [UIImage new], nil];
     self.expectedDelegateUpdateCallbacks = animationSequence.count;
@@ -100,6 +111,7 @@
 - (void)testEmptyAnimationSequence
 {
     self.expectation = [self expectationWithDescription:@"Empty animation sequence"];
+    self.expectedNumberOfDelegateCallbacks = 1;
     
     VImageAnimationOperation *operation = [[VImageAnimationOperation alloc] init];
     operation.animationDuration = 1.0;
@@ -121,6 +133,7 @@
 - (void)testStopAnimation
 {
     self.expectation = [self expectationWithDescription:@"Cancel animation sequence"];
+    self.expectedNumberOfDelegateCallbacks = -1;
     
     NSArray *animationSequence = [NSArray arrayWithObjects:[UIImage new], [UIImage new], [UIImage new], [UIImage new], [UIImage new], nil];
     self.expectedDelegateUpdateCallbacks = animationSequence.count;
@@ -145,6 +158,7 @@
 - (void)testCancelAnimationQueue
 {
     self.expectation = [self expectationWithDescription:@"Cancel animation sequence"];
+    self.expectedNumberOfDelegateCallbacks = -1;
     
     NSArray *animationSequence = [NSArray arrayWithObjects:[UIImage new], [UIImage new], [UIImage new], [UIImage new], [UIImage new], nil];
     self.expectedDelegateUpdateCallbacks = animationSequence.count;
@@ -164,6 +178,27 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.operationQueue cancelAllOperations];
     });
+    
+    [self waitForExpectation];
+}
+
+- (void)testMultipleAnimationQueue
+{
+    self.expectation = [self expectationWithDescription:@"Multiple animation sequence"];
+    NSInteger numberOfAnimations = 1000;
+    self.expectedNumberOfDelegateCallbacks = numberOfAnimations;
+    for (int a = 0; a<numberOfAnimations; a++)
+    {
+        NSArray *animationSequence = [NSArray arrayWithObjects:[UIImage new], [UIImage new], [UIImage new], [UIImage new], [UIImage new], nil];
+        
+        VImageAnimationOperation *operation = [[VImageAnimationOperation alloc] init];
+        operation.animationDuration = 0.5;
+        operation.delegate = self;
+        operation.animationSequence = animationSequence;
+        self.delegateFinish = 1;
+        
+        [self.operationQueue addOperation:operation];
+    }
     
     [self waitForExpectation];
 }

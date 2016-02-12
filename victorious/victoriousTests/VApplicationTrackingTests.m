@@ -10,7 +10,6 @@
 #import "Nocilla.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VApplicationTracking.h"
-#import "NSCharacterSet+VSDKURLParts.h"
 #import "VSDKURLMacroReplacement.h"
 #import "victorious-Swift.h"
 #import "VMockRequestRecorder.h"

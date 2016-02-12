@@ -34,7 +34,7 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
         let operation = LoadUserConversationOperation(sourceUser: userResult.sourceResult)
         operation.queue() { op in
             if let conversation = operation.loadedConversation {
-                self.displayConversation(conversation, animated: true)
+                self.showConversation(conversation, animated: true)
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
@@ -44,8 +44,8 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
 extension VConversationListViewController: PaginatedDataSourceDelegate {
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: !self.isLoadingNextPage)
-        self.hasLoadedOnce = true
+        self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: self.shouldAnimateDataSourceChanges)
+        self.shouldAnimateDataSourceChanges = false
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

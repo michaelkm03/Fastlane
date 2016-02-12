@@ -30,7 +30,13 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {
-                let uniqueElements = [ "remoteId" : result.notificationID ]
+                
+                /// Determining uniqueness based on time of creation and subject of the notification
+                let uniqueElements : [String : AnyObject] = [
+                    "createdAt" : result.createdAt,
+                    "subject" : result.subject
+                ]
+                
                 let notification: VNotification = context.v_findOrCreateObject(uniqueElements)
                 notification.populate(fromSourceModel: result)
                 notification.displayOrder = displayOrder++
