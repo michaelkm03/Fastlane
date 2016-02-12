@@ -10,8 +10,8 @@ import Foundation
 
 class LoginSuccessOperation: FetcherOperation {
     
-    private let parameters: AccountCreateParameters
-    private let response: AccountCreateResponse
+    let parameters: AccountCreateParameters
+    let response: AccountCreateResponse
     
     private var userObjectID: NSManagedObjectID?
     

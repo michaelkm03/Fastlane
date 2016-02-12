@@ -18,18 +18,6 @@ import UIKit
     init( originViewController: UIViewController, dependencyManager: VDependencyManager ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        
-        super.init()
-        
-        // If required, first queue a login operation upon which this operation will depenend
-        if VCurrentUser.user() == nil {
-            let loginOperation = ShowLoginOperation(
-                originViewController: originViewController,
-                dependencyManager: dependencyManager,
-                context: .CreatePost
-            )
-            loginOperation.queueBefore(self)
-        }
     }
     
     override func start() {
