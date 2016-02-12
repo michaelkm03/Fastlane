@@ -224,6 +224,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         self.badgeNumberUpdateBlock( badgeNumber );
     }
+    [self updateBadge];
 }
 
 #pragma mark - VAuthorizationContextProvider
@@ -428,13 +429,21 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
-    [self refresh];
+    [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
+     {
+         [self.messageCountCoordinator updateUnreadMessageCount];
+         [self updateBadges];
+         [self.tableView reloadData];
+    }];
 }
 
 - (void)updateBadges
 {
     self.badgeNumber = self.messageCountCoordinator.unreadMessageCount;
+    [self updateBadge];
+}
 
+- (void)updateBadge {
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
     if (badgeResponder != nil)
     {
