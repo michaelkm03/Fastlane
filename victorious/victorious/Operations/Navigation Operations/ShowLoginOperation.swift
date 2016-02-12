@@ -10,7 +10,7 @@ import Foundation
 
 class ShowLoginOperation: Operation {
     
-    private let originViewController: UIViewController
+    private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
     private let animated: Bool
@@ -56,12 +56,20 @@ class ShowLoginOperation: Operation {
             }
             
             loginFlow.onCompletionBlock = { authorized in
-                self.originViewController.dismissViewControllerAnimated(true, completion: nil)
+                
+                // Dismiss on the next run cycle to give the UI initailziation code that we
+                // happen to know is in the completion block of this operation a chance
+                // to run first so that the configured tab bar is visible immediately
+                // when the login view controller is dismissed.
+                dispatch_after(0.0) {
+                    self.originViewController?.dismissViewControllerAnimated(true, completion: nil)
+                }
+                
                 self.finishedExecuting()
             }
             loginFlow.setAuthorizationContext?( self.context )
             
-            self.originViewController.presentViewController(viewController, animated: self.animated, completion: nil)
+            self.originViewController?.presentViewController(viewController, animated: self.animated, completion: nil)
         }
     }
 }

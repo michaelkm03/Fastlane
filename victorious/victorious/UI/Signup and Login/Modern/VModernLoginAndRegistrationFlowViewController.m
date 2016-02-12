@@ -244,27 +244,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     return [[self.registrationScreens lastObject] isEqual:viewController];
 }
-
-- (void)cancelLoginAndRegistration
-{
-    if (self.actionsDisabled)
-    {
-        return;
-    }
-    
-    if (self.presentingViewController != nil)
-    {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-         {
-             [self registrationDidFinishedWithSuccess:NO];
-         }];
-    }
-    else
-    {
-        [self registrationDidFinishedWithSuccess:NO];
-    }
-}
-
 - (void)selectedLogin
 {
     if (self.actionsDisabled)
@@ -700,17 +679,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     [self.view endEditing:YES];
-    if (self.presentingViewController != nil)
-    {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-         {
-             [self registrationDidFinishedWithSuccess:success];
-         }];
-    }
-    else
-    {
-        [self registrationDidFinishedWithSuccess:success];
-    }
+    [self registrationDidFinishedWithSuccess:success];
 }
 
 - (UIViewController<VLoginFlowScreen> *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
@@ -762,6 +731,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [self popToViewController:[self.loginScreens firstObject]
                      animated:YES];
+}
+
+- (void)LoginErrorAlertAcknowledged
+{
+    [self dismissLoadingScreen];
 }
 
 #pragma mark - Loading Screen Delegate
