@@ -7236,6 +7236,7 @@
 				A7E2918C1C3B452B00B84127 /* FollowHashtagOperation.swift */,
 				6238A59B1C50530D002143CE /* FollowUsersOperation.swift */,
 				798AA5951C3B429900D267C3 /* FriendFindByEmailOperation.swift */,
+				67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */,
 				6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */,
 				A75DF5121C3D94A500A4C82A /* HashtagSearchOperation.swift */,
 				5A6F11D61C410000000BF7F3 /* ImageSearchOperation.swift */,
@@ -7279,8 +7280,6 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
-				A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */,
-				67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -7361,6 +7360,7 @@
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
+				67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */,
 				67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */,
 				622103481C65354A00A77A73 /* LoginOperationTests.swift */,
 				674B66EF1C3F0A1C00938EB5 /* PasswordResetOperationTests.swift */,
@@ -7374,8 +7374,6 @@
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
-				A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */,
-				67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
