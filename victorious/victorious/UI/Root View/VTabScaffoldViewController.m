@@ -30,7 +30,7 @@
 
 static NSString * const kMenuKey = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, ForceLoginOperationDelegate, InterstitialListener>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, InterstitialListener>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -82,6 +82,8 @@ static NSString * const kMenuKey = @"menu";
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+    
     self.definesPresentationContext = YES;
     
     [self addChildViewController:self.rootNavigationController];
@@ -123,6 +125,18 @@ static NSString * const kMenuKey = @"menu";
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
 }
 
+- (void)loggedInChanged:(NSNotification *)notification
+{
+    if ( [VCurrentUser user] == nil )
+    {
+        ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
+                                                                                        dependencyManager:self.dependencyManager
+                                                                                                  context:VAuthorizationContextDefault
+                                                                                                 animated:YES];
+        [showLoginOperation queueOn:showLoginOperation.defaultQueue completionBlock:nil];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -140,12 +154,6 @@ static NSString * const kMenuKey = @"menu";
     {
         [[InterstitialManager sharedInstance] showNextInterstitialOnViewController:self];
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotate
@@ -334,8 +342,18 @@ static NSString * const kMenuKey = @"menu";
         return;
     }
     self.hasSetupFirstLaunchOperations = YES;
-
-    ForceLoginOperation *forceLoginOperation = [[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self];
+    
+    __weak typeof(self) welf = self;
+    
+    ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
+                                                                                    dependencyManager:self.dependencyManager
+                                                                                              context:VAuthorizationContextDefault
+                                                                                             animated:NO];
+    showLoginOperation.completionBlock = ^{
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [welf configureTabBar];
+        });
+    };
     
     NSOperation *showQueuedDeeplinkOperation = [NSBlockOperation blockOperationWithBlock:^{
         dispatch_async( dispatch_get_main_queue(), ^{
@@ -348,7 +366,7 @@ static NSString * const kMenuKey = @"menu";
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
                                                                                       sessionTimer:[VRootViewController sharedRootViewController].sessionTimer];
-
+    
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
     pushNotificationOperation.completionBlock = ^void {
         dispatch_async( dispatch_get_main_queue(), ^{
@@ -359,12 +377,12 @@ static NSString * const kMenuKey = @"menu";
     // Determine execution order by setting dependencies
     [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
     [pushNotificationOperation addDependency:ftueVideoOperation];
-    [ftueVideoOperation addDependency:forceLoginOperation];
+    [ftueVideoOperation addDependency:showLoginOperation];
     
     // Order doesn't matter in this array, dependencies ensure order
     NSArray *operationsToAdd = @[ pushNotificationOperation,
                                   ftueVideoOperation,
-                                  forceLoginOperation,
+                                  showLoginOperation,
                                   showQueuedDeeplinkOperation ];
     
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];

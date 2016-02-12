@@ -13,11 +13,13 @@ class ShowLoginOperation: Operation {
     private let originViewController: UIViewController
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
+    private let animated: Bool
     
-    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, context: VAuthorizationContext = .Default) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, context: VAuthorizationContext = .Default, animated: Bool = true) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.context = context
+        self.animated = animated
         
         super.init()
         
@@ -31,7 +33,14 @@ class ShowLoginOperation: Operation {
         
         dispatch_async( dispatch_get_main_queue() ) {
             
+            // Don't show login when running unit tests
             guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+                self.finishedExecuting()
+                return
+            }
+            
+            // Don't show login if the user is already logged in
+            guard VCurrentUser.user() == nil else {
                 self.finishedExecuting()
                 return
             }
@@ -39,15 +48,20 @@ class ShowLoginOperation: Operation {
             self.beganExecuting()
             
             // User is not logged in, show login view
-            let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
-                forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
-            viewController.onCompletionBlock = { (finished) -> Void in
-                self.originViewController.dismissViewControllerAnimated(true) {
-                    self.finishedExecuting()
-                }
+            guard let templateValue = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
+                forKey: "loginAndRegistrationView"),
+                let viewController = templateValue as? UIViewController,
+                let loginFlow = templateValue as? VLoginRegistrationFlow else {
+                    fatalError("Unable to find login view controller to present to user.")
             }
-            viewController.setAuthorizationContext?( self.context )
-            self.originViewController.presentViewController( viewController as! UIViewController, animated: true, completion: nil)
+            
+            loginFlow.onCompletionBlock = { authorized in
+                self.originViewController.dismissViewControllerAnimated(true, completion: nil)
+                self.finishedExecuting()
+            }
+            loginFlow.setAuthorizationContext?( self.context )
+            
+            self.originViewController.presentViewController(viewController, animated: self.animated, completion: nil)
         }
     }
 }

@@ -20,7 +20,8 @@ class LoginOperation: RequestOperation {
     
     func onComplete(response: AccountCreateResponse, completion: () -> ()) {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: self.request.email)
-        LoginSuccessOperation(response: response, parameters: parameters).queueAfter(self)
+        let successOperation = LoginSuccessOperation(response: response, parameters: parameters)
+        successOperation.queueAfter(self, shouldTransferCompletionBlock: true)
         completion()
     }
 }

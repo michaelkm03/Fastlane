@@ -702,7 +702,6 @@
 		A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */; };
 		A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */; };
 		A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */; };
-		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
 		A7078CDA1BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */; };
 		A7078CDC1BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */; };
@@ -2891,7 +2890,6 @@
 		A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Perform.swift"; sourceTree = "<group>"; };
 		A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+EditRelationship.swift"; sourceTree = "<group>"; };
 		A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Copy.swift"; sourceTree = "<group>"; };
-		A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForceLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
 		A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCreateSheetOperation.swift; sourceTree = "<group>"; };
@@ -6695,7 +6693,6 @@
 			isa = PBXGroup;
 			children = (
 				67E435DD1C232F7300CBA922 /* AnonymousLoginOperation.swift */,
-				A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */,
 				A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */,
 				A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */,
 			);
@@ -11267,7 +11264,6 @@
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
-				A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,

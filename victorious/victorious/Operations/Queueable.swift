@@ -43,6 +43,8 @@ protocol Queuable {
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
     /// Uses the shared queue for the type of the receiver.
+    func queueAfter( operation: NSOperation, shouldTransferCompletionBlock: Bool )
+    
     func queueAfter( operation: NSOperation )
     
     /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
@@ -72,14 +74,26 @@ protocol Queuable {
 /// all other methods in the Qeueuable protocol
 extension Queuable where Self : NSOperation {
     
-    func queueAfter( operation: NSOperation ) {
-        queueAfter( operation, queue: self.defaultQueue )
+    func queueAfter( operation: NSOperation) {
+        queueAfter( operation, queue: self.defaultQueue, shouldTransferCompletionBlock: false )
     }
     
-    func queueAfter( operation: NSOperation, queue: NSOperationQueue ) {
+    func queueAfter( operation: NSOperation, shouldTransferCompletionBlock: Bool ) {
+        queueAfter( operation, queue: self.defaultQueue, shouldTransferCompletionBlock: shouldTransferCompletionBlock )
+    }
+    
+    func queueAfter( operation: NSOperation, queue: NSOperationQueue) {
+        queueAfter(operation, queue:queue, shouldTransferCompletionBlock:false)
+    }
+    
+    func queueAfter( operation: NSOperation, queue: NSOperationQueue, shouldTransferCompletionBlock: Bool ) {
         let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
         for dependentOperation in dependentOperations {
             dependentOperation.addDependency( self )
+        }
+        if shouldTransferCompletionBlock {
+            completionBlock = operation.completionBlock
+            operation.completionBlock = nil
         }
         addDependency( operation )
         queue.addOperation( self )

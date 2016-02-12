@@ -18,6 +18,7 @@ class LogoutOperation: RequestOperation {
         self.qualityOfService = .UserInitiated
         
         PrunePersistentStoreOperation().queueBefore(self)
+        LogoutRemoteOperation().queueAfter(self)
     }
     
     override func main() {
@@ -46,7 +47,21 @@ class LogoutOperation: RequestOperation {
         // And finally, clear the user.  Don't do this early because
         // some of the stuff above requires knowing the current user
         VCurrentUser.clear()
+    }
+}
+
+class LogoutRemoteOperation: RequestOperation {
+    
+    let request = LogoutRequest()
+    
+    override init() {
+        super.init()
+        self.qualityOfService = .UserInitiated
         
+        PrunePersistentStoreOperation().queueBefore(self)
+    }
+    
+    override func main() {
         // Execute the network request and don't wait for response
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
