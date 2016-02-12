@@ -77,6 +77,19 @@
     return [[[self classTypeForSequence:sequence] alloc] initWithFrame:CGRectZero];
 }
 
++ (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
+                                               streamItem:(VStreamItem *)streamItem
+                                                    frame:(CGRect)frame
+                                        dependencyManager:(VDependencyManager *)dependencyManager
+                                                focusType:(VFocusType)focusType
+{
+    VSequencePreviewView *previewView = [[[self classTypeForSequence:sequence] alloc] initWithFrame:frame];
+    previewView.streamItem = streamItem;
+    previewView.dependencyManager = dependencyManager;
+    previewView.focusType = focusType;
+    return previewView;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

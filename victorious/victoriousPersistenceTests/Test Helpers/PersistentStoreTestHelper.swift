@@ -21,9 +21,10 @@ struct PersistentStoreTestHelper {
         } as VUser
     }
 
-    func createSequence(remoteId remoteId: Int) -> VSequence {
+    func createSequence(remoteId remoteId: Int, category: String = kVOwnerVideoCategory) -> VSequence {
         return persistentStore.mainContext.v_createObjectAndSave { sequence in
             sequence.remoteId = String(remoteId)
+            sequence.category = category
             sequence.commentCount = 1
             sequence.createdBy = 1
             sequence.gifCount = 1

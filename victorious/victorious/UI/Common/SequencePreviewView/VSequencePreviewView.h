@@ -37,6 +37,21 @@
  */
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
 
+/**
+ * Convenience initializer with parameters for a basic setup
+ * @param sequence determines the type of a preview view
+ * @param streamItem stream item for a preview view
+ * @param frame frame of a view
+ * @param dependencyManager dependencyManager that determines the configuration of a preview view
+ * @param focusType specifies a focus type for a view
+ */
++ (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
+                                               streamItem:(VStreamItem *)streamItem
+                                                    frame:(CGRect)frame
+                                        dependencyManager:(VDependencyManager *)dependencyManager
+                                                focusType:(VFocusType)focusType;
+
+
 @property (nonatomic, strong) VSequence *sequence;
 
 @property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;

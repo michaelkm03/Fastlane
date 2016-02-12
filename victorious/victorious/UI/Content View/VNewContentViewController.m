@@ -756,12 +756,29 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
 
-            ContentCellSetupResult *result = [ContentCellSetupHelper setupWithContentCell:self.contentCell
-                                                                   contentPreviewProvider:(id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider
-                                                                      contentCellDelegate:self
-                                                                           detailDelegate:self
-                                                                 videoPreviewViewDelegate:self
-                                                                                  adBreak:self.viewModel.sequence.adBreak];
+            ContentCellSetupHelper *setupHelper;
+            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
+            if(provider != nil)
+            {
+                setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
+                                                              previewViewProvider:provider
+                                                              contentCellDelegate:self
+                                                                   detailDelegate:self
+                                                         videoPreviewViewDelegate:self
+                                                                          adBreak:self.viewModel.sequence.adBreak];
+            }
+            else
+            {
+                setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
+                                                              contentCellDelegate:self
+                                                                   detailDelegate:self
+                                                         videoPreviewViewDelegate:self
+                                                                          adBreak:self.viewModel.sequence.adBreak
+                                                                         sequence:self.viewModel.context.sequence
+                                                                dependencyManager:self.dependencyManager];
+            }
+
+            ContentCellSetupResult *result = setupHelper.result;
             self.sequencePreviewView = result.previewView;
             self.videoPlayer = result.videoPlayer;
             if ( [self.sequencePreviewView conformsToProtocol:@protocol(VPollResultReceiver)] )

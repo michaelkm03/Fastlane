@@ -84,6 +84,33 @@ class TestVideoPreviewViewDelegate: NSObject, VVideoPreviewViewDelegate {
     }
 }
 
+class TestContentCell: VContentCell, VContentPreviewViewReceiver {
+    let testTargetSuperView: UIView
+    var testPreviewView: VSequencePreviewView?
+    var testVideoPlayer: VVideoPlayer?
+
+    init(test: Bool, targetSuperView: UIView, frame: CGRect) {
+        testTargetSuperView = targetSuperView
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func getTargetSuperview() -> UIView {
+        return testTargetSuperView
+    }
+
+    func setPreviewView(previewView: VSequencePreviewView) {
+        testPreviewView = previewView
+    }
+
+    func setVideoPlayer(videoPlayer: VVideoPlayer) {
+        testVideoPlayer = videoPlayer
+    }
+}
+
 class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     var testVideoPlayer: TestVideoPlayer!
     var testContentCellDelegate: TestContentCellDelegate!
@@ -94,6 +121,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
 
     override func setUp() {
         super.setUp()
+        continueAfterFailure = false
         testVideoPlayer = TestVideoPlayer()
         testContentCellDelegate = TestContentCellDelegate()
         testDetailDelegate = TestDetailDelegate()
@@ -103,12 +131,13 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     }
 
     func testContentCellSetup() {
-        let result = ContentCellSetupHelper.setup(contentCell: contentCell,
-            contentPreviewProvider: previewViewProvider,
+        var setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+            previewViewProvider: previewViewProvider,
             contentCellDelegate: testContentCellDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
+        var result = setupHelper.result
         XCTAssertEqual(contentCell.minSize.height, VShrinkingContentLayoutMinimumContentHeight)
         guard let contentCellDelegate = contentCell.delegate else {
             XCTFail("Failed to get a delegate of a content cell after setting it up")
@@ -121,29 +150,54 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
             return
         }
         XCTAssert(detailDelegate === testDetailDelegate)
+        XCTAssert(previewViewProvider.getPreviewView() === result.previewView)
         XCTAssertNotNil(result.videoPlayer)
+
+        let sequence = persistentStoreHelper.createSequence(remoteId: 1)
+        let testDependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
+        let testTargetSuperView = UIView()
+        let testContentCell = TestContentCell(test: true, targetSuperView: testTargetSuperView, frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        setupHelper = ContentCellSetupHelper(contentCell: testContentCell,
+            contentCellDelegate: testContentCellDelegate,
+            detailDelegate: testDetailDelegate,
+            videoPreviewViewDelegate: testVideoPreviewViewDelegate,
+            adBreak: nil,
+            sequence: sequence,
+            dependencyManager: testDependencyManager)
+        result = setupHelper.result
+        XCTAssert(previewViewProvider.getPreviewView() !== result.previewView)
+        guard let streamItem = result.previewView.streamItem else {
+            XCTFail("A newly created preview view doesn't have a stream item set up")
+            return
+        }
+        XCTAssertEqual(sequence, streamItem)
+        XCTAssertEqual(testTargetSuperView.bounds, result.previewView.frame)
+        XCTAssert(testDependencyManager === result.previewView.dependencyManager)
+        XCTAssertEqual(VFocusType.Detail, result.previewView.focusType)
     }
 
     func testPlayingAd() {
         let adBreak = persistentStoreHelper.createAdBreak()
-        ContentCellSetupHelper.setup(contentCell: contentCell,
-            contentPreviewProvider: previewViewProvider,
+        let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+            previewViewProvider: previewViewProvider,
             contentCellDelegate: testContentCellDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: adBreak)
+        setupHelper.result
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
         XCTAssertNotNil(contentCell.adVideoPlayerViewController)
     }
 
     func testPlayVideo() {
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
-        ContentCellSetupHelper.setup(contentCell: contentCell,
-            contentPreviewProvider: previewViewProvider,
+        let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+            previewViewProvider: previewViewProvider,
             contentCellDelegate: testContentCellDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
+        setupHelper.result
         XCTAssertEqual(1, testVideoPlayer.playFromStartCallCount)
         XCTAssertNil(contentCell.adVideoPlayerViewController)
     }
