@@ -11,44 +11,54 @@ import VictoriousIOSSDK
 
 final class ConversationOperation: RequestOperation, PaginatedOperation {
     
-    let conversationID: Int
+    let conversationID: Int?
+    let userID: Int?
     let request: ConversationRequest
     
     var conversation: VConversation?
-    
-    convenience init(conversationID: Int) {
-        self.init( request: ConversationRequest(conversationID: conversationID) )
+
+    convenience init(conversationID: NSNumber?, userID: NSNumber?) {
+        let request = ConversationRequest(
+            conversationID: conversationID?.integerValue ?? 0,
+            userID: userID?.integerValue
+        )
+        self.init( request: request )
     }
     
     required init( request: ConversationRequest ) {
         self.request = request
         self.conversationID = request.conversationID
+        self.userID = request.userID
     }
     
     override func main() {
-        guard self.conversationID > 0 else {
-            return
-        }
         
-        /// Check if the conversation has been flagged (deleted)
-        /// If so, exit early and do not fetch the conversation
-        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
-        if flaggedIDs.contains(self.conversationID) {
-            self.completionBlock?()
-            return
+        // If we have a valid conversationID, reload it remotely first
+        if let conversationID = self.conversationID where conversationID > 0 {
+            
+            /// Check if the conversation has been flagged (deleted)
+            /// If so, exit early and do not fetch the conversation
+            let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
+            if flaggedIDs.contains(conversationID) {
+                self.completionBlock?()
+                return
+            }
+            
+            requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+            
+        } else {
+            self.results = self.fetchResults()
         }
-        
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( results: ConversationRequest.ResultType, completion:()->() ) {
-        guard !results.isEmpty else {
+        guard let conversationID = self.conversationID where !results.isEmpty else {
             completion()
             return
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : self.conversationID ])
+            let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : conversationID ])
             var displayOrder = self.request.paginator.displayOrderCounterStart
             var messagesLoaded = [VMessage]()
             for result in results {
@@ -85,20 +95,29 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let conversation: VConversation = context.v_findObjects([ "remoteId" : self.conversationID ]).first else {
+            guard let messagesPredicate = self.messagesPredicate else {
+                VLog("Unable to load messages without a converationID or userID.")
+                assertionFailure()
                 return []
             }
             
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            let predicate = NSPredicate(
-                vsdk_format: "conversation = %@",
-                vsdk_argumentArray: [ conversation ],
-                vsdk_paginator: self.request.paginator )
-            
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
-            fetchRequest.predicate = predicate
+            fetchRequest.predicate = self.request.paginator.paginatorPredicate + messagesPredicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results
+        }
+    }
+    
+    private var messagesPredicate: NSPredicate? {
+        if let conversationID = self.conversationID where conversationID > 0 {
+            return NSPredicate(format: "conversation.remoteId == %i", conversationID)
+            
+        } else if let userID = self.userID {
+            return NSPredicate(format: "conversation.user.remoteId == %i", userID)
+            
+        } else {
+            return nil
         }
     }
 }
