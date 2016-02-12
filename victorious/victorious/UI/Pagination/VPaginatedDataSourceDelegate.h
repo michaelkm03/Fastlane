@@ -20,9 +20,9 @@ typedef NS_ENUM(NSInteger, VDataSourceState) {
 
 @protocol VPaginatedDataSourceDelegate <NSObject>
 
-/// Called from a `PaginatedDataSource` instance when new objects have been fetched and added to its backing store.
+/// Called from a `VPaginatedDataSource` instance when new objects have been fetched and added to its backing store.
 /// The `oldValue` and `newValue` parameters are designed to allow calling code to
-/// precisely reload only what has changed instead of useing `reloadData()`.
+/// precisely reload only what has changed instead of using `reloadData()`.
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue;
 
 @optional
