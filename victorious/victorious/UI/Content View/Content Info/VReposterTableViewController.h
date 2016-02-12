@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VReposterTableViewController : UITableViewController
 
-- (id)initWithDependencyManager:(VDependencyManager *)dependencyManager;
-- (void)setHasReposters:(BOOL)hasReposters;
+- (instancetype)initWithSequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, strong) VSequence *sequence;
+
 @property (nonatomic, strong, nullable) SequenceRepostersOperation *repostersOperation;
 
 @end
