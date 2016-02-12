@@ -683,7 +683,6 @@
 		A702C8511C123DC5001EE1D5 /* StreamPaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8501C123DC5001EE1D5 /* StreamPaginatorTests.swift */; };
 		A702C8531C124110001EE1D5 /* PageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8521C124110001EE1D5 /* PageableTests.swift */; };
 		A702C85B1C126038001EE1D5 /* PaginatedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */; };
-		A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7039CD61C23CB5E0023DE6F /* VApplicationTracking.swift */; };
 		A7039CDF1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7039CDE1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift */; };
 		A7039CE11C24867C0023DE6F /* CreateAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7039CE01C24867C0023DE6F /* CreateAlertRequest.swift */; };
@@ -1093,6 +1092,7 @@
 		A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */; };
 		A7BC35B61C1A337600732750 /* VFlaggedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35B51C1A337600732750 /* VFlaggedContentTests.m */; };
 		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
+		A7C523251C6E56DA00B25B6E /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */; };
 		A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */; };
 		A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */; };
 		A7C565DE1C405A4800E4DF6A /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
@@ -2866,7 +2866,6 @@
 		A702C8521C124110001EE1D5 /* PageableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageableTests.swift; sourceTree = "<group>"; };
 		A702C8541C12462A001EE1D5 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedOperation.swift; sourceTree = "<group>"; };
-		A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernLoginAndRegistrationFlowViewController.swift; sourceTree = "<group>"; };
 		A7039CD61C23CB5E0023DE6F /* VApplicationTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VApplicationTracking.swift; sourceTree = "<group>"; };
 		A7039CDE1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertOperation.swift; sourceTree = "<group>"; };
 		A7039CE01C24867C0023DE6F /* CreateAlertRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAlertRequest.swift; sourceTree = "<group>"; };
@@ -3510,6 +3509,7 @@
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
+		A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperation.swift; sourceTree = "<group>"; };
 		A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperationTests.swift; sourceTree = "<group>"; };
 		A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InterstitialManager+Debug.swift"; sourceTree = "<group>"; };
 		A7C565E11C40665600E4DF6A /* AlertReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift; sourceTree = "<group>"; };
@@ -7236,6 +7236,7 @@
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A778CB6B1C474DA0007DF0C2 /* LoadUserConversationOperation.swift */,
 				6221034A1C65699100A77A73 /* LoginOperation.swift */,
+				A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */,
 				798AA5901C3B033D00D267C3 /* LogoutOperation.swift */,
 				A7C565F01C4486E400E4DF6A /* MarkAllNotificationsReadOperation.swift */,
 				A7AF872A1C4601CC00B49478 /* MarkConversationReadOperation.swift */,
@@ -8614,7 +8615,6 @@
 				D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */,
 				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
 				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
-				A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */,
 				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
 				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
 				D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */,
@@ -11350,7 +11350,6 @@
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
-				A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
@@ -11566,6 +11565,7 @@
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
+				A7C523251C6E56DA00B25B6E /* LoginSuccessOperation.swift in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */,
 				C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */,

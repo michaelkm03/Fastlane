@@ -25,26 +25,12 @@ public struct LoginRequest: RequestType {
         self.password = password
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> LoginResponse {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> AccountCreateResponse {
         let payload = responseJSON["payload"]
         if let token = payload["token"].string,
            let user = User(json: payload) {
-                return LoginResponse(token: token, user: user)
+                return AccountCreateResponse(token: token, user: user)
         }
         throw ResponseParsingError()
-    }
-}
-
-/// The response to a login call
-public struct LoginResponse {
-    /// Authentication token for the new account
-    public let token: String
-    
-    /// Details on the new account
-    public let user: User
-    
-    public init(token: String, user: User) {
-        self.token = token
-        self.user = user
     }
 }

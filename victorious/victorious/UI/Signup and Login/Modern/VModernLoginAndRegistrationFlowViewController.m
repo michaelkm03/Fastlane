@@ -85,7 +85,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                          forKey:kLandingScreen];
         _loadingScreen = [dependencyManager templateValueConformingToProtocol:@protocol(LoginFlowLoadingScreen) forKey:kLoadingScreen];
         _loadingScreen.loadingScreenDelegate = self;
-
+        
         [self setDelegateForScreensInArray:@[_landingScreen]];
         [self setViewControllers:@[_landingScreen]];
         
@@ -120,7 +120,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
- 
+    
     UIScreenEdgePanGestureRecognizer *backGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedFromLeftSideOfScreen:)];
     backGesture.delegate = self;
     backGesture.edges = UIRectEdgeLeft;
@@ -128,7 +128,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.view addGestureRecognizer:backGesture];
     
     self.delegate = self;
- 
+    
     self.view.backgroundColor = [UIColor blackColor];
     [self.navigationBar setBackgroundImage:[[UIImage alloc] init]
                              forBarMetrics:UIBarMetricsDefault];
@@ -251,7 +251,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-
+    
     if (self.presentingViewController != nil)
     {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^
@@ -273,7 +273,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeEmail];
-        
+    
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     UIViewController<VLoginFlowScreen> *firstLoginScreen = [self.loginScreens firstObject];
@@ -321,22 +321,40 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          __weak typeof(self) weakSelf = self;
          [self showLoadingScreenWithCompletion:^
           {
-              
               VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
               [twitterManager refreshTwitterTokenWithIdentifier:twitterAccount.identifier
-                                             fromViewController:self
+                                             fromViewController:weakSelf
                                                 completionBlock:^(BOOL success, NSError *error)
                {
-                   weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                       accessSecret:twitterManager.secret
-                                                                          twitterID:twitterManager.twitterId
-                                                                         identifier:twitterAccount.identifier];
+                   [weakSelf onTwitterTokenRefreshed:twitterAccount];
                }];
           }];
      }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
+}
+
+- (void)onTwitterTokenRefreshed:(ACAccount *)twitterAccount
+{
+    VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
+    self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                    accessSecret:twitterManager.secret
+                                                                       twitterID:twitterManager.twitterId
+                                                                      identifier:twitterAccount.identifier completion:^(NSError *_Nullable error) {
+                                                                          
+                                                                          if ( [VCurrentUser user] != nil && error == nil)
+                                                                          {
+                                                                              self.actionsDisabled = NO;
+                                                                              self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+                                                                              [self continueRegistrationFlowAfterSocialRegistration];
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                              [self handleTwitterLoginError:error];
+                                                                          }
+                                                                          self.onCompletionBlock(error == nil);
+                                                                      }];
 }
 
 - (void)handleTwitterLoginError:(NSError *)error
@@ -413,18 +431,34 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)loginWithStoredFacebookToken
 {
     __weak typeof(self) weakSelf = self;
-    [self showLoadingScreenWithCompletion:^{
-        weakSelf.currentOperation = [weakSelf queueLoginOperationWithFacebook];
-    }];
+    [self showLoadingScreenWithCompletion:^
+     {
+         [weakSelf.loginFlowHelper queueFacebookLoginOperationWithCompletion:^(NSError *_Nullable error)
+          {
+              if ( [VCurrentUser user] != nil && error == nil )
+              {
+                  weakSelf.actionsDisabled = NO;
+                  weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+                  [weakSelf continueRegistrationFlowAfterSocialRegistration];
+              }
+              else
+              {
+                  [weakSelf handleFacebookLoginError:error];
+              }
+              weakSelf.onCompletionBlock(error == nil);
+          }];
+     }];
 }
 
 - (void)handleFacebookLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
+    
     UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                                    message:NSLocalizedString(@"FacebookLoginFailed", @"")
                                                                       andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
     [self presentViewController:alertController animated:YES completion:nil];
+    
     [[[FBSDKLoginManager alloc] init] logOut];
 }
 
@@ -440,7 +474,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     __weak typeof(self) weakSelf = self;
     [self showLoadingScreenWithCompletion:^{
-        self.currentOperation = [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+        self.currentOperation = [weakSelf.loginFlowHelper queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
             if ( error == nil )
             {
                 completion(YES, nil);
@@ -448,6 +482,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             }
             else
             {
+                [weakSelf dismissLoadingScreen];
                 completion(NO, error);
             }
         }];
@@ -466,26 +501,27 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     __weak typeof(self) weakSelf = self;
     [self showLoadingScreenWithCompletion:^{
-         self.currentOperation = [weakSelf queueAccountCreateOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
-             if ( error == nil )
-             {
-                 BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
-                 completion(YES, completeProfile, nil);
-                 if (completeProfile)
-                 {
-                     [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                 }
-                 else
-                 {
-                     [weakSelf continueRegistrationFlow];
-                 }
-             }
-             else
-             {
-                 completion(NO, NO, error);
-             }
-         }];
-     }];
+        self.currentOperation = [weakSelf.loginFlowHelper queueAccountCreateOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+            if ( error == nil )
+            {
+                BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
+                completion(YES, completeProfile, nil);
+                if (completeProfile)
+                {
+                    [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                }
+                else
+                {
+                    [weakSelf continueRegistrationFlow];
+                }
+            }
+            else
+            {
+                completion(NO, NO, error);
+                [weakSelf dismissLoadingScreen];
+            }
+        }];
+    }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
@@ -500,12 +536,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) welf = self;
     [self.loginFlowHelper setUsername:username
                            completion:^(BOOL success, NSError *error)
-    {
-        if (success)
-        {
-            [welf continueRegistrationFlow];
-        }
-    }];
+     {
+         if (success)
+         {
+             [welf continueRegistrationFlow];
+         }
+     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
 }
@@ -519,18 +555,18 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [self.loginFlowHelper forgotPasswordWithStartingEmail:initialEmail
                                                completion:^(BOOL success, NSError *error)
-    {
-        if (success)
-        {
-            if (![self.topViewController isKindOfClass:[VModernResetTokenViewController class]])
-            {
-                UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
-                [self setDelegateForScreensInArray:@[resetTokenScreen]];
-                [self pushViewController:resetTokenScreen
-                                animated:YES];
-            }
-        }
-    }];
+     {
+         if (success)
+         {
+             if (![self.topViewController isKindOfClass:[VModernResetTokenViewController class]])
+             {
+                 UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
+                 [self setDelegateForScreensInArray:@[resetTokenScreen]];
+                 [self pushViewController:resetTokenScreen
+                                 animated:YES];
+             }
+         }
+     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectResetPassword];
 }
@@ -545,16 +581,16 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) welf = self;
     [self.loginFlowHelper setResetToken:resetToken
                              completion:^(BOOL success, NSError *error)
-    {
-        if (success)
-        {
-            // show change password screen.
-            UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
-            [welf setDelegateForScreensInArray:@[changePasswordScreen]];
-            [welf pushViewController:changePasswordScreen
-                            animated:YES];
-        }
-    }];
+     {
+         if (success)
+         {
+             // show change password screen.
+             UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+             [welf setDelegateForScreensInArray:@[changePasswordScreen]];
+             [welf pushViewController:changePasswordScreen
+                             animated:YES];
+         }
+     }];
 }
 
 - (void)updateWithNewPassword:(NSString *)newPassword
@@ -567,16 +603,16 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [self.loginFlowHelper updatePassword:newPassword
                               completion:^(BOOL success, NSError *error)
-    {
-        if (success)
-        {
-            [self onAuthenticationFinishedWithSuccess:YES];
-        }
-        else
-        {
-            completion(success);
-        }
-    }];
+     {
+         if (success)
+         {
+             [self onAuthenticationFinishedWithSuccess:YES];
+         }
+         else
+         {
+             completion(success);
+         }
+     }];
 }
 
 - (void)showPrivacyPolicy
@@ -643,7 +679,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
-   UIViewController<VLoginFlowScreen> *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.currentScreen inArray:self.registrationScreens];
+    UIViewController<VLoginFlowScreen> *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.currentScreen inArray:self.registrationScreens];
     if ( nextRegisterViewController != nil && self.isRegisteredAsNewUser )
     {
         self.currentScreen = nextRegisterViewController;
@@ -712,9 +748,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     UIBarButtonItemStyle style = isFinal ? UIBarButtonItemStyleDone : UIBarButtonItemStylePlain;
     NSString *title = isFinal ? NSLocalizedString(@"Done", @"") : NSLocalizedString(@"Next", @"");
     loginFlowScreen.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title
-                                                                              style:style
-                                                                             target:loginFlowScreen
-                                                                             action:@selector(onContinue:)];
+                                                                                         style:style
+                                                                                        target:loginFlowScreen
+                                                                                        action:@selector(onContinue:)];
 }
 
 - (void)onAuthenticationFinished
@@ -728,11 +764,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      animated:YES];
 }
 
-- (void)LoginErrorAlertAcknowledged
-{
-    [self dismissLoadingScreen];
-}
-
 #pragma mark - Loading Screen Delegate
 
 - (void)loadingScreenCancelled
@@ -743,11 +774,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)loadingScreenDidAppear
 {
-     if (self.onLoadingAppeared != nil)
-     {
-         self.onLoadingAppeared();
-         self.onLoadingAppeared = nil;
-     }
+    if (self.onLoadingAppeared != nil)
+    {
+        self.onLoadingAppeared();
+        self.onLoadingAppeared = nil;
+    }
 }
 
 #pragma mark - Loading screen
