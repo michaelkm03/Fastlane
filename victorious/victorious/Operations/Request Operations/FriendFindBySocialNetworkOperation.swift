@@ -13,8 +13,8 @@ class FriendFindBySocialNetworkOperation: RequestOperation {
     
     private var request: FriendFindBySocialNetworkRequest
     
-    convenience init(platformName: String, token: String) {
-        let request = FriendFindBySocialNetworkRequest(socialNetwork: .Facebook(platformName: platformName, accessToken: token))
+    convenience init(token: String) {
+        let request = FriendFindBySocialNetworkRequest(socialNetwork: .Facebook(accessToken: token))
         self.init(request: request)
     }
     

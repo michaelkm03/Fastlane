@@ -10,27 +10,28 @@
 import Foundation
 import SwiftyJSON
 
-public enum FriendFindSocialNetwork {
-    case Facebook(platformName: String, accessToken: String)
+public enum FriendFindBySocialNetworkCredentials {
+    case Facebook(accessToken: String)
 }
 
 public struct FriendFindBySocialNetworkRequest: RequestType {
-    public let socialNetwork: FriendFindSocialNetwork
     
-    public init(socialNetwork: FriendFindSocialNetwork) {
+    public let socialNetwork: FriendFindBySocialNetworkCredentials
+    
+    public init(socialNetwork: FriendFindBySocialNetworkCredentials) {
         self.socialNetwork = socialNetwork
     }
     
     public var urlRequest: NSURLRequest {
-        var url = NSURL(string: "/api/friend/find")
+        var url = NSURL(string: "/api/friend/find")!
         
         switch socialNetwork {
-        case let .Facebook(platform, token):
-            url = url?.URLByAppendingPathComponent(platform)
-            url = url?.URLByAppendingPathComponent(token)
+        case let .Facebook(token):
+            url = url.URLByAppendingPathComponent("facebook")
+            url = url.URLByAppendingPathComponent(token)
         }
         
-        return NSURLRequest(URL: url!)
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
@@ -38,5 +39,4 @@ public struct FriendFindBySocialNetworkRequest: RequestType {
         
         return foundUsersJSON.flatMap { User(json: $0) }
     }
-    
 }

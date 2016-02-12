@@ -12,12 +12,12 @@ import SwiftyJSON
 
 class FriendFindBySocialNetworkRequestTests: XCTestCase {
 
-    let token = "TestFacebookToken"
-    let facebook = FriendFindSocialNetwork.Facebook(platformName: "Facebook", accessToken: "token")
+
+    let facebook = FriendFindBySocialNetworkCredentials.Facebook(accessToken: "TestFacebookToken")
 
     func testRequest() {
         let request = FriendFindBySocialNetworkRequest(socialNetwork: facebook)
-        XCTAssertEqual(request.urlRequest.URL!.absoluteString, "/api/friend/find")
+        XCTAssertEqual(request.urlRequest.URL!.absoluteString, "/api/friend/find/facebook/TestFacebookToken")
     }
     
     func testParseResponse() {
