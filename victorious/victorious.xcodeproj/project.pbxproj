@@ -441,8 +441,8 @@
 		6728C0E81C6133020005A29F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
-		673B91C41C6D541900846EA6 /* FriendFindByFacebookRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C31C6D541900846EA6 /* FriendFindByFacebookRequest.swift */; };
-		673B91C61C6D545300846EA6 /* FriendFindByFacebookRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C51C6D545300846EA6 /* FriendFindByFacebookRequestTests.swift */; };
+		673B91C41C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */; };
+		673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C51C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift */; };
 		673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */; };
 		6749C9A61C571F3D00D0A2D1 /* StreamItemsFetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6749C9A51C571F3D00D0A2D1 /* StreamItemsFetcherOperation.swift */; };
 		674B66F01C3F0A1C00938EB5 /* PasswordResetOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B66EF1C3F0A1C00938EB5 /* PasswordResetOperationTests.swift */; };
@@ -2562,8 +2562,8 @@
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
-		673B91C31C6D541900846EA6 /* FriendFindByFacebookRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByFacebookRequest.swift; sourceTree = "<group>"; };
-		673B91C51C6D545300846EA6 /* FriendFindByFacebookRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByFacebookRequestTests.swift; sourceTree = "<group>"; };
+		673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkRequest.swift; sourceTree = "<group>"; };
+		673B91C51C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkRequestTests.swift; sourceTree = "<group>"; };
 		673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUser.swift; sourceTree = "<group>"; };
 		6749C9A51C571F3D00D0A2D1 /* StreamItemsFetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemsFetcherOperation.swift; sourceTree = "<group>"; };
 		674B66EF1C3F0A1C00938EB5 /* PasswordResetOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetOperationTests.swift; sourceTree = "<group>"; };
@@ -5251,7 +5251,7 @@
 				C32D8BD71BF2D45500AB5085 /* FollowHashtagRequest.swift */,
 				C36C7F6E1BF27B6000B3174A /* FollowUsersRequest.swift */,
 				798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */,
-				673B91C31C6D541900846EA6 /* FriendFindByFacebookRequest.swift */,
+				673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
 				A7D618EC1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift */,
@@ -5403,7 +5403,7 @@
 				795271031C34914100BD41F1 /* UserSearchRequestTests.swift */,
 				0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */,
 				A7BBB8EE1C167861009319D9 /* VSDKURLMacroReplacementTests.m */,
-				673B91C51C6D545300846EA6 /* FriendFindByFacebookRequestTests.swift */,
+				673B91C51C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
@@ -10548,7 +10548,7 @@
 				C314E6B91BF13AD800FB9591 /* TrendingHashtagRequest.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift in Sources */,
-				673B91C41C6D541900846EA6 /* FriendFindByFacebookRequest.swift in Sources */,
+				673B91C41C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift in Sources */,
 				A702C84B1C12130C001EE1D5 /* StreamPaginator.swift in Sources */,
 				A778CB6A1C474BA8007DF0C2 /* NSPredicate+Pagination.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
@@ -10692,7 +10692,7 @@
 				67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */,
 				C323C3B31BF55CFD00681059 /* UpdateCommentRequestTests.swift in Sources */,
 				0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */,
-				673B91C61C6D545300846EA6 /* FriendFindByFacebookRequestTests.swift in Sources */,
+				673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */,
 				795B758C1BFA628100227647 /* TermsOfServiceRequestTests.swift in Sources */,
 				C32D8BD01BF2D08E00AB5085 /* UnfollowUserRequestTests.swift in Sources */,
 				C352CF381BF2834E00790921 /* FollowUsersRequestTests.swift in Sources */,
