@@ -70,6 +70,9 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                     newMessage = context.v_createObject()
                     newMessage.populate( fromSourceModel: result )
                 }
+                if conversation.user == nil {
+                    conversation.user = newMessage.sender
+                }
                 newMessage.displayOrder = displayOrder++
                 messagesLoaded.append( newMessage )
             }
