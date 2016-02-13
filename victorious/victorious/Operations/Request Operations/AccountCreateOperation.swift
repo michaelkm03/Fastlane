@@ -32,7 +32,7 @@ class AccountCreateOperation: RequestOperation {
     
     func onComplete( response: AccountCreateResponse, completion:()->() ) {
         let successOperation = LoginSuccessOperation(response: response, parameters: self.parameters)
-        successOperation.queueAfter(self, shouldTransferCompletionBlock: true)
+        successOperation.queueAfter(self, rechain: true)
         completion()
     }
 }

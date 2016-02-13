@@ -43,7 +43,10 @@ protocol Queuable {
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
     /// Uses the shared queue for the type of the receiver.
-    func queueAfter( operation: NSOperation, shouldTransferCompletionBlock: Bool )
+    ///
+    /// -parameter- rechain Whether or not the dependent operations and completion block
+    /// of the `operation` parameter should be transferred to the receiver.
+    func queueAfter( operation: NSOperation, rechain: Bool )
     
     func queueAfter( operation: NSOperation )
     
@@ -75,23 +78,26 @@ protocol Queuable {
 extension Queuable where Self : NSOperation {
     
     func queueAfter( operation: NSOperation) {
-        queueAfter( operation, queue: self.defaultQueue, shouldTransferCompletionBlock: false )
+        queueAfter( operation, queue: self.defaultQueue, rechain: false )
     }
     
-    func queueAfter( operation: NSOperation, shouldTransferCompletionBlock: Bool ) {
-        queueAfter( operation, queue: self.defaultQueue, shouldTransferCompletionBlock: shouldTransferCompletionBlock )
+    func queueAfter( operation: NSOperation, rechain: Bool ) {
+        queueAfter( operation, queue: self.defaultQueue, rechain: rechain )
     }
     
     func queueAfter( operation: NSOperation, queue: NSOperationQueue) {
-        queueAfter(operation, queue:queue, shouldTransferCompletionBlock:false)
+        queueAfter(operation, queue:queue, rechain:false)
     }
     
-    func queueAfter( operation: NSOperation, queue: NSOperationQueue, shouldTransferCompletionBlock: Bool ) {
-        let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
-        for dependentOperation in dependentOperations {
-            dependentOperation.addDependency( self )
-        }
-        if shouldTransferCompletionBlock {
+    func queueAfter( operation: NSOperation, queue: NSOperationQueue, rechain: Bool ) {
+        if rechain {
+            // Transfer dependencies
+            let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
+            for dependentOperation in dependentOperations {
+                dependentOperation.addDependency( self )
+            }
+            
+            // Transfer completion block
             completionBlock = operation.completionBlock
             operation.completionBlock = nil
         }
