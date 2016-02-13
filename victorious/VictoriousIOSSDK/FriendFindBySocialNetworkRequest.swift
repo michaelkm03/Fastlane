@@ -23,20 +23,27 @@ public struct FriendFindBySocialNetworkRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        var url = NSURL(string: "/api/friend/find")!
-        
-        switch socialNetwork {
-        case let .Facebook(token):
-            url = url.URLByAppendingPathComponent("facebook")
-            url = url.URLByAppendingPathComponent(token)
-        }
-        
-        return NSURLRequest(URL: url)
+        let baseURL = NSURL(string: "/api/friend/find")!
+        let fullURL = socialNetwork.urlForSocialNetworkFromURL(baseURL)
+        return NSURLRequest(URL: fullURL)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
         let foundUsersJSON = responseJSON["payload"].arrayValue
         
         return foundUsersJSON.flatMap { User(json: $0) }
+    }
+}
+
+private extension FriendFindBySocialNetworkCredentials {
+    
+    func urlForSocialNetworkFromURL(url: NSURL) -> NSURL {
+        var output = url
+        switch self {
+        case let .Facebook(token):
+            output = output.URLByAppendingPathComponent("facebook")
+            output = output.URLByAppendingPathComponent(token)
+        }
+        return output
     }
 }

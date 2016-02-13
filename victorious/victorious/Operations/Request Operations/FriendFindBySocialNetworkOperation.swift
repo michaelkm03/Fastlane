@@ -27,33 +27,14 @@ class FriendFindBySocialNetworkOperation: RequestOperation {
     }
     
     func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
-        let fetcherOperation = FoundFriendsFetcherOperation(users: results, persistentStore: self.persistentStore)
-        fetcherOperation.queue { _ in
-            self.results = fetcherOperation.results
-            completion()
-        }
-    }
-}
-
-/// This operation is used to fetch local persistent results for
-/// the network user models we get from FriendFind operations
-class FoundFriendsFetcherOperation: FetcherOperation {
-    let networkUsers: [User]
-
-    init(users: [User], persistentStore: PersistentStoreType) {
-        self.networkUsers = users
-        super.init()
-        self.persistentStore = persistentStore
-    }
-    
-    override func main() {
         persistentStore.mainContext.v_performBlockAndWait { context in
-            self.results = self.networkUsers.flatMap {
+            self.results = results.flatMap {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
                 persistentUser.populate(fromSourceModel: $0)
                 return persistentUser
             }
             context.v_save()
         }
+        completion()
     }
 }
