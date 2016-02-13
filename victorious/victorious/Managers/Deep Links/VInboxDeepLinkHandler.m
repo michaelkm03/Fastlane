@@ -86,8 +86,10 @@
          else
          {
              completion( YES, self.inboxViewController );
-             [self.inboxViewController showConversation:conversation animated:YES];
          }
+         
+         /// showConversation now handles nil conversations to just navigate to the inbox
+         [self.inboxViewController showConversation:conversation animated:YES];
      }];
 }
 

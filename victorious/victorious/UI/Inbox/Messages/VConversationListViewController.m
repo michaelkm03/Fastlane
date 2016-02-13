@@ -339,6 +339,10 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)showConversation:(VConversation *)conversation animated:(BOOL)animated
 {
+    if (conversation == nil)
+    {
+        return;
+    }
     VConversationContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
     detailVC.conversation = conversation;
     UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
