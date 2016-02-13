@@ -14,7 +14,23 @@ class MainRequestExecutor: RequestExecutorType {
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
-    private(set) var error: NSError?
+    private(set) var error: NSError? {
+        didSet {
+            if let error = error {
+                self.handleError(error)
+            }
+        }
+    }
+    
+    var errorHandlers = [RequestErrorHandler]()
+    
+    private func handleError( error: NSError ) {
+        for handler in errorHandlers.reverse() {
+            if handler.enabled {
+                handler.handleError(error)
+            }
+        }
+    }
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         

@@ -8,6 +8,11 @@
 
 import VictoriousIOSSDK
 
+protocol RequestErrorHandler: class {
+    var enabled: Bool { get set }
+    func handleError( error: NSError ) -> Bool
+}
+
 /// Defines an object that executes concrete implementations of `RequestType`
 protocol RequestExecutorType: class {
     
@@ -15,6 +20,8 @@ protocol RequestExecutorType: class {
     /// This value, if defined, should reference the same `NSError` instance returned in the `onError:` closure
     /// provided to `executeRequest(_:onComplete:onError:)`
     var error: NSError? { get }
+    
+    var errorHandlers: [RequestErrorHandler] { get set }
     
     /// Executes the provided request and calls the `onComplete` or `onError` block when
     /// when the request finishes successfully executing or fails, respectively.  These closures

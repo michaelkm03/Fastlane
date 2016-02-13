@@ -10,6 +10,34 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
+class DefaultErrorHandler: RequestErrorHandler {
+    
+    let requestIdentifier: String
+    var enabled: Bool = true
+    
+    init(requestIdentifier: String) {
+        self.requestIdentifier = requestIdentifier
+    }
+    
+    func handleError(error: NSError) -> Bool {
+        VLog("RequestOperation `\(requestIdentifier)` failed with error: \(error)")
+        return true
+    }
+}
+
+class UnauthorizedErrorHandler: RequestErrorHandler {
+    
+    var enabled: Bool = true
+    
+    func handleError(error: NSError) -> Bool {
+        if error.code == 401 {
+            LogoutOperation().queue()
+            return true
+        }
+        return false
+    }
+}
+
 class RequestOperation: NSOperation, Queuable, ErrorOperation {
     
     internal(set) var results: [AnyObject]?
