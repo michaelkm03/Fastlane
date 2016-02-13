@@ -9,39 +9,39 @@
 @testable import victorious
 
 class TestVAdViewControllerDelegateImplementor: NSObject, VAdViewControllerDelegate {
-    var adDidLoadForAdViewControllerCallCount = 0
-    var adDidFinishForAdViewControllerCallCount = 0
-    var adDidStartPlaybackInAdViewControllerCallCount = 0
-    var adHadImpressionInAdViewControllerCallCount = 0
-    var adDidHitFirstQuartileInAdViewController = 0
-    var adDidHitMidpointInAdViewControllerCallCount = 0
-    var adDidHitThirdQuartileInAdViewControllerCallCount = 0
+    var adDidLoadCallCount = 0
+    var adDidFinishCallCount = 0
+    var adDidStartPlaybackCallCount = 0
+    var adHadImpressionCallCount = 0
+    var adDidHitFirstQuartileCallCount = 0
+    var adDidHitMidpointCallCount = 0
+    var adDidHitThirdQuartileCallCount = 0
 
-    func adDidLoadForAdViewController(adViewController: VAdViewController!) {
-        adDidLoadForAdViewControllerCallCount += 1
+    func adDidLoad() {
+        adDidLoadCallCount += 1
     }
 
-    func adDidFinishForAdViewController(adViewController: VAdViewController!) {
-        adDidFinishForAdViewControllerCallCount += 1
+    func adDidFinish() {
+        adDidFinishCallCount += 1
     }
 
-    func adDidStartPlaybackInAdViewController(adViewController: VAdViewController!) {
-        adDidStartPlaybackInAdViewControllerCallCount += 1
+    func adDidStartPlayback() {
+        adDidStartPlaybackCallCount += 1
     }
 
-    func adHadImpressionInAdViewController(adViewController: VAdViewController!) {
-        adHadImpressionInAdViewControllerCallCount += 1
+    func adHadImpression() {
+        adHadImpressionCallCount += 1
     }
 
-    func adDidHitFirstQuartileInAdViewController(adViewController: VAdViewController!) {
-        adDidHitFirstQuartileInAdViewController += 1
+    func adDidHitFirstQuartile() {
+        adDidHitFirstQuartileCallCount += 1
     }
 
-    func adDidHitMidpointInAdViewController(adViewController: VAdViewController!) {
-        adDidHitMidpointInAdViewControllerCallCount += 1
+    func adDidHitMidpoint() {
+        adDidHitMidpointCallCount += 1
     }
 
-    func adDidHitThirdQuartileInAdViewController(adViewController: VAdViewController!) {
-        adDidHitThirdQuartileInAdViewControllerCallCount += 1
+    func adDidHitThirdQuartile() {
+        adDidHitThirdQuartileCallCount += 1
     }
 }

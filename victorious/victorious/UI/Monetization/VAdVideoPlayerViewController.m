@@ -8,7 +8,7 @@
 
 #import "VAdVideoPlayerViewController.h"
 #import "VConstants.h"
-#import "VAdViewController.h"
+#import "VAdViewControllerDelegate.h"
 #import "UIView+AutoLayout.h"
 #import "victorious-Swift.h"
 
@@ -22,19 +22,16 @@
 @implementation VAdVideoPlayerViewController
 
 - (instancetype)initWithAdBreak:(VAdBreak *)adBreak
-               player:(id<VVideoPlayer>)player
+                         player:(id<VVideoPlayer>)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSAssert(adBreak != nil, @"%@ needs an adBreak in order to initialize.", [VAdVideoPlayerViewController class]);
-        NSAssert(player != nil, @"%@ needs a player in order to initialize.", [VAdVideoPlayerViewController class]);
         _adBreak = adBreak;
         _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
                                                                   adTag:self.adBreak.adTag
-                                                                nibName:nil
-                                                              nibBundle:nil
-                                                              adsLoader:[[IMAAdsLoader alloc] init]];
+                                                              adsLoader:[[IMAAdsLoader alloc] init]
+                                                                 adView:[[UIView alloc] init]];
     }
     return self;
 }
@@ -60,64 +57,58 @@
 - (void)start
 {
     self.adViewController.delegate = self;
-    [self addChildViewController:self.adViewController];
-    [self.view addSubview:self.adViewController.view];
-    [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];
-    [self.adViewController didMoveToParentViewController:self];
+    [self.view addSubview:self.adViewController.adView];
+    [self.view v_addFitToParentConstraintsToSubview:self.adViewController.adView
+                                            leading:0.0f
+                                           trailing:0.0f
+                                                top:40.0f
+                                             bottom:0.0f];
     [self.adViewController startAdManager];
 }
 
 #pragma mark - VAdViewControllerDelegate
 
-- (void)adDidLoadForAdViewController:(VAdViewController *)adViewController
+- (void)adDidLoad
 {
-    [self.delegate adDidLoadForAdVideoPlayerViewController:self];
+    [self.delegate adDidLoad];
 }
 
-- (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
+- (void)adDidFinish
 {
-    // Remove the adViewController from the view hierarchy
-    [self.adViewController willMoveToParentViewController:nil];
-    [self.adViewController.view removeFromSuperview];
-    [self.adViewController removeFromParentViewController];
-    
-    [self.delegate adDidFinishForAdVideoPlayerViewController:self];
+    [self.adViewController.adView removeFromSuperview];
+    [self.delegate adDidFinish];
 }
 
-- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController withError:(NSError *)error
+- (void)adHadError:(NSError *)error
 {
-    // Remove the adViewController from the view hierarchy
-    [self.adViewController willMoveToParentViewController:nil];
-    [self.adViewController.view removeFromSuperview];
-    [self.adViewController removeFromParentViewController];
-
-    if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
+    [self.adViewController.adView removeFromSuperview];
+    if ([self.delegate respondsToSelector:@selector(adHadError:)])
     {
-        [self.delegate adHadErrorForAdVideoPlayerViewController:self];
+        [self.delegate adHadError];
     }
 }
 
-- (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController
+- (void)adHadImpression
 {
-    if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
+    if ([self.delegate respondsToSelector:@selector(adHadImpression)])
     {
-        [self.delegate adHadImpressionForAdVideoPlayerViewController:self];
+        [self.delegate adHadImpression];
     }
 }
 
-- (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
+- (void)adDidStartPlayback
 {
-    if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
+    if ([self.delegate respondsToSelector:@selector(adDidStartPlayback)])
     {
-        [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
+        [self.delegate adDidStartPlayback];
     }
 }
 
-- (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
+- (void)adDidStopPlayback
 {
-    if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])
+    if ([self.delegate respondsToSelector:@selector(adDidStopPlayback)])
     {
-        [self.delegate adDidStopPlaybackForAdVideoPlayerViewController:self];
+        [self.delegate adDidStopPlayback];
     }
 }
 

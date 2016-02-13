@@ -299,20 +299,20 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
 #pragma mark  VAdVideoPlayerViewControllerDelegate
 
-- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adHadError
 {
     [self.activityIndicatorView stopAnimating];
     [self resumeContentPlaybackAnimated:NO];
 }
 
-- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidLoad
 {
     // Set the timer again so we have a chance to see the ads playing after loading
     [self.adTimeoutTimer invalidate];
     [self scheduleAdTimeoutTimer];
 }
 
-- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidStartPlayback
 {
     [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidStartPlayingAd:self];
@@ -320,13 +320,13 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     self.adTimeoutTimer = nil;
 }
 
-- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidStopPlayback
 {
     [self.delegate contentCellDidEndPlayingAd:self];
     [self resumeContentPlaybackAnimated:YES];
 }
 
-- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidFinish
 {
     [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidEndPlayingAd:self];

@@ -8,10 +8,16 @@
 
 import victorious
 
-class TestVAdViewController: VAdViewController {
+class TestVAdViewController: NSObject, VAdViewControllerType {
     var startAdManagerCallCount = 0
+    var delegate: VAdViewControllerDelegate?
+    var adView: UIView
 
-    override func startAdManager() {
+    init(adView: UIView = UIView()) {
+        self.adView = adView
+    }
+
+    func startAdManager() {
         startAdManagerCallCount += 1
     }
 }

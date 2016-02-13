@@ -10,26 +10,27 @@ import GoogleInteractiveMediaAds
 import SafariServices
 
 /// Provides an integration with Google IMA Ad system
-@objc class IMAAdViewController: VAdViewController, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
+@objc class IMAAdViewController: NSObject, VAdViewControllerType, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
     let adTag: String
     let player: VVideoPlayer
     let contentPlayhead: VIMAContentPlayhead
     let adsLoader: IMAAdsLoader
+    let adView: UIView
     var adsManager: IMAAdsManager?
+    var delegate: VAdViewControllerDelegate?
 
     //MARK: - Initializers
 
     init(player: VVideoPlayer,
         adTag: String,
-        nibName: String? = nil,
-        nibBundle: NSBundle? = nil,
-        adsLoader: IMAAdsLoader = IMAAdsLoader()) {
+        adsLoader: IMAAdsLoader = IMAAdsLoader(),
+        adView: UIView = UIView()) {
             self.adTag = adTag
             self.player = player
             self.contentPlayhead = VIMAContentPlayhead(player: player)
+            self.adView = adView
             self.adsLoader = adsLoader
-            super.init(nibName: nibName, bundle: nibBundle)
-
+            super.init()
             self.adsLoader.delegate = self
             NSNotificationCenter.defaultCenter().addObserver(
                 self,
@@ -37,19 +38,11 @@ import SafariServices
                 name: AVPlayerItemDidPlayToEndTimeNotification,
                 object: player)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    //MARK: - VAdViewController method overrides
+    //MARK: - VAdViewControllerType method overrides
 
-    override func startAdManager() {
-        guard let view = self.view else {
-            VLog("Failed to play ads because there is no view to play it on")
-            return
-        }
-        let adDisplayContainer = IMAAdDisplayContainer(adContainer: view, companionSlots: nil)
+    func startAdManager() {
+        let adDisplayContainer = IMAAdDisplayContainer(adContainer: adView, companionSlots: nil)
         let request = IMAAdsRequest(adTagUrl: adTag, adDisplayContainer: adDisplayContainer, contentPlayhead: contentPlayhead, userContext: nil)
         adsLoader.requestAdsWithRequest(request)
     }
@@ -72,10 +65,10 @@ import SafariServices
         }
         adsManagerInstance.delegate = self
         let adsRenderingSettings = IMAAdsRenderingSettings()
-        adsRenderingSettings.webOpenerPresentingController = self
+        adsRenderingSettings.webOpenerPresentingController = UIViewController()
         adsRenderingSettings.webOpenerDelegate = self
         adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
-        delegate?.adDidLoadForAdViewController(self)
+        delegate?.adDidLoad()
     }
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
@@ -84,7 +77,7 @@ import SafariServices
         let error = NSError(domain: kVictoriousErrorDomain,
             code: imaError.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : imaError.message])
-        delegate?.adHadErrorInAdViewController?(self, withError: error)
+        delegate?.adHadError?(error)
     }
 
     //MARK: - IMAAdsManagerDelegate methods
@@ -100,26 +93,26 @@ import SafariServices
         case .CLICKED:
             adsManager.discardAdBreak()
         case .COMPLETE, .ALL_ADS_COMPLETED:
-            delegate?.adDidFinishForAdViewController(self)
+            delegate?.adDidFinish()
         case .FIRST_QUARTILE:
-            delegate?.adDidHitFirstQuartileInAdViewController?(self)
+            delegate?.adDidHitFirstQuartile?()
         case .LOADED:
             adsManager.start()
-            delegate?.adDidLoadForAdViewController(self)
+            delegate?.adDidLoad()
         case .MIDPOINT:
-            delegate?.adDidHitMidpointInAdViewController?(self)
+            delegate?.adDidHitMidpoint?()
         case .PAUSE:
             break
         case .RESUME:
             break
         case .SKIPPED:
-            delegate?.adDidFinishForAdViewController(self)
+            delegate?.adDidFinish()
         case .STARTED:
-            delegate?.adDidStartPlaybackInAdViewController?(self)
+            delegate?.adDidStartPlayback?()
         case .TAPPED:
-            delegate?.adHadImpressionInAdViewController?(self)
+            delegate?.adHadImpression?()
         case .THIRD_QUARTILE:
-            delegate?.adDidHitThirdQuartileInAdViewController?(self)
+            delegate?.adDidHitThirdQuartile?()
         }
     }
 
@@ -128,7 +121,7 @@ import SafariServices
         let nsError = NSError(domain: kVictoriousErrorDomain,
             code: error.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : error.message])
-        delegate?.adHadErrorInAdViewController?(self, withError: nsError)
+        delegate?.adHadError?(nsError)
     }
 
     func adsManagerDidRequestContentPause(adsManager: IMAAdsManager!) {
@@ -142,6 +135,6 @@ import SafariServices
     //MARK: - IMAWebOpenerDelegate
 
     func webOpenerDidCloseInAppBrowser(webOpener: NSObject) {
-        delegate?.adDidFinishForAdViewController(self)
+        delegate?.adDidFinish()
     }
 }

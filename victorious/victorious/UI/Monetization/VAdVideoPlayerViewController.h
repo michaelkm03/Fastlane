@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "VVideoPlayer.h"
-#import "VAdViewController.h"
+#import "VAdViewControllerType.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @class VAdVideoPlayerViewController, VAdBreak;
 
@@ -19,15 +21,15 @@
 
 @required
 
-- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
-- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
+- (void)adDidLoad;
+- (void)adDidFinish;
 
 @optional
 
-- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
-- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
-- (void)adHadImpressionForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
-- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
+- (void)adDidStartPlayback;
+- (void)adDidStopPlayback;
+- (void)adHadImpression;
+- (void)adHadError;
 
 @end
 
@@ -45,19 +47,19 @@
 - (instancetype)initWithAdBreak:(VAdBreak *)adBreak
                          player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil NS_UNAVAILABLE;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
 /**
  Ad video player delegate object
  */
-@property (nonatomic, weak) id<VAdVideoPlayerViewControllerDelegate>delegate;
+@property (nonatomic, weak, nullable) id<VAdVideoPlayerViewControllerDelegate>delegate;
 
 /**
  ViewController instance that deals with an add provider
  */
-@property (nonatomic, readwrite) VAdViewController *adViewController;
+@property (nonatomic, readwrite, nonnull) id<VAdViewControllerType>adViewController;
 
 /**
  Method that starts the ad manager
@@ -65,3 +67,5 @@
 - (void)start;
 
 @end
+
+NS_ASSUME_NONNULL_END

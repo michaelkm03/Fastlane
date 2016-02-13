@@ -20,7 +20,7 @@ class IMAAdViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         testAdsLoader = TestIMAAdsLoader()
-        controller = IMAAdViewController(player: player, adTag: testAdTag, nibName: nil, nibBundle: nil, adsLoader: testAdsLoader)
+        controller = IMAAdViewController(player: player, adTag: testAdTag, adsLoader: testAdsLoader)
         delegateViewController = TestVAdViewControllerDelegateImplementor()
         controller.adsManager = testAdsManager
         controller.delegate = delegateViewController
@@ -37,18 +37,18 @@ class IMAAdViewControllerTests: XCTestCase {
 
     func testAdLoaded() {
         let loadedEvent = TestIMAAdEvent(test: true, type: .LOADED)
-        XCTAssertEqual(0, delegateViewController.adDidLoadForAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidLoadCallCount)
         XCTAssertEqual(0, testAdsManager.startCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: loadedEvent)
-        XCTAssertEqual(1, delegateViewController.adDidLoadForAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidLoadCallCount)
         XCTAssertEqual(1, testAdsManager.startCallCount)
     }
 
     func testAdStarted() {
         let startedEvent = TestIMAAdEvent(test: true, type: .STARTED)
-        XCTAssertEqual(0, delegateViewController.adDidStartPlaybackInAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidStartPlaybackCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: startedEvent)
-        XCTAssertEqual(1, delegateViewController.adDidStartPlaybackInAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidStartPlaybackCallCount)
     }
 
     func testLearnMoreTapped() {
@@ -57,57 +57,57 @@ class IMAAdViewControllerTests: XCTestCase {
         controller.adsManager(controller.adsManager, didReceiveAdEvent: clickedEvent)
         XCTAssertEqual(1, testAdsManager.discardAdBreakCallCount)
 
-        XCTAssertEqual(0, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidFinishCallCount)
         controller.webOpenerDidCloseInAppBrowser(NSObject())
-        XCTAssertEqual(1, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidFinishCallCount)
     }
 
     func testAdCopleted() {
         let completeEvent = TestIMAAdEvent(test: true, type: .COMPLETE)
-        XCTAssertEqual(0, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidFinishCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: completeEvent)
-        XCTAssertEqual(1, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidFinishCallCount)
     }
 
     func testAllAdsCompleted() {
         let allAdsCompleteEvent = TestIMAAdEvent(test: true, type: .ALL_ADS_COMPLETED)
-        XCTAssertEqual(0, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidFinishCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: allAdsCompleteEvent)
-        XCTAssertEqual(1, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidFinishCallCount)
     }
 
     func testAdSkipped() {
         let adSkippedEvent = TestIMAAdEvent(test: true, type: .SKIPPED)
-        XCTAssertEqual(0, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidFinishCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adSkippedEvent)
-        XCTAssertEqual(1, delegateViewController.adDidFinishForAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidFinishCallCount)
     }
 
     func testAdTapped() {
         let adTappedEvent = TestIMAAdEvent(test: true, type: .TAPPED)
-        XCTAssertEqual(0, delegateViewController.adHadImpressionInAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adHadImpressionCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adTappedEvent)
-        XCTAssertEqual(1, delegateViewController.adHadImpressionInAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adHadImpressionCallCount)
     }
 
     func testAdReachedFirstQuartile() {
         let adReachedFirstQuartileEvent = TestIMAAdEvent(test: true, type: .FIRST_QUARTILE)
-        XCTAssertEqual(0, delegateViewController.adDidHitFirstQuartileInAdViewController)
+        XCTAssertEqual(0, delegateViewController.adDidHitFirstQuartileCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedFirstQuartileEvent)
-        XCTAssertEqual(1, delegateViewController.adDidHitFirstQuartileInAdViewController)
+        XCTAssertEqual(1, delegateViewController.adDidHitFirstQuartileCallCount)
     }
 
     func testAdReachedMidpoint() {
         let adReachedMidpointEvent = TestIMAAdEvent(test: true, type: .MIDPOINT)
-        XCTAssertEqual(0, delegateViewController.adDidHitMidpointInAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidHitMidpointCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedMidpointEvent)
-        XCTAssertEqual(1, delegateViewController.adDidHitMidpointInAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidHitMidpointCallCount)
     }
 
     func testAdReachedThirdQuartile() {
         let adReachedThirdQuartileEvent = TestIMAAdEvent(test: true, type: .THIRD_QUARTILE)
-        XCTAssertEqual(0, delegateViewController.adDidHitThirdQuartileInAdViewControllerCallCount)
+        XCTAssertEqual(0, delegateViewController.adDidHitThirdQuartileCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedThirdQuartileEvent)
-        XCTAssertEqual(1, delegateViewController.adDidHitThirdQuartileInAdViewControllerCallCount)
+        XCTAssertEqual(1, delegateViewController.adDidHitThirdQuartileCallCount)
     }
 }
