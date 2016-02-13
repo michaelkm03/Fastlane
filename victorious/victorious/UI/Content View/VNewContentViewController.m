@@ -69,7 +69,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -762,7 +762,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
                                                               previewViewProvider:provider
-                                                              contentCellDelegate:self
+                                                                       adDelegate:self
                                                                    detailDelegate:self
                                                          videoPreviewViewDelegate:self
                                                                           adBreak:self.viewModel.sequence.adBreak];
@@ -770,7 +770,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             else
             {
                 setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
-                                                              contentCellDelegate:self
+                                                                       adDelegate:self
                                                                    detailDelegate:self
                                                          videoPreviewViewDelegate:self
                                                                           adBreak:self.viewModel.sequence.adBreak
@@ -1587,22 +1587,33 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.videoPlayerDidFinishPlayingOnce = YES;
 }
 
-#pragma mark - VContentCellDelegate
+#pragma mark - AdLifecycleDelegate
 
-- (void)contentCellDidEndPlayingAd:(VContentCell *)cell
+- (void)adHadError:(NSError *)error
 {
-    self.textEntryView.userInteractionEnabled = true;
-    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
-        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-    }];
+    VLog(@"Failed had an error, recovering to the normal state");
+    [self enableCommentsAndExperienceEnhancers];
 }
 
-- (void)contentCellDidStartPlayingAd:(VContentCell *)cell
+- (void)adDidFinish
+{
+    [self enableCommentsAndExperienceEnhancers];
+}
+
+- (void)adDidStart
 {
     self.closeButton.alpha = 1.0f;
     self.textEntryView.userInteractionEnabled = false;
     [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    }];
+}
+
+- (void)enableCommentsAndExperienceEnhancers
+{
+    self.textEntryView.userInteractionEnabled = true;
+    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }];
 }
 

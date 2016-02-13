@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAdViewControllerDelegate.h"
+#import "AdLifecycleDelegate.h"
 
 @protocol VAdViewControllerType <NSObject>
 
@@ -18,7 +18,7 @@
 /**
  Ad video player delegate object
  */
-@property (nonatomic, weak, nullable) id<VAdViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<AdLifecycleDelegate> delegate;
 
 /**
  Starts the ad manager

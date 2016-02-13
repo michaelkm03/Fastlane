@@ -17,7 +17,7 @@ import SafariServices
     let adsLoader: IMAAdsLoader
     let adView: UIView
     var adsManager: IMAAdsManager?
-    var delegate: VAdViewControllerDelegate?
+    var delegate: AdLifecycleDelegate?
 
     //MARK: - Initializers
 
@@ -77,7 +77,7 @@ import SafariServices
         let error = NSError(domain: kVictoriousErrorDomain,
             code: imaError.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : imaError.message])
-        delegate?.adHadError?(error)
+        delegate?.adHadError(error)
     }
 
     //MARK: - IMAAdsManagerDelegate methods
@@ -108,7 +108,7 @@ import SafariServices
         case .SKIPPED:
             delegate?.adDidFinish()
         case .STARTED:
-            delegate?.adDidStartPlayback?()
+            delegate?.adDidStart()
         case .TAPPED:
             delegate?.adHadImpression?()
         case .THIRD_QUARTILE:
@@ -121,7 +121,7 @@ import SafariServices
         let nsError = NSError(domain: kVictoriousErrorDomain,
             code: error.code.rawValue,
             userInfo: [kVictoriousErrorMessageKey : error.message])
-        delegate?.adHadError?(nsError)
+        delegate?.adHadError(nsError)
     }
 
     func adsManagerDidRequestContentPause(adsManager: IMAAdsManager!) {

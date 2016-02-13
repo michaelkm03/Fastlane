@@ -20,7 +20,7 @@
 @objc class ContentCellSetupHelper: NSObject {
     let contentCell: VContentCell
     let previewViewProvider: VContentPreviewViewProvider?
-    let contentCellDelegate: VContentCellDelegate
+    let adDelegate: AdLifecycleDelegate
     let detailDelegate: VSequencePreviewViewDetailDelegate
     let videoPreviewViewDelegate: VVideoPreviewViewDelegate
     let adBreak: VAdBreak?
@@ -30,19 +30,19 @@
     /// Initialize a new instance of a class with the existing preview view provider
     /// - parameter contentCell: content cell to be set up
     /// - parameter previewViewProvider: provider of an existing preview view
-    /// - parameter contentCellDelegate: depegate for a content cell
+    /// - parameter adDelegate: ad depegate for a content cell
     /// - parameter detailDelegate: detailDelegate to be set on a preview view
     /// - parameter videoPreviewViewDelegate: for a video player in case a cell is a video cell
     /// - parameter adBreak: presense of an adBreak will trigger playing of the ads instead of playing content
     init(contentCell: VContentCell,
         previewViewProvider: VContentPreviewViewProvider,
-        contentCellDelegate: VContentCellDelegate,
+        adDelegate: AdLifecycleDelegate,
         detailDelegate: VSequencePreviewViewDetailDelegate,
         videoPreviewViewDelegate: VVideoPreviewViewDelegate,
         adBreak: VAdBreak?) {
             self.contentCell = contentCell
             self.previewViewProvider = previewViewProvider
-            self.contentCellDelegate = contentCellDelegate
+            self.adDelegate = adDelegate
             self.detailDelegate = detailDelegate
             self.videoPreviewViewDelegate = videoPreviewViewDelegate
             self.adBreak = adBreak
@@ -53,14 +53,14 @@
     /// Initialize a new instance of a class without an existing preview provider. 
     /// A new preview view will be created.
     /// - parameter contentCell: content cell to be set up
-    /// - parameter contentCellDelegate: depegate for a content cell
+    /// - parameter adDelegate: ad depegate for a content cell
     /// - parameter detailDelegate: detailDelegate to be set on a preview view
     /// - parameter videoPreviewViewDelegate: for a video player in case a cell is a video cell
     /// - parameter adBreak: presense of an adBreak will trigger playing of the ads instead of playing content
     /// - parameter sequence: a sequence used to initialize a new preview view
     /// - parameter dependencyManager: a dependencyManager used to initialize a new preview view
     init(contentCell: VContentCell,
-        contentCellDelegate: VContentCellDelegate,
+        adDelegate: AdLifecycleDelegate,
         detailDelegate: VSequencePreviewViewDetailDelegate,
         videoPreviewViewDelegate: VVideoPreviewViewDelegate,
         adBreak: VAdBreak?,
@@ -68,7 +68,7 @@
         dependencyManager: VDependencyManager) {
             self.contentCell = contentCell
             self.previewViewProvider = nil
-            self.contentCellDelegate = contentCellDelegate
+            self.adDelegate = adDelegate
             self.detailDelegate = detailDelegate
             self.videoPreviewViewDelegate = videoPreviewViewDelegate
             self.adBreak = adBreak
@@ -80,7 +80,7 @@
     /// - returns: An new instance of `ContentCellSetupResult`
     var result: ContentCellSetupResult {
         contentCell.minSize = CGSize(width: contentCell.minSize.width, height: VShrinkingContentLayoutMinimumContentHeight)
-        contentCell.delegate = contentCellDelegate
+        contentCell.delegate = adDelegate
         previewViewProvider?.hasRelinquishedPreviewView = true
         let receiver = contentCell as? VContentPreviewViewReceiver
 

@@ -8,11 +8,11 @@
 
 #import "VAdVideoPlayerViewController.h"
 #import "VConstants.h"
-#import "VAdViewControllerDelegate.h"
+#import "AdLifecycleDelegate.h"
 #import "UIView+AutoLayout.h"
 #import "victorious-Swift.h"
 
-@interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
+@interface VAdVideoPlayerViewController () <AdLifecycleDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, strong) VAdBreak *adBreak;
@@ -61,7 +61,7 @@
     [self.adViewController startAdManager];
 }
 
-#pragma mark - VAdViewControllerDelegate
+#pragma mark - AdLifecycleDelegate
 
 - (void)adDidLoad
 {
@@ -77,34 +77,17 @@
 - (void)adHadError:(NSError *)error
 {
     [self.adViewController.adView removeFromSuperview];
-    if ([self.delegate respondsToSelector:@selector(adHadError:)])
-    {
-        [self.delegate adHadError];
-    }
+    [self.delegate adHadError:error];
 }
 
 - (void)adHadImpression
 {
-    if ([self.delegate respondsToSelector:@selector(adHadImpression)])
-    {
-        [self.delegate adHadImpression];
-    }
+    [self.delegate adHadImpression];
 }
 
-- (void)adDidStartPlayback
+- (void)adDidStart
 {
-    if ([self.delegate respondsToSelector:@selector(adDidStartPlayback)])
-    {
-        [self.delegate adDidStartPlayback];
-    }
-}
-
-- (void)adDidStopPlayback
-{
-    if ([self.delegate respondsToSelector:@selector(adDidStopPlayback)])
-    {
-        [self.delegate adDidStopPlayback];
-    }
+    [self.delegate adDidStart];
 }
 
 @end

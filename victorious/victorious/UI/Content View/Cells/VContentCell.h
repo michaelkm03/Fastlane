@@ -10,16 +10,9 @@
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
 #import "VAdVideoPlayerViewController.h"
+#import "AdLifecycleDelegate.h"
 
 @class VSequencePreviewView, VContentCell, VAdBreak;
-
-@protocol VContentCellDelegate
-
-- (void)contentCellDidEndPlayingAd:(VContentCell *)cell;
-
-- (void)contentCellDidStartPlayingAd:(VContentCell *)cell;
-
-@end
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -35,7 +28,7 @@
  */
 @property (nonatomic, assign) NSInteger repeatCount;
 
-@property (nonatomic, weak) id<VContentCellDelegate> delegate;
+@property (nonatomic, weak) id<AdLifecycleDelegate> delegate;
 
 /**
  Used to determine how to fade in or out with an interactive-style animation

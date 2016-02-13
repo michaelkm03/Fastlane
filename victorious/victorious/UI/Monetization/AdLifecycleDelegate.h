@@ -1,24 +1,24 @@
 //
-//  VAdViewControllerDelegate.h
+//  AdLifecycleDelegate.h
 //  victorious
 //
 //  Created by Alex Tamoykin on 2/12/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-@protocol VAdViewControllerDelegate <NSObject>
+/// Defines callbacks for different stages of ad playback
+@protocol AdLifecycleDelegate <NSObject>
 
 @required
 
 - (void)adDidLoad;
 - (void)adDidFinish;
+- (void)adDidStart;
+- (void)adHadError:(NSError *)error;
 
 @optional
 
-- (void)adDidStartPlayback;
-- (void)adDidStopPlaybackIn;
 - (void)adHadImpression;
-- (void)adHadError:(NSError *)error;
 - (void)adDidHitFirstQuartile;
 - (void)adDidHitMidpoint;
 - (void)adDidHitThirdQuartile;

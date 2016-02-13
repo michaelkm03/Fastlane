@@ -17,7 +17,7 @@
 
 static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
-@interface VContentCell () <VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
+@interface VContentCell () <AdLifecycleDelegate, VContentPreviewViewReceiver>
 
 @property (nonatomic, assign) BOOL isPreparedForDismissal;
 @property (nonatomic, assign) BOOL shrinkingDisabled;
@@ -303,7 +303,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
 #pragma mark  VAdVideoPlayerViewControllerDelegate
 
-- (void)adHadError
+- (void)adHadError:(NSError *)error
 {
     [self.activityIndicatorView stopAnimating];
     [self resumeContentPlaybackAnimated:NO];
@@ -316,24 +316,18 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     [self scheduleAdTimeoutTimer];
 }
 
-- (void)adDidStartPlayback
+- (void)adDidStart
 {
     [self.activityIndicatorView stopAnimating];
-    [self.delegate contentCellDidStartPlayingAd:self];
+    [self.delegate adDidStart];
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
-}
-
-- (void)adDidStopPlayback
-{
-    [self.delegate contentCellDidEndPlayingAd:self];
-    [self resumeContentPlaybackAnimated:YES];
 }
 
 - (void)adDidFinish
 {
     [self.activityIndicatorView stopAnimating];
-    [self.delegate contentCellDidEndPlayingAd:self];
+    [self.delegate adDidFinish];
     [self resumeContentPlaybackAnimated:YES];
 }
 

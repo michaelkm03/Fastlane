@@ -40,19 +40,6 @@ class TestContentVideoPreviewViewProvider: NSObject, VContentPreviewViewProvider
     }
 }
 
-class TestContentCellDelegate: NSObject, VContentCellDelegate {
-    var contentCellDidEndPlayingAdCallCount = 0
-    var contentCellDidStartPlayingAdCallCount = 0
-
-    func contentCellDidEndPlayingAd(cell: VContentCell!) {
-        contentCellDidEndPlayingAdCallCount += 1
-    }
-
-    func contentCellDidStartPlayingAd(cell: VContentCell!) {
-        contentCellDidStartPlayingAdCallCount += 1
-    }
-}
-
 class TestDetailDelegate: NSObject, VSequencePreviewViewDetailDelegate {
     var didSelectMediaURLCallCount = 0
     var didLikeSequenceCallCount = 0
@@ -113,7 +100,7 @@ class TestContentCell: VContentCell, VContentPreviewViewReceiver {
 
 class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     var testVideoPlayer: TestVideoPlayer!
-    var testContentCellDelegate: TestContentCellDelegate!
+    var testAdDelegate: TestAdLifecycleDelegate!
     var testDetailDelegate: TestDetailDelegate!
     var testVideoPreviewViewDelegate: TestVideoPreviewViewDelegate!
     var previewViewProvider: TestContentVideoPreviewViewProvider!
@@ -123,7 +110,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         super.setUp()
         continueAfterFailure = false
         testVideoPlayer = TestVideoPlayer()
-        testContentCellDelegate = TestContentCellDelegate()
+        testAdDelegate = TestAdLifecycleDelegate()
         testDetailDelegate = TestDetailDelegate()
         testVideoPreviewViewDelegate = TestVideoPreviewViewDelegate()
         previewViewProvider = TestContentVideoPreviewViewProvider(videoPlayer: testVideoPlayer)
@@ -133,7 +120,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     func testContentCellSetup() {
         var setupHelper = ContentCellSetupHelper(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
-            contentCellDelegate: testContentCellDelegate,
+            adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
@@ -143,7 +130,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
             XCTFail("Failed to get a delegate of a content cell after setting it up")
             return
         }
-        XCTAssert(contentCellDelegate === testContentCellDelegate)
+        XCTAssert(contentCellDelegate === testAdDelegate)
         XCTAssertEqual(true, previewViewProvider.hasRelinquishedPreviewView)
         guard let detailDelegate = previewViewProvider.getPreviewView().detailDelegate else {
             XCTFail("Failed to get a preview view detail delegate after setting up a content cell")
@@ -158,7 +145,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         let testTargetSuperView = UIView()
         let testContentCell = TestContentCell(test: true, targetSuperView: testTargetSuperView, frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         setupHelper = ContentCellSetupHelper(contentCell: testContentCell,
-            contentCellDelegate: testContentCellDelegate,
+            adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil,
@@ -180,7 +167,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         let adBreak = persistentStoreHelper.createAdBreak()
         let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
-            contentCellDelegate: testContentCellDelegate,
+            adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: adBreak)
@@ -193,7 +180,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
         let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
-            contentCellDelegate: testContentCellDelegate,
+            adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)

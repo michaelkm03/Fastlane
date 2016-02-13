@@ -9,30 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "VVideoPlayer.h"
 #import "VAdViewControllerType.h"
-#import "VAdViewControllerType.h"
+#import "AdLifecycleDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class VAdVideoPlayerViewController, VAdBreak;
-
-/**
- Reports on ad playback events
- */
-@protocol VAdVideoPlayerViewControllerDelegate <NSObject>
-
-@required
-
-- (void)adDidLoad;
-- (void)adDidFinish;
-
-@optional
-
-- (void)adDidStartPlayback;
-- (void)adDidStopPlayback;
-- (void)adHadImpression;
-- (void)adHadError;
-
-@end
+@class VAdVideoPlayerViewController;
 
 @interface VAdVideoPlayerViewController : UIViewController
 
@@ -52,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Ad video player delegate object
  */
-@property (nonatomic, weak, nullable) id<VAdVideoPlayerViewControllerDelegate>delegate;
+@property (nonatomic, weak, nullable) id<AdLifecycleDelegate>delegate;
 
 /**
  ViewController instance that deals with an add provider
