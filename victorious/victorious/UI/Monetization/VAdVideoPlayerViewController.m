@@ -21,17 +21,12 @@
 
 @implementation VAdVideoPlayerViewController
 
-- (instancetype)initWithAdBreak:(VAdBreak *)adBreak
-                         player:(id<VVideoPlayer>)player
+- (instancetype)initWithAdViewController:(id<VAdViewControllerType>)adViewController
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        _adBreak = adBreak;
-        _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
-                                                                  adTag:self.adBreak.adTag
-                                                              adsLoader:[[IMAAdsLoader alloc] init]
-                                                                 adView:[[UIView alloc] init]];
+        _adViewController = adViewController;
     }
     return self;
 }

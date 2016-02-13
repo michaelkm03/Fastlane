@@ -18,8 +18,9 @@ class VAdVideoPlayerViewControllerTests: XCTestCase {
         super.setUp()
         testStore = TestPersistentStore()
         let player = VVideoView()
-        let adBreak = createAdBreak()
-        controller = VAdVideoPlayerViewController(adBreak: adBreak, player: player)
+        let adTag = "http://example.com/ads"
+        let adViewController = IMAAdViewController(player: player, adTag: adTag)
+        controller = VAdVideoPlayerViewController(adViewController: adViewController)
         controller.adViewController = testAdViewController
     }
 
@@ -27,10 +28,5 @@ class VAdVideoPlayerViewControllerTests: XCTestCase {
         controller.start()
         XCTAssert(controller === testAdViewController.delegate)
         XCTAssertEqual(1, testAdViewController.startAdManagerCallCount)
-    }
-
-    private func createAdBreak() -> VAdBreak {
-        return testStore.mainContext.v_createObjectAndSave() { adBreak in
-        } as VAdBreak
     }
 }

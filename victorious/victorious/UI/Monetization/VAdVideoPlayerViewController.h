@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VVideoPlayer.h"
 #import "VAdViewControllerType.h"
+#import "VAdViewControllerType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,16 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The designated constructor for VAdVideoPlayerViewController
  *
- *  @param adBreak             Parameters for the ad.
- *  @param player              Player where a video is played.
+ *  @param adViewController a concrete implementation of a view controller provider class.
  *
  *  @return Returns an instance of the VAdVideoPlayerViewController class.
  */
-- (instancetype)initWithAdBreak:(VAdBreak *)adBreak
-                         player:(id<VVideoPlayer>)videoPlayer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAdViewController:(id<VAdViewControllerType>)adViewController NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil NS_UNAVAILABLE;
-
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
 /**

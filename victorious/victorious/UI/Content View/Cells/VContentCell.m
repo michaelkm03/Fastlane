@@ -13,6 +13,7 @@
 #import "VTimerManager.h"
 #import "victorious-Swift.h"
 #import "VSequencePreviewView.h"
+#import "VAdViewControllerType.h"
 
 static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
@@ -240,8 +241,11 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     }
     
     self.backgroundColor = [UIColor blackColor];
-    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdBreak:adBreak
-                                                                                      player:self.videoPlayer];
+    IMAAdViewController *adViewController = [[IMAAdViewController alloc] initWithPlayer:self.videoPlayer
+                                                                                  adTag:adBreak.adTag
+                                                                              adsLoader:[[IMAAdsLoader alloc] init]
+                                                                                 adView:[[UIView alloc] init]];
+    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdViewController:adViewController];
     _currentAdBreak = adBreak;
     if ( self.adVideoPlayerViewController != nil )
     {
