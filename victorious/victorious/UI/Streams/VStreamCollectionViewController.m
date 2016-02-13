@@ -229,6 +229,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
+    self.streamDataSource.suppressShelves = self.suppressShelves;
     self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];

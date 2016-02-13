@@ -30,6 +30,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @property (nonatomic, strong) VNoContentView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 
 @property (nonatomic, assign) BOOL canShowMarquee; ///< Defaults to YES; if NO, we won't adjust the "hasHeaderCell" variable even when a marquee is available in the stream
+@property (nonatomic, assign) BOOL suppressShelves;
 
 /**
  *  Creates a new stream collection view controller
