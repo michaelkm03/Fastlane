@@ -91,23 +91,35 @@ import SafariServices
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdEvent event: IMAAdEvent!) {
         switch event.type {
-        case .AD_BREAK_READY: break
-        case .AD_BREAK_ENDED: break
-        case .AD_BREAK_STARTED: break
+        case .AD_BREAK_READY:
+            break
+        case .AD_BREAK_ENDED:
+            break
+        case .AD_BREAK_STARTED:
+            break
         case .CLICKED:
             adsManager.discardAdBreak()
-        case .COMPLETE, .ALL_ADS_COMPLETED: delegate?.adDidFinishForAdViewController(self)
-        case .FIRST_QUARTILE: delegate?.adDidHitFirstQuartileInAdViewController?(self)
+        case .COMPLETE, .ALL_ADS_COMPLETED:
+            delegate?.adDidFinishForAdViewController(self)
+        case .FIRST_QUARTILE:
+            delegate?.adDidHitFirstQuartileInAdViewController?(self)
         case .LOADED:
             adsManager.start()
             delegate?.adDidLoadForAdViewController(self)
-        case .MIDPOINT: delegate?.adDidHitMidpointInAdViewController?(self)
-        case .PAUSE: break
-        case .RESUME: break
-        case .SKIPPED: delegate?.adDidFinishForAdViewController(self)
-        case .STARTED: delegate?.adDidStartPlaybackInAdViewController?(self)
-        case .TAPPED: delegate?.adHadImpressionInAdViewController?(self)
-        case .THIRD_QUARTILE: delegate?.adDidHitThirdQuartileInAdViewController?(self)
+        case .MIDPOINT:
+            delegate?.adDidHitMidpointInAdViewController?(self)
+        case .PAUSE:
+            break
+        case .RESUME:
+            break
+        case .SKIPPED:
+            delegate?.adDidFinishForAdViewController(self)
+        case .STARTED:
+            delegate?.adDidStartPlaybackInAdViewController?(self)
+        case .TAPPED:
+            delegate?.adHadImpressionInAdViewController?(self)
+        case .THIRD_QUARTILE:
+            delegate?.adDidHitThirdQuartileInAdViewController?(self)
         }
     }
 
