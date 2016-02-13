@@ -12,7 +12,6 @@ import SwiftyJSON
 /// A struct representing a notification
 public struct Notification {
     
-    public let notificationID: String
     public let subject: String
     public let user: User
     public let body: String?
@@ -26,13 +25,11 @@ public struct Notification {
     public init?(json: JSON) {
         
         guard let createdAt     = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["created_at"].stringValue),
-            let notificationID  = json["id"].v_stringFromInt,
             let subject         = json["subject"].string,
             let user            = User(json: json["created_by"]) else {
                 return nil
         }
         self.createdAt          = createdAt
-        self.notificationID     = notificationID
         self.subject            = subject
         self.user               = user
         

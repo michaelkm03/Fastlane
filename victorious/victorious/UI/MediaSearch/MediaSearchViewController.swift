@@ -27,7 +27,7 @@ class MediaSearchOptions: NSObject {
 }
 
 /// View controller that allows users to search for media files as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, PaginatedDataSourceDelegate {
+class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -274,9 +274,9 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		searchBar.resignFirstResponder()
     }
     
-    // MARK: - PaginatedDataSourceDelegate
+    // MARK: - VPaginatedDataSourceDelegate
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         
         // To update whether the bottom activity indicator footer shows
         if paginatedDataSource.hasLoadedLastPage {

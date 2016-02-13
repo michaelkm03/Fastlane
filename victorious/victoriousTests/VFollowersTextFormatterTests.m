@@ -49,16 +49,16 @@
     XCTAssertEqualObjects( label, @"1K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:2500];
-    XCTAssertEqualObjects( label, @"2K Followers" );
+    XCTAssertEqualObjects( label, @"2.5K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:5180];
-    XCTAssertEqualObjects( label, @"5K Followers" );
+    XCTAssertEqualObjects( label, @"5.1K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:21225];
-    XCTAssertEqualObjects( label, @"21K Followers" );
+    XCTAssertEqualObjects( label, @"21.2K Followers" );
     
     label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:1530500];
-    XCTAssertEqualObjects( label, @"1M Followers" );
+    XCTAssertEqualObjects( label, @"1.5M Followers" );
 }
 
 @end

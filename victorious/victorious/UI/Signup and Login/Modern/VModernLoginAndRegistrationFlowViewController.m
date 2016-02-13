@@ -440,7 +440,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     __weak typeof(self) weakSelf = self;
     [self showLoadingScreenWithCompletion:^{
-        [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+        self.currentOperation = [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
             if ( error == nil )
             {
                 completion(YES, nil);
@@ -449,7 +449,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             else
             {
                 completion(NO, error);
-                [weakSelf dismissLoadingScreen];
             }
         }];
     }];
@@ -467,7 +466,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     __weak typeof(self) weakSelf = self;
     [self showLoadingScreenWithCompletion:^{
-         [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+         self.currentOperation = [weakSelf queueAccountCreateOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
              if ( error == nil )
              {
                  BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
@@ -484,7 +483,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
              else
              {
                  completion(NO, NO, error);
-                 [weakSelf dismissLoadingScreen];
              }
          }];
      }];
@@ -730,12 +728,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      animated:YES];
 }
 
+- (void)LoginErrorAlertAcknowledged
+{
+    [self dismissLoadingScreen];
+}
+
 #pragma mark - Loading Screen Delegate
 
 - (void)loadingScreenCancelled
 {
     [self.currentOperation cancel];
-    self.loadingScreen.canCancel = NO;
+    [self dismissLoadingScreen];
 }
 
 - (void)loadingScreenDidAppear

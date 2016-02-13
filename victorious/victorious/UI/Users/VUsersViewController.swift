@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension VUsersViewController: PaginatedDataSourceDelegate {
+extension VUsersViewController: VPaginatedDataSourceDelegate {
     
     private func updateBackground() {
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
@@ -30,11 +30,11 @@ extension VUsersViewController: PaginatedDataSourceDelegate {
         }
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue)
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateBackground()
     }
 }

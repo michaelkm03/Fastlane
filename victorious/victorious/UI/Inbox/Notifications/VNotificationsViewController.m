@@ -23,7 +23,7 @@
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
 
-@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate>
+@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate>
 
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
@@ -154,8 +154,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     
     switch ( [self.dataSource state] )
     {
-        case DataSourceStateError:
-        case DataSourceStateNoResults: {
+        case VDataSourceStateError:
+        case VDataSourceStateNoResults: {
             if ( self.tableView.backgroundView != self.noContentView )
             {
                 self.tableView.backgroundView = self.noContentView;
@@ -338,6 +338,18 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     VNotification *notification = [self.dataSource.visibleItems objectAtIndex:indexPath.row];
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:notification.user];
     [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
+#pragma mark - VPaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [self.tableView v_applyChangeInSection:0 from:oldValue to:newValue];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
+{
+    [self updateTableView];
 }
 
 @end

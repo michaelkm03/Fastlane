@@ -35,6 +35,10 @@ class RequestOperation: NSOperation, Queuable, ErrorOperation {
     
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
         self.completionBlock = {
+            guard !self.cancelled else {
+                return
+            }
+            
             if completionBlock != nil {
                 self.mainQueueCompletionBlock = completionBlock
             }
