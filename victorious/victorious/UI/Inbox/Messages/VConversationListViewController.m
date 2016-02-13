@@ -443,7 +443,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [self updateBadge];
 }
 
-- (void)updateBadge {
+- (void)updateBadge
+{
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
     if (badgeResponder != nil)
     {
