@@ -46,7 +46,7 @@ import SafariServices
 
     override func startAdManager() {
         guard let view = self.view else {
-            print("Can't play ads on a non existent view")
+            VLog("Failed to play ads because there is no view to play it on")
             return
         }
         let adDisplayContainer = IMAAdDisplayContainer(adContainer: view, companionSlots: nil)
@@ -67,7 +67,7 @@ import SafariServices
     func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
         self.adsManager = adsLoadedData.adsManager
         guard let adsManagerInstance = self.adsManager else {
-            print("Failed to instantiate IMAAdsManager, can't show ads without it")
+            VLog("Failed to instantiate IMAAdsManager, can't show ads without it")
             return
         }
         adsManagerInstance.delegate = self
