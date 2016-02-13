@@ -132,9 +132,11 @@ import SafariServices
     }
 
     func adsManagerDidRequestContentPause(adsManager: IMAAdsManager!) {
+        player.pause()
     }
 
     func adsManagerDidRequestContentResume(adsManager: IMAAdsManager!) {
+        player.play()
     }
 
     //MARK: - IMAWebOpenerDelegate
