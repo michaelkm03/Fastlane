@@ -16,11 +16,4 @@
 - (void)adDidStart;
 - (void)adHadError:(NSError *)error;
 
-@optional
-
-- (void)adHadImpression;
-- (void)adDidHitFirstQuartile;
-- (void)adDidHitMidpoint;
-- (void)adDidHitThirdQuartile;
-
 @end

@@ -80,11 +80,6 @@
     [self.delegate adHadError:error];
 }
 
-- (void)adHadImpression
-{
-    [self.delegate adHadImpression];
-}
-
 - (void)adDidStart
 {
     [self.delegate adDidStart];

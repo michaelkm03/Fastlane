@@ -13,10 +13,6 @@ class TestAdLifecycleDelegate: NSObject, AdLifecycleDelegate {
     var adDidFinishCallCount = 0
     var adDidStartCallCount = 0
     var adHadErrorCallCount = 0
-    var adHadImpressionCallCount = 0
-    var adDidHitFirstQuartileCallCount = 0
-    var adDidHitMidpointCallCount = 0
-    var adDidHitThirdQuartileCallCount = 0
 
     func adHadError(error: NSError!) {
         adHadErrorCallCount += 1
@@ -32,21 +28,5 @@ class TestAdLifecycleDelegate: NSObject, AdLifecycleDelegate {
 
     func adDidStart() {
         adDidStartCallCount += 1
-    }
-
-    func adHadImpression() {
-        adHadImpressionCallCount += 1
-    }
-
-    func adDidHitFirstQuartile() {
-        adDidHitFirstQuartileCallCount += 1
-    }
-
-    func adDidHitMidpoint() {
-        adDidHitMidpointCallCount += 1
-    }
-
-    func adDidHitThirdQuartile() {
-        adDidHitThirdQuartileCallCount += 1
     }
 }

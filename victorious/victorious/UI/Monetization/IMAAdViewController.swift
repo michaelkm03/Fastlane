@@ -98,12 +98,12 @@ import SafariServices
         case .COMPLETE, .ALL_ADS_COMPLETED:
             delegate?.adDidFinish()
         case .FIRST_QUARTILE:
-            delegate?.adDidHitFirstQuartile?()
+            break
         case .LOADED:
             adsManager.start()
             delegate?.adDidLoad()
         case .MIDPOINT:
-            delegate?.adDidHitMidpoint?()
+            break
         case .PAUSE:
             break
         case .RESUME:
@@ -113,9 +113,9 @@ import SafariServices
         case .STARTED:
             delegate?.adDidStart()
         case .TAPPED:
-            delegate?.adHadImpression?()
+            break
         case .THIRD_QUARTILE:
-            delegate?.adDidHitThirdQuartile?()
+            break
         }
     }
 

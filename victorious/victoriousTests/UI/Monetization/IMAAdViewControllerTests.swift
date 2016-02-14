@@ -85,29 +85,21 @@ class IMAAdViewControllerTests: XCTestCase {
 
     func testAdTapped() {
         let adTappedEvent = TestIMAAdEvent(test: true, type: .TAPPED)
-        XCTAssertEqual(0, testAdDelegate.adHadImpressionCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adTappedEvent)
-        XCTAssertEqual(1, testAdDelegate.adHadImpressionCallCount)
     }
 
     func testAdReachedFirstQuartile() {
         let adReachedFirstQuartileEvent = TestIMAAdEvent(test: true, type: .FIRST_QUARTILE)
-        XCTAssertEqual(0, testAdDelegate.adDidHitFirstQuartileCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedFirstQuartileEvent)
-        XCTAssertEqual(1, testAdDelegate.adDidHitFirstQuartileCallCount)
     }
 
     func testAdReachedMidpoint() {
         let adReachedMidpointEvent = TestIMAAdEvent(test: true, type: .MIDPOINT)
-        XCTAssertEqual(0, testAdDelegate.adDidHitMidpointCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedMidpointEvent)
-        XCTAssertEqual(1, testAdDelegate.adDidHitMidpointCallCount)
     }
 
     func testAdReachedThirdQuartile() {
         let adReachedThirdQuartileEvent = TestIMAAdEvent(test: true, type: .THIRD_QUARTILE)
-        XCTAssertEqual(0, testAdDelegate.adDidHitThirdQuartileCallCount)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedThirdQuartileEvent)
-        XCTAssertEqual(1, testAdDelegate.adDidHitThirdQuartileCallCount)
     }
 }

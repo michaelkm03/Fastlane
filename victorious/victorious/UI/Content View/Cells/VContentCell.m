@@ -301,7 +301,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     [self resumeContentPlaybackAnimated:YES];
 }
 
-#pragma mark  VAdVideoPlayerViewControllerDelegate
+#pragma mark  AdLifecycleDelegate
 
 - (void)adHadError:(NSError *)error
 {
