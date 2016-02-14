@@ -16,6 +16,7 @@ import SafariServices
     let contentPlayhead: VIMAContentPlayhead
     let adsLoader: IMAAdsLoader
     let adView: UIView
+    let adDetailViewController: UIViewController
     var adsManager: IMAAdsManager?
     var delegate: AdLifecycleDelegate?
 
@@ -30,6 +31,8 @@ import SafariServices
             self.contentPlayhead = VIMAContentPlayhead(player: player)
             self.adView = adView
             self.adsLoader = adsLoader
+            self.adDetailViewController = UIViewController()
+            self.adDetailViewController.view = self.adView
             super.init()
             self.adsLoader.delegate = self
             NSNotificationCenter.defaultCenter().addObserver(
@@ -65,7 +68,7 @@ import SafariServices
         }
         adsManagerInstance.delegate = self
         let adsRenderingSettings = IMAAdsRenderingSettings()
-        adsRenderingSettings.webOpenerPresentingController = UIViewController()
+        adsRenderingSettings.webOpenerPresentingController = adDetailViewController
         adsRenderingSettings.webOpenerDelegate = self
         adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
         delegate?.adDidLoad()
