@@ -8,7 +8,6 @@
 
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
-#import "VAdVideoPlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "VTimerManager.h"
 #import "victorious-Swift.h"
@@ -24,7 +23,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, strong) UIView *adContainer;
 @property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
-@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
+@property (nonatomic, strong, readwrite) AdVideoPlayerViewController *adVideoPlayerViewController;
 @property (nonatomic, strong, readonly) VAdBreak *currentAdBreak;
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
@@ -245,7 +244,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
                                                                                   adTag:adBreak.adTag
                                                                               adsLoader:[[IMAAdsLoader alloc] init]
                                                                                  adView:[[UIView alloc] init]];
-    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdViewController:adViewController];
+    self.adVideoPlayerViewController = [[AdVideoPlayerViewController alloc] initWithAdViewController:adViewController];
     _currentAdBreak = adBreak;
     if ( self.adVideoPlayerViewController != nil )
     {

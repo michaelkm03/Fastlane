@@ -1,5 +1,5 @@
 //
-//  VAdVideoPlayerViewControllerTests.swift
+//  AdVideoPlayerViewControllerTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/24/16.
@@ -9,10 +9,10 @@
 import XCTest
 @testable import victorious
 
-class VAdVideoPlayerViewControllerTests: XCTestCase {
+class AdVideoPlayerViewControllerTests: XCTestCase {
     var testStore: TestPersistentStore!
     let testAdViewController = TestVAdViewController()
-    var controller: VAdVideoPlayerViewController!
+    var controller: AdVideoPlayerViewController!
 
     override func setUp() {
         super.setUp()
@@ -20,7 +20,7 @@ class VAdVideoPlayerViewControllerTests: XCTestCase {
         let player = VVideoView()
         let adTag = "http://example.com/ads"
         let adViewController = IMAAdViewController(player: player, adTag: adTag)
-        controller = VAdVideoPlayerViewController(adViewController: adViewController)
+        controller = AdVideoPlayerViewController(adViewController: adViewController)
         controller.adViewController = testAdViewController
     }
 

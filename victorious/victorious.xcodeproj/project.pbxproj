@@ -365,6 +365,7 @@
 		62168C4D1C706974008E34AA /* TestIMAAdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */; };
 		62168C4E1C706982008E34AA /* TestIMAAdsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */; };
 		62168C4F1C7069A3008E34AA /* TestIMAAdEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */; };
+		62168C511C7076DF008E34AA /* AdVideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */; };
 		622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622103481C65354A00A77A73 /* LoginOperationTests.swift */; };
 		6221034B1C65699100A77A73 /* LoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6221034A1C65699100A77A73 /* LoginOperation.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
@@ -1615,7 +1616,6 @@
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
 		DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B551A425A7200B4ADC8 /* VHashtag.m */; };
 		DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */; };
-		DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 		DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */; };
 		DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */; };
@@ -1624,7 +1624,6 @@
 		DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890519F5BB9000D678A0 /* MapKit.framework */; };
 		DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */; };
 		DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */; };
-		DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */; };
 		DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7919F5860A00E0AC95 /* AdSupport.framework */; };
 		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
 		DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */; };
@@ -2481,6 +2480,7 @@
 		62058B661C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAdVideoPlayerViewControllerTests.swift; sourceTree = "<group>"; };
 		62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePersistentStoreTestCase.swift; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
+		62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdVideoPlayerViewController.swift; sourceTree = "<group>"; };
 		622103481C65354A00A77A73 /* LoginOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperationTests.swift; sourceTree = "<group>"; };
 		6221034A1C65699100A77A73 /* LoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperation.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FollowUsersOperationTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -4250,8 +4250,6 @@
 		DB531B551A425A7200B4ADC8 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
 		DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelperTests.m; sourceTree = "<group>"; };
 		DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
-		DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdPlayerView.h; sourceTree = "<group>"; };
-		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
 		DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstTimeInstallHelper.h; sourceTree = "<group>"; };
@@ -4263,8 +4261,6 @@
 		DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DBB1A0481A0025F600E16D62 /* VAdViewControllerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdViewControllerType.h; sourceTree = "<group>"; };
-		DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdVideoPlayerViewController.h; sourceTree = "<group>"; };
-		DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdVideoPlayerViewController.m; sourceTree = "<group>"; };
 		DBD02A7919F5860A00E0AC95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -9041,11 +9037,8 @@
 			isa = PBXGroup;
 			children = (
 				62E5A9701C6F0E19007E27C7 /* AdLifecycleDelegate.h */,
+				62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */,
 				629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */,
-				DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */,
-				DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */,
-				DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */,
-				DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */,
 				DBB1A0481A0025F600E16D62 /* VAdViewControllerType.h */,
 			);
 			path = Monetization;
@@ -10961,6 +10954,7 @@
 				A7AF872F1C46073D00B49478 /* ConversationDataSource.swift in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */,
 				A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */,
+				62168C511C7076DF008E34AA /* AdVideoPlayerViewController.swift in Sources */,
 				C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */,
 				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
@@ -11389,7 +11383,6 @@
 				A6DAEB5C1B4C786E00935EA0 /* VRemixPresenter.m in Sources */,
 				03960BBC1BB21418006815F6 /* VHashTagTextView.m in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
-				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */,
 				A767121B1C209F37006568DF /* CommentEditOperation.swift in Sources */,
 				A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */,
@@ -11454,7 +11447,6 @@
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
-				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				A71A3FD81C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
