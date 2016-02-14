@@ -10,15 +10,16 @@ import XCTest
 @testable import victorious
 
 class IMAAdViewControllerTests: XCTestCase {
-    let player = VVideoView()
     let testAdTag = "http://example.com/adTag"
     let testAdsManager = TestIMAAdsManager(test: true)
+    var player: TestVideoPlayer!
     var testAdsLoader: TestIMAAdsLoader!
     var controller: IMAAdViewController!
     var testAdDelegate: TestAdLifecycleDelegate!
 
     override func setUp() {
         super.setUp()
+        player = TestVideoPlayer()
         testAdsLoader = TestIMAAdsLoader()
         controller = IMAAdViewController(player: player, adTag: testAdTag, adsLoader: testAdsLoader)
         testAdDelegate = TestAdLifecycleDelegate()
@@ -101,5 +102,17 @@ class IMAAdViewControllerTests: XCTestCase {
     func testAdReachedThirdQuartile() {
         let adReachedThirdQuartileEvent = TestIMAAdEvent(test: true, type: .THIRD_QUARTILE)
         controller.adsManager(controller.adsManager, didReceiveAdEvent: adReachedThirdQuartileEvent)
+    }
+
+    func testAdsManagerDidRequestContentPause() {
+        XCTAssertEqual(0, player.pauseCallCount)
+        controller.adsManagerDidRequestContentPause(controller.adsManager)
+        XCTAssertEqual(1, player.pauseCallCount)
+    }
+
+    func testAdsManagerDidRequestContentResume() {
+        XCTAssertEqual(0, player.playCallCount)
+        controller.adsManagerDidRequestContentResume(controller.adsManager)
+        XCTAssertEqual(1, player.playCallCount)
     }
 }
