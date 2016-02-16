@@ -88,10 +88,16 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
             }
             
             let objectID = conversation.objectID
-            self.persistentStore.mainContext.v_performBlock() { context in
-                self.results = self.fetchResults()
-                self.conversation = context.objectWithID( objectID ) as? VConversation
+            
+            if conversation.user == nil {
                 completion()
+            }
+            else {
+                self.persistentStore.mainContext.v_performBlock() { context in
+                    self.results = self.fetchResults()
+                    self.conversation = context.objectWithID( objectID ) as? VConversation
+                    completion()
+                }
             }
         }
     }
