@@ -42,6 +42,16 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         })
     }
     
+    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+        
+        self.refreshRemote(
+            createOperation: {
+                return ConversationListOperation()
+            },
+            completion: completion
+        )
+    }
+    
     func registerCells( tableView: UITableView ) {
         let identifier = VConversationCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VConversationCell.self) )
