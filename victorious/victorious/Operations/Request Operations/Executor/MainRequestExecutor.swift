@@ -32,6 +32,11 @@ class MainRequestExecutor: RequestExecutorType {
         }
     }
     
+    static var successCount = 0
+    func create401Error() -> NSError {
+        return NSError(domain:"", code:401, userInfo:nil)
+    }
+    
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
@@ -53,7 +58,7 @@ class MainRequestExecutor: RequestExecutorType {
                 dispatch_async( dispatch_get_main_queue() ) {
                     
                     if let error = error as? RequestErrorType {
-                        let nsError = NSError( error )
+                        let nsError = self.create401Error() // NSError( error )
                         self.error = nsError
                         if let onError = onError {
                             onError( nsError ) {
@@ -75,6 +80,8 @@ class MainRequestExecutor: RequestExecutorType {
                             dispatch_semaphore_signal( executeSemphore )
                         }
                     }
+                    
+                    print("MainRequestExecutor successCount = \(MainRequestExecutor.successCount)")
                 }
             }
         )

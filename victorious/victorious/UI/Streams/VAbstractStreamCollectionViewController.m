@@ -315,11 +315,6 @@
      {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
-         if ( error != nil )
-         {
-#warning TODO: Show any REAL error (this excludes last page or no network errors)
-         }
-         
          if ( completion != nil )
          {
              completion();

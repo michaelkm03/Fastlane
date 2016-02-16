@@ -433,10 +433,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [self dismissLoadingScreen];
     
-    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                   message:NSLocalizedString(@"FacebookLoginFailed", @"")
-                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self v_showErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
+                       message:NSLocalizedString(@"FacebookLoginFailed", @"")];
     
     [[[FBSDKLoginManager alloc] init] logOut];
 }

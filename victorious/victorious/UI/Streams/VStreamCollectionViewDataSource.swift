@@ -70,6 +70,10 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         self.delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
+    }
+    
     func unloadStream() {
         self.paginatedDataSource.unload()
     }

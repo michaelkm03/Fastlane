@@ -28,6 +28,10 @@ extension VStreamCollectionViewController {
         self.updateCollectionView()
     }
     
+    public override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorWithTitle(nil, message: nil)
+    }
+    
     func updateCollectionView() {
         
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView

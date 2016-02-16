@@ -60,6 +60,11 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         }
     }
     
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        let viewControllerForError = self.navigationController ?? self
+        viewControllerForError.v_showErrorWithTitle(nil, message:nil)
+    }
+    
     func updateTableView() {
         
         self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? .SingleLine : .None

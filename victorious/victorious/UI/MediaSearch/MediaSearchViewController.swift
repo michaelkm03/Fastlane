@@ -276,6 +276,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     // MARK: - VPaginatedDataSourceDelegate
     
+    
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         
         // To update whether the bottom activity indicator footer shows
@@ -284,7 +285,13 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {}
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        // `MediaSearchDataSourceAdapter` handles errors in its own unique way
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        // `MediaSearchDataSourceAdapter` handles errors in its own unique way
+    }
 }
 
 /// Conveninece method to insert/delete sections during a batch update
