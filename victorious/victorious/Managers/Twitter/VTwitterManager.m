@@ -21,6 +21,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
 @property (nonatomic, strong) NSString *oauthToken;
 @property (nonatomic, strong) NSString *secret;
 @property (nonatomic, strong) NSString *twitterId;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) VTwitterAccountsHelper *accountsHelper;
 
 @end
@@ -53,18 +54,18 @@ CGFloat const VTwitterManagerErrorFailed = 2;
     return self.secret != nil && self.oauthToken != nil && self.twitterId != nil;
 }
 
-- (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                       fromViewController:(UIViewController *)viewController
+- (void)refreshTwitterTokenFromViewController:(UIViewController *)viewController
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
-    [_accountsHelper selectTwitterAccountWithViewControler:viewController
-                                                completion:^(ACAccount *twitterAccount)
+    [self.accountsHelper selectTwitterAccountWithViewControler:viewController
+                                                    completion:^(ACAccount *twitterAccount)
      {
          if ( twitterAccount == nil )
          {
              self.oauthToken = nil;
              self.secret = nil;
              self.twitterId = nil;
+             self.identifier = nil;
              
              if ( completionBlock != nil )
              {
@@ -83,6 +84,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
                   self.oauthToken = nil;
                   self.secret = nil;
                   self.twitterId = nil;
+                  self.identifier = nil;
                   
                   if ( completionBlock != nil )
                   {
@@ -96,7 +98,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString: [@"http://twitter.com?" stringByAppendingString:responseStr]];
               NSArray *queryItems = [urlComponents queryItems];
               NSMutableDictionary *parsedData = [[NSMutableDictionary alloc] init];
-              for(NSURLQueryItem *queryItem in queryItems)
+              for (NSURLQueryItem *queryItem in queryItems)
               {
                   parsedData[queryItem.name] = queryItem.value;
               }
@@ -104,6 +106,7 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               self.oauthToken = [parsedData objectForKey:@"oauth_token"];
               self.secret = [parsedData objectForKey:@"oauth_token_secret"];
               self.twitterId = [parsedData objectForKey:@"user_id"];
+              self.identifier = twitterAccount.identifier;
               
               if ( completionBlock != nil )
               {

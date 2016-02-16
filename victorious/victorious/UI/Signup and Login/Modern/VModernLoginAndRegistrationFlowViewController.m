@@ -287,26 +287,32 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeTwitter];
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeTwitter];
     
-    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
+    __weak typeof(self) weakSelf = self;
+    [self showLoadingScreenWithCompletion:^
      {
-         if (twitterAccount == nil)
-         {
-             return;
-         }
-         
          self.loadingScreen.canCancel = NO;
          
-         __weak typeof(self) weakSelf = self;
-         [self showLoadingScreenWithCompletion:^
+         VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
+         [twitterManager refreshTwitterTokenFromViewController:self
+                                               completionBlock:^(BOOL success, NSError *error)
           {
-              VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
-              [twitterManager refreshTwitterTokenWithIdentifier:twitterAccount.identifier
-                                             fromViewController:weakSelf
-                                                completionBlock:^(BOOL success, NSError *error)
-               {
-                   [weakSelf onTwitterTokenRefreshed:twitterAccount];
-               }];
+              if (error == nil)
+              {
+                  weakSelf.currentOperation = [weakSelf.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                                          accessSecret:twitterManager.secret
+                                                                                             twitterID:twitterManager.twitterId
+                                                                                            identifier:twitterManager.identifier
+                                                                                            completion:^(NSError *_Nullable error) {
+                                                                                                if ( error != nil )
+                                                                                                {
+                                                                                                    [weakSelf handleTwitterLoginError:error];
+                                                                                                }
+                                                                                            }];
+              }
+              else
+              {
+                  [weakSelf handleTwitterLoginError:error];
+              }
           }];
      }];
     
@@ -314,39 +320,16 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)onTwitterTokenRefreshed:(ACAccount *)twitterAccount
-{
-    VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
-    self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                    accessSecret:twitterManager.secret
-                                                                       twitterID:twitterManager.twitterId
-                                                                      identifier:twitterAccount.identifier completion:^(NSError *_Nullable error) {
-                                                                          
-                                                                          if ( [VCurrentUser user] != nil && error == nil)
-                                                                          {
-                                                                              self.actionsDisabled = NO;
-                                                                              self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
-                                                                              [self continueRegistrationFlowAfterSocialRegistration];
-                                                                          }
-                                                                          else
-                                                                          {
-                                                                              [self handleTwitterLoginError:error];
-                                                                          }
-                                                                          self.onCompletionBlock(error == nil);
-                                                                      }];
-}
-
 - (void)handleTwitterLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
-    
-    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
+    if (error.code == VTwitterManagerErrorCanceled)
     {
-        UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")
-                                                                          andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-        [self presentViewController:alertController animated:YES completion:nil];
+        return;
     }
+    
+    [self v_showErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
 }
 
 - (void)selectedFacebookAuthorization
