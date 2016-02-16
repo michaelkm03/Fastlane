@@ -733,9 +733,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         if ( ![VTwitterManager sharedManager].authorizedToShare )
         {
             shareItemCell.state = VShareItemCellStateLoading;
-            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:[[VTwitterManager sharedManager] twitterId]
-                                                            fromViewController:self
-                                                               completionBlock:^(BOOL success, NSError *error)
+            [[VTwitterManager sharedManager] refreshTwitterTokenFromViewController:self
+                                                                   completionBlock:^(BOOL success, NSError *error)
              {
                  shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
                  if ( !success )

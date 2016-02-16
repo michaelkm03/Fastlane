@@ -308,30 +308,26 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeTwitter];
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeTwitter];
     
-    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
+    __weak typeof(self) weakSelf = self;
+    [self showLoadingScreenWithCompletion:^
      {
-         if (twitterAccount == nil)
-         {
-             return;
-         }
-         
          self.loadingScreen.canCancel = NO;
          
-         __weak typeof(self) weakSelf = self;
-         [self showLoadingScreenWithCompletion:^
+         VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
+         [twitterManager refreshTwitterTokenFromViewController:self
+                                               completionBlock:^(BOOL success, NSError *error)
           {
-              
-              VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
-              [twitterManager refreshTwitterTokenWithIdentifier:twitterAccount.identifier
-                                             fromViewController:self
-                                                completionBlock:^(BOOL success, NSError *error)
-               {
-                   weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                       accessSecret:twitterManager.secret
-                                                                          twitterID:twitterManager.twitterId
-                                                                         identifier:twitterAccount.identifier];
-               }];
+              if (error == nil)
+              {
+                  weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                      accessSecret:twitterManager.secret
+                                                                         twitterID:twitterManager.twitterId
+                                                                        identifier:twitterManager.identifier];
+              }
+              else
+              {
+                  [self handleTwitterLoginError:error];
+              }
           }];
      }];
     
@@ -342,8 +338,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)handleTwitterLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
+    if (error.code == VTwitterManagerErrorCanceled)
+    {
+        return;
+    }
     
-    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
+    if ( ![error.domain isEqualToString:NSURLErrorDomain] )
     {
         UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
                                                                                        message:NSLocalizedString(@"TwitterTroubleshooting", @"")
