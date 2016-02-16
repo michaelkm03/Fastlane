@@ -1,5 +1,5 @@
 //
-//  LoginSuccessOperation.swift
+//  LoginSuccessOperationTests.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/12/16.

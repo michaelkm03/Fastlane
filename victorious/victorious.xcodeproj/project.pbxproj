@@ -787,7 +787,7 @@
 		A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */; };
 		A722B9441C3B79AA0014BA42 /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		A722B9461C3C53010014BA42 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722B9451C3C53010014BA42 /* CommentsDataSource.swift */; };
-		A722D9441C6E9836003C06C5 /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722D9431C6E9836003C06C5 /* LoginSuccessOperation.swift */; };
+		A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */; };
 		A7245F051C04101F00187825 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */; };
 		A7245F071C04105400187825 /* SequenceRepostersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7245F061C04105400187825 /* SequenceRepostersOperation.swift */; };
 		A7245F091C04E66E00187825 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */; };
@@ -3032,7 +3032,7 @@
 		A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+OrderedSet.h"; sourceTree = "<group>"; };
 		A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+OrderedSet.m"; sourceTree = "<group>"; };
 		A722B9451C3C53010014BA42 /* CommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
-		A722D9431C6E9836003C06C5 /* LoginSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperation.swift; sourceTree = "<group>"; };
+		A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperationTests.swift; sourceTree = "<group>"; };
 		A7245F061C04105400187825 /* SequenceRepostersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostersOperation.swift; sourceTree = "<group>"; };
 		A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
 		A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentOperation.swift; sourceTree = "<group>"; };
@@ -7351,7 +7351,7 @@
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
 				67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */,
 				622103481C65354A00A77A73 /* LoginOperationTests.swift */,
-				A722D9431C6E9836003C06C5 /* LoginSuccessOperation.swift */,
+				A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */,
 				674B66EF1C3F0A1C00938EB5 /* PasswordResetOperationTests.swift */,
 				67A952471C444DD3001234B4 /* RegisterPushNotificationOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* RequestOperationTests.swift */,
@@ -10833,7 +10833,7 @@
 				6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */,
 				A7D716921C53174900F45977 /* MockPagination.swift in Sources */,
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
-				A722D9441C6E9836003C06C5 /* LoginSuccessOperation.swift in Sources */,
+				A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */,
 				A70E84701C3F069A00689EFA /* RequestOperationTests.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,

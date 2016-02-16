@@ -320,20 +320,21 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
                                                                     accessSecret:twitterManager.secret
                                                                        twitterID:twitterManager.twitterId
-                                                                      identifier:twitterAccount.identifier completion:^(NSError *_Nullable error) {
-                                                                          
-                                                                          if ( [VCurrentUser user] != nil && error == nil)
-                                                                          {
-                                                                              self.actionsDisabled = NO;
-                                                                              self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
-                                                                              [self continueRegistrationFlowAfterSocialRegistration];
-                                                                          }
-                                                                          else
-                                                                          {
-                                                                              [self handleTwitterLoginError:error];
-                                                                          }
-                                                                          self.onCompletionBlock(error == nil);
-                                                                      }];
+                                                                      identifier:twitterAccount.identifier
+                                                                      completion:^(NSError *_Nullable error)
+    {
+        if ( [VCurrentUser user] != nil && error == nil)
+        {
+            self.actionsDisabled = NO;
+            self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+            [self continueRegistrationFlowAfterSocialRegistration];
+        }
+        else
+        {
+            [self handleTwitterLoginError:error];
+        }
+        self.onCompletionBlock(error == nil);
+    }];
 }
 
 - (void)handleTwitterLoginError:(NSError *)error
