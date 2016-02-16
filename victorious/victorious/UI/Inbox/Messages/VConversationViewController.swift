@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension VConversationViewController: PaginatedDataSourceDelegate {
+extension VConversationViewController: VPaginatedDataSourceDelegate {
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
         if self.hasLoadedOnce {
             
@@ -37,7 +37,7 @@ extension VConversationViewController: PaginatedDataSourceDelegate {
         self.hasLoadedOnce = true
     }
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+    public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateTableView()
     }
 }

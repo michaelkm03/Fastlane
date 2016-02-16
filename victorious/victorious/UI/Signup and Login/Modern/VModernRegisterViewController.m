@@ -337,8 +337,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                         style:UIAlertActionStyleCancel
-                                                      handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self.delegate LoginErrorAlertAcknowledged];
+                                                      }]];
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - VBackgroundContainer

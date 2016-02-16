@@ -6,17 +6,18 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VPaginatedDataSourceDelegate.h"
+
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PaginatedDataSourceDelegate;
 @class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation, PaginatedDataSource;
 
 /**
  *  Data delegate for the VStreamCollectionViewDataSource.
  */
-@protocol VStreamCollectionDataDelegate <PaginatedDataSourceDelegate>
+@protocol VStreamCollectionDataDelegate <VPaginatedDataSourceDelegate>
 
 @required
 
