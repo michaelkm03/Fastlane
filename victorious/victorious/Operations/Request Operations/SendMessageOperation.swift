@@ -64,7 +64,8 @@ class CreateMessageOperation: FetcherOperation {
             
             let creationDate = NSDate()
             
-            let predicate = NSPredicate( format: "conversation.remoteId == %@", argumentArray: [self.creationParameters.recipientID])
+            let predicate = NSPredicate( format: "conversation.user.remoteId == %@", argumentArray: [self.creationParameters.recipientID])
+            
             let newDisplayOrder = context.v_displayOrderForNewObjectWithEntityName(VMessage.v_entityName(), predicate: predicate)
             
             let message: VMessage = context.v_createObject()
