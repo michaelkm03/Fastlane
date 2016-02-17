@@ -10,14 +10,18 @@ import Foundation
 import VictoriousIOSSDK
 
 class LogoutOperation: RequestOperation {
-    
-    let request = LogoutRequest()
 
     override init() {
         super.init()
+        
+        // Boost the priority of this operation
         self.qualityOfService = .UserInitiated
         
+        // Before cleaning out current user data, prune it (while VCurrentUser.user() is stil available)
         PrunePersistentStoreOperation().queueBefore(self)
+        
+        // After we finish cleaning out current user data, fire-and-forget to the backend
+        LogoutRemoteOperation().queueAfter(self)
     }
     
     override func main() {
@@ -46,8 +50,14 @@ class LogoutOperation: RequestOperation {
         // And finally, clear the user.  Don't do this early because
         // some of the stuff above requires knowing the current user
         VCurrentUser.clear()
-        
-        // Execute the network request and don't wait for response
+    }
+}
+
+class LogoutRemoteOperation: RequestOperation {
+    
+    let request = LogoutRequest()
+    
+    override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
