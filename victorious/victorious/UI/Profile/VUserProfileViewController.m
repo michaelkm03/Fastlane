@@ -410,15 +410,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
-    self.profileHeaderViewController = nil;
-    if ( self.representsMainUser )
+    if ( self.representsMainUser  )
     {
-        [self.streamDataSource unloadStream];
-        self.user = [VCurrentUser user];
-    }
-    else if ( [VCurrentUser user] != nil )
-    {
-        [self updateProfileHeaderState];
+        if ( [VCurrentUser user] != nil )
+        {
+            // User logged in
+            self.user = [VCurrentUser user];
+            [self updateProfileHeaderState];
+        }
+        else
+        {
+            // User logged out, clear away all stream items and unload any user data
+            [self.streamDataSource unloadStream];
+            self.profileHeaderViewController = nil;
+            self.user = nil;
+        }
     }
 }
 

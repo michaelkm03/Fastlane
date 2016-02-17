@@ -11,13 +11,6 @@ import VictoriousIOSSDK
 
 extension VProfileCreateViewController {
     
-    func queueLoginOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
-        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
-        let operation = AccountCreateOperation( request: accountCreateRequest, loginType: .Email, accountIdentifier: email )
-        operation.queue( completion )
-        return operation
-    }
-    
     func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?)->())? ) -> NSOperation? {
         
         let updateOperation = AccountUpdateOperation(

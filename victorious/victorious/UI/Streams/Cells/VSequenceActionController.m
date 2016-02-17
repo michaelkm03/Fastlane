@@ -207,9 +207,9 @@
 
 - (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
 {
+#warning FIXME: Redo in new architecture: Create FetcherOperation subclass
     NSError *error = nil;
-    [user addRepostedSequencesObject:sequence];
-#warning FIXME: Redo in new architecture
+    [user v_addObject:sequence to:@"repostedSequences"];
     if ( ![user.managedObjectContext save:&error] )
     {
         VLog( @"Error marking sequence as reposted for main user: %@", error );

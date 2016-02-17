@@ -10,5 +10,4 @@
     @NSManaged var adSystemID: NSNumber
     @NSManaged var timeout: NSNumber
     @NSManaged var adTag: String?
-    @NSManaged var cannedAdXML: String?
 }

@@ -16,7 +16,7 @@ class ConversationRequestTests: XCTestCase {
 
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
-        let conversationRequest = ConversationRequest(conversationID: 3797, paginator:paginator)
+        let conversationRequest = ConversationRequest(conversationID: 3797, userID: 97, paginator:paginator)
         XCTAssertEqual(conversationRequest.urlRequest.URL?.absoluteString, "/api/message/conversation/3797/desc/1/99")
     }
     
@@ -27,7 +27,7 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
-        let conversationRequest = ConversationRequest(conversationID: 3797, paginator: paginator)
+        let conversationRequest = ConversationRequest(conversationID: 3797, userID:97, paginator: paginator)
         let results = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
 
         XCTAssertEqual(results.count, 1)
@@ -71,7 +71,7 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
-        let conversationRequest = ConversationRequest(conversationID: 3797, paginator: paginator)
+        let conversationRequest = ConversationRequest(conversationID: 3797, userID: 97, paginator: paginator)
         let results = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         
         XCTAssertEqual(results.count, 1)
@@ -93,7 +93,7 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
-        let conversationRequest = ConversationRequest(conversationID: 3797, paginator: paginator)
+        let conversationRequest = ConversationRequest(conversationID: 3797, userID: 97, paginator: paginator)
         let results = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
 
         XCTAssertEqual(results.count, 0)
@@ -107,7 +107,7 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
-        let conversationRequest = ConversationRequest(conversationID: 3797, paginator: paginator)
+        let conversationRequest = ConversationRequest(conversationID: 3797, userID: 97, paginator: paginator)
         let results = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         
         XCTAssertEqual(results.count, 0)

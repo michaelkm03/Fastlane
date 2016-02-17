@@ -28,7 +28,6 @@ class AdBreakTests: XCTestCase {
         XCTAssertEqual(5, adBreakWithEverything.adSystemID)
         XCTAssertEqual(7000, adBreakWithEverything.timeout)
         XCTAssertEqual(expectedTestAdTag, adBreakWithEverything.adTag)
-        XCTAssertEqual("test_xml", adBreakWithEverything.cannedAdXML)
 
         guard let adBreakWithOnlyAdTag = createAdBreakFromJSON(fileName: "AdBreakWithOnlyAdTag") else {
             XCTFail("Failed to create an adBreak")
@@ -37,19 +36,11 @@ class AdBreakTests: XCTestCase {
         XCTAssertEqual(5, adBreakWithOnlyAdTag.adSystemID)
         XCTAssertEqual(7000, adBreakWithOnlyAdTag.timeout)
         XCTAssertEqual(expectedTestAdTag, adBreakWithOnlyAdTag.adTag)
-        XCTAssertEqual("", adBreakWithOnlyAdTag.cannedAdXML)
-
-        guard let adBreakWithOnlyCannedXML = createAdBreakFromJSON(fileName: "AdBreakWithOnlyCannedXML") else {
-            XCTFail("Failed to create an adBreak")
-            return
-        }
-        XCTAssertEqual(5, adBreakWithOnlyCannedXML.adSystemID)
-        XCTAssertEqual(7000, adBreakWithOnlyCannedXML.timeout)
-        XCTAssertEqual("", adBreakWithOnlyCannedXML.adTag)
-        XCTAssertEqual("test_xml", adBreakWithOnlyCannedXML.cannedAdXML)
     }
 
     func testInvalid() {
+        let adBreakWithOnlyCannedXML: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithOnlyCannedXML")
+        XCTAssertNil(adBreakWithOnlyCannedXML)
         let adBreakWithoutTimeout: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutTimeout")
         XCTAssertNil(adBreakWithoutTimeout)
         let adBreakWithoutAdTagAndCannedAdXML: AdBreak? = createAdBreakFromJSON(fileName: "AdBreakWithoutAdTagAndCannedAdXML")

@@ -8,22 +8,22 @@
 
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
-#import "VAdVideoPlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "VTimerManager.h"
 #import "victorious-Swift.h"
 #import "VSequencePreviewView.h"
+#import "VAdViewControllerType.h"
 
 static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
 
-@interface VContentCell () <VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
+@interface VContentCell () <AdLifecycleDelegate, VContentPreviewViewReceiver>
 
 @property (nonatomic, assign) BOOL isPreparedForDismissal;
 @property (nonatomic, assign) BOOL shrinkingDisabled;
 @property (nonatomic, strong) UIView *adContainer;
 @property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
-@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
+@property (nonatomic, strong, readwrite) AdVideoPlayerViewController *adVideoPlayerViewController;
 @property (nonatomic, strong, readonly) VAdBreak *currentAdBreak;
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
@@ -240,8 +240,11 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     }
     
     self.backgroundColor = [UIColor blackColor];
-    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithAdBreak:adBreak
-                                                                                      player:self.videoPlayer];
+    IMAAdViewController *adViewController = [[IMAAdViewController alloc] initWithPlayer:self.videoPlayer
+                                                                                  adTag:adBreak.adTag
+                                                                              adsLoader:[[IMAAdsLoader alloc] init]
+                                                                                 adView:[[UIView alloc] init]];
+    self.adVideoPlayerViewController = [[AdVideoPlayerViewController alloc] initWithAdViewController:adViewController];
     _currentAdBreak = adBreak;
     if ( self.adVideoPlayerViewController != nil )
     {
@@ -278,7 +281,7 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     NSTimeInterval adTimeoutTimeInterval = 0;
     if (self.currentAdBreak != nil && self.currentAdBreak.timeout != nil)
     {
-        adTimeoutTimeInterval = self.currentAdBreak.timeout.doubleValue;
+        adTimeoutTimeInterval = self.currentAdBreak.timeout.doubleValue / 1000;
     }
     else
     {
@@ -297,39 +300,33 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     [self resumeContentPlaybackAnimated:YES];
 }
 
-#pragma mark  VAdVideoPlayerViewControllerDelegate
+#pragma mark  AdLifecycleDelegate
 
-- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adHadError:(NSError *)error
 {
     [self.activityIndicatorView stopAnimating];
     [self resumeContentPlaybackAnimated:NO];
 }
 
-- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidLoad
 {
     // Set the timer again so we have a chance to see the ads playing after loading
     [self.adTimeoutTimer invalidate];
     [self scheduleAdTimeoutTimer];
 }
 
-- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidStart
 {
     [self.activityIndicatorView stopAnimating];
-    [self.delegate contentCellDidStartPlayingAd:self];
+    [self.delegate adDidStart];
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
 }
 
-- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
-{
-    [self.delegate contentCellDidEndPlayingAd:self];
-    [self resumeContentPlaybackAnimated:YES];
-}
-
-- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+- (void)adDidFinish
 {
     [self.activityIndicatorView stopAnimating];
-    [self.delegate contentCellDidEndPlayingAd:self];
+    [self.delegate adDidFinish];
     [self resumeContentPlaybackAnimated:YES];
 }
 

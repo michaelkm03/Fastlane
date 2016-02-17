@@ -11,13 +11,6 @@ import VictoriousIOSSDK
 
 extension VLoginFlowAPIHelper {
     
-    func queueLoginOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
-        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
-        let operation = AccountCreateOperation( request: accountCreateRequest, loginType: .Email, accountIdentifier: email )
-        operation.queue( completion )
-        return operation
-    }
-    
     func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, completion: ((NSError?)->())? ) -> NSOperation? {
         let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(
@@ -37,5 +30,58 @@ extension VLoginFlowAPIHelper {
         }
         
         return nil
+    }
+    
+    func queueFacebookLoginOperationWithCompletion(completion:(NSError?)->()) -> NSOperation {
+        let loginType = VLoginType.Facebook
+        let credentials: NewAccountCredentials = loginType.storedCredentials()!
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let operation = AccountCreateOperation(
+            request: accountCreateRequest,
+            parameters: AccountCreateParameters(
+                loginType: loginType,
+                accountIdentifier: nil
+            )
+        )
+        operation.queue() { error in
+            completion(error)
+        }
+        return operation
+    }
+    
+    func queueLoginOperationWithTwitter(oauthToken: String, accessSecret: String, twitterID: String, identifier: String, completion:(NSError?)->()) -> NSOperation {
+        let loginType = VLoginType.Twitter
+        let credentials: NewAccountCredentials = .Twitter(accessToken: oauthToken, accessSecret: accessSecret, twitterID: twitterID)
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let operation = AccountCreateOperation(
+            request: accountCreateRequest,
+            parameters: AccountCreateParameters(
+                loginType: loginType,
+                accountIdentifier: nil
+            )
+        )
+        operation.queue()  { error in
+            completion(error)
+        }
+        return operation
+    }
+    
+    func queueLoginOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
+        let operation = LoginOperation(email: email, password: password)
+        operation.queue( completion )
+        return operation
+    }
+    
+    func queueAccountCreateOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
+        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
+        let operation = AccountCreateOperation(
+            request: accountCreateRequest,
+            parameters: AccountCreateParameters(
+                loginType: .Email,
+                accountIdentifier: email
+            )
+        )
+        operation.queue( completion )
+        return operation
     }
 }

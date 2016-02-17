@@ -48,8 +48,10 @@ class StoredLoginOperation: Operation {
                 let accountCreateRequest = AccountCreateRequest(credentials: credentials)
                 let operation = AccountCreateOperation(
                     request: accountCreateRequest,
-                    loginType: loginType,
-                    accountIdentifier: accountIdentifier
+                    parameters: AccountCreateParameters(
+                        loginType: loginType,
+                        accountIdentifier: accountIdentifier
+                    )
                 )
                 
                 // We want to queue AccountCreateOperation next and to transfer all of
@@ -60,7 +62,7 @@ class StoredLoginOperation: Operation {
                     dependentOperation.addDependency( operation )
                 }
                 operation.queue()
-      
+                
         } else {
             // Or finally, just let this operation finish up without doing anthing.
             // Subsequent operations in the queue will handle logging in the user.

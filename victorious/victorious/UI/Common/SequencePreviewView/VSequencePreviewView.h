@@ -32,10 +32,21 @@
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- *  The factory method for the VSequencePreviewView, will provide a concrete subclass specialized to
+ *  A factory method for the VSequencePreviewView, will provide a concrete subclass specialized to
  *  the given sequence.
  */
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
+
+/**
+ * A factory method for the VSequencePreviewView that provides a concrete subclass specialized to
+ *  the given sequence with basic setup.
+ */
++ (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
+                                               streamItem:(VStreamItem *)streamItem
+                                                    frame:(CGRect)frame
+                                        dependencyManager:(VDependencyManager *)dependencyManager
+                                                focusType:(VFocusType)focusType;
+
 
 @property (nonatomic, strong) VSequence *sequence;
 

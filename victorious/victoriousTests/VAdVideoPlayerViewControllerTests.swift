@@ -1,5 +1,5 @@
 //
-//  VAdVideoPlayerViewControllerTests.swift
+//  AdVideoPlayerViewControllerTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/24/16.
@@ -9,17 +9,18 @@
 import XCTest
 @testable import victorious
 
-class VAdVideoPlayerViewControllerTests: XCTestCase {
+class AdVideoPlayerViewControllerTests: XCTestCase {
     var testStore: TestPersistentStore!
     let testAdViewController = TestVAdViewController()
-    var controller: VAdVideoPlayerViewController!
+    var controller: AdVideoPlayerViewController!
 
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
         let player = VVideoView()
-        let adBreak = createAdBreak()
-        controller = VAdVideoPlayerViewController(adBreak: adBreak, player: player)
+        let adTag = "http://example.com/ads"
+        let adViewController = IMAAdViewController(player: player, adTag: adTag)
+        controller = AdVideoPlayerViewController(adViewController: adViewController)
         controller.adViewController = testAdViewController
     }
 
@@ -27,10 +28,5 @@ class VAdVideoPlayerViewControllerTests: XCTestCase {
         controller.start()
         XCTAssert(controller === testAdViewController.delegate)
         XCTAssertEqual(1, testAdViewController.startAdManagerCallCount)
-    }
-
-    private func createAdBreak() -> VAdBreak {
-        return testStore.mainContext.v_createObjectAndSave() { adBreak in
-        } as VAdBreak
     }
 }
