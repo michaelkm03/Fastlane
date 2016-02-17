@@ -13,8 +13,6 @@ class DeleteConversationOperation: FetcherOperation {
     
     let conversationID: Int
     
-    private let flaggedContent = VFlaggedContent()
-    
     init(conversationID: Int) {
         self.conversationID = conversationID
         super.init()
@@ -24,9 +22,6 @@ class DeleteConversationOperation: FetcherOperation {
     }
     
     override func main() {
-        
-        /// By adding the conversation to FlaggedContent, we are blocking that user from messaging us again.
-        flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let uniqueElements = [ "remoteId" : self.conversationID ]

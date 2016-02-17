@@ -24,7 +24,6 @@ class FlagConversationOperation: FetcherOperation {
     }
     
     override func main() {
-        flaggedContent.addRemoteId( String(self.conversationID), toFlaggedItemsWithType: .Conversation)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             let uniqueElements = [ "remoteId" : self.conversationID ]

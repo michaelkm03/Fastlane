@@ -294,6 +294,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.dataSource removeDeletedItems];
          [self removeCachedViewControllerForUser:conversation.user];
+         [self updateBadges];
      }];
 }
 
@@ -339,10 +340,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)showConversation:(VConversation *)conversation animated:(BOOL)animated
 {
-    if (conversation == nil)
-    {
-        return;
-    }
+    NSParameterAssert(conversation != nil);
     VConversationContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
     detailVC.conversation = conversation;
     UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
