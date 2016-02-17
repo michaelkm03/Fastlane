@@ -106,8 +106,10 @@ import SafariServices
         case .FIRST_QUARTILE:
             break
         case .LOADED:
-            adsManager.start()
-            delegate?.adDidLoad()
+            if event.ad != nil {
+                adsManager.start()
+                delegate?.adDidLoad()
+            }
         case .MIDPOINT:
             break
         case .PAUSE:
