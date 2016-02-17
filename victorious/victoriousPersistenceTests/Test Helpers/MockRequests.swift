@@ -8,7 +8,6 @@
 
 import Foundation
 import VictoriousIOSSDK
-@testable import victorious
 import SwiftyJSON
 
 struct MockRequest: RequestType {
@@ -19,20 +18,13 @@ struct MockRequest: RequestType {
 }
 
 struct MockErrorRequest: RequestType {
-    
-    let urlRequest: NSURLRequest
     let code: Int
-    
-    init(urlRequest: NSURLRequest = NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! ), code: Int = 999) {
-        self.urlRequest = urlRequest
+    init(code: Int = 999) {
         self.code = code
     }
     
-    init(code: Int) {
-        self.init(urlRequest:NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! ), code:code)
-    }
-    
+    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! )
     func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        throw APIError( localizedDescription: "MockError", code: 999)
+        throw APIError( localizedDescription: "MockError", code: code)
     }
 }
