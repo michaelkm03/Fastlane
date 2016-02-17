@@ -38,24 +38,21 @@ protocol Queuable {
     /// instantiate and queue a follow-up operation.
     /// Uses the queue provided.
     func queueAfter( operation: NSOperation, queue: NSOperationQueue )
-    
-    /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
-    /// effectively "cutting in line" all the dependency operations.  This allows operations to
-    /// instantiate and queue a follow-up operation.
-    /// Uses the shared queue for the type of the receiver.
     func queueAfter( operation: NSOperation )
     
     /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
-    /// Uses the shared queue for the type of the receiver.
-    func queueBefore( operation: NSOperation )
+    /// Uses the queue provided.
+    func rechainAndQueueAfter( operation: NSOperation, queue: NSOperationQueue )
+    func rechainAndQueueAfter( operation: NSOperation )
     
     /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
     /// Uses the queue provided.
     func queueBefore( operation: NSOperation, queue: NSOperationQueue )
+    func queueBefore( operation: NSOperation )
     
     /// Returns an array of operations which are dependencies of the receiver on the provided queue.
     func dependentOperationsInQueue( queue: NSOperationQueue ) -> [NSOperation]
@@ -72,25 +69,52 @@ protocol Queuable {
 /// all other methods in the Qeueuable protocol
 extension Queuable where Self : NSOperation {
     
-    func queueAfter( operation: NSOperation ) {
-        queueAfter( operation, queue: self.defaultQueue )
+    func queueOn( queue: NSOperationQueue ) {
+        self.queueOn( queue, completionBlock: nil )
     }
     
-    func queueAfter( operation: NSOperation, queue: NSOperationQueue ) {
-        let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
-        for dependentOperation in dependentOperations {
-            dependentOperation.addDependency( self )
-        }
-        addDependency( operation )
-        queue.addOperation( self )
+    func queue( completionBlock:CompletionBlockType? ) {
+        self.queueOn( self.defaultQueue, completionBlock: completionBlock )
     }
     
-    func queueBefore( operation: NSOperation ) {
-        self.queueBefore( operation, queue: self.defaultQueue )
+    func queue() {
+        self.queueOn( self.defaultQueue, completionBlock: nil )
+    }
+    func queueBefore( operation: NSOperation) {
+        queueBefore( operation, queue: self.defaultQueue)
     }
     
     func queueBefore( operation: NSOperation, queue: NSOperationQueue ) {
         operation.addDependency( self )
+        queue.addOperation( self )
+    }
+    
+    func queueAfter( operation: NSOperation) {
+        queueAfter( operation, queue: self.defaultQueue)
+    }
+    
+    func queueAfter( operation: NSOperation, queue: NSOperationQueue ) {
+        addDependency( operation )
+        queue.addOperation( self )
+    }
+    
+    func rechainAndQueueAfter( operation: NSOperation ) {
+        self.rechainAndQueueAfter( operation, queue: self.defaultQueue )
+    }
+    
+    func rechainAndQueueAfter( operation: NSOperation, queue: NSOperationQueue) {
+        
+        // Rechain (transfer) dependencies
+        let dependentOperations = (operation as? Self)?.dependentOperationsInQueue( queue ) ?? []
+        for dependentOperation in dependentOperations {
+            dependentOperation.addDependency( self )
+        }
+        
+        // Rechain (transfer) completion block
+        completionBlock = operation.completionBlock
+        operation.completionBlock = nil
+        
+        addDependency( operation )
         queue.addOperation( self )
     }
     
@@ -104,17 +128,5 @@ extension Queuable where Self : NSOperation {
     
     func dependentOperationsInQueue() -> [NSOperation] {
         return dependentOperationsInQueue( self.defaultQueue )
-    }
-    
-    func queueOn( queue: NSOperationQueue ) {
-        self.queueOn( queue, completionBlock: nil )
-    }
-    
-    func queue( completionBlock:CompletionBlockType? ) {
-        self.queueOn( self.defaultQueue, completionBlock: completionBlock )
-    }
-    
-    func queue() {
-        self.queueOn( self.defaultQueue, completionBlock: nil )
     }
 }

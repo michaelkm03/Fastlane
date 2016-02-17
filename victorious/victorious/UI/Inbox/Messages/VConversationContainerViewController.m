@@ -21,6 +21,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
+#import "VUnreadMessageCountCoordinator.h"
 
 static const NSUInteger kCharacterLimit = 1024;
 
@@ -78,6 +79,7 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.messageCountCoordinator markConversationRead:self.conversation];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
@@ -217,7 +219,10 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self sendMessageWithText:text publishParameters:publishParameters inConversation:self.conversation completion:nil];
+    [self sendMessageWithText:text publishParameters:publishParameters inConversation:self.conversation completion:^
+     {
+         [[self innerViewController] onUpdate];
+     }];
     
     [keyboardBar clearKeyboardBar];
 }

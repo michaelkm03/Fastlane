@@ -53,5 +53,7 @@
 @dynamic loginType;
 @dynamic notificationSettings;
 @dynamic likedSequences;
+@dynamic accountIdentifier;
+@dynamic isNewUser;
 
 @end

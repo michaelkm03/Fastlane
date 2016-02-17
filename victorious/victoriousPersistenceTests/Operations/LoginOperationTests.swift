@@ -17,29 +17,25 @@ class LoginOperationTests: BaseRequestOperationTestCase {
             XCTFail( "Failed to load sample user" )
             return
         }
+        
         let operation = LoginOperation(email: email, password: "password")
         
         operation.persistentStore = TestPersistentStore()
         operation.requestExecutor = TestRequestExecutor()
         
-        
         let token = "ABCDEFGabcdefg"
-        let response = LoginResponse(token: token, user: user)
-
+        let response = AccountCreateResponse(token: token, user: user)
         
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.onComplete(response) {
-            guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
-                XCTFail( "Unable to load the user the operation should have parsed." )
+            
+            XCTAssertEqual( operation.dependentOperationsInQueue().count, 1 );
+            guard let successOperation = operation.dependentOperationsInQueue().first as? LoginSuccessOperation else {
+                XCTFail("Expecting an operaiton to be queued after onComplete is called.")
                 return
             }
-            
-            XCTAssertEqual( persistentUser.loginType?.integerValue ?? -1, VLoginType.Email.rawValue )
-            XCTAssertEqual( persistentUser.token, token )
-            
-            let currentUser = VCurrentUser.user()
-            XCTAssertNotNil( VCurrentUser.user() )
-            XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
+            XCTAssertEqual(successOperation.parameters.loginType, VLoginType.Email)
+            XCTAssertEqual(successOperation.parameters.accountIdentifier, email)
             
             expectation.fulfill()
         }

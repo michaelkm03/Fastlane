@@ -46,69 +46,7 @@
 @property (nonatomic, retain) NSNumber *loginType;
 @property (nonatomic, retain) VNotificationSettings *notificationSettings;
 @property (nonatomic, retain) NSOrderedSet *likedSequences;
-
-@end
-
-@interface VUser (CoreDataGeneratedAccessors)
-
-- (void)addChildSequencesObject:(VSequence *)value;
-- (void)removeChildSequencesObject:(VSequence *)value;
-- (void)addChildSequences:(NSSet *)values;
-- (void)removeChildSequences:(NSSet *)values;
-
-- (void)addCommentsObject:(VComment *)value;
-- (void)removeCommentsObject:(VComment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
-
-- (void)addFollowersObject:(VUser *)value;
-- (void)removeFollowersObject:(VUser *)value;
-- (void)addFollowers:(NSSet *)values;
-- (void)removeFollowers:(NSSet *)values;
-
-- (void)addFollowingObject:(VUser *)value;
-- (void)removeFollowingObject:(VUser *)value;
-- (void)addFollowing:(NSSet *)values;
-- (void)removeFollowing:(NSSet *)values;
-
-- (void)insertObject:(VHashtag *)value inHashtagsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromHashtagsAtIndex:(NSUInteger)idx;
-- (void)insertHashtags:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeHashtagsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInHashtagsAtIndex:(NSUInteger)idx withObject:(VHashtag *)value;
-- (void)replaceHashtagsAtIndexes:(NSIndexSet *)indexes withHashtags:(NSArray *)values;
-- (void)addHashtagsObject:(VHashtag *)value;
-- (void)removeHashtagsObject:(VHashtag *)value;
-- (void)addHashtags:(NSOrderedSet *)values;
-- (void)removeHashtags:(NSOrderedSet *)values;
-- (void)addMessagesObject:(VMessage *)value;
-- (void)removeMessagesObject:(VMessage *)value;
-- (void)addMessages:(NSSet *)values;
-- (void)removeMessages:(NSSet *)values;
-
-- (void)addNotificationsObject:(VNotification *)value;
-- (void)removeNotificationsObject:(VNotification *)value;
-- (void)addNotifications:(NSSet *)values;
-- (void)removeNotifications:(NSSet *)values;
-
-- (void)addPollResultsObject:(VPollResult *)value;
-- (void)removePollResultsObject:(VPollResult *)value;
-- (void)addPollResults:(NSSet *)values;
-- (void)removePollResults:(NSSet *)values;
-
-- (void)addRecentSequencesObject:(VSequence *)value;
-- (void)removeRecentSequencesObject:(VSequence *)value;
-- (void)addRecentSequences:(NSOrderedSet *)values;
-- (void)removeRecentSequences:(NSOrderedSet *)values;
-
-- (void)addPreviewAssetsObject:(VImageAsset *)value;
-- (void)removePreviewAssetsObject:(VImageAsset *)value;
-- (void)addPreviewAssets:(NSSet *)values;
-- (void)removePreviewAssets:(NSSet *)values;
-
-- (void)addRepostedSequencesObject:(VSequence *)value;
-- (void)removeRepostedSequencesObject:(VSequence *)value;
-- (void)addRepostedSequences:(NSSet *)values;
-- (void)removeRepostedSequences:(NSSet *)values;
+@property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
+@property (nonatomic, retain) NSNumber * isNewUser; //< Transient
 
 @end
