@@ -361,10 +361,6 @@
             {
                 [self.videoPlayer play];
             }
-            else
-            {
-                [self.videoPlayer playFromStart];
-            }
             break;
     }
 }

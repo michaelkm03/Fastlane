@@ -3,7 +3,6 @@
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="cannedAdXML" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeout" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreak" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -345,7 +344,8 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteResults" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AdBreak" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="AbstractFilter" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="315"/>

@@ -8,7 +8,7 @@
 
 #import "VSequence.h"
 #import "VRealtimeCommentsViewModel.h"
-#import "VAdViewController.h"
+#import "VAdViewControllerType.h"
 #import "VExperienceEnhancerController.h"
 #import "VPublishParameters.h"
 

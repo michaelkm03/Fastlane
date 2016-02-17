@@ -37,6 +37,8 @@
 #warning FORCE_DEEPLINK is activated.  A hardcoded deep link will automatically open with each app launch
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/3533"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/15780"]; //< YouTube video on dev/app:1
+//         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/18182"]; //< Video with preroll ad on dev/app:1
+//         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/17113"]; //< Text poist on dev/app:1
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/5618"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/2694"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];

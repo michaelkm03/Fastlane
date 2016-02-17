@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAdViewController.h"
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"

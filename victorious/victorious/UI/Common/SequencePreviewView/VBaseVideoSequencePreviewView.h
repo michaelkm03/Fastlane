@@ -28,7 +28,7 @@
  * Responsible for playing video in-line. Subclasses can hide this if
  * there is no need to play video.
  */
-@property (nonatomic, strong, readonly) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, strong, readwrite) id<VVideoPlayer> videoPlayer;
 
 /**
  * The image view responsible for showing the video's preview image

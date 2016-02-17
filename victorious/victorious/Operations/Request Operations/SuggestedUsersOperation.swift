@@ -19,7 +19,7 @@ class SuggestedUsersOperation: RequestOperation {
     
     func onComplete( users: SuggestedUsersRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
@@ -33,10 +33,21 @@ class SuggestedUsersOperation: RequestOperation {
                 return VSuggestedUser( user: user, recentSequences: recentSequences )
             }
             context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
+
+            let finishOperation = {
                 self.results = self.fetchResults( suggestedUsers )
                 completion()
             }
+
+            if NSBundle.v_isTestBundle {
+                finishOperation()
+            } else {
+                dispatch_async( dispatch_get_main_queue() ) {
+                    finishOperation()
+                }
+            }
+
+            return context
         }
     }
     

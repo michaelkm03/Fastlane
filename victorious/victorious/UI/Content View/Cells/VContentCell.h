@@ -9,16 +9,9 @@
 #import "VBaseCollectionViewCell.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
+#import "AdLifecycleDelegate.h"
 
-@class VSequencePreviewView, VContentCell, VAdBreak;
-
-@protocol VContentCellDelegate
-
-- (void)contentCellDidEndPlayingAd:(VContentCell *)cell;
-
-- (void)contentCellDidStartPlayingAd:(VContentCell *)cell;
-
-@end
+@class VSequencePreviewView, VContentCell, VAdBreak, AdVideoPlayerViewController;
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -34,7 +27,7 @@
  */
 @property (nonatomic, assign) NSInteger repeatCount;
 
-@property (nonatomic, weak) id<VContentCellDelegate> delegate;
+@property (nonatomic, weak) id<AdLifecycleDelegate> delegate;
 
 /**
  Used to determine how to fade in or out with an interactive-style animation
@@ -51,6 +44,8 @@
 @property (nonatomic, assign, readonly) BOOL isPlayingAd;
 
 @property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
+
+@property (nonatomic, strong, readonly) AdVideoPlayerViewController *adVideoPlayerViewController;
 
 /**
  Properly rotates itself and subcomponents based on the rotation of the collection view.
