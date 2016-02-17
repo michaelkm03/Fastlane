@@ -33,17 +33,15 @@ class ShowLoginOperation: Operation {
         
         dispatch_async( dispatch_get_main_queue() ) {
             
-            defer {
-                self.finishedExecuting()
-            }
-            
             // Don't show login when running unit tests
             guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+                self.finishedExecuting()
                 return
             }
             
             // Don't show login if the user is already logged in
             guard VCurrentUser.user() == nil else {
+                self.finishedExecuting()
                 return
             }
             
@@ -66,6 +64,8 @@ class ShowLoginOperation: Operation {
                 dispatch_after(0.0) {
                     self.originViewController?.dismissViewControllerAnimated(true, completion: nil)
                 }
+                
+                self.finishedExecuting()
             }
             loginFlow.setAuthorizationContext?( self.context )
             

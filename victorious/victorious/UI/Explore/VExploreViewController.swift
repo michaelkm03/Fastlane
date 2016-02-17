@@ -549,9 +549,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
             
-            if let streamDataSource = streamCollection?.streamDataSource {
-                streamDataSource.suppressShelves = stream == currentStream
-            }
+            streamCollection?.suppressShelves = true
         }
         
         // show the stream view controller if it has been instantiated

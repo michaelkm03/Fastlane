@@ -328,7 +328,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         // Logout first if logged in
         LogoutOperation *operation = [[LogoutOperation alloc] init];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+        {
             [self updateLogoutButtonState];
         }];
     }

@@ -35,16 +35,6 @@
     return self;
 }
 
-- (void)setSuppressShelves:(BOOL)suppressShelves
-{
-    if ( _suppressShelves == suppressShelves )
-    {
-        return;
-    }
-    _suppressShelves = suppressShelves;
-    [self paginatedDataSource:self.paginatedDataSource didUpdateVisibleItemsFrom:self.visibleItems to:self.visibleItems];
-}
-
 - (BOOL)hasLoadedLastPage
 {
     return self.paginatedDataSource.hasLoadedLastPage;
@@ -71,19 +61,19 @@
         return nil;
     }
     
-    return [self.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
+    return [self.visibleItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
     NSInteger section = self.hasHeaderCell ? 1 : 0;
-    NSUInteger index = [self.paginatedDataSource.visibleItems indexOfObject:streamItem];
+    NSUInteger index = [self.visibleItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
 {
-    return self.paginatedDataSource.visibleItems.count;
+    return self.visibleItems.count;
 }
 
 - (NSInteger)sectionIndexForContent
