@@ -13,23 +13,18 @@ extension VStreamCollectionViewController {
     // MARK: - VPaginatedDataSourceDelegate
 
     public override func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        // BEFORE calling super:
         guard let contentSection = self.streamDataSource?.sectionIndexForContent()
             where contentSection < self.collectionView.numberOfSections() else {
                 return
         }
-        self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue, animated: true)
+        
+        super.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: newValue)
         
         // Updating focus now will resume playback of autoplay videos and GIFs when collection
         // view animations move cells in or out of view as items are inserted or deleted
         self.focusHelper.updateFocus()
-    }
-    
-    public override func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        self.updateCollectionView()
-    }
-    
-    public override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        self.v_showErrorDefaultError()
     }
     
     func updateCollectionView() {

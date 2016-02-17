@@ -432,6 +432,11 @@
     }
 }
 
+- (void)updateCollectionView
+{
+    // Subclasses may override
+}
+
 #pragma mark - VScrollPaginatorDelegate
 
 - (void)shouldLoadNextPage
@@ -497,6 +502,23 @@
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
+}
+
+#pragma mark - VPaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [self.collectionView v_applyChangeInSection:0 from:oldValue to:newValue];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
+{
+    [self updateCollectionView];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [self v_showErrorDefaultError];
 }
 
 @end
