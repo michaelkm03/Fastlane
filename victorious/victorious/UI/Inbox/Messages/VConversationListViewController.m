@@ -276,24 +276,25 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return messageViewController;
 }
 
-- (void)removeCachedViewControllerForUser:(VUser *)otherUser
+- (void)removeCachedViewControllerForUserId:(NSNumber *)userRemoteId
 {
-    if ( self.messageViewControllers == nil || otherUser.remoteId == nil )
+    if ( self.messageViewControllers == nil || userRemoteId == nil )
     {
         return;
     }
-    [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
+    [self.messageViewControllers removeObjectForKey:userRemoteId];
 }
 
 - (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+    NSNumber * userRemoteId = conversation.user.remoteId;
     NSInteger conversationID = conversation.remoteId.integerValue;
     DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.dataSource removeDeletedItems];
-         [self removeCachedViewControllerForUser:conversation.user];
+         [self removeCachedViewControllerForUserId:userRemoteId];
          [self updateBadges];
      }];
 }
