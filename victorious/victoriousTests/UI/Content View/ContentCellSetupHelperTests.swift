@@ -105,9 +105,11 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     var testVideoPreviewViewDelegate: TestVideoPreviewViewDelegate!
     var previewViewProvider: TestContentVideoPreviewViewProvider!
     var contentCell: VContentCell!
+    var setupHelper: ContentCellSetupHelper!
 
     override func setUp() {
         super.setUp()
+        setupHelper = ContentCellSetupHelper()
         continueAfterFailure = false
         testVideoPlayer = TestVideoPlayer()
         testAdDelegate = TestAdLifecycleDelegate()
@@ -118,13 +120,12 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
     }
 
     func testContentCellSetup() {
-        var setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+        var result = setupHelper.setup(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
             adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
-        var result = setupHelper.result
         XCTAssertEqual(contentCell.minSize.height, VShrinkingContentLayoutMinimumContentHeight)
         guard let contentCellDelegate = contentCell.delegate else {
             XCTFail("Failed to get a delegate of a content cell after setting it up")
@@ -144,14 +145,13 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         let testDependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
         let testTargetSuperView = UIView()
         let testContentCell = TestContentCell(test: true, targetSuperView: testTargetSuperView, frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        setupHelper = ContentCellSetupHelper(contentCell: testContentCell,
+        result = setupHelper.setup(contentCell: testContentCell,
             adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil,
             sequence: sequence,
             dependencyManager: testDependencyManager)
-        result = setupHelper.result
         XCTAssert(previewViewProvider.getPreviewView() !== result.previewView)
         guard let streamItem = result.previewView.streamItem else {
             XCTFail("A newly created preview view doesn't have a stream item set up")
@@ -165,26 +165,24 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
 
     func testPlayingAd() {
         let adBreak = persistentStoreHelper.createAdBreak()
-        let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+        setupHelper.setup(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
             adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: adBreak)
-        setupHelper.result
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
         XCTAssertNotNil(contentCell.adVideoPlayerViewController)
     }
 
     func testPlayVideo() {
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
-        let setupHelper = ContentCellSetupHelper(contentCell: contentCell,
+        setupHelper.setup(contentCell: contentCell,
             previewViewProvider: previewViewProvider,
             adDelegate: testAdDelegate,
             detailDelegate: testDetailDelegate,
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
-        setupHelper.result
         XCTAssertEqual(1, testVideoPlayer.playFromStartCallCount)
         XCTAssertNil(contentCell.adVideoPlayerViewController)
     }

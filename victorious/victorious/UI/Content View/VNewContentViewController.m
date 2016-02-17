@@ -756,29 +756,28 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
 
-            ContentCellSetupHelper *setupHelper;
+            ContentCellSetupHelper *setupHelper = [[ContentCellSetupHelper alloc] init];
+            ContentCellSetupResult *result;
             id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
             if(provider != nil)
             {
-                setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
-                                                              previewViewProvider:provider
-                                                                       adDelegate:self
-                                                                   detailDelegate:self
-                                                         videoPreviewViewDelegate:self
-                                                                          adBreak:self.viewModel.sequence.adBreak];
+                result = [setupHelper setupWithContentCell:self.contentCell
+                                       previewViewProvider:provider
+                                                adDelegate:self
+                                            detailDelegate:self
+                                  videoPreviewViewDelegate:self
+                                                   adBreak:self.viewModel.sequence.adBreak];
             }
             else
             {
-                setupHelper = [[ContentCellSetupHelper alloc] initWithContentCell:self.contentCell
-                                                                       adDelegate:self
-                                                                   detailDelegate:self
-                                                         videoPreviewViewDelegate:self
-                                                                          adBreak:self.viewModel.sequence.adBreak
-                                                                         sequence:self.viewModel.context.sequence
-                                                                dependencyManager:self.dependencyManager];
+                result = [setupHelper setupWithContentCell:self.contentCell
+                                                adDelegate:self
+                                            detailDelegate:self
+                                  videoPreviewViewDelegate:self
+                                                   adBreak:self.viewModel.sequence.adBreak
+                                                  sequence:self.viewModel.context.sequence
+                                         dependencyManager:self.dependencyManager];
             }
-
-            ContentCellSetupResult *result = setupHelper.result;
             self.sequencePreviewView = result.previewView;
             self.videoPlayer = result.videoPlayer;
             if ( [self.sequencePreviewView conformsToProtocol:@protocol(VPollResultReceiver)] )
@@ -1603,7 +1602,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)adDidStart
 {
     self.closeButton.alpha = 1.0f;
-    self.textEntryView.userInteractionEnabled = false;
+    self.textEntryView.userInteractionEnabled = NO;
     [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
     }];
