@@ -178,7 +178,6 @@ import VictoriousIOSSDK
                 
                 // Return no results
                 operation.results = []
-                self.hasLoadedLastPage = true
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 

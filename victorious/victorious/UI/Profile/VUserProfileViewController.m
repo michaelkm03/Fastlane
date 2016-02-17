@@ -825,4 +825,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [super paginatedDataSource:paginatedDataSource didReceiveError:error];
+}
+
 @end

@@ -1035,6 +1035,7 @@
 		A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
+		A7AAE58D1C74EF7E00AD7682 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7AAE58C1C74EF7E00AD7682 /* FriendFindByEmailResponse.json */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
@@ -3417,6 +3418,7 @@
 		A7A922681AC9DB5F00F4755E /* VMultiplePickerSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerSelection.h; sourceTree = "<group>"; };
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
+		A7AAE58C1C74EF7E00AD7682 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FriendFindByEmailResponse.json; path = ../../../../../Desktop/FriendFindByEmailResponse.json; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
 		A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
@@ -5469,6 +5471,7 @@
 				67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */,
 				C352CF351BF2804F00790921 /* FollowUserResponse.json */,
 				7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */,
+				A7AAE58C1C74EF7E00AD7682 /* FriendFindByEmailResponse.json */,
 				C3FEA79A1BF172FA003446CC /* GIFSearchResponse.json */,
 				C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */,
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
@@ -9788,6 +9791,7 @@
 				79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */,
 				795B75921BFA6A8400227647 /* tos.html in Resources */,
 				62575EF91C54CB2000B49CB0 /* SequenceWithAdBreak.json in Resources */,
+				A7AAE58D1C74EF7E00AD7682 /* FriendFindByEmailResponse.json in Resources */,
 				79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */,
 				79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */,
 				79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */,

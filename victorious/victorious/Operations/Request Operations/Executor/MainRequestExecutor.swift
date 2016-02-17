@@ -53,8 +53,8 @@ class MainRequestExecutor: RequestExecutorType {
                 dispatch_async( dispatch_get_main_queue() ) {
                     
                     if let error = error as? RequestErrorType {
-                        let nsError = NSError( error )
-                        self.handleError(nsError)
+                        let nsError =  NSError( error )
+                        self.error = nsError
                         if let onError = onError {
                             onError( nsError ) {
                                 dispatch_semaphore_signal( executeSemphore )
