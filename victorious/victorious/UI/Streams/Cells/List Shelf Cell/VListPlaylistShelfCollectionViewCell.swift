@@ -79,8 +79,8 @@ extension VListPlaylistShelfCollectionViewCell { // TrackableShelf methods
             if indexPath.row == 0 {
                 return shelf
             }
-            else if let streamItem = shelf.streamItems[indexPath.row - 1] as? VStreamItem {
-                return streamItem
+            else {
+                return shelf.streamItems[indexPath.row - 1]
             }
         }
         return nil
@@ -94,10 +94,11 @@ extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDelegate met
         if let shelf = shelf {
             let responder: VShelfStreamItemSelectionResponder = typedResponder()
             let itemToNavigateTo: VStreamItem? = {
-                if indexPath.row != 0, let streamItem = shelf.streamItems[indexPath.row - 1] as? VStreamItem {
-                     return streamItem
+                if indexPath.row != 0 {
+                    return shelf.streamItems[indexPath.row - 1]
+                } else {
+                    return nil
                 }
-                return nil
             }()
             responder.navigateTo(itemToNavigateTo, fromShelf: shelf)
         }
