@@ -27,7 +27,7 @@ class FriendFindByEmailOperation: RequestOperation {
         requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
     }
     
-    func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
+    func onComplete( results: [User], completion:()->() ) {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             self.resultObjectIDs = results.flatMap {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
