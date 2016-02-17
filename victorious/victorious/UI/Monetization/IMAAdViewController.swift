@@ -71,7 +71,6 @@ import SafariServices
         adsRenderingSettings.webOpenerPresentingController = adDetailViewController
         adsRenderingSettings.webOpenerDelegate = self
         adsManagerInstance.initializeWithAdsRenderingSettings(adsRenderingSettings)
-        delegate?.adDidLoad()
     }
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
