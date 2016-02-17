@@ -442,10 +442,15 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
      {
-         [self removeAllCachedViewControllers]; // Need to remove view controllers from cache, since original conversation Core Data objects are deleted
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.tableView reloadData];
+         for (UITableViewCell *cell in self.tableView.visibleCells)
+         {
+             if ([cell isKindOfClass:VConversationCell.class])
+             {
+                 [self.dataSource decorateWithCell:(VConversationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
+             }
+         }
     }];
 }
 

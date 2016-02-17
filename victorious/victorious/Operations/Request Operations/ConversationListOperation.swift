@@ -29,12 +29,6 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
-            // FIXME: This is a hack to refresh converations.  `PaginatedDataSource` should really handle
-            // this logic for all paginated operations.
-            if self.request.paginator.pageNumber == 1 {
-                context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
-            }
-                
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {
                 let uniqueElements = [ "user.remoteId" : result.otherUser.userID ]
