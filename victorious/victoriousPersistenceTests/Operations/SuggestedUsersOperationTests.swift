@@ -48,13 +48,8 @@ class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
         let suggestedUser = SuggestedUser(user: user, recentSequences: [sequence])
         operation.main()
         XCTAssertEqual( testRequestExecutor.executeRequestCallCount, 1 )
-        
-        let expectation = expectationWithDescription("operation completed")
-        operation.onComplete([suggestedUser]) {
-            expectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
-        
+        operation.onComplete([suggestedUser]) {}
+
         XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
         if let fetchedUsers = operation.results as? [VSuggestedUser] {
             XCTAssertEqual(1, fetchedUsers.count)
