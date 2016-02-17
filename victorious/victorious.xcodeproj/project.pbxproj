@@ -1036,6 +1036,7 @@
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AAE58D1C74EF7E00AD7682 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7AAE58C1C74EF7E00AD7682 /* FriendFindByEmailResponse.json */; };
+		A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
@@ -3418,6 +3419,7 @@
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AAE58C1C74EF7E00AD7682 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FriendFindByEmailResponse.json; path = ../../../../../Desktop/FriendFindByEmailResponse.json; sourceTree = "<group>"; };
+		A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNotificationsViewController.swift; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
 		A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
@@ -5027,6 +5029,7 @@
 				0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */,
 				035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */,
 				035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */,
+				A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */,
 				A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */,
 			);
 			path = Notifications;
@@ -10926,6 +10929,7 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				A75DF5221C3DBD5100A4C82A /* UserSearchDataSource.swift in Sources */,
+				A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
 				7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,

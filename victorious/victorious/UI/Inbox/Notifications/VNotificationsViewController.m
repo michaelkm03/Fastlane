@@ -148,32 +148,6 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     [self.tableView registerNib:[UINib nibWithNibName:kNotificationCellViewIdentifier bundle:nil] forCellReuseIdentifier:kNotificationCellViewIdentifier];
 }
 
-- (void)updateTableView
-{
-    self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? UITableViewCellSeparatorStyleSingleLine : UITableViewCellSeparatorStyleNone;
-    
-    switch ( [self.dataSource state] )
-    {
-        case VDataSourceStateError:
-        case VDataSourceStateNoResults: {
-            if ( self.tableView.backgroundView != self.noContentView )
-            {
-                self.tableView.backgroundView = self.noContentView;
-                [self.noContentView resetInitialAnimationState];
-                [self.noContentView animateTransitionIn];
-            }
-            break;
-        }
-            
-        default:
-            [UIView animateWithDuration:0.5f animations:^void
-             {
-                 self.tableView.backgroundView = nil;
-             }];
-            break;
-    }
-}
-
 #pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -350,6 +324,11 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
 {
     [self updateTableView];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [self v_showErrorDefaultError];
 }
 
 @end

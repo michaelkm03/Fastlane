@@ -72,7 +72,7 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         
         switch self.dataSource.state {
             
-        case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
+        case .NoResults, .Loading where isAlreadyShowingNoContent:
             guard let tableView = self.tableView else {
                 break
             }
@@ -87,4 +87,3 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         }
     }
 }
-

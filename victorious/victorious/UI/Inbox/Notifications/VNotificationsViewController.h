@@ -23,6 +23,4 @@
 @property (strong, nonatomic) VNoContentView *noContentView;
 @property (strong, nonatomic) NotificationsDataSource *dataSource;
 
-- (void)updateTableView;
-
 @end
