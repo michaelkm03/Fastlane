@@ -1,5 +1,5 @@
 //
-//  DefaultErrorHandler.swift
+//  DebugErrorHanlder.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/16/16.
@@ -11,7 +11,7 @@ import Foundation
 /// A simple implementation that logs each error encountered.
 /// Priority is low to allow other more functional error handlers
 /// to take precedence.
-class DefaultErrorHandler: RequestErrorHandler {
+class DebugErrorHanlder: RequestErrorHandler {
     
     let priority: Int = 0
     
@@ -23,6 +23,8 @@ class DefaultErrorHandler: RequestErrorHandler {
     
     func handleError(error: NSError) -> Bool {
         VLog("RequestOperation `\(requestIdentifier)` failed with error: \(error)")
-        return true
+        
+        // Doesn't actually handle/swallow errors, just logs them
+        return false
     }
 }
