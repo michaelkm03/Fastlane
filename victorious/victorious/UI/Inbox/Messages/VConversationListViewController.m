@@ -182,14 +182,23 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
-         // Need to remove view controllers from cache, since original conversation Core Data objects are deleted
-         [self removeAllCachedViewControllers];
-         
          [self.refreshControl endRefreshing];
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
+         [self redecorateVisibleCells];
      }];
+}
+
+- (void)redecorateVisibleCells
+{
+    for (UITableViewCell *cell in self.tableView.visibleCells)
+    {
+        if ([cell isKindOfClass:VConversationCell.class])
+        {
+            [self.dataSource decorateWithCell:(VConversationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
+        }
+    }
 }
 
 #pragma mark - Properties
@@ -444,13 +453,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         for (UITableViewCell *cell in self.tableView.visibleCells)
-         {
-             if ([cell isKindOfClass:VConversationCell.class])
-             {
-                 [self.dataSource decorateWithCell:(VConversationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
-             }
-         }
+         [self redecorateVisibleCells];
     }];
 }
 

@@ -205,6 +205,17 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     }
 }
 
+- (void)redecorateVisibleCells
+{
+    for (UITableViewCell *cell in self.tableView.visibleCells)
+    {
+        if ([cell isKindOfClass:VNotificationCell.class])
+        {
+            [self.dataSource decorateWithCell:(VNotificationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
+        }
+    }
+}
+
 - (void)markAllItemsAsRead
 {
     MarkAllNotificationsAsReadOperation *operation = [[MarkAllNotificationsAsReadOperation alloc] init];
@@ -218,6 +229,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
          [self.refreshControl endRefreshing];
          [self updateTableView];
          [self markAllItemsAsRead];
+         [self redecorateVisibleCells];
      }];
 }
 
@@ -231,6 +243,11 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
     [self fetchNotificationCount];
+    
+    [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
+     {
+         // Don't need to redecorate visible cells here, because new notification objects are created based off of createdAt and subject properties
+     }];
 }
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
