@@ -182,6 +182,9 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
+         // Need to remove view controllers from cache, since original conversation Core Data objects are deleted
+         [self removeAllCachedViewControllers];
+         
          [self.refreshControl endRefreshing];
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
@@ -276,6 +279,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return messageViewController;
 }
 
+- (void)removeAllCachedViewControllers
+{
+    [self.messageViewControllers removeAllObjects];
+}
+
 - (void)removeCachedViewControllerForUserId:(NSNumber *)userRemoteId
 {
     if ( self.messageViewControllers == nil || userRemoteId == nil )
@@ -288,7 +296,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-    NSNumber * userRemoteId = conversation.user.remoteId;
+    NSNumber *userRemoteId = conversation.user.remoteId;
     NSInteger conversationID = conversation.remoteId.integerValue;
     DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
@@ -434,6 +442,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
      {
+         [self removeAllCachedViewControllers]; // Need to remove view controllers from cache, since original conversation Core Data objects are deleted
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
          [self.tableView reloadData];
