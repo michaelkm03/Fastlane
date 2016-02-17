@@ -19,7 +19,6 @@ extension VStreamCollectionViewController {
             where contentSection < self.collectionView.numberOfSections() else {
                 return
         }
-        
         super.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: newValue)
         
         // Updating focus now will resume playback of autoplay videos and GIFs when collection

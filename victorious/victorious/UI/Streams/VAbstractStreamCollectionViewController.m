@@ -104,37 +104,36 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.collectionView.alwaysBounceVertical = YES;
+    
+    const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+    if ( isPreLoaded )
+    {
+        [self.streamDataSource loadPreloadedStream:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
+    if ( shouldRefresh )
+    {
+        [self loadPage:VPageTypeFirst completion:^
+         {
+             [self.refreshControl endRefreshing];
+         }];
+    }
+    
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
     if ( self.streamDataSource.count != 0 )
     {
-        // This is HIGHLY important to call on `viewDidAppear:` because any deleted sequences
+        // This is HIGHLY important to call on `viewWillAppear:` because any deleted sequences
         // that are still being displayed in the stream are ticking timebombs waiting to crash.
         [self.streamDataSource removeDeletedItems];
     }
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
-
-    if ( shouldRefresh )
-    {
-        BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
-        if (isPreLoaded)
-        {
-            [self.streamDataSource loadPreloadedStream:nil];
-        }
-        else
-        {
-            [self loadPage:VPageTypeFirst completion:^{
-                [self.refreshControl endRefreshing];
-            }];
-        }
-    }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
@@ -508,7 +507,8 @@
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
-    [self.collectionView v_applyChangeInSection:0 from:oldValue to:newValue];
+    NSInteger contentSection = [self.streamDataSource sectionIndexForContent];
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
