@@ -27,8 +27,12 @@ extension UIViewController {
         
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         
+        let customView = UIImageView(image: UIImage(named:"error")!.imageWithRenderingMode(.AlwaysTemplate))
+        customView.tintColor = UIColor.whiteColor()
+        
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        progressHUD.mode = .Text
+        progressHUD.mode = .CustomView
+        progressHUD.customView = customView
         progressHUD.userInteractionEnabled = false
         progressHUD.labelText = title
         progressHUD.detailsLabelText = message
