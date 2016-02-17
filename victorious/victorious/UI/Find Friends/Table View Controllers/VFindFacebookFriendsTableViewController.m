@@ -58,8 +58,9 @@
 {
     NSString *facebookToken = [[FBSDKAccessToken currentAccessToken] tokenString];
     FriendFindBySocialNetworkOperation *operation = [[FriendFindBySocialNetworkOperation alloc] initWithToken:facebookToken];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
-        if (completionBlock)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (completionBlock != nil)
         {
             completionBlock(operation.results, error);
         }
