@@ -19,6 +19,7 @@ import SafariServices
     let adDetailViewController: UIViewController
     var adsManager: IMAAdsManager?
     var delegate: AdLifecycleDelegate?
+    private var hasBeenCalled = false
 
     //MARK: - Initializers
 
@@ -94,8 +95,14 @@ import SafariServices
             break
         case .CLICKED:
             adsManager.discardAdBreak()
-        case .COMPLETE, .ALL_ADS_COMPLETED:
-            delegate?.adDidFinish()
+        case .COMPLETE:
+            callOnce() {
+                self.delegate?.adDidFinish()
+            }
+        case .ALL_ADS_COMPLETED:
+            callOnce {
+                self.delegate?.adDidFinish()
+            }
         case .FIRST_QUARTILE:
             break
         case .LOADED:
@@ -138,5 +145,13 @@ import SafariServices
 
     func webOpenerDidCloseInAppBrowser(webOpener: NSObject) {
         delegate?.adDidFinish()
+    }
+
+    private func callOnce(block: () -> Void) {
+        if hasBeenCalled == true {
+            return
+        }
+        hasBeenCalled = true
+        block()
     }
 }

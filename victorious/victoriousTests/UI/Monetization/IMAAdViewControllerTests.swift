@@ -71,9 +71,19 @@ class IMAAdViewControllerTests: XCTestCase {
     }
 
     func testAllAdsCompleted() {
-        let allAdsCompleteEvent = TestIMAAdEvent(test: true, type: .ALL_ADS_COMPLETED)
+        let allAdsCompletedEvent = TestIMAAdEvent(test: true, type: .ALL_ADS_COMPLETED)
         XCTAssertEqual(0, testAdDelegate.adDidFinishCallCount)
-        controller.adsManager(controller.adsManager, didReceiveAdEvent: allAdsCompleteEvent)
+        controller.adsManager(controller.adsManager, didReceiveAdEvent: allAdsCompletedEvent)
+        XCTAssertEqual(1, testAdDelegate.adDidFinishCallCount)
+    }
+
+    func testAdCompletedFollowedByAllAdsCompleted() {
+        let completeEvent = TestIMAAdEvent(test: true, type: .COMPLETE)
+        let allAdsCompletedEvent = TestIMAAdEvent(test: true, type: .ALL_ADS_COMPLETED)
+        XCTAssertEqual(0, testAdDelegate.adDidFinishCallCount)
+        controller.adsManager(controller.adsManager, didReceiveAdEvent: completeEvent)
+        XCTAssertEqual(1, testAdDelegate.adDidFinishCallCount)
+        controller.adsManager(controller.adsManager, didReceiveAdEvent: allAdsCompletedEvent)
         XCTAssertEqual(1, testAdDelegate.adDidFinishCallCount)
     }
 
