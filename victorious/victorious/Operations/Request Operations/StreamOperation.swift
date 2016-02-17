@@ -16,18 +16,27 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     private let apiPath: String
     
     private var persistentStreamItemIDs: [NSManagedObjectID]?
+    private var preloadedStreamObjectID: NSManagedObjectID?
     
     required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil) {
+    convenience init( apiPath: String, sequenceID: String? = nil, existingStreamID: NSManagedObjectID? = nil) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
+        preloadedStreamObjectID = existingStreamID
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
+        if let preloadedStreamObjectID = self.preloadedStreamObjectID {
+            dispatch_sync( dispatch_get_main_queue() ) {
+                self.results = self.fetchLocalResults( preloadedStreamObjectID )
+            }
+            
+        } else {
+            requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
+        }
     }
     
     func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
@@ -73,6 +82,22 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                     context.objectWithID($0) as? VStreamItem
                 }
                 completion()
+            }
+        }
+    }
+    
+    func fetchLocalResults(preloadedStreamObjectID: NSManagedObjectID) -> [AnyObject] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let stream = context.objectWithID(preloadedStreamObjectID) as? VStream else {
+                return []
+            }
+            let paginationPredicate = self.request.paginator.paginatorPredicate
+            let streamPredciate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
+            let persistentStreamItemPointers = stream.streamItemPointers.filteredOrderedSetUsingPredicate( paginationPredicate + streamPredciate ).array
+            let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
+            
+            return persistentStreamItemIDs.flatMap {
+                context.objectWithID($0) as? VStreamItem
             }
         }
     }
