@@ -296,10 +296,12 @@
         <relationship name="streamItemPointer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItemPointer" inverseName="tracking" inverseEntity="StreamItemPointer" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
+        <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isFollowedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isNewUser" optional="YES" transient="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPercentage" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPoints" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -373,7 +375,7 @@
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="160" positionY="192" width="128" height="135"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="600"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>

@@ -39,6 +39,7 @@ extern CGFloat const VTwitterManagerErrorFailed;
 @property (nonatomic, readonly) NSString *oauthToken;
 @property (nonatomic, readonly) NSString *secret;
 @property (nonatomic, readonly) NSString *twitterId;
+@property (nonatomic, readonly) NSString *identifier;
 
 + (VTwitterManager *)sharedManager;
 
@@ -53,8 +54,7 @@ extern CGFloat const VTwitterManagerErrorFailed;
  *  @param identifier      The identifier for the account to use.  May be nil.
  *  @param completionBlock Block that will run after completing.
  */
-- (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                       fromViewController:(UIViewController *)viewController
+- (void)refreshTwitterTokenFromViewController:(UIViewController *)viewController
                           completionBlock:(VTWitterCompletionBlock)completionBlock;
 
 @end

@@ -54,7 +54,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
-@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, ForceLoginOperationDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
@@ -328,35 +328,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         // Logout first if logged in
         LogoutOperation *operation = [[LogoutOperation alloc] init];
-        [operation queueOn:operation.defaultQueue completionBlock:^void(NSError *_Nullable error)
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
         {
             [self updateLogoutButtonState];
         }];
     }
-    
-    // Then show login prompt
-    [self showLogin];
-}
-
-- (void)showLogin
-{
-    ShowLoginOperation *operation = [[ShowLoginOperation alloc] initWithOriginViewController:self
-                                                                           dependencyManager:self.dependencyManager
-                                                                                     context:VAuthorizationContextDefault];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
-    [self updateLogoutButtonState];
-}
-
-#pragma mark - ForceLoginOperationDelegate
-
-- (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
-{
-    [self presentViewController:loginViewController animated:true completion:nil];
-}
-
-- (void)hideLoginViewController:(void (^ __nonnull)(void))completion
-{
-    [self dismissViewControllerAnimated:YES completion:completion];
 }
 
 #pragma mark - Navigation

@@ -74,6 +74,7 @@ public struct AccountCreateRequest: RequestType {
 
 /// The response to an account create call
 public struct AccountCreateResponse {
+    
     /// Authentication token for the new account
     public let token: String
     
@@ -84,7 +85,7 @@ public struct AccountCreateResponse {
     /// account, true if a truly new account was created.
     public let newUser: Bool
     
-    public init( token: String, user: User, newUser: Bool ) {
+    public init( token: String, user: User, newUser: Bool = false ) {
         self.token = token
         self.user = user
         self.newUser = newUser
