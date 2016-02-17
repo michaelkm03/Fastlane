@@ -12,6 +12,8 @@
 class TestRequestExecutor: RequestExecutorType {
 
     private(set) var error: NSError?
+    
+    var errorHandlers = [RequestErrorHandler]()
 
     var executeRequestCallCount = 0
     var hasNetworkConnection: Bool = true

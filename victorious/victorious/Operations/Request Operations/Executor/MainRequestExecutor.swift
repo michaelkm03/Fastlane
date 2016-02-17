@@ -12,25 +12,25 @@ import VictoriousCommon
 
 class MainRequestExecutor: RequestExecutorType {
     
-    private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
-    private(set) var error: NSError? {
+    var error: NSError? {
         didSet {
             if let error = error {
-                self.handleError(error)
+                self.handleError( error )
             }
         }
     }
     
     var errorHandlers = [RequestErrorHandler]()
-    
-    private func handleError( error: NSError ) {
+    func handleError(error: NSError) {
         for handler in errorHandlers.sort({ $0.priority > $1.priority }) {
             if handler.handleError(error) {
                 return
             }
         }
     }
+    
+    private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         
@@ -54,7 +54,7 @@ class MainRequestExecutor: RequestExecutorType {
                     
                     if let error = error as? RequestErrorType {
                         let nsError = NSError( error )
-                        self.error = nsError
+                        self.handleError(nsError)
                         if let onError = onError {
                             onError( nsError ) {
                                 dispatch_semaphore_signal( executeSemphore )

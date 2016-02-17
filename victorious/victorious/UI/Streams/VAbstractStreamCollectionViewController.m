@@ -313,13 +313,11 @@
     
     [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
-         [self.streamTrackingHelper streamDidLoad:self.currentStream];
-         
          if ( completion != nil )
          {
              completion();
          }
-         
+         [self.streamTrackingHelper streamDidLoad:self.currentStream];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }

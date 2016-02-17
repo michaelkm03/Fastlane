@@ -62,7 +62,7 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
     
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         let viewControllerForError = self.navigationController ?? self
-        viewControllerForError.v_showErrorWithTitle(nil, message:nil)
+        viewControllerForError.v_showErrorDefaultError()
     }
     
     func updateTableView() {

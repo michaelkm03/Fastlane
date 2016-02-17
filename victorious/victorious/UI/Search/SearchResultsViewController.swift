@@ -186,7 +186,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         // TODO: Show error message in view similar to media search or use a no content view
-        self.v_showErrorWithTitle(nil, message:nil)
+        self.v_showErrorDefaultError()
     }
 
     // MARK: - Private

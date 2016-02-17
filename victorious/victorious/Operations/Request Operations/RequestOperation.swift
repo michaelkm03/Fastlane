@@ -27,7 +27,7 @@ class RequestOperation: NSOperation, Queuable, ErrorOperation {
         super.init()
         
         requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
-        requestExecutor.errorHandlers.append( DefaultErrorHandler(requestIdentifier: "\(self.dynamicType)") )
+        requestExecutor.errorHandlers.append( DebugErrorHanlder(requestIdentifier: "\(self.dynamicType)") )
     }
     
     /// Allows subclasses to override to disabled unauthorized (401) error handling.

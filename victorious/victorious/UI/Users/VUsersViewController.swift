@@ -39,6 +39,6 @@ extension VUsersViewController: VPaginatedDataSourceDelegate {
     }
     
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        self.v_showErrorWithTitle(nil, message:nil)
+        self.v_showErrorDefaultError()
     }
 }

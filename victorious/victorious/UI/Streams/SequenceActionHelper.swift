@@ -58,7 +58,7 @@ import UIKit
                 if error.code == Int(kVCommentAlreadyFlaggedError) {
                     viewController.v_showFlaggedConversationAlert(completion: completion)
                 } else {
-                    viewController.v_showErrorWithTitle(nil, message:nil)
+                    viewController.v_showErrorDefaultError()
                 }
            
             } else {
