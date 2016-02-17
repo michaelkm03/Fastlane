@@ -22,6 +22,9 @@ class AccountCreateOperation: RequestOperation {
     init( request: AccountCreateRequest, parameters: AccountCreateParameters) {
         self.parameters = parameters
         self.request = request
+        super.init()
+        
+        requiresAuthorization = false
     }
     
     // MARK: - Operation overrides
@@ -32,7 +35,7 @@ class AccountCreateOperation: RequestOperation {
     
     func onComplete( response: AccountCreateResponse, completion:()->() ) {
         let successOperation = LoginSuccessOperation(response: response, parameters: self.parameters)
-        successOperation.queueAfter(self)
+        successOperation.rechainAndQueueAfter(self)
         completion()
     }
 }

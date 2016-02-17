@@ -38,7 +38,6 @@ static NSString * const kMenuKey = @"menu";
 @property (nonatomic, strong) VTabMenuShim *tabShim;
 @property (nonatomic, strong) VTabScaffoldHidingHelper *hidingHelper;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
-@property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
@@ -174,26 +173,12 @@ static NSString * const kMenuKey = @"menu";
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    if (self.autoShowLoginViewController != nil)
-    {
-        return self.autoShowLoginViewController;
-    }
-    else
-    {
-        return self.internalTabBarController;
-    }
+    return self.internalTabBarController;
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    if (self.autoShowLoginViewController != nil)
-    {
-        return self.autoShowLoginViewController;
-    }
-    else
-    {
-        return self.internalTabBarController;
-    }
+    return self.internalTabBarController;
 }
 
 #pragma mark - Public API
@@ -386,42 +371,6 @@ static NSString * const kMenuKey = @"menu";
                                   showQueuedDeeplinkOperation ];
     
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
-}
-
-#pragma mark - ForceLoginOperationDelegate
-
-- (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
-{
-    [self addChildViewController:loginViewController];
-    [self.view addSubview:loginViewController.view];
-    [self.view v_addFitToParentConstraintsToSubview:loginViewController.view];
-    [loginViewController didMoveToParentViewController:self];
-    self.autoShowLoginViewController = loginViewController;
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)hideLoginViewController:(void (^ __nonnull)(void))completion
-{
-    [self configureTabBar];
-    [self.autoShowLoginViewController willMoveToParentViewController:nil];
-    [UIView animateWithDuration:0.5
-                          delay:0.0
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
-                     animations:^
-     {
-         CGFloat yTranslationAmount = CGRectGetHeight(self.autoShowLoginViewController.view.bounds);
-         self.autoShowLoginViewController.view.transform = CGAffineTransformMakeTranslation(0, yTranslationAmount);
-     }
-                     completion:^(BOOL finished)
-     {
-         [self.autoShowLoginViewController.view removeFromSuperview];
-         [self.autoShowLoginViewController removeFromParentViewController];
-         self.autoShowLoginViewController = nil;
-         [self setNeedsStatusBarAppearanceUpdate];
-         completion();
-     }];
 }
 
 #pragma mark - UITabBarControllerDelegate

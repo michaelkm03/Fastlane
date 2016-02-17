@@ -298,16 +298,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
           {
               if (error == nil)
               {
-                  weakSelf.currentOperation = [weakSelf.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                                          accessSecret:twitterManager.secret
-                                                                                             twitterID:twitterManager.twitterId
-                                                                                            identifier:twitterManager.identifier
-                                                                                            completion:^(NSError *_Nullable error) {
-                                                                                                if ( error != nil )
-                                                                                                {
-                                                                                                    [weakSelf handleTwitterLoginError:error];
-                                                                                                }
-                                                                                            }];
+                  [weakSelf onTwitterTokenRefreshedWithTwitterManager:twitterManager];
               }
               else
               {
@@ -318,6 +309,28 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
+}
+
+- (void)onTwitterTokenRefreshedWithTwitterManager:(VTwitterManager *)twitterManager
+{
+    self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                    accessSecret:twitterManager.secret
+                                                                       twitterID:twitterManager.twitterId
+                                                                      identifier:twitterManager.identifier
+                                                                      completion:^(NSError *_Nullable error)
+    {
+        if ( [VCurrentUser user] != nil && error == nil)
+        {
+            self.actionsDisabled = NO;
+            self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+            [self continueRegistrationFlowAfterSocialRegistration];
+        }
+        else
+        {
+            [self handleTwitterLoginError:error];
+        }
+        self.onCompletionBlock(error == nil);
+    }];
 }
 
 - (void)handleTwitterLoginError:(NSError *)error

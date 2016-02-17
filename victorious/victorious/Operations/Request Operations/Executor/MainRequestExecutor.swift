@@ -25,16 +25,11 @@ class MainRequestExecutor: RequestExecutorType {
     var errorHandlers = [RequestErrorHandler]()
     
     private func handleError( error: NSError ) {
-        for handler in errorHandlers.reverse() {
-            if handler.enabled {
-                handler.handleError(error)
+        for handler in errorHandlers.sort({ $0.priority > $1.priority }) {
+            if handler.handleError(error) {
+                return
             }
         }
-    }
-    
-    static var successCount = 0
-    func create401Error() -> NSError {
-        return NSError(domain:"", code:401, userInfo:nil)
     }
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
@@ -58,7 +53,7 @@ class MainRequestExecutor: RequestExecutorType {
                 dispatch_async( dispatch_get_main_queue() ) {
                     
                     if let error = error as? RequestErrorType {
-                        let nsError = self.create401Error() // NSError( error )
+                        let nsError = NSError( error )
                         self.error = nsError
                         if let onError = onError {
                             onError( nsError ) {
@@ -80,8 +75,6 @@ class MainRequestExecutor: RequestExecutorType {
                             dispatch_semaphore_signal( executeSemphore )
                         }
                     }
-                    
-                    print("MainRequestExecutor successCount = \(MainRequestExecutor.successCount)")
                 }
             }
         )

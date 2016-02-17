@@ -10,43 +10,11 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-class DefaultErrorHandler: RequestErrorHandler {
-    
-    let requestIdentifier: String
-    var enabled: Bool = true
-    
-    init(requestIdentifier: String) {
-        self.requestIdentifier = requestIdentifier
-    }
-    
-    func handleError(error: NSError) -> Bool {
-        VLog("RequestOperation `\(requestIdentifier)` failed with error: \(error)")
-        return true
-    }
-}
-
-class UnauthorizedErrorHandler: RequestErrorHandler {
-    
-    var enabled: Bool = true
-    
-    func handleError(error: NSError) -> Bool {
-        if error.code == 401 {
-            LogoutOperation().queue()
-            return true
-        }
-        return false
-    }
-}
-
 class RequestOperation: NSOperation, Queuable, ErrorOperation {
     
     internal(set) var results: [AnyObject]?
     
     private static let sharedQueue: NSOperationQueue = NSOperationQueue()
-    
-    var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
-    
-    var mainQueueCompletionBlock: ((NSError?)->())?
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -55,11 +23,38 @@ class RequestOperation: NSOperation, Queuable, ErrorOperation {
     
     lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
     
-    // MARK: - Queuable
+    override init() {
+        super.init()
+        
+        requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
+        requestExecutor.errorHandlers.append( DefaultErrorHandler(requestIdentifier: "\(self.dynamicType)") )
+    }
+    
+    /// Allows subclasses to override to disabled unauthorized (401) error handling.
+    /// Otherwise, these errors are handled by default.
+    var requiresAuthorization: Bool = true {
+        didSet {
+            if requiresAuthorization {
+                if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+                    requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
+                }
+            } else {
+                requestExecutor.errorHandlers = requestExecutor.errorHandlers.filter { ($0 is UnauthorizedErrorHandler) == false }
+            }
+        }
+    }
+    
+    // MARK: - ErrorOperation
     
     var error: NSError? {
         return self.requestExecutor.error
     }
+    
+    // MARK: - Queuable
+    
+    var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
+    
+    var mainQueueCompletionBlock: ((NSError?)->())?
     
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
         self.completionBlock = {
