@@ -104,7 +104,6 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual(5, adBreak.adSystemID)
         XCTAssertEqual(7000, adBreak.timeout)
         XCTAssertEqual(testAdTag, adBreak.adTag)
-        XCTAssertEqual("", adBreak.cannedAdXML)
     }
 
     private func createAdSequenceFromJSON(fileName fileName: String) -> Sequence? {

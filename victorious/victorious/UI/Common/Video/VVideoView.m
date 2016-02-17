@@ -352,7 +352,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (Float64)currentTimeSeconds
 {
-    return CMTimeGetSeconds( self.player.currentItem.currentTime );
+    Float64 currentTimeInSeconds = 0;
+    if ( self.player != nil && self.player.currentItem != nil )
+    {
+        currentTimeInSeconds = CMTimeGetSeconds( self.player.currentItem.currentTime );
+    }
+    return currentTimeInSeconds;
 }
 
 - (NSUInteger)currentTimeMilliseconds

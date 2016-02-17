@@ -92,7 +92,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
-    self.collectionView.alpha = enabled ? 1.0f : 0.0f;
+    self.collectionView.alpha = enabled ? 1.0f : kExperienceEnhancerBarFadeOutOpacity;
     for ( VExperienceEnhancerCell *cell in self.collectionView.visibleCells)
     {
         [cell startCooldown];
