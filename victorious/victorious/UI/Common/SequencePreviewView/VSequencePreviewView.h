@@ -32,18 +32,14 @@
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- *  The factory method for the VSequencePreviewView, will provide a concrete subclass specialized to
+ *  A factory method for the VSequencePreviewView, will provide a concrete subclass specialized to
  *  the given sequence.
  */
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
 
 /**
- * Convenience initializer with parameters for a basic setup
- * @param sequence determines the type of a preview view
- * @param streamItem stream item for a preview view
- * @param frame frame of a view
- * @param dependencyManager dependencyManager that determines the configuration of a preview view
- * @param focusType specifies a focus type for a view
+ * A factory method for the VSequencePreviewView that provides a concrete subclass specialized to
+ *  the given sequence with basic setup.
  */
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
                                                streamItem:(VStreamItem *)streamItem

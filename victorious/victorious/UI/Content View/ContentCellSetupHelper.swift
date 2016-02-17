@@ -16,7 +16,6 @@
     }
 }
 
-/// Helper class that sets up a contentCell
 @objc class ContentCellSetupHelper: NSObject {
     let contentCell: VContentCell
     let previewViewProvider: VContentPreviewViewProvider?
