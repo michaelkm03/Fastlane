@@ -97,10 +97,11 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
             }
             
             let operation: RequestOperation
+            let sourceScreenName = VFollowSourceScreenDiscoverUserSearchResults
             if currentUser.isFollowingUserID(userID) {
-                operation = UnfollowUserOperation(userID: userID, sourceScreenName: nil)
+                operation = UnfollowUserOperation(userID: userID, sourceScreenName: sourceScreenName)
             } else {
-                operation = FollowUsersOperation(userIDs: [userID])
+                operation = FollowUsersOperation(userIDs: [userID], sourceScreenName: sourceScreenName)
             }
             operation.queue()
         }
