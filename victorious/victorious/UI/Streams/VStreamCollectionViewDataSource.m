@@ -45,18 +45,6 @@
     return self.paginatedDataSource.isLoading;
 }
 
-- (void)setVisibleItems:(NSOrderedSet *)visibleItems
-{
-    if (self.suppressShelves)
-    {
-        _visibleItems = [self streamItemsWithoutShelves:visibleItems.array];
-    }
-    else
-    {
-        _visibleItems = visibleItems;
-    }
-}
-
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.count || self.count <= (NSUInteger)indexPath.row)
