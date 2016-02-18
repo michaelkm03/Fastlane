@@ -132,7 +132,6 @@ static const NSUInteger kCharacterLimit = 1024;
                                                                                  mostRecentMessageID:mostRecentMessageID];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self.innerViewController.dataSource removeDeletedItems];
          [self v_showFlaggedConversationAlertWithCompletion:^(BOOL success)
           {
               [self.navigationController popViewControllerAnimated:YES];
