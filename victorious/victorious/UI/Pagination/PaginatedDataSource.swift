@@ -136,9 +136,9 @@ import VictoriousIOSSDK
         case .First:
             operationToQueue = createOperation()
         case .Next:
-            operationToQueue = ((currentPaginatedOperation as? T) ?? createOperation()).next()
+            operationToQueue = (currentPaginatedOperation as? T)?.next()
         case .Previous:
-            operationToQueue = ((currentPaginatedOperation as? T) ?? createOperation()).prev()
+            operationToQueue = (currentPaginatedOperation as? T)?.prev()
         }
         
         // Return early if there is no operation to queue, i.e. no work to do

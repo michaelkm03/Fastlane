@@ -92,8 +92,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 return []
             }
             let paginationPredicate = self.request.paginator.paginatorPredicate
-            let streamPredciate = NSPredicate(format: "streamParent.apiPath == %@", self.apiPath)
-            let persistentStreamItemPointers = stream.streamItemPointers.filteredOrderedSetUsingPredicate( paginationPredicate + streamPredciate ).array
+            let persistentStreamItemPointers = stream.streamItemPointers.filteredOrderedSetUsingPredicate( paginationPredicate ).array
             let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
             
             return persistentStreamItemIDs.flatMap {

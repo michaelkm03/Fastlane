@@ -23,12 +23,7 @@ extension VStreamCollectionViewDataSource {
                 return StreamOperation(apiPath: apiPath)
             },
             completion: { (operation, error) in
-                if let error = error {
-                    completion( error )
-                    
-                } else {
-                    completion( nil )
-                }
+                completion(error)
             }
         )
     }
@@ -38,16 +33,10 @@ extension VStreamCollectionViewDataSource {
     func loadPreloadedStream(completion: ((NSError?)->())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
-                return StreamOperation(apiPath: stream.apiPath!, sequenceID: nil, existingStreamID: stream.objectID)
+                return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
             },
             completion: { (operation, error) in
-                if let error = error {
-                    completion?( error )
-                    
-                } else {
-                    completion?( nil )
-
-                }
+                completion?(error)
         })
     }
     
