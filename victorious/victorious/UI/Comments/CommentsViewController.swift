@@ -564,6 +564,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
+    }
+    
     func updateCollectionView() {
         
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView

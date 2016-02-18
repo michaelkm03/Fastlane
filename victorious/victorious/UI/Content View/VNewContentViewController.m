@@ -21,7 +21,6 @@
 #import "VComment+Fetcher.h"
 #import "VCommentAlertHelper.h"
 #import "VCommentTextAndMediaView.h"
-#import "VContentAlertHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
 #import "VContentPollBallotCell.h"

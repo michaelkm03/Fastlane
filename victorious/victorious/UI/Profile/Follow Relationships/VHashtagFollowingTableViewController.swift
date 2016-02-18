@@ -49,4 +49,8 @@ extension VHashtagFollowingTableViewController: VPaginatedDataSourceDelegate {
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateBackground()
     }
+    
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        v_showErrorDefaultError()
+    }
 }

@@ -299,11 +299,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
               if (error == nil)
               {
                   [weakSelf onTwitterTokenRefreshedWithTwitterManager:twitterManager];
-                  
               }
               else
               {
-                  [self handleTwitterLoginError:error];
+                  [weakSelf handleTwitterLoginError:error];
               }
           }];
      }];
@@ -342,13 +341,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    if ( ![error.domain isEqualToString:NSURLErrorDomain] )
-    {
-        UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")
-                                                                          andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
+    [self v_showErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
 }
 
 - (void)selectedFacebookAuthorization
@@ -435,10 +429,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [self dismissLoadingScreen];
     
-    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                   message:NSLocalizedString(@"FacebookLoginFailed", @"")
-                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self v_showErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
+                       message:NSLocalizedString(@"FacebookLoginFailed", @"")];
     
     [[[FBSDKLoginManager alloc] init] logOut];
 }

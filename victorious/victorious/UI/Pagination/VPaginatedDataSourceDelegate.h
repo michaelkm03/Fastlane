@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, VDataSourceState) {
     VDataSourceStateLoading,
     VDataSourceStateCleared,
@@ -25,8 +27,12 @@ typedef NS_ENUM(NSInteger, VDataSourceState) {
 /// precisely reload only what has changed instead of using `reloadData()`.
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue;
 
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error;
+
 @optional
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(VDataSourceState)oldState to:(VDataSourceState)newState;
 
 @end
+
+NS_ASSUME_NONNULL_END

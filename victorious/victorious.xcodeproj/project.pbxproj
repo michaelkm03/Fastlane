@@ -816,6 +816,7 @@
 		A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734AF171C499B5500ECA324 /* RequestBodyWriterType.swift */; };
 		A734AF1A1C499C9100ECA324 /* MessageRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734AF191C499C9100ECA324 /* MessageRequestBodyWriter.swift */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
+		A73A454A1C741769009B8409 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */; };
 		A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */; };
@@ -850,6 +851,9 @@
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
+		A74C2C601C7410620022AC35 /* DebugErrorHanlder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */; };
+		A74C2C611C7410620022AC35 /* UnauthorizedErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */; };
+		A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */; };
 		A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */; };
 		A75486DA1C691B07003024D8 /* PrunePersistentStoreOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */; };
 		A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486E01C695B4F003024D8 /* RepostersDataSource.swift */; };
@@ -963,6 +967,8 @@
 		A76AEAED1C038E0000E8A26F /* UnlikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */; };
 		A76AEAEE1C038E0000E8A26F /* UserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
+		A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */; };
+		A76E79C41C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */; };
 		A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FEC1B33422B00B1BBB3 /* VActionButton.m */; };
 		A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */; };
 		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
@@ -1035,6 +1041,7 @@
 		A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
+		A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
@@ -1062,7 +1069,6 @@
 		A7B0A63A1C347A01008B875C /* CoreDataPathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62D1C347A01008B875C /* CoreDataPathHelper.swift */; };
 		A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */; };
 		A7B0E07A1BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */; };
-		A7B133071C604933006EC4F5 /* UIViewController+FlaggedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133061C604933006EC4F5 /* UIViewController+FlaggedContent.swift */; };
 		A7B1330B1C604CE9006EC4F5 /* ErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */; };
 		A7B1330D1C606C2C006EC4F5 /* VStreamItemPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1330C1C606C2C006EC4F5 /* VStreamItemPointer.swift */; };
 		A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1334C1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift */; };
@@ -1229,7 +1235,6 @@
 		A7DCA5171C128A78004E35B4 /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		A7DCA51A1C128E8F004E35B4 /* NetworkActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */; };
 		A7DCA51C1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */; };
-		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
 		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
 		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
@@ -3115,6 +3120,9 @@
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
 		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
+		A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugErrorHanlder.swift; sourceTree = "<group>"; };
+		A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthorizedErrorHandler.swift; sourceTree = "<group>"; };
+		A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorHandler.swift; sourceTree = "<group>"; };
 		A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+PublishParameters.swift"; sourceTree = "<group>"; };
 		A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrunePersistentStoreOperation.swift; sourceTree = "<group>"; };
 		A75486E01C695B4F003024D8 /* RepostersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostersDataSource.swift; sourceTree = "<group>"; };
@@ -3290,6 +3298,8 @@
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
 		A76D938F1B32151B007A150D /* VContentLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentLikeButton.m; sourceTree = "<group>"; };
 		A76D93A51B321E68007A150D /* VPageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPageType.h; sourceTree = "<group>"; };
+		A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Error.swift"; sourceTree = "<group>"; };
+		A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+FlaggedContent.swift"; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A7724FEB1B33422B00B1BBB3 /* VActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionButton.h; sourceTree = "<group>"; };
 		A7724FEC1B33422B00B1BBB3 /* VActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButton.m; sourceTree = "<group>"; };
@@ -3416,6 +3426,7 @@
 		A7A922681AC9DB5F00F4755E /* VMultiplePickerSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerSelection.h; sourceTree = "<group>"; };
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
+		A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNotificationsViewController.swift; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
 		A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
@@ -3465,7 +3476,6 @@
 		A7B0A6461C347CF7008B875C /* 1.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.0.xcdatamodel; sourceTree = "<group>"; };
 		A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayer.swift; sourceTree = "<group>"; };
 		A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeVideoSequencePreviewView.swift; sourceTree = "<group>"; };
-		A7B133061C604933006EC4F5 /* UIViewController+FlaggedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+FlaggedContent.swift"; sourceTree = "<group>"; };
 		A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorOperation.swift; sourceTree = "<group>"; };
 		A7B1330C1C606C2C006EC4F5 /* VStreamItemPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamItemPointer.swift; sourceTree = "<group>"; };
 		A7B1334C1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFooterCollectionDataSource.swift; sourceTree = "<group>"; };
@@ -3598,8 +3608,6 @@
 		A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SimpleStream.json; sourceTree = "<group>"; };
 		A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicator.swift; sourceTree = "<group>"; };
 		A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorTests.swift; sourceTree = "<group>"; };
-		A7DD35EE1BB07D6900C4DBC5 /* VContentAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentAlertHelper.h; sourceTree = "<group>"; };
-		A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentAlertHelper.m; sourceTree = "<group>"; };
 		A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+VBitmask.h"; sourceTree = "<group>"; };
 		A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+VBitmask.m"; sourceTree = "<group>"; };
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
@@ -4795,7 +4803,6 @@
 				C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */,
 				0314D35019B46B5E00FA363C /* VTextAndMediaView.h */,
 				0314D35119B46B5E00FA363C /* VTextAndMediaView.m */,
-				A7B133061C604933006EC4F5 /* UIViewController+FlaggedContent.swift */,
 			);
 			path = Comments;
 			sourceTree = "<group>";
@@ -4910,8 +4917,6 @@
 				F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */,
 				A7A343D91A8A8452000F0BCF /* VCommentAlertHelper.h */,
 				A7A343DA1A8A8452000F0BCF /* VCommentAlertHelper.m */,
-				A7DD35EE1BB07D6900C4DBC5 /* VContentAlertHelper.h */,
-				A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */,
 				036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */,
 				036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
@@ -5027,6 +5032,7 @@
 				0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */,
 				035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */,
 				035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */,
+				A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */,
 				A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */,
 			);
 			path = Notifications;
@@ -5212,8 +5218,11 @@
 			isa = PBXGroup;
 			children = (
 				031DE6031C55E3570063492B /* AlertsRequestDecorator.swift */,
+				A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */,
 				6205AAB71C334D9300859145 /* MainRequestExecutor.swift */,
+				A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */,
 				62E2407A1C332125001037C3 /* RequestExecutorType.swift */,
+				A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */,
 			);
 			path = Executor;
 			sourceTree = "<group>";
@@ -6782,6 +6791,8 @@
 		A721E8601B572452000B7901 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */,
+				A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */,
 				A721E8611B572452000B7901 /* AVAsset+Orientation.h */,
 				A721E8621B572452000B7901 /* AVAsset+Orientation.m */,
 				C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */,
@@ -10774,6 +10785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0352FCE91B72C7C300DB6EAB /* TemplateDownloadCLI.swift in Sources */,
+				A73A454A1C741769009B8409 /* RequestErrorHandler.swift in Sources */,
 				0352FCE71B72C7C300DB6EAB /* BasicTemplateDownloader.swift in Sources */,
 				A7C565DE1C405A4800E4DF6A /* RequestExecutorType.swift in Sources */,
 				0352FCE81B72C7C300DB6EAB /* main.swift in Sources */,
@@ -10942,6 +10954,7 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				A75DF5221C3DBD5100A4C82A /* UserSearchDataSource.swift in Sources */,
+				A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
 				7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
@@ -10992,7 +11005,6 @@
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
-				A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
 				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
@@ -11000,6 +11012,7 @@
 				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
 				C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */,
+				A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
 				A778CB661C4705DA007DF0C2 /* VConversationContainerViewController.swift in Sources */,
@@ -11151,6 +11164,7 @@
 				B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */,
 				A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
+				A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
@@ -11196,6 +11210,7 @@
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */,
+				A74C2C611C7410620022AC35 /* UnauthorizedErrorHandler.swift in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
@@ -11271,7 +11286,6 @@
 				A75DF5211C3DBD5100A4C82A /* SearchResultsViewController.swift in Sources */,
 				A75C64961AD78DCA00245125 /* VTextPostTextView.m in Sources */,
 				A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */,
-				A7B133071C604933006EC4F5 /* UIViewController+FlaggedContent.swift in Sources */,
 				D85B70781B0EAF3F0038CA5B /* VFindFriendsViewController.m in Sources */,
 				C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
@@ -11748,6 +11762,7 @@
 				A7078CDE1BFA7D2B008FB7FF /* StoredLoginOperation.swift in Sources */,
 				A74679731BF6CC9B0026FD2E /* VStoredPassword.m in Sources */,
 				A7D618F11C2A8DD6007F46EA /* GIFSearchResultObject.swift in Sources */,
+				A76E79C41C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift in Sources */,
 				A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */,
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
@@ -11830,6 +11845,7 @@
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
+				A74C2C601C7410620022AC35 /* DebugErrorHanlder.swift in Sources */,
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */,
