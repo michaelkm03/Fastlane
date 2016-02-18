@@ -1,26 +1,27 @@
 //
-//  FriendFindByEmailOperation.swift
+//  FriendFindBySocialNetworkOperation.swift
 //  victorious
 //
-//  Created by Michael Sena on 1/4/16.
+//  Created by Tian Lan on 2/11/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindByEmailOperation: RequestOperation {
+class FriendFindBySocialNetworkOperation: RequestOperation {
     
     private var resultObjectIDs = [NSManagedObjectID]()
+
+    private var request: FriendFindBySocialNetworkRequest
     
-    private var request: FriendFindByEmailRequest!
+    convenience init(token: String) {
+        let request = FriendFindBySocialNetworkRequest(socialNetwork: .Facebook(accessToken: token))
+        self.init(request: request)
+    }
     
-    init?(emails: [String]) {
-        self.request = FriendFindByEmailRequest(emails: emails)
-        super.init()
-        if self.request == nil {
-            return nil
-        }
+    private init(request: FriendFindBySocialNetworkRequest) {
+        self.request = request
     }
     
     override func main() {

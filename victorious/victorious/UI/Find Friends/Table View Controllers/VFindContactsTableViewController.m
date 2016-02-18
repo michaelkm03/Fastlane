@@ -155,7 +155,7 @@
         FriendFindByEmailOperation *operation = [[FriendFindByEmailOperation alloc] initWithEmails:allEmailAddresses];
         [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
         {
-            if ( error != nil && operation.results != nil )
+            if ( error == nil && operation.results != nil )
             {
                 completionBlock(operation.results, error);
             };
