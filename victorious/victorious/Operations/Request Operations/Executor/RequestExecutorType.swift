@@ -16,6 +16,8 @@ protocol RequestExecutorType: class {
     /// provided to `executeRequest(_:onComplete:onError:)`
     var error: NSError? { get }
     
+    var errorHandlers: [RequestErrorHandler] { get set }
+    
     /// Executes the provided request and calls the `onComplete` or `onError` block when
     /// when the request finishes successfully executing or fails, respectively.  These closures
     /// are optional in cases where calling node isn't concerned with the response of the request,

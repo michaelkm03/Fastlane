@@ -636,4 +636,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         trackVisibleCells()
         collectionView.reloadData()
     }
+    
+    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
+    }
 }

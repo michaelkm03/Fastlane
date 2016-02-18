@@ -334,7 +334,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VCommentCellUtilitiesDelegate
     
     func editComment(comment: VComment) {
-        let editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
+        let editViewController = VEditCommentViewController.newWithComment(comment, dependencyManager: self.dependencyManager)
         editViewController.transitioningDelegate = modalTransitioningDelegate
         editViewController.delegate = self
         self.presentViewController(editViewController, animated: true, completion: nil)
@@ -562,6 +562,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         dispatch_after(0.1) {
             self.collectionView.flashScrollIndicators()
         }
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
     }
     
     func updateCollectionView() {

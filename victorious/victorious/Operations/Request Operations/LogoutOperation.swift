@@ -14,6 +14,8 @@ class LogoutOperation: RequestOperation {
     override init() {
         super.init()
         
+        requiresAuthorization = false
+        
         // Boost the priority of this operation
         self.qualityOfService = .UserInitiated
         
@@ -53,9 +55,15 @@ class LogoutOperation: RequestOperation {
     }
 }
 
-class LogoutRemoteOperation: RequestOperation {
+private class LogoutRemoteOperation: RequestOperation {
     
     let request = LogoutRequest()
+    
+    override init() {
+        super.init()
+        
+        requiresAuthorization = false
+    }
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )

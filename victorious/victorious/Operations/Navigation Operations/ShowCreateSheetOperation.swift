@@ -38,10 +38,7 @@ import UIKit
                 self.originViewController.presentViewController(createSheet, animated: true, completion: nil)
             }
             else {
-                let message = NSLocalizedString( "GenericFailMessage", comment:"" )
-                let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
-                alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment:""), style: .Cancel, handler: nil) )
-                self.originViewController.presentViewController( alertController, animated: true, completion: nil)
+                self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment:"" ))
                 self.finishedExecuting()
             }
         }

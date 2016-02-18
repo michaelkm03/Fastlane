@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class VComment;
+@class VComment, VDependencyManager;
 
 @interface VCommentTextView : UITextView
 
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VEditCommentViewController : UIViewController <VSimpleModalTransitionPresentedViewController>
 
-+ (VEditCommentViewController *)instantiateFromStoryboardWithComment:(VComment *)comment;
++ (VEditCommentViewController *)newWithComment:(VComment *)comment dependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (weak, nonatomic) IBOutlet UIView *modalContainer;
 @property (weak, nonatomic) IBOutlet UIView *backgroundScreen;

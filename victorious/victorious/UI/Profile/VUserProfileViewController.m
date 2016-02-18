@@ -502,16 +502,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return stream;
 }
 
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
-    
-    if ( self.streamDataSource.count > 0 )
-    {
-        [self shrinkHeaderAnimated:YES];
-    }
-}
-
 - (NSString *)title
 {
     if ( [self isDisplayingFloatingProfileHeader] )
@@ -821,6 +811,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reselected
 {
     [self floatingViewSelected:nil];
+}
+
+#pragma mark - VPaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    [super paginatedDataSource:paginatedDataSource didUpdateVisibleItemsFrom:oldValue to:newValue];
+    
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [super paginatedDataSource:paginatedDataSource didReceiveError:error];
 }
 
 @end

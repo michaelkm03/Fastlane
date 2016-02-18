@@ -131,12 +131,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtx-Nu-lyk" userLabel="Bottom Info View">
                             <rect key="frame" x="0.0" y="373" width="320" height="90"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottomShade" translatesAutoresizingMaskIntoConstraints="NO" id="h5x-Gl-qu7">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="90" id="5Bq-0t-ifw"/>
-                                    </constraints>
-                                </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="259" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-BR-Oom" userLabel="Info Label">
                                     <rect key="frame" x="31" y="12" width="259" height="65"/>
                                     <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis accumsan arcu, ut sagittis metus accumsan ut. Aliquam enim diam, scelerisque ut neque eget, ultrices laoreet orci. Sed tincidunt est odio, et egestas augue maximus in. </string>
@@ -147,12 +141,9 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="h5x-Gl-qu7" firstAttribute="leading" secondItem="wtx-Nu-lyk" secondAttribute="leading" id="F4f-Q0-NL2"/>
-                                <constraint firstAttribute="bottom" secondItem="h5x-Gl-qu7" secondAttribute="bottom" id="Lxc-Ie-mxm"/>
                                 <constraint firstItem="hgn-BR-Oom" firstAttribute="leading" secondItem="wtx-Nu-lyk" secondAttribute="leading" constant="31" id="Rmh-2c-Q1h"/>
                                 <constraint firstAttribute="bottom" secondItem="hgn-BR-Oom" secondAttribute="bottom" constant="13" id="jaM-oe-e6W"/>
                                 <constraint firstAttribute="trailing" secondItem="hgn-BR-Oom" secondAttribute="trailing" constant="30" id="nFH-or-DoP"/>
-                                <constraint firstAttribute="trailing" secondItem="h5x-Gl-qu7" secondAttribute="trailing" id="qmH-iU-3WO"/>
                                 <constraint firstAttribute="height" constant="90" id="rXu-xc-vxj"/>
                                 <constraint firstItem="hgn-BR-Oom" firstAttribute="top" secondItem="wtx-Nu-lyk" secondAttribute="top" constant="12" id="rjk-bm-UpA"/>
                             </constraints>
@@ -236,7 +227,4 @@
             </connections>
         </view>
     </objects>
-    <resources>
-        <image name="bottomShade" width="320" height="86"/>
-    </resources>
 </document>

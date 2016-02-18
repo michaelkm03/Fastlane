@@ -21,7 +21,6 @@
 #import "VComment+Fetcher.h"
 #import "VCommentAlertHelper.h"
 #import "VCommentTextAndMediaView.h"
-#import "VContentAlertHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
 #import "VContentPollBallotCell.h"
@@ -1345,7 +1344,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)editComment:(VComment *)comment
 {
-    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    VEditCommentViewController *editViewController = [VEditCommentViewController newWithComment:comment dependencyManager:self.dependencyManager];
     editViewController.transitioningDelegate = self.modalTransitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
