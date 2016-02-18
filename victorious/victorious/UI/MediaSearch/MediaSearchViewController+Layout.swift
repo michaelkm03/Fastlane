@@ -88,7 +88,7 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
     
     private func shouldShowFooter( section: Int ) -> Bool {
         let numSections = collectionView.numberOfSections()
-        let output = numSections > 1 && self.isLastSection(section) && !self.dataSourceAdapter.hasLoadedLastPage
+        let output = numSections > 1 && self.isLastSection(section)
         return output
     }
     

@@ -14,8 +14,6 @@ import VictoriousIOSSDK
 /// or collection view.
 @objc protocol PaginatedDataSourceType: class {
     
-    var hasLoadedLastPage: Bool { get }
-    
     var delegate: VPaginatedDataSourceDelegate? { set get }
     
     /// The current state, which should be represented any UI

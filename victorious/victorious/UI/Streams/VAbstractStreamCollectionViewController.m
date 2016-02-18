@@ -28,7 +28,6 @@
 @property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
-@property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
 
 @property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
@@ -285,14 +284,7 @@
     [self loadPage:VPageTypeFirst completion:^
      {
          [self.refreshControl endRefreshing];
-         [self updateRowCount];
      }];
-}
-
-- (void)updateRowCount
-{
-    const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
-    self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
@@ -343,55 +335,13 @@
 
 #pragma mark - Bottom activity indicator footer
 
-- (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
-                 inCollectionView:(UICollectionView *)collectionView
-                      atIndexPath:(NSIndexPath *)indexPath
-{
-    const NSUInteger currentCount = [self.collectionView numberOfItemsInSection:indexPath.section];
-    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection && self.previousNumberOfRowsInStreamSection > 0;
-    const BOOL isFirstRowOfNewPage = indexPath.row == (NSInteger) self.previousNumberOfRowsInStreamSection;
-    if ( newPageDidLoad && isFirstRowOfNewPage )
-    {
-        const CGFloat translationY = [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds].height;
-        cell.transform = CGAffineTransformMakeTranslation( 0.0f, translationY );
-        [UIView animateWithDuration:0.5f
-                              delay:0.0f
-             usingSpringWithDamping:0.9f
-              initialSpringVelocity:0.2f
-                            options:kNilOptions
-                         animations:^
-         {
-             cell.transform = CGAffineTransformIdentity;
-         }
-                         completion:nil];
-        
-        self.previousNumberOfRowsInStreamSection = currentCount;
-    }
-}
-
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = !self.streamDataSource.hasLoadedLastPage;
-    const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
-    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
-    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
-}
-
-- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
-{
-    return [self.collectionView numberOfItemsInSection:section] > 1;
-}
-
-- (BOOL)shouldAnimateActivityViewFooter
-{
-    // Once this property is read as YES, it automatically returns to NO
-    if ( _shouldAnimateActivityViewFooter )
-    {
-        _shouldAnimateActivityViewFooter = NO;
-        return YES;
-    }
-    
-    return NO;
+    const BOOL isLoading = self.streamDataSource.isLoading;
+    const BOOL isLastVisibleSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
+    const BOOL hasOneOrMoreItems = [self.collectionView numberOfItemsInSection:section] > 0;
+    const BOOL shouldDisplayActivityViewFooter = isLastVisibleSection && isLoading && hasOneOrMoreItems;
+    return shouldDisplayActivityViewFooter;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -421,17 +371,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self shouldAnimateActivityViewFooter] && [view isKindOfClass:[VFooterActivityIndicatorView class]] )
+    if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
     {
         [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
-    }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
-    {
-        [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
     }
 }
 
@@ -439,21 +381,19 @@
 
 - (void)shouldLoadNextPage
 {
-    if ( self.collectionView.visibleCells.count == 0 ||
-         self.streamDataSource.visibleItems.count == 0 ||
-         self.streamDataSource.isLoading )
+    if ( self.streamDataSource.isLoading )
     {
         return;
     }
     
-    self.shouldAnimateActivityViewFooter = YES;
-    [self updateRowCount];
     __weak typeof(self) welf = self;
     [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
      {
          [welf.collectionView flashScrollIndicators];
          [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }];
+    
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
