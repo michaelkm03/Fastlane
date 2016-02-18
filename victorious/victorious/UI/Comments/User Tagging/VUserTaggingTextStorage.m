@@ -41,12 +41,18 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 
 @implementation VUserTaggingTextStorage
 
+- (instancetype)init
+{
+    return [self initWithTextView:nil defaultFont:nil taggingDelegate:nil dependencyManager:nil];
+}
+
 - (instancetype)initWithTextView:(UITextView *)textView
                      defaultFont:(UIFont *)defaultFont
                  taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
                dependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSAssert(defaultFont != nil, @"DefaultFont must not be nil");
+    NSParameterAssert(defaultFont != nil);
+    NSParameterAssert(dependencyManager != nil);
     
     self = [super init];
     if ( self != nil )

@@ -334,7 +334,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VCommentCellUtilitiesDelegate
     
     func editComment(comment: VComment) {
-        let editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
+        let editViewController = VEditCommentViewController.newWithComment(comment, dependencyManager: self.dependencyManager)
         editViewController.transitioningDelegate = modalTransitioningDelegate
         editViewController.delegate = self
         self.presentViewController(editViewController, animated: true, completion: nil)

@@ -17,10 +17,13 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     
     private lazy var dataSource: UserSearchDataSource = {
-        return UserSearchDataSource(dependencyManager: self.dependencyManager)
+        guard let dependencyManager = self.dependencyManager else {
+            fatalError( "UserTaggingViewController is missing a dependency manager." )
+        }
+        return UserSearchDataSource(dependencyManager: dependencyManager)
     }()
     
-    private var dependencyManager: VDependencyManager!
+    private var dependencyManager: VDependencyManager?
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> UserTaggingViewController {
         let viewController: UserTaggingViewController = UserTaggingViewController.v_initialViewControllerFromStoryboard()
