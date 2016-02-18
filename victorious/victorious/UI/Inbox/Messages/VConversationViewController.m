@@ -106,7 +106,6 @@
     [super viewDidAppear:animated];
     
     [self beginLiveUpdates];
-    [self onUpdate];
     
     // Update cell focus
     [self.focusHelper updateFocus];
