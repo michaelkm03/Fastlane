@@ -13,10 +13,10 @@ import VictoriousCommon
 class MainRequestExecutor: RequestExecutorType {
     
     /// An error stored from the last request that was executed.  It is always populated
-    /// regardless of whether or not and `RequestErrorHandler` handled it.
+    /// regardless of whether or not an `RequestErrorHandler` handled it.
     private(set) var error: NSError?
     
-    /// An array `RequestErrorHandler` impementations tgat will handle errors when requests are executed.
+    /// An array of `RequestErrorHandler` objects that will handle errors when requests are executed.
     /// Calling code may append, filter or anything else to customize the behavior.  When an error occurs,
     /// `MainRequestExecutor` iterates through error handlers until it finds one that can
     /// handle the error, then returns so that each error is handler by only one handler.
