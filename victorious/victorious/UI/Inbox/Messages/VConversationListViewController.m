@@ -115,6 +115,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
+    [self.refreshControl beginRefreshing];
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,10 +140,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          {
              [self.tableView reloadData];
          }];
-    }
-    else
-    {
-        [self refresh];
     }
     
     self.selectedConversationViewController = nil;
@@ -368,20 +366,23 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         self.queuedConversation = conversation;
     }
-    else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
-    {
-        if ( rootInnerNavigationController.topViewController != detailVC )
-        {
-            [rootInnerNavigationController popToViewController:detailVC animated:animated];
-        }
-    }
     else
     {
-        detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
+        {
+            if ( rootInnerNavigationController.topViewController != detailVC )
+            {
+                [rootInnerNavigationController popToViewController:detailVC animated:animated];
+            }
+        }
+        else
+        {
+            detailVC.messageCountCoordinator = self.messageCountCoordinator;
+            [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        }
+        
+        self.selectedConversationViewController = detailVC;
     }
-    
-    self.selectedConversationViewController = detailVC;
 }
 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl

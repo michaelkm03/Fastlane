@@ -10,12 +10,18 @@
 
 class TestIMAAdEvent: IMAAdEvent {
     var testType: IMAAdEventType
+    var testAd: TestIMAAd?
+
+    override var ad: IMAAd? {
+        return testAd
+    }
 
     override var type: IMAAdEventType {
         return testType
     }
 
-    init(test: Bool, type: IMAAdEventType) {
+    init(test: Bool, type: IMAAdEventType, ad: TestIMAAd? = nil) {
         testType = type
+        testAd = ad
     }
 }
