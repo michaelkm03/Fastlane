@@ -13,6 +13,5 @@ extension VAdBreak: PersistenceParsable {
         adSystemID = adBreak.adSystemID
         timeout = adBreak.timeout
         adTag = adBreak.adTag
-        cannedAdXML = adBreak.cannedAdXML
     }
 }

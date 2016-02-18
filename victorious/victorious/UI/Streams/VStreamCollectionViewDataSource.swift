@@ -48,20 +48,25 @@ extension VStreamCollectionViewDataSource {
 extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     
     public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        var filteredOldItems = oldValue
+        
         if suppressShelves {
-            let filteredArray = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType == VStreamItemTypeShelf }
-            self.visibleItems = NSOrderedSet(array: filteredArray)
+            filteredOldItems = NSOrderedSet(array: (oldValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf })
+            
+            let filteredNewItems = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf }
+            visibleItems = NSOrderedSet(array: filteredNewItems)
         } else {
-            self.visibleItems = newValue
+            visibleItems = newValue
         }
-        self.delegate?.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
+        
+        delegate?.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: filteredOldItems, to: visibleItems)
     }
     
     public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        self.delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
+        delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
     func unloadStream() {
-        self.paginatedDataSource.unload()
+        paginatedDataSource.unload()
     }
 }

@@ -43,11 +43,6 @@
 @protocol VLoginFlowControllerDelegate <NSObject>
 
 /**
- * The login flow should cancel and dismiss.
- */
-- (void)cancelLoginAndRegistration;
-
-/**
  *  The user wants to proceed to login.
  */
 - (void)selectedLogin;

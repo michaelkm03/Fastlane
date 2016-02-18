@@ -69,7 +69,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -163,7 +163,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateSequence
 {
-    [self.contentCell playAdWithAdBreak:self.viewModel.sequence.adBreak];
     [self.sequencePreviewView showLikeButton:YES];
 }
 
@@ -756,45 +755,35 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
-            self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-            self.contentCell.delegate = self;
-            
-            id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
+
+            ContentCellSetupHelper *setupHelper = [[ContentCellSetupHelper alloc] init];
+            ContentCellSetupResult *result;
             id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
-            [provider setHasRelinquishedPreviewView:YES];
-            VSequencePreviewView *previewView = [provider getPreviewView];
-            
-            if ( previewView == nil )
+            if(provider != nil)
             {
-                // Create a new sequence preview if we haven't been given one from the context
-                previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
-                UIView *superview = [receiver getTargetSuperview];
-                previewView.frame = superview.bounds;
-                [previewView setDependencyManager:self.dependencyManager];
-                [previewView setStreamItem:self.viewModel.sequence];
-                previewView.focusType = VFocusTypeDetail;
-                [superview addSubview:previewView];
-                [superview v_addFitToParentConstraintsToSubview:previewView];
+                result = [setupHelper setupWithContentCell:self.contentCell
+                                       previewViewProvider:provider
+                                                adDelegate:self
+                                            detailDelegate:self
+                                  videoPreviewViewDelegate:self
+                                                   adBreak:self.viewModel.sequence.adBreak];
             }
-            
-            previewView.detailDelegate = self;
-            self.sequencePreviewView = previewView;
-            
-            // Setup relationships for polls
-            if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
+            else
             {
-                self.pollAnswerReceiver = (id<VPollResultReceiver>)previewView;
+                result = [setupHelper setupWithContentCell:self.contentCell
+                                                adDelegate:self
+                                            detailDelegate:self
+                                  videoPreviewViewDelegate:self
+                                                   adBreak:self.viewModel.sequence.adBreak
+                                                  sequence:self.viewModel.context.sequence
+                                         dependencyManager:self.dependencyManager];
             }
-            
-            // Setup relationships for video playback
-            if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
+            self.sequencePreviewView = result.previewView;
+            self.videoPlayer = result.videoPlayer;
+            if ( [self.sequencePreviewView conformsToProtocol:@protocol(VPollResultReceiver)] )
             {
-                id<VVideoPreviewView> videoPreviewView = (id<VVideoPreviewView>)previewView;
-                self.videoPlayer = videoPreviewView.videoPlayer;
-                videoPreviewView.delegate = self;
-                [receiver setVideoPlayer:self.videoPlayer];
+                self.pollAnswerReceiver = (id<VPollResultReceiver>)self.sequencePreviewView;
             }
-            
             return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
@@ -1597,17 +1586,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.videoPlayerDidFinishPlayingOnce = YES;
 }
 
-#pragma mark - VContentCellDelegate
+#pragma mark - AdLifecycleDelegate
 
-- (void)contentCellDidEndPlayingAd:(VContentCell *)cell
+- (void)adHadError:(NSError *)error
 {
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    VLog(@"Failed had an error, recovering to the normal state");
+    [self enableCommentsAndExperienceEnhancers];
 }
 
-- (void)contentCellDidStartPlayingAd:(VContentCell *)cell
+- (void)adDidFinish
+{
+    [self enableCommentsAndExperienceEnhancers];
+}
+
+- (void)adDidStart
 {
     self.closeButton.alpha = 1.0f;
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    self.textEntryView.userInteractionEnabled = NO;
+    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    }];
+}
+
+- (void)enableCommentsAndExperienceEnhancers
+{
+    self.textEntryView.userInteractionEnabled = true;
+    [UIView animateWithDuration:kExperienceEnhancerFadeAnimationDuration animations:^{
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    }];
 }
 
 #pragma mark - Memory Warning
