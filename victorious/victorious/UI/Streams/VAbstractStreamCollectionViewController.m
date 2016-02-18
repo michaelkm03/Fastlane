@@ -441,7 +441,8 @@
 {
     if ( self.collectionView.visibleCells.count == 0 ||
          self.streamDataSource.visibleItems.count == 0 ||
-         self.streamDataSource.isLoading )
+         self.streamDataSource.isLoading ||
+         self.targetStreamItem != nil )
     {
         return;
     }

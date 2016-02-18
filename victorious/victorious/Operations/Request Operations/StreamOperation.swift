@@ -91,8 +91,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             guard let stream = context.objectWithID(preloadedStreamObjectID) as? VStream else {
                 return []
             }
-            let paginationPredicate = self.request.paginator.paginatorPredicate
-            let persistentStreamItemPointers = stream.streamItemPointers.filteredOrderedSetUsingPredicate( paginationPredicate ).array
+            let persistentStreamItemPointers = stream.streamItemPointers.array
             let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
             
             return persistentStreamItemIDs.flatMap {
