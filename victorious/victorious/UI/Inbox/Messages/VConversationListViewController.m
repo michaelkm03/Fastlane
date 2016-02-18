@@ -114,9 +114,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
-    
-    [self.refreshControl beginRefreshing];
-    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,6 +137,12 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          {
              [self.tableView reloadData];
          }];
+    }
+    else if ( self.dataSource.visibleItems.count == 0 )
+    {
+        // Refresh and show refresh control since we are loading for the first time in a new session
+        [self.refreshControl beginRefreshing];
+        [self refresh];
     }
     
     self.selectedConversationViewController = nil;
