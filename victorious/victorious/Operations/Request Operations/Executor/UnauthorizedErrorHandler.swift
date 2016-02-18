@@ -11,8 +11,6 @@ import Foundation
 /// Catches 401 errors and logs out the current user to force a login, i.e. reauthorization.
 class UnauthorizedErrorHandler: RequestErrorHandler {
     
-    let priority: Int = 1000
-    
     func handleError(error: NSError) -> Bool {
         if error.code == 401 && VCurrentUser.user() != nil {
             LogoutOperation().queue()

@@ -12,11 +12,9 @@ import Foundation
 class MockErrorHandler: NSObject, RequestErrorHandler {
     
     let code: Int
-    let priority: Int
     
-    init(code: Int, priority: Int) {
+    init(code: Int) {
         self.code = code
-        self.priority = priority
     }
     
     private(set) var errorsHandled = [NSError]()

@@ -12,22 +12,25 @@ import VictoriousCommon
 
 class MainRequestExecutor: RequestExecutorType {
     
-    var error: NSError? {
-        didSet {
-            if let error = error {
-                self.handleError( error )
-            }
-        }
-    }
+    /// An error stored from the last request that was executed.  It is always populated
+    /// regardless of whether or not and `RequestErrorHandler` handled it.
+    private(set) var error: NSError?
     
+    /// An array `RequestErrorHandler` impementations tgat will handle errors when requests are executed.
+    /// Calling code may append, filter or anything else to customize the behavior.  When an error occurs,
+    /// `MainRequestExecutor` iterates through error handlers until it finds one that can
+    /// handle the error, then returns so that each error is handler by only one handler.
     var errorHandlers = [RequestErrorHandler]()
-    func handleError(error: NSError) {
-        for handler in errorHandlers.sort({ $0.priority > $1.priority }) {
+    
+    private func handleError(error: NSError) {
+        for handler in errorHandlers {
             if handler.handleError(error) {
                 return
             }
         }
     }
+    
+    static private var count: Int = 0
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
@@ -52,9 +55,10 @@ class MainRequestExecutor: RequestExecutorType {
             callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
                     
-                    if let error = error as? RequestErrorType {
-                        let nsError = NSError( error )
+                    if (MainRequestExecutor.count++) % 3 == 0 && MainRequestExecutor.count > 15 {
+                        let nsError = NSError(domain:"", code:(arc4random() % 10 > 8) ? 401 : 999, userInfo:nil)
                         self.error = nsError
+                        self.handleError( nsError )
                         if let onError = onError {
                             onError( nsError ) {
                                 dispatch_semaphore_signal( executeSemphore )

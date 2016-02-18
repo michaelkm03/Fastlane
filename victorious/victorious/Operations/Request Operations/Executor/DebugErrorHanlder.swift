@@ -13,8 +13,6 @@ import Foundation
 /// to take precedence.
 class DebugErrorHanlder: RequestErrorHandler {
     
-    let priority: Int = 0
-    
     let requestIdentifier: String
     
     init(requestIdentifier: String) {
