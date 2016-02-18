@@ -628,7 +628,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             context.placeholderImage = image
             self.contentPresenter.presentContentView(context: context)
         }
-            // Navigating to a stream
+        // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
