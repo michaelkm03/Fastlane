@@ -276,7 +276,6 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     // MARK: - VPaginatedDataSourceDelegate
     
-    
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         
         // To update whether the bottom activity indicator footer shows
