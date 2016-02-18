@@ -51,7 +51,7 @@ extension Asset {
         duration                = json["duration"].double
         loop                    = json["loop"].v_boolFromAnyValue
         mimeType                = json["mime_type"].string
-        playerControlsDisabled  = json["player_controls_disabled"].bool
+        playerControlsDisabled  = json["player_controls_disabled"].v_boolFromAnyValue
         remoteContentID         = json["remote_content_id"].string
         remotePlayback          = json["remote_playback"].v_boolFromAnyValue
         remoteSource            = json["remote_source"].string
