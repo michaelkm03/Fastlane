@@ -30,8 +30,6 @@ class MainRequestExecutor: RequestExecutorType {
         }
     }
     
-    static private var count: Int = 0
-    
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     
@@ -55,8 +53,8 @@ class MainRequestExecutor: RequestExecutorType {
             callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
                     
-                    if (MainRequestExecutor.count++) % 3 == 0 && MainRequestExecutor.count > 15 {
-                        let nsError = NSError(domain:"", code:(arc4random() % 10 > 8) ? 401 : 999, userInfo:nil)
+                    if let error = error as? RequestErrorType {
+                        let nsError = NSError(error)
                         self.error = nsError
                         self.handleError( nsError )
                         if let onError = onError {
