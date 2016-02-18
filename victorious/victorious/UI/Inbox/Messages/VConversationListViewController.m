@@ -319,6 +319,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
+         self.shouldAnimateDataSourceChanges = YES;
          [self.dataSource removeDeletedItems];
          [self removeCachedViewControllerForUserId:userRemoteId];
          [self updateBadges];
@@ -428,7 +429,9 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     
     self.shouldAnimateDataSourceChanges = NO;
-    [self.dataSource loadConversations:VPageTypeNext completion:nil];
+    [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *error){
+        self.shouldAnimateDataSourceChanges = YES;
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
