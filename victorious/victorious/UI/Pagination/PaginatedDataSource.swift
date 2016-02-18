@@ -82,8 +82,14 @@ import VictoriousIOSSDK
     }
     
     func removeDeletedItems() {
+        let oldCount = self.visibleItems.count
         self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
-        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+        if oldCount > 0 && self.visibleItems == 0 {
+            // Setting state to `NoResults` will show a no content view, so we shouldonly
+            // do that if there was content previously.  Otherwise, the view could simply
+            // not be finished loading yet.
+            self.state = .NoResults
+        }
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
