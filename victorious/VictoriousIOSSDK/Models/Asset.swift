@@ -10,27 +10,27 @@ import Foundation
 import SwiftyJSON
 
 public enum AssetType: String {
-    case Media = "media"
-    case Path = "path"
-    case Text = "text"
-    case URL = "url"
+    case Media  = "media"
+    case Path   = "path"
+    case Text   = "text"
+    case URL    = "url"
 }
 
 public struct Asset {
     public let assetID: Int
-    public let audioMuted: Bool
+    public let audioMuted: Bool?
     public let backgroundColor: String?
     public let backgroundImageUrl: String?
     public let data: String
-    public let duration: Double
-    public let loop: Bool
+    public let duration: Double?
+    public let loop: Bool?
     public let mimeType: String?
-    public let playerControlsDisabled: Bool
+    public let playerControlsDisabled: Bool?
     public let remoteContentID: String?
-    public let remotePlayback: Bool
+    public let remotePlayback: Bool?
     public let remoteSource: String?
-    public let speed: Double
-    public let streamAutoplay: Bool
+    public let speed: Double?
+    public let streamAutoplay: Bool?
     public let type: AssetType
 }
 
@@ -45,17 +45,17 @@ extension Asset {
         self.data               = data
         self.assetID            = assetID
         
-        audioMuted              = json["audio_muted"].bool ?? false
+        audioMuted              = json["audio_muted"].v_boolFromAnyValue
         backgroundColor         = json["background_color"].string
         backgroundImageUrl      = json["background_image"].string
-        duration                = json["duration"].double ?? 0.0
-        loop                    = json["loop"].bool ?? false
+        duration                = json["duration"].double
+        loop                    = json["loop"].v_boolFromAnyValue
         mimeType                = json["mime_type"].string
-        playerControlsDisabled  = json["player_controls_disabled"].bool ?? false
+        playerControlsDisabled  = json["player_controls_disabled"].bool
         remoteContentID         = json["remote_content_id"].string
-        remotePlayback          = json["remote_playback"].bool ?? false
+        remotePlayback          = json["remote_playback"].v_boolFromAnyValue
         remoteSource            = json["remote_source"].string
-        speed                   = json["speed"].double ?? 1.0
-        streamAutoplay          = json["stream_autoplay"].bool ?? false
+        speed                   = json["speed"].double
+        streamAutoplay          = json["stream_autoplay"].v_boolFromAnyValue
     }
 }
