@@ -11,30 +11,30 @@ import VictoriousIOSSDK
 
 class DeleteConversationOperation: FetcherOperation {
     
-    let conversationID: Int
+    let userRemoteID: Int
     
-    init(conversationID: Int) {
-        self.conversationID = conversationID
-        super.init()
-        
-        let remoteOperation = DeleteConversationRemoteOperation(conversationID: conversationID)
-        remoteOperation.queueAfter( self )
+    init(userRemoteID: Int) {
+        self.userRemoteID = userRemoteID
     }
     
     override func main() {
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.conversationID ]
+        let remoteID: Int? = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            let uniqueElements = [ "user.remoteId" : self.userRemoteID ]
             guard let conversation: VConversation = context.v_findObjects( uniqueElements ).first else {
-                return
+                return nil
             }
+            let remoteId: Int? = conversation.remoteId?.integerValue
             context.deleteObject( conversation )
-            context.v_save()
+            context.v_saveAndBubbleToParentContext()
+            
+            return remoteId
+        }
+        if let remoteID = remoteID {
+            let remoteOperation = DeleteConversationRemoteOperation(conversationID: remoteID)
+            remoteOperation.queueAfter( self )
         }
         
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            context.v_save()
-        }
     }
 }
 

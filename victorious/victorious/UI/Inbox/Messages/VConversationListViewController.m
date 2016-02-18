@@ -316,8 +316,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
     [self.messageCountCoordinator markConversationRead:conversation];
     NSNumber *userRemoteId = conversation.user.remoteId;
-    NSInteger conversationID = conversation.remoteId.integerValue;
-    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
+    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.dataSource removeDeletedItems];
