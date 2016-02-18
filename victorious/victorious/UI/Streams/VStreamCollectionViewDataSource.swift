@@ -43,6 +43,10 @@ extension VStreamCollectionViewDataSource {
     public func removeStreamItem(streamItem: VStreamItem) {
         RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queue()
     }
+    
+    public func streamItemsWithoutShelves(streamItems: [VStreamItem]) -> NSOrderedSet {
+        return NSOrderedSet(array: streamItems.filter { $0.itemType != VStreamItemTypeShelf })
+    }
 }
 
 extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
@@ -51,13 +55,9 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         var filteredOldItems = oldValue
         
         if suppressShelves {
-            filteredOldItems = NSOrderedSet(array: (oldValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf })
-            
-            let filteredNewItems = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf }
-            visibleItems = NSOrderedSet(array: filteredNewItems)
-        } else {
-            visibleItems = newValue
+            filteredOldItems = streamItemsWithoutShelves(oldValue.array as? [VStreamItem] ?? [])
         }
+        visibleItems = newValue
         
         delegate?.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: filteredOldItems, to: visibleItems)
     }
