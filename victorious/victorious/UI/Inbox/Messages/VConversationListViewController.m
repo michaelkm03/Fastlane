@@ -368,20 +368,23 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         self.queuedConversation = conversation;
     }
-    else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
-    {
-        if ( rootInnerNavigationController.topViewController != detailVC )
-        {
-            [rootInnerNavigationController popToViewController:detailVC animated:animated];
-        }
-    }
     else
     {
-        detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
+        {
+            if ( rootInnerNavigationController.topViewController != detailVC )
+            {
+                [rootInnerNavigationController popToViewController:detailVC animated:animated];
+            }
+        }
+        else
+        {
+            detailVC.messageCountCoordinator = self.messageCountCoordinator;
+            [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        }
+        
+        self.selectedConversationViewController = detailVC;
     }
-    
-    self.selectedConversationViewController = detailVC;
 }
 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl
