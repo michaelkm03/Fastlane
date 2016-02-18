@@ -1344,7 +1344,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)editComment:(VComment *)comment
 {
-    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    VEditCommentViewController *editViewController = [VEditCommentViewController newWithComment:comment dependencyManager:self.dependencyManager];
     editViewController.transitioningDelegate = self.modalTransitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
