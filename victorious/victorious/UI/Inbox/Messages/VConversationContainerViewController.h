@@ -12,9 +12,16 @@
 
 @class VDependencyManager, VUnreadMessageCountCoordinator, VConversation, ConversationDataSource;
 
+@protocol VConversationContainerViewControllerDelegate <NSObject>
+
+- (void)conversationFlaggedWithUserId:(NSNumber *)otherUserId;
+
+@end
+
 @interface VConversationContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies, VAuthorizationContextProvider>
 
 @property (nonatomic, strong) VConversation *conversation;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (nonatomic, weak) id delegate;
 
 @end

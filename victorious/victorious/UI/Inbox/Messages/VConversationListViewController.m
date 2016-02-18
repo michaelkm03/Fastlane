@@ -32,7 +32,7 @@
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 static const CGFloat kActivityFooterHeight = 50.0f;
 
-@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate>
+@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate, VConversationContainerViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -256,6 +256,13 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
+#pragma mark - VConversationContainerViewControllerDelegate
+
+- (void)conversationFlaggedWithUserId:(NSNumber *)otherUserId
+{
+    [self removeCachedViewControllerForUserId:otherUserId];
+}
+
 #pragma mark - Message View Controller Cache
 
 - (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user
@@ -280,6 +287,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
         NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
         VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
         messageViewController = [VConversationContainerViewController newWithDependencyManager:childDependencyManager];
+        messageViewController.delegate = self;
         self.messageViewControllers[ user.remoteId ] = messageViewController;
     }
     
