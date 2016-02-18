@@ -200,7 +200,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 - (void)clearBackgroundImage
 {
     UIImage *launchScreenImage = [[VLaunchScreenProvider launchImage] scaleToSize:[UIScreen mainScreen].bounds.size];
-    
     [self.backgroundImageView setBlurredImageWithClearImage:launchScreenImage
                                            placeholderImage:nil
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
