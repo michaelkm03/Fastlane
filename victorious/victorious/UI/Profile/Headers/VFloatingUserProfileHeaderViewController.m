@@ -143,7 +143,8 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:self.view.bounds.size];
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
-        [self.backgroundImageView setBlurredImageWithClearImage:[VLaunchScreenProvider launchImage]
+        UIImage *launchScreenImage = [[VLaunchScreenProvider launchImage] scaleToSize:[UIScreen mainScreen].bounds.size];
+        [self.backgroundImageView setBlurredImageWithClearImage:launchScreenImage
                                                placeholderImage:nil
                                                       tintColor:[UIColor colorWithWhite:0.0 alpha:kBlurredWhiteAlpha]];
     }
