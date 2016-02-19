@@ -296,10 +296,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowingRelationship
 {
-    if ( self.user.remoteId == nil && self.user.remoteId.integerValue <= 0 )
-    {
-        return;
-    }
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
     [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
@@ -463,7 +459,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     }
     
-    if ( user == _user )
+    if ( user == _user || user == nil )
     {
         return;
     }
