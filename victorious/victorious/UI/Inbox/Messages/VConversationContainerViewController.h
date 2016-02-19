@@ -14,13 +14,8 @@
 
 @protocol VConversationContainerViewControllerDelegate <NSObject>
 
-- (void)conversationFlaggedWithUserId:(NSNumber *)otherUserId;
-
-/*
- * This method is called since ConversationContainerViewController may be popped before the message actually finishes sending and updating.
- * Therefore, in that case, the conversation list will know to update this conversation.
- */
-- (void)conversationDidFinishSendingWithUserId:(NSNumber *)otherUserId;
+- (void)onConversationFlagged:(VConversation *)conversation;
+- (void)onConversationUpdated:(VConversation *)conversation;
 
 @end
 

@@ -31,8 +31,7 @@ public extension VConversationContainerViewController {
         )
         CreateMessageOperation(creationParameters: parameters).queue() { results in
             completion?()
-            // Let conversation list view controller know to refresh this one
-            self.delegate?.conversationDidFinishSendingWithUserId(recipient.remoteId)
+            self.delegate?.onConversationUpdated( conversation )
         }
     }
 }

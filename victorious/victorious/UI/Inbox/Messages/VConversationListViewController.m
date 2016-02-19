@@ -247,12 +247,12 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - VConversationContainerViewControllerDelegate
 
-- (void)conversationFlaggedWithUserId:(NSNumber *)otherUserId
+- (void)onConversationFlagged:(VConversation *)conversation
 {
-    [self removeCachedViewControllerForUserId:otherUserId];
+    [self removeCachedViewControllerForUserId:conversation.user.remoteId];
 }
 
-- (void)conversationDidFinishSendingWithUserId:(NSNumber *)otherUserId
+- (void)onConversationUpdated:(VConversation *)conversation
 {
     [self.dataSource redocorateVisibleCells:self.tableView];
 }

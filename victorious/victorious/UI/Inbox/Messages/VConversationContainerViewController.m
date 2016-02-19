@@ -123,7 +123,7 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self.delegate conversationFlaggedWithUserId:self.conversation.user.remoteId];
+    [self.delegate onConversationFlagged:self.conversation];
     [self.innerViewController onConversationFlagged];
     
     NSInteger conversationID = self.conversation.remoteId.integerValue;
