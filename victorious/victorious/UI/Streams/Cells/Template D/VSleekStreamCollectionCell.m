@@ -332,11 +332,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:_sequence]];
 }
 
-- (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
-{
-    return self.previewContainerHeightConstraint.multiplier != 1.0f / [sequence previewAssetAspectRatio];
-}
-
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
     const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
@@ -368,9 +363,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)updateConstraints
 {
     // Add new height constraint for preview container to account for aspect ratio of preview asset
-    if ( [self needsAspectRatioUpdateForSequence:self.sequence] )
+    const CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
+    const BOOL needsAspectRatioUpdate = self.previewContainerHeightConstraint.multiplier != 1.0f / aspectRatio;
+    if ( needsAspectRatioUpdate )
     {
-        CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
         [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
         NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
                                                                          attribute:NSLayoutAttributeHeight
