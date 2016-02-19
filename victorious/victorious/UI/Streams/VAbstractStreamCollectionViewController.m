@@ -394,7 +394,10 @@
          [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }];
     
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [self.collectionView performBatchUpdates:^
+     {
+         [self.collectionView.collectionViewLayout invalidateLayout];
+     } completion:nil];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
