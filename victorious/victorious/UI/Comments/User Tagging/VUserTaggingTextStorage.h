@@ -30,7 +30,7 @@
 - (instancetype)initWithTextView:(UITextView *)textView
                      defaultFont:(UIFont *)defaultFont
                  taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
-               dependencyManager:(VDependencyManager *)dependencyManager;
+               dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
  Create a database-formatted version of the current attributed string

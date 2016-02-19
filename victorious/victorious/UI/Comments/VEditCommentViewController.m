@@ -42,6 +42,7 @@ static const CGFloat kSearchTableAnimationDuration      = 0.3f;
 @property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, assign) BOOL isDismissing;
 @property (nonatomic, strong) UIViewController *searchViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (strong, nonatomic) VComment *comment;
 
@@ -49,11 +50,12 @@ static const CGFloat kSearchTableAnimationDuration      = 0.3f;
 
 @implementation VEditCommentViewController
 
-+ (VEditCommentViewController *)instantiateFromStoryboardWithComment:(VComment *)comment
++ (VEditCommentViewController *)newWithComment:(VComment *)comment dependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"EditComment" bundle:nil];
     VEditCommentViewController *viewController = (VEditCommentViewController *)[storyboard instantiateInitialViewController];
     viewController.comment = comment;
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -72,12 +74,12 @@ static const CGFloat kSearchTableAnimationDuration      = 0.3f;
     
     UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     
-    /*
-     The custom textStorage screws up the delegate unless the textView is inited
-        programmatically with the proper layoutManager and textContainer,
-        so we have to do the little dance below
-     */
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self dependencyManager:nil];
+    
+    // The custom textStorage screws up the delegate unless the textView is inited
+    // programmatically with the proper layoutManager and textContainer,
+    // so we have to do the little dance below
+    
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];

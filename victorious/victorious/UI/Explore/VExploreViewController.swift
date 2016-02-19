@@ -445,6 +445,10 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.reloadData()
     }
     
+    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
+    }
+    
     // MARK: - Private
     
     private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {

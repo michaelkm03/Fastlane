@@ -291,21 +291,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                  if (error.code != kVUserBannedError)
                  {
                      NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
-                     
                      if ( error.code == kVUserOrPasswordInvalidError )
                      {
                          message = NSLocalizedString(@"Invalid email address or password", @"");
                      }
                      
-                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                              message:message
-                                                                                       preferredStyle:UIAlertControllerStyleAlert];
-                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                         style:UIAlertActionStyleCancel
-                                                                       handler:^(UIAlertAction *_Nonnull action) {
-                                                                           [flowControllerResponder LoginErrorAlertAcknowledged];
-                                                                       }]];
-                     [self.navigationController presentViewController:alertController animated:YES completion:nil];
+                     [self v_showErrorWithTitle:NSLocalizedString(@"LoginFail", @"") message:message];
                  }
              }
          }];

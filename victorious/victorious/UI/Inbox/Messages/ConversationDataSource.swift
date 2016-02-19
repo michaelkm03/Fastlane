@@ -113,6 +113,10 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.delegate?.paginatedDataSource( paginatedDataSource, didReceiveError: error)
+    }
+    
     // MARK: - UITableViewDataSource
     
     func registerCells( tableView: UITableView ) {

@@ -69,7 +69,13 @@ import VictoriousIOSSDK
         }
         let operation: FetcherOperation = createOperation()
         operation.queue() { (results, error) in
-            if let results = results where error == nil {
+            
+            if let error = error {
+                self.delegate?.paginatedDataSource(self, didReceiveError: error)
+                self.state = .Error
+                completion?([])
+                
+            } else if let results = results {
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 self.currentLocalOperation = nil
@@ -80,8 +86,14 @@ import VictoriousIOSSDK
     }
     
     func removeDeletedItems() {
+        let oldCount = self.visibleItems.count
         self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
-        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+        if oldCount > 0 && self.visibleItems == 0 {
+            // Setting state to `NoResults` will show a no content view, so we shouldonly
+            // do that if there was content previously.  Otherwise, the view could simply
+            // not be finished loading yet.
+            self.state = .NoResults
+        }
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
@@ -100,14 +112,21 @@ import VictoriousIOSSDK
         self.state = .Loading
         requestOperation.queue() { error in
             
-            let results = operation.results ?? []
-            operation.results = results
-            let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-            if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+            if let error = error {
+                self.delegate?.paginatedDataSource(self, didReceiveError: error)
+                self.state = .Error
+                completion?( [], error )
+            
+            } else {
+                let results = operation.results ?? []
+                operation.results = results
+                let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
+                if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
+                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                }
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                completion?( newResults, error )
             }
-            self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-            completion?( newResults, error )
         }
     }
     
@@ -149,19 +168,19 @@ import VictoriousIOSSDK
         self.state = .Loading
         requestOperation.queue() { error in
             
-            // Fetch local results if we failed because of no network
-            if error == nil {
-                let results = operation.results ?? []
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-                
-            } else {
+            if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
                 self.pagesLoaded.remove( operation.request.paginator.pageNumber )
                 
                 // Return no results
                 operation.results = []
+                self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
+                
+            } else {
+                let results = operation.results ?? []
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
             completion?( operation: operation, error: error )

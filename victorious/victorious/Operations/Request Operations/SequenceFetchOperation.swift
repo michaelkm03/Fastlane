@@ -29,19 +29,18 @@ class SequenceFetchOperation: RequestOperation {
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        let persistentSequenceID: NSManagedObjectID = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : sequence.sequenceID ])
             persistentSequence.populate(fromSourceModel: (sequence, self.streamID) )
             context.v_save()
             
-            let persistentSequenceID = persistentSequence.objectID
-            self.persistentStore.mainContext.v_performBlockAndWait { context in
-                if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
-                    self.result = sequence
-                }
-                completion()
-            }
+            return persistentSequence.objectID
         }
+        
+        persistentStore.mainContext.v_performBlockAndWait { context in
+            self.result = context.objectWithID(persistentSequenceID) as? VSequence
+        }
+        completion()
     }
 }
 

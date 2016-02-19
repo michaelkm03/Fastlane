@@ -55,10 +55,7 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
             
                 var reason: NSString?
                 if !contentViewFactory.canDisplaySequence( sequence, localizedReason: &reason ) {
-                    
-                    let alertController = UIAlertController(title: nil, message: reason as String!, preferredStyle: .Alert )
-                    alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: "" ), style:.Default, handler: nil) )
-                    viewController.presentViewController(alertController, animated:true, completion:nil)
+                    viewController.v_showErrorWithTitle(nil, message: reason as? String)
                 }
                 else if let contentViewController = contentViewFactory.contentViewForContext( context ) {
                     if viewController.presentedViewController != nil {

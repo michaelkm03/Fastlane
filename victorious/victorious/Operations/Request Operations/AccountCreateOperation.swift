@@ -22,6 +22,9 @@ class AccountCreateOperation: RequestOperation {
     init( request: AccountCreateRequest, parameters: AccountCreateParameters) {
         self.parameters = parameters
         self.request = request
+        super.init()
+        
+        requiresAuthorization = false
     }
     
     // MARK: - Operation overrides

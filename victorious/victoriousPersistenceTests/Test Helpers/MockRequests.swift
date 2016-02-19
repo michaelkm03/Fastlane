@@ -18,8 +18,13 @@ struct MockRequest: RequestType {
 }
 
 struct MockErrorRequest: RequestType {
+    let code: Int
+    init(code: Int = 999) {
+        self.code = code
+    }
+    
     let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! )
     func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        throw APIError( localizedDescription: "MockError", code: 999)
+        throw APIError( localizedDescription: "MockError", code: code)
     }
 }
