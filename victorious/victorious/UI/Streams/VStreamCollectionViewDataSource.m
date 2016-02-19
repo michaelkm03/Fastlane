@@ -40,15 +40,6 @@
     return self.paginatedDataSource.isLoading;
 }
 
-- (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems
-{
-    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings)
-    {
-        return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
-    }];
-    return [[NSOrderedSet alloc] initWithArray:[streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate]];
-}
-
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.count || self.count <= (NSUInteger)indexPath.row)

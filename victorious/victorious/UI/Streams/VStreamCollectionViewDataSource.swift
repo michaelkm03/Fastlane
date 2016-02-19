@@ -16,6 +16,7 @@ extension VStreamCollectionViewDataSource {
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
     func loadPage( pageType: VPageType, completion:(NSError?)->()) {
         guard let apiPath = stream.apiPath else {
+            completion(NSError(domain: "StreamLoadingError", code: 1, userInfo: nil))
             return
         }
         self.paginatedDataSource.loadPage( pageType,
@@ -23,29 +24,20 @@ extension VStreamCollectionViewDataSource {
                 return StreamOperation(apiPath: apiPath)
             },
             completion: { (operation, error) in
-                if let error = error {
-                    completion( error )
-                    
-                } else {
-                    completion( nil )
-                }
+                completion(error)
             }
         )
     }
     
     /// If a stream is pre populated with its stream items, no network request
     /// is needed and we just fetch those stream items locally
-    func loadPreloadedStream(completion: ((NSError?)->())? ) {
-        self.paginatedDataSource.refreshLocal(
+    func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
+        self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
-                return StreamItemsFetcherOperation(streamObjectID: stream.objectID)
+                return StreamOperation(existingStreamID: stream.objectID)
             },
-            completion: { results in
-                if results.count > 0 {
-                    completion?(nil)
-                } else {
-                    completion?( NSError(domain: "StreamDataSource", code: -1, userInfo: nil) )
-                }
+            completion: { (operation, error) in
+                completion?(error)
         })
     }
     
@@ -64,10 +56,8 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         var filteredOldItems = oldValue
         
         if suppressShelves {
-            filteredOldItems = NSOrderedSet(array: (oldValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf })
-            
-            let filteredNewItems = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType != VStreamItemTypeShelf }
-            visibleItems = NSOrderedSet(array: filteredNewItems)
+            filteredOldItems = oldValue.v_orderedSetFilteredWithoutShelves()
+            visibleItems = newValue.v_orderedSetFilteredWithoutShelves()
         } else {
             visibleItems = newValue
         }
@@ -81,5 +71,19 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
+    }
+}
+
+private extension NSOrderedSet {
+    
+    func v_orderedSetFilteredWithoutShelves() -> NSOrderedSet {
+        let predicate = NSPredicate() { (item, _) -> Bool in
+            if item is VStreamItem {
+                return item.itemType != VStreamItemTypeShelf
+            } else {
+                return false
+            }
+        }
+        return self.filteredOrderedSetUsingPredicate(predicate)
     }
 }

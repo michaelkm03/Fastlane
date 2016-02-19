@@ -103,12 +103,6 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.collectionView.alwaysBounceVertical = YES;
-    
-    const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
-    if ( isPreLoaded )
-    {
-        [self.streamDataSource loadPreloadedStream:nil];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,10 +112,18 @@
     const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
-        [self loadPage:VPageTypeFirst completion:^
-         {
-             [self.refreshControl endRefreshing];
-         }];
+        const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+        if ( isPreLoaded )
+        {
+            [self.streamDataSource loadPreloadedStreamWithCompletion:nil];
+        }
+        else
+        {
+            [self loadPage:VPageTypeFirst completion:^
+             {
+                 [self.refreshControl endRefreshing];
+             }];
+        }
     }
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
@@ -302,17 +304,19 @@
         [self.refreshControl beginRefreshing];
     }
     
-    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.streamDataSource loadPage:pageType completion:^(NSError *_Nullable error)
      {
-         if ( completion != nil )
-         {
-             completion();
-         }
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:pageType];
+         
          if ( [self.refreshControl isRefreshing] )
          {
              [self.refreshControl endRefreshing];
+         }
+         
+         if ( completion != nil )
+         {
+             completion();
          }
      }];
 }
@@ -382,22 +386,24 @@
 
 - (void)shouldLoadNextPage
 {
-    if ( self.streamDataSource.isLoading )
+    if ( self.streamDataSource.isLoading ||
+         self.targetStreamItem != nil )
     {
         return;
     }
     
     __weak typeof(self) welf = self;
-    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
-     {
-         [welf.collectionView flashScrollIndicators];
-         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
-     }];
     
-    [self.collectionView performBatchUpdates:^
-     {
-         [self.collectionView.collectionViewLayout invalidateLayout];
-     } completion:nil];
+    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            [welf.collectionView flashScrollIndicators];
+        }
+        [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
+    }];
+    
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
@@ -451,7 +457,7 @@
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     NSInteger contentSection = [self.streamDataSource sectionIndexForContent];
-    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue animated:YES];
 }
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState

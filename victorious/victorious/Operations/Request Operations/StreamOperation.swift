@@ -16,6 +16,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     private let apiPath: String
     
     private var persistentStreamItemIDs: [NSManagedObjectID]?
+    private var preloadedStreamObjectID: NSManagedObjectID?
     
     required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
@@ -26,8 +27,21 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
     }
     
+    // Initializer for preloaded streams without an apiPath
+    convenience init( existingStreamID: NSManagedObjectID) {
+        self.init( request: StreamRequest(apiPath: "", sequenceID: nil)! )
+        preloadedStreamObjectID = existingStreamID
+    }
+    
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
+        if let preloadedStreamObjectID = self.preloadedStreamObjectID {
+            dispatch_sync( dispatch_get_main_queue() ) {
+                self.results = self.fetchLocalResults( preloadedStreamObjectID )
+            }
+            
+        } else {
+            requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
+        }
     }
     
     func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
@@ -73,6 +87,20 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                     context.objectWithID($0) as? VStreamItem
                 }
                 completion()
+            }
+        }
+    }
+    
+    func fetchLocalResults(preloadedStreamObjectID: NSManagedObjectID) -> [AnyObject] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let stream = context.objectWithID(preloadedStreamObjectID) as? VStream else {
+                return []
+            }
+            let persistentStreamItemPointers = stream.streamItemPointers.array
+            let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
+            
+            return persistentStreamItemIDs.flatMap {
+                context.objectWithID($0) as? VStreamItem
             }
         }
     }
