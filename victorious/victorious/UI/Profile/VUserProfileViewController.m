@@ -459,7 +459,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     }
     
-    if ( user == _user )
+    if ( user == _user || user == nil )
     {
         return;
     }
