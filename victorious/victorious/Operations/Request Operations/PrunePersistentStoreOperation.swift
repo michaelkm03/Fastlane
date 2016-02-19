@@ -15,17 +15,34 @@ import Foundation
 /// and freely deletes as much data as it wants without caring that the same objects
 /// will be reloaded from the server.  In the future, we should expand on this and prune
 /// according to necessities of a responsive and offline user experience.
-class PrunePersistentStoreOperation: FetcherOperation {
+class NewSessionPrunePersistentStoreOperation: FetcherOperation {
     
     override func main() {
         
         // Perform on main context for high-priority, thread-blocking results:
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // Delete streams when we want to clear the persistent store
-            // for a new user or new session
+            // Delete streams when we want to clear the persistent store for a new session
             
             context.v_deleteAllObjectsWithEntityName( VStream.v_entityName() )
+            
+            context.v_saveAndBubbleToParentContext()
+        }
+    }
+}
+
+class LogoutPrunePersistentStoreOperation: FetcherOperation {
+    
+    override func main() {
+        
+        // Perform on main context for high-priority, thread-blocking results:
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            // Delete stream pointers to remove all stream items from all streams.
+            // This wipes the slate clean for a new user to come along and re-load
+            // streams specific to their them.
+            
+            context.v_deleteAllObjectsWithEntityName( VStreamItemPointer.v_entityName() )
             
             // Delete any and all other objects that only exist for a current user.
             // This prevents old conversations or notificaitons from appearing after logout.
