@@ -404,10 +404,7 @@
         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
     }];
     
-    [self.collectionView performBatchUpdates:^
-     {
-         [self.collectionView.collectionViewLayout invalidateLayout];
-     } completion:nil];
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
@@ -461,7 +458,7 @@
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     NSInteger contentSection = [self.streamDataSource sectionIndexForContent];
-    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue animated:YES];
 }
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState
