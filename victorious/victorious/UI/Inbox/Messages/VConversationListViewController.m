@@ -266,6 +266,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [self removeCachedViewControllerForUserId:otherUserId];
 }
 
+- (void)conversationDidFinishSendingWithUserId:(NSNumber *)otherUserId
+{
+    [self redecorateVisibleCells];
+}
+
 #pragma mark - Message View Controller Cache
 
 - (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user
