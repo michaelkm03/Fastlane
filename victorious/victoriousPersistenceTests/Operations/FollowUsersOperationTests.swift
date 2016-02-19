@@ -96,7 +96,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowOnlyExistentUsers() {
-        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo])
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo], sourceScreenName: "")
         operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
@@ -111,7 +111,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowUsersWhosIDMatchesACurrentUser() {
-        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID], sourceScreenName: "")
         operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
