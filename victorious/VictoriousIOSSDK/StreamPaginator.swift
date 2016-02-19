@@ -63,7 +63,9 @@ public struct StreamPaginator: NumericPaginator {
     
     public func nextPage( resultCount: Int ) -> StreamPaginator? {
         if resultCount > 0 {
-            return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
+            let currentPage = resultCount / itemsPerPage
+            let nextPageNumber = currentPage > pageNumber ? currentPage + 1 : pageNumber + 1
+            return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: nextPageNumber, itemsPerPage: itemsPerPage)
         }
         return nil
     }
