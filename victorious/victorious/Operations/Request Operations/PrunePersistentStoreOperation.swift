@@ -38,13 +38,7 @@ class LogoutPrunePersistentStoreOperation: FetcherOperation {
         // Perform on main context for high-priority, thread-blocking results:
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // Delete stream pointers to remove all stream items from all streams.
-            // This wipes the slate clean for a new user to come along and re-load
-            // streams specific to their them.
-            
-            context.v_deleteAllObjectsWithEntityName( VStreamItemPointer.v_entityName() )
-            
-            // Delete any and all other objects that only exist for a current user.
+            // Delete all objects that only exist for a current user.
             // This prevents old conversations or notificaitons from appearing after logout.
             
             context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
