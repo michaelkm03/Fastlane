@@ -418,6 +418,8 @@
 		62BA8BCE1C59E0C700FFDF9F /* TestVAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */; };
 		62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
+		62F4B0191C76FBA200422A0F /* RepostersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F4B0171C76FB0100422A0F /* RepostersDataSourceTests.swift */; };
+		62F4B01D1C77043500422A0F /* VInviteFriendTableViewCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F4B01C1C77043500422A0F /* VInviteFriendTableViewCellTests.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
@@ -2548,6 +2550,8 @@
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		62E2407A1C332125001037C3 /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
 		62E5A9701C6F0E19007E27C7 /* AdLifecycleDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdLifecycleDelegate.h; sourceTree = "<group>"; };
+		62F4B0171C76FB0100422A0F /* RepostersDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RepostersDataSourceTests.swift; path = "UI/Content View/Content Info/RepostersDataSourceTests.swift"; sourceTree = "<group>"; };
+		62F4B01C1C77043500422A0F /* VInviteFriendTableViewCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VInviteFriendTableViewCellTests.swift; path = "UI/Find Friends/VInviteFriendTableViewCellTests.swift"; sourceTree = "<group>"; };
 		6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.staging.xcconfig"; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		669EBBDF1A30239100DE317D /* VBasicToolPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicToolPickerCell.h; sourceTree = "<group>"; };
@@ -6418,11 +6422,12 @@
 		62058B641C54DFCE00D3C8F9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				621BC2FC1C76AF93002A28E4 /* Profile */,
+				62F4B01B1C7703C200422A0F /* Find Friends */,
 				621BC2F71C769EC4002A28E4 /* Discover */,
 				624E39931C6AF0F0004E0C8E /* Common */,
 				62A6F2BA1C6AA9F4008BB294 /* Content View */,
 				62058B651C54DFD100D3C8F9 /* Monetization */,
+				621BC2FC1C76AF93002A28E4 /* Profile */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -6528,9 +6533,26 @@
 		62A6F2BA1C6AA9F4008BB294 /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				62F4B0161C76FAD300422A0F /* Content Info */,
 				624E39901C6AF025004E0C8E /* ContentCellSetupHelperTests.swift */,
 			);
 			name = "Content View";
+			sourceTree = "<group>";
+		};
+		62F4B0161C76FAD300422A0F /* Content Info */ = {
+			isa = PBXGroup;
+			children = (
+				62F4B0171C76FB0100422A0F /* RepostersDataSourceTests.swift */,
+			);
+			name = "Content Info";
+			sourceTree = "<group>";
+		};
+		62F4B01B1C7703C200422A0F /* Find Friends */ = {
+			isa = PBXGroup;
+			children = (
+				62F4B01C1C77043500422A0F /* VInviteFriendTableViewCellTests.swift */,
+			);
+			name = "Find Friends";
 			sourceTree = "<group>";
 		};
 		669EBBDE1A30234A00DE317D /* Pickers */ = {
@@ -10889,6 +10911,7 @@
 				6236F8811C36057000746476 /* MainPersistentStoreTests.swift in Sources */,
 				62A45FA91C6F2C8C0089DC9E /* TestAdLifecycleDelegate.swift in Sources */,
 				62168C4C1C706953008E34AA /* IMAAdViewControllerTests.swift in Sources */,
+				62F4B0191C76FBA200422A0F /* RepostersDataSourceTests.swift in Sources */,
 				A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */,
 				6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */,
 				67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */,
@@ -10915,6 +10938,7 @@
 				67C9ADAD1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift in Sources */,
 				62168C4E1C706982008E34AA /* TestIMAAdsLoader.swift in Sources */,
 				67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */,
+				62F4B01D1C77043500422A0F /* VInviteFriendTableViewCellTests.swift in Sources */,
 				67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */,
 				621BC2FB1C76A4C4002A28E4 /* VDiscoverSuggestedPersonCellTests.swift in Sources */,
 				6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */,
