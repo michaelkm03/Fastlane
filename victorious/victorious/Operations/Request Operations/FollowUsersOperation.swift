@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 class FollowUsersOperation: RequestOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
+    let sourceScreenName: String?
     
     private let request: FollowUsersRequest
-    private let sourceScreenName: String?
     private let userIDs: [Int]
     
     required init(userIDs: [Int], sourceScreenName: String? = nil) {
