@@ -103,12 +103,6 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.collectionView.alwaysBounceVertical = YES;
-    
-    const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
-    if ( isPreLoaded )
-    {
-        [self.streamDataSource loadPreloadedStream:nil];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,10 +112,18 @@
     const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
-        [self loadPage:VPageTypeFirst completion:^
-         {
-             [self.refreshControl endRefreshing];
-         }];
+        const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
+        if ( isPreLoaded )
+        {
+            [self.streamDataSource loadPreloadedStream:nil];
+        }
+        else
+        {
+            [self loadPage:VPageTypeFirst completion:^
+             {
+                 [self.refreshControl endRefreshing];
+             }];
+        }
     }
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
