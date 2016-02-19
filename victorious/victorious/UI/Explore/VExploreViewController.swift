@@ -349,8 +349,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         // Don't call super, we're going rogue here because of the whacky section structure
         
         let isLoading = self.streamDataSource?.isLoading ?? false
-        let isLastVisibleSection = section == max( self.collectionView.numberOfSections() - 1, 0)
-        let hasOneOrMoreItems = self.collectionView.numberOfItemsInSection(section-1) > 0
+        let sectionCount = self.collectionView.numberOfSections()
+        let isLastVisibleSection = section == max( sectionCount - 1, 0)
+        let hasOneOrMoreItems = self.collectionView.numberOfItemsInSection( max(section-1, 0) ) > 0
         let shouldDisplayActivityViewFooter = isLastVisibleSection && isLoading && hasOneOrMoreItems
         return shouldDisplayActivityViewFooter
     }
