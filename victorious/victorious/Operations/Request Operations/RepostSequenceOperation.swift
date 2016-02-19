@@ -23,9 +23,9 @@ class RepostSequenceOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        let didSucceed: Bool = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
-                fatalError( "User must be logged in." )
+                return false
             }
             let node:VNode = context.v_findOrCreateObject( [ "remoteId" : self.nodeID ] )
             node.sequence.hasReposted = true
@@ -33,6 +33,11 @@ class RepostSequenceOperation: RequestOperation {
             user.v_addObject(node.sequence, to: "repostedSequences")
             
             context.v_save()
+            return true
+        }
+        
+        guard didSucceed else {
+            return
         }
         
         // Then execute the request
