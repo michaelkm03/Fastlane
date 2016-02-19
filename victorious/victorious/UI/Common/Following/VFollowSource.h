@@ -18,6 +18,6 @@ extern NSString * const VFollowSourceScreenLikers;
 extern NSString * const VFollowSourceScreenMessageableUsers;
 extern NSString * const VFollowSourceScreenFindFriendsContacts;
 extern NSString * const VFollowSourceScreenFindFriendsFacebook;
-extern NSString * const VFollowSourceScreenTrendingUserShelf;
+extern NSString * const VFollowSourceScreenStreamTrendingUserShelf;
 extern NSString * const VFollowSourceScreenRegistrationSuggestedUsers;
 extern NSString * const VFollowSourceScreenSleekCell;

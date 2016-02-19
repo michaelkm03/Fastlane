@@ -214,9 +214,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         let userID = shelf.user.remoteId.integerValue
         let operation: RequestOperation
         if currentUser.isFollowingUserID(userID) {
-            operation = UnfollowUserOperation( userID: userID, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
+            operation = UnfollowUserOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
         } else {
-            operation = FollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
+            operation = FollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
         }
         operation.queue() { error in
             self.updateFollowControlState()
