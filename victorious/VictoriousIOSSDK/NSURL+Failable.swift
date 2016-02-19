@@ -14,6 +14,7 @@ extension NSURL {
     /// the string is defined and that it is not empty, i.e. ""
     convenience init?(vsdk_string string: String?) {
         guard let string = string where !string.characters.isEmpty else {
+            self.init(string: "")
             return nil
         }
         self.init(string: string)
