@@ -73,7 +73,6 @@
     
     [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self.messageCountCoordinator markConversationRead:self.conversation];
          [self.focusHelper updateFocus];
          
          if ( !self.hasLoadedOnce )
@@ -106,7 +105,6 @@
     [super viewDidAppear:animated];
     
     [self beginLiveUpdates];
-    [self onUpdate];
     
     // Update cell focus
     [self.focusHelper updateFocus];

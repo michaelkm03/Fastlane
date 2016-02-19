@@ -79,7 +79,6 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.messageCountCoordinator markConversationRead:self.conversation];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
@@ -124,6 +123,7 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
+    [self.delegate onConversationFlagged:self.conversation];
     [self.innerViewController onConversationFlagged];
     
     NSInteger conversationID = self.conversation.remoteId.integerValue;
@@ -132,7 +132,6 @@ static const NSUInteger kCharacterLimit = 1024;
                                                                                  mostRecentMessageID:mostRecentMessageID];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self.innerViewController.dataSource removeDeletedItems];
          [self v_showFlaggedConversationAlertWithCompletion:^(BOOL success)
           {
               [self.navigationController popViewControllerAnimated:YES];

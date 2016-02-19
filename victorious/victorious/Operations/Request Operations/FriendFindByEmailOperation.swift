@@ -27,26 +27,23 @@ class FriendFindByEmailOperation: RequestOperation {
         requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
     }
     
-    func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
-        
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var persistentUsers = [VUser]()
-            for foundFriend in results {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
-                persistentUser.populate(fromSourceModel: foundFriend)
-                persistentUsers.append(persistentUser)
+    func onComplete( results: [User], completion:()->() ) {
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait { context in
+            self.resultObjectIDs = results.flatMap {
+                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
+                persistentUser.populate(fromSourceModel: $0)
+                return persistentUser.objectID
             }
             context.v_save()
-            self.resultObjectIDs = persistentUsers.map { $0.objectID }
             
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
+            self.results = self.fetchResults()
+            completion()
+            
+            return context
         }
     }
     
-    func fetchResults() -> [AnyObject] {
+    private func fetchResults() -> [VUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             var mainQueueUsers = [VUser]()
             for foundFriendObjectID in self.resultObjectIDs {

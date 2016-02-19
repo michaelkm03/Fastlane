@@ -56,23 +56,15 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
-#warning TODO: New Architecture
-    /*[[VObjectManager sharedManager] findFriendsBySocialWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
-                                                          secret:nil
-                                                withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    NSString *facebookToken = [[FBSDKAccessToken currentAccessToken] tokenString];
+    FriendFindBySocialNetworkOperation *operation = [[FriendFindBySocialNetworkOperation alloc] initWithToken:facebookToken];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
-        if (completionBlock)
+        if (completionBlock != nil)
         {
-            completionBlock(resultObjects, nil);
+            completionBlock(operation.results, error);
         }
-    }
-                                              failBlock:^(NSOperation *operation, NSError *error)
-    {
-        if (completionBlock)
-        {
-            completionBlock(nil, error);
-        }
-    }];*/
+    }];
 }
 
 - (NSString *)headerTextForNewFriendsSection

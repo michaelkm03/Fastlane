@@ -45,7 +45,6 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
     
     public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: self.shouldAnimateDataSourceChanges)
-        self.shouldAnimateDataSourceChanges = false
     }
     
     public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -60,6 +59,11 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         }
     }
     
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        let viewControllerForError = self.navigationController ?? self
+        viewControllerForError.v_showErrorDefaultError()
+    }
+    
     func updateTableView() {
         
         self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? .SingleLine : .None
@@ -67,7 +71,7 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         
         switch self.dataSource.state {
             
-        case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
+        case .NoResults, .Loading where isAlreadyShowingNoContent:
             guard let tableView = self.tableView else {
                 break
             }
@@ -82,4 +86,3 @@ extension VConversationListViewController: VPaginatedDataSourceDelegate {
         }
     }
 }
-

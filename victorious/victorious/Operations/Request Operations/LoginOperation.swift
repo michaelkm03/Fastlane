@@ -12,6 +12,9 @@ class LoginOperation: RequestOperation {
     
     init(email: String, password: String) {
         request = LoginRequest(email: email, password: password)
+        super.init()
+        
+        requiresAuthorization = false
     }
     
     override func main() {

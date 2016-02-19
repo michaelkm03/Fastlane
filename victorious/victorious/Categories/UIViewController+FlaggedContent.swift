@@ -35,14 +35,6 @@ extension UIViewController {
         )
     }
     
-    func v_showErrorAlert( completion completion: (Bool->())? = nil ) {
-        v_showAlert(
-            title: NSLocalizedString( "WereSorry", comment:""),
-            message: NSLocalizedString( "ErrorOccured", comment:""),
-            completion: completion
-        )
-    }
-    
     func v_showAlert( title title: String, message: String, completion: (Bool->())? = nil ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment:""), style: .Cancel) { action in

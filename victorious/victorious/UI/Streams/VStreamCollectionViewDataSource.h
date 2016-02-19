@@ -79,7 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nonnull, strong) PaginatedDataSource *paginatedDataSource;
 @property (nonatomic, strong) NSOrderedSet *visibleItems;
 @property (nonatomic, readonly) BOOL isLoading;
-@property (nonatomic, readonly) BOOL hasLoadedLastPage;
 
 /**
  *  Initializes the data source with a default stream.

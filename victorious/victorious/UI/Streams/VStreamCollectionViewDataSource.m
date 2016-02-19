@@ -35,11 +35,6 @@
     return self;
 }
 
-- (BOOL)hasLoadedLastPage
-{
-    return self.paginatedDataSource.hasLoadedLastPage;
-}
-
 - (BOOL)isLoading
 {
     return self.paginatedDataSource.isLoading;
@@ -115,8 +110,7 @@
     return 1;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
-           viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
     if ( isFooter && [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )

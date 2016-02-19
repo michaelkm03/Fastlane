@@ -259,7 +259,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     self.previewHeightConstraint.active = !self.onlyShowPreview;
     self.previewWidthConstraint.active = !self.onlyShowPreview;
     
-    if ( !self.onlyShowPreview )
+    if ( !self.onlyShowPreview && self.textPostViewController != nil )
     {
         BOOL hasRenderingSize = !CGSizeEqualToSize( self.previewRenderingSize, CGSizeZero );
         const CGSize size = hasRenderingSize ? self.previewRenderingSize : self.bounds.size;

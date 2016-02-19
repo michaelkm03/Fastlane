@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, VFlaggedContentType)
 {
     VFlaggedContentTypeStreamItem,
-    VFlaggedContentTypeComment,
-    VFlaggedContentTypeConversation
+    VFlaggedContentTypeComment
 };
 
 extern const NSTimeInterval VDefaultRefreshTimeInterval;

@@ -27,6 +27,16 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         )
     }
     
+    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+        
+        self.refreshRemote(
+            createOperation: {
+                return NotificationsOperation()
+            },
+            completion: completion
+        )
+    }
+    
     // MARK: - UITableViewDataSource
     
     func registerCells( tableView: UITableView ) {
@@ -41,14 +51,20 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("VNotificationCell", forIndexPath: indexPath) as! VNotificationCell
-        let notification = visibleItems[ indexPath.row ] as! VNotification
-        cell.notification = notification
-        cell.dependencyManager = dependencyManager
-        cell.backgroundColor = notification.isRead!.boolValue ? UIColor.whiteColor() : UIColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1.0)
+        decorate(cell: cell, atIndexPath: indexPath)
         return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 72.0
     }
+    
+    func decorate(cell notificationCell:VNotificationCell, atIndexPath indexPath: NSIndexPath) {
+        let notification = visibleItems[ indexPath.row ] as! VNotification
+        notificationCell.notification = notification
+        notificationCell.dependencyManager = dependencyManager
+        notificationCell.backgroundColor = notification.isRead!.boolValue ? UIColor.whiteColor() : UIColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1.0)
+    }
+    
+    
 }

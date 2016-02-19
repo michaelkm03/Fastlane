@@ -51,10 +51,6 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 			return self.results.count
 		}
 	}
-	
-    var hasLoadedLastPage: Bool {
-        return dataSource?.hasLoadedLastPage ?? true
-    }
     
     var state: VDataSourceState {
         return dataSource?.state ?? .Cleared

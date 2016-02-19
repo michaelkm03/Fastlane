@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Marks a conversation as read and updates the unreadMessageCount property asynchronously
  */
-- (void)markConversationRead:(VConversation *)conversation;
+- (void)markConversationRead:(VConversation *)conversation completion:(void(^)())completion;
 
 @end
 

@@ -40,8 +40,12 @@ extension VStreamCollectionViewDataSource {
         })
     }
     
-    public func removeStreamItem(streamItem: VStreamItem) {
-        RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queue()
+    func removeDeletedItems() {
+        self.paginatedDataSource.removeDeletedItems()
+    }
+    
+    func unloadStream() {
+        self.paginatedDataSource.unload()
     }
 }
 
@@ -64,8 +68,8 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
-    func unloadStream() {
-        paginatedDataSource.unload()
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
     }
     
     private func streamItemsWithoutShelves(streamItems: [VStreamItem]) -> NSOrderedSet {

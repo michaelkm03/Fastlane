@@ -40,6 +40,10 @@ extension VConversationViewController: VPaginatedDataSourceDelegate {
     public func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         self.updateTableView()
     }
+    
+    public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
+    }
 }
 
 extension VConversationViewController {

@@ -41,7 +41,6 @@ extension VSequence: PersistenceParsable {
         previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
         itemType                = sequence.type?.rawValue
         itemSubType             = sequence.subtype?.rawValue
-        releasedAt              = sequence.releasedAt ?? releasedAt
         
         guard let context = self.managedObjectContext else {
             return
@@ -67,15 +66,6 @@ extension VSequence: PersistenceParsable {
             self.parentUser = persistentParentUser
         }
         
-        if let previewImageAssets = sequence.previewImageAssets where previewImageAssets.count > 0 {
-            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = context.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
-                imageAsset.populate( fromSourceModel: $0 )
-                return imageAsset
-            }
-            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
-        }
-        
         if let textPostAsset = sequence.previewTextPostAsset {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
             persistentAsset.populate(fromSourceModel: textPostAsset)
@@ -90,6 +80,15 @@ extension VSequence: PersistenceParsable {
                 return node
             }
             self.nodes = NSOrderedSet(array: persistentNodes)
+        }
+        
+        if let previewImageAssets = sourceModel.sequence.previewImageAssets {
+            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                imageAsset.populate( fromSourceModel: $0 )
+                return imageAsset
+            }
+            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
         if let voteResults = sequence.voteTypes where !voteResults.isEmpty {

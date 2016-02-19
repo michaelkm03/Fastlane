@@ -30,6 +30,10 @@ extern NSString * const VConversationListViewControllerInboxPushReceivedNotifica
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)showConversation:(VConversation *)conversation animated:(BOOL)animated;
+
+/*
+ * Shows a conversation in the inbox. The conversation should never be nil.
+ */
+- (void)showConversation:(nonnull VConversation *)conversation animated:(BOOL)animated;
 
 @end
