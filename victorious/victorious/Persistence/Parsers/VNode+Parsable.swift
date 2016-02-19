@@ -12,22 +12,25 @@ import VictoriousIOSSDK
 extension VNode: PersistenceParsable {
     
     func populate( fromSourceModel node: Node ) {
-        self.remoteId = node.nodeID
+        remoteId        = node.nodeID
+        shareUrlPath    = node.shareUrlPath?.absoluteString ?? shareUrlPath
         
-        if assets.count == 0 && !node.assets.isEmpty {
-            assets = NSOrderedSet( array: node.assets.flatMap {
+        if let assets = node.assets {
+                let persistentAssets: [VAsset] = assets.flatMap {
                 let asset: VAsset = self.v_managedObjectContext.v_createObject()
                 asset.populate( fromSourceModel: $0 )
                 return asset
-                })
+            }
+            self.assets = NSOrderedSet(array: persistentAssets)
         }
         
-        if interactions.count == 0 && !node.interactions.isEmpty {
-            interactions = NSOrderedSet( array: node.interactions.flatMap {
+        if let interactions = node.interactions {
+            let persistentInteractions: [VInteraction] = interactions.flatMap {
                 let interaction: VInteraction = self.v_managedObjectContext.v_createObject()
                 interaction.populate( fromSourceModel: $0 )
                 return interaction
-                })
+            }
+            self.interactions = NSOrderedSet(array: persistentInteractions)
         }
     }
 }
