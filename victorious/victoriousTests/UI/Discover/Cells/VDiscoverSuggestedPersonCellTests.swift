@@ -32,7 +32,9 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
         let followControl = VFollowControl()
 
         cell.onFollow(followControl)
-        guard let followOperation = sharedQueue.operations.filter({ $0.cancelled != true }).first as? FollowUsersOperation else {
+        let followOperations = sharedQueue.operations.filter({ $0.cancelled != true && $0 is FollowUsersOperation })
+        XCTAssertEqual(1, followOperations.count)
+        guard let followOperation = followOperations.first as? FollowUsersOperation else {
             XCTFail("Follow users operation should be queued when following a user")
             return
         }
@@ -44,7 +46,9 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
         let followControl = VFollowControl()
 
         cell.onFollow(followControl)
-        guard let unfollowOperation = sharedQueue.operations.filter({ $0.cancelled != true }).first as? UnfollowUserOperation else {
+        let unFollowOperations = sharedQueue.operations.filter({ $0.cancelled != true && $0 is UnfollowUserOperation })
+        XCTAssertEqual(1, unFollowOperations.count)
+        guard let unfollowOperation = unFollowOperations.first as? UnfollowUserOperation else {
             XCTFail("UnFollow users operation should be queued when unfollowing a user")
             return
         }
