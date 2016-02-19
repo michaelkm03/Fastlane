@@ -395,9 +395,13 @@
     
     __weak typeof(self) welf = self;
     
-    [self loadPage:VPageTypeNext completion:^
+    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
     {
-        [welf.collectionView flashScrollIndicators];
+        if (error == nil)
+        {
+            [welf.collectionView flashScrollIndicators];
+        }
+        [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
     }];
     
     [self.collectionView performBatchUpdates:^

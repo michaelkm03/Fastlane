@@ -16,6 +16,7 @@ extension VStreamCollectionViewDataSource {
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
     func loadPage( pageType: VPageType, completion:(NSError?)->()) {
         guard let apiPath = stream.apiPath else {
+            completion(NSError(domain: "StreamLoadingError", code: 1, userInfo: nil))
             return
         }
         self.paginatedDataSource.loadPage( pageType,
