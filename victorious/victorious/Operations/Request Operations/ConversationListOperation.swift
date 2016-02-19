@@ -27,20 +27,10 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
             return
         }
         
-        // Filter flagged conversations here so that they never even make it into the persistent store
-        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
-        let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
-        
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
-            // FIXME: This is a hack to refresh converations.  `PaginatedDataSource` should really handle
-            // this logic for all paginated operations.
-            if self.request.paginator.pageNumber == 1 {
-                context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )
-            }
-                
             var displayOrder = self.request.paginator.displayOrderCounterStart
-            for result in unflaggedResults {
+            for result in results {
                 let uniqueElements = [ "user.remoteId" : result.otherUser.userID ]
                 let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 conversation.populate( fromSourceModel: result )

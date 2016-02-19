@@ -36,6 +36,7 @@ class SendMessageOperation: RequestOperation {
                 completion()
                 return
             }
+            message.conversation.remoteId = result.conversationID
             message.remoteId = result.messageID
             context.v_save()
             completion()

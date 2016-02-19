@@ -35,15 +35,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         
         // If we have a valid conversationID, reload it remotely first
         if let conversationID = self.conversationID where conversationID > 0 {
-            
-            /// Check if the conversation has been flagged (deleted)
-            /// If so, exit early and do not fetch the conversation
-            let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
-            if flaggedIDs.contains(conversationID) {
-                self.completionBlock?()
-                return
-            }
-            
+                        
             requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
             
         } else {
@@ -73,25 +65,29 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 if conversation.user == nil {
                     conversation.user = newMessage.sender
                 }
+                if conversation.postedAt == nil {
+                    conversation.postedAt = newMessage.postedAt
+                }
                 newMessage.displayOrder = displayOrder++
                 messagesLoaded.append( newMessage )
             }
             conversation.v_addObjects( messagesLoaded, to: "messages" )
             conversation.lastMessageText = messagesLoaded.first?.text ?? conversation.lastMessageText
             
-            do {
-                try context.save()
-            } catch {
-                // Because conversations may be deleted by the user at any time, this save may fail.
-                // In that case, we catch the error and abandon this context that is trying to parse
-                // a conversation already deleted.
-            }
+            context.v_save()
             
             let objectID = conversation.objectID
-            self.persistentStore.mainContext.v_performBlock() { context in
-                self.results = self.fetchResults()
-                self.conversation = context.objectWithID( objectID ) as? VConversation
+            
+            if conversation.user == nil {
+                // If conversation has been deleted
                 completion()
+            }
+            else {
+                self.persistentStore.mainContext.v_performBlock() { context in
+                    self.results = self.fetchResults()
+                    self.conversation = context.objectWithID(objectID) as? VConversation
+                    completion()
+                }
             }
         }
     }

@@ -31,6 +31,7 @@ public extension VConversationContainerViewController {
         )
         CreateMessageOperation(creationParameters: parameters).queue() { results in
             completion?()
+            self.delegate?.onConversationUpdated( conversation )
         }
     }
 }

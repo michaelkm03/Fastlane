@@ -32,7 +32,7 @@
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 static const CGFloat kActivityFooterHeight = 50.0f;
 
-@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate>
+@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate, VConversationContainerViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -114,7 +114,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -134,13 +133,12 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         // Any sending/receiving messages that happens while a conversation detail is shown
         // will all be cached locally, so only a local refresh is needed
-        [self.dataSource refreshLocalWithCompletion:^(NSArray *_Nonnull results)
-         {
-             [self.tableView reloadData];
-         }];
+        [self.dataSource refreshLocalWithCompletion:nil];
     }
-    else
+    else if ( self.dataSource.visibleItems.count == 0 )
     {
+        // Refresh and show refresh control since we are loading for the first time in a new session
+        [self.refreshControl beginRefreshing];
         [self refresh];
     }
     
@@ -186,6 +184,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
+         [self.dataSource redocorateVisibleCells:self.tableView];
      }];
 }
 
@@ -246,6 +245,18 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
+#pragma mark - VConversationContainerViewControllerDelegate
+
+- (void)onConversationFlagged:(VConversation *)conversation
+{
+    [self removeCachedViewControllerForUserId:conversation.user.remoteId];
+}
+
+- (void)onConversationUpdated:(VConversation *)conversation
+{
+    [self.dataSource redocorateVisibleCells:self.tableView];
+}
+
 #pragma mark - Message View Controller Cache
 
 - (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user
@@ -270,30 +281,38 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
         NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
         VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
         messageViewController = [VConversationContainerViewController newWithDependencyManager:childDependencyManager];
+        messageViewController.delegate = self;
         self.messageViewControllers[ user.remoteId ] = messageViewController;
     }
     
     return messageViewController;
 }
 
-- (void)removeCachedViewControllerForUser:(VUser *)otherUser
+- (void)removeAllCachedViewControllers
 {
-    if ( self.messageViewControllers == nil || otherUser.remoteId == nil )
+    [self.messageViewControllers removeAllObjects];
+}
+
+- (void)removeCachedViewControllerForUserId:(NSNumber *)userRemoteId
+{
+    if ( self.messageViewControllers == nil || userRemoteId == nil )
     {
         return;
     }
-    [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
+    [self.messageViewControllers removeObjectForKey:userRemoteId];
 }
 
 - (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-    NSInteger conversationID = conversation.remoteId.integerValue;
-    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversationID];
+    NSNumber *userRemoteId = conversation.user.remoteId;
+    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
+         self.shouldAnimateDataSourceChanges = YES;
          [self.dataSource removeDeletedItems];
-         [self removeCachedViewControllerForUser:conversation.user];
+         [self removeCachedViewControllerForUserId:userRemoteId];
+         [self updateBadges];
      }];
 }
 
@@ -339,6 +358,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)showConversation:(VConversation *)conversation animated:(BOOL)animated
 {
+    NSParameterAssert(conversation != nil);
     VConversationContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
     detailVC.conversation = conversation;
     UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
@@ -347,20 +367,28 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         self.queuedConversation = conversation;
     }
-    else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
-    {
-        if ( rootInnerNavigationController.topViewController != detailVC )
-        {
-            [rootInnerNavigationController popToViewController:detailVC animated:animated];
-        }
-    }
     else
     {
-        detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        [self.messageCountCoordinator markConversationRead:conversation completion:^
+         {
+             [self.dataSource redocorateVisibleCells:self.tableView];
+         }];
+        
+        if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
+        {
+            if ( rootInnerNavigationController.topViewController != detailVC )
+            {
+                [rootInnerNavigationController popToViewController:detailVC animated:animated];
+            }
+        }
+        else
+        {
+            detailVC.messageCountCoordinator = self.messageCountCoordinator;
+            [rootInnerNavigationController pushViewController:detailVC animated:YES];
+        }
+        
+        self.selectedConversationViewController = detailVC;
     }
-    
-    self.selectedConversationViewController = detailVC;
 }
 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl
@@ -396,7 +424,9 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     
     self.shouldAnimateDataSourceChanges = NO;
-    [self.dataSource loadConversations:VPageTypeNext completion:nil];
+    [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *error){
+        self.shouldAnimateDataSourceChanges = YES;
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -433,7 +463,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.tableView reloadData];
+         [self.dataSource redocorateVisibleCells:self.tableView];
     }];
 }
 
