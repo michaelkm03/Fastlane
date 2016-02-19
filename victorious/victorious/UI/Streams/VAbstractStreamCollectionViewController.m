@@ -115,7 +115,7 @@
         const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
         if ( isPreLoaded )
         {
-            [self.streamDataSource loadPreloadedStream:nil];
+            [self.streamDataSource loadPreloadedStreamWithCompletion:nil];
         }
         else
         {

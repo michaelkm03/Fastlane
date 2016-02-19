@@ -23,8 +23,13 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil, existingStreamID: NSManagedObjectID? = nil) {
+    convenience init( apiPath: String, sequenceID: String? = nil) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
+    }
+    
+    // Initializer for preloaded streams without an apiPath
+    convenience init( existingStreamID: NSManagedObjectID) {
+        self.init( request: StreamRequest(apiPath: "", sequenceID: nil)! )
         preloadedStreamObjectID = existingStreamID
     }
     

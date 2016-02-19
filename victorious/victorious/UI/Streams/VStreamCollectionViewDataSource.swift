@@ -31,10 +31,10 @@ extension VStreamCollectionViewDataSource {
     
     /// If a stream is pre populated with its stream items, no network request
     /// is needed and we just fetch those stream items locally
-    func loadPreloadedStream(completion: ((NSError?)->())? ) {
+    func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
-                return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
+                return StreamOperation(existingStreamID: stream.objectID)
             },
             completion: { (operation, error) in
                 completion?(error)
@@ -56,8 +56,8 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         var filteredOldItems = oldValue
         
         if suppressShelves {
-            filteredOldItems = streamItemsWithoutShelves(oldValue.array as? [VStreamItem] ?? [])
-            visibleItems = streamItemsWithoutShelves(newValue.array as? [VStreamItem] ?? [])
+            filteredOldItems = oldValue.v_orderedSetFilteredWithoutShelves()
+            visibleItems = newValue.v_orderedSetFilteredWithoutShelves()
         } else {
             visibleItems = newValue
         }
@@ -75,5 +75,19 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     
     private func streamItemsWithoutShelves(streamItems: [VStreamItem]) -> NSOrderedSet {
         return NSOrderedSet(array: streamItems.filter { $0.itemType != VStreamItemTypeShelf })
+    }
+}
+
+private extension NSOrderedSet {
+    
+    func v_orderedSetFilteredWithoutShelves() -> NSOrderedSet {
+        let predicate = NSPredicate() { (item, _) -> Bool in
+            if item is VStreamItem {
+                return item.itemType != VStreamItemTypeShelf
+            } else {
+                return false
+            }
+        }
+        return self.filteredOrderedSetUsingPredicate(predicate)
     }
 }
