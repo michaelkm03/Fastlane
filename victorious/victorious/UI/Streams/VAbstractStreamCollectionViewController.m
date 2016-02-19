@@ -311,7 +311,7 @@
         [self.refreshControl beginRefreshing];
     }
     
-    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.streamDataSource loadPage:pageType completion:^(NSError *_Nullable error)
      {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
@@ -325,7 +325,7 @@
              completion();
          }
          
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:pageType];
      }];
 }
 
@@ -450,11 +450,11 @@
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
     __weak typeof(self) welf = self;
-    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
-     {
-         [welf.collectionView flashScrollIndicators];
-         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
-     }];
+    
+    [self loadPage:VPageTypeNext completion:^
+    {
+        [welf.collectionView flashScrollIndicators];
+    }];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
