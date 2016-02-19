@@ -197,11 +197,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         }
     }
     
-    override func hasEnoughItemsToShowLoadingIndicatorFooterInSection(section: Int) -> Bool {
-        // Always return YES for our empty last section containing the footer
-        return section == collectionView.numberOfSections() - 1
-    }
-    
     override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource) -> Int {
         // Total number of shelves plus one section for recent content
         return sectionRanges.count + 1
@@ -226,13 +221,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath)
     }
     
-    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView, inSection section: Int) -> Bool {
-        // Only show activity footer if the superclass's checks, which check for being able to load more items from the stream,
-        // pass and we're trying to display a footer in the last section of the collection view
-        return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
-    }
-    
-    /// MARK: Tracking
+    /// MARK: - Tracking
     
     private func trackVisibleCells() {
         dispatch_after(0.1) {
@@ -353,11 +342,173 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, heightForFooterInSection section: Int) -> CGFloat {
-        if section == collectionView.numberOfSections() - 1 {
-            // We're in our dummy last section, return the preffered size for the activity indicator footer
-            return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
+        return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
+    }
+    
+    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView, inSection section: Int) -> Bool {
+        // Don't call super, we're going rogue here because of the whacky section structure
+        
+        let isLoading = self.streamDataSource?.isLoading ?? false
+        let sectionCount = self.collectionView.numberOfSections()
+        let isLastVisibleSection = section == max( sectionCount - 1, 0)
+        let hasOneOrMoreItems = self.collectionView.numberOfItemsInSection( max(section-1, 0) ) > 0
+        let shouldDisplayActivityViewFooter = isLastVisibleSection && isLoading && hasOneOrMoreItems
+        return shouldDisplayActivityViewFooter
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, columnCountForSection section: Int) -> Int {
+        return isRecentContent(section) ? 2 : 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let numberOfSections = collectionView.numberOfSections()
+        if section == numberOfSections - 1 {
+            //Dealing with the last, dummy section that will show the activity indicator if there's more pages to load
+            return UIEdgeInsetsZero
         }
-        return 0
+        
+        let insets = super.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: section)
+        var sectionDependentInsets = isRecentContent(section) ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
+        if isRecentContent(section + 1) {
+            sectionDependentInsets.bottom += Constants.recentSectionLabelAdditionalTopInset
+        }
+        if section == 0 {
+            sectionDependentInsets.top = 0
+        }
+        if numberOfSections > 1 && section == numberOfSections - 2 {
+            sectionDependentInsets.bottom = 0
+        }
+        return insets + sectionDependentInsets
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let streamItem = streamItemFor(indexPath) {
+            navigate(toStream: currentStream, atStreamItem: streamItem)
+        }
+    }
+    
+    // MARK: - VHashtagSelectionResponder
+    
+    func hashtagSelected(text: String!) {
+        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+            self.navigationController?.pushViewController(stream, animated: true)
+        }
+    }
+    
+    // MARK: - VMarqueeSelectionDelegate
+    
+    func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
+        
+        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
+            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
+        }
+        else {
+            assertionFailure("Explore View controller was unable to retrive a marquee cell at the provided index path")
+        }
+    }
+    
+    // MARK: - VTabMenuContainedViewControllerNavigation
+    
+    func reselected() {
+        v_navigationController().setNavigationBarHidden(false)
+        collectionView.setContentOffset(CGPointZero, animated: true)
+    }
+    
+    // MARK: - VPaginatedDataSourceDelegate
+    
+    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
+            return
+        }
+        
+        for streamItem in recentItems {
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+        }
+        
+        updateSectionRanges()
+        trackVisibleCells()
+        collectionView.reloadData()
+    }
+    
+    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+        self.v_showErrorDefaultError()
+    }
+    
+    // MARK: - Private
+    
+    private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
+        let isShelf = stream.isShelf
+        var streamCollection: VStreamCollectionViewController?
+        
+        // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
+        let baseDict = [Constants.sequenceIDKey : stream.remoteId]
+        let configDict = NSMutableDictionary(dictionary: baseDict)
+        if let name = stream.name {
+            configDict[VDependencyManagerTitleKey] = name
+        }
+        
+        // Navigating to a shelf
+        if isShelf {
+            configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
+            if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
+                // Hashtag Shelf
+                if let tagShelf = stream as? HashtagShelf {
+                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
+                }
+                    // Other shelves
+                else {
+                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
+                }
+            }
+        }
+            // Navigating to a single stream
+        else if stream == currentStream || stream.isSingleStream {
+            //Tapped on a recent post
+            streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+            
+            streamCollection?.suppressShelves = true
+        }
+        
+        // show the stream view controller if it has been instantiated
+        if let streamViewController = streamCollection {
+            streamViewController.currentStream = stream
+            streamViewController.targetStreamItem = streamItem
+            navigationController?.pushViewController(streamViewController, animated: true)
+        }
+            // else Show the stream of streams
+        else if stream.isStreamOfStreams {
+            if let directory = dependencyManager?.templateValueOfType (
+                VDirectoryCollectionViewController.self,
+                forKey: Constants.marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
+                    directory.currentStream = stream
+                    directory.title = stream.name
+                    directory.targetStreamItem = streamItem
+                    
+                    navigationController?.pushViewController(directory, animated: true)
+            }
+            else {
+                // No directory to show, alert the user
+                let alertController = UIAlertController(title: nil, message: NSLocalizedString("GenericFailMessage", comment: ""), preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+                presentViewController(alertController, animated: true, completion: nil)
+            }
+        }
     }
     
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
@@ -454,130 +605,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return false
     }
     
-    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return Constants.interItemSpace
-    }
-    
-    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return Constants.interItemSpace
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, columnCountForSection section: Int) -> Int {
-        return isRecentContent(section) ? 2 : 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return Constants.interItemSpace
-    }
-    
-    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let numberOfSections = collectionView.numberOfSections()
-        if section == numberOfSections - 1 {
-            //Dealing with the last, dummy section that will show the activity indicator if there's more pages to load
-            return UIEdgeInsetsZero
-        }
-        
-        let insets = super.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: section)
-        var sectionDependentInsets = isRecentContent(section) ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
-        if isRecentContent(section + 1) {
-            sectionDependentInsets.bottom += Constants.recentSectionLabelAdditionalTopInset
-        }
-        if section == 0 {
-            sectionDependentInsets.top = 0
-        }
-        if numberOfSections > 1 && section == numberOfSections - 2 {
-            sectionDependentInsets.bottom = 0
-        }
-        return insets + sectionDependentInsets
-    }
-    
-    // MARK: - UICollectionViewDelegate
-    
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let streamItem = streamItemFor(indexPath) {
-            navigate(toStream: currentStream, atStreamItem: streamItem)
-        }
-    }
-    
-    // MARK: - VHashtagSelectionResponder
-    
-    func hashtagSelected(text: String!) {
-        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
-            self.navigationController?.pushViewController(stream, animated: true)
-        }
-    }
-    
-    // MARK: - VMarqueeSelectionDelegate
-    
-    func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
-        
-        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
-            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
-        }
-        else {
-            assertionFailure("Explore View controller was unable to retrive a marquee cell at the provided index path")
-        }
-    }
-    
-    private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
-        let isShelf = stream.isShelf
-        var streamCollection: VStreamCollectionViewController?
-        
-        // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
-        let baseDict = [Constants.sequenceIDKey : stream.remoteId]
-        let configDict = NSMutableDictionary(dictionary: baseDict)
-        if let name = stream.name {
-            configDict[VDependencyManagerTitleKey] = name
-        }
-        
-        // Navigating to a shelf
-        if isShelf {
-            configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
-            if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
-                // Hashtag Shelf
-                if let tagShelf = stream as? HashtagShelf {
-                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
-                }
-                    // Other shelves
-                else {
-                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
-                }
-            }
-        }
-        // Navigating to a single stream
-        else if stream == currentStream || stream.isSingleStream {
-            //Tapped on a recent post
-            streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
-            
-            streamCollection?.suppressShelves = true
-        }
-        
-        // show the stream view controller if it has been instantiated
-        if let streamViewController = streamCollection {
-            streamViewController.currentStream = stream
-            streamViewController.targetStreamItem = streamItem
-            navigationController?.pushViewController(streamViewController, animated: true)
-        }
-        // else Show the stream of streams
-        else if stream.isStreamOfStreams {
-            if let directory = dependencyManager?.templateValueOfType (
-                VDirectoryCollectionViewController.self,
-                forKey: Constants.marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
-                    directory.currentStream = stream
-                    directory.title = stream.name
-                    directory.targetStreamItem = streamItem
-                    
-                    navigationController?.pushViewController(directory, animated: true)
-            }
-            else {
-                // No directory to show, alert the user
-                let alertController = UIAlertController(title: nil, message: NSLocalizedString("GenericFailMessage", comment: ""), preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
-                presentViewController(alertController, animated: true, completion: nil)
-            }
-        }
-    }
-    
     private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage?, inCell cell: UICollectionViewCell) {
         
         /// Marquee item selection tracking
@@ -610,34 +637,5 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
-    }
-    
-    // MARK: - VTabMenuContainedViewControllerNavigation
-    
-    func reselected() {
-        v_navigationController().setNavigationBarHidden(false)
-        collectionView.setContentOffset(CGPointZero, animated: true)
-    }
-    
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        
-        guard let recentItems: [VStreamItem] = newValue.filter({$0.itemType != VStreamItemTypeShelf}) as? [VStreamItem] else {
-            return
-        }
-        
-        for streamItem in recentItems {
-            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-        }
-        
-        updateSectionRanges()
-        trackVisibleCells()
-        collectionView.reloadData()
-    }
-    
-    override func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        self.v_showErrorDefaultError()
     }
 }

@@ -18,8 +18,6 @@ import VictoriousIOSSDK
     private(set) weak var currentPaginatedOperation: NSOperation?
     private(set) weak var currentLocalOperation: NSOperation?
     
-    private(set) var hasLoadedLastPage: Bool = false
-    
     private(set) var state: VDataSourceState = .Cleared {
         didSet {
             if oldValue != state {
@@ -29,7 +27,7 @@ import VictoriousIOSSDK
     }
     
     var shouldShowNextPageActivity: Bool {
-        return state == .Loading && visibleItems.count > 0 && !hasLoadedLastPage
+        return state == .Loading && visibleItems.count > 0
     }
     
     // Tracks page numbers already loaded to prevent re-loading pages unecessarily
@@ -138,16 +136,9 @@ import VictoriousIOSSDK
             return
         }
         
-        if pageType == .Next {
-            guard !self.hasLoadedLastPage else {
-                return
-            }
-        }
-        
         if pageType == .First {
             // Clear all from `pagesLoaded` because .First indicates a "refresh"
             pagesLoaded = Set<Int>()
-            self.hasLoadedLastPage = false
         }
         
         let operationToQueue: T?
@@ -163,7 +154,6 @@ import VictoriousIOSSDK
         // Return early if there is no operation to queue, i.e. no work to do
         guard let requestOperation = operationToQueue as? RequestOperation,
             var operation = operationToQueue else {
-                self.hasLoadedLastPage = true
                 return
         }
         
@@ -189,7 +179,6 @@ import VictoriousIOSSDK
                 
             } else {
                 let results = operation.results ?? []
-                self.hasLoadedLastPage = results.isEmpty
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }

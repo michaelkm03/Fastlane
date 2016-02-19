@@ -59,27 +59,10 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 - (void)loadPage:(VPageType)pageType completion:(void(^ __nullable)(void))completionBlock;
 
 /**
-    Intended to be called by subclasses on `collectionView:willDisplayCell:atIndexPath:` to
-        trigger an animation for newly loaded cells where appropriate.
- */
-- (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
-                 inCollectionView:(UICollectionView *)collectionView
-                      atIndexPath:(NSIndexPath *)indexPath;
-
-/**
     Called when a condition that affects UGC permissions may have changed for the stream
         and a the presennce of the create content button should be updated.
  */
 - (void)updateNavigationItems;
-
-/**
-    By default, returns YES when there is more than 1 item in the provided section.
- 
-    @param section The section that will present the loading indicator footer if YES is returned.
- 
-    @return YES if there are enough items to cause the loading indicator to show in the provided section.
- */
-- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section;
 
 @end
 
