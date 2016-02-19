@@ -36,7 +36,14 @@ class LogoutPrunePersistentStoreOperation: FetcherOperation {
     override func main() {
         
         // Perform on main context for high-priority, thread-blocking results:
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+    persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            let userPostPredicate = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
+            let followingStreamPredicate = NSPredicate(format: "streamParent.streamId == %@", "user_posts")
+            fetchRequest.predicate = userPostPredicate + followingStreamPredicate
+            
+            context.v_deleteObjects(fetchRequest)
             
             // Delete all objects that only exist for a current user.
             // This prevents old conversations or notificaitons from appearing after logout.

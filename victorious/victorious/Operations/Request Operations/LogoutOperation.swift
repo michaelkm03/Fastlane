@@ -20,10 +20,11 @@ class LogoutOperation: RequestOperation {
         self.qualityOfService = .UserInitiated
         
         // Before cleaning out current user data, prune it (while VCurrentUser.user() is stil available)
-        LogoutPrunePersistentStoreOperation().queueBefore(self)
+        let pruneOperation = LogoutPrunePersistentStoreOperation()
+        pruneOperation.queueBefore(self)
         
         // After we finish cleaning out current user data, fire-and-forget to the backend
-        LogoutRemoteOperation().queueAfter(self)
+        LogoutRemoteOperation().rechainAndQueueAfter(pruneOperation)
     }
     
     override func main() {
