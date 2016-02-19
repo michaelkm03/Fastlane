@@ -20,7 +20,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
 
@@ -135,6 +134,7 @@
     VUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.user = self.usersDataSource.users[ indexPath.row ];
+    cell.sourceScreenName = self.sourceScreenName;
     return cell;
 }
 

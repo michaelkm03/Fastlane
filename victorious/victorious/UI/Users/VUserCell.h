@@ -19,9 +19,9 @@
 @interface VUserCell : VBaseCollectionViewCell
 
 - (void)setUser:(VUser *)user;
-
 - (void)updateFollowingAnimated:(BOOL)animated;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) NSString *sourceScreenName;
 
 @end
