@@ -72,10 +72,6 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
     }
-    
-    private func streamItemsWithoutShelves(streamItems: [VStreamItem]) -> NSOrderedSet {
-        return NSOrderedSet(array: streamItems.filter { $0.itemType != VStreamItemTypeShelf })
-    }
 }
 
 private extension NSOrderedSet {
