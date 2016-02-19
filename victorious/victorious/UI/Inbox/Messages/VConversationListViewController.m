@@ -30,7 +30,6 @@
 #import "victorious-swift.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
-static const CGFloat kActivityFooterHeight = 50.0f;
 
 @interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate, VConversationContainerViewControllerDelegate>
 
