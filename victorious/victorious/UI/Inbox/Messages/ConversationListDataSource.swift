@@ -52,6 +52,15 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         )
     }
     
+    func redocorateVisibleCells(tableView: UITableView) {
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? VConversationCell else {
+                continue
+            }
+            self.decorate(cell: cell, atIndexPath: indexPath)
+        }
+    }
+    
     func registerCells( tableView: UITableView ) {
         let identifier = VConversationCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VConversationCell.self) )
@@ -94,7 +103,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         }
     }
     
-    func decorate(cell conversationCell:VConversationCell, atIndexPath indexPath: NSIndexPath) {
+    private func decorate(cell conversationCell:VConversationCell, atIndexPath indexPath: NSIndexPath) {
         let conversation = visibleItems[ indexPath.row ] as! VConversation
         conversationCell.conversation = conversation
         conversationCell.dependencyManager = self.dependencyManager

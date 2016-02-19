@@ -79,7 +79,6 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.messageCountCoordinator markConversationRead:self.conversation];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 

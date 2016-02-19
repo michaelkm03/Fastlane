@@ -133,10 +133,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         // Any sending/receiving messages that happens while a conversation detail is shown
         // will all be cached locally, so only a local refresh is needed
-        [self.dataSource refreshLocalWithCompletion:^(NSArray *_Nonnull results)
-         {
-             [self.tableView reloadData];
-         }];
+        [self.dataSource refreshLocalWithCompletion:nil];
     }
     else if ( self.dataSource.visibleItems.count == 0 )
     {
@@ -187,19 +184,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self redecorateVisibleCells];
+         [self.dataSource redocorateVisibleCells:self.tableView];
      }];
-}
-
-- (void)redecorateVisibleCells
-{
-    for (UITableViewCell *cell in self.tableView.visibleCells)
-    {
-        if ([cell isKindOfClass:VConversationCell.class])
-        {
-            [self.dataSource decorateWithCell:(VConversationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
-        }
-    }
 }
 
 #pragma mark - Properties
@@ -268,7 +254,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)conversationDidFinishSendingWithUserId:(NSNumber *)otherUserId
 {
-    [self redecorateVisibleCells];
+    [self.dataSource redocorateVisibleCells:self.tableView];
 }
 
 #pragma mark - Message View Controller Cache
@@ -319,7 +305,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (void)deleteConversationAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
-    [self.messageCountCoordinator markConversationRead:conversation];
     NSNumber *userRemoteId = conversation.user.remoteId;
     DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
@@ -384,6 +369,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     else
     {
+        [self.messageCountCoordinator markConversationRead:conversation completion:^
+         {
+             [self.dataSource redocorateVisibleCells:self.tableView];
+         }];
+        
         if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
         {
             if ( rootInnerNavigationController.topViewController != detailVC )
@@ -473,7 +463,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self redecorateVisibleCells];
+         [self.dataSource redocorateVisibleCells:self.tableView];
     }];
 }
 

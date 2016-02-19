@@ -73,10 +73,14 @@
     });
 }
 
-- (void)markConversationRead:(VConversation *)conversation
+- (void)markConversationRead:(VConversation *)conversation completion:(void(^)())completion
 {
     if ( conversation.remoteId == nil || conversation.remoteId.integerValue == 0 )
     {
+        if ( completion != nil )
+        {
+            completion();
+        }
         return;
     }
     
@@ -85,18 +89,16 @@
     {
         if ( operation.unreadConversationsCount != nil )
         {
-            dispatch_async(self.privateQueue, ^(void)
+            if (self.loadingUnreadMessageCount)
             {
-                if (self.loadingUnreadMessageCount)
-                {
-                    self.shouldLoadUnreadMessageCountAgain = YES;
-                    return;
-                }
-                dispatch_sync(dispatch_get_main_queue(), ^(void)
-                {
-                    self.unreadMessageCount = operation.unreadConversationsCount.integerValue;
-                });
-            });
+                self.shouldLoadUnreadMessageCountAgain = YES;
+                return;
+            }
+            self.unreadMessageCount = operation.unreadConversationsCount.integerValue;
+        }
+        if ( completion != nil )
+        {
+            completion();
         }
     }];
 }
