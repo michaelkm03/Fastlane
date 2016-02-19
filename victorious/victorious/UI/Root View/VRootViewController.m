@@ -455,7 +455,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     PrunePersistentStoreOperation *operation = [[PrunePersistentStoreOperation alloc] init];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self showViewController:nil animated:NO completion:nil];
          [self showLoadingViewController];
      }];
 }
