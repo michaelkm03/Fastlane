@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "첫 번째로 댓글을 달아주세요!";
 "NoCommentsMessage"     =   "글, 사진, 영상 댓글을 달고 다른 사람의 반응을 보세요!";
 
+"NoUserSearchResultsTitle"       =   "사용자를 찾을 수 없었습니다";
+"NoUserSearchResultsMessage"     =   "해당 사용자를 찾을 수 없었습니다. 다시 시도하거나 해당 사용자의 프로필로 가서 거기서 메시지를 보내세요!";
+
 "NoFollowersTitle"      =   "훌쩍! 아직 날 팔로우한 사람이 아무도 없습니다.";
 "NoFollowersMessage"    =   "댓글을 달고, 리믹스하고, 새 콘텐츠를 올려서 커뮤니티와 교류하고 팔로워를 늘리세요.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "편집";
 "editProfileButton"     =   "프로필 편집";
 "followers"             =   "팔로워들";
+"followersCount"        =   "팔로워 %@명"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "팔로잉";
 "follow"                =   "팔로우";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@이(가) %@에";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "신고하기";
-"REPOSTS"               =   "리포스트";
+"REPOSTERS"             =   "리포스터"; // Title for a list of users who have reposted something
 "Repost"                =   "리포스트";
 "Reposted"              =   "리포스트";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "게재중";
 "Upload failure" = "업로드 실패";
 "Error loading results" = "결과 불러오는 중 오류 발생";
-"Error rendering GIF" = "GIF 렌더링 중 오류 발생. 다시 시도하세요.";
+"Error rendering Media" = "미디어 렌더링 중 오류. 다시 시도하세요.";
 
 "By signing up you are agreeing to our" = "가입하시면 다음에 동의하시는 것으로 간주됩니다.";
 "terms of service"      =   "서비스 약관";

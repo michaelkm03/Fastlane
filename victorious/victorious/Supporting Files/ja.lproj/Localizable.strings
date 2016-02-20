@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "最初のコメントを投稿しましょう！";
 "NoCommentsMessage"     =   "テキスト、写真もしくは動画コメントを投稿して、ファンの反応を見てみましょう";
 
+"NoUserSearchResultsTitle"       =   "ユーザーが見つかりません";
+"NoUserSearchResultsMessage"     =   "指定のユーザーを見つけられませんでした。もう一度試すか、指定のユーザーのプロフィールからメッセージを送信しましょう！";
+
 "NoFollowersTitle"      =   "まだ誰もあなたをフォローしていません";
 "NoFollowersMessage"    =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "編集する";
 "editProfileButton"     =   "プロフィール編集";
 "followers"             =   "フォロワー";
+"followersCount"        =   "%@人のフォロワー"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "フォロー中";
 "follow"                =   "フォロー中";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ - %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "報告/フラグ";
-"REPOSTS"               =   "再投稿";
+"REPOSTERS"             =   "再投稿者"; // Title for a list of users who have reposted something
 "Repost"                =   "再投稿";
 "Reposted"              =   "再投稿済";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "公開処理中…";
 "Upload failure" = "アップロードに失敗";
 "Error loading results" = "結果の読み込みエラー";
-"Error rendering GIF" = "GIFレンダリングエラー";
+"Error rendering Media" = "メディアの表示中にエラーが発生しました。後ほど改めてお試しください。";
 
 "By signing up you are agreeing to our" = "サインアップすることで、次に同意したものとみなされます: 当社の";
 "terms of service"      =   "利用規約";
