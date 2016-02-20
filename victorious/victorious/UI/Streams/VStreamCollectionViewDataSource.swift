@@ -34,6 +34,9 @@ extension VStreamCollectionViewDataSource {
     func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
+                // For a preloaded stream, if the `stream` has an apiPath, we need to pass it in so that
+                // the preloaded stream has a valid apiPath to load next page.
+                // e.g. Explore recent feed
                 return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
             },
             completion: { (operation, error) in
