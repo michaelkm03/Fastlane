@@ -31,10 +31,10 @@ extension VStreamCollectionViewDataSource {
     
     /// If a stream is pre populated with its stream items, no network request
     /// is needed and we just fetch those stream items locally
-    func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
+    func loadPreloadedStream(completion: ((NSError?)->())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
-                return StreamOperation(existingStreamID: stream.objectID)
+                return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
             },
             completion: { (operation, error) in
                 completion?(error)
@@ -56,8 +56,8 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         var filteredOldItems = oldValue
         
         if suppressShelves {
-            filteredOldItems = oldValue.v_orderedSetFilteredWithoutShelves()
-            visibleItems = newValue.v_orderedSetFilteredWithoutShelves()
+            filteredOldItems = streamItemsWithoutShelves(oldValue.array as? [VStreamItem] ?? [])
+            visibleItems = streamItemsWithoutShelves(newValue.array as? [VStreamItem] ?? [])
         } else {
             visibleItems = newValue
         }
@@ -71,19 +71,5 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
-    }
-}
-
-private extension NSOrderedSet {
-    
-    func v_orderedSetFilteredWithoutShelves() -> NSOrderedSet {
-        let predicate = NSPredicate() { (item, _) -> Bool in
-            if item is VStreamItem {
-                return item.itemType != VStreamItemTypeShelf
-            } else {
-                return false
-            }
-        }
-        return self.filteredOrderedSetUsingPredicate(predicate)
     }
 }
