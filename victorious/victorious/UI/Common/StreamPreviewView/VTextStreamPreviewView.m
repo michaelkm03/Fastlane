@@ -44,7 +44,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)setStream:(VStream *)stream
 {
-    BOOL needsUpdate = stream != self.streamItem;
+    BOOL needsUpdate = stream != (VStream *)self.streamItem;
     [super setStream:stream];
     if ( needsUpdate )
     {
