@@ -56,8 +56,8 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
         var filteredOldItems = oldValue
         
         if suppressShelves {
-            filteredOldItems = streamItemsWithoutShelves(oldValue.array as? [VStreamItem] ?? [])
-            visibleItems = streamItemsWithoutShelves(newValue.array as? [VStreamItem] ?? [])
+            filteredOldItems = oldValue.v_orderedSetFilteredWithoutShelves()
+            visibleItems = newValue.v_orderedSetFilteredWithoutShelves()
         } else {
             visibleItems = newValue
         }
@@ -72,8 +72,19 @@ extension VStreamCollectionViewDataSource: VPaginatedDataSourceDelegate {
     public func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         self.delegate?.paginatedDataSource(paginatedDataSource, didReceiveError: error)
     }
+}
+
+private extension NSOrderedSet {
     
-    private func streamItemsWithoutShelves(streamItems: [VStreamItem]) -> NSOrderedSet {
-        return NSOrderedSet(array: streamItems.filter { $0.itemType != VStreamItemTypeShelf })
+    func v_orderedSetFilteredWithoutShelves() -> NSOrderedSet {
+        let predicate = NSPredicate() { (item, _) -> Bool in
+            if item is VStreamItem {
+                return item.itemType != VStreamItemTypeShelf
+            } else {
+                return false
+            }
+        }
+        return self.filteredOrderedSetUsingPredicate(predicate)
     }
 }
+
