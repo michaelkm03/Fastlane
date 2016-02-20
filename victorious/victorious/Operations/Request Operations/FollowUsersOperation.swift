@@ -12,18 +12,18 @@ import VictoriousIOSSDK
 class FollowUsersOperation: RequestOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
+    let sourceScreenName: String
     
     private let request: FollowUsersRequest
-    private let sourceScreenName: String?
     private let userIDs: [Int]
     
-    required init(userIDs: [Int], sourceScreenName: String? = nil) {
+    required init(userIDs: [Int], sourceScreenName: String) {
         self.userIDs = userIDs
         self.sourceScreenName = sourceScreenName
         self.request = FollowUsersRequest(userIDs: userIDs, sourceScreenName: sourceScreenName)
     }
     
-    convenience init(userID: Int, sourceScreenName: String? = nil) {
+    convenience init(userID: Int, sourceScreenName: String) {
         self.init( userIDs: [userID], sourceScreenName: sourceScreenName )
     }
 

@@ -60,7 +60,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
-@property (nonatomic, strong, readwrite) VUser *user;
 @property (nonatomic, strong) NSNumber *userRemoteId;
 
 // If YES, this view controller is for the current user and is part of the main menu
@@ -95,7 +94,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         viewController.user = [VCurrentUser user];
         viewController.representsMainUser = YES;
     }
-    
+
+    viewController.sourceScreenName = VFollowSourceScreenProfileSleekCell;
     return viewController;
 }
 
@@ -122,7 +122,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
 }
-
 
 - (void)initializeProfileHeader
 {
@@ -382,12 +381,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super loadPage:pageType completion:completionBlock];
 }
 
-#pragma mark -
+#pragma mark - Following
 
 - (void)toggleFollowUser
 {
     NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = nil;
+    NSString *sourceScreenName = VFollowSourceScreenProfile;
     
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )

@@ -118,7 +118,7 @@
 - (IBAction)onFollow:(VFollowControl *)sender
 {
     NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = nil;
+    NSString *sourceScreenName = VFollowSourceScreenDiscoverSuggestedUsers;
     
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )

@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "HÃY LÀ NGƯỜI ĐẦU TIÊN VÀO BÌNH LUẬN!";
 "NoCommentsMessage"     =   "Đăng tin nhắn, ảnh hoặc bình luận video, và xem những điều mọi người nói!";
 
+"NoUserSearchResultsTitle"       =   "KHÔNG TÌM THẤY NGƯỜI DÙNG";
+"NoUserSearchResultsMessage"     =   "Chúng tôi không thể tìm thấy người dùng đó. Bạn có thể thử lại hoặc ghé thăm hồ sơ của người dùng và gửi tin nhắn từ đó!";
+
 "NoFollowersTitle"      =   "Ồ! CHƯA CÓ HAI THEO DÕI BẠN";
 "NoFollowersMessage"    =   "Hãy xây dựng mạng lưới những người theo dõi bạn bằng cách gắn bó với cộng đồng thông qua cơ chế bình luận, kết hợp lại hoặc đăng nội dung mới.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "Chỉnh sửa";
 "editProfileButton"     =   "Chỉnh sửa Hồ sơ";
 "followers"             =   "Người Theo dõi";
+"followersCount"        =   "%@ Người theo dõi"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Đang Theo dõi";
 "follow"                =   "Theo dõi";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ tại %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Báo cáo/Cảnh báo";
-"REPOSTS"               =   "Đăng lại";
+"REPOSTERS"             =   "Những người đăng lại"; // Title for a list of users who have reposted something
 "Repost"                =   "Đăng lại";
 "Reposted"              =   "Đã đăng lại";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "Đang công bố ...";
 "Upload failure" = "Tải lên không thành công";
 "Error loading results" = "Lỗi khi đang tải kết quả";
-"Error rendering GIF" = "Tôi khi đang hoàn lại ảnh động GIF. Xin hãy thử lại.";
+"Error rendering Media" = "Lỗi khi đang trình diễn Đa phương tiện. Vui lòng thử lại.";
 
 "By signing up you are agreeing to our" = "Qua việc đăng ký, bạn đã đồng ý với";
 "terms of service"      =   "điều khoản dịch vụ";

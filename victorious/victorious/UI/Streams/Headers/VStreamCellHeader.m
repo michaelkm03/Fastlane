@@ -240,7 +240,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
     NSInteger userId = self.sequence.user.remoteId.integerValue;
-    NSString *sourceScreenName = VFollowSourceScreenSleekCell;
+    NSString *sourceScreenName = self.sourceScreenName != nil ? self.sourceScreenName : VFollowSourceScreenSteamSleekCell;
     
     RequestOperation *operation;
     if ( self.sequence.user.isFollowedByMainUser.boolValue )

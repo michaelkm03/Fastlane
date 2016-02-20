@@ -15,8 +15,6 @@
  */
 typedef void (^VLoginFlowCompletionBlock) (BOOL authorized);
 
-@class VObjectManager;
-
 /**
  *  Objects conforming to this protocol provide UI for the user to login or register.
  */

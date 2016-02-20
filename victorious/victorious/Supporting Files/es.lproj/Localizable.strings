@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "¡SÉ EL PRIMERO EN COMENTAR!";
 "NoCommentsMessage"     =   "Publica textos, fotos o comentarios a videos, ¡y ve lo que los demás dicen!";
 
+"NoUserSearchResultsTitle"       =   "NO SE ENCONTRARON USUARIOS";
+"NoUserSearchResultsMessage"     =   "No pudimos encontrar ese usuario; ¡puedes intentarlo de nuevo o ir a su perfil y enviarle un mensaje desde allí!";
+
 "NoFollowersTitle"      =   "¡BOMP BOMP! NADIE TE HA SEGUIDO AÚN";
 "NoFollowersMessage"    =   "Construye tu propio seguimiento participando con la comunidad a través de comentatios, remezcla o publica nuevo contenido.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "Editar";
 "editProfileButton"     =   "Editar perfil";
 "followers"             =   "Seguidores";
+"followersCount"        =   "%@ seguidores"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Siguiendo";
 "follow"                =   "Seguir";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ a %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Denunciar/Señalar";
-"REPOSTS"               =   "Republicaciones";
+"REPOSTERS"             =   "Republicadores"; // Title for a list of users who have reposted something
 "Repost"                =   "Volver a publicar";
 "Reposted"              =   "Vuelto a publicar";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "Publicando...";
 "Upload failure" = "Error al cargar";
 "Error loading results" = "Error al cargar los resultados";
-"Error rendering GIF" = "Error al reproducir el GIF. Por favor vuelve a intentarlo.";
+"Error rendering Media" = "Error en el suministro de los materiales. Por favor, vuelve a intentarlo.";
 
 "By signing up you are agreeing to our" = "Al firmar aceptas nuestros";
 "terms of service"      =   "términos de servicio";
@@ -447,4 +451,5 @@
 "LEVEL" = "NIVEL";
 "TestAlertsViewControllerFooter" = "Después de que registres una alerta, regresa a la transmisión o perfil y jala para actualizar. La alerta debe aparecer.";
 
-"Enter birthday before continuing" = "Por favor, introduce tu cumpleaños antes de continuar: ";
+"Enter birthday before continuing" = "Por favor, introduce tu cumpleaños antes de continuar:
+";

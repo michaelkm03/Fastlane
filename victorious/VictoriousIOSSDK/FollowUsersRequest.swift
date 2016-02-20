@@ -12,9 +12,9 @@ import SwiftyJSON
 public struct FollowUsersRequest: RequestType {
     
     public let userIDs: [Int]
-    public let sourceScreenName: String?
+    public let sourceScreenName: String
     
-    public init(userIDs: [Int], sourceScreenName: String?) {
+    public init(userIDs: [Int], sourceScreenName: String) {
         self.userIDs = userIDs
         self.sourceScreenName = sourceScreenName
     }
@@ -26,7 +26,7 @@ public struct FollowUsersRequest: RequestType {
         } else if userIDs.count == 1 {
             let url = NSURL(string: "/api/follow/add")!
             let request = NSMutableURLRequest(URL: url)
-            let params = [ "source": sourceScreenName ?? "", "target_user_id": String( userIDs[0] ) ]
+            let params = [ "source": sourceScreenName, "target_user_id": String( userIDs[0] ) ]
             request.vsdk_addURLEncodedFormPost(params)
             return request
         

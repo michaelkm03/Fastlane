@@ -14,5 +14,5 @@
  *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All CollectionViewCell subclasses should subclass VBaseCollectionViewCell.
  */
 @interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
-
+@property (nonatomic, strong, readwrite) NSString *sourceScreenName;
 @end

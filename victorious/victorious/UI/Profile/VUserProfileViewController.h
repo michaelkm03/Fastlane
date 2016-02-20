@@ -16,6 +16,8 @@
 
 @interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VTabMenuContainedViewControllerNavigation, VDeeplinkSupporter>
 
-@property (nonatomic, readonly) VUser *user;
+@property (nonatomic, strong, readwrite) VUser *user;
+
+- (void)toggleFollowUser;
 
 @end

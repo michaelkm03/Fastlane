@@ -30,7 +30,7 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         if let viewController = viewControllers.first,
             let searchResultsViewControler = viewController as? SearchResultsViewController {
                 
-                searchResultsViewControler.dataSource = UserSearchDataSource(dependencyManager: dependencyManager)
+                searchResultsViewControler.dataSource = UserSearchDataSource(dependencyManager: dependencyManager, sourceScreenName: VFollowSourceScreenMessageableUsers)
                 searchResultsViewControler.searchResultsDelegate = self
                 
                 searchController.searchBar.sizeToFit()
