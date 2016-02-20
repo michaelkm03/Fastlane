@@ -17,6 +17,8 @@
 
 @class VDependencyManager, VSequenceActionController, VContentCell, VExperienceEnhancerBarCell, VNewContentViewController;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VNewContentViewControllerDelegate <NSObject>
 @optional
 
@@ -48,11 +50,11 @@
  */
 @property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
-@property (nonatomic, strong) UIImage *placeholderImage;
+@property (nonatomic, strong, nullable) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, weak, readonly) VContentCell *contentCell;
+@property (nonatomic, weak, readonly, nullable) VContentCell *contentCell;
 
 @property (nonatomic, weak, nullable) id<VNewContentViewControllerDelegate> delegate;
 
@@ -60,11 +62,13 @@
  Provides playback controls and other interactions
  with a visible video UI.
  */
-@property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, weak, nullable) id<VVideoPlayer> videoPlayer;
 
 /*
  Object that responds to interaction with a poll view.
  */
-@property (nonatomic, weak) id<VPollResultReceiver> pollAnswerReceiver;
+@property (nonatomic, weak, nullable) id<VPollResultReceiver> pollAnswerReceiver;
 
 @end
+
+NS_ASSUME_NONNULL_END
