@@ -649,7 +649,13 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                     cellForStreamItem:sequence
                                           atIndexPath:indexPath];
     }
-    
+
+    VBaseCollectionViewCell *baseCollectionViewCell = ((VBaseCollectionViewCell *)cell);
+    if (baseCollectionViewCell != nil && [baseCollectionViewCell respondsToSelector:@selector(setSourceScreenName:)])
+    {
+        baseCollectionViewCell.sourceScreenName = self.sourceScreenName;
+    }
+
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;

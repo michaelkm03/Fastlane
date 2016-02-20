@@ -20,4 +20,5 @@ extern NSString * const VFollowSourceScreenFindFriendsContacts;
 extern NSString * const VFollowSourceScreenFindFriendsFacebook;
 extern NSString * const VFollowSourceScreenStreamTrendingUserShelf;
 extern NSString * const VFollowSourceScreenRegistrationSuggestedUsers;
-extern NSString * const VFollowSourceScreenSleekCell;
+extern NSString * const VFollowSourceScreenSteamSleekCell;
+extern NSString * const VFollowSourceScreenProfileSleekCell;

@@ -94,7 +94,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         viewController.user = [VCurrentUser user];
         viewController.representsMainUser = YES;
     }
-    
+
+    viewController.sourceScreenName = VFollowSourceScreenProfileSleekCell;
     return viewController;
 }
 
@@ -121,7 +122,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
 }
-
 
 - (void)initializeProfileHeader
 {
