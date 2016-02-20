@@ -31,7 +31,7 @@ extension VStreamCollectionViewDataSource {
     
     /// If a stream is pre populated with its stream items, no network request
     /// is needed and we just fetch those stream items locally
-    func loadPreloadedStream(completion: ((NSError?)->())? ) {
+    func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
                 return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
