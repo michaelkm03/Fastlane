@@ -192,15 +192,8 @@
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-            UICollectionViewLayoutAttributes *attributes = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-            if ( !CGSizeEqualToSize(attributes.size, CGSizeZero) )
-            {
-                CGPoint offset = attributes.frame.origin;
-                offset.x = 0;
-                offset.y -= self.v_layoutInsets.top;
-                self.collectionView.contentOffset = offset;
-                self.targetStreamItem = nil;
-            }
+            [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+            self.targetStreamItem = nil;
         }
     }
 }
