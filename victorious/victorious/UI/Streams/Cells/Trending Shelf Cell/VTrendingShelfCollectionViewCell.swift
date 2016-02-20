@@ -137,12 +137,11 @@ extension VTrendingShelfCollectionViewCell: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
-        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+        if let shelf = shelf {
             if indexPath.row == shelf.streamItems.count - 1 {
                 responder.navigateTo(nil, fromShelf: shelf)
-            }
-            else {
-                responder.navigateTo(streamItem, fromShelf: shelf)
+            } else {
+                responder.navigateTo(shelf.streamItems[indexPath.row], fromShelf: shelf)
             }
             return
         }

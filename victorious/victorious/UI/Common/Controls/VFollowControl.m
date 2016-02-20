@@ -82,8 +82,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     [self addTarget:self action:@selector(onToggleFollow:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-#pragma mark - UIControl
-
 #pragma mark - Animations
 
 - (void)performHighlightAnimations:(void (^)(void))animations
