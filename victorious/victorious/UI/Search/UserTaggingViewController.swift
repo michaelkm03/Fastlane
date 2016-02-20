@@ -20,7 +20,8 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
         guard let dependencyManager = self.dependencyManager else {
             fatalError( "UserTaggingViewController is missing a dependency manager." )
         }
-        return UserSearchDataSource(dependencyManager: dependencyManager)
+        return UserSearchDataSource(dependencyManager: dependencyManager,
+            sourceScreenName: VFollowSourceScreenDiscoverUserSearchResults)
     }()
     
     private var dependencyManager: VDependencyManager?

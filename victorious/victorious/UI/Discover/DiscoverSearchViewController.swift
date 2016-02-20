@@ -15,7 +15,8 @@ extension DiscoverSearchViewController {
             identifier: "SearchResultsViewController")
         
         userSearchVC.dependencyManager = self.dependencyManager
-        userSearchVC.dataSource = UserSearchDataSource(dependencyManager: dependencyManager)
+        userSearchVC.dataSource = UserSearchDataSource(dependencyManager: dependencyManager,
+            sourceScreenName: VFollowSourceScreenDiscoverUserSearchResults)
         self.userSearchViewController = userSearchVC
         
         self.addChildViewController( userSearchVC )

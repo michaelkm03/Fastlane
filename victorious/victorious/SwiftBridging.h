@@ -90,6 +90,7 @@
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDirectoryCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
+#import "VDiscoverSuggestedPersonCell.h"
 #import "VEditCommentViewController.h"
 #import "VEditableTextPostViewController.h"
 #import "VElapsedTimeFormatter.h"

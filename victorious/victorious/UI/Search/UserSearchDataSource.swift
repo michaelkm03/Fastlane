@@ -14,11 +14,13 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     private(set) var searchTerm: String?
     
     let dependencyManager: VDependencyManager
+    let sourceScreenName: String
     
     weak var tableView: UITableView?
     
-    required init(dependencyManager: VDependencyManager) {
+    required init(dependencyManager: VDependencyManager, sourceScreenName: String) {
         self.dependencyManager = dependencyManager
+        self.sourceScreenName = sourceScreenName
         super.init()
         
         if let currentUser = VCurrentUser.user() {
@@ -98,9 +100,9 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
             
             let operation: RequestOperation
             if currentUser.isFollowingUserID(userID) {
-                operation = UnfollowUserOperation(userID: userID, sourceScreenName: nil)
+                operation = UnfollowUserOperation(userID: userID, sourceScreenName: self.sourceScreenName)
             } else {
-                operation = FollowUsersOperation(userIDs: [userID])
+                operation = FollowUsersOperation(userIDs: [userID], sourceScreenName: self.sourceScreenName)
             }
             operation.queue()
         }

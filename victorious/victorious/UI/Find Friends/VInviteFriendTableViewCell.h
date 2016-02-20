@@ -16,7 +16,9 @@
 @property (nonatomic, readonly) BOOL haveRelationship;
 @property (nonatomic, weak) IBOutlet VFollowControl *followUserControl;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) NSString *sourceScreenName;
 
 - (void)updateFollowStatusAnimated:(BOOL)animated;
+- (IBAction)followUnfollowUser:(VFollowControl *)sender;
 
 @end

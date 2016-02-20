@@ -24,4 +24,6 @@
  */
 @property (nonatomic, strong) VSequence *sequence;
 
+@property (nonatomic, strong, readwrite) NSString *sourceScreenName;
+
 @end

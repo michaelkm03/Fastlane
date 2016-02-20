@@ -33,7 +33,9 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
-        _dataSource = [[RepostersDataSource alloc] initWithSequence:sequence dependencyManager:dependencyManager];
+        _dataSource = [[RepostersDataSource alloc] initWithSequence:sequence
+                                                  dependencyManager:dependencyManager
+                                                   sourceScreenName:VFollowSourceScreenReposter];
     }
     return self;
 }
