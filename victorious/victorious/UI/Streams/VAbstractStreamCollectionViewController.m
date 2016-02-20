@@ -387,7 +387,8 @@
 - (void)shouldLoadNextPage
 {
     if ( self.streamDataSource.isLoading ||
-         self.targetStreamItem != nil )
+         self.targetStreamItem != nil ||
+         self.refreshControl.isRefreshing )
     {
         return;
     }
