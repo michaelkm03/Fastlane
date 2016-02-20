@@ -98,7 +98,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    long long userId = self.user.remoteId.longLongValue;
+    NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = nil;
     
     RequestOperation *operation;

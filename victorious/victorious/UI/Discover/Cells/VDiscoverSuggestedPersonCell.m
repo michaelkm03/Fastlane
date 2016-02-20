@@ -117,7 +117,7 @@
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    long long userId = self.user.remoteId.longLongValue;
+    NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = nil;
     
     RequestOperation *operation;

@@ -112,7 +112,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 - (IBAction)followControlPressed:(VFollowControl *)sender
 {
-    long long userId = self.user.remoteId.longLongValue;
+    NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenRegistrationSuggestedUsers;
     
     RequestOperation *operation;
