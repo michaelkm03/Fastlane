@@ -122,7 +122,7 @@ import VictoriousIOSSDK
                 operation.results = results
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
                 if !results.isEmpty && (self.visibleItems.count == 0 || (self.visibleItems[0] as? NSObject) != (results[0] as? NSObject) ) {
-                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .First)
+                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
                 }
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error )

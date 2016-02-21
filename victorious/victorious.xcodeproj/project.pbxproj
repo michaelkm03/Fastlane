@@ -838,6 +838,12 @@
 		A73D16BB1C24F98D00497F83 /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73D16BA1C24F98D00497F83 /* StreamOperation.swift */; };
 		A73D16BD1C24F99700497F83 /* SuggestedUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73D16BC1C24F99700497F83 /* SuggestedUsersOperation.swift */; };
 		A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73D16BE1C24FA0700497F83 /* TermsOfServiceOperation.swift */; };
+		A740500D1C77D10600120A23 /* LiveStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A740500C1C77D10600120A23 /* LiveStreamViewController.swift */; };
+		A74050131C77DFF800120A23 /* LiveStreamDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74050121C77DFF800120A23 /* LiveStreamDataSource.swift */; };
+		A74050161C77E02300120A23 /* LiveStreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74050141C77E02300120A23 /* LiveStreamCell.swift */; };
+		A74050171C77E02300120A23 /* LiveStreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74050151C77E02300120A23 /* LiveStreamCell.xib */; };
+		A74050191C77ED2000120A23 /* LiveStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74050181C77ED2000120A23 /* LiveStreamOperation.swift */; };
+		A740501B1C77ED3400120A23 /* UICollectionView+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A740501A1C77ED3400120A23 /* UICollectionView+Pagination.swift */; };
 		A740CA171C3F53950038D7DF /* AuthenticationContext+CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A740CA151C3F52A40038D7DF /* AuthenticationContext+CurrentUser.swift */; };
 		A740CA181C3F53F50038D7DF /* RequestContext+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A740CA131C3F528B0038D7DF /* RequestContext+Environment.swift */; };
 		A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */; };
@@ -1082,7 +1088,6 @@
 		A7B1335F1C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B133511C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib */; };
 		A7B133601C6178FD006EC4F5 /* PaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133521C6178FD006EC4F5 /* PaginatedDataSource.swift */; };
 		A7B133611C6178FD006EC4F5 /* PaginatedDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133531C6178FD006EC4F5 /* PaginatedDataSourceType.swift */; };
-		A7B133621C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133541C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift */; };
 		A7B133631C6178FD006EC4F5 /* UITableView+OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */; };
 		A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B133571C6178FD006EC4F5 /* VNoContentView.m */; };
 		A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B133591C6178FD006EC4F5 /* VScrollPaginator.m */; };
@@ -3099,6 +3104,12 @@
 		A73D16BA1C24F98D00497F83 /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamOperation.swift; sourceTree = "<group>"; };
 		A73D16BC1C24F99700497F83 /* SuggestedUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersOperation.swift; sourceTree = "<group>"; };
 		A73D16BE1C24FA0700497F83 /* TermsOfServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceOperation.swift; sourceTree = "<group>"; };
+		A740500C1C77D10600120A23 /* LiveStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveStreamViewController.swift; path = LiveStream/LiveStreamViewController.swift; sourceTree = "<group>"; };
+		A74050121C77DFF800120A23 /* LiveStreamDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveStreamDataSource.swift; path = LiveStream/LiveStreamDataSource.swift; sourceTree = "<group>"; };
+		A74050141C77E02300120A23 /* LiveStreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveStreamCell.swift; path = LiveStream/LiveStreamCell.swift; sourceTree = "<group>"; };
+		A74050151C77E02300120A23 /* LiveStreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LiveStreamCell.xib; path = LiveStream/LiveStreamCell.xib; sourceTree = "<group>"; };
+		A74050181C77ED2000120A23 /* LiveStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveStreamOperation.swift; path = LiveStream/LiveStreamOperation.swift; sourceTree = "<group>"; };
+		A740501A1C77ED3400120A23 /* UICollectionView+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Pagination.swift"; sourceTree = "<group>"; };
 		A740CA131C3F528B0038D7DF /* RequestContext+Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RequestContext+Environment.swift"; sourceTree = "<group>"; };
 		A740CA151C3F52A40038D7DF /* AuthenticationContext+CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AuthenticationContext+CurrentUser.swift"; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
@@ -3492,7 +3503,6 @@
 		A7B133511C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityIndicatorTableCell.xib; sourceTree = "<group>"; };
 		A7B133521C6178FD006EC4F5 /* PaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataSource.swift; sourceTree = "<group>"; };
 		A7B133531C6178FD006EC4F5 /* PaginatedDataSourceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataSourceType.swift; sourceTree = "<group>"; };
-		A7B133541C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+OrderedSet.swift"; sourceTree = "<group>"; };
 		A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+OrderedSet.swift"; sourceTree = "<group>"; };
 		A7B133561C6178FD006EC4F5 /* VNoContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentView.h; sourceTree = "<group>"; };
 		A7B133571C6178FD006EC4F5 /* VNoContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentView.m; sourceTree = "<group>"; };
@@ -4733,6 +4743,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A740500B1C77D0EF00120A23 /* LiveStream */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				F07409801B059CAD00C44623 /* Coachmarks */,
@@ -6985,6 +6996,19 @@
 			path = DataSources;
 			sourceTree = "<group>";
 		};
+		A740500B1C77D0EF00120A23 /* LiveStream */ = {
+			isa = PBXGroup;
+			children = (
+				A74050141C77E02300120A23 /* LiveStreamCell.swift */,
+				A74050151C77E02300120A23 /* LiveStreamCell.xib */,
+				A74050121C77DFF800120A23 /* LiveStreamDataSource.swift */,
+				A74050181C77ED2000120A23 /* LiveStreamOperation.swift */,
+				A740500C1C77D10600120A23 /* LiveStreamViewController.swift */,
+				A740501A1C77ED3400120A23 /* UICollectionView+Pagination.swift */,
+			);
+			name = LiveStream;
+			sourceTree = "<group>";
+		};
 		A743E7E11A0816D500339CB3 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
@@ -7702,7 +7726,6 @@
 				A7B133511C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib */,
 				A7B133521C6178FD006EC4F5 /* PaginatedDataSource.swift */,
 				A7B133531C6178FD006EC4F5 /* PaginatedDataSourceType.swift */,
-				A7B133541C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift */,
 				A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */,
 				A7B133561C6178FD006EC4F5 /* VNoContentView.h */,
 				A7B133571C6178FD006EC4F5 /* VNoContentView.m */,
@@ -10043,6 +10066,7 @@
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
 				7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */,
 				A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
+				A74050171C77E02300120A23 /* LiveStreamCell.xib in Resources */,
 				03645B0F1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
@@ -10911,6 +10935,7 @@
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
+				A740500D1C77D10600120A23 /* LiveStreamViewController.swift in Sources */,
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
 				C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
@@ -11050,6 +11075,7 @@
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
 				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
+				A74050161C77E02300120A23 /* LiveStreamCell.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
@@ -11322,6 +11348,7 @@
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				A75DF5251C3DBD5100A4C82A /* UserSearchViewController.swift in Sources */,
 				F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */,
+				A740501B1C77ED3400120A23 /* UICollectionView+Pagination.swift in Sources */,
 				A7078CDC1BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
@@ -11353,7 +11380,6 @@
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
-				A7B133621C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */,
@@ -11645,6 +11671,7 @@
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				A7F843661BFD44DB004C3D55 /* Conversation+Parsable.swift in Sources */,
 				79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */,
+				A74050191C77ED2000120A23 /* LiveStreamOperation.swift in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
@@ -11708,6 +11735,7 @@
 				F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
+				A74050131C77DFF800120A23 /* LiveStreamDataSource.swift in Sources */,
 				C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */,

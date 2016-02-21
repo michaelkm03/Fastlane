@@ -117,7 +117,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        v_navigationController().view.setNeedsLayout()
+        v_navigationController()?.view?.setNeedsLayout()
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

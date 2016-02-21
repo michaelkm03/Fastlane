@@ -97,7 +97,7 @@
 	<key>animated.voteType</key>
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
-	<string>VFollowingStreamCollectionViewController</string>
+	<string>victorious.LiveStreamViewController</string>
 	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
 	<key>basic.multiScreen</key>
