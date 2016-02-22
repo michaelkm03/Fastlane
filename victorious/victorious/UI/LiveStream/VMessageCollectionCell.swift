@@ -1,5 +1,5 @@
 //
-//  LiveStreamCell.swift
+//  VMessageCollectionCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -27,9 +27,9 @@ enum ChatAlignment {
 
 struct StreamCellAligner {
     
-    let cell: LiveStreamCell
+    let cell: VMessageCollectionCell
     
-    init(cell: LiveStreamCell) {
+    init(cell: VMessageCollectionCell) {
         self.cell = cell
     }
     
@@ -62,9 +62,9 @@ struct StreamCellAligner {
     }
 }
 
-class LiveStreamCell: UICollectionViewCell {
+class VMessageCollectionCell: UICollectionViewCell {
     
-    static var suggestedReuseIdentifier = "LiveStreamCell"
+    static var suggestedReuseIdentifier = "VMessageCollectionCell"
     
     struct Style {
         let textColor: UIColor

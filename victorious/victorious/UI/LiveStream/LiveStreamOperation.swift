@@ -8,44 +8,24 @@
 
 import Foundation
 
-class VLiveStreamModel: NSObject {
-    var displayOrder: NSNumber! = 0
-    
-    let username: String
-    let createdAt: NSDate
-    let text: String
-    
-    init(text: String, username: String = "Patrick", createdAt: NSDate = NSDate()) {
-        self.username = username
-        self.createdAt = createdAt
-        self.text = text
-    }
-    
-    override func isEqual(object: AnyObject?) -> Bool {
-        return self === object
-    }
-}
-
-func createModels() -> [VLiveStreamModel] {
-    return [
-        VLiveStreamModel(text: "I love you Ariana!"),
-        VLiveStreamModel(text: "You rocked at iHeartRadio!!", username: "Sky"),
-        VLiveStreamModel(text: "OMG your so cute your dimple!  Why can't I look like you!"),
-        VLiveStreamModel(text: "I have no words"),
-        VLiveStreamModel(text: "I love you Ariana!", username: "Sky"),
-        VLiveStreamModel(text: "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!"),
-        VLiveStreamModel(text: "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!"),
-        VLiveStreamModel(text: "I have no words", username: "Sky"),
-        VLiveStreamModel(text: "I love you Ariana!"),
-        VLiveStreamModel(text: "You rocked at iHeartRadio!!", username: "Sky"),
-        VLiveStreamModel(text: "OMG your so cute your dimple!  Why can't I look like you!"),
-        VLiveStreamModel(text: "I have no words"),
-        VLiveStreamModel(text: "I love you Ariana!", username: "Sky"),
-        VLiveStreamModel(text: "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!"),
-        VLiveStreamModel(text: "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!"),
-        VLiveStreamModel(text: "I have no words", username: "Sky"),
-    ]
-}
+let testMessageText = [
+    "I love you Ariana!",
+    "You rocked at iHeartRadio!!",
+    "OMG your so cute your dimple!  Why can't I look like you!",
+    "I have no words",
+    "I love you Ariana!",
+    "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!",
+    "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!",
+    "I have no words",
+    "I love you Ariana!",
+    "You rocked at iHeartRadio!!",
+    "OMG your so cute your dimple!  Why can't I look like you!",
+    "I have no words",
+    "I love you Ariana!",
+    "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!",
+    "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!",
+    "I have no words"
+]
 
 final class LiveStreamOperation: RequestOperation, PaginatedOperation {
     
@@ -60,13 +40,28 @@ final class LiveStreamOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        dispatch_sync( dispatch_get_main_queue() ) {
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            let models = createModels()
-            for model in models {
-                model.displayOrder = displayOrder++
+        
+        var displayOrder = self.request.paginator.displayOrderCounterStart
+        
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            let sender: VUser
+            if arc4random() % 10 > 3 {
+                sender = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky" ])
+            } else {
+                sender = VCurrentUser.user(inManagedObjectContext: context)!
             }
-            self.results = models
+                
+            for text in testMessageText {
+                let message: VMessage = context.v_createObject()
+                message.sender = sender
+                message.senderUserId = sender.remoteId
+                message.text = text
+                message.postedAt = NSDate()
+                message.displayOrder = displayOrder++
+            }
+            
+            context.v_save()
         }
     }
 }
@@ -84,13 +79,20 @@ final class LiveStreamOperationUpdate: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        dispatch_sync( dispatch_get_main_queue() ) {
+        
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             if arc4random() % 10 > 2 {
-                let models = createModels()
                 var results = [AnyObject]()
                 for _ in 0..<Int(arc4random() % 4) {
-                    let rnd = Int(arc4random() % UInt32(models.count) )
-                    results.append( models[rnd] )
+                    let rnd = Int(arc4random() % UInt32(testMessageText.count) )
+                    let text = testMessageText[rnd]
+                    let sender: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky" ])
+                    let message: VMessage = context.v_createObject()
+                    message.sender = sender
+                    message.senderUserId = sender.remoteId
+                    message.text = text
+                    message.postedAt = NSDate()
+                    results.append( message )
                 }
                 self.results = results
             } else {

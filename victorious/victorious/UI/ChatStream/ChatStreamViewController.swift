@@ -1,5 +1,5 @@
 //
-//  LiveStreamViewController.swift
+//  ChatStreamViewController.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild {
+class ChatStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild {
     
     private var dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> LiveStreamViewController {
-        let viewController = LiveStreamViewController()
+    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ChatStreamViewController {
+        let viewController = ChatStreamViewController()
         viewController.dependencyManager = dependencyManager
         return viewController
     }
@@ -38,22 +38,10 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         return noContentView
     }()
     
-    private lazy var dataSource: ConversationDataSource = {
-        return ConversationDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
-    }()
-    
-    
-    private lazy var conversation: VConversation = {
-        let persistentStore = MainPersistentStore()
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            return context.v_createObject()
-        }
-    }()
-    
     private var timer: VTimerManager?
     private let scrollPaginator = VScrollPaginator()
     private var hasLoadedOnce = false
-    
+    private let dataSource = ChatDataSource()
     
     // MARK: - VMultipleContainerChild
     
@@ -71,8 +59,8 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         title = "Live Stream"
         
         dataSource.delegate = self
-        dataSource.registerCellsWithCollectionView( collectionView )
-        dataSource.loadMessages(pageType: .First) { (results, error) in
+        dataSource.registerCells( collectionView )
+        dataSource.loadPage(.First) { error in
             self.scrollPaginator.delegate = self
         }
         
@@ -83,7 +71,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         super.viewDidAppear(animated)
         beginLiveUpdates()
     }
-    
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
@@ -129,7 +116,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     func shouldLoadNextPage() { }
     
     func shouldLoadPreviousPage() {
-        dataSource.loadMessages( pageType: .Next )
+        dataSource.loadPage( .Next )
     }
     
     // MARK: - UIScrollViewDelegate

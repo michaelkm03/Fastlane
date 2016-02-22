@@ -10,9 +10,13 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
+class ConversationDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource, VPaginatedDataSourceDelegate {
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
+    
+    let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
+    
+    let cellDecorator: MessageCollectionCellDecorator
     
     private lazy var paginatedDataSource: PaginatedDataSource = {
         let dataSource = PaginatedDataSource()
@@ -45,9 +49,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
+    let messageCellDecorator: MessageTableCellDecorator
+    
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
+        self.messageCellDecorator = MessageTableCellDecorator(dependencyManager: dependencyManager)
+        self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
         self.KVOController.observe( conversation,
@@ -133,13 +141,51 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         let identifier = VMessageCell.suggestedReuseIdentifier()
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
         let message = visibleItems[ indexPath.row ] as! VMessage
-        decorateCell( cell, withMessage: message )
+        messageCellDecorator.decorateCell( cell, withMessage: message )
         return cell
     }
     
-    // MARK: - Private helpers
+    // MARK: - UICollectionViewDataSource
     
-    private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return visibleItems.count
+    }
+    
+    func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
+        let identifier = VMessageCollectionCell.suggestedReuseIdentifier
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VMessageCollectionCell
+        let message = visibleItems[ indexPath.row ] as! VMessage
+        cellDecorator.decorateCell(cell, withMessage: message)
+        return cell
+    }
+    
+    func registerCellsWithCollectionView( collectionView: UICollectionView ) {
+        let identifier = VMessageCollectionCell.suggestedReuseIdentifier
+        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VMessageCollectionCell.self) )
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let message = visibleItems[ indexPath.row ] as! VMessage
+        cellDecorator.decorateCell(sizingCell, withMessage: message)
+        return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+    }
+    
+    func redocorateVisibleCells(collectionView: UICollectionView) {
+        for indexPath in collectionView.indexPathsForVisibleItems() {
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! VMessageCollectionCell
+            let message = visibleItems[ indexPath.row ] as! VMessage
+            cellDecorator.decorateCell(cell, withMessage:message)
+        }
+    }
+}
+
+struct MessageTableCellDecorator {
+    
+    let dependencyManager: VDependencyManager
+    
+    func decorateCell( cell: VMessageCell, withMessage message: VMessage) {
+        
         cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
@@ -150,5 +196,26 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
             cell.profileImageView?.setProfileImageURL(imageURL)
         }
+    }
+}
+
+struct MessageCollectionCellDecorator {
+    
+    let dependencyManager: VDependencyManager
+    
+    func decorateCell( cell: VMessageCollectionCell, withMessage message: VMessage) {
+        let aligner = StreamCellAligner(cell:cell)
+        if message.sender.name == "Patrick" {
+            aligner.align( .Right )
+        } else {
+            aligner.align( .Left )
+        }
+        
+        let font = UIFont.systemFontOfSize(18.0)
+        let textColor = UIColor.whiteColor()
+        let backgroundColor = UIColor.grayColor()
+        cell.style = VMessageCollectionCell.Style(textColor: textColor, backgroundColor: backgroundColor, font: font)
+        
+        cell.viewData = VMessageCollectionCell.ViewData(text: message.text, createdAt: message.postedAt, username: message.sender.name)
     }
 }
