@@ -313,6 +313,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)onTwitterTokenRefreshedWithTwitterManager:(VTwitterManager *)twitterManager
 {
+    __weak typeof(self) weakSelf = self;
     self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
                                                                     accessSecret:twitterManager.secret
                                                                        twitterID:twitterManager.twitterId
@@ -321,28 +322,40 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         if ( [VCurrentUser user] != nil && error == nil)
         {
-            self.actionsDisabled = NO;
-            self.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
-            [self continueRegistrationFlowAfterSocialRegistration];
+            weakSelf.actionsDisabled = NO;
+            weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+            [weakSelf continueRegistrationFlowAfterSocialRegistration];
         }
         else
         {
-            [self handleTwitterLoginError:error];
+            [weakSelf handleTwitterLoginError:error];
         }
-        self.onCompletionBlock(error == nil);
+        [weakSelf registrationDidFinishedWithSuccess:error == nil];
     }];
 }
 
 - (void)handleTwitterLoginError:(NSError *)error
 {
-    [self dismissLoadingScreen];
     if (error.code == VTwitterManagerErrorCanceled)
     {
         return;
     }
     
-    [self v_showErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
+    [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                          message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
+}
+
+- (void)showAlertErrorWithTitle:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self loginErrorAlertAcknowledged];
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)selectedFacebookAuthorization
@@ -420,19 +433,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
               {
                   [weakSelf handleFacebookLoginError:error];
               }
-              weakSelf.onCompletionBlock(error == nil);
+              [weakSelf registrationDidFinishedWithSuccess:error == nil];
           }];
      }];
 }
 
 - (void)handleFacebookLoginError:(NSError *)error
 {
-    [self dismissLoadingScreen];
-    
-    [self v_showErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
-                       message:NSLocalizedString(@"FacebookLoginFailed", @"")];
-    
     [[[FBSDKLoginManager alloc] init] logOut];
+    
+    [self showAlertErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
+                          message:NSLocalizedString(@"FacebookLoginFailed", @"")];
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -455,7 +466,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             }
             else
             {
-                [weakSelf dismissLoadingScreen];
                 completion(NO, error);
             }
         }];
@@ -727,7 +737,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      animated:YES];
 }
 
-- (void)LoginErrorAlertAcknowledged
+- (void)loginErrorAlertAcknowledged
 {
     [self dismissLoadingScreen];
 }
