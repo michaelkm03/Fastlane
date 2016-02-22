@@ -499,7 +499,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             else
             {
                 completion(NO, NO, error);
-                [weakSelf dismissLoadingScreen];
             }
         }];
     }];
