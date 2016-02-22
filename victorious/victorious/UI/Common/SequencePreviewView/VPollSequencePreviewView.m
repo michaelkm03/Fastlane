@@ -230,6 +230,11 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setResultViewsHidden:(BOOL)hidden animated:(BOOL)animated
 {
+    if (self.answerAResultView == nil || self.answerAResultView == nil)
+    {
+        return;
+    }
+    
     for ( VResultView *view in @[ self.answerBResultView, self.answerAResultView ] )
     {
         [self setResultView:view hidden:hidden animated:animated];
