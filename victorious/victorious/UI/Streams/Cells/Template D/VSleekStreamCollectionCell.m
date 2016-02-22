@@ -528,6 +528,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
+    if (sequence == nil)
+    {
+        return CGSizeZero;
+    }
+    
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSArray *comments = [self inStreamCommentsArrayForSequence:sequence] ?: @[];
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
