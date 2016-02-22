@@ -195,7 +195,6 @@ static NSString *kOrIconKey = @"orIcon";
     NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f), @"priority" : @(UILayoutPriorityDefaultHigh) };
     
     self.answerAResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
-    self.answerBResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
     NSDictionary *viewsA = @{ @"view" : self.answerAResultView };
     self.answerAResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerAResultView];
