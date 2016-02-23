@@ -212,7 +212,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
         
         let userID = shelf.user.remoteId.integerValue
-        let operation: RequestOperation
+        let operation: FetcherOperation
         if currentUser.isFollowingUserID(userID) {
             operation = UnfollowUserOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
         } else {

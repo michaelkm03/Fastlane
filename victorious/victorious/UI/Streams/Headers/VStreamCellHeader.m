@@ -241,17 +241,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 {
     NSInteger userId = self.sequence.user.remoteId.integerValue;
     NSString *sourceScreenName = self.sourceScreenName != nil ? self.sourceScreenName : VFollowSourceScreenSteamSleekCell;
-    
-    RequestOperation *operation;
-    if ( self.sequence.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
