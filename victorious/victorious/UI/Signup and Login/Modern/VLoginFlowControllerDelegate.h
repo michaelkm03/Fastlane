@@ -138,6 +138,6 @@
 /**
  * The delegate may choose what to do when user acknowledges login error
  */
-- (void)LoginErrorAlertAcknowledged;
+- (void)loginErrorAlertAcknowledged;
 
 @end
