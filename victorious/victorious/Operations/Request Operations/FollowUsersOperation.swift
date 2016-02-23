@@ -9,18 +9,19 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FollowUsersOperation: RequestOperation {
+class FollowUsersOperation: FetcherOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
-    let sourceScreenName: String
     
-    private let request: FollowUsersRequest
-    private let userIDs: [Int]
+    let userIDs: [Int]
+    let sourceScreenName: String
     
     required init(userIDs: [Int], sourceScreenName: String) {
         self.userIDs = userIDs
         self.sourceScreenName = sourceScreenName
-        self.request = FollowUsersRequest(userIDs: userIDs, sourceScreenName: sourceScreenName)
+        super.init()
+        
+        FollowUsersRemoteOperation(userIDs: userIDs, sourceScreenName: sourceScreenName).queueAfter(self)
     }
     
     convenience init(userID: Int, sourceScreenName: String) {
@@ -55,6 +56,23 @@ class FollowUsersOperation: RequestOperation {
         }
 
         self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
+    }
+}
+
+class FollowUsersRemoteOperation: RequestOperation {
+    
+    let sourceScreenName: String
+    
+    private let request: FollowUsersRequest
+    private let userIDs: [Int]
+    
+    required init(userIDs: [Int], sourceScreenName: String) {
+        self.userIDs = userIDs
+        self.sourceScreenName = sourceScreenName
+        self.request = FollowUsersRequest(userIDs: userIDs, sourceScreenName: sourceScreenName)
+    }
+    
+    override func main() {
         self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }

@@ -262,7 +262,7 @@
     [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
 
-    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:nil];
+    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:nil];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 
     [self dismissViewControllerAnimated:YES completion:nil];

@@ -18,7 +18,6 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         operation = UnfollowUserOperation(userID: userID, sourceScreenName: "profile")
-        operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }
     
@@ -51,7 +50,6 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
         
         operation.main()
 
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         guard let updatedUser = self.testStore.mainContext.objectWithID(objectUser.objectID) as? VUser else {
             XCTFail("No user to follow found after following a user")
             return

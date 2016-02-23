@@ -317,8 +317,8 @@
         return user.remoteId;
     }];
     
-    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {

@@ -15,6 +15,10 @@ import VictoriousIOSSDK
     init(user: VictoriousIOSSDK.User) {
         sourceResult = user
     }
+    
+    var remoteId: NSNumber {
+        return sourceResult.userID
+    }
 }
 
 final class UserSearchOperation: RequestOperation, PaginatedOperation {

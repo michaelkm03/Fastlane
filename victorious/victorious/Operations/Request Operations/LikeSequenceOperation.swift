@@ -9,17 +9,17 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LikeSequenceOperation: RequestOperation {
-    
-    let request: LikeSequenceRequest
+class LikeSequenceOperation: FetcherOperation {
     
     private let sequenceID: String
     
     init( sequenceID: String ){
-        self.request = LikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
+        super.init()
+        
+        LikeSequenceRemoteOperation(sequenceID: sequenceID).queueAfter(self)
     }
-
+    
     override func main() {
         // Make data change optimistically before executing the request
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -41,8 +41,19 @@ class LikeSequenceOperation: RequestOperation {
             sequenceLiker.displayOrder = newDisplayOrder
             context.v_save()
         }
-        
-        // Now execute the request fire-and-forget style
+    }
+}
+
+class LikeSequenceRemoteOperation: RequestOperation {
+    
+    let request: LikeSequenceRequest
+    
+    init( sequenceID: String ) {
+        self.request = LikeSequenceRequest(sequenceID: sequenceID)
+    }
+    
+    override func main() {
+        // Execute the request fire-and-forget style
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
