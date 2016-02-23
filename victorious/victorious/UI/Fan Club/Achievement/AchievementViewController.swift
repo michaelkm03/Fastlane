@@ -97,10 +97,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
             return
         }
         
-        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
-        self.animatedBadge?.animateProgress(duration,
-            endPercentage: Int(alert.parameters.userFanLoyalty.progress),
-            completion: nil)
+        self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears

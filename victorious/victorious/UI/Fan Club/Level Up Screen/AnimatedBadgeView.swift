@@ -186,28 +186,6 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         linearGradientView.frame = container.bounds
     }
     
-    /// MARK: Public Functions
-    
-    /// Starts the radial animation of the inner hexagon
-    ///
-    /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
-    /// - parameter completion: A closure to be called after the animation completes
-    func animateProgress(duration: NSTimeInterval, endPercentage: Int, completion: (() -> Void)?) {
-        animatingHexagonView.reset()
-        animatingHexagonView.animateStroke(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
-    }
-    
-    /// Resets progress bar back to zero
-    func resetProgress(animated: Bool = false) {
-        UIView.animateWithDuration(0.8, animations: { () in
-            self.animatingHexagonView.alpha = 0
-            }) { (completed) in
-                self.animatingHexagonView.reset()
-                self.animatingHexagonView.alpha = 1
-        }
-    }
-    
     /// MARK: Helpers
     
     private func configureWithDependencyManager(dependencyManager: VDependencyManager?) {

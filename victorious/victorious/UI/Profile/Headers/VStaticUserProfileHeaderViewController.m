@@ -58,6 +58,11 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     [super viewDidAppear:animated];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self updateBadgeView];
 }
 
@@ -89,18 +94,18 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
             // Otherwise the badge's shape layer won't always animate it's stroke
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
             {
-                [self animateProgress];
+                [self updateLevelBadgeProgress];
             });
         }
     }
 }
 
-- (void)animateProgress
+- (void)updateLevelBadgeProgress
 {
     if (self.state == VUserProfileHeaderStateCurrentUser)
     {
         NSInteger progress = self.user.levelProgressPercentage.integerValue;
-        [self.badgeView animateProgress:levelProgressAnimationTime * (progress / 100.0f) endPercentage:progress completion:nil];
+        self.badgeView.progress = progress;
     }
 }
 
