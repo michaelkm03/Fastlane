@@ -12,11 +12,13 @@ import VictoriousIOSSDK
 class FollowUsersOperation: FetcherOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
-
-    private let userIDs: [Int]
+    
+    let userIDs: [Int]
+    let sourceScreenName: String
     
     required init(userIDs: [Int], sourceScreenName: String) {
         self.userIDs = userIDs
+        self.sourceScreenName = sourceScreenName
         super.init()
         
         FollowUsersRemoteOperation(userIDs: userIDs, sourceScreenName: sourceScreenName).queueAfter(self)

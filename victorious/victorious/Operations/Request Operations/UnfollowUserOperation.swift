@@ -13,10 +13,12 @@ class UnfollowUserOperation: FetcherOperation {
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let userID: Int
+    let userID: Int
+    let sourceScreenName:String
     
     init( userID: Int, sourceScreenName: String ) {
         self.userID = userID
+        self.sourceScreenName = sourceScreenName
         super.init()
         
         UnfollowUserRemoteOperation(userID: userID, sourceScreenName: sourceScreenName).queueAfter(self)
