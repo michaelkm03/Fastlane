@@ -261,7 +261,8 @@ static NSString * const kMenuKey = @"menu";
         }
     }
     
-    if (self.willSelectContainerViewController != nil)
+    if (self.willSelectContainerViewController != nil &&
+        [self.internalTabBarController.viewControllers containsObject:self.willSelectContainerViewController] )
     {
         if (self.willSelectContainerViewController.containedViewController == nil)
         {
