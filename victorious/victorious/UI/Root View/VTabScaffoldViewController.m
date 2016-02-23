@@ -263,6 +263,14 @@ static NSString * const kMenuKey = @"menu";
     
     if (self.willSelectContainerViewController != nil)
     {
+        const BOOL tabBarContainsSelectedViewController = [self.internalTabBarController.viewControllers containsObject:self.willSelectContainerViewController];
+        if ( !tabBarContainsSelectedViewController )
+        {
+            // Tab bar is not fully initialized yet, return early
+            // in case someone is spamming the tab bar item
+            return;
+        }
+        
         if (self.willSelectContainerViewController.containedViewController == nil)
         {
             VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
