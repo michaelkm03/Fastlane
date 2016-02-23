@@ -420,7 +420,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             // User logged out, clear away all stream items and unload any user data
-            [self.streamDataSource unloadStream];
+            [self.streamDataSource unload];
             self.profileHeaderViewController = nil;
             self.user = nil;
         }
@@ -458,12 +458,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     }
     
-    if ( user == _user || user == nil )
+    if ( user == _user )
     {
         return;
     }
     
     _user = user;
+    
+    if ( _user == nil )
+    {
+        return;
+    }
+    
     [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;
