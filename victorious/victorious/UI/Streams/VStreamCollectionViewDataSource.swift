@@ -48,7 +48,7 @@ extension VStreamCollectionViewDataSource {
         self.paginatedDataSource.removeDeletedItems()
     }
     
-    func unloadStream() {
+    func unload() {
         self.paginatedDataSource.unload()
     }
 }
