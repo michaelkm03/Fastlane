@@ -24,7 +24,7 @@ extension VContentViewViewModel {
         // TODO: Check if `self.deepLinkCommentId` is defined and if so,
         // implement deep link to comment using endpoint /api/comment/find/{comment_id}.
 
-        SequenceFetchOperation( sequenceID: self.sequence.remoteId, streamID: self.streamId).queue() { error in
+        SequenceFetchOperation( sequenceID: self.sequence.remoteId, streamID: self.streamId).queue() { (results, error) in
             // Update the vote/EBs thrown counts
             self.experienceEnhancerController.updateData()
             self.delegate?.didUpdateSequence()
@@ -33,11 +33,11 @@ extension VContentViewViewModel {
         self.commentsDataSource.loadComments(.First)
         
         if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
-            SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in
+            SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { (results, error) in
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
             
-            FollowCountOperation(userID: Int(currentUserID)).queue() { error in
+            FollowCountOperation(userID: Int(currentUserID)).queue() { (results, error) in
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
@@ -84,7 +84,7 @@ extension VContentViewViewModel {
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
             let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.integerValue)
-            operation.queue() { error in
+            operation.queue() { (results, error) in
                 completion?(error)
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)

@@ -34,7 +34,7 @@ class TrendingUsersOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
+        waitForExpectationsWithTimeout(expectationThreshold) { (results, error) in
             XCTAssertEqual(self.operation.results?.count, 1)
             
             guard let firstResult = self.operation.results?.first as? VUser else {

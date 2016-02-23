@@ -20,7 +20,7 @@ class DeleteCommentOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = DeleteCommentRemoteOperation(commentID: commentID, removalReason: removalReason)
-        remoteOperation.queueAfter(self)
+        remoteOperation.after(self).queue()
     }
     
     override func main() {

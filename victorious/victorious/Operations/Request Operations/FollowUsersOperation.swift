@@ -21,7 +21,7 @@ class FollowUsersOperation: FetcherOperation {
         self.sourceScreenName = sourceScreenName
         super.init()
         
-        FollowUsersRemoteOperation(userIDs: userIDs, sourceScreenName: sourceScreenName).queueAfter(self)
+        FollowUsersRemoteOperation(userIDs: userIDs, sourceScreenName: sourceScreenName).after(self).queue()
     }
     
     convenience init(userID: Int, sourceScreenName: String) {

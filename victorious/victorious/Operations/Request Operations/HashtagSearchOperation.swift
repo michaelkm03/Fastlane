@@ -46,7 +46,7 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Queue a follow-up operation that parses to persistent store
-        SaveHashtagsOperation(hashtags: networkResult).queueAfter(self)
+        SaveHashtagsOperation(hashtags: networkResult).after(self).queue()
         
         completion()
     }

@@ -22,8 +22,8 @@ class LogoutOperation: RequestOperation {
         // Before cleaning out current user data, prune the persistent store first,
         // and make the remote logout call to backend
         let pruneOperation = LogoutPrunePersistentStoreOperation()
-        pruneOperation.queueBefore(self)
-        LogoutRemoteOperation().rechainAndQueueAfter(pruneOperation)
+        pruneOperation.before(self).queue()
+        LogoutRemoteOperation().rechainAfter(pruneOperation).queue()
     }
     
     override func main() {

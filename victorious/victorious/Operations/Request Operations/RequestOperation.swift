@@ -10,9 +10,9 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-class RequestOperation: NSOperation, Queuable, ErrorOperation {
+class RequestOperation: NSOperation, Queueable, ErrorOperation {
     
-    internal(set) var results: [AnyObject]?
+    var results: [AnyObject]?
     
     private static let sharedQueue: NSOperationQueue = NSOperationQueue()
     
@@ -50,25 +50,21 @@ class RequestOperation: NSOperation, Queuable, ErrorOperation {
         return self.requestExecutor.error
     }
     
-    // MARK: - Queuable
+    // MARK: - Queueable
     
-    var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
-    
-    var mainQueueCompletionBlock: ((NSError?)->())?
-    
-    func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
-        self.completionBlock = {
-            guard !self.cancelled else {
-                return
-            }
-            
-            if completionBlock != nil {
-                self.mainQueueCompletionBlock = completionBlock
-            }
-            dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self.error )
-            }
+    func executeCompletionBlock(completionBlock: ([AnyObject]?, NSError?)->()) {
+        // This ensures that every subclass of `RequestOperation` has its completion block
+        // executed on the main queue, which saves the trouble of having to wrap
+        // in dispatch block in calling code.
+        dispatch_async( dispatch_get_main_queue() ) {
+            completionBlock(self.results, self.error)
         }
-        queue.addOperation( self )
+    }
+    
+    /// A manual implementation of a method provided by a Swift protocol extension
+    /// so that Objective-C can still easily queue and operation like other functions
+    /// in the `Queueable` protocol.
+    func queueWithCompletion(completion: ([AnyObject]?, NSError?)->()) {
+        queue(completion: completion)
     }
 }

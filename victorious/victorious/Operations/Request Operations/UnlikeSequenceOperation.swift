@@ -17,7 +17,7 @@ class UnlikeSequenceOperation: FetcherOperation {
         self.sequenceID = sequenceID
         super.init()
         
-        UnlikeSequenceRemoteOperation(sequenceID: sequenceID).queueAfter(self)
+        UnlikeSequenceRemoteOperation(sequenceID: sequenceID).after(self).queue()
     }
     
     override func main() {

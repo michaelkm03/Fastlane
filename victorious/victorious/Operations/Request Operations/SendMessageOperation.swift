@@ -98,7 +98,7 @@ class CreateMessageOperation: FetcherOperation {
         
         if let messageObjectID = newMessageObjectID,
             let remoteOperation = SendMessageOperation(localMessageID: messageObjectID, creationParameters: self.creationParameters) {
-                remoteOperation.queueAfter(self)
+                remoteOperation.after(self).queue()
         }
     }
 }

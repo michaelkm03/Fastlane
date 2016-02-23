@@ -558,10 +558,9 @@
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
 		7925E7311C58292400946D0F /* UserTaggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7301C58292400946D0F /* UserTaggingViewController.swift */; };
 		7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */; };
-		7925E7351C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */; };
+		7925E7351C584E7900946D0F /* FetchFromMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925E7341C584E7900946D0F /* FetchFromMainContextOperation.swift */; };
 		7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */; };
 		7938F0991C3CD055009CE091 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */; };
-		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		794CD33C1C5FE7830047A93A /* ExperienceEnhancersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794CD33B1C5FE7830047A93A /* ExperienceEnhancersOperation.swift */; };
 		795270F01C3488AD00BD41F1 /* VConversationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795270EF1C3488AD00BD41F1 /* VConversationListViewController.swift */; };
 		795271001C348BD200BD41F1 /* UserSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795270FF1C348BD200BD41F1 /* UserSearchOperation.swift */; };
@@ -640,7 +639,7 @@
 		A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */; };
 		A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */; };
 		A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */; };
-		A60C990F1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */; };
+		A60C990F1C5AE4830096691D /* FetchFromMainContextOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */; };
 		A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */; };
 		A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */ = {isa = PBXBuildFile; fileRef = A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */; };
 		A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */; };
@@ -955,7 +954,6 @@
 		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
 		A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */; };
 		A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */; };
-		A76AEA321BFEAD9300E8A26F /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA311BFEAD9300E8A26F /* Queueable.swift */; };
 		A76AEA351BFEB9EC00E8A26F /* VLoginType+Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA331BFEB9EC00E8A26F /* VLoginType+Credentials.swift */; };
 		A76AEA361BFEB9EC00E8A26F /* VLoginType+Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA341BFEB9EC00E8A26F /* VLoginType+Tracking.swift */; };
 		A76AEA551BFED31B00E8A26F /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
@@ -1009,6 +1007,7 @@
 		A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED511A933D9300A8CD5D /* VPhotoFilter.m */; };
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
+		A785DEEA1C7D1CED00FD5B3E /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BBE0511C7D165A00495C8C /* Queueable.swift */; };
 		A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = A78740A31BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m */; };
 		A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */; };
 		A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */; };
@@ -1106,6 +1105,8 @@
 		A7BBB8ED1C167858009319D9 /* VSDKURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */; };
 		A7BBB8EF1C167861009319D9 /* VSDKURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BBB8EE1C167861009319D9 /* VSDKURLMacroReplacementTests.m */; };
 		A7BBB8F41C167A91009319D9 /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
+		A7BBE0521C7D165A00495C8C /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BBE0501C7D165A00495C8C /* NSOperationQueue+Queuable.swift */; };
+		A7BBE0551C7D166800495C8C /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BBE0541C7D166800495C8C /* Operation.swift */; };
 		A7BC35A21C18E12400732750 /* test_image.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BC35A01C18E12000732750 /* test_image.png */; };
 		A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */; };
 		A7BC35B61C1A337600732750 /* VFlaggedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35B51C1A337600732750 /* VFlaggedContentTests.m */; };
@@ -2695,11 +2696,10 @@
 		7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrashlyticsLogTracking.m; sourceTree = "<group>"; };
 		7925E7301C58292400946D0F /* UserTaggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTaggingViewController.swift; sourceTree = "<group>"; };
 		7925E7321C58293700946D0F /* UserTaggingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserTaggingViewController.storyboard; sourceTree = "<group>"; };
-		7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchManagedObjectsOnMainContextOperation.swift; sourceTree = "<group>"; };
+		7925E7341C584E7900946D0F /* FetchFromMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFromMainContextOperation.swift; sourceTree = "<group>"; };
 		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchOperationTests.swift; sourceTree = "<group>"; };
 		7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FriendFindByEmailResponse.json; sourceTree = "<group>"; };
-		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		794CD33B1C5FE7830047A93A /* ExperienceEnhancersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancersOperation.swift; sourceTree = "<group>"; };
 		795270EF1C3488AD00BD41F1 /* VConversationListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VConversationListViewController.swift; sourceTree = "<group>"; };
 		795270FF1C348BD200BD41F1 /* UserSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchOperation.swift; sourceTree = "<group>"; };
@@ -2801,7 +2801,7 @@
 		A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPresenter.m; sourceTree = "<group>"; };
 		A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionListPresentationController.h; sourceTree = "<group>"; };
 		A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionListPresentationController.m; sourceTree = "<group>"; };
-		A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchManagedObjectsOnMainContextOperationTests.swift; sourceTree = "<group>"; };
+		A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFromMainContextOperationTests.swift; sourceTree = "<group>"; };
 		A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionGridViewController.storyboard; sourceTree = "<group>"; };
 		A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlternateCaptureOption.h; sourceTree = "<group>"; };
 		A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlternateCaptureOption.m; sourceTree = "<group>"; };
@@ -3288,7 +3288,6 @@
 		A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingSettingsViewController.m; sourceTree = "<group>"; };
 		A769FE491ABD051A00888ED8 /* VTrackingEventLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEventLog.h; sourceTree = "<group>"; };
 		A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEventLog.m; sourceTree = "<group>"; };
-		A76AEA311BFEAD9300E8A26F /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		A76AEA331BFEB9EC00E8A26F /* VLoginType+Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VLoginType+Credentials.swift"; sourceTree = "<group>"; };
 		A76AEA341BFEB9EC00E8A26F /* VLoginType+Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VLoginType+Tracking.swift"; sourceTree = "<group>"; };
 		A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListOperation.swift; sourceTree = "<group>"; };
@@ -3534,6 +3533,9 @@
 		A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSDKURLMacroReplacement.h; sourceTree = "<group>"; };
 		A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSDKURLMacroReplacement.m; sourceTree = "<group>"; };
 		A7BBB8EE1C167861009319D9 /* VSDKURLMacroReplacementTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSDKURLMacroReplacementTests.m; sourceTree = "<group>"; };
+		A7BBE0501C7D165A00495C8C /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
+		A7BBE0511C7D165A00495C8C /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
+		A7BBE0541C7D166800495C8C /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		A7BC35A01C18E12000732750 /* test_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_image.png; sourceTree = "<group>"; };
 		A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestBodyTests.swift; sourceTree = "<group>"; };
 		A7BC35B51C1A337600732750 /* VFlaggedContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlaggedContentTests.m; sourceTree = "<group>"; };
@@ -6650,16 +6652,16 @@
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */,
 				A7D618F01C2A8DD6007F46EA /* GIFSearchResultObject.swift */,
 				A746796D1BF6CC7B0026FD2E /* Helpers */,
 				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
 				A78BFC161C4858A900FBC17E /* MediaSearchResult.swift */,
 				A7078CC81BFA7D2B008FB7FF /* Navigation Operations */,
-				794246441B7D39B000F5F879 /* Operation.swift */,
-				A76AEA311BFEAD9300E8A26F /* Queueable.swift */,
+				A7BBE0541C7D166800495C8C /* Operation.swift */,
+				A7BBE04F1C7D165A00495C8C /* Queueable */,
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
 				670334B01C49D51A00E24967 /* Upload Operations */,
-				A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -7307,7 +7309,7 @@
 				031DE6001C54BCAB0063492B /* Executor */,
 				794CD33B1C5FE7830047A93A /* ExperienceEnhancersOperation.swift */,
 				A763636E1C5037FB000887C4 /* FetcherOperation.swift */,
-				7925E7341C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift */,
+				7925E7341C584E7900946D0F /* FetchFromMainContextOperation.swift */,
 				67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A7AF872C1C4603D800B49478 /* FlagConversationOperation.swift */,
@@ -7439,7 +7441,7 @@
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
-				A60C990E1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift */,
+				A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
@@ -7824,6 +7826,16 @@
 				7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */,
 			);
 			path = "Push Notification Settings";
+			sourceTree = "<group>";
+		};
+		A7BBE04F1C7D165A00495C8C /* Queueable */ = {
+			isa = PBXGroup;
+			children = (
+				A7BBE0501C7D165A00495C8C /* NSOperationQueue+Queuable.swift */,
+				A7BBE0511C7D165A00495C8C /* Queueable.swift */,
+			);
+			name = Queueable;
+			path = "Navigation Operations/Queueable";
 			sourceTree = "<group>";
 		};
 		A7BF9D111B5ECB1E002C0A98 /* Cells */ = {
@@ -10925,7 +10937,7 @@
 				67A3C9F31C4D99470068E4F5 /* TrendingHashtagOperationTests.swift in Sources */,
 				678AC1731C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift in Sources */,
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
-				A60C990F1C5AE4830096691D /* FetchManagedObjectsOnMainContextOperationTests.swift in Sources */,
+				A60C990F1C5AE4830096691D /* FetchFromMainContextOperationTests.swift in Sources */,
 				A70032F61C5BF4E600AB4A57 /* FollowUsersOperationTests.swift in Sources */,
 				622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,
@@ -11131,7 +11143,6 @@
 				797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				678AC1711C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift in Sources */,
-				A76AEA321BFEAD9300E8A26F /* Queueable.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
 				C3623E5F1B9A7874002B121D /* HexagonView.swift in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
@@ -11186,6 +11197,7 @@
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */,
 				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
+				A7BBE0521C7D165A00495C8C /* NSOperationQueue+Queuable.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */,
@@ -11621,6 +11633,7 @@
 				A7AF87331C460E9200B49478 /* VConversationViewController.swift in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
+				A7BBE0551C7D166800495C8C /* Operation.swift in Sources */,
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,
 				A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */,
 				F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */,
@@ -11636,7 +11649,7 @@
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
-				7925E7351C584E7900946D0F /* FetchManagedObjectsOnMainContextOperation.swift in Sources */,
+				7925E7351C584E7900946D0F /* FetchFromMainContextOperation.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
@@ -11674,6 +11687,7 @@
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */,
 				C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */,
+				A785DEEA1C7D1CED00FD5B3E /* Queueable.swift in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
@@ -11883,7 +11897,6 @@
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
-				794246451B7D39B000F5F879 /* Operation.swift in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
@@ -12594,6 +12607,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -12627,6 +12641,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
@@ -12655,6 +12670,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
@@ -12683,6 +12699,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
@@ -12711,6 +12728,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;

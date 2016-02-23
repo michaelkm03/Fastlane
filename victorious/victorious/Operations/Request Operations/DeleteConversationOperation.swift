@@ -31,8 +31,7 @@ class DeleteConversationOperation: FetcherOperation {
             return remoteId
         }
         if let remoteID = remoteID {
-            let remoteOperation = DeleteConversationRemoteOperation(conversationID: remoteID)
-            remoteOperation.queueAfter( self )
+            DeleteConversationRemoteOperation(conversationID: remoteID).after( self ).queue()
         }
         
     }

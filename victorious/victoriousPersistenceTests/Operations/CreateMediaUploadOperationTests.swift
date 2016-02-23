@@ -17,7 +17,7 @@ class CreateMediaUploadOperationTests: XCTestCase {
     func testOperationExecution() {
         let mockParameters = VPublishParameters()
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
-        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { error in
+        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { (results, error) in
         }
         
         operation.start()
@@ -26,7 +26,7 @@ class CreateMediaUploadOperationTests: XCTestCase {
 
     func testInvalidParameters() {
         let invalidParameters = VPublishParameters()
-        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager) { error in
+        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager) { (results, error) in
         }
 
         operation.start()

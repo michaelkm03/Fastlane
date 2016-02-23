@@ -30,7 +30,7 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
+        waitForExpectationsWithTimeout(expectationThreshold) { (results, error) in
             guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
                 XCTFail("We should have results here")

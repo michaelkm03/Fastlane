@@ -116,7 +116,7 @@ extension VConversationViewController {
     
     func onUpdate() {
         self.dataSource.refreshRemote() { (results, error) in
-            if !results.isEmpty {
+            if let results = results where !results.isEmpty {
                 self.scrollToBottomAnimated( true )
             }
         }

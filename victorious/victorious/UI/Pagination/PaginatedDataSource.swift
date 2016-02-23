@@ -65,7 +65,7 @@ import VictoriousIOSSDK
     
     /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     /// operations locally on the persistent store only and does not send a network request.
-    func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
+    func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         guard currentLocalOperation == nil else {
             return
         }
@@ -75,14 +75,13 @@ import VictoriousIOSSDK
             if let error = error {
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
-                completion?([])
                 
             } else if let results = results {
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 self.currentLocalOperation = nil
-                completion?(results)
             }
+            completion?(results, error)
         }
         self.currentLocalOperation = operation
     }
@@ -100,7 +99,7 @@ import VictoriousIOSSDK
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
+    func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         
         guard self.currentPaginatedOperation != nil else {
             return
@@ -112,7 +111,7 @@ import VictoriousIOSSDK
         }
         
         self.state = .Loading
-        requestOperation.queue() { error in
+        requestOperation.queue() { (results, error) in
             
             if let error = error {
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
@@ -132,7 +131,7 @@ import VictoriousIOSSDK
         }
     }
     
-    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
+    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
         
         guard !isLoading() else {
             return
@@ -168,7 +167,7 @@ import VictoriousIOSSDK
         pagesLoaded.insert(operation.request.paginator.pageNumber)
         
         self.state = .Loading
-        requestOperation.queue() { error in
+        requestOperation.queue() { (results, error) in
             
             if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
@@ -185,7 +184,7 @@ import VictoriousIOSSDK
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
-            completion?( operation: operation, error: error )
+            completion?( results: results, error: error )
         }
         
         self.currentPaginatedOperation = requestOperation

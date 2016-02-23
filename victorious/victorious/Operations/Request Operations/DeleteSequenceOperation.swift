@@ -19,7 +19,7 @@ class DeleteSequenceOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = DeleteSequenceRemoteOperation(sequenceID: sequenceID)
-        remoteOperation.queueAfter( self )
+        remoteOperation.after( self ).queue()
     }
     
     override func main() {

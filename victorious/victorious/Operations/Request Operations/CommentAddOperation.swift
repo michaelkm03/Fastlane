@@ -104,7 +104,7 @@ class CreateCommentOperation: FetcherOperation {
         
         if let newCommentObjectID = newCommentObjectID,
             let remoteOperation = CommentAddOperation(localCommentID: newCommentObjectID, creationParameters: self.creationParameters) {
-                remoteOperation.queueAfter(self)
+                remoteOperation.after(self).queue()
         }
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,

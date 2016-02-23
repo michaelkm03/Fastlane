@@ -36,5 +36,5 @@ protocol GenericPaginatedDataSourceType: PaginatedDataSourceType {
     /// may occur, which will in turn call the appropriate delegate methods.
     func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType,
         @noescape createOperation: () -> T,
-        completion: ((operation: T?, error: NSError?) -> Void)? )
+        completion: ((results: [AnyObject]?, error: NSError?) -> Void)? )
 }

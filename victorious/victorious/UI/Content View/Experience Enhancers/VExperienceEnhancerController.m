@@ -76,8 +76,7 @@
     
     ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequence:self.sequence
                                                                                                              voteTypes:voteTypes];
-    [experienceEnhancerOperation queueOn:experienceEnhancerOperation.defaultQueue
-                         completionBlock:^(Operation *_Nonnull operation)
+    [experienceEnhancerOperation queueWithCompletion:^(Operation *_Nonnull operation)
      {
          self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancerOperation.experienceEnhancers];
          [self.enhancerBar reloadData];

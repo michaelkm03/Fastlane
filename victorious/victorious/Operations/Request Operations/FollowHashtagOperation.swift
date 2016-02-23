@@ -19,7 +19,7 @@ class FollowHashtagOperation: FetcherOperation {
         self.hashtag = hashtag
         super.init()
         
-        FollowHashtagRemoteOperation(hashtag: hashtag).queueAfter(self)
+        FollowHashtagRemoteOperation(hashtag: hashtag).after(self).queue()
     }
     
     override func main() {

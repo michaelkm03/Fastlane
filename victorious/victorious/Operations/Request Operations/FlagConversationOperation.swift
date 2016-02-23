@@ -20,7 +20,7 @@ class FlagConversationOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = FlagConversationRemoteOperation(conversationID: conversationID, mostRecentMessageID: mostRecentMessageID)
-        remoteOperation.queueAfter( self )
+        remoteOperation.after(self).queue()
     }
     
     override func main() {

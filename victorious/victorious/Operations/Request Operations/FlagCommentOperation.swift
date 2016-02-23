@@ -20,7 +20,7 @@ class FlagCommentOperation: RequestOperation {
         super.init()
         
         let remoteOperation = FlagCommentRemoteOperation(commentID: commentID)
-        remoteOperation.queueAfter( self )
+        remoteOperation.after( self ).queue()
     }
     
     override func main() {

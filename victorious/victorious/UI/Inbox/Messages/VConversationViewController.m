@@ -115,7 +115,7 @@
     // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
     NSInteger userID = self.conversation.user.remoteId.integerValue;
     Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithUserID:userID];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -12,7 +12,7 @@ import Foundation
 
 private let _testQueue = NSOperationQueue()
 
-class MockOperation: NSOperation, Queuable {
+class MockOperation: NSOperation, Queueable {
 
     static var sharedQueue: NSOperationQueue {
         return _testQueue

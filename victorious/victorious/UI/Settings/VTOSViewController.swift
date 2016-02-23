@@ -13,7 +13,7 @@ extension VTOSViewController {
     
     func loadTermsOfService() {
         let termsOfServiceOperation = TermsOfServiceOperation()
-        termsOfServiceOperation.queue() { error in
+        termsOfServiceOperation.queue() { (results, error) in
             guard let htmlString = termsOfServiceOperation.resultHTMLString where error == nil else {
                 self.setFailureWithError(error)
                 return

@@ -193,7 +193,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 - (void)markAllItemsAsRead
 {
     MarkAllNotificationsAsReadOperation *operation = [[MarkAllNotificationsAsReadOperation alloc] init];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 - (void)refresh
@@ -260,7 +260,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     }
     
     UnreadNotificationsCountOperation *operation = [[UnreadNotificationsCountOperation alloc] init];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
     {
         if ( operation.unreadNotificationsCount != nil )
         {

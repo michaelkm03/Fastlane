@@ -30,6 +30,7 @@ class CreateMediaUploadOperation: Operation {
     
     override func start() {
         super.start()
+        self.beganExecuting()
         upload(uploadManager)
     }
     
@@ -53,10 +54,10 @@ class CreateMediaUploadOperation: Operation {
         
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
         
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_sync(dispatch_get_main_queue()) {
             self.uploadCompletion(nil)
-            self.mainQueueCompletionBlock?(self)
         }
+        self.finishedExecuting()
     }
     
     private var formFields: [NSObject : AnyObject] {

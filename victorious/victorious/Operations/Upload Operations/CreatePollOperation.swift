@@ -60,9 +60,7 @@ final class CreatePollOperation: Operation {
         do {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.mainQueueCompletionBlock?(self)
-                }
+                self.finishedExecuting()
             }
             
             if let answer1media = formFields["answer1_media"] as? NSURL {

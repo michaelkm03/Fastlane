@@ -337,7 +337,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
         }
     }];
     
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
