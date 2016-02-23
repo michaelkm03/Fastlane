@@ -32,4 +32,5 @@
 
 - (void)showRepostersForSequence:(VSequence *)sequence;
 
+- (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion;
 @end
