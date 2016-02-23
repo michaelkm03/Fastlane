@@ -95,11 +95,6 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// The minimum level it takes to expose this badge view
     private(set) var minLevel = 0
     
-    /// Whether or not the progress bar is currently animating
-    var isAnimating: Bool {
-        return animatingHexagonView.isAnimating
-    }
-    
     /// How percentage representing how far the progress bar extends towards the end
     var progress: Int {
         get {

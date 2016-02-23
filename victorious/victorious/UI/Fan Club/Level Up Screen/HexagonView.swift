@@ -12,7 +12,6 @@ import Foundation
 class HexagonView: UIView {
     
     private var shapeLayer = CAShapeLayer()
-    private let strokeAnimationKey = "strokeEndAnimation"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -73,15 +72,6 @@ class HexagonView: UIView {
             self.shapeLayer.strokeEnd = newValue
         }
     }
-    
-    /// Whether or not the stroke is being animated
-    var isAnimating: Bool {
-        get {
-            return shapeLayer.animationForKey(strokeAnimationKey) != nil
-        }
-    }
-    
-    private var animationCompletion: (() -> Void)?
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -150,33 +140,6 @@ class HexagonView: UIView {
         shapeLayer.fillColor = fillColor.CGColor
         shapeLayer.lineCap = kCALineCapRound;
         self.layer.addSublayer(shapeLayer)
-    }
-    
-    // Animate the stroke of the hexagon's shape layer
-    func animateStroke(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
-        animationCompletion = completion
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.fromValue = 0
-        basicAnimation.toValue = endValue
-        basicAnimation.duration = duration
-        basicAnimation.delegate = self
-        
-        CATransaction.setDisableActions(true)
-        shapeLayer.strokeEnd = endValue
-        
-        shapeLayer.addAnimation(basicAnimation, forKey: strokeAnimationKey)
-    }
-    
-    // Removes animation from hexagon's shape layer
-    func reset() {
-        shapeLayer.removeAnimationForKey(strokeAnimationKey)
-        CATransaction.setDisableActions(true)
-        shapeLayer.strokeEnd = 0
-    }
-    
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        animationCompletion?()
-        animationCompletion = nil
     }
 }
 
