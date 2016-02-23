@@ -330,7 +330,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         {
             [weakSelf handleTwitterLoginError:error];
         }
-        [weakSelf registrationDidFinishedWithSuccess:error == nil];
     }];
 }
 
@@ -433,7 +432,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
               {
                   [weakSelf handleFacebookLoginError:error];
               }
-              [weakSelf registrationDidFinishedWithSuccess:error == nil];
           }];
      }];
 }
@@ -501,7 +499,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             else
             {
                 completion(NO, NO, error);
-                [weakSelf dismissLoadingScreen];
             }
         }];
     }];

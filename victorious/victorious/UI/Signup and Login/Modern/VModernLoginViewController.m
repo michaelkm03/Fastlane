@@ -313,7 +313,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                       handler:^(UIAlertAction *_Nonnull action) {
                                                           [self.delegate loginErrorAlertAcknowledged];
                                                       }]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
 - (BOOL)shouldLoginForced:(BOOL)forced

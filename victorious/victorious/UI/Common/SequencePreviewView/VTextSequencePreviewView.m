@@ -265,7 +265,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
         const CGSize size = hasRenderingSize ? self.previewRenderingSize : self.bounds.size;
         
         const BOOL hasAddedConstraints = self.previewWidthConstraint != nil && self.previewWidthConstraint != nil;
-        if ( !hasAddedConstraints && !CGSizeEqualToSize(size, CGSizeZero) )
+        if ( !hasAddedConstraints && !CGSizeEqualToSize(size, CGSizeZero) && self.textPostViewController.view != nil )
         {
             [self v_addCenterToParentContraintsToSubview:self.textPostViewController.view];
             self.previewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:size.width];
