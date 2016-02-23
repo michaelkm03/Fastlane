@@ -92,8 +92,8 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
     /// Returns the optimium size for this badge view based on this badge view's current state.
     var desiredSize: CGSize {
-        var size = image(isCreator, withImageType: levelBadgeImageType).size
-        if let text = text where !isCreator
+        var size = image(verified(), withImageType: levelBadgeImageType).size
+        if let text = text where !verified()
         {
             let textWidth = text.boundingRectWithSize(CGSizeMake(CGFloat.max, size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [ NSFontAttributeName : badgeLabel.font ], context: nil).width + ( AvatarLevelBadgeView.kLabelInsets.left + AvatarLevelBadgeView.kLabelInsets.right )
             size.width = max(size.width, textWidth)
@@ -123,6 +123,15 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     var textColor: UIColor? {
         didSet {
             badgeLabel.textColor = textColor
+        }
+    }
+    
+    var avatarBadgeType: String? {
+        didSet {
+            if avatarBadgeType != oldValue {
+                updateBadgeIcon()
+                updateBadgeText()
+            }
         }
     }
     
@@ -211,17 +220,24 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     }
     
     private func updateBadgeIcon() {
-        let desiredImage = image(isCreator, withImageType: levelBadgeImageType)
+        let desiredImage = image(verified(), withImageType: levelBadgeImageType)
         if let currentImage = backgroundImageView.image where currentImage.isEqual(desiredImage) { }
         else {
             backgroundImageView.image = desiredImage
-            if let imageSet = badgeImageSet(isCreator) as? UserBadgeImages {
+            if let imageSet = badgeImageSet(verified()) as? UserBadgeImages {
                 badgeLabel.font = imageSet.font(type: levelBadgeImageType)
             }
         }
     }
     
+    private func verified() -> Bool {
+        if avatarBadgeType != nil {
+            return true
+        }
+        return isCreator
+    }
+    
     private func updateBadgeText() {
-        badgeLabel.text = isCreator ? nil : text
+        badgeLabel.text = verified() ? nil : text
     }
 }
