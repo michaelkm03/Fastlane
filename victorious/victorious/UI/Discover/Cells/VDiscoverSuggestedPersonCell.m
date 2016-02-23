@@ -119,17 +119,7 @@
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenDiscoverSuggestedUsers;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 

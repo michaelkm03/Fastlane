@@ -9,17 +9,17 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnfollowUserOperation: RequestOperation {
-    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
-    let sourceScreenName: String
+class UnfollowUserOperation: FetcherOperation {
     
-    private let request: UnfollowUserRequest
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+    
     private let userID: Int
     
     init( userID: Int, sourceScreenName: String ) {
-        self.sourceScreenName = sourceScreenName
         self.userID = userID
-        self.request = UnfollowUserRequest(userID: userID, sourceScreenName: self.sourceScreenName)
+        super.init()
+        
+        UnfollowUserRemoteOperation(userID: userID, sourceScreenName: sourceScreenName).queueAfter(self)
     }
     
     override func main() {
@@ -41,11 +41,22 @@ class UnfollowUserOperation: RequestOperation {
                 subjectUser.v_removeObject(followedUser, from: "following")
                 context.deleteObject( followedUser )
             }
-
+            
             context.v_save()
         }
         
         self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
+    }
+}
+
+class UnfollowUserRemoteOperation: RequestOperation {
+    private let request: UnfollowUserRequest
+    
+    init( userID: Int, sourceScreenName: String ) {
+        self.request = UnfollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
+    }
+    
+    override func main() {
         self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }

@@ -974,6 +974,8 @@
 		A76AEAED1C038E0000E8A26F /* UnlikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */; };
 		A76AEAEE1C038E0000E8A26F /* UserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
+		A76DD75F1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76DD75E1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift */; };
+		A76DD7611C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76DD7601C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift */; };
 		A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */; };
 		A76E79C41C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */; };
 		A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FEC1B33422B00B1BBB3 /* VActionButton.m */; };
@@ -3312,6 +3314,8 @@
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
 		A76D938F1B32151B007A150D /* VContentLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentLikeButton.m; sourceTree = "<group>"; };
 		A76D93A51B321E68007A150D /* VPageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPageType.h; sourceTree = "<group>"; };
+		A76DD75E1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleFollowUserOperation.swift; sourceTree = "<group>"; };
+		A76DD7601C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleFollowHashtagOperation.swift; sourceTree = "<group>"; };
 		A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Error.swift"; sourceTree = "<group>"; };
 		A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+FlaggedContent.swift"; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
@@ -7332,6 +7336,7 @@
 				A7AF872A1C4601CC00B49478 /* MarkConversationReadOperation.swift */,
 				A7C565E31C442E7600E4DF6A /* NotificationsOperation.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
+				A76DD7601C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift */,
 				674B66F11C3F0C0400938EB5 /* PasswordResetOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
@@ -7351,6 +7356,7 @@
 				A73D16BA1C24F98D00497F83 /* StreamOperation.swift */,
 				A73D16BC1C24F99700497F83 /* SuggestedUsersOperation.swift */,
 				A73D16BE1C24FA0700497F83 /* TermsOfServiceOperation.swift */,
+				A76DD75E1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift */,
 				67A3C9F01C4D99240068E4F5 /* TrendingHashtagOperation.swift */,
 				672033581C4DD8760015D91D /* TrendingUsersOperation.swift */,
 				A7E2918E1C3B462D00B84127 /* UnfollowHashtagOperation.swift */,
@@ -11191,6 +11197,7 @@
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */,
+				A76DD7611C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift in Sources */,
 				5A75EAD91C51860700B08056 /* SearchDataSourceType.swift in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
@@ -11198,6 +11205,7 @@
 				A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
+				A76DD75F1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,

@@ -9,14 +9,17 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnfollowHashtagOperation: RequestOperation {
+class UnfollowHashtagOperation: FetcherOperation {
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: UnfollowHashtagRequest
+    let hashtag: String
     
     required init(hashtag: String) {
-        self.request = UnfollowHashtagRequest(hashtag: hashtag)
+        self.hashtag = hashtag
+        super.init()
+        
+        UnfollowHashtagRemoteOperation(hashtag: hashtag).queueAfter(self)
     }
     
     override func main() {
@@ -26,14 +29,27 @@ class UnfollowHashtagOperation: RequestOperation {
             }
             
             // Find the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]
+            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( followedHashtag )
             }
             context.v_save()
         }
         
-        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
+    }
+}
+
+
+class UnfollowHashtagRemoteOperation: RequestOperation {
+    
+    private let request: UnfollowHashtagRequest
+    
+    required init(hashtag: String) {
+        self.request = UnfollowHashtagRequest(hashtag: hashtag)
+    }
+    
+    override func main() {
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }
