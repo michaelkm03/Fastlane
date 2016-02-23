@@ -1347,6 +1347,7 @@
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */; };
 		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
+		BF68C4F01C7CEE9900739D87 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* Avatar.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
@@ -3804,6 +3805,7 @@
 		BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAnimationOperation.swift; sourceTree = "<group>"; };
 		BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextContainerView.h; sourceTree = "<group>"; };
 		BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextContainerView.m; sourceTree = "<group>"; };
+		BF68C4EE1C7CEE0000739D87 /* Avatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
@@ -5541,6 +5543,7 @@
 				A7039CEE1C248E0B0023DE6F /* Alert.swift */,
 				A7EF1BC11BF2754D00D429DE /* Answer.swift */,
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
+				BF68C4EE1C7CEE0000739D87 /* Avatar.swift */,
 				C3D956161BF4368F00069FD6 /* Comment.swift */,
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
 				7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */,
@@ -10659,6 +10662,7 @@
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
+				BF68C4F01C7CEE9900739D87 /* Avatar.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
 				62575ECF1C54C36E00B49CB0 /* JSONDeseriealizable.swift in Sources */,
 				67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */,

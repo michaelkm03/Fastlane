@@ -55,5 +55,6 @@
 @dynamic likedSequences;
 @dynamic accountIdentifier;
 @dynamic isNewUser;
+@dynamic avatarBadgeType;
 
 @end

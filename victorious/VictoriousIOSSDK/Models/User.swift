@@ -35,6 +35,7 @@ public struct User {
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]?
     public let maxVideoUploadDuration: Int?
+    public let avatar: Avatar?
 }
 
 extension User {
@@ -49,6 +50,7 @@ extension User {
         self.userID = userID
         self.status = status
         
+        avatar                      = Avatar(json: json["avatar"])
         email                       = json["email"].string
         name                        = json["name"].string
         location                    = json["profile_location"].string
