@@ -531,6 +531,7 @@
 		67C5C5371C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */; };
 		67C5C53B1C0395ED00F99C8C /* UnlikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */; };
 		67C5C53D1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */; };
+		67C7764F1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */; };
 		67C9ADAB1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */; };
 		67C9ADAD1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */; };
 		67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */; };
@@ -2656,6 +2657,7 @@
 		67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceDetailListByUserRequestTests.swift; sourceTree = "<group>"; };
 		67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequest.swift; sourceTree = "<group>"; };
 		67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequestTests.swift; sourceTree = "<group>"; };
+		67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrophyCaseCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkOperation.swift; sourceTree = "<group>"; };
 		67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkOperationTests.swift; sourceTree = "<group>"; };
 		67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUploadManager.swift; sourceTree = "<group>"; };
@@ -6620,6 +6622,14 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
+		67C7764D1C7E6C3700BE65CE /* Trophy Case */ = {
+			isa = PBXGroup;
+			children = (
+				67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */,
+			);
+			name = "Trophy Case";
+			sourceTree = "<group>";
+		};
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -8520,6 +8530,7 @@
 				C3186DF71BACE84C00F4BCFF /* Achievement */,
 				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
+				67C7764D1C7E6C3700BE65CE /* Trophy Case */,
 			);
 			path = "Fan Club";
 			sourceTree = "<group>";
@@ -11141,6 +11152,7 @@
 				F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */,
 				0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */,
 				0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */,
+				67C7764F1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
 				F06B41801B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift in Sources */,
 				A76712111C1F83C8006568DF /* VAnswer+Parsable.swift in Sources */,
 				D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */,
