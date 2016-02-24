@@ -21,6 +21,15 @@ protocol ResultsOperation {
     var results: [AnyObject]? { set get }
 }
 
+protocol Paginated {
+    
+    /// Returns a copy of this operation configured for loading next page worth of data
+    func next() -> Self?
+    
+    /// Returns a copy of this operation configured for loading previous page worth of data
+    func prev() -> Self?
+}
+
 /// Defines an object that must use a RequestType to perform its function
 protocol RequestOperation {
     
@@ -35,9 +44,40 @@ protocol RequestOperation {
     var request: SingleRequestType! { get }
 }
 
+protocol PaginatedOperation: Paginated, ResultsOperation {
+    
+    /// The type of Paginator used by this operation
+    typealias PaginatorType: Paginator
+    
+    /// The current paginator used for this operation, required in order to get
+    /// the next/prev paginators from which to maket the next/prev operations.
+    var paginator: PaginatorType { get }
+    
+    /// Required initializer that takes a value typed to PaginatorType
+    init( paginator: PaginatorType )
+}
+
+extension Paginated where Self : PaginatedOperation {
+    
+    func prev() -> Self? {
+        if let previousPaginator = self.paginator.previousPage() {
+            return self.dynamicType.init(paginator: previousPaginator)
+        }
+        return nil
+    }
+    
+    func next() -> Self? {
+        let results = self.results ?? []
+        if let nextPaginator = self.paginator.nextPage( results.count ) {
+            return self.dynamicType.init(paginator: nextPaginator)
+        }
+        return nil
+    }
+}
+
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedRequestOperation: ResultsOperation {
+protocol PaginatedRequestOperation: Paginated, ResultsOperation {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -48,16 +88,10 @@ protocol PaginatedRequestOperation: ResultsOperation {
     
     /// Required initializer that takes a value typed to PaginatedRequestType
     init( request: PaginatedRequestType )
-    
-    /// Returns a copy of this operation configured for loading next page worth of data
-    func next() -> Self?
-    
-    /// Returns a copy of this operation configured for loading previous page worth of data
-    func prev() -> Self?
 }
 
 extension PaginatedRequestOperation {
-
+    
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)
