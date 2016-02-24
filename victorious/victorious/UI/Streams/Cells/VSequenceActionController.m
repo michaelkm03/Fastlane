@@ -190,7 +190,7 @@
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceActionHelper likeSequence:sequence triggeringView:actionView originViewController:viewController dependencyManager:self.dependencyManager completion:completion];
+    [self.sequenceActionHelper likeSequence:sequence triggeringView:actionView completion:completion];
 }
 
 #pragma mark - Repost

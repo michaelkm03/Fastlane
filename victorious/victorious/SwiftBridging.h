@@ -34,6 +34,8 @@
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VAbstractStreamCollectionViewController.h"
+#import "VActionSheetTransitioningDelegate.h"
+#import "VActionSheetViewController.h"
 #import "VActionItem.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"

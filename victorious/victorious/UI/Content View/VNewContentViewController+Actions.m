@@ -39,7 +39,7 @@
     
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
-    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    VActionSheetViewController *actionSheetViewController = [[VActionSheetViewController alloc] init];
     actionSheetViewController.dependencyManager = self.dependencyManager;
     VNewContentViewController *contentViewController = self;
     

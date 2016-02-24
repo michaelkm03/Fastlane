@@ -101,7 +101,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
+@property (nonatomic, strong) SequenceActionHelper *sequenceActionHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -190,7 +190,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
     self.contentViewPresenter.delegate = self;
-    self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -208,6 +207,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     self.sequenceActionController.dependencyManager = self.dependencyManager;
+    self.sequenceActionHelper = [[SequenceActionHelper alloc] initWithDependencyManager:self.dependencyManager originViewController:self sequenceActionController:self.sequenceActionController];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     
@@ -745,227 +745,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
-    
-    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
-    
-    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
-    actionSheetViewController.dependencyManager = self.dependencyManager;
-    VStreamCollectionViewController *streamCollectionViewController = self;
-    
-    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
-    
-    VActionItem *userItem = [VActionItem userActionItemUserWithTitle:sequence.user.name
-                                                                user:sequence.user
-                                                          detailText:@""];
-    userItem.selectionHandler = ^(VActionItem *item)
-    {
-        [streamCollectionViewController dismissViewControllerAnimated:YES completion:^
-         {
-             [self.sequenceActionController showPosterProfileFromViewController:streamCollectionViewController sequence:sequence];
-         }];
-    };
-    [actionItems addObject:userItem];
-
-    VActionItem *descriptionItem = [VActionItem descriptionActionItemWithText:sequence.name
-                                                      hashTagSelectionHandler:^(NSString *hashTag)
-                                    {
-                                        VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashTag];
-                                        
-                                        [streamCollectionViewController dismissViewControllerAnimated:YES completion:^
-                                         {
-                                             [streamCollectionViewController.navigationController pushViewController:vc animated:YES];
-                                         }];
-                                    }];
-
-    [actionItems addObject:descriptionItem];
-    
-    if ( sequence.permissions.canGIF )
-    {
-        VActionItem *gifItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a GIF", @"")
-                                                           actionIcon:[UIImage imageNamed:@"D_gifIcon"]
-                                                            detailText:[NSString stringWithFormat:@"%@", sequence.gifCount]];
-        
-        [self setupRemixActionItem:gifItem
-         withContentViewController:streamCollectionViewController
-         actionSheetViewController:actionSheetViewController
-                         withBlock:^
-         {
-             [self.sequenceActionController showRemixOnViewController:self
-                                                         withSequence:sequence
-                                                 andDependencyManager:self.dependencyManager
-                                                       preloadedImage:nil
-                                                     defaultVideoEdit:VDefaultVideoEditGIF
-                                                           completion:nil];
-             
-         }
-            dismissCompletionBlock:^
-         {
-             [self.sequenceActionController showGiffersOnNavigationController:streamCollectionViewController.navigationController
-                                                                     sequence:sequence
-                                                         andDependencyManager:self.dependencyManager];
-         }];
-    }
-    if ( sequence.permissions.canMeme )
-    {
-        VActionItem *memeItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a meme", @"")
-                                                             actionIcon:[UIImage imageNamed:@"D_memeIcon"]
-                                                             detailText:[NSString stringWithFormat:@"%@", sequence.memeCount]];
-        [self setupRemixActionItem:memeItem
-         withContentViewController:streamCollectionViewController
-         actionSheetViewController:actionSheetViewController
-                         withBlock:^
-         {
-             [self.sequenceActionController showRemixOnViewController:self
-                                                         withSequence:sequence
-                                                 andDependencyManager:self.dependencyManager
-                                                       preloadedImage:nil
-                                                     defaultVideoEdit:VDefaultVideoEditSnapshot
-                                                           completion:nil];
-             
-         }
-            dismissCompletionBlock:^
-         {
-             [self.sequenceActionController showMemersOnNavigationController:streamCollectionViewController.navigationController
-                                                                    sequence:sequence
-                                                        andDependencyManager:self.dependencyManager];
-         }];
-    }
-    
-
-    if (sequence.permissions.canRepost)
-    {
-        NSString *localizedRepostRepostedText = [sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
-        VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
-                                                               actionIcon:[UIImage imageNamed:@"icon_repost"]
-                                                               detailText:[NSString stringWithFormat:@"%@", sequence.repostCount]
-                                                                  enabled:![sequence.hasReposted boolValue]];
-        repostItem.selectionHandler = ^(VActionItem *item)
-        {
-            if ( !sequence.hasReposted)
-            {
-                [actionSheetViewController setLoading:YES forItem:item];
-                
-                [self.sequenceActionController repostActionFromViewController:streamCollectionViewController
-                                                                         node:sequence.firstNode
-                                                                   completion:^(BOOL didSucceed)
-                 {
-                     if ( didSucceed )
-                     {
-                         sequence.hasReposted = @(1);
-                     }
-                     
-                     [streamCollectionViewController dismissViewControllerAnimated:YES completion:nil];
-                 }];
-            }
-        };
-        repostItem.detailSelectionHandler = ^(VActionItem *item)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowReposters];
-            
-            [self dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 [self.sequenceActionController showRepostersFromViewController:streamCollectionViewController sequence:sequence];
-             }];
-        };
-        [actionItems addObject:repostItem];
-    }
-    
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"")
-                                                          actionIcon:[UIImage imageNamed:@"icon_share"]
-                                                          detailText:nil];
-    
-    void (^shareHandler)(VActionItem *item) = ^void(VActionItem *item)
-    {
-        [streamCollectionViewController dismissViewControllerAnimated:YES
-                                                  completion:^
-         {
-             [self.sequenceActionController shareFromViewController:streamCollectionViewController
-                                                           sequence:sequence
-                                                               node:sequence.firstNode
-                                                           streamID:sequence.remoteId /*self.viewModel.streamId*/
-                                                         completion:nil];
-         }];
-    };
-    shareItem.selectionHandler = shareHandler;
-    shareItem.detailSelectionHandler = shareHandler;
-    [actionItems addObject:shareItem];
-    
-    if ( sequence.permissions.canDelete )
-    {
-        VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
-                                                               actionIcon:[UIImage imageNamed:@"delete-icon"]
-                                                               detailText:nil];
-        
-        deleteItem.selectionHandler = ^(VActionItem *item)
-        {
-            [self dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
-                                                                                          message:nil
-                                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
-                 
-                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
-                                                                     style:UIAlertActionStyleCancel
-                                                                   handler:nil]];
-                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"DeleteButton", @"")
-                                                                     style:UIAlertActionStyleDestructive
-                                                                   handler:^(UIAlertAction *action)
-                                             {
-                                                 DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:sequence.remoteId];
-                                                 [deleteOperation queueOn:deleteOperation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
-                                                  {
-                                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                      [self contentViewPresenterDidDeleteContent:nil];
-                                                  }];
-                                             }]];
-                 
-                 [self presentViewController:alertController animated:YES completion:nil];
-             }];
-        };
-        [actionItems addObject:deleteItem];
-    }
-    
-    BOOL canFlag = sequence.permissions.canFlagSequence;
-    
-    if ( canFlag )
-    {
-        VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
-                                                             actionIcon:[UIImage imageNamed:@"icon_flag"]
-                                                             detailText:nil];
-        flagItem.selectionHandler = ^(VActionItem *item)
-        {
-            
-            [streamCollectionViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-             {
-                 [self.sequenceActionController flagSheetFromViewController:streamCollectionViewController sequence:sequence completion:^(BOOL success)
-                  {
-                       [self contentViewPresenterDidFlagContent:nil];
-                  }];
-             }];
-        };
-        [actionItems addObject:flagItem];
-    }
-    
-    if ([AgeGate isAnonymousUser])
-    {
-        actionItems = [NSMutableArray arrayWithArray:[AgeGate filterMoreButtonItems:actionItems]];
-    }
-    
-    [actionSheetViewController addActionItems:actionItems];
-    
-    [self presentViewController:actionSheetViewController animated:YES completion:nil];
+    [self.sequenceActionHelper moreButtonAction:sequence completion:^
+     {
+         completion(YES);
+     }];
 }
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [self.streamLikeHelper likeSequence:sequence
+    [self.sequenceActionHelper likeSequence:sequence
                          triggeringView:view
-                   originViewController:self
-                      dependencyManager:self.dependencyManager
                              completion:^void(BOOL success)
      {
          if ( completion != nil )
