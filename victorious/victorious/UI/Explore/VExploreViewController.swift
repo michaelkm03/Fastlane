@@ -117,6 +117,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        dependencyManager?.trackViewWillAppear(self)
+        
         v_navigationController()?.view?.setNeedsLayout()
     }
     
