@@ -90,14 +90,16 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     /// MARK: Actions
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         guard let alert = alert else {
             return
         }
         
-        self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
+        dispatch_async(dispatch_get_main_queue()) {
+            self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
+        }
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears

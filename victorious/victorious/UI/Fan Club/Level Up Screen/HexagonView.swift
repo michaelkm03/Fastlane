@@ -68,7 +68,10 @@ class HexagonView: UIView {
             return shapeLayer.strokeEnd
         }
         set {
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
             self.shapeLayer.strokeEnd = newValue
+            CATransaction.commit()
         }
     }
     
