@@ -21,7 +21,14 @@ protocol ResultsOperation {
     var results: [AnyObject]? { set get }
 }
 
-protocol Paginated {
+protocol Paginated: ResultsOperation {
+    
+    /// The type of Paginator used by this operation
+    typealias PaginatorType: Paginator
+    
+    /// The current paginator used for this operation, required in order to get
+    /// the next/prev paginators from which to maket the next/prev operations.
+    var paginator: PaginatorType { get }
     
     /// Returns a copy of this operation configured for loading next page worth of data
     func next() -> Self?
@@ -44,14 +51,7 @@ protocol RequestOperation {
     var request: SingleRequestType! { get }
 }
 
-protocol PaginatedOperation: Paginated, ResultsOperation {
-    
-    /// The type of Paginator used by this operation
-    typealias PaginatorType: Paginator
-    
-    /// The current paginator used for this operation, required in order to get
-    /// the next/prev paginators from which to maket the next/prev operations.
-    var paginator: PaginatorType { get }
+protocol PaginatedOperation: Paginated {
     
     /// Required initializer that takes a value typed to PaginatorType
     init( paginator: PaginatorType )
@@ -77,7 +77,7 @@ extension Paginated where Self : PaginatedOperation {
 
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedRequestOperation: Paginated, ResultsOperation {
+protocol PaginatedRequestOperation: Paginated {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -88,6 +88,13 @@ protocol PaginatedRequestOperation: Paginated, ResultsOperation {
     
     /// Required initializer that takes a value typed to PaginatedRequestType
     init( request: PaginatedRequestType )
+}
+
+extension Paginated where Self : PaginatedRequestOperation {
+    
+    var paginator: Self.PaginatedRequestType.PaginatorType {
+        return request.paginator
+    }
 }
 
 extension PaginatedRequestOperation {
