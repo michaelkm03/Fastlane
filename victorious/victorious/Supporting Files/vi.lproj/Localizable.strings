@@ -276,8 +276,6 @@
 "NoFriends"             =   "Không khớp";
 "NoFriendsDetail"       =   "Chúng tôi không tìm thấy bất kỳ bạn bè nào của bạn sử dụng ứng dụng của chúng tôi. Hãy tiếp tục và mời họ!";
 
-"RTCUserPostedAtSyntax" =   "%@ tại %@";// e.g. "Username at 0:04"
-
 "Report/Flag"           =   "Báo cáo/Cảnh báo";
 "REPOSTERS"             =   "Những người đăng lại"; // Title for a list of users who have reposted something
 "Repost"                =   "Đăng lại";

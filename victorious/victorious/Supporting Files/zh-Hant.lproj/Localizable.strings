@@ -276,8 +276,6 @@
 "NoFriends"             =   "無相符結果";
 "NoFriendsDetail"       =   "我們找不到有使用我們應用程式的好友。快去邀請他們吧！";
 
-"RTCUserPostedAtSyntax" =   "%@ 在 %@";// e.g. "Username at 0:04"
-
 "Report/Flag"           =   "回報/檢舉";
 "REPOSTERS"             =   "轉貼者"; // Title for a list of users who have reposted something
 "Repost"                =   "轉貼";
