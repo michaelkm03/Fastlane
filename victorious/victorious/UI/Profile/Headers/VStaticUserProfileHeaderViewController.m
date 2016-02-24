@@ -20,7 +20,6 @@
 
 @import KVOController;
 
-static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
 static NSString * const kLevelBadgeKey = @"animatedBadge";
 
@@ -49,15 +48,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         self.state = self.state; // Trigger a state refresh
     }
-    
-    // Setup badge view
-    [self updateBadgeView];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
