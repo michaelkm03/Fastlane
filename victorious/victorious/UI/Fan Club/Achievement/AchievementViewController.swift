@@ -19,7 +19,6 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         static let presentationDuration = 0.5
         static let dismissalDuration = 0.3
         static let containerWidth: CGFloat = 292
-        static let badgeAnimationTotalDuration = 2.0
     }
     
     private let achievementAnimator = AchievementAnimator()
