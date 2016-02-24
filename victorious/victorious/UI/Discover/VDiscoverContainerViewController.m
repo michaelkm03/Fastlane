@@ -25,7 +25,7 @@
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-swift.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer, SearchResultsViewControllerDelegate>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;

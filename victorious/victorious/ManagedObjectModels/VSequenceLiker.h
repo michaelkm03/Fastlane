@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VSequenceLiker : NSManagedObject
 
-@property (null_unspecified, nonatomic, retain) NSNumber *displayOrder;
+@property (nonatomic, retain) NSNumber *displayOrder;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 

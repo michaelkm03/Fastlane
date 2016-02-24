@@ -44,7 +44,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
-            // FIXME: This is a hack to refresh streams.  `PaginatedDataSource` should really handle
+            // This is a hack to refresh streams.  `PaginatedDataSource` should really handle
             // this logic for all paginated operations.
             if self.request.paginator.pageNumber == 1 {
                 let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName() )

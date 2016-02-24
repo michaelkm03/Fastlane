@@ -32,7 +32,6 @@ class FollowCountOperationTests: BaseRequestOperationTestCase {
         let expectation = expectationWithDescription("operation completed")
         let followCount = FollowCount(followingCount: 87, followersCount:32)
         
-        // TODO: Call `main()` instead and assert testRequestExecutor.executeRequestCallCount
         operation.onComplete(followCount) {
             expectation.fulfill()
         }
@@ -46,7 +45,6 @@ class FollowCountOperationTests: BaseRequestOperationTestCase {
         let expectation = expectationWithDescription("operation completed")
         let followCount = FollowCount(followingCount: 87, followersCount:32)
     
-        // TODO: Call `main()` instead and assert testRequestExecutor.executeRequestCallCount
         operation.onComplete(followCount) {
             // As long as this completion block is called without crashing
             // from within the operation, this "missing user" case is covered

@@ -20,9 +20,6 @@ extension VContentViewViewModel {
                 self.delegate?.didUpdatePoll()
             }
         }
-        
-        // TODO: Check if `self.deepLinkCommentId` is defined and if so,
-        // implement deep link to comment using endpoint /api/comment/find/{comment_id}.
 
         SequenceFetchOperation( sequenceID: self.sequence.remoteId, streamID: self.streamId).queue() { error in
             // Update the vote/EBs thrown counts

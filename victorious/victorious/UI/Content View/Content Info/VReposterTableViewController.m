@@ -131,6 +131,11 @@
     [self.tableView v_applyChangeInSection:0 from:oldValue to:newValue];
 }
 
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [self v_showErrorDefaultError];
+}
+
 #pragma mark - private
 
 - (void)updateTableView

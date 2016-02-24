@@ -71,7 +71,6 @@ class CreateMessageOperation: FetcherOperation {
             
             let message: VMessage = context.v_createObject()
             message.sender = currentUser
-            message.senderUserId = currentUser.remoteId
             message.text = self.creationParameters.text
             message.postedAt = creationDate
             message.displayOrder = newDisplayOrder

@@ -73,7 +73,7 @@
     // If there is no background image selector or there is no color, then skip ahead to publish
     if ( self.mediaURL == nil || [self currentColorSelection] == nil )
     {
-        [self publishTextPost:self.mediaURL completion:completion];
+        [self publishTextPost:nil completion:completion];
         return;
     }
     

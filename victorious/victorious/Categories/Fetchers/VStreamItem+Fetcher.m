@@ -115,8 +115,11 @@ NSString * const VStreamItemSubTypeStream = @"stream";
             }
         }
     }
-    
-    return [NSURL URLWithString:previewImageString];
+    if ( previewImageString != nil )
+    {
+        return [NSURL URLWithString:previewImageString];
+    }
+    return nil;
 }
 
 - (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size
