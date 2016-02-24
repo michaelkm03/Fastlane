@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "選取 Twitter 帳號";
 
-"ReportInappropriate"   =   "舉報不當內容";
+"BlockInappropriate"    =   "舉報不當內容";
 "ReportedTitle"         =   "收到！";
 "ReportContentMessage"  =   "我們將在 24 小時內審查此內容。";
 "ReportCommentMessage"  =   "我們將在 24 小時內審查此內容。";

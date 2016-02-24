@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Lựa chọn một tài khoản twitter";
 
-"ReportInappropriate"   =   "Báo cáo Không phù hợp";
+"BlockInappropriate"    =   "Báo cáo Không phù hợp";
 "ReportedTitle"         =   "Đã Hiểu!";
 "ReportContentMessage"  =   "Chúng tôi sẽ xem xét lại nội dung này trong vòng 24 giờ.";
 "ReportCommentMessage"  =   "Chúng tôi sẽ xem xét nội dung này trong vòng 24 giờ.";
