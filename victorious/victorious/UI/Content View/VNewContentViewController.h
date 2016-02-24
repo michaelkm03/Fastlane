@@ -50,9 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
-@property (nonatomic, strong, nullable) UIImage *placeholderImage;
+@property (nonatomic, strong) VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, strong, nullable) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly, nullable) VContentCell *contentCell;
 

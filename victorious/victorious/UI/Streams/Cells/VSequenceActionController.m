@@ -36,98 +36,99 @@
 
 @interface VSequenceActionController ()
 
-@property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 @property (nonatomic, strong) VRemixPresenter *remixPresenter;
-@property (nonatomic, strong) SequenceActionHelper *sequenceActionHelper;
+@property (nonatomic, weak, readwrite) UIViewController *originViewController;
+@property (nonatomic, weak, readwrite) VDependencyManager *depencencyManager;
 
 @end
 
 @implementation VSequenceActionController
 
-#pragma mark - Comments
+#pragma mark - Initializer
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController
-                              sequence:(VSequence *)sequence
-                   withSelectedComment:(VComment *)selectedComment
+- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController
 {
-    CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
-    [viewController.navigationController pushViewController:commentsViewController animated:YES];
+    self = [super init];
+    if (self)
+    {
+        _dependencyManager = dependencyManager;
+        _originViewController = originViewController;
+    }
+    return self;
 }
 
-- (SequenceActionHelper *)sequenceActionHelper
+#pragma mark - Comments
+
+- (void)showCommentsWithSequence:(VSequence *)sequence
+             withSelectedComment:(VComment *)selectedComment
 {
-    if ( _sequenceActionHelper == nil )
-    {
-        _sequenceActionHelper = [[SequenceActionHelper alloc] init];
-    }
-    return _sequenceActionHelper;
+    CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
+    [self.originViewController.navigationController pushViewController:commentsViewController animated:YES];
 }
 
 #pragma mark - User
 
-- (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (BOOL)showPosterProfileWithSequence:(VSequence *)sequence
 {
     if ( sequence == nil )
     {
         return NO;
     }
     
-    return [self showProfile:sequence.user fromViewController:viewController];
+    return [self showProfile:sequence.user];
 }
 
-- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId fromViewController:(UIViewController *)viewController
+- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId
 {
-    if ( viewController == nil || viewController.navigationController == nil || remoteId == nil )
+    if ( self.originViewController == nil || self.originViewController.navigationController == nil || remoteId == nil )
     {
         return NO;
     }
     
-    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).user.remoteId isEqual:remoteId] )
+    if ( [self.originViewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)self.originViewController).user.remoteId isEqual:remoteId] )
     {
         return NO;
     }
     
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:remoteId];
-    [viewController.navigationController pushViewController:profileViewController animated:YES];
+    [self.originViewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
 }
 
-- (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
+- (BOOL)showProfile:(VUser *)user
 {
-    if ( viewController == nil || viewController.navigationController == nil || user == nil )
+    if ( self.originViewController == nil || self.originViewController.navigationController == nil || user == nil )
     {
         return NO;
     }
     
-    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).user isEqual:user] )
+    if ( [self.originViewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)self.originViewController).user isEqual:user] )
     {
         return NO;
     }
     
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
-    [viewController.navigationController pushViewController:profileViewController animated:YES];
+    [self.originViewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
 }
 
-- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController
+- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType
 {
     VAbstractMediaLinkViewController *mediaLinkViewController = [VAbstractMediaLinkViewController newWithMediaUrl:url andMediaLinkType:linkType];
-    [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];
+    [self.originViewController presentViewController:mediaLinkViewController animated:YES completion:nil];
     return YES;
 }
 
 #pragma mark - Remix
 
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
-                   preloadedImage:(UIImage *)preloadedImage
-                 defaultVideoEdit:(VDefaultVideoEdit)defaultVideoEdit
-                       completion:(void(^)(BOOL))completion
+- (void)showRemixWithSequence:(VSequence *)sequence
+               preloadedImage:(UIImage *)preloadedImage
+             defaultVideoEdit:(VDefaultVideoEdit)defaultVideoEdit
+                   completion:(void(^)(BOOL))completion
 {
     NSAssert( ![sequence isPoll], @"You cannot remix polls." );
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
@@ -150,19 +151,14 @@
     
     self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
                                                              sequenceToRemix:sequence];
-    [self.remixPresenter presentOnViewController:viewController];
-    self.viewControllerPresentingWorkspace = viewController;
+    [self.remixPresenter presentOnViewController:self.originViewController];
 }
 
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixWithSequence:(VSequence *)sequence
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void (^)(BOOL))completion
 {
-    [self showRemixOnViewController:viewController
-                       withSequence:sequence
-               andDependencyManager:dependencyManager
+    [self showRemixWithSequence:sequence
                      preloadedImage:preloadedImage
                    defaultVideoEdit:VDefaultVideoEditGIF
                          completion:completion];
@@ -170,39 +166,37 @@
 
 - (void)showGiffersOnNavigationController:(UINavigationController *)navigationController
                                  sequence:(VSequence *)sequence
-                     andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *gifStream = [dependencyManager gifStreamForSequence:sequence];
+    VStreamCollectionViewController *gifStream = [self.dependencyManager gifStreamForSequence:sequence];
     [navigationController pushViewController:gifStream animated:YES];
 }
 
 - (void)showMemersOnNavigationController:(UINavigationController *)navigationController
                                 sequence:(VSequence *)sequence
-                    andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *memeStream = [dependencyManager memeStreamForSequence:sequence];
+    VStreamCollectionViewController *memeStream = [self.dependencyManager memeStreamForSequence:sequence];
     [navigationController pushViewController:memeStream animated:YES];
 }
 
-- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+- (void)likeSequence:(VSequence *)sequence
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceActionHelper likeSequence:sequence triggeringView:actionView completion:completion];
+    [self likeSequence:sequence triggeringView:actionView completion:completion];
 }
 
 #pragma mark - Repost
 
-- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
+- (void)repostActionFromNode:(VNode *)node
 {
-    [self repostActionFromViewController:viewController node:node completion:nil];
+    [self repostActionFromNode:node completion:nil];
 }
 
-- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
+- (void)repostActionFromNode:(VNode *)node completion:(void(^)(BOOL))completion
 {
-    [self.sequenceActionHelper repostNode:node completion:completion];
+    [self repostNode:node completion:completion];
 }
 
 - (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
@@ -216,14 +210,14 @@
     }
 }
 
-- (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)showRepostersWithSequence:(VSequence *)sequence
 {
     VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithSequence:sequence
                                                                             dependencyManager:self.dependencyManager];
-    [viewController.navigationController pushViewController:vc animated:YES];
+    [self.originViewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)showLikersWithSequence:(VSequence *)sequence
 {
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
@@ -231,16 +225,15 @@
     usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
     usersViewController.usersViewContext = VUsersViewContextLikers;
     
-    [viewController.navigationController pushViewController:usersViewController animated:YES];
+    [self.originViewController.navigationController pushViewController:usersViewController animated:YES];
 }
 
 #pragma mark - Share
 
-- (void)shareFromViewController:(UIViewController *)viewController
-                       sequence:(VSequence *)sequence
-                           node:(VNode *)node
-                       streamID:(NSString *)streamID
-                     completion:(void(^)())completion
+- (void)shareWithSequence:(VSequence *)sequence
+                     node:(VNode *)node
+                 streamID:(NSString *)streamID
+               completion:(void(^)())completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
     
@@ -286,7 +279,7 @@
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
         }
         
-        [viewController reloadInputViews];
+        [self.originViewController reloadInputViews];
         
         if ( completion != nil )
         {
@@ -294,36 +287,16 @@
         }
     };
     
-    [viewController presentViewController:activityViewController
+    [self.originViewController presentViewController:activityViewController
                                  animated:YES
                                completion:nil];
 }
 
 #pragma mark - Flag
 
-- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(BOOL success))completion
+- (void)flagSequence:(VSequence *)sequence completion:(void (^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:nil
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Report/Flag", @"")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action)
-                                {
-                                    [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
-                                }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:nil]];
-    
-    [viewController presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(BOOL success))completion
-{
-    [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:completion];
+    [self flagSequence:sequence completion:completion];
 }
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message

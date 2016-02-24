@@ -25,12 +25,6 @@
 #import "VAsset+Fetcher.h"
 #import "victorious-Swift.h"
 
-@interface VNewContentViewController ()
-
-@property VSequenceActionController *sequenceActionController;
-
-@end
-
 @implementation VNewContentViewController (Actions)
 
 - (IBAction)pressedMore:(id)sender
@@ -52,7 +46,7 @@
     {
         [contentViewController dismissViewControllerAnimated:YES completion:^
          {
-             [self.sequenceActionController showPosterProfileFromViewController:contentViewController sequence:self.viewModel.sequence];
+             [self.sequenceActionController showPosterProfileWithSequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:userItem];
@@ -85,9 +79,8 @@
             {
                 [actionSheetViewController setLoading:YES forItem:item];
                 
-                [self.sequenceActionController repostActionFromViewController:contentViewController
-                                                                         node:contentViewController.viewModel.currentNode
-                                                                   completion:^(BOOL didSucceed)
+                [self.sequenceActionController repostActionFromNode:contentViewController.viewModel.currentNode
+                                                         completion:^(BOOL didSucceed)
                  {
                      if ( didSucceed )
                      {
@@ -105,7 +98,7 @@
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 [self.sequenceActionController showRepostersFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController showRepostersWithSequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:repostItem];
@@ -120,11 +113,10 @@
         [contentViewController dismissViewControllerAnimated:YES
                                                   completion:^
          {
-             [self.sequenceActionController shareFromViewController:contentViewController
-                                                           sequence:contentViewController.viewModel.sequence
-                                                               node:contentViewController.viewModel.currentNode
-                                                           streamID:self.viewModel.streamId
-                                                         completion:nil];
+             [self.sequenceActionController shareWithSequence:contentViewController.viewModel.sequence
+                                                         node:contentViewController.viewModel.currentNode
+                                                     streamID:self.viewModel.streamId
+                                                   completion:nil];
          }];
     };
     shareItem.selectionHandler = shareHandler;
@@ -175,7 +167,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(BOOL success)
+                 [self.sequenceActionController flag:self.viewModel.sequence completion:^(BOOL success)
                   {
                       [self.presentingViewController dismissViewControllerAnimated:YES completion:^
                        {
@@ -197,13 +189,17 @@
     
     [actionSheetViewController addActionItems:actionItems];
     
+    
+    
+    [self presentViewController:actionSheetViewController animated:YES completion:nil];
+    
+    
     // Pause video when presenting action sheet
     if (self.viewModel.type == VContentViewTypeVideo)
     {
         [self.videoPlayer pause];
     }
-    
-    [self presentViewController:actionSheetViewController animated:YES completion:nil];
+//    [self.sequenceActionController moreButtonActionWithSequence:self.viewModel.sequence streamId:self.viewModel.streamId completion:nil];
 }
 
 - (void)onSequenceDeleted
@@ -249,9 +245,7 @@
      actionSheetViewController:actionSheetViewController
                      withBlock:^
      {
-         [self.sequenceActionController showRemixOnViewController:self
-                                                     withSequence:self.viewModel.sequence
-                                             andDependencyManager:self.dependencyManager
+         [self.sequenceActionController showRemixWithSequence:self.viewModel.sequence
                                                    preloadedImage:nil
                                                  defaultVideoEdit:VDefaultVideoEditGIF
                                                        completion:nil];
@@ -260,8 +254,7 @@
         dismissCompletionBlock:^
      {
          [self.sequenceActionController showGiffersOnNavigationController:contentViewController.navigationController
-                                                                 sequence:self.viewModel.sequence
-                                                     andDependencyManager:self.dependencyManager];
+                                                                 sequence:self.viewModel.sequence];
      }];
     return gifItem;
 }
@@ -277,19 +270,16 @@
      actionSheetViewController:actionSheetViewController
                      withBlock:^
      {
-         [self.sequenceActionController showRemixOnViewController:self
-                                                     withSequence:self.viewModel.sequence
-                                             andDependencyManager:self.dependencyManager
-                                                   preloadedImage:nil
-                                                 defaultVideoEdit:VDefaultVideoEditSnapshot
-                                                       completion:nil];
+         [self.sequenceActionController showRemixWithSequence:self.viewModel.sequence
+                                               preloadedImage:nil
+                                             defaultVideoEdit:VDefaultVideoEditSnapshot
+                                                   completion:nil];
          
      }
         dismissCompletionBlock:^
      {
          [self.sequenceActionController showMemersOnNavigationController:contentViewController.navigationController
-                                                                sequence:self.viewModel.sequence
-                                                    andDependencyManager:self.dependencyManager];
+                                                                sequence:self.viewModel.sequence];
      }];
     return memeItem;
 }

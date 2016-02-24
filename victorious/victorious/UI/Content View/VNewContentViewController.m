@@ -102,7 +102,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
@@ -120,7 +119,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController.dependencyManager = dependencyManager;
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:dependencyManager andOriginViewController:contentViewController];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -1442,7 +1441,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject withSelectedComment:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -1525,7 +1524,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
 {
     [self.sequenceActionController likeSequence:self.viewModel.sequence
-                             fromViewController:self
                                  withActionView:previewView.likeButton
                                      completion:^(BOOL success)
      {

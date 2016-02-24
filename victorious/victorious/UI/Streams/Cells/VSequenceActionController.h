@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VCommentMediaType.h"
 
-@class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment, VStream;
+@class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment, VStream, ContentViewPresenterDelegate;
 
 typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 {
@@ -20,42 +20,39 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 @interface VSequenceActionController : NSObject
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, weak, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, weak, readonly) UIViewController *originViewController;
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment;
+- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController;
 
-- (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+- (void)showCommentsWithSequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment;
 
-- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId fromViewController:(UIViewController *)viewController;
+- (BOOL)showPosterProfileWithSequence:(VSequence *)sequence;
 
-- (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController;
+- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId;
 
-- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController;
+- (BOOL)showProfile:(VUser *)user;
+
+- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType;
 
 /**
- *  Presents remix UI on a viewcontroller with a given sequence to remix.
- *  Will present a UIViewController for the remix UI on the pased in viewController.
+ *  Presents remix UI on the ViewController given in the initializer with a given sequence to remix.
+ *  Will present a UIViewController for the remix UI on the passed in originViewController.
  *
- *  @param viewController    The viewController to present the remix UI on.
  *  @param sequence          The sequence to remix.
- *  @param dependencyManager A dependency manager to use for creating the remix UI.
  *  @param defaultVideoEdit  The default video editing state.
  *  @param completion        A completion block. BOOL is YES if successful publish, NO if cancelled out.
  */
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixWithSequence:(VSequence *)sequence
                    preloadedImage:(UIImage *)preloadedImage
                  defaultVideoEdit:(VDefaultVideoEdit)defaultVideoEdit
                        completion:(void(^)(BOOL))completion;
 
 /**
- *  Internally calls "showRemixOnViewController:withSequence:preloadedImage:defaultVideoEdit:completion:"
+ *  Internally calls "showRemixWithSequence:preloadedImage:defaultVideoEdit:completion:"
  *  with VDefaultVideoGIF for default video edit.
  */
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixWithSequence:(VSequence *)sequence
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void (^)(BOOL))completion;
 
@@ -64,45 +61,32 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
  *
  *  @param navigationController The UINavigationController to push the remixers stream on.
  *  @param sequence             A valid sequence. Can't be nil.
- *  @param dependencyManager    A valid dependency manager.
  */
 - (void)showGiffersOnNavigationController:(UINavigationController *)navigationController
-                                 sequence:(VSequence *)sequence
-                     andDependencyManager:(VDependencyManager *)dependencyManager;
+                                 sequence:(VSequence *)sequence;
 
 - (void)showMemersOnNavigationController:(UINavigationController *)navigationController
-                                sequence:(VSequence *)sequence
-                    andDependencyManager:(VDependencyManager *)dependencyManager;
+                                sequence:(VSequence *)sequence;
 
-- (void)repostActionFromViewController:(UIViewController *)viewController
-                                  node:(VNode *)node;
+- (void)repostActionFromNode:(VNode *)node;
 
-- (void)repostActionFromViewController:(UIViewController *)viewController
-                                  node:(VNode *)node
-                            completion:(void(^)(BOOL))completion;
+- (void)repostActionFromNode:(VNode *)node
+              completion:(void(^)(BOOL))completion;
 
-- (void)showRepostersFromViewController:(UIViewController *)viewController
-                               sequence:(VSequence *)sequence;
+- (void)showRepostersWithSequence:(VSequence *)sequence;
 
-- (void)shareFromViewController:(UIViewController *)viewController
-                       sequence:(VSequence *)sequence
-                           node:(VNode *)node
-                       streamID:(NSString *)streamID
-                     completion:(void(^)())completion;
+- (void)shareWithSequence:(VSequence *)sequence
+                     node:(VNode *)node
+                 streamID:(NSString *)streamID
+               completion:(void(^)())completion;
 
-- (void)flagSheetFromViewController:(UIViewController *)viewController
-                           sequence:(VSequence *)sequence
-                         completion:(void (^)(BOOL success))completion;
-
-- (void)flagActionForSequence:(VSequence *)sequence
-           fromViewController:(UIViewController *)viewController
+- (void)flagWithSequence:(VSequence *)sequence
                    completion:(void (^)(BOOL success))completion;
 
 
-- (void)showLikersFromViewController:(UIViewController *)viewControlle
-                            sequence:(VSequence *)sequence;
+- (void)showLikersWithSequence:(VSequence *)sequence;
 
-- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+- (void)likeSequence:(VSequence *)sequence
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion;
 

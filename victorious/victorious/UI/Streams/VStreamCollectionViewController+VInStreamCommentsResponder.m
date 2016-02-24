@@ -12,7 +12,7 @@
 
 - (void)actionForInStreamCommentSelection:(VComment *)comment fromSequence:(VSequence *)sequence
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequence withSelectedComment:comment];
+    [self.sequenceActionController showCommentsWithSequence:sequence withSelectedComment:comment];
 }
 
 - (void)actionForInStreamHashtagSelection:(NSString *)hashtag
@@ -22,12 +22,12 @@
 
 - (void)actionForInStreamUserSelection:(NSNumber *)userId
 {
-    [self.sequenceActionController showProfileWithRemoteId:userId fromViewController:self];
+    [self.sequenceActionController showProfileWithRemoteId:userId];
 }
 
 - (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType
 {
-    [self.sequenceActionController showMediaContentViewForUrl:mediaUrl withMediaLinkType:linkType fromViewController:self];
+    [self.sequenceActionController showMediaContentViewForUrl:mediaUrl withMediaLinkType:linkType];
 }
 
 @end

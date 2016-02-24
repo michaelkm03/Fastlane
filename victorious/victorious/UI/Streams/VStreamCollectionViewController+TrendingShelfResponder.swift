@@ -12,7 +12,7 @@ extension VStreamCollectionViewController: VShelfStreamItemSelectionResponder, V
     }
     
     func trendingUserShelfSelected(user: VUser, fromShelf: UserShelf) {
-        sequenceActionController.showProfile(user, fromViewController: self)
+        sequenceActionController.showProfile(user)
     }
     
     func trendingHashtagShelfSelected(hashtag: String, fromShelf: HashtagShelf) {

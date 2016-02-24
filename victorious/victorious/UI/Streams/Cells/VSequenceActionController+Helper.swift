@@ -1,32 +1,20 @@
 //
-//  SequenceActionHelper.swift
+//  VSequenceActionController+Helper.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/17/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Vincent Ho on 2/24/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-@objc class SequenceActionHelper: NSObject {
+extension VSequenceActionController {
     
-    var dependencyManager: VDependencyManager
-    var originViewController: UIViewController
-    var sequenceActionController: VSequenceActionController
-    
-    
-    init(dependencyManager: VDependencyManager, originViewController: UIViewController, sequenceActionController: VSequenceActionController) {
-        self.dependencyManager = dependencyManager
-        self.originViewController = originViewController
-        self.sequenceActionController = sequenceActionController
-        super.init()
-    }
-    
-    func moreButtonAction(sequence: VSequence, completion: ()->()) {
+    func moreButtonAction(withSequence sequence: VSequence, streamId: String?, completion: ()->() ) {
         let actionSheetViewController = VActionSheetViewController()
         actionSheetViewController.dependencyManager = dependencyManager
         VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
-
+        
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
         var actionItems: [VActionItem] = []
@@ -52,7 +40,7 @@ import UIKit
         }
         
         // Share Item
-        actionItems.append(shareItem(sequence))
+        actionItems.append(shareItem(sequence, withStreamId: streamId ?? ""))
         
         if sequence.permissions.canDelete {
             actionItems.append(deleteItem(sequence))
@@ -71,15 +59,51 @@ import UIKit
         
     }
     
+    func flag(sequence: VSequence, completion: (Bool)->()) {
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        
+        let alertController = UIAlertController(title: nil,
+                                                message: nil,
+                                                preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
+            style: UIAlertActionStyle.Default,
+            handler: { action in
+                FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
+                    
+                    if let error = error {
+                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
+                        
+                        if error.code == Int(kVCommentAlreadyFlaggedError) {
+                            self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                        } else {
+                            self.originViewController.v_showErrorDefaultError()
+                        }
+                        
+                    } else {
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                        self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                    }
+                }
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+            style: UIAlertActionStyle.Default,
+            handler:nil))
+        originViewController.presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
     private func flagItem(sequence: VSequence) -> VActionItem {
         
         let flagItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""),
-                                                                actionIcon: UIImage(named: "icon_flag"),
-                                                                detailText: "")
+                                                              actionIcon: UIImage(named: "icon_flag"),
+                                                              detailText: "")
         flagItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.sequenceActionController.flagSheetFromViewController(self.originViewController, sequence: sequence, completion: { success in
-//                    self.originViewController.contentViewPresenterDidFlagContent(nil)
+                self.flag(sequence, completion: { success in
+                    if self.originViewController.respondsToSelector("contentViewPresenterDidFlagContent:") {
+                        self.originViewController.performSelector("contentViewPresenterDidFlagContent:", withObject: nil)
+                    }
                 })
             })
         }
@@ -106,26 +130,28 @@ import UIKit
                         let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
                         deleteOperation.queueOn(deleteOperation.defaultQueue, completionBlock: { results, error in
                             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
-                            //                            self.originViewController.contentViewPresenterDidDeleteContent(nil)
+                            if self.originViewController.respondsToSelector("contentViewPresenterDidDeleteContent:") {
+                                self.originViewController.performSelector("contentViewPresenterDidDeleteContent:", withObject: nil)
+                            }
                         })
                 }))
+                self.originViewController.presentViewController(alertController, animated: true, completion: nil)
             })
         }
         return deleteItem
         
     }
     
-    private func shareItem(sequence: VSequence) -> VActionItem {
+    private func shareItem(sequence: VSequence, withStreamId streamId: String) -> VActionItem {
         
         let shareItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Share", comment: ""),
                                                                actionIcon: UIImage(named: "icon_share"),
                                                                detailText: "")
         let shareHandler: (VActionItem)->() = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.sequenceActionController.shareFromViewController(self.originViewController,
-                    sequence: sequence,
+                self.shareWithSequence(sequence,
                     node: sequence.firstNode(),
-                    streamID: sequence.remoteId, //self.viewModel.streamId -> might be causing an issue here
+                    streamID: streamId, //self.viewModel.streamId -> might be causing an issue here
                     completion: nil)
             })
         }
@@ -139,17 +165,18 @@ import UIKit
     
     private func repostItem(sequence: VSequence, loadingBlock: (VActionItem)->() ) -> VActionItem {
         
-        let localizedRepostRepostedText = sequence.hasReposted.boolValue ? NSLocalizedString("Resposted", comment: "") : NSLocalizedString("Repost", comment: "")
         let hasReposted = sequence.hasReposted.boolValue
+        let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Resposted", comment: "") : NSLocalizedString("Repost", comment: "")
         
         let repostItem = VActionItem.defaultActionItemWithTitle(localizedRepostRepostedText,
                                                                 actionIcon: UIImage(named: "icon_repost"),
                                                                 detailText: "\(sequence.repostCount)",
                                                                 enabled: !hasReposted)
+        
         repostItem.selectionHandler = { item in
             if (!hasReposted) {
                 loadingBlock(item)
-                self.sequenceActionController.repostActionFromViewController(self.originViewController, node: sequence.firstNode(), completion: { didSucceed in
+                self.repostNode(sequence.firstNode(), completion: { didSucceed in
                     if (didSucceed) {
                         sequence.hasReposted = 1
                     }
@@ -161,7 +188,7 @@ import UIKit
         repostItem.detailSelectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShowReposters)
             self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.sequenceActionController.showRepostersFromViewController(self.originViewController, sequence: sequence)
+                self.showRepostersWithSequence(sequence)
             })
         }
         
@@ -186,7 +213,7 @@ import UIKit
         let userItem = VActionItem.userActionItemUserWithTitle(sequence.user.name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.sequenceActionController.showPosterProfileFromViewController(self.originViewController, sequence: sequence)
+                self.showPosterProfileWithSequence(sequence)
             })
         }
         return userItem
@@ -201,15 +228,13 @@ import UIKit
         
         setupRemixActionItem(memeItem,
                              block: {
-                                self.sequenceActionController.showRemixOnViewController(self.originViewController,
-                                    withSequence: sequence,
-                                    andDependencyManager: self.dependencyManager,
+                                self.showRemixWithSequence(sequence,
                                     preloadedImage: nil,
                                     defaultVideoEdit: VDefaultVideoEdit.Snapshot,
                                     completion: nil)
             },
                              dismissCompletionBlock: {
-                                self.sequenceActionController.showMemersOnNavigationController(self.originViewController.navigationController, sequence: sequence, andDependencyManager: self.dependencyManager)
+                                self.showMemersOnNavigationController(self.originViewController.navigationController, sequence: sequence)
         })
         return memeItem
     }
@@ -222,15 +247,13 @@ import UIKit
         
         setupRemixActionItem(gifItem,
                              block: {
-                                self.sequenceActionController.showRemixOnViewController(self.originViewController,
-                                    withSequence: sequence,
-                                    andDependencyManager: self.dependencyManager,
+                                self.showRemixWithSequence(sequence,
                                     preloadedImage: nil,
                                     defaultVideoEdit: VDefaultVideoEdit.GIF,
                                     completion: nil)
             },
                              dismissCompletionBlock: {
-                                self.sequenceActionController.showMemersOnNavigationController(self.originViewController.navigationController, sequence: sequence, andDependencyManager: self.dependencyManager)
+                                self.showMemersOnNavigationController(self.originViewController.navigationController, sequence: sequence)
         })
         return gifItem
         
@@ -292,25 +315,5 @@ import UIKit
             completion?( error == nil )
         }
     }
-    
-    func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
-        
-        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
-           
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                
-                if error.code == Int(kVCommentAlreadyFlaggedError) {
-                    viewController.v_showFlaggedConversationAlert(completion: completion)
-                } else {
-                    viewController.v_showErrorDefaultError()
-                }
-           
-            } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                viewController.v_showFlaggedConversationAlert(completion: completion)
-            }
-        }
-    }
+
 }

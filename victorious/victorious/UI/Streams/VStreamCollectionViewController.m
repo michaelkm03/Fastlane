@@ -101,7 +101,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) SequenceActionHelper *sequenceActionHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -205,9 +204,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super viewDidLoad];
     
     self.hasRefreshed = NO;
-    self.sequenceActionController = [[VSequenceActionController alloc] init];
-    self.sequenceActionController.dependencyManager = self.dependencyManager;
-    self.sequenceActionHelper = [[SequenceActionHelper alloc] initWithDependencyManager:self.dependencyManager originViewController:self sequenceActionController:self.sequenceActionController];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:self.dependencyManager andOriginViewController:self];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     
@@ -692,24 +689,22 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject withSelectedComment:nil];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
 {
-    [self.sequenceActionController showProfile:user fromViewController:self];
+    [self.sequenceActionController showProfile:user];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    [self.sequenceActionController showRemixOnViewController:self
-                                                withSequence:sequence
-                                        andDependencyManager:self.dependencyManager
-                                              preloadedImage:nil
-                                            defaultVideoEdit:defaultEdit
-                                                  completion:nil];
+    [self.sequenceActionController showRemixWithSequence:sequence
+                                          preloadedImage:nil
+                                        defaultVideoEdit:defaultEdit
+                                              completion:nil];
 }
 
 - (void)setupRemixActionItem:(VActionItem *)remixItem
@@ -745,7 +740,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceActionHelper moreButtonAction:sequence completion:^
+    [self.sequenceActionController moreButtonActionWithSequence:sequence
+                                                       streamId:self.currentStream.remoteId
+                                                     completion:^
      {
          completion(YES);
      }];
@@ -753,7 +750,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceActionHelper likeSequence:sequence
+    [self.sequenceActionController likeSequence:sequence
                          triggeringView:view
                              completion:^void(BOOL success)
      {
@@ -766,11 +763,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController shareFromViewController:self
-                                                  sequence:sequence
-                                                      node:[sequence firstNode]
-                                                  streamID:self.streamDataSource.stream.remoteId
-                                                completion:nil];
+    [self.sequenceActionController shareWithSequence:sequence
+                                                    node:[sequence firstNode]
+                                                streamID:self.streamDataSource.stream.remoteId
+                                              completion:nil];
 }
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -789,7 +785,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
 {
-    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
+    [self.sequenceActionController repostActionFromNode:[sequence firstNode] completion:completion];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -804,12 +800,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)showRepostersForSequence:(VSequence *)sequence
 {
-    [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+    [self.sequenceActionController showRepostersWithSequence:sequence];
 }
 
 - (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController showLikersFromViewController:self sequence:sequence];
+    [self.sequenceActionController showLikersWithSequence:sequence];
 }
 
 #pragma mark - Actions
@@ -819,7 +815,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
     
-    // If a user is able to execercise super-human speed and tap a deleted sequence before the
+    // If a user is able to exercise super-human speed and tap a deleted sequence before the
     // this view controller's super class can remove it by calling `removeDeletedItems` from
     // `viewWillAppear:`, return early to prevent the inevitable crash later on.
     if ( event.streamItem.hasBeenDeleted )
