@@ -61,6 +61,7 @@
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
+#import "VPurchaseManager.h"
 
 @import KVOController;
 
@@ -107,6 +108,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
 @property (nonatomic, strong) VSequenceActionController *sequenceActionController;
 @property (nonatomic, strong) UIButton *buySubscriptionButton;
+@property (nonatomic, strong) VPurchaseManager *purchaseManager;
 
 @end
 
@@ -363,6 +365,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
 
+    self.purchaseManager = [VPurchaseManager sharedInstance];
     self.buySubscriptionButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 200, 50)];
     self.buySubscriptionButton.titleLabel.text = @"Get that super awesome VIP content";
     self.buySubscriptionButton.backgroundColor = [UIColor magentaColor];
@@ -1567,6 +1570,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)presentSubscriptionViewController
 {
+    if ( !self.purchaseManager.isPurchaseRequestActive )
+    {
+        [self.purchaseManager fetchProductsWithIdentifiers:[NSSet setWithArray:@[kTestSubscriptionProductIdentifier]] success:nil failure:nil];
+    }
+
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager
                                                                               productIdentifier:kTestSubscriptionProductIdentifier
                                                                                       largeIcon:[UIImage imageNamed:@"test_vip_icon_large"]];
