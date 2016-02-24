@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "SEJA O PRIMEIRO A COMENTAR!";
 "NoCommentsMessage"     =   "Publique comentários de texto, foto ou vídeo e veja o que os outros vão dizer!";
 
+"NoUserSearchResultsTitle"       =   "NENHUM USUÁRIO ENCONTRADO";
+"NoUserSearchResultsMessage"     =   "Não conseguimos encontrar esse usuário. Você pode tentar novamente ou visitar o perfil do usuário e enviar uma mensagem de lá!";
+
 "NoFollowersTitle"      =   "OH-OH! NINGUÉM SEGUIU VOCÊ AINDA";
 "NoFollowersMessage"    =   "Crie a sua própria multidão de seguidores envolvendo-se na comunidade com comentários, remixagens ou publicação de novos conteúdos.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "Editar";
 "editProfileButton"     =   "Editar Perfil";
 "followers"             =   "Seguidores";
+"followersCount"        =   "%@ Seguidores"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Seguindo";
 "follow"                =   "Seguir";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ em %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Denunciar/Sinalizar";
-"REPOSTS"               =   "Repostagens";
+"REPOSTERS"             =   "Quem repostou"; // Title for a list of users who have reposted something
 "Repost"                =   "Repostar";
 "Reposted"              =   "Repostado";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "Publicando...";
 "Upload failure" = "Falha ao carregar";
 "Error loading results" = "Erro ao carregar os resultados";
-"Error rendering GIF" = "Erro ao reproduzir o GIF. Por favor, tente novamente.";
+"Error rendering Media" = "Erro ao renderizar. Tente novamente.";
 
 "By signing up you are agreeing to our" = "Ao inscrever-se você concorda com";
 "terms of service"      =   "termos de serviço";

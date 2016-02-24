@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "HINTERLASSE DEN ERSTEN KOMMENTAR!";
 "NoCommentsMessage"     =   "Erstelle Text-, Foto- oder Videokommentare und sieh dir an, was die anderen sagen!";
 
+"NoUserSearchResultsTitle"       =   "KEINE BENUTZER GEFUNDEN";
+"NoUserSearchResultsMessage"     =   "Wir konnten diesen Benutzer nicht finden. Du kannst es erneut versuchen oder zum Profil dieses Benutzers gehen und von dort eine Nachricht senden.";
+
 "NoFollowersTitle"      =   "OH NEIN! ES FOLGT DIR NOCH NIEMAND";
 "NoFollowersMessage"    =   "Baue deine eigene Gemeinschaft auf, indem du mit ihr in Form von Kommentaren, Remixen oder neuen Inhalten interagierst.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "Bearbeiten";
 "editProfileButton"     =   "Profil bearbeiten";
 "followers"             =   "Follower";
+"followersCount"        =   "%@ Follower"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Folgen";
 "follow"                =   "Folgen";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ bei %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Melden/Markieren";
-"REPOSTS"               =   "Erneute Posts";
+"REPOSTERS"             =   "Teiler"; // Title for a list of users who have reposted something
 "Repost"                =   "Erneut posten";
 "Reposted"              =   "Erneut geposted";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "Wird veröffentlicht...";
 "Upload failure" = "Upload fehlgeschlagen";
 "Error loading results" = "Fehler beim Laden der Ergebnisse";
-"Error rendering GIF" = "Fehler beim Rendern von GIF. Bitte erneut versuchen.";
+"Error rendering Media" = "Fehler beim Rendern des Mediums. Bitte versuche es erneut.";
 
 "By signing up you are agreeing to our" = "Mit der Anmeldung akzeptierst du unsere";
 "terms of service"      =   "Nutzungsbedingungen";
@@ -446,4 +450,5 @@
 "LevelFormat" = "LEVEL %@";
 "LEVEL" = "LEVEL";
 "TestAlertsViewControllerFooter" = "Wenn du eine Benachrichtigung registrierst hast, kehre zum Stream oder Profil zurück und ziehe nach unten, um sie zu aktualisieren. Dann erscheint die Benachrichtigung.";
-"Enter birthday before continuing" = "Bitte gib deinen Geburtstag ein, bevor du fortfährst:";
+
+"Enter birthday before continuing" = "Bitte gib deinen Geburtstag ein, bevor du fortsetzt:";

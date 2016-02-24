@@ -25,7 +25,6 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         self.continueAfterFailure = false
         operation = FollowUsersOperation(userID: userIDOne, sourceScreenName: "profile")
         operation.eventTracker = testTrackingManager
-        operation.requestExecutor = testRequestExecutor
     }
 
     func testFollowingAnExistentUser() {
@@ -88,7 +87,6 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
             XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
         }
         
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
@@ -96,8 +94,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowOnlyExistentUsers() {
-        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo])
-        operation.requestExecutor = testRequestExecutor
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo], sourceScreenName: "")
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
         let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
@@ -111,8 +108,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowUsersWhosIDMatchesACurrentUser() {
-        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
-        operation.requestExecutor = testRequestExecutor
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID], sourceScreenName: "")
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
         persistentStoreHelper.createUser(remoteId: currentUserID)
@@ -173,8 +169,6 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
-
-        XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
     }
 
 }

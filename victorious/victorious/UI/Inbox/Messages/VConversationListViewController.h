@@ -8,13 +8,13 @@
 
 #import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
-#import "VProvidesNavigationMenuItemBadge.h"
 #import "VMultipleContainer.h"
 #import "VAuthorizationContextProvider.h"
 #import "VAccessoryNavigationSource.h"
-#import "VNoContentView.h"
 
-@class VUnreadMessageCountCoordinator, VConversation, VDependencyManager, ConversationListDataSource;
+@class VUnreadMessageCountCoordinator, VConversation, VDependencyManager, VNoContentView, ConversationListDataSource;
+
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const VConversationListViewControllerDeeplinkHostComponent; ///< The host component for deepLink URLs that point to inbox messages
 extern NSString * const VConversationListViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
@@ -34,6 +34,8 @@ extern NSString * const VConversationListViewControllerInboxPushReceivedNotifica
 /*
  * Shows a conversation in the inbox. The conversation should never be nil.
  */
-- (void)showConversation:(nonnull VConversation *)conversation animated:(BOOL)animated;
+- (void)showConversation:(VConversation *)conversation animated:(BOOL)animated;
 
 @end
+
+NS_ASSUME_NONNULL_END

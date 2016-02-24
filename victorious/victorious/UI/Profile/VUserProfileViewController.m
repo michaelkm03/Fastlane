@@ -60,7 +60,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
-@property (nonatomic, strong, readwrite) VUser *user;
 @property (nonatomic, strong) NSNumber *userRemoteId;
 
 // If YES, this view controller is for the current user and is part of the main menu
@@ -95,7 +94,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         viewController.user = [VCurrentUser user];
         viewController.representsMainUser = YES;
     }
-    
+
+    viewController.sourceScreenName = VFollowSourceScreenProfileSleekCell;
     return viewController;
 }
 
@@ -122,7 +122,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
 }
-
 
 - (void)initializeProfileHeader
 {
@@ -382,23 +381,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super loadPage:pageType completion:completionBlock];
 }
 
-#pragma mark -
+#pragma mark - Following
 
 - (void)toggleFollowUser
 {
-    long long userId = self.user.remoteId.longLongValue;
-    NSString *sourceScreenName = nil;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    NSInteger userId = self.user.remoteId.integerValue;
+    NSString *sourceScreenName = VFollowSourceScreenProfile;
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -421,7 +411,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             // User logged out, clear away all stream items and unload any user data
-            [self.streamDataSource unloadStream];
+            [self.streamDataSource unload];
             self.profileHeaderViewController = nil;
             self.user = nil;
         }
@@ -465,6 +455,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     _user = user;
+    
+    if ( _user == nil )
+    {
+        return;
+    }
+    
     [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;

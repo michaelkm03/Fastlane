@@ -51,6 +51,8 @@ import VictoriousIOSSDK
     
     func unload() {
         visibleItems = NSOrderedSet()
+        currentPaginatedOperation = nil
+        currentLocalOperation = nil
         pagesLoaded = Set<Int>()
         state = .Cleared
     }

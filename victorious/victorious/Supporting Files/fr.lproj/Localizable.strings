@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "SOYEZ LE PREMIER À COMMENTER !";
 "NoCommentsMessage"     =   "Publiez du texte, des photos ou des commentaires vidéo et découvrez ce qu'en pensent les autres !";
 
+"NoUserSearchResultsTitle"       =   "AUCUN UTILISATEUR TROUVÉ";
+"NoUserSearchResultsMessage"     =   "Nous n'avons pas trouvé cet utilisateur. Vous pouvez réessayer ou lui envoyer un message directement depuis son profil !";
+
 "NoFollowersTitle"      =   "PERSONNE NE VOUS SUIT POUR LE MOMENT";
 "NoFollowersMessage"    =   "Une activité fréquente vous apportera une plus grande visibilité au sein de la commuanuté et vous permettra de créer votre propre réseau d'abonnés.";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "Modifier";
 "editProfileButton"     =   "Modifier";
 "followers"             =   "Abonnés";
+"followersCount"        =   "%@ abonnés"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Abonnements";
 "follow"                =   "Suivre";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ à %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Signaler un contenu";
-"REPOSTS"               =   "Republications";
+"REPOSTERS"             =   "Republieurs"; // Title for a list of users who have reposted something
 "Repost"                =   "Republier";
 "Reposted"              =   "Republié";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "En cours de publication...";
 "Upload failure" = "Le téléchargement a échoué";
 "Error loading results" = "Erreur de chargement des résultats";
-"Error rendering GIF" = "La création du GIF a échoué. Veuillez réessayer.";
+"Error rendering Media" = "La création du média a échoué. Veuillez réessayer.";
 
 "By signing up you are agreeing to our" = "En vous inscrivant, vous acceptez nos";
 "terms of service"      =   "conditions d'utilisation";

@@ -11,7 +11,7 @@ import Foundation
 /// Deletes objects from the persistent store collected during regular use of the app.
 /// This is useful when logging out and resetting a session.
 ///
-/// TODO: This operation was written while using an in-memory CoreData persistent store,
+/// This operation was written while using an in-memory CoreData persistent store,
 /// and freely deletes as much data as it wants without caring that the same objects
 /// will be reloaded from the server.  In the future, we should expand on this and prune
 /// according to necessities of a responsive and offline user experience.
@@ -36,15 +36,16 @@ class LogoutPrunePersistentStoreOperation: FetcherOperation {
     override func main() {
         
         // Perform on main context for high-priority, thread-blocking results:
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+    persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // Delete stream pointers to remove all stream items from all streams.
-            // This wipes the slate clean for a new user to come along and re-load
-            // streams specific to their them.
+            let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
+            let userPostPredicate = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
+            let followingStreamPredicate = NSPredicate(format: "streamParent.streamId == %@", "user_posts")
+            fetchRequest.predicate = userPostPredicate + followingStreamPredicate
             
-            context.v_deleteAllObjectsWithEntityName( VStreamItemPointer.v_entityName() )
+            context.v_deleteObjects(fetchRequest)
             
-            // Delete any and all other objects that only exist for a current user.
+            // Delete all objects that only exist for a current user.
             // This prevents old conversations or notificaitons from appearing after logout.
             
             context.v_deleteAllObjectsWithEntityName( VConversation.v_entityName() )

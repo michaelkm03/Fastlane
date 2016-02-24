@@ -117,19 +117,9 @@
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    long long userId = self.user.remoteId.longLongValue;
-    NSString *sourceScreenName = nil;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    
+    NSInteger userId = self.user.remoteId.integerValue;
+    NSString *sourceScreenName = VFollowSourceScreenDiscoverSuggestedUsers;
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 

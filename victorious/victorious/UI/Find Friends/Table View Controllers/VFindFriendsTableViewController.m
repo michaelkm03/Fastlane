@@ -23,7 +23,7 @@
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, readwrite) VFindFriendsTableViewState  state;
+@property (nonatomic, readwrite) VFindFriendsTableViewState state;
 @property (nonatomic, strong) NSArray *users;
 @property (nonatomic, strong) NSMutableArray *usersFollowing;
 @property (nonatomic, strong) NSMutableArray *usersNotFollowing;
@@ -317,8 +317,8 @@
         return user.remoteId;
     }];
     
-    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:nil];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
@@ -448,6 +448,7 @@
     
     cell.profile = profile;
     cell.dependencyManager = self.dependencyManager;
+    cell.sourceScreenName = self.sourceScreenName;
 
     return cell;
 }

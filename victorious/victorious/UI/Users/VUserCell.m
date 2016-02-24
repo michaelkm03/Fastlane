@@ -98,19 +98,9 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    long long userId = self.user.remoteId.longLongValue;
-    NSString *sourceScreenName = nil;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-
+    NSInteger userId = self.user.remoteId.integerValue;
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId
+                                                                   sourceScreenName:self.sourceScreenName];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 

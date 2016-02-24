@@ -12,10 +12,12 @@ class RepostersDataSource: PaginatedDataSource, UITableViewDataSource {
     
     let sequence: VSequence
     let dependencyManager: VDependencyManager
+    let sourceScreenName: String
     
-    init(sequence: VSequence, dependencyManager: VDependencyManager) {
+    init(sequence: VSequence, dependencyManager: VDependencyManager, sourceScreenName: String) {
         self.sequence = sequence
         self.dependencyManager = dependencyManager
+        self.sourceScreenName = sourceScreenName
     }
     
     func loadRepostersWithPageType(pageType: VPageType ) {
@@ -43,6 +45,7 @@ class RepostersDataSource: PaginatedDataSource, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as! VInviteFriendTableViewCell
         cell.profile = self.visibleItems[indexPath.row] as! VUser
         cell.dependencyManager = self.dependencyManager
+        cell.sourceScreenName = self.sourceScreenName
         return cell
     }
 }

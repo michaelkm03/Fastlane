@@ -758,7 +758,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             ContentCellSetupHelper *setupHelper = [[ContentCellSetupHelper alloc] init];
             ContentCellSetupResult *result;
             id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
-            if(provider != nil)
+            if (provider != nil)
             {
                 result = [setupHelper setupWithContentCell:self.contentCell
                                        previewViewProvider:provider
@@ -1587,6 +1587,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - AdLifecycleDelegate
 
+- (void)adDidLoad
+{
+}
+
 - (void)adHadError:(NSError *)error
 {
     VLog(@"Failed had an error, recovering to the normal state");
@@ -1635,6 +1639,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     [self.contentCollectionView v_applyChangeInSection:VContentViewSectionAllComments from:oldValue to:newValue];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [self v_showErrorDefaultError];
 }
 
 @end

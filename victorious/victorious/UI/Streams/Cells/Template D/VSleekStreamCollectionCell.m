@@ -76,6 +76,19 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @synthesize hasRelinquishedPreviewView = _hasRelinquishedPreviewView;
 
+- (void)setSourceScreenName:(NSString *)sourceScreenName
+{
+    if (self.headerView != nil)
+    {
+        self.headerView.sourceScreenName = sourceScreenName;
+    }
+}
+
+- (NSString *)sourceScreenName
+{
+    return self.headerView.sourceScreenName;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -92,7 +105,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
-    
+
     if ([AgeGate isAnonymousUser])
     {
         [self.sleekActionView removeFromSuperview];
@@ -515,6 +528,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
+    if (sequence == nil)
+    {
+        return CGSizeZero;
+    }
+    
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSArray *comments = [self inStreamCommentsArrayForSequence:sequence] ?: @[];
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,

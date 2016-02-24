@@ -18,7 +18,6 @@
 @dynamic postedAt;
 @dynamic remoteId;
 @dynamic displayOrder;
-@dynamic senderUserId;
 @dynamic text;
 @dynamic thumbnailUrl;
 @dynamic isRead;

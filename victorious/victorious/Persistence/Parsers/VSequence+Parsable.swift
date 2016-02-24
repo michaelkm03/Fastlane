@@ -117,13 +117,13 @@ private extension VStreamItem {
         if let streamID = streamID {
             // If we have a `streamID`, create VStreamItemPointer for that stream
             let stream: VStream = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : streamID])
-            uniqueInfo = ["streamItem" : self, "streamParent" : stream, "marqueeParent" : "nil"]
+            uniqueInfo = ["streamItem" : self, "streamParent" : stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
             // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
-            uniqueInfo = ["streamItem" : self, "streamParent" : "nil", "marqueeParent" : "nil"]
+            uniqueInfo = ["streamItem" : self]
         }
         return v_managedObjectContext.v_findOrCreateObject( uniqueInfo )
     }

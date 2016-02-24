@@ -33,7 +33,9 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
-        _dataSource = [[RepostersDataSource alloc] initWithSequence:sequence dependencyManager:dependencyManager];
+        _dataSource = [[RepostersDataSource alloc] initWithSequence:sequence
+                                                  dependencyManager:dependencyManager
+                                                   sourceScreenName:VFollowSourceScreenReposter];
     }
     return self;
 }
@@ -127,6 +129,11 @@
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     [self.tableView v_applyChangeInSection:0 from:oldValue to:newValue];
+}
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
+{
+    [self v_showErrorDefaultError];
 }
 
 #pragma mark - private

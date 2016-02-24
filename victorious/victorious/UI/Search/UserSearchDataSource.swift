@@ -14,34 +14,24 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     private(set) var searchTerm: String?
     
     let dependencyManager: VDependencyManager
+    let sourceScreenName: String
     
     weak var tableView: UITableView?
     
-    required init(dependencyManager: VDependencyManager) {
+    required init(dependencyManager: VDependencyManager, sourceScreenName: String) {
         self.dependencyManager = dependencyManager
-        super.init()
-        
-        if let currentUser = VCurrentUser.user() {
-            self.KVOController.observe(currentUser,
-                keyPath: "following",
-                options: [.New, .Old],
-                action: Selector( "onFollowedChanged:" )
-            )
-        }
+        self.sourceScreenName = sourceScreenName
     }
     
-    func onFollowedChanged( change: [NSObject: AnyObject]! ) {
-        guard let objectChanged = ((change?[ NSKeyValueChangeNewKey ] ?? change?[ NSKeyValueChangeOldKey ]) as? NSArray)?.firstObject,
-            let user = (objectChanged as? VFollowedUser)?.objectUser else {
-                return
+    func onFollowingUpdated() {
+        guard let tableView = tableView else {
+            return
         }
-        
-        let index = visibleItems.indexOfObjectPassingTest() { (obj, idx, stop) in
-            return (obj as? UserSearchResultObject)?.sourceResult.userID == user.remoteId.integerValue
-        }
-        if index != NSNotFound,
-            let cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? UserSearchResultTableViewCell {
-                self.updateFollowControlState(cell.followControl, forUserID: user.remoteId.integerValue, animated: true)
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? UserSearchResultTableViewCell,
+                let user = self.visibleItems[ indexPath.row ] as? UserSearchResultObject {
+                    self.updateFollowControlState(cell.followControl, forUserID: user.remoteId.integerValue, animated: true)
+            }
         }
     }
     
@@ -91,18 +81,20 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
         cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:profileURL)
         cell.dependencyManager = dependencyManager
-        cell.followControl?.onToggleFollow = {
-            guard let currentUser = VCurrentUser.user() else {
+        cell.followControl?.onToggleFollow = { [weak self] in
+            guard let strongSelf = self, let currentUser = VCurrentUser.user() else {
                 return
             }
             
-            let operation: RequestOperation
+            let operation: FetcherOperation
             if currentUser.isFollowingUserID(userID) {
-                operation = UnfollowUserOperation(userID: userID, sourceScreenName: nil)
+                operation = UnfollowUserOperation(userID: userID, sourceScreenName: strongSelf.sourceScreenName)
             } else {
-                operation = FollowUsersOperation(userIDs: [userID])
+                operation = FollowUsersOperation(userIDs: [userID], sourceScreenName: strongSelf.sourceScreenName)
             }
-            operation.queue()
+            operation.queue() { (results, error) in
+                self?.onFollowingUpdated()
+            }
         }
         return cell
     }

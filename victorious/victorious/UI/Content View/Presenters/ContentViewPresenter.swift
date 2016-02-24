@@ -75,12 +75,11 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
     
     //MARK: - VNewContentViewControllerDelegate
     
-    func contentViewDidDeleteContent(contentViewController: VNewContentViewController!) {
+    func contentViewDidDeleteContent(contentViewController: VNewContentViewController) {
         delegate?.contentViewPresenterDidDeleteContent?(self)
     }
     
-    func contentViewDidFlagContent(contentViewController: VNewContentViewController!) {
+    func contentViewDidFlagContent(contentViewController: VNewContentViewController) {
         delegate?.contentViewPresenterDidFlagContent?(self)
     }
 }
-

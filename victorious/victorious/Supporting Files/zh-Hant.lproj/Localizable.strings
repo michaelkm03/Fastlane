@@ -80,6 +80,9 @@
 "NoCommentsTitle"       =   "成為第一個留言的人！";
 "NoCommentsMessage"     =   "在貼文、照片或影片底下留言，看看別人怎麼說！";
 
+"NoUserSearchResultsTitle"       =   "未找到使用者";
+"NoUserSearchResultsMessage"     =   "我們找不到該使用者。你可以再試一次，或前往該使用者的個人資料頁面，並在那裡傳送訊息給他！";
+
 "NoFollowersTitle"      =   "啊喔！目前沒有人關注你";
 "NoFollowersMessage"    =   "在社群中留言、改編或發佈新內容，建立你專屬的關注列表。";
 
@@ -205,6 +208,7 @@
 "Edit"                  =   "編輯";
 "editProfileButton"     =   "編輯個人資料";
 "followers"             =   "粉絲";
+"followersCount"        =   "%@ 個粉絲"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "已關注";
 "follow"                =   "關注";
 
@@ -275,7 +279,7 @@
 "RTCUserPostedAtSyntax" =   "%@ 在 %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "回報/檢舉";
-"REPOSTS"               =   "轉貼";
+"REPOSTERS"             =   "轉貼者"; // Title for a list of users who have reposted something
 "Repost"                =   "轉貼";
 "Reposted"              =   "已轉貼";
 
@@ -390,7 +394,7 @@
 "Publishing..." = "發佈中...";
 "Upload failure" = "上傳失敗";
 "Error loading results" = "載入搜尋結果時發生錯誤";
-"Error rendering GIF" = "GIF 渲染失敗。請稍後再試。";
+"Error rendering Media" = "轉譯媒體時發生錯誤。請再試一次。";
 
 "By signing up you are agreeing to our" = "註冊即表示你同意我們的";
 "terms of service"      =   "服務條款";

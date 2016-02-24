@@ -113,7 +113,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, UICollectionViewD
     // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder?.compare($1.displayOrder) == .OrderedDescending }
+        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder.compare($1.displayOrder) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
@@ -190,10 +190,10 @@ struct MessageTableCellDecorator {
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
-        cell.profileImageOnRight = message.sender?.isCurrentUser() ?? false
+        cell.profileImageOnRight = message.sender.isCurrentUser() ?? false
         cell.selectionStyle = .None
         
-        if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
+        if let urlString = message.sender.pictureUrl, let imageURL = NSURL(string: urlString) {
             cell.profileImageView?.setProfileImageURL(imageURL)
         }
     }

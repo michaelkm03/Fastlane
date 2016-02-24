@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VUser.h"
+#import "VFollowControl.h"
 
 @class VDependencyManager;
 
@@ -19,7 +20,7 @@
 - (void)populateData;
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated;
-
+- (IBAction)onFollow:(VFollowControl *)sender;
 + (CGFloat)cellHeight;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

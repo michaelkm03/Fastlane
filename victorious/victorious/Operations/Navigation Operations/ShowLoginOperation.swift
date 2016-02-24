@@ -55,10 +55,13 @@ class ShowLoginOperation: Operation {
                     fatalError("Unable to find login view controller to present to user.")
             }
             
-            loginFlow.onCompletionBlock = { _ in
+            loginFlow.onCompletionBlock = { didSucceed in
+                guard didSucceed else {
+                    return
+                }
                 
-                // Dismiss on the next run cycle to give the UI initailziation code that we
-                // happen to know is in the completion block of this operation a chance
+                // Dismiss on the next run cycle to give the UI initailziation code (that we
+                // happen to know is in the completion block of this operation) a chance
                 // to run first so that the configured tab bar is visible immediately
                 // when the login view controller is dismissed.
                 dispatch_after(0.0) {

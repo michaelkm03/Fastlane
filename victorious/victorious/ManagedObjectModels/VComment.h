@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, null_unspecified) VUser *user;
 @property (nonatomic, retain, nullable) NSNumber *mediaWidth;
 @property (nonatomic, retain, nullable) NSNumber *mediaHeight;
-@property (nonatomic, retain, null_unspecified) NSNumber *displayOrder;
+@property (nonatomic, retain) NSNumber *displayOrder;
 
 @end
 

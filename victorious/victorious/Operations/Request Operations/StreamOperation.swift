@@ -23,13 +23,8 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil) {
+    convenience init( apiPath: String, sequenceID: String? = nil, existingStreamID: NSManagedObjectID? = nil) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
-    }
-    
-    // Initializer for preloaded streams without an apiPath
-    convenience init( existingStreamID: NSManagedObjectID) {
-        self.init( request: StreamRequest(apiPath: "", sequenceID: nil)! )
         preloadedStreamObjectID = existingStreamID
     }
     
@@ -49,7 +44,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
-            // FIXME: This is a hack to refresh streams.  `PaginatedDataSource` should really handle
+            // This is a hack to refresh streams.  `PaginatedDataSource` should really handle
             // this logic for all paginated operations.
             if self.request.paginator.pageNumber == 1 {
                 let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName() )
