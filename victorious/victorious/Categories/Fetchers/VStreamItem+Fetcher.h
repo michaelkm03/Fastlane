@@ -66,7 +66,7 @@ extern NSString * const VStreamItemSubTypeStream;
  *
  *  @return A valid image url
  */
-- (NSURL *)previewImageUrl;
+- (NSURL *_Nullable)previewImageUrl;
 
 /**
  *  Returns the largest asset from the preview assets array that fits within the provided size or, if

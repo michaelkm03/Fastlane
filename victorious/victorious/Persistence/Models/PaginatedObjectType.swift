@@ -12,9 +12,7 @@ import Foundation
 /// paginated endpoints.  This allows some behavior related to display order
 /// to be abstracted and shared.
 @objc protocol PaginatedObjectType: class {
-    
-    // TODO: Audit nullability or re-write models in Swift to remove force unwrap (null_unspecified)
-    var displayOrder: NSNumber! { get set }
+    var displayOrder: NSNumber { get set }
 }
 
 // Provide conformance models that already have defined `displayOrder` property

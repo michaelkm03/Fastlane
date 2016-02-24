@@ -15,4 +15,5 @@
  */
 @interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 @property (nonatomic, strong, readwrite) NSString *sourceScreenName;
+
 @end

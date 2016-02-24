@@ -26,9 +26,6 @@
     
     self.trackingURLs = @[ @"url1", @"url2" ];
     
-#warning FIXME: New architecture
-    // [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
-    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledDefaultsKey];
     XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );
     

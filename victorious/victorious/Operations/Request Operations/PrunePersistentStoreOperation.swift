@@ -11,7 +11,7 @@ import Foundation
 /// Deletes objects from the persistent store collected during regular use of the app.
 /// This is useful when logging out and resetting a session.
 ///
-/// TODO: This operation was written while using an in-memory CoreData persistent store,
+/// This operation was written while using an in-memory CoreData persistent store,
 /// and freely deletes as much data as it wants without caring that the same objects
 /// will be reloaded from the server.  In the future, we should expand on this and prune
 /// according to necessities of a responsive and offline user experience.

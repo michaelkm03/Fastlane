@@ -1520,7 +1520,6 @@
 		D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70421B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m */; };
 		D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70441B0EAF3F0038CA5B /* VFindFriendsTableView.m */; };
 		D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */; };
-		D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */; };
 		D85B70781B0EAF3F0038CA5B /* VFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B704E1B0EAF3F0038CA5B /* VFindFriendsViewController.m */; };
 		D85B70791B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70501B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m */; };
 		D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D85B70511B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib */; };
@@ -4060,8 +4059,6 @@
 		D85B70441B0EAF3F0038CA5B /* VFindFriendsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableView.m; sourceTree = "<group>"; };
 		D85B70451B0EAF3F0038CA5B /* VFindFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsTableViewController.h; sourceTree = "<group>"; };
 		D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableViewController.m; sourceTree = "<group>"; };
-		D85B704B1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedFriendsTableViewController.h; sourceTree = "<group>"; };
-		D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedFriendsTableViewController.m; sourceTree = "<group>"; };
 		D85B704D1B0EAF3F0038CA5B /* VFindFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsViewController.h; sourceTree = "<group>"; };
 		D85B704E1B0EAF3F0038CA5B /* VFindFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsViewController.m; sourceTree = "<group>"; };
 		D85B704F1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInviteFriendTableViewCell.h; sourceTree = "<group>"; };
@@ -8775,8 +8772,6 @@
 				D85B70441B0EAF3F0038CA5B /* VFindFriendsTableView.m */,
 				D85B70451B0EAF3F0038CA5B /* VFindFriendsTableViewController.h */,
 				D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */,
-				D85B704B1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.h */,
-				D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */,
 			);
 			path = "Table View Controllers";
 			sourceTree = "<group>";
@@ -11449,7 +11444,6 @@
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
 				A722B9461C3C53010014BA42 /* CommentsDataSource.swift in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
-				D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				C348D2111B8C03CA0040042C /* Memoization.swift in Sources */,
 				A700330F1C5FEA1800AB4A57 /* VComment+Equitable.swift in Sources */,

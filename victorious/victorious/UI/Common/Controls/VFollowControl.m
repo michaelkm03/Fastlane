@@ -13,7 +13,6 @@
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
-static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
