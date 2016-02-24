@@ -35,9 +35,9 @@
     [super setUp];
     
     self.navigationController = [[UINavigationController alloc] init];
-    self.sequenceActionController = [[VSequenceActionController alloc] init];
     self.userProfileViewController = [[VUserProfileViewController alloc] init];
     self.viewController = [[UIViewController alloc] init];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:nil andOriginViewController:self.viewController];
     
     self.sequence = [VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.user = [VDummyModels objectWithEntityName:@"User" subclass:[VUser class]];
@@ -63,53 +63,53 @@
 - (void)testShowPosterProfileFromViewController
 {
     [self.navigationController pushViewController:self.viewController animated:NO];
-    XCTAssert( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:self.sequence] );
+    XCTAssert( [self.sequenceActionController showPosterProfileWithSequence:self.sequence] );
 }
 
 - (void)testShowPosterProfileFromViewControllerWithParent
 {
     [self.navigationController pushViewController:self.userProfileViewController animated:NO];
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:self.sequence] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:self.sequence] );
 }
 
 - (void)testShowPosterProfileFromViewControllerFail
 {
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:nil sequence:nil] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:nil] );
     
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:nil] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:nil] );
     
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:self.sequence] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:self.sequence] );
     
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:nil sequence:self.sequence] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:self.sequence] );
     
     [self.navigationController pushViewController:self.viewController animated:NO];
-    XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:nil] );
+    XCTAssertFalse( [self.sequenceActionController showPosterProfileWithSequence:nil] );
 }
 
 - (void)testShowProfileFromViewController
 {
     [self.navigationController pushViewController:self.viewController animated:NO];
-    XCTAssert( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+    XCTAssert( [self.sequenceActionController showProfile:self.sequence.user] );
 }
 
 - (void)testShowProfileFromViewControllerWithParent
 {
     [self.navigationController pushViewController:self.userProfileViewController animated:NO];
-    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user] );
 }
 
 - (void)testShowProfileFromViewControllerFail
 {
-    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:nil] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil] );
     
-    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:self.viewController] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil] );
     
-    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user] );
     
-    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:nil] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user] );
     
     [self.navigationController pushViewController:self.viewController animated:NO];
-    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:self.viewController] );
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil] );
 }
 
 @end
