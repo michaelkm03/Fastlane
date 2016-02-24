@@ -55,7 +55,6 @@ final class LiveStreamOperation: RequestOperation, PaginatedOperation {
             for text in testMessageText {
                 let message: VMessage = context.v_createObject()
                 message.sender = sender
-                message.senderUserId = sender.remoteId
                 message.text = text
                 message.postedAt = NSDate()
                 message.displayOrder = displayOrder++
@@ -89,7 +88,6 @@ final class LiveStreamOperationUpdate: RequestOperation, PaginatedOperation {
                     let sender: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky" ])
                     let message: VMessage = context.v_createObject()
                     message.sender = sender
-                    message.senderUserId = sender.remoteId
                     message.text = text
                     message.postedAt = NSDate()
                     results.append( message )

@@ -16,7 +16,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     let request: ConversationRequest
     
     var conversation: VConversation?
-
+    
     convenience init(conversationID: NSNumber?, userID: NSNumber?) {
         let request = ConversationRequest(
             conversationID: conversationID?.integerValue ?? 0,
@@ -35,7 +35,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         
         // If we have a valid conversationID, reload it remotely first
         if let conversationID = self.conversationID where conversationID > 0 {
-                        
+            
             requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
             
         } else {

@@ -186,7 +186,7 @@ struct MessageTableCellDecorator {
     
     func decorateCell( cell: VMessageCell, withMessage message: VMessage) {
         
-        cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
+        cell.timeLabel?.text = message.postedAt.timeSince()
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
@@ -216,6 +216,6 @@ struct MessageCollectionCellDecorator {
         let backgroundColor = UIColor.grayColor()
         cell.style = VMessageCollectionCell.Style(textColor: textColor, backgroundColor: backgroundColor, font: font)
         
-        cell.viewData = VMessageCollectionCell.ViewData(text: message.text, createdAt: message.postedAt, username: message.sender.name)
+        cell.viewData = VMessageCollectionCell.ViewData(text: message.text ?? "", createdAt: message.postedAt, username: message.sender.name)
     }
 }

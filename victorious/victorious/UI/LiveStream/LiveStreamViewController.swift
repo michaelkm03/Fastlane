@@ -42,11 +42,12 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         return ConversationDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
     }()
     
-    
     private lazy var conversation: VConversation = {
         let persistentStore = MainPersistentStore()
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            return context.v_createObject()
+            let publicConversation: VConversation = context.v_createObject()
+            publicConversation.remoteId = 99999
+            return publicConversation
         }
     }()
     
@@ -67,8 +68,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = "Live Stream"
         
         dataSource.delegate = self
         dataSource.registerCellsWithCollectionView( collectionView )
@@ -121,7 +120,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        v_showErrorDefaultError()
+        
     }
     
     // MARK: - VScrollPaginatorDelegate
