@@ -97,9 +97,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
             return
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
-        }
+        self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears

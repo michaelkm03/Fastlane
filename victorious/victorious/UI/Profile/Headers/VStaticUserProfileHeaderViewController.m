@@ -81,11 +81,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         {
             [self.badgeContainerView addSubview:viewToContain];
             [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
-            // Otherwise the badge's shape layer won't always animate it's stroke
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [self updateLevelBadgeProgress];
-            });
+            [self updateLevelBadgeProgress];
         }
     }
 }

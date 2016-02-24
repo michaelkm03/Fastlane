@@ -11,7 +11,9 @@ import Foundation
 /// A UIView subclass which draws a hexagon
 class HexagonView: UIView {
     
-    private var shapeLayer = CAShapeLayer()
+    private var shapeLayer: CAShapeLayer {
+        return self.layer as! CAShapeLayer
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,6 +27,10 @@ class HexagonView: UIView {
     
     func sharedInit() {
         self.backgroundColor = UIColor.clearColor()
+    }
+    
+    override class func layerClass() -> AnyClass {
+        return CAShapeLayer.self
     }
     
     /// The polygon's fill color
@@ -70,7 +76,7 @@ class HexagonView: UIView {
         set {
             CATransaction.begin()
             CATransaction.setDisableActions(true)
-            self.shapeLayer.strokeEnd = newValue
+            shapeLayer.strokeEnd = newValue
             CATransaction.commit()
         }
     }
@@ -81,8 +87,6 @@ class HexagonView: UIView {
     }
     
     private func configureShapeLayer() {
-        
-        shapeLayer.removeFromSuperlayer()
         
         let rect = bounds
         
@@ -133,15 +137,13 @@ class HexagonView: UIView {
         let bezierPath = UIBezierPath(CGPath: hexagonPath)
         bezierPath.lineCapStyle = .Round
         
-        shapeLayer = CAShapeLayer()
         shapeLayer.path = bezierPath.CGPath
         shapeLayer.strokeStart = 0
-        shapeLayer.strokeEnd = 0
+        shapeLayer.strokeEnd = strokeEnd
         shapeLayer.lineWidth = borderWidth
         shapeLayer.strokeColor = strokeColor.CGColor
         shapeLayer.fillColor = fillColor.CGColor
         shapeLayer.lineCap = kCALineCapRound;
-        self.layer.addSublayer(shapeLayer)
     }
 }
 
