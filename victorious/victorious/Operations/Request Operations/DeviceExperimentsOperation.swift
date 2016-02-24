@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DeviceExperimentsOperation: RequestOperation {
+class DeviceExperimentsOperation: FetcherOperation, RequestOperation {
     
-    private let request = DeviceExperimentsRequest()
+    let request: DeviceExperimentsRequest! = DeviceExperimentsRequest()
     
     private(set) var defaultExperimentIDs: Set<Int> = []
     

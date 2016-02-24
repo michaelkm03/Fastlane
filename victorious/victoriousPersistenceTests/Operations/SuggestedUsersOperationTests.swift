@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 import SwiftyJSON
 @testable import victorious
 
-class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
+class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
     
     var operation: SuggestedUsersOperation!
 

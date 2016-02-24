@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class FollowUsersOperationTests: BaseRequestOperationTestCase {
+class FollowUsersOperationTests: BaseFetcherOperationTestCase {
     var operation: FollowUsersOperation!
     let currentUserID = 1
     let userIDOne = 2

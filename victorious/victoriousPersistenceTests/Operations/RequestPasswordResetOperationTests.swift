@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class RequestPasswordResetOperationTests: BaseRequestOperationTestCase {
+class RequestPasswordResetOperationTests: BaseFetcherOperationTestCase {
 
     let mockDeviceToken = "MockDeviceToken"
     

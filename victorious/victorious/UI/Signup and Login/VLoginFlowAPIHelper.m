@@ -165,7 +165,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     
     RequestPasswordResetOperation *operation = [[RequestPasswordResetOperation alloc] initWithEmail:email];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          if (error == nil)
          {
@@ -220,7 +220,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     ValidatePasswordResetTokenOperation *operation = [[ValidatePasswordResetTokenOperation alloc] initWithUserToken:self.userToken
                                                                                            deviceToken:self.deviceToken];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
     {
         if (error == nil)
         {
@@ -260,13 +260,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     PasswordResetOperation *operation = [[PasswordResetOperation alloc] initWithNewPassword:password
                                                                                     userToken:self.userToken
                                                                                   deviceToken:self.deviceToken];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
     {
         if (error == nil)
         {
             [hud hide:YES];
             
-            [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSError *_Nullable error) {
+            [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+                
                 if ( error == nil )
                 {
                     completion(YES, nil);

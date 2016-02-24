@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class TrendingHashtagOperationTests: BaseRequestOperationTestCase {
+class TrendingHashtagOperationTests: BaseFetcherOperationTestCase {
     
     func testRequestExecution() {
         let operation = TrendingHashtagOperation()

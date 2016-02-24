@@ -9,10 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-class MarkConversationReadOperation: RequestOperation {
+class MarkConversationReadOperation: FetcherOperation, RequestOperation {
     
     let conversationID: Int
-    private let request: MarkConversationReadRequest
+    
+    let request: MarkConversationReadRequest!
     
     var unreadConversationsCount: NSNumber?
     

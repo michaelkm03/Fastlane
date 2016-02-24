@@ -130,7 +130,7 @@ static const NSUInteger kCharacterLimit = 1024;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
     FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
                                                                                  mostRecentMessageID:mostRecentMessageID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self v_showFlaggedConversationAlertWithCompletion:^(BOOL success)
           {

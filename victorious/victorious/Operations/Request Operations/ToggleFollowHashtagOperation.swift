@@ -21,9 +21,9 @@ class ToggleFollowHashtagOperation: FetcherOperation {
                 return
             }
             if currentUser.isFollowingHashtagString(self.hashtag) {
-                UnfollowHashtagOperation(hashtag: self.hashtag).rechainAndQueueAfter(self)
+                UnfollowHashtagOperation(hashtag: self.hashtag).rechainAfter(self).queue()
             } else {
-                FollowHashtagOperation(hashtag: self.hashtag).rechainAndQueueAfter(self)
+                FollowHashtagOperation(hashtag: self.hashtag).rechainAfter(self).queue()
             }
         }
     }

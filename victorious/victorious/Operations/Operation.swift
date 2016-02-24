@@ -10,15 +10,9 @@ import Foundation
 
 let _sharedQueue = NSOperationQueue()
 
-class Operation: NSOperation, Queuable {
-    
-    var mainQueueCompletionBlock: ((Operation)->())?
+class Operation: NSOperation, Queueable {
     
     static var sharedQueue: NSOperationQueue {
-        return _sharedQueue
-    }
-    
-    var defaultQueue: NSOperationQueue {
         return _sharedQueue
     }
     
@@ -57,17 +51,21 @@ class Operation: NSOperation, Queuable {
         }
     }
     
-    // MARK: - Queuable
+    // MARK: - Queueable
     
-    func queueOn( queue: NSOperationQueue, completionBlock:((Operation)->())?) {
-        self.completionBlock = {
-            if completionBlock != nil {
-                self.mainQueueCompletionBlock = completionBlock
-            }
-            dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self )
-            }
+    func executeCompletionBlock(completionBlock: Operation->()) {
+        // This ensures that every subclass of `Operation` has its completion block
+        // executed on the main queue, which saves the trouble of having to wrap
+        // in dispatch block in calling code.
+        dispatch_async( dispatch_get_main_queue() ) {
+            completionBlock(self)
         }
-        queue.addOperation( self )
+    }
+    
+    /// A manual implementation of a method provided by a Swift protocol extension
+    /// so that Objective-C can still easily queue and operation like other functions
+    /// in the `Queueable` protocol.
+    func queueWithCompletion(completion: (Operation->())? ) {
+        queue(completion: completion)
     }
 }

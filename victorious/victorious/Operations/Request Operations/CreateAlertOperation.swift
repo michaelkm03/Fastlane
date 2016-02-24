@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CreateAlertOperation: RequestOperation {
+class CreateAlertOperation: FetcherOperation, RequestOperation {
     
-    let request: CreateAlertRequest
+    let request: CreateAlertRequest!
     
     init(type: String, addtionalParameters: [String: AnyObject]? = nil) {
         self.request = CreateAlertRequest(type: type, addtionalParameters:addtionalParameters)

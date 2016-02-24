@@ -1,5 +1,5 @@
 //
-//  PaginatedOperation.swift
+//  PaginatedRequestOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.
@@ -21,9 +21,23 @@ protocol ResultsOperation {
     var results: [AnyObject]? { set get }
 }
 
+/// Defines an object that must use a RequestType to perform its function
+protocol RequestOperation {
+    
+    /// The type of RequestType request used by this operation
+    typealias SingleRequestType: RequestType
+    
+    /// The current request used for this operation
+    ///
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
+    var request: SingleRequestType! { get }
+}
+
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedOperation: ResultsOperation {
+protocol PaginatedRequestOperation: ResultsOperation {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -42,7 +56,7 @@ protocol PaginatedOperation: ResultsOperation {
     func prev() -> Self?
 }
 
-extension PaginatedOperation {
+extension PaginatedRequestOperation {
 
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
@@ -52,7 +66,7 @@ extension PaginatedOperation {
     }
 }
 
-extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
+extension PaginatedRequestOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
         let results = self.results ?? []

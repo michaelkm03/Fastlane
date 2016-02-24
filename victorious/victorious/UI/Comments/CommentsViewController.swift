@@ -163,7 +163,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if sender == nil {
             self.refreshControl.beginRefreshing()
         }
-        dataSource?.loadComments( .First ) { [weak self]error in
+        dataSource?.loadComments( .First ) { [weak self] (results, error) in
             if sender == nil {
                 // Don't animate on first load
                 UIView.performWithoutAnimation() {
@@ -352,14 +352,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func flagComment(comment: VComment) {
-        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue() { error in
+        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue() { (results, error) in
             self.dataSource?.removeDeletedItems()
             self.v_showFlaggedCommentAlert()
         }
     }
     
     func deleteComment(comment: VComment) {
-        DeleteCommentOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { error in
+        DeleteCommentOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { (results, error) in
             self.dataSource?.removeDeletedItems()
         }
     }

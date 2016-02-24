@@ -260,9 +260,9 @@
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
-
+    
     FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:@""];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

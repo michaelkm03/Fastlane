@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceFetchOperation: RequestOperation {
+class SequenceFetchOperation: FetcherOperation, RequestOperation {
     
-    let request: SequenceFetchRequest
+    let request: SequenceFetchRequest!
     var result: VSequence?
     let streamID: String?
     
