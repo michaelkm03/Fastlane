@@ -276,8 +276,6 @@
 "NoFriends"             =   "Sem Correspondências";
 "NoFriendsDetail"       =   "Não encontramos nenhum dos seus amigos que usam o nosso aplicativo. Vá em frente e convide-os!";
 
-"RTCUserPostedAtSyntax" =   "%@ em %@";// e.g. "Username at 0:04"
-
 "Report/Flag"           =   "Denunciar/Sinalizar";
 "REPOSTERS"             =   "Quem repostou"; // Title for a list of users who have reposted something
 "Repost"                =   "Repostar";

@@ -276,8 +276,6 @@
 "NoFriends"             =   "Keine Treffer";
 "NoFriendsDetail"       =   "Wir konnten unter den aktuellen Nutzern unserer App keine deiner Freunde finden. Lade sie einfach ein!";
 
-"RTCUserPostedAtSyntax" =   "%@ bei %@";// e.g. "Username at 0:04"
-
 "Report/Flag"           =   "Melden/Markieren";
 "REPOSTERS"             =   "Teiler"; // Title for a list of users who have reposted something
 "Repost"                =   "Erneut posten";

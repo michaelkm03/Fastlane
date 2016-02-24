@@ -276,8 +276,6 @@
 "NoFriends"             =   "一致する結果なし";
 "NoFriendsDetail"       =   "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
 
-"RTCUserPostedAtSyntax" =   "%@ - %@";// e.g. "Username at 0:04"
-
 "Report/Flag"           =   "報告/フラグ";
 "REPOSTERS"             =   "再投稿者"; // Title for a list of users who have reposted something
 "Repost"                =   "再投稿";
