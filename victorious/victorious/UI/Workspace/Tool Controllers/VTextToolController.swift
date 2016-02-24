@@ -40,7 +40,7 @@ extension VTextToolController {
         return image
     }
     
-    func publishTextPost(renderedAssetURL: NSURL, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
+    func publishTextPost(renderedAssetURL: NSURL?, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
         
         let parameters = TextPostParameters(content: currentText, backgroundImageURL: renderedAssetURL, backgroundColor: currentColorSelection)
         let previewImage = textPostPreviewImage
