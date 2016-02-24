@@ -371,6 +371,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.buySubscriptionButton.backgroundColor = [UIColor magentaColor];
     [self.buySubscriptionButton addTarget:self action:@selector(presentSubscriptionViewController) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.buySubscriptionButton];
+    if ( !self.purchaseManager.isPurchaseRequestActive )
+    {
+        [self.purchaseManager fetchProductsWithIdentifiers:[NSSet setWithArray:@[kTestSubscriptionProductIdentifier]] success:nil failure:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1570,11 +1574,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)presentSubscriptionViewController
 {
-    if ( !self.purchaseManager.isPurchaseRequestActive )
-    {
-        [self.purchaseManager fetchProductsWithIdentifiers:[NSSet setWithArray:@[kTestSubscriptionProductIdentifier]] success:nil failure:nil];
-    }
-
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager
                                                                               productIdentifier:kTestSubscriptionProductIdentifier
                                                                                       largeIcon:[UIImage imageNamed:@"test_vip_icon_large"]];
