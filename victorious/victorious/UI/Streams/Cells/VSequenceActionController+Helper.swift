@@ -10,7 +10,7 @@ import Foundation
 
 extension VSequenceActionController {
     
-    func moreButtonAction(withSequence sequence: VSequence, streamId: String?, completion: ()->() ) {
+    func moreButtonAction(withSequence sequence: VSequence, streamId: String?, completion: (()->())? ) {
         let actionSheetViewController = VActionSheetViewController()
         actionSheetViewController.dependencyManager = dependencyManager
         VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
@@ -55,8 +55,9 @@ extension VSequenceActionController {
         }
         
         actionSheetViewController.addActionItems(actionItems)
-        originViewController.presentViewController(actionSheetViewController, animated: true, completion: nil)
-        
+        originViewController.presentViewController(actionSheetViewController, animated: true) {
+            completion?()
+        }
     }
     
     func flag(sequence: VSequence, completion: (Bool)->()) {
@@ -99,13 +100,13 @@ extension VSequenceActionController {
                                                               actionIcon: UIImage(named: "icon_flag"),
                                                               detailText: "")
         flagItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.flag(sequence, completion: { success in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.flag(sequence) { success in
                     if self.originViewController.respondsToSelector("contentViewPresenterDidFlagContent:") {
                         self.originViewController.performSelector("contentViewPresenterDidFlagContent:", withObject: nil)
                     }
-                })
-            })
+                }
+            }
         }
         return flagItem
         
@@ -117,7 +118,7 @@ extension VSequenceActionController {
                                                                 actionIcon: UIImage(named: "delete-icon"),
                                                                 detailText: "")
         deleteItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
                     message: nil,
                     preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -125,18 +126,17 @@ extension VSequenceActionController {
                     style: UIAlertActionStyle.Cancel,
                     handler: nil))
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
-                    style: UIAlertActionStyle.Destructive,
-                    handler: { action in
+                    style: UIAlertActionStyle.Destructive) { action in
                         let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
-                        deleteOperation.queueOn(deleteOperation.defaultQueue, completionBlock: { results, error in
+                        deleteOperation.queueOn(deleteOperation.defaultQueue) { results, error in
                             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
                             if self.originViewController.respondsToSelector("contentViewPresenterDidDeleteContent:") {
                                 self.originViewController.performSelector("contentViewPresenterDidDeleteContent:", withObject: nil)
                             }
-                        })
-                }))
+                        }
+                })
                 self.originViewController.presentViewController(alertController, animated: true, completion: nil)
-            })
+            }
         }
         return deleteItem
         
@@ -176,20 +176,20 @@ extension VSequenceActionController {
         repostItem.selectionHandler = { item in
             if (!hasReposted) {
                 loadingBlock(item)
-                self.repostNode(sequence.firstNode(), completion: { didSucceed in
+                self.repostNode(sequence.firstNode())  { didSucceed in
                     if (didSucceed) {
                         sequence.hasReposted = 1
                     }
                     self.originViewController.dismissViewControllerAnimated(true, completion: nil)
-                })
+                }
             }
         }
         
         repostItem.detailSelectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShowReposters)
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 self.showRepostersWithSequence(sequence)
-            })
+            }
         }
         
         return repostItem
@@ -200,9 +200,9 @@ extension VSequenceActionController {
         
         let descriptionItem = VActionItem.descriptionActionItemWithText(sequence.name ?? "", hashTagSelectionHandler: { hashtag in
             let vc: VHashtagStreamCollectionViewController = self.dependencyManager.hashtagStreamWithHashtag(hashtag)
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 self.originViewController.navigationController?.pushViewController(vc, animated: true)
-            })
+            }
         })
         return descriptionItem
         
@@ -264,17 +264,17 @@ extension VSequenceActionController {
         remixItem.selectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectRemix)
             
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 block()
-            })
+            }
         }
         
         remixItem.detailSelectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShowRemixes)
             
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 dismissCompletionBlock()
-            })
+            }
         }
         
     }
