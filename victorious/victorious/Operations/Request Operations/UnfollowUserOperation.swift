@@ -21,7 +21,7 @@ class UnfollowUserOperation: FetcherOperation {
         self.sourceScreenName = sourceScreenName
         super.init()
         
-        UnfollowUserRemoteOperation(userID: userID, sourceScreenName: sourceScreenName).after(self).queue()
+        UnfollowUserRequestOperation(userID: userID, sourceScreenName: sourceScreenName).after(self).queue()
     }
     
     override func main() {
@@ -51,8 +51,9 @@ class UnfollowUserOperation: FetcherOperation {
     }
 }
 
-class UnfollowUserRemoteOperation: RequestOperation {
-    private let request: UnfollowUserRequest
+class UnfollowUserRequestOperation: FetcherOperation, RequestOperation {
+    
+    let request: UnfollowUserRequest!
     
     init( userID: Int, sourceScreenName: String ) {
         self.request = UnfollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)

@@ -25,14 +25,14 @@ class FetchFromMainContextOperationTests: XCTestCase {
     func testFindsExpectedManagedObjects() {
         persistentStoreHelper.createUser(remoteId: testRemoteID)
         
-        let fetchManagedObjectsOperation = FetchFromMainContextOperation(
+        let fetchOperation = FetchFromMainContextOperation(
             entityName: VUser.v_entityName(),
             predicate: NSPredicate(format:"remoteId == %i", testRemoteID)
         )
         
-        queueExpectedOperation(operation: fetchManagedObjectsOperation)
-        waitForExpectationsWithTimeout(1) { (results, error) in
-            guard let results = fetchManagedObjectsOperation.result else {
+        queueExpectedOperation(operation: fetchOperation)
+        waitForExpectationsWithTimeout(1) { error in
+            guard let results = fetchOperation.results else {
                 XCTFail("We should have results.")
                 return
             }
@@ -45,7 +45,7 @@ class FetchFromMainContextOperationTests: XCTestCase {
         }
     }
 
-    func queueExpectedOperation(operation operation: Operation) -> XCTestExpectation {
+    func queueExpectedOperation(operation operation: FetcherOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
         operation.queue() { (results, error) in
             expectation.fulfill()

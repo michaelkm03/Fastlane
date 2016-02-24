@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class FriendFindBySocialNetworkOperationTests: BaseRequestOperationTestCase {
+class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
     let testUserID = 1
     let facebookToken = "testFacebookToken"
     
@@ -26,7 +26,7 @@ class FriendFindBySocialNetworkOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold) { (results, error) in
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
             guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
                     XCTFail("We should have results here")

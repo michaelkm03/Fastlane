@@ -31,15 +31,15 @@ class DeleteConversationOperation: FetcherOperation {
             return remoteId
         }
         if let remoteID = remoteID {
-            DeleteConversationRemoteOperation(conversationID: remoteID).after( self ).queue()
+            DeleteConversationRequestOperation(conversationID: remoteID).after( self ).queue()
         }
         
     }
 }
 
-class DeleteConversationRemoteOperation: RequestOperation {
+class DeleteConversationRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: DeleteConversationRequest
+    let request: DeleteConversationRequest!
     
     init(conversationID: Int) {
         self.request = DeleteConversationRequest(conversationID: conversationID)

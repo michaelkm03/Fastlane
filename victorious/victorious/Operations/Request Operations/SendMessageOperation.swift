@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SendMessageOperation: RequestOperation {
+class SendMessageOperation: FetcherOperation, RequestOperation {
     
-    let request: SendMessageRequest
+    let request: SendMessageRequest!
     let localMessageID: NSManagedObjectID
     
     required init( request: SendMessageRequest, localMessageID: NSManagedObjectID) {

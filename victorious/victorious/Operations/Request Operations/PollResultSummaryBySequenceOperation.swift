@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryBySequenceOperation: RequestOperation {
+final class PollResultSummaryBySequenceOperation: FetcherOperation, RequestOperation {
     
-    let request: PollResultSummaryRequest
+    let request: PollResultSummaryRequest!
     
     private let sequenceID: String
     

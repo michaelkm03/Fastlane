@@ -2,26 +2,53 @@
 //  FetcherOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 1/20/16.
-//  Copyright © 2016 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 11/11/15.
+//  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
+import VictoriousIOSSDK
+import VictoriousCommon
 
-/// An superclass for operations that use a paginator to fetch local results from the persistent store
-class FetcherOperation: NSOperation, Queueable, ResultsOperation {
-    
-    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
-    
-    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
-    
-    // MARK: - ResultsOperation
+class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     
     var results: [AnyObject]?
     
+    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
+    
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    
+    /// A place to store a background context so that it is retained for as long as expected during the operation
+    var storedBackgroundContext: NSManagedObjectContext?
+    
+    lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
+    
+    override init() {
+        super.init()
+        
+        requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
+        requestExecutor.errorHandlers.append( DebugErrorHanlder(requestIdentifier: "\(self.dynamicType)") )
+    }
+    
+    /// Allows subclasses to override to disabled unauthorized (401) error handling.
+    /// Otherwise, these errors are handled by default.
+    var requiresAuthorization: Bool = true {
+        didSet {
+            if requiresAuthorization {
+                if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+                    requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
+                }
+            } else {
+                requestExecutor.errorHandlers = requestExecutor.errorHandlers.filter { ($0 is UnauthorizedErrorHandler) == false }
+            }
+        }
+    }
+    
     // MARK: - ErrorOperation
     
-    var error: NSError?
+    var error: NSError? {
+        return self.requestExecutor.error
+    }
     
     // MARK: - Queueable
     
@@ -37,7 +64,7 @@ class FetcherOperation: NSOperation, Queueable, ResultsOperation {
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion: ([AnyObject]?, NSError?)->()) {
+    func queueWithCompletion(completion: (([AnyObject]?, NSError?)->())? = nil ) {
         queue(completion: completion)
     }
 }

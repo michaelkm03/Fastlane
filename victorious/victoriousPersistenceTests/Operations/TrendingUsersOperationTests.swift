@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class TrendingUsersOperationTests: BaseRequestOperationTestCase {
+class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
 
     var operation: TrendingUsersOperation!
 
@@ -34,7 +34,7 @@ class TrendingUsersOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(expectationThreshold) { (results, error) in
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
             XCTAssertEqual(self.operation.results?.count, 1)
             
             guard let firstResult = self.operation.results?.first as? VUser else {

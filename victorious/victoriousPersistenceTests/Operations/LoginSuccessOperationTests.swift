@@ -10,7 +10,7 @@ import XCTest
 import SwiftyJSON
 @testable import victorious
 
-class LoginSuccessOperationTests: BaseRequestOperationTestCase {
+class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
     
     func testLogin() {
         guard let user = self.loadUser(), let email = user.email else {

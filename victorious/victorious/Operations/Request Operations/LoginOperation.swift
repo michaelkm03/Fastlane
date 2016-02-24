@@ -6,9 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class LoginOperation: RequestOperation {
+class LoginOperation: FetcherOperation, RequestOperation {
     
-    let request: LoginRequest
+    let request: LoginRequest!
     
     init(email: String, password: String) {
         request = LoginRequest(email: email, password: password)

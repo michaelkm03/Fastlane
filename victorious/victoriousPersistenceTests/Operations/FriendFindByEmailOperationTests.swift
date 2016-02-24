@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
+class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
     
     let testUserID: Int = 1
     let emails = ["h@h.hh", "mike@msena.com"]
@@ -30,7 +30,7 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold) { (results, error) in
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
             guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
                 XCTFail("We should have results here")

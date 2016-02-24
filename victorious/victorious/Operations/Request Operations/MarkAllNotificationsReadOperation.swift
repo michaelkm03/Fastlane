@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class MarkAllNotificationsAsReadOperation: RequestOperation {
+final class MarkAllNotificationsAsReadOperation: FetcherOperation, RequestOperation {
     
-    private let request = MarkAllNotificationsAsReadRequest()
+    let request: MarkAllNotificationsAsReadRequest! = MarkAllNotificationsAsReadRequest()
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )

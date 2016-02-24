@@ -9,13 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
+/// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentPaginatedOperation: NSOperation?
+    private(set) weak var currentPaginatedRequestOperation: NSOperation?
     private(set) weak var currentLocalOperation: NSOperation?
     
     private(set) var state: VDataSourceState = .Cleared {
@@ -51,15 +51,15 @@ import VictoriousIOSSDK
     
     func unload() {
         visibleItems = NSOrderedSet()
-        currentPaginatedOperation = nil
+        currentPaginatedRequestOperation = nil
         currentLocalOperation = nil
         pagesLoaded = Set<Int>()
         state = .Cleared
     }
     
     func cancelCurrentOperation() {
-        currentPaginatedOperation?.cancel()
-        currentPaginatedOperation = nil
+        currentPaginatedRequestOperation?.cancel()
+        currentPaginatedRequestOperation = nil
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
@@ -97,16 +97,16 @@ import VictoriousIOSSDK
         }
     }
     
-    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
+    func refreshRemote<T: PaginatedRequestOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         
-        guard self.currentPaginatedOperation != nil else {
+        guard self.currentPaginatedRequestOperation != nil else {
             return
         }
         
         var operation: T = createOperation()
-        guard let requestOperation = operation as? RequestOperation else {
+        guard let requestOperation = operation as? FetcherOperation else {
             return
         }
         
@@ -131,7 +131,7 @@ import VictoriousIOSSDK
         }
     }
     
-    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
+    func loadPage<T: PaginatedRequestOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
         
         guard !isLoading() else {
             return
@@ -147,13 +147,13 @@ import VictoriousIOSSDK
         case .First:
             operationToQueue = createOperation()
         case .Next:
-            operationToQueue = (currentPaginatedOperation as? T)?.next()
+            operationToQueue = (currentPaginatedRequestOperation as? T)?.next()
         case .Previous:
-            operationToQueue = (currentPaginatedOperation as? T)?.prev()
+            operationToQueue = (currentPaginatedRequestOperation as? T)?.prev()
         }
         
         // Return early if there is no operation to queue, i.e. no work to do
-        guard let requestOperation = operationToQueue as? RequestOperation,
+        guard let requestOperation = operationToQueue as? FetcherOperation,
             var operation = operationToQueue else {
                 return
         }
@@ -187,7 +187,7 @@ import VictoriousIOSSDK
             completion?( results: results, error: error )
         }
         
-        self.currentPaginatedOperation = requestOperation
+        self.currentPaginatedRequestOperation = requestOperation
     }
 }
 

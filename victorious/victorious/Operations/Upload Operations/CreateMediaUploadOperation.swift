@@ -54,10 +54,10 @@ class CreateMediaUploadOperation: Operation {
         
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
         
-        dispatch_sync(dispatch_get_main_queue()) {
+        dispatch_async(dispatch_get_main_queue()) {
             self.uploadCompletion(nil)
+            self.finishedExecuting()
         }
-        self.finishedExecuting()
     }
     
     private var formFields: [NSObject : AnyObject] {

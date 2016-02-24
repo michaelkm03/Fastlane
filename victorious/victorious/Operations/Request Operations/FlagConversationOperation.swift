@@ -19,7 +19,7 @@ class FlagConversationOperation: FetcherOperation {
         self.conversationID = conversationID
         super.init()
         
-        let remoteOperation = FlagConversationRemoteOperation(conversationID: conversationID, mostRecentMessageID: mostRecentMessageID)
+        let remoteOperation = FlagConversationRequestOperation(conversationID: conversationID, mostRecentMessageID: mostRecentMessageID)
         remoteOperation.after(self).queue()
     }
     
@@ -41,9 +41,9 @@ class FlagConversationOperation: FetcherOperation {
     }
 }
 
-class FlagConversationRemoteOperation: RequestOperation {
+class FlagConversationRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: FlagConversationRequest
+    let request: FlagConversationRequest!
     
     init(conversationID: Int, mostRecentMessageID: Int) {
         self.request = FlagConversationRequest(mostRecentMessageID: mostRecentMessageID)

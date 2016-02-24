@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
+final class SequenceRepostersOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: SequenceRepostersRequest
     

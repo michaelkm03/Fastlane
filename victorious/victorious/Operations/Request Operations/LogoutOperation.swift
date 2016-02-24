@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: RequestOperation {
+class LogoutOperation: FetcherOperation {
 
     override init() {
         super.init()
@@ -23,7 +23,7 @@ class LogoutOperation: RequestOperation {
         // and make the remote logout call to backend
         let pruneOperation = LogoutPrunePersistentStoreOperation()
         pruneOperation.before(self).queue()
-        LogoutRemoteOperation().rechainAfter(pruneOperation).queue()
+        LogoutRequestOperation().rechainAfter(pruneOperation).queue()
     }
     
     override func main() {
@@ -55,9 +55,9 @@ class LogoutOperation: RequestOperation {
     }
 }
 
-private class LogoutRemoteOperation: RequestOperation {
+private class LogoutRequestOperation: FetcherOperation, RequestOperation {
     
-    let request = LogoutRequest()
+    let request: LogoutRequest! = LogoutRequest()
     
     override init() {
         super.init()

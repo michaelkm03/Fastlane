@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UserSearchOperationTests: BaseRequestOperationTestCase {
+class UserSearchOperationTests: BaseFetcherOperationTestCase {
 
     let testUserID: Int = 1
     var operation: UserSearchOperation!

@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingHashtagOperation: RequestOperation {
+class TrendingHashtagOperation: FetcherOperation, RequestOperation {
     
-    let request = TrendingHashtagRequest()
+    let request: TrendingHashtagRequest! = TrendingHashtagRequest()
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)

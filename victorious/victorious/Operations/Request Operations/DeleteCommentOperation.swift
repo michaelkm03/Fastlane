@@ -19,7 +19,7 @@ class DeleteCommentOperation: FetcherOperation {
         self.commentID = commentID
         super.init()
         
-        let remoteOperation = DeleteCommentRemoteOperation(commentID: commentID, removalReason: removalReason)
+        let remoteOperation = DeleteCommentRequestOperation(commentID: commentID, removalReason: removalReason)
         remoteOperation.after(self).queue()
     }
     
@@ -40,9 +40,9 @@ class DeleteCommentOperation: FetcherOperation {
     }
 }
 
-class DeleteCommentRemoteOperation: RequestOperation {
+class DeleteCommentRequestOperation: FetcherOperation, RequestOperation {
     
-    var request: DeleteCommentRequest
+    let request: DeleteCommentRequest!
     
     init( commentID: Int, removalReason: String?) {
         self.request = DeleteCommentRequest(commentID: commentID, removalReason: removalReason)

@@ -18,7 +18,7 @@ class FlagSequenceOperation: FetcherOperation {
         self.sequenceID = sequenceID
         super.init()
         
-        let remoteOperation = FlagSequenceRemoteOperation(sequenceID: sequenceID)
+        let remoteOperation = FlagSequenceRequestOperation(sequenceID: sequenceID)
         remoteOperation.after(self).queue()
     }
     
@@ -46,9 +46,9 @@ class FlagSequenceOperation: FetcherOperation {
     }
 }
 
-class FlagSequenceRemoteOperation: RequestOperation {
+class FlagSequenceRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: FlagSequenceRequest
+    let request: FlagSequenceRequest!
     
     init( sequenceID: String ) {
         self.request = FlagSequenceRequest(sequenceID: sequenceID)
