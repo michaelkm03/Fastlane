@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
+@objc public class PaginatedDataSource: NSObject { //, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
     private(set) weak var currentPaginatedRequestOperation: NSOperation?
@@ -99,7 +99,7 @@ import VictoriousIOSSDK
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func refreshRemote<T: PaginatedRequestOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
+    func refreshRemote<T: Paginated>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         
         guard self.currentPaginatedRequestOperation != nil else {
             return
@@ -131,7 +131,7 @@ import VictoriousIOSSDK
         }
     }
     
-    func loadPage<T: PaginatedRequestOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
+    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
         
         guard !isLoading() else {
             return
@@ -159,19 +159,19 @@ import VictoriousIOSSDK
         }
         
         // Return early if we've already loaded this page
-        guard !pagesLoaded.contains(operation.request.paginator.pageNumber) else {
+        guard !pagesLoaded.contains(operation.paginator.pageNumber) else {
             return
         }
         
         // Add the page from `pagesLoaded` so it won't be loaded again
-        pagesLoaded.insert(operation.request.paginator.pageNumber)
+        pagesLoaded.insert(operation.paginator.pageNumber)
         
         self.state = .Loading
         requestOperation.queue() { (results, error) in
             
             if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
-                self.pagesLoaded.remove( operation.request.paginator.pageNumber )
+                self.pagesLoaded.remove( operation.paginator.pageNumber )
                 
                 // Return no results
                 operation.results = []
