@@ -106,6 +106,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
 @property (nonatomic, strong) VSequenceActionController *sequenceActionController;
+@property (nonatomic, strong) UIButton *buySubscriptionButton;
 
 @end
 
@@ -288,7 +289,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
     
     self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
@@ -361,6 +362,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.experienceEnhancerCompletionQueue = [NSOperationQueue new];
     
     self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
+
+    self.buySubscriptionButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 200, 50)];
+    self.buySubscriptionButton.titleLabel.text = @"Get that super awesome VIP content";
+    self.buySubscriptionButton.backgroundColor = [UIColor magentaColor];
+    [self.buySubscriptionButton addTarget:self action:@selector(presentSubscriptionViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.buySubscriptionButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1547,9 +1554,22 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
-    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
-    viewController.voteType = voteType;
+
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager
+                                                                              productIdentifier:voteType.productIdentifier
+                                                                                      largeIcon:voteType.iconImageLarge];
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+#pragma mark - Subscription
+
+- (void)presentSubscriptionViewController
+{
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager
+                                                                              productIdentifier:kTestSubscriptionProductIdentifier
+                                                                                      largeIcon:[UIImage imageNamed:@"test_vip_icon_large"]];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];

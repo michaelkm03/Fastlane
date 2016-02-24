@@ -25,20 +25,21 @@
 
 @interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependencies>
 
-@property (nonatomic, weak) id<VPurchaseViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<VPurchaseViewControllerDelegate> _Nullable delegate;
 
-/**
- The vote type that a user is trying to unlock.  This is where the product identifier
- used to make purchases in the App Store comes from.  This property should be set immediately after
- initialization.  The convenience initializer instantiateFromStoryboard:withVoteType will handle
- setting this using the supplied vote type parameter.
- */
-@property (nonatomic, strong) VVoteType *voteType;
+@property (nonatomic, strong) UIImage * _Nonnull largeIcon;
+@property (nonatomic, strong) NSString * _Nonnull productIdentifier;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
+@property (weak, nonatomic) IBOutlet UIView * backgroundScreen;
 
 /** Exposing public property so that external classes/categories can animate it */
 @property (weak, nonatomic) IBOutlet UIView *modalContainer;
+
++ (instancetype)newWithDependencyManager:(VDependencyManager * _Nonnull)dependencyManager
+                       productIdentifier:(NSString * _Nonnull)productIdentifier
+                               largeIcon:(UIImage * _Nonnull)largeIcon;
+
++ (instancetype)newWithDependencyManager:(VDependencyManager * _Nonnull)dependencyManager NS_UNAVAILABLE;
 
 @end

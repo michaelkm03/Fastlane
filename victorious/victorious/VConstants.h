@@ -98,6 +98,10 @@ static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
 static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 
+#pragma mark - Purchases
+
+static NSString * const kTestSubscriptionProductIdentifier = @"com.getvictorious.leachypeachy99.vip";
+
 #pragma mark - Sequence Categories
 
 //NOTE: If you add categories, add them all to the necessary C functions in this section
