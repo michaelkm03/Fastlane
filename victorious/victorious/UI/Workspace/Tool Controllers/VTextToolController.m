@@ -70,26 +70,27 @@
 {
     self.textPostViewController.isEditing = NO;
     
-    // If there is no background image selector or there is no color, then skip ahead to publish
-    if ( self.mediaURL == nil || [self currentColorSelection] == nil )
-    {
-        [self publishTextPost:nil completion:completion];
-        return;
-    }
-    
     // If there is a background image and color, they must be rendered together into the final tinted output image
-    self.imageHelper = [[VTextPostImageHelper alloc] init];
-    [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
+    if ( self.mediaURL != nil && [self currentColorSelection] != nil )
     {
-        if ( renderedAssetURL != nil )
-        {
-            [self publishTextPost:renderedAssetURL completion:completion];
-        }
-        else
-        {
-            completion( NO, nil, nil, error );
-        }
-    }];
+        self.imageHelper = [[VTextPostImageHelper alloc] init];
+        [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
+         {
+             if ( renderedAssetURL != nil )
+             {
+                 [self publishTextPost:renderedAssetURL completion:completion];
+             }
+             else
+             {
+                 completion( NO, nil, nil, error );
+             }
+         }];
+    }
+    else
+    {
+        // If there is no background image selector or there is no color, then skip ahead to publish
+        [self publishTextPost:self.mediaURL completion:completion];
+    }
 }
 
 - (VTextPostViewController *)textPostViewController

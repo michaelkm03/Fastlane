@@ -30,8 +30,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
-@dynamic sourceScreenName;
-
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake( CGRectGetWidth(bounds), kUserCellHeight );
