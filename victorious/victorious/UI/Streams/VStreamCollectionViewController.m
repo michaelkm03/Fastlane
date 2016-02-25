@@ -744,7 +744,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                        streamId:self.currentStream.remoteId
                                                      completion:^
      {
-         if (completion) {
+         if (completion)
+         {
              completion(YES);
          }
      }];
