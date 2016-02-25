@@ -42,7 +42,8 @@
 @import MBProgressHUD;
 @import SDWebImage;
 
-static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
+static NSString * const kEditProfileSegueIdentifier = @"toEditProfile";
+static NSString * const kTrophyCaseScreenKey = @"trophyCaseScreen";
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
@@ -563,6 +564,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         usersViewController.usersViewContext = VUsersViewContextFollowing;
         [self.navigationController pushViewController:usersViewController animated:YES];
     }
+}
+
+- (void)openTrophyCase
+{
+    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:kTrophyCaseScreenKey];
+    [self.navigationController pushViewController:trophyCaseViewController animated:YES];
 }
 
 #pragma mark - Navigation

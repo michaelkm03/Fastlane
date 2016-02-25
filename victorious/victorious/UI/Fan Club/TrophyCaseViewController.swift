@@ -11,7 +11,31 @@ import UIKit
 
 class TrophyCaseViewController: UIViewController {
     
+    var dependencyManager: VDependencyManager?
+    
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                collectionView.dataSource = TrophyCaseCollectionViewDataSource(dependencyManager: dependencyManager)
+            }
+        }
+    }
+    
+    //MARK: - Factory method
+    
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> TrophyCaseViewController {
-        return TrophyCaseViewController()
+        let trophyCaseViewController = TrophyCaseViewController.v_fromStoryboard() as TrophyCaseViewController
+        trophyCaseViewController.dependencyManager = dependencyManager
+        
+        return trophyCaseViewController
+    }
+    
+    //MARK: - View Controller Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.extendedLayoutIncludesOpaqueBars = true
+        self.automaticallyAdjustsScrollViewInsets = false
     }
 }

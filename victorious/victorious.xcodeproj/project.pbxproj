@@ -436,6 +436,7 @@
 		670C659B1C52C7EA00BD7F3F /* ListShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */; };
 		670C659D1C52CE8A00BD7F3F /* HashtagShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
+		671DD5571C7F80B10095A605 /* TrophyCaseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
 		672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672033581C4DD8760015D91D /* TrendingUsersOperation.swift */; };
 		6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */; };
@@ -2568,6 +2569,7 @@
 		670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelfTests.swift; sourceTree = "<group>"; };
 		670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagShelfTests.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
+		671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TrophyCaseViewController.storyboard; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
 		672033581C4DD8760015D91D /* TrendingUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperation.swift; sourceTree = "<group>"; };
 		6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperationTests.swift; sourceTree = "<group>"; };
@@ -6626,6 +6628,7 @@
 			isa = PBXGroup;
 			children = (
 				67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */,
+				671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */,
 				67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */,
 			);
 			name = "Trophy Case";
@@ -9991,6 +9994,7 @@
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
+				671DD5571C7F80B10095A605 /* TrophyCaseViewController.storyboard in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,

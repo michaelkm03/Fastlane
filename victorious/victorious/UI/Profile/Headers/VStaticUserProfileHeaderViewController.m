@@ -23,7 +23,6 @@
 static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
 static NSString * const kLevelBadgeKey = @"animatedBadge";
-static NSString * const kTrophyCaseScreenKey = @"trophyCaseScreen";
 
 @interface VStaticUserProfileHeaderViewController ()
 
@@ -149,8 +148,7 @@ static NSString * const kTrophyCaseScreenKey = @"trophyCaseScreen";
 
 - (IBAction)trophyCaseButtonTapped:(id)sender
 {
-    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:kTrophyCaseScreenKey];
-    [self.navigationController pushViewController:trophyCaseViewController animated:YES];
+    [self.delegate openTrophyCase];
 }
 
 #pragma mark - VUserProfileHeader

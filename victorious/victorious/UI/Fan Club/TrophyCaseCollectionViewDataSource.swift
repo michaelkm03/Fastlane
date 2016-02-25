@@ -10,8 +10,15 @@ import Foundation
 
 class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
+    private(set) var dependencyManager: VDependencyManager?
+    
+    convenience init(dependencyManager: VDependencyManager) {
+        self.init()
+        self.dependencyManager = dependencyManager
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 5
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

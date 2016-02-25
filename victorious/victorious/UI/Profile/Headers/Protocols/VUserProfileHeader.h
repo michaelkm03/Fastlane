@@ -53,6 +53,11 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 - (void)primaryActionHandler;
 
+/**
+ User tapped on the trophy case button on profile header. We should open the trophy case for them.
+ */
+- (void)openTrophyCase;
+
 @end
 
 /**
