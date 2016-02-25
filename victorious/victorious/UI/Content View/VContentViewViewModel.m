@@ -19,7 +19,6 @@
 #import "VComment+Fetcher.h"
 #import "VUser.h"
 #import "NSDate+timeSince.h"
-#import "VRTCUserPostedAtFormatter.h"
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
@@ -35,7 +34,6 @@
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
-@property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
@@ -78,7 +76,6 @@
         else if ([_sequence isVideo] && ![_sequence isGIFVideo])
         {
             _type = VContentViewTypeVideo;
-            _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
             _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
         else if ([_sequence isGIFVideo])

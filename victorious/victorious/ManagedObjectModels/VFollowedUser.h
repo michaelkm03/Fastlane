@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VFollowedUser : NSManagedObject
 
-@property (null_unspecified, nonatomic, retain) NSNumber *displayOrder;
+@property (nonatomic, retain) NSNumber *displayOrder;
 @property (nonatomic, retain) VUser *objectUser;
 @property (nonatomic, retain) VUser *subjectUser;
 

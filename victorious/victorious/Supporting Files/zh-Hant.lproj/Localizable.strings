@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "選取 Twitter 帳號";
 
-"ReportInappropriate"   =   "舉報不當內容";
+"BlockInappropriate"    =   "舉報不當內容";
 "ReportedTitle"         =   "收到！";
 "ReportContentMessage"  =   "我們將在 24 小時內審查此內容。";
 "ReportCommentMessage"  =   "我們將在 24 小時內審查此內容。";
@@ -275,8 +275,6 @@
 
 "NoFriends"             =   "無相符結果";
 "NoFriendsDetail"       =   "我們找不到有使用我們應用程式的好友。快去邀請他們吧！";
-
-"RTCUserPostedAtSyntax" =   "%@ 在 %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "回報/檢舉";
 "REPOSTERS"             =   "轉貼者"; // Title for a list of users who have reposted something

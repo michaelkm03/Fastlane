@@ -9,15 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnlikeSequenceOperation: RequestOperation {
-    
-    let request: UnlikeSequenceRequest
+class UnlikeSequenceOperation: FetcherOperation {
     
     private let sequenceID: String
     
     init( sequenceID: String ){
-        self.request = UnlikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
+        super.init()
+        
+        UnlikeSequenceRemoteOperation(sequenceID: sequenceID).queueAfter(self)
     }
     
     override func main() {
@@ -35,8 +35,19 @@ class UnlikeSequenceOperation: RequestOperation {
             
             context.v_save()
         }
-        
-        // Now execute the request fire-and-forget style
+    }
+}
+
+class UnlikeSequenceRemoteOperation: RequestOperation {
+    
+    let request: UnlikeSequenceRequest
+    
+    init( sequenceID: String ){
+        self.request = UnlikeSequenceRequest(sequenceID: sequenceID)
+    }
+    
+    override func main() {
+        // Execute the request fire-and-forget style
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }

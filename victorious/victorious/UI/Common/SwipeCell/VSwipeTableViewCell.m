@@ -60,4 +60,14 @@
     [self.commentsUtilitiesDelegate replyToComment:comment];
 }
 
+- (void)deleteComment:(VComment *)comment
+{
+    
+}
+
+- (void)flagComment:(VComment *)comment
+{
+    
+}
+
 @end

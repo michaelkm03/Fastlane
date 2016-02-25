@@ -340,7 +340,7 @@ extension VSequenceActionController {
             }
             
         } else {
-            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
+            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { results, error in
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,

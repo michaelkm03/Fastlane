@@ -512,7 +512,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     }
     
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
-        //FIXME: There might be a better fix than this. For RC1 this should be fine.
         let paginator = StandardPaginator()
         let perPageNumber = paginator.itemsPerPage
         let pageLocation = indexPath.row % perPageNumber
