@@ -284,7 +284,6 @@
 		039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */; };
 		039420481AB88A450087ADFA /* image-template.json in Resources */ = {isa = PBXBuildFile; fileRef = 039420471AB88A450087ADFA /* image-template.json */; };
 		0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394204C1AB9026C0087ADFA /* VVoteType.m */; };
-		03949CEA1C1A0C490092B366 /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		03960BBC1BB21418006815F6 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
 		0399E80E1C51D42900E090F7 /* TemplateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0399E80D1C51D42900E090F7 /* TemplateRequest.swift */; };
@@ -2329,7 +2328,6 @@
 		039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManagerImageTests.m; sourceTree = "<group>"; };
 		0394204B1AB9026C0087ADFA /* VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteType.h; sourceTree = "<group>"; };
 		0394204C1AB9026C0087ADFA /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
-		03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		0399E80D1C51D42900E090F7 /* TemplateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateRequest.swift; sourceTree = "<group>"; };
@@ -8167,7 +8165,6 @@
 				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */,
-				03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */,
 				A719CD5619F6D5030019E866 /* FileSystemTestHelpers */,
 				675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */,
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
@@ -11970,7 +11967,6 @@
 				A7DCA4E51C128A78004E35B4 /* VDiscoverViewControllerTests.m in Sources */,
 				A7D0AD311C0D453D0018C63E /* NSString+UnicodeTests.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
-				03949CEA1C1A0C490092B366 /* FanLoyaltyTests.swift in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */,

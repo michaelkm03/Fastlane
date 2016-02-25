@@ -15,6 +15,7 @@ public struct FanLoyalty {
     public let progress: Int
     public let tier: String?
     public let name: String?
+    public let achievementsUnlocked: [String]?
 }
 
 extension FanLoyalty {
@@ -30,5 +31,6 @@ extension FanLoyalty {
         self.points = json["points"].int
         self.name = json["name"].string
         self.tier = json["tier"].string
+        self.achievementsUnlocked = json["achievements_unlocked"].array?.flatMap { $0.stringValue }
     }
 }
