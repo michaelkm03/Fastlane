@@ -12,12 +12,11 @@ import UIKit
 class TrophyCaseViewController: UIViewController {
     
     var dependencyManager: VDependencyManager?
+    private(set) var trophyCaseDataSource: TrophyCaseCollectionViewDataSource?
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            if let dependencyManager = dependencyManager {
-                collectionView.dataSource = TrophyCaseCollectionViewDataSource(dependencyManager: dependencyManager)
-            }
+            collectionView.dataSource = trophyCaseDataSource
         }
     }
     
@@ -26,6 +25,7 @@ class TrophyCaseViewController: UIViewController {
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> TrophyCaseViewController {
         let trophyCaseViewController = TrophyCaseViewController.v_fromStoryboard() as TrophyCaseViewController
         trophyCaseViewController.dependencyManager = dependencyManager
+        trophyCaseViewController.trophyCaseDataSource = TrophyCaseCollectionViewDataSource(dependencyManager: dependencyManager)
         
         return trophyCaseViewController
     }
@@ -35,7 +35,12 @@ class TrophyCaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
+        extendedLayoutIncludesOpaqueBars = true
+        automaticallyAdjustsScrollViewInsets = false
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.reloadData()
     }
 }
