@@ -74,6 +74,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager; //< Set the dependencyManager before setting the profile
     [viewController addLoginStatusChangeObserver];
+    [viewController updateAccessoryItems];
     
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
     NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
@@ -794,6 +795,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (NSInteger)badgeNumber
+{
+    NSArray *menuItems = self.dependencyManager.accessoryMenuItems;
+    NSInteger badgeNumber = 0;
+    for ( VNavigationMenuItem *accessoryItem in menuItems )
+    {
+        id destination = accessoryItem.destination;
+        if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+        {
+            badgeNumber += [(id <VProvidesNavigationMenuItemBadge>)destination badgeNumber];
+        }
+    }
+    return badgeNumber;
+}
 
 #pragma mark - VDeepLinkSupporter
 
