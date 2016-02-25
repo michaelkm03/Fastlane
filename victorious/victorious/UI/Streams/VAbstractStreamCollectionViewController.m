@@ -167,7 +167,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
                                                   isBeingDismissed:self.isBeingDismissed];

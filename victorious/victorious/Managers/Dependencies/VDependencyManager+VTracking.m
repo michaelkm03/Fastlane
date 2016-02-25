@@ -73,6 +73,8 @@ static const char kAssociatedObjectViewWasHiddenKey;
             return;
         }
         
+        NSLog( @"\n\n>>>>>trackViewWillAppear %@\n\n", urls.firstObject );
+        
         NSMutableDictionary *combined = [[NSMutableDictionary alloc] initWithDictionary:parameters];
         combined[ VTrackingKeyUrls ] = urls;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventComponentDidBecomeVisible
