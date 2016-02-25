@@ -406,6 +406,7 @@
 		62575F001C54CD9400B49CB0 /* VSequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62575EFF1C54CD9400B49CB0 /* VSequenceTests.swift */; };
 		626842B61C7418CE00AFA454 /* TestIMAAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626842B41C74187500AFA454 /* TestIMAAd.swift */; };
 		627FD7E01C5DC10000680B22 /* TestAdLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DF1C5DC10000680B22 /* TestAdLifecycleDelegate.swift */; };
+		6287BE101C7E87390057D116 /* VIPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPViewController.swift */; };
 		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
 		629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */; };
 		62A45FA91C6F2C8C0089DC9E /* TestAdLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DF1C5DC10000680B22 /* TestAdLifecycleDelegate.swift */; };
@@ -2551,6 +2552,7 @@
 		627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdEvent.swift; sourceTree = "<group>"; };
 		627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsManager.swift; sourceTree = "<group>"; };
 		627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsLoader.swift; sourceTree = "<group>"; };
+		6287BE0F1C7E87390057D116 /* VIPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPViewController.swift; sourceTree = "<group>"; };
 		629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAAdViewController.swift; sourceTree = "<group>"; };
 		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
@@ -4798,6 +4800,7 @@
 				A77951031B27D1C800D9DB0A /* Suggested Users */,
 				A75C64851AD78DCA00245125 /* TextPost */,
 				A7724FD51B3241FD00B1BBB3 /* Users */,
+				6287BE0E1C7E871B0057D116 /* VIP */,
 				A769C3D81A13176700698D0C /* Web View */,
 				D8A93F131A2E84A9009B8A18 /* Workspace */,
 			);
@@ -6558,6 +6561,14 @@
 				629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */,
 			);
 			name = Video;
+			sourceTree = "<group>";
+		};
+		6287BE0E1C7E871B0057D116 /* VIP */ = {
+			isa = PBXGroup;
+			children = (
+				6287BE0F1C7E87390057D116 /* VIPViewController.swift */,
+			);
+			path = VIP;
 			sourceTree = "<group>";
 		};
 		62A6F2BA1C6AA9F4008BB294 /* Content View */ = {
@@ -11420,6 +11431,7 @@
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
+				6287BE101C7E87390057D116 /* VIPViewController.swift in Sources */,
 				A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				A75DF5251C3DBD5100A4C82A /* UserSearchViewController.swift in Sources */,

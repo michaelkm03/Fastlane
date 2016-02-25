@@ -1574,12 +1574,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)presentSubscriptionViewController
 {
-    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager
-                                                                              productIdentifier:kTestSubscriptionProductIdentifier
-                                                                                      largeIcon:[UIImage imageNamed:@"test_vip_icon_large"]];
-    viewController.transitioningDelegate = self.modalTransitionDelegate;
-    viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
+    VIPViewController *vipViewController = [[VIPViewController alloc] initWithNibName:nil
+                                                                               bundle:nil
+                                                                    dependencyManager:self.dependencyManager];
+    [self.navigationController pushViewController:vipViewController animated:YES];
 }
 
 #pragma mark - VSequencePreviewViewDetailDelegate
