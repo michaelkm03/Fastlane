@@ -37,7 +37,7 @@
     self.navigationController = [[UINavigationController alloc] init];
     self.userProfileViewController = [[VUserProfileViewController alloc] init];
     self.viewController = [[UIViewController alloc] init];
-    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:nil andOriginViewController:self.viewController];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:nil andOriginViewController:self.viewController andDelegate:self shouldDismissOnDelete:YES];
     
     self.sequence = [VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.user = [VDummyModels objectWithEntityName:@"User" subclass:[VUser class]];

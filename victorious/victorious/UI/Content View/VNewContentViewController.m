@@ -570,6 +570,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.sequencePreviewView showLikeButton:NO];
 }
 
+- (IBAction)pressedMore:(id)sender
+{
+    // Pause video when presenting action sheet
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        [self.videoPlayer pause];
+    }
+    [self.sequenceActionController moreButtonActionWithSequence:self.viewModel.sequence
+                                                       streamId:self.viewModel.streamId
+                                                     completion:nil];
+}
+
 #pragma mark - Private Mehods
 
 - (NSDictionary *)attributesForPollQuestion
