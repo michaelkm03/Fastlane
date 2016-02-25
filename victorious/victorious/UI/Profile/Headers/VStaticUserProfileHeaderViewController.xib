@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VStaticUserProfileHeaderViewController">
@@ -20,6 +19,7 @@
                 <outlet property="primaryActionButton" destination="reE-xi-zdS" id="BtM-uD-uK3"/>
                 <outlet property="staticProfileImageView" destination="HHC-1V-OAe" id="zhR-h4-cgc"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
+                <outlet property="trophyCaseButton" destination="FGG-nD-eIq" id="uEF-Tb-kQ7"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
                 <outlet property="userStatsBarBackgroundContainer" destination="u9S-Sj-DNg" id="6tq-yI-BS5"/>
                 <outlet property="view" destination="HNG-L2-8S5" id="Lfl-UU-LZu"/>
@@ -169,8 +169,8 @@
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
-                            <exclude reference="OWP-vH-mpj"/>
                             <exclude reference="VBY-xr-VOh"/>
+                            <exclude reference="OWP-vH-mpj"/>
                         </mask>
                     </variation>
                 </view>
@@ -187,6 +187,17 @@
                         <constraint firstAttribute="width" constant="55" id="gtj-Dd-NMo"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGG-nD-eIq">
+                    <rect key="frame" x="20" y="31" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="nTl-u9-2xI"/>
+                        <constraint firstAttribute="height" constant="50" id="sQh-vz-l7O"/>
+                    </constraints>
+                    <state key="normal" title="Trophy"/>
+                    <connections>
+                        <action selector="trophyCaseButtonTapped:" destination="-1" eventType="touchUpInside" id="68f-Ba-o9c"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -195,6 +206,7 @@
                 <constraint firstItem="bHl-Un-gmi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eWJ-1h-9hk" secondAttribute="bottom" constant="15" id="1nr-65-wGL"/>
                 <constraint firstItem="Qmh-5E-xej" firstAttribute="leading" secondItem="HHC-1V-OAe" secondAttribute="leading" constant="50" id="6Vb-WI-XCN"/>
                 <constraint firstAttribute="bottom" secondItem="bHl-Un-gmi" secondAttribute="bottom" id="AIm-qH-UOa"/>
+                <constraint firstItem="FGG-nD-eIq" firstAttribute="top" secondItem="HHC-1V-OAe" secondAttribute="top" id="CCn-kR-e0q"/>
                 <constraint firstItem="Xdy-I6-0YY" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="CF0-Ts-gn9"/>
                 <constraint firstItem="Qmh-5E-xej" firstAttribute="top" secondItem="HHC-1V-OAe" secondAttribute="top" constant="31" id="CHT-40-4M9"/>
                 <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" constant="-15" id="En6-uP-cI9"/>
@@ -203,6 +215,7 @@
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="top" secondItem="HNG-L2-8S5" secondAttribute="top" id="WI5-T2-asj"/>
                 <constraint firstAttribute="bottom" secondItem="Nua-VV-KOT" secondAttribute="bottom" id="Y5d-Ys-eBR"/>
                 <constraint firstItem="eWJ-1h-9hk" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="YQ3-gq-fUH"/>
+                <constraint firstItem="FGG-nD-eIq" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="adV-mk-XNu"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="eLF-i6-Mme"/>
                 <constraint firstAttribute="trailing" secondItem="Xdy-I6-0YY" secondAttribute="trailing" constant="20" id="gXy-cM-dEF"/>
                 <constraint firstItem="hnb-2H-Iq8" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="jFh-wg-L2e"/>

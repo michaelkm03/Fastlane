@@ -549,6 +549,7 @@
 		67FD54C71BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C61BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift */; };
 		67FD54C91BF69A4500CF52F7 /* DeleteCommentRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C81BF69A4500CF52F7 /* DeleteCommentRequestTests.swift */; };
 		67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */; };
+		67FE73CD1C7E94B900FE94A2 /* TrophyCaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */; };
 		79004DB81BF53A050027E344 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79004DB71BF53A050027E344 /* DateFormat.swift */; };
 		790254751BF293E200D20AFE /* Hashtag.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6C01BF13E3F00FB9591 /* Hashtag.json */; };
 		79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */; };
@@ -2676,6 +2677,7 @@
 		67FD54C61BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67FD54C81BF69A4500CF52F7 /* DeleteCommentRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCommentRequestTests.swift; sourceTree = "<group>"; };
 		67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConversationRequestTests.swift; sourceTree = "<group>"; };
+		67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrophyCaseViewController.swift; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -6624,6 +6626,7 @@
 			isa = PBXGroup;
 			children = (
 				67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */,
+				67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */,
 			);
 			name = "Trophy Case";
 			sourceTree = "<group>";
@@ -11708,6 +11711,7 @@
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
+				67FE73CD1C7E94B900FE94A2 /* TrophyCaseViewController.swift in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A76363711C50511A000887C4 /* PreloadUserInfoOperation.swift in Sources */,

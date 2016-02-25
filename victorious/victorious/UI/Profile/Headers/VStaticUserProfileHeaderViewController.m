@@ -23,12 +23,13 @@
 static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
 static NSString * const kLevelBadgeKey = @"animatedBadge";
+static NSString * const kTrophyCaseScreenKey = @"trophyCaseScreen";
 
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
-
-@property (weak, nonatomic) IBOutlet UIView *badgeContainerView;
+@property (nonatomic, weak) IBOutlet UIButton *trophyCaseButton;
+@property (nonatomic, weak) IBOutlet UIView *badgeContainerView;
 @property (nonatomic, strong) AnimatedBadgeView *badgeView;
 
 @end
@@ -142,6 +143,14 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     return ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
     self.badgeView.progress != self.user.levelProgressPercentage.integerValue ||
     self.badgeView.superview == nil;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)trophyCaseButtonTapped:(id)sender
+{
+    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:kTrophyCaseScreenKey];
+    [self.navigationController pushViewController:trophyCaseViewController animated:YES];
 }
 
 #pragma mark - VUserProfileHeader
