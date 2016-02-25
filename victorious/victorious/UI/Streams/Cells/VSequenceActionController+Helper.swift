@@ -285,7 +285,7 @@ extension VSequenceActionController {
     private func memeItem(sequence: VSequence) -> VActionItem {
         
         let memeItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Create a meme", comment: ""),
-                                                              actionIcon: UIImage(named: "D_gifIcon"),
+                                                              actionIcon: UIImage(named: "D_memeIcon"),
                                                               detailText: "\(sequence.memeCount)")
         
         setupRemixActionItem(memeItem,
