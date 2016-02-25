@@ -1885,7 +1885,7 @@
 		0308B0EE1AB20B2C00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		0308B0F81AB20B2E00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		0308B0FA1AB20B2F00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ActionSheet.strings; sourceTree = "<group>"; };
-		0308B0FB1AB20B2F00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		0308B0FB1AB20B2F00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0308B0FC1AB20B3000144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Discover.strings; sourceTree = "<group>"; };
 		0308B0FD1AB20B3000144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/settings.strings; sourceTree = "<group>"; };
 		0308B1001AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VNoContentView.strings; sourceTree = "<group>"; };
@@ -1937,7 +1937,7 @@
 		0314D39B19B46B5E00FA363C /* VMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessageCell.h; sourceTree = "<group>"; };
 		0314D39C19B46B5E00FA363C /* VMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageCell.m; sourceTree = "<group>"; };
 		0314D39E19B46B5E00FA363C /* VConversationContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversationContainerViewController.h; sourceTree = "<group>"; };
-		0314D39F19B46B5E00FA363C /* VConversationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = VConversationContainerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0314D39F19B46B5E00FA363C /* VConversationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationContainerViewController.m; sourceTree = "<group>"; };
 		0314D3A219B46B5E00FA363C /* VConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversationViewController.h; sourceTree = "<group>"; };
 		0314D3A319B46B5E00FA363C /* VConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationViewController.m; sourceTree = "<group>"; };
 		0314D3A519B46B5E00FA363C /* VNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationCell.h; sourceTree = "<group>"; };
@@ -2033,7 +2033,7 @@
 		034033931BD085A6000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VAssetCollectionListViewController.strings"; sourceTree = "<group>"; };
 		034033941BD085A6000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0340339B1BD085A7000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VCreatePollViewController.strings"; sourceTree = "<group>"; };
-		034033A11BD085A8000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		034033A11BD085A8000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		034033A21BD085A9000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Profile.strings"; sourceTree = "<group>"; };
 		034033A31BD085A9000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VPublishViewController.strings"; sourceTree = "<group>"; };
 		034033AE1BD085AB000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Discover.strings"; sourceTree = "<group>"; };
@@ -2060,7 +2060,7 @@
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		034D1A5F1AAF5A8800EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
-		034D1A611AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		034D1A611AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		034D1A621AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Discover.strings; sourceTree = "<group>"; };
 		034D1A641AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -2118,7 +2118,7 @@
 		03669B721B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03669B741B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VCreatePollViewController.strings; sourceTree = "<group>"; };
 		03669B761B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Profile.strings; sourceTree = "<group>"; };
-		03669B771B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		03669B771B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03669B781B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
 		03669B7E1B632D57003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Discover.strings; sourceTree = "<group>"; };
 		03669B851B6332D5003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
@@ -2137,7 +2137,7 @@
 		03669B931B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03669B951B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VCreatePollViewController.strings; sourceTree = "<group>"; };
 		03669B971B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Profile.strings; sourceTree = "<group>"; };
-		03669B981B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		03669B981B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03669B991B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
 		03669B9F1B6332DC003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Discover.strings; sourceTree = "<group>"; };
 		0366EAFA1B68714A0073A233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VAssetCollectionListViewController.storyboard; sourceTree = "<group>"; };
@@ -2277,7 +2277,7 @@
 		038A6B201B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		038A6B221B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Workspace.strings; sourceTree = "<group>"; };
 		038A6B231B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		038A6B241B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		038A6B241B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		038B7F9619DB8EB300F739DF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		038B7F9819DB8EBC00F739DF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		038C51171B37B3D700A903C2 /* VTemplateImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImage.h; sourceTree = "<group>"; };
@@ -2285,7 +2285,7 @@
 		038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImageSet.h; sourceTree = "<group>"; };
 		038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageSet.m; sourceTree = "<group>"; };
 		038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageSetTests.m; sourceTree = "<group>"; };
-		0390084B19F386E200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		0390084B19F386E200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0390085519F38BC600FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ActionSheet.storyboard; sourceTree = "<group>"; };
 		0390085819F38BC800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		0390085B19F38C9500FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VNoContentView.xib; sourceTree = "<group>"; };
@@ -2451,7 +2451,7 @@
 		03F2F75F1B55829000F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/settings.strings; sourceTree = "<group>"; };
 		03F2F7601B55829000F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03F2F7621B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Profile.strings; sourceTree = "<group>"; };
-		03F2F7631B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		03F2F7631B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03F2F7691B55829200F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Discover.strings; sourceTree = "<group>"; };
 		03F2F7941B560B8E00F2EF16 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage2.png; sourceTree = "<group>"; };
 		03F61E691C6ADF0700EEA8F9 /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Assets.bundle; sourceTree = "<group>"; };
@@ -4254,7 +4254,7 @@
 		D8FFB8E11B0272540022A491 /* VStreamLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamLabel.m; sourceTree = "<group>"; };
 		D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.stable.xcconfig"; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
-		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB531B541A425A7200B4ADC8 /* VHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtag.h; sourceTree = "<group>"; };
 		DB531B551A425A7200B4ADC8 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
 		DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelperTests.m; sourceTree = "<group>"; };
