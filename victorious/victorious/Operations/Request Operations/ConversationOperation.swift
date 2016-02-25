@@ -121,14 +121,18 @@ final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
     }
 }
 
-class FetchConverationOperation: FetcherOperation {
+final class FetchConverationOperation: FetcherOperation, PaginatedOperation {
     
     let userID: Int
-    let paginator: NumericPaginator
+    let paginator: StandardPaginator
     
-    init( userID: Int, paginator: NumericPaginator = StandardPaginator() ) {
-        self.userID = userID
+    required convenience init(operation: FetchConverationOperation, paginator: StandardPaginator) {
+        self.init(userID: operation.userID, paginator: paginator)
+    }
+    
+    init( userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
+        self.userID = userID
     }
     
     override func main() {

@@ -54,14 +54,14 @@ protocol RequestOperation {
 protocol PaginatedOperation: Paginated {
     
     /// Required initializer that takes a value typed to PaginatorType
-    init( paginator: PaginatorType )
+    init( operation: Self, paginator: PaginatorType )
 }
 
 extension Paginated where Self : PaginatedOperation {
     
     func prev() -> Self? {
         if let previousPaginator = self.paginator.previousPage() {
-            return self.dynamicType.init(paginator: previousPaginator)
+            return self.dynamicType.init(operation: self, paginator: previousPaginator)
         }
         return nil
     }
@@ -69,7 +69,7 @@ extension Paginated where Self : PaginatedOperation {
     func next() -> Self? {
         let results = self.results ?? []
         if let nextPaginator = self.paginator.nextPage( results.count ) {
-            return self.dynamicType.init(paginator: nextPaginator)
+            return self.dynamicType.init(operation: self, paginator: nextPaginator)
         }
         return nil
     }

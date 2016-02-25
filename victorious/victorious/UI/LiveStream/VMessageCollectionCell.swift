@@ -72,6 +72,8 @@ class VMessageCollectionCell: UICollectionViewCell {
         let font: UIFont
     }
     
+    private var storyboardTextViewWidth: CGFloat!
+    
     var style: Style! {
         didSet {
             textView.font = style.font
@@ -84,6 +86,11 @@ class VMessageCollectionCell: UICollectionViewCell {
             
             avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        storyboardTextViewWidth = textView.bounds.width
     }
     
     struct ViewData {
@@ -115,7 +122,8 @@ class VMessageCollectionCell: UICollectionViewCell {
     // MARK: - SelfSizingCell
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        var sizeNeeded = textView.sizeThatFits(CGSize(width: bounds.width, height: CGFloat.max))
+        let availableTextViewSize = CGSize(width: storyboardTextViewWidth - 10, height: CGFloat.max)
+        var sizeNeeded = textView.sizeThatFits(availableTextViewSize)
         sizeNeeded.width = bounds.width
         sizeNeeded.height += textView.frame.minY + self.bounds.maxY - textView.frame.maxY
         return sizeNeeded

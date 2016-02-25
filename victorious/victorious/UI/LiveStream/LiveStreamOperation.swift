@@ -27,21 +27,17 @@ let testMessageText = [
     "I have no words"
 ]
 
-final class LiveStreamOperation: RequestOperation, PaginatedOperation {
+final class LiveStreamOperation: FetcherOperation, PaginatedOperation {
     
-    let request: StreamRequest
+    let paginator: StandardPaginator
     
-    required init( request: StreamRequest ) {
-        self.request = request
-    }
-    
-    override convenience init() {
-        self.init( request: StreamRequest(apiPath: "", sequenceID: nil)! )
+    required init(operation: LiveStreamOperation, paginator: StandardPaginator) {
+        self.paginator = paginator
     }
     
     override func main() {
         
-        var displayOrder = self.request.paginator.displayOrderCounterStart
+        var displayOrder = self.paginator.displayOrderCounterStart
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
@@ -65,36 +61,78 @@ final class LiveStreamOperation: RequestOperation, PaginatedOperation {
     }
 }
 
-final class LiveStreamOperationUpdate: RequestOperation, PaginatedOperation {
+
+protocol LiveOperationDelegate: class {
+    func liveOperation(operation: LiveOperation, didReceiveResults: [AnyObject] )
+    func liveOperation(operation: LiveOperation, didEncounterError: NSError )
+}
+
+protocol LiveOperation: class {
+    weak var delegate: LiveOperationDelegate? { get }
+}
+
+final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
     
-    let request: StreamRequest
+    let paginator: StandardPaginator
+    let conversationID: Int
     
-    required init( request: StreamRequest ) {
-        self.request = request
+    required init(conversationID: Int, paginator: StandardPaginator = StandardPaginator()) {
+        self.paginator = paginator
+        self.conversationID = conversationID
     }
     
-    override convenience init() {
-        self.init( request: StreamRequest(apiPath: "", sequenceID: nil)! )
+    required convenience init(operation: LiveStreamOperationUpdate, paginator: StandardPaginator) {
+        self.init(conversationID: operation.conversationID, paginator: paginator)
     }
     
     override func main() {
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            if arc4random() % 10 > 2 {
-                var results = [AnyObject]()
-                for _ in 0..<Int(arc4random() % 4) {
-                    let rnd = Int(arc4random() % UInt32(testMessageText.count) )
-                    let text = testMessageText[rnd]
-                    let sender: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky" ])
-                    let message: VMessage = context.v_createObject()
-                    message.sender = sender
-                    message.text = text
-                    message.postedAt = NSDate()
-                    results.append( message )
+        let objectIDs: [NSManagedObjectID] = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
+                let conversation: VConversation = context.v_findObjects( ["remoteId" : self.conversationID ]).first else {
+                return []
+            }
+            let shouldCreatedMessages = arc4random() % 10 > 2
+            
+            let user: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky"])
+            user.status = "test"
+            conversation.user = user
+            
+            guard shouldCreatedMessages else {
+                return []
+            }
+            
+            var messagesCreated = [VMessage]()
+            var displayOrder = (conversation.messages?.lastObject as? VMessage)?.displayOrder.integerValue ?? 0
+            
+            let messagesCount = Int(arc4random() % 4)
+            for _ in 0..<messagesCount {
+                let sender: VUser
+                if arc4random() % 5 == 1 {
+                    sender = currentUser
+                } else {
+                    sender = user
                 }
-                self.results = results
-            } else {
-                self.results = []
+                
+                let rnd = Int(arc4random() % UInt32(testMessageText.count) )
+                let text = testMessageText[rnd]
+                let message: VMessage = context.v_createObject()
+                message.sender = sender
+                message.text = text
+                message.postedAt = NSDate()
+                message.displayOrder = --displayOrder
+                messagesCreated.append(message)
+            }
+            
+            conversation.v_addObjects( messagesCreated, to: "messages")
+            context.v_save()
+            
+            return messagesCreated.map { $0.objectID }
+        }
+        
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            self.results = objectIDs.flatMap {
+                return context.objectWithID($0) as? VMessage
             }
         }
     }

@@ -53,6 +53,21 @@ extension UICollectionView {
         self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false)
     }
     
+    public func v_reloadForPreviousPage() {
+        
+        // Because we're scrolling up in this view controller, we need to do a bit of
+        // careful reloading and scroll position adjustment when loading next pages
+        let oldContentSize = contentSize
+        let oldOffset = contentOffset
+        
+        //Must call reloadData() to get contentSize to update instantly
+        reloadData()
+        
+        let newContentSize = contentSize
+        let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
+        setContentOffset(newOffset, animated:false)
+    }
+    
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
         

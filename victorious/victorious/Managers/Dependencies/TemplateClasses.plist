@@ -97,7 +97,7 @@
 	<key>animated.voteType</key>
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
-	<string>victorious.LiveStreamViewController</string>
+	<string>VFollowingStreamCollectionViewController</string>
 	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
 	<key>basic.multiScreen</key>
@@ -110,6 +110,8 @@
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VConversationListViewController</string>
+	<key>livechat.screen</key>
+	<string>victorious.LiveStreamViewController</string>
 	<key>message.screen</key>
 	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
