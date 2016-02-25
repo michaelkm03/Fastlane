@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Twitterアカウントを選択してください";
 
-"ReportInappropriate"   =   "不適切な内容を報告";
+"BlockInappropriate"   =   "不適切な内容を報告";
 "ReportedTitle"         =   "了解！";
 "ReportContentMessage"  =   "このコンテンツは24時間以内に審査されます。";
 "ReportCommentMessage"  =   "このコンテンツは24時間以内に審査されます。";

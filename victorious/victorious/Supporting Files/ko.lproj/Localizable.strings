@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "트위터 계정 선택하기";
 
-"ReportInappropriate"   =   "부적절한 내용 신고";
+"BlockInappropriate"    =   "부적절한 내용 신고";
 "ReportedTitle"         =   "알겠습니다!";
 "ReportContentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";
 "ReportCommentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";

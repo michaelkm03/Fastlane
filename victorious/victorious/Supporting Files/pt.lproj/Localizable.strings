@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Selecione uma conta do Twitter";
 
-"ReportInappropriate"   =   "Denunciar como Impróprio";
+"BlockInappropriate"    =   "Denunciar como Impróprio";
 "ReportedTitle"         =   "Tudo certo!";
 "ReportContentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
 "ReportCommentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
