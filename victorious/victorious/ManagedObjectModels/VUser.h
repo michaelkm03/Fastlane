@@ -48,5 +48,6 @@
 @property (nonatomic, retain) NSOrderedSet *likedSequences;
 @property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
 @property (nonatomic, retain) NSNumber * isNewUser; //< Transient
+@property (nonatomic, retain) id achievementsUnlocked;
 
 @end

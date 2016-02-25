@@ -28,7 +28,8 @@ extension VUser: PersistenceParsable {
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
-        levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage        
+        levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
+        achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
