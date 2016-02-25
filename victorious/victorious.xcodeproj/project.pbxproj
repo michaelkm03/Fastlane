@@ -436,7 +436,6 @@
 		670C659B1C52C7EA00BD7F3F /* ListShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */; };
 		670C659D1C52CE8A00BD7F3F /* HashtagShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
-		671DD5571C7F80B10095A605 /* TrophyCaseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
 		672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672033581C4DD8760015D91D /* TrendingUsersOperation.swift */; };
 		6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */; };
@@ -462,6 +461,9 @@
 		6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555E1BF157BA00D40A87 /* FanLoyalty.swift */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
 		675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */; };
+		675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */; };
+		675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */; };
+		675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */; };
 		675EAF0B1C10E52E00019087 /* AgeGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */; };
 		6761E6C51C4DC8D600B97BF1 /* TrendingUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */; };
 		6761E6C71C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */; };
@@ -532,7 +534,6 @@
 		67C5C5371C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */; };
 		67C5C53B1C0395ED00F99C8C /* UnlikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */; };
 		67C5C53D1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */; };
-		67C7764F1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */; };
 		67C9ADAB1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */; };
 		67C9ADAD1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */; };
 		67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */; };
@@ -551,7 +552,6 @@
 		67FD54C71BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C61BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift */; };
 		67FD54C91BF69A4500CF52F7 /* DeleteCommentRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C81BF69A4500CF52F7 /* DeleteCommentRequestTests.swift */; };
 		67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */; };
-		67FE73CD1C7E94B900FE94A2 /* TrophyCaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */; };
 		79004DB81BF53A050027E344 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79004DB71BF53A050027E344 /* DateFormat.swift */; };
 		790254751BF293E200D20AFE /* Hashtag.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6C01BF13E3F00FB9591 /* Hashtag.json */; };
 		79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */; };
@@ -2570,7 +2570,6 @@
 		670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelfTests.swift; sourceTree = "<group>"; };
 		670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagShelfTests.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
-		671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TrophyCaseViewController.storyboard; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
 		672033581C4DD8760015D91D /* TrendingUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperation.swift; sourceTree = "<group>"; };
 		6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperationTests.swift; sourceTree = "<group>"; };
@@ -2598,6 +2597,9 @@
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
 		675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManagerTests.swift; sourceTree = "<group>"; };
 		675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseAchievementCollectionViewCell.swift; path = "Trophy Case/TrophyCaseAchievementCollectionViewCell.swift"; sourceTree = "<group>"; };
+		675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseCollectionViewDataSource.swift; path = "Trophy Case/TrophyCaseCollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TrophyCaseViewController.storyboard; path = "Trophy Case/TrophyCaseViewController.storyboard"; sourceTree = "<group>"; };
+		675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseViewController.swift; path = "Trophy Case/TrophyCaseViewController.swift"; sourceTree = "<group>"; };
 		675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateViewController.swift; sourceTree = "<group>"; };
 		6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequest.swift; sourceTree = "<group>"; };
 		6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequestTests.swift; sourceTree = "<group>"; };
@@ -2660,7 +2662,6 @@
 		67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceDetailListByUserRequestTests.swift; sourceTree = "<group>"; };
 		67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequest.swift; sourceTree = "<group>"; };
 		67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequestTests.swift; sourceTree = "<group>"; };
-		67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrophyCaseCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		67C9ADAA1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkOperation.swift; sourceTree = "<group>"; };
 		67C9ADAC1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkOperationTests.swift; sourceTree = "<group>"; };
 		67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUploadManager.swift; sourceTree = "<group>"; };
@@ -2681,7 +2682,6 @@
 		67FD54C61BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67FD54C81BF69A4500CF52F7 /* DeleteCommentRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCommentRequestTests.swift; sourceTree = "<group>"; };
 		67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConversationRequestTests.swift; sourceTree = "<group>"; };
-		67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrophyCaseViewController.swift; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -6630,9 +6630,9 @@
 			isa = PBXGroup;
 			children = (
 				675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */,
-				67C7764E1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift */,
-				671DD5561C7F80B10095A605 /* TrophyCaseViewController.storyboard */,
-				67FE73CC1C7E94B900FE94A2 /* TrophyCaseViewController.swift */,
+				675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */,
+				675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */,
+				675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */,
 			);
 			name = "Trophy Case";
 			sourceTree = "<group>";
@@ -9997,7 +9997,7 @@
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
-				671DD5571C7F80B10095A605 /* TrophyCaseViewController.storyboard in Resources */,
+				675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,
@@ -11159,7 +11159,6 @@
 				F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */,
 				0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */,
 				0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */,
-				67C7764F1C7E6CAD00BE65CE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
 				F06B41801B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift in Sources */,
 				A76712111C1F83C8006568DF /* VAnswer+Parsable.swift in Sources */,
 				D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */,
@@ -11461,6 +11460,7 @@
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
+				675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
@@ -11570,6 +11570,7 @@
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				A7AF17B41C599331007BCAFE /* VUser+Following.swift in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
+				675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
 				A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */,
@@ -11718,7 +11719,6 @@
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
-				67FE73CD1C7E94B900FE94A2 /* TrophyCaseViewController.swift in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A76363711C50511A000887C4 /* PreloadUserInfoOperation.swift in Sources */,
