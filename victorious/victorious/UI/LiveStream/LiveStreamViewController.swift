@@ -10,7 +10,7 @@ import UIKit
 
 class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate {
     
-    private let kSectionBottomMargin: CGFloat = 50.0
+    private let kSectionBottomMargin: CGFloat = 60.0
     
     private var dependencyManager: VDependencyManager!
     
@@ -46,6 +46,8 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private var timer: VTimerManager?
     private let scrollPaginator = VScrollPaginator()
+    private var previousScrollPosition = CGPoint.zero
+    private var shouldScrollToBottom: Bool = true
     private var isScrolling: Bool = false
     
     @IBOutlet private var moreContentController: MoreContentController!
@@ -60,7 +62,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     // MARK: - MoreContentControllerDelegate
     
     func onMoreContentSelected() {
-        if !isScrolling {
+        if !shouldScrollToBottom {
             collectionView.v_scrollToBottomAnimated(true)
         }
     }
@@ -121,19 +123,18 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
             return
         }
         
-        if shouldScrollToBottom {
+        if shouldScrollToBottom && !isScrolling {
             // Some tricky stuff to make sure the collection view's content size is updated enough
             // so that the scroll to bottom actually works
             CATransaction.begin()
             CATransaction.setCompletionBlock() {
                 dispatch_after(0.0) {
-                    if !self.isScrolling {
-                        self.collectionView.v_scrollToBottomAnimated(true)
-                    }
+                    self.collectionView.v_scrollToBottomAnimated(true)
                 }
             }
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             CATransaction.commit()
+            
         } else {
             let newContentCount = newValue.array.filter { !oldValue.containsObject( $0 ) }.count
             moreContentController.incrementMessageCountBy( newContentCount )
@@ -150,14 +151,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         
     }
     
-    private var shouldScrollToBottom: Bool {
-        let indexPath = NSIndexPath(forItem: dataSource.visibleItems.count-1, inSection: 0)
-        let collectionViewLayout = collectionView.collectionViewLayout
-        let size = dataSource.collectionView( collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
-        let contentOffsetAtBottom = collectionView.contentSize.height - collectionView.bounds.height - (size.height + kSectionBottomMargin * 2.0)
-        return collectionView.contentOffset.y >= contentOffsetAtBottom
-    }
-    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() { }
@@ -169,12 +162,18 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let contentOffsetAtBottom = collectionView.contentSize.height - collectionView.bounds.height - 100.0
+        
+        let contentOffsetAtBottom = collectionView.contentSize.height - collectionView.bounds.height - kSectionBottomMargin
         if collectionView.contentOffset.y >= contentOffsetAtBottom {
             moreContentController.hide()
+            shouldScrollToBottom = true
+        
+        } else if scrollView.contentOffset.y <= previousScrollPosition.y {
+            shouldScrollToBottom = false
         }
         
-        //scrollPaginator.scrollViewDidScroll(scrollView)
+        previousScrollPosition = scrollView.contentOffset
+        scrollPaginator.scrollViewDidScroll(scrollView)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

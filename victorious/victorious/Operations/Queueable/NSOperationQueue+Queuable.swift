@@ -46,7 +46,7 @@ extension NSOperationQueue {
             if let lastOp = lastOp {
                 nextOp.addDependency(lastOp)
             }
-            lastOp = nextOp
+            lastOp = nextOpf
         }
         operations.last?.completionBlock = completion
     }
