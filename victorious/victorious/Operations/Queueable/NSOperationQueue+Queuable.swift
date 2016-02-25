@@ -59,7 +59,7 @@ extension NSOperationQueue {
 
 extension NSOperationQueue {
     
-    func v_addOperation<T: QueueableOperation where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
+    func v_addOperation<T: Queueable where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
         if let completion = completion {
             operation.completionBlock = { [weak operation] in
                 operation?.executeCompletionBlock(completion)
