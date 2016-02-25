@@ -63,7 +63,6 @@ extension VSequenceActionController {
     func flag(sequence: VSequence, completion: (Bool)->()) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
-        
         let flagBlock = {
             FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
                 
@@ -102,7 +101,14 @@ extension VSequenceActionController {
     }
     
     private func flagItem(sequence: VSequence) -> VActionItem {
-        
+        let delegateFlagBlock = {
+            if self.delegate.respondsToSelector("contentViewDidFlagContent:") {
+                self.delegate.performSelector("contentViewDidFlagContent:", withObject: nil)
+            }
+            else if self.delegate.respondsToSelector("contentViewPresenterDidFlagContent:") {
+                self.delegate.performSelector("contentViewPresenterDidFlagContent:", withObject: nil)
+            }
+        }
         let flagItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""),
                                                               actionIcon: UIImage(named: "icon_flag"),
                                                               detailText: "")
@@ -111,15 +117,12 @@ extension VSequenceActionController {
                 self.flag(sequence) { success in
                     if self.shouldDismissOnDelete {
                         self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
-                            if self.delegate.respondsToSelector("contentViewDidFlagContent:") {
-                                self.delegate.performSelector("contentViewDidFlagContent:", withObject: nil)
-                            }
+                            delegateFlagBlock()
                         }
                     }
                     else {
-                        if self.delegate.respondsToSelector("contentViewDidFlagContent:") {
-                            self.delegate.performSelector("contentViewDidFlagContent:", withObject: nil)
-                        }                    }
+                        delegateFlagBlock()
+                    }
 
 
                 }
@@ -130,6 +133,7 @@ extension VSequenceActionController {
     }
     
     func delete(sequence: VSequence, completion: (Bool)->()) {
+        
         let deleteBlock = {
             let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
             deleteOperation.queueOn(deleteOperation.defaultQueue) { results, error in
@@ -154,16 +158,7 @@ extension VSequenceActionController {
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
                                                 style: UIAlertActionStyle.Destructive) { action in
-                             
-            if self.shouldDismissOnDelete {
-                self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
-                    deleteBlock()
-                }
-            }
-            else {
                 deleteBlock()
-            }
-
         })
         
         self.originViewController.presentViewController(alertController, animated: true, completion: nil)
@@ -171,14 +166,27 @@ extension VSequenceActionController {
     
     private func deleteItem(sequence: VSequence) -> VActionItem {
         
+        let delegateDeleteBlock = {
+            if self.delegate.respondsToSelector("contentViewDidDeleteContent:") {
+                self.delegate.performSelector("contentViewDidDeleteContent:", withObject: nil)
+            }
+            else if self.delegate.respondsToSelector("contentViewPresenterDidDeleteContent:") {
+                self.delegate.performSelector("contentViewPresenterDidDeleteContent:", withObject: nil)
+            }
+        }
         let deleteItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Delete", comment: ""),
                                                                 actionIcon: UIImage(named: "delete-icon"),
                                                                 detailText: "")
         deleteItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {
                 self.delete(sequence) { success in
-                    if self.delegate.respondsToSelector("contentViewDidDeleteContent:") {
-                        self.delegate.performSelector("contentViewDidDeleteContent:", withObject: nil)
+                    if self.shouldDismissOnDelete {
+                        self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
+                            delegateDeleteBlock()
+                        }
+                    }
+                    else {
+                        delegateDeleteBlock()
                     }
                 }
             }
