@@ -138,13 +138,10 @@ final class FetchConverationOperation: FetcherOperation, PaginatedOperation {
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            let predicate = NSPredicate(
-                vsdk_format: "conversation.user.remoteId == %@",
-                vsdk_argumentArray: [ self.userID ],
-                vsdk_paginator: self.paginator )
-            
+            let predicate = NSPredicate( format: "conversation.user.remoteId == %i", self.userID)
+            let padinatorPredicate = self.paginator.paginatorPredicate
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
-            fetchRequest.predicate = predicate
+            fetchRequest.predicate = predicate + padinatorPredicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results
         }

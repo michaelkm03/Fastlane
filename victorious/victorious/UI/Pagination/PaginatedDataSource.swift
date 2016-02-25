@@ -37,9 +37,10 @@ import VictoriousIOSSDK
         return state == .Loading
     }
     
+    private var quietUpdate = false
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
-            if oldValue != visibleItems {
+            if oldValue != visibleItems && !quietUpdate {
                 self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
             }
         }
@@ -101,10 +102,6 @@ import VictoriousIOSSDK
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: Paginated>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         
-        guard self.currentPaginatedRequestOperation != nil else {
-            return
-        }
-        
         var operation: T = createOperation()
         guard let requestOperation = operation as? FetcherOperation else {
             return
@@ -117,7 +114,7 @@ import VictoriousIOSSDK
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 completion?( [], error )
-            
+                
             } else {
                 let results = operation.results ?? []
                 operation.results = results
@@ -128,6 +125,16 @@ import VictoriousIOSSDK
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error )
             }
+        }
+    }
+    
+    func purgeVisibleItemsWithinLimit(limit: Int) {
+        let (newItems, removed) = visibleItems.v_orderedSetPrunedToLimit(limit, pageType: .Next)
+        if removed.count > 0 {
+            quietUpdate = true
+            visibleItems = newItems
+            quietUpdate = false
+            delegate?.paginatedDataSource?(self, didPurgeItems: removed)
         }
     }
     
@@ -209,6 +216,17 @@ private extension NSOrderedSet {
         }
         
         return output.v_orderedSetFitleredForDeletedObjects()
+    }
+    
+    func v_orderedSetPrunedToLimit(limit: Int, pageType: VPageType) -> (result: NSOrderedSet, removed: NSOrderedSet) {
+        guard self.count > limit else {
+            return (self, NSOrderedSet())
+        }
+        var items = self.array
+        let range = 0..<(self.count - limit)
+        let removed = Array(items[range])
+        items.removeRange(range)
+        return (NSOrderedSet(array: items), NSOrderedSet(array: removed))
     }
     
     func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {

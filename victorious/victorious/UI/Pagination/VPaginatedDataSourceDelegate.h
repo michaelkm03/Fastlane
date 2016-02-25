@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, VDataSourceState) {
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(VDataSourceState)oldState to:(VDataSourceState)newState;
 
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didPurgeItems:(NSOrderedSet *)items;
+
 @end
 
 NS_ASSUME_NONNULL_END

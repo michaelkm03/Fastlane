@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate {
+class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, LiveStreamDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate {
     
     private let kSectionBottomMargin: CGFloat = 60.0
     
@@ -47,7 +47,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     private var timer: VTimerManager?
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
-    private var shouldScrollToBottom: Bool = true
     private var isScrolling: Bool = false
     
     @IBOutlet private var moreContentController: MoreContentController!
@@ -62,9 +61,8 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     // MARK: - MoreContentControllerDelegate
     
     func onMoreContentSelected() {
-        if !shouldScrollToBottom {
-            collectionView.v_scrollToBottomAnimated(true)
-        }
+        dataSource.shouldStashNewContent = false
+        collectionView.v_scrollToBottomAnimated(true)
     }
     
     // MARK: - UIViewController
@@ -76,7 +74,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
-        view.backgroundColor = UIColor.blackColor()
+        view.backgroundColor = UIColor.v_colorFromHexString("170724")
         
         dataSource.delegate = self
         dataSource.registerCellsWithCollectionView( collectionView )
@@ -98,7 +96,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         beginLiveUpdates()
     }
     
-    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         endLiveUpdates()
@@ -114,7 +111,17 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         return UIEdgeInsets(top: 0, left: 0, bottom: kSectionBottomMargin, right: 0)
     }
     
-    // MARK: - VPaginatedDataSourceDelegate
+    // MARK: - LiveStreamDataSourceDelegate
+    
+    func liveStreamDataSourceDidUpdateStashedItems( liveStreamDataSource: LiveStreamDataSource) {
+        let count = liveStreamDataSource.stashedItems.count
+        if count > 0 {
+            moreContentController.count = liveStreamDataSource.stashedItems.count
+            moreContentController.show()
+        } else {
+            moreContentController.hide()
+        }
+    }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
@@ -123,23 +130,20 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
             return
         }
         
-        if shouldScrollToBottom && !isScrolling {
+        if !dataSource.shouldStashNewContent && !isScrolling {
             // Some tricky stuff to make sure the collection view's content size is updated enough
             // so that the scroll to bottom actually works
             CATransaction.begin()
             CATransaction.setCompletionBlock() {
                 dispatch_after(0.0) {
-                    self.collectionView.v_scrollToBottomAnimated(true)
+                    if !self.dataSource.shouldStashNewContent {
+                        self.collectionView.v_scrollToBottomAnimated(true)
+                    }
                 }
             }
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             CATransaction.commit()
             
-        } else {
-            let newContentCount = newValue.array.filter { !oldValue.containsObject( $0 ) }.count
-            moreContentController.incrementMessageCountBy( newContentCount )
-            moreContentController.show()
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: false)
         }
     }
     
@@ -148,12 +152,17 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didPurgeItems items: NSOrderedSet) {
+        collectionView.v_reloadForPreviousPage()
     }
     
     // MARK: - VScrollPaginatorDelegate
     
-    func shouldLoadNextPage() { }
+    func shouldLoadNextPage() {
+        dataSource.loadMessages( pageType: .Previous )
+    }
     
     func shouldLoadPreviousPage() {
         dataSource.loadMessages( pageType: .Next )
@@ -163,17 +172,17 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        let contentOffsetAtBottom = collectionView.contentSize.height - collectionView.bounds.height - kSectionBottomMargin
-        if collectionView.contentOffset.y >= contentOffsetAtBottom {
-            moreContentController.hide()
-            shouldScrollToBottom = true
-        
-        } else if scrollView.contentOffset.y <= previousScrollPosition.y {
-            shouldScrollToBottom = false
+        // Regular pagination through `scrollPaginator` should only be active when
+        // new items are not being stashed
+        if dataSource.shouldStashNewContent {
+            scrollPaginator.scrollViewDidScroll(scrollView)
         }
         
+        if isScrolling && scrollView.contentOffset.y <= previousScrollPosition.y {
+            // When scrolling up to look at older items
+            dataSource.shouldStashNewContent = true
+        }
         previousScrollPosition = scrollView.contentOffset
-        scrollPaginator.scrollViewDidScroll(scrollView)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -200,13 +209,9 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func onUpdate() {
-        dataSource.refreshRemote()
+        if !dataSource.shouldStashNewContent {
+            dataSource.purgeVisibleItemsWithinLimit(25)
+        }
+        dataSource.loadMessages(pageType: .First)
     }
-}
-
-struct PaginedDataSourceChange {
-    let oldVisibleItems: NSOrderedSet
-    let itemsAdded: [AnyObject]
-    let itemsRemoved: [AnyObject]
-    let itemsPurged: [AnyObject]
 }

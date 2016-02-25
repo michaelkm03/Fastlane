@@ -85,6 +85,7 @@ class VMessageCollectionCell: UICollectionViewCell {
             bubbleView.layer.borderWidth = 1.0
             
             avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
+            avatarView.backgroundColor = UIColor.v_colorFromHexString("5e8d98")
         }
     }
     
@@ -118,6 +119,8 @@ class VMessageCollectionCell: UICollectionViewCell {
     @IBOutlet private(set) weak var textView: UITextView!
     @IBOutlet private weak var bubbleView: UIView!
     @IBOutlet private weak var avatarView: UIView!
+    @IBOutlet private weak var nameLabel: UITextView!
+    @IBOutlet private weak var timeLabel: UITextView!
     
     // MARK: - SelfSizingCell
     

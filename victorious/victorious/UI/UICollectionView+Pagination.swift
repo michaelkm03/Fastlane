@@ -50,7 +50,7 @@ extension UICollectionView {
     }
     
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
-        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false)
+        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false, completion:nil)
     }
     
     public func v_reloadForPreviousPage() {
@@ -69,7 +69,7 @@ extension UICollectionView {
     }
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
+    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion:(()->())? = nil) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {
@@ -96,10 +96,15 @@ extension UICollectionView {
         }
         
         let performChangesBlock = {
-            self.performBatchUpdates({
-                self.insertItemsAtIndexPaths( insertedIndexPaths )
-                self.deleteItemsAtIndexPaths( deletedIndexPaths )
-                }, completion: nil)
+            self.performBatchUpdates(
+                {
+                    self.insertItemsAtIndexPaths( insertedIndexPaths )
+                    self.deleteItemsAtIndexPaths( deletedIndexPaths )
+                },
+                completion: { _ in
+                    completion?()
+                }
+            )
         }
         
         if animated {

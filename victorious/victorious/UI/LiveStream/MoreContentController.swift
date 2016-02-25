@@ -18,9 +18,9 @@ class MoreContentController: NSObject {
     
     private(set) var isShowing: Bool = true
     
-    private var messageCount: Int = 0 {
+    var count: Int = 0 {
         didSet {
-            let formattedMessageCount = largeNumberFormatter.stringForInteger(messageCount)
+            let formattedMessageCount = largeNumberFormatter.stringForInteger(count)
             let title = "\(formattedMessageCount) New Messages"
             UIView.setAnimationsEnabled(false)
             self.button.setTitle(title, forState: .Normal)
@@ -50,10 +50,6 @@ class MoreContentController: NSObject {
     }
     
     private var moreContentnButtonToBottomStoryboardValue: CGFloat!
-    
-    func incrementMessageCountBy(amount: Int) {
-        messageCount += amount
-    }
     
     func show(animated animated: Bool = true) {
         guard !isShowing else {
@@ -87,7 +83,7 @@ class MoreContentController: NSObject {
             self.button.layoutIfNeeded()
         }
         let completion = { (_:Bool) in
-            self.messageCount = 0
+            self.count = 0
             self.isShowing = false
         }
         if animated {
