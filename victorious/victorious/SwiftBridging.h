@@ -172,6 +172,7 @@
 #import "VProfileEditViewController.h"
 #import "VPublishParameters.h"
 #import "VPushNotificationManager.h"
+#import "VPurchaseManager.h"
 #import "VPurchaseViewController.h"
 #import "VReachability.h"
 #import "VRemixPresenter.h"

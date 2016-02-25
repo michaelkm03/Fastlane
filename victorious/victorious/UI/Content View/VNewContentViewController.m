@@ -1576,7 +1576,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     VIPViewController *vipViewController = [[VIPViewController alloc] initWithNibName:nil
                                                                                bundle:nil
-                                                                    dependencyManager:self.dependencyManager];
+                                                                    dependencyManager:self.dependencyManager
+                                                                      purchaseManager:self.purchaseManager];
     [self.navigationController pushViewController:vipViewController animated:YES];
 }
 

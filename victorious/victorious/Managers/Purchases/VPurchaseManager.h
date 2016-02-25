@@ -111,6 +111,11 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  */
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier;
 
+
+- (void)validateReceipt:(NSData *)receipt
+                success:(ReceiptValidationSuccessBlock)successCallback
+                failure:(ReceiptValidationFailureBlock)failureCallback;
+
 #ifdef V_RESET_PURCHASES
 
 /**

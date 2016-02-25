@@ -9,13 +9,19 @@
 class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     let kLargeSubscribeImage = UIImage(named: "test_vip_icon_large")!
     let dependencyManager: VDependencyManager
+    let purchaseManager: VPurchaseManager
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
 
     //MARK: - Initialization
 
-    init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?, dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(nibName nibNameOrNil: String?,
+        bundle nibBundleOrNil: NSBundle?,
+        dependencyManager: VDependencyManager,
+        purchaseManager: VPurchaseManager) {
+
+            self.dependencyManager = dependencyManager
+            self.purchaseManager = purchaseManager
+            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -25,8 +31,26 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     //MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        self.view.backgroundColor = UIColor.magentaColor()
+
         if VCurrentUser.user()?.isVIPSubscriber == true {
-            setUpVIPViews()
+            let receipt = NSBundle.mainBundle().readReceiptData()
+            purchaseManager.validateReceipt(receipt,
+                success: { isReceiptValid in
+                    if isReceiptValid == true {
+                        self.setUpVIPViews()
+                    } else {
+                        let alert = UIAlertController(title: "Invalid subscription",
+                            message: "Your subscription became invalid",
+                            preferredStyle: .Alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        self.showPurchaseSubscriptionScreen()
+                    }
+                }, failure: { error in
+                    VLog("Failed to validate a receipt when entering the VIP screen")
+                }
+            )
         } else {
             showPurchaseSubscriptionScreen()
         }
@@ -34,6 +58,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
 
     private func setUpVIPViews() {
         let alert = UIAlertController(title: "Yay!", message: "You're now in the VIP zone", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Awesome!", style: .Default, handler: nil))
         presentViewController(alert, animated: true, completion: nil)
     }
 
@@ -51,6 +76,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     func purchaseDidFinish(didMakePurchase: Bool) {
         if didMakePurchase == true {
             self.presentedViewController?.dismissViewControllerAnimated(true) {
+                VCurrentUser.user()?.isVIPSubscriber = true
                 self.setUpVIPViews()
             }
         }
