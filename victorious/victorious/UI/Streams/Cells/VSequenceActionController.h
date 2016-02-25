@@ -22,8 +22,16 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 @property (nonatomic, weak, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, weak, readonly) UIViewController *originViewController;
+@property (nonatomic, weak) id delegate;
+@property (nonatomic, readonly) BOOL shouldDismissOnDelete;
 
-- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController;
+
+/**
+ *  Sets up the SequenceActionController with the dependency manager and the view controller that it should be presented on
+ *
+ *  @param shouldDismissOnDelete      Should originViewController be dismissed if the sequence is flagged/deleted
+ */
+- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController andDelegate:(id)delegate shouldDismissOnDelete:(BOOL)shouldDismissOnDelete;
 
 - (void)showCommentsWithSequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment;
 
@@ -79,10 +87,6 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
                      node:(VNode *)node
                  streamID:(NSString *)streamID
                completion:(void(^)())completion;
-
-- (void)flagWithSequence:(VSequence *)sequence
-                   completion:(void (^)(BOOL success))completion;
-
 
 - (void)showLikersWithSequence:(VSequence *)sequence;
 

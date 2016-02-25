@@ -38,6 +38,7 @@
 
 @property (nonatomic, strong) VRemixPresenter *remixPresenter;
 @property (nonatomic, weak, readwrite) UIViewController *originViewController;
+//@property (nonatomic, weak, readwrite) id delegate;
 @property (nonatomic, weak, readwrite) VDependencyManager *depencencyManager;
 
 @end
@@ -46,13 +47,15 @@
 
 #pragma mark - Initializer
 
-- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController
+- (instancetype)initWithDepencencyManager:(VDependencyManager *)dependencyManager andOriginViewController:(UIViewController *)originViewController andDelegate:(id)delegate shouldDismissOnDelete:(BOOL)shouldDismissOnDelete
 {
     self = [super init];
     if (self)
     {
         _dependencyManager = dependencyManager;
         _originViewController = originViewController;
+        _shouldDismissOnDelete = shouldDismissOnDelete;
+        _delegate = delegate;
     }
     return self;
 }
@@ -293,11 +296,6 @@
 }
 
 #pragma mark - Flag
-
-- (void)flagSequence:(VSequence *)sequence completion:(void (^)(BOOL success))completion
-{
-    [self flagSequence:sequence completion:completion];
-}
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message
 {

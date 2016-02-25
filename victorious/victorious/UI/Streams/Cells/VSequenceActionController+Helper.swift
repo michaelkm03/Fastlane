@@ -63,30 +63,37 @@ extension VSequenceActionController {
     func flag(sequence: VSequence, completion: (Bool)->()) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
+        
+        let flagBlock = {
+            FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
+                
+                if let error = error {
+                    let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
+                    
+                    if error.code == Int(kVCommentAlreadyFlaggedError) {
+                        self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                    } else {
+                        self.originViewController.v_showErrorDefaultError()
+                    }
+                    
+                } else {
+                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                    self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                }
+            }
+        }
+        
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
                                                 preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
             style: UIAlertActionStyle.Default,
             handler: { action in
-                FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
-                    
-                    if let error = error {
-                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                        
-                        if error.code == Int(kVCommentAlreadyFlaggedError) {
-                            self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-                        } else {
-                            self.originViewController.v_showErrorDefaultError()
-                        }
-                        
-                    } else {
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                        self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-                    }
-                }
-        }))
+                flagBlock()
+            }))
+        
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
             style: UIAlertActionStyle.Default,
             handler:nil))
@@ -102,14 +109,64 @@ extension VSequenceActionController {
         flagItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {
                 self.flag(sequence) { success in
-                    if self.originViewController.respondsToSelector("contentViewPresenterDidFlagContent:") {
-                        self.originViewController.performSelector("contentViewPresenterDidFlagContent:", withObject: nil)
+                    if self.shouldDismissOnDelete {
+                        self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
+                            if self.delegate.respondsToSelector("contentViewDidFlagContent:") {
+                                self.delegate.performSelector("contentViewDidFlagContent:", withObject: nil)
+                            }
+                        }
                     }
+                    else {
+                        if self.delegate.respondsToSelector("contentViewDidFlagContent:") {
+                            self.delegate.performSelector("contentViewDidFlagContent:", withObject: nil)
+                        }                    }
+
+
                 }
             }
         }
         return flagItem
         
+    }
+    
+    func delete(sequence: VSequence, completion: (Bool)->()) {
+        let deleteBlock = {
+            let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
+            deleteOperation.queueOn(deleteOperation.defaultQueue) { results, error in
+                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
+                if let error = error {
+                    print ("Error: \(error.code)")
+                    completion(false)
+                }
+                else {
+                    completion(true)
+                }
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
+                                                message: nil,
+                                                preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
+            style: UIAlertActionStyle.Cancel,
+            handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
+                                                style: UIAlertActionStyle.Destructive) { action in
+                             
+            if self.shouldDismissOnDelete {
+                self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
+                    deleteBlock()
+                }
+            }
+            else {
+                deleteBlock()
+            }
+
+        })
+        
+        self.originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
     
     private func deleteItem(sequence: VSequence) -> VActionItem {
@@ -119,23 +176,11 @@ extension VSequenceActionController {
                                                                 detailText: "")
         deleteItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {
-                let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
-                    message: nil,
-                    preferredStyle: UIAlertControllerStyle.ActionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
-                    style: UIAlertActionStyle.Cancel,
-                    handler: nil))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
-                    style: UIAlertActionStyle.Destructive) { action in
-                        let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
-                        deleteOperation.queueOn(deleteOperation.defaultQueue) { results, error in
-                            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
-                            if self.originViewController.respondsToSelector("contentViewPresenterDidDeleteContent:") {
-                                self.originViewController.performSelector("contentViewPresenterDidDeleteContent:", withObject: nil)
-                            }
-                        }
-                })
-                self.originViewController.presentViewController(alertController, animated: true, completion: nil)
+                self.delete(sequence) { success in
+                    if self.delegate.respondsToSelector("contentViewDidDeleteContent:") {
+                        self.delegate.performSelector("contentViewDidDeleteContent:", withObject: nil)
+                    }
+                }
             }
         }
         return deleteItem

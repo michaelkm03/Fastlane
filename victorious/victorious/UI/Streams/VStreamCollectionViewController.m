@@ -204,7 +204,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super viewDidLoad];
     
     self.hasRefreshed = NO;
-    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:self.dependencyManager andOriginViewController:self];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:self.dependencyManager andOriginViewController:self andDelegate:self shouldDismissOnDelete:NO];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     

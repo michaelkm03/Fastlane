@@ -119,7 +119,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:dependencyManager andOriginViewController:contentViewController];
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:dependencyManager andOriginViewController:contentViewController andDelegate:self shouldDismissOnDelete:YES];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -129,6 +129,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     viewModel.delegate = contentViewController;
     
     return contentViewController;
+}
+
+- (void)setDelegate:(id<VNewContentViewControllerDelegate>)delegate
+{
+    _delegate = delegate;
+    self.sequenceActionController.delegate = delegate;
 }
 
 #pragma mark - Dealloc
