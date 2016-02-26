@@ -212,14 +212,14 @@ import Foundation
                     VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
                     
                     if error.code == Int(kVCommentAlreadyFlaggedError) {
-                        self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                        self.originViewController.v_showFlaggedContentAlert(completion: completion)
                     } else {
                         self.originViewController.v_showErrorDefaultError()
                     }
                     
                 } else {
                     VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                    self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                    self.originViewController.v_showFlaggedContentAlert(completion: completion)
                 }
             }
         }
@@ -232,6 +232,73 @@ import Foundation
             style: UIAlertActionStyle.Default,
             handler: { action in
                 flagBlock()
+        }))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+            style: UIAlertActionStyle.Default,
+            handler:nil))
+        originViewController.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Block
+    ///
+    /// Presents an Alert Controller to confirm blocking of a user. Upon
+    /// confirmation, blocks the user and calls the completion block with a
+    /// Boolean representing success/failure of the operation.
+    ///
+    /// - parameter sequence:           The user we want to block. Should not
+    /// be nil.
+    /// - parameter completion:         A completion block takes in a Boolean
+    /// argument representing success/failure.
+    ///
+    
+    func blockUser(user: VUser?, completion: ((Bool)->())? ) {
+        guard let user = user else {
+            completion?(false)
+            return
+        }
+        
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        
+        let blockUserBlock = {
+            if let blocked = user.isBlocked?.boolValue where blocked {
+                
+                UnblockUserOperation(userID: user.remoteId.integerValue).queue() { (results, error) in
+                    
+                    if let error = error {
+                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
+                        self.originViewController.v_showErrorDefaultError()
+                        
+                    } else {
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
+                        completion?(true)
+                    }
+                }
+            } else {
+                BlockUserOperation(userID: user.remoteId.integerValue).queue() { (results, error) in
+                    
+                    if let error = error {
+                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
+                        self.originViewController.v_showErrorDefaultError()
+                        
+                    } else {
+                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
+                        self.originViewController.v_showFlaggedUserAlert(completion: completion)
+                    }
+                }
+            }
+        }
+        
+        let alertController = UIAlertController(title: nil,
+            message: nil,
+            preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
+            style: UIAlertActionStyle.Default,
+            handler: { action in
+                blockUserBlock()
         }))
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
@@ -454,6 +521,7 @@ extension VSequenceActionController {
     
     enum DelegateCallback {
         case Flag
+        case Block
         case Delete
     }
     
@@ -484,6 +552,8 @@ extension VSequenceActionController {
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
+        actionItems.append(blockUserActionItem(forSequence: sequence))
+        
         if AgeGate.isAnonymousUser() {
             actionItems = AgeGate.filterMoreButtonItems(actionItems)
         }
@@ -499,6 +569,8 @@ extension VSequenceActionController {
             delegate?.sequenceActionControllerDidFlagContent?()
         case DelegateCallback.Delete:
             delegate?.sequenceActionControllerDidDeleteContent?()
+        case DelegateCallback.Block:
+            delegate?.sequenceActionControllerDidBlockUser?()
         }
     }
     
@@ -512,6 +584,17 @@ extension VSequenceActionController {
             self.callDelegateWith(DelegateCallback.Flag)
         }
         return flagItem
+    }
+    
+    private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
+        let title = sequence.user.isBlocked == true ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let blockItem = VActionItem.defaultActionItemWithTitle(title,
+            actionIcon: UIImage(named: "action_sheet_block"),
+            detailText: "")
+        blockItem.selectionHandler = { item in
+            self.callDelegateWith(DelegateCallback.Block)
+        }
+        return blockItem
     }
     
     private func deleteActionItem(forSequence sequence: VSequence) -> VActionItem {

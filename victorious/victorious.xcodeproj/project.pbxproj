@@ -1654,6 +1654,10 @@
 		F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */; };
 		F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */; };
 		F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */; };
+		F048AFC51C80DCC2004F516A /* BlockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */; };
+		F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */; };
+		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
+		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
@@ -4322,6 +4326,10 @@
 		F0411E8B1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingMarqueeLabel.h; sourceTree = "<group>"; };
 		F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingMarqueeLabel.m; sourceTree = "<group>"; };
 		F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCaptionView.xib; sourceTree = "<group>"; };
+		F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperation.swift; sourceTree = "<group>"; };
+		F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperation.swift; sourceTree = "<group>"; };
+		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
+		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -5223,6 +5231,7 @@
 				A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */,
 				79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */,
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
+				F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */,
 				C323C3B61BF55F6600681059 /* CommentEditRequest.swift */,
@@ -5300,6 +5309,7 @@
 				677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */,
 				C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */,
 				6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */,
+				F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */,
 				C32D8BDB1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift */,
 				C32D8BD11BF2D1A800AB5085 /* UnfollowUserRequest.swift */,
 				67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */,
@@ -7257,6 +7267,7 @@
 				A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */,
 				A7039CDE1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift */,
 				A7C565E11C40665600E4DF6A /* AlertReceiver.swift */,
+				F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
@@ -7318,6 +7329,7 @@
 				A76DD75E1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift */,
 				67A3C9F01C4D99240068E4F5 /* TrendingHashtagOperation.swift */,
 				672033581C4DD8760015D91D /* TrendingUsersOperation.swift */,
+				F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */,
 				A7E2918E1C3B462D00B84127 /* UnfollowHashtagOperation.swift */,
 				A7E2918A1C3B403C00B84127 /* UnfollowUserOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
@@ -10580,6 +10592,7 @@
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
+				F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */,
 				A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */,
@@ -10647,6 +10660,7 @@
 				C32D8BD21BF2D1A800AB5085 /* UnfollowUserRequest.swift in Sources */,
 				670C65891C52AC0000BD7F3F /* Usershelf.swift in Sources */,
 				A72EDF991C03FAC5003D6177 /* SequenceUserInteractionsRequest.swift in Sources */,
+				F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */,
 				67C5C53B1C0395ED00F99C8C /* UnlikeSequenceRequest.swift in Sources */,
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
@@ -10920,6 +10934,7 @@
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
+				F048AFC51C80DCC2004F516A /* BlockUserOperation.swift in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
@@ -11326,6 +11341,7 @@
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
 				676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
+				F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */,
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,

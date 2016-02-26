@@ -684,6 +684,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
+- (void)sequenceActionControllerDidBlockUser
+{
+    [self.streamDataSource.paginatedDataSource removeDeletedItems];
+}
+
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView

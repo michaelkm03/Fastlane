@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 - (void)sequenceActionControllerDidDeleteContent;
 - (void)sequenceActionControllerDidFlagContent;
+- (void)sequenceActionControllerDidBlockUser;
 
 @end
 
