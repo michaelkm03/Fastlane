@@ -688,7 +688,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsWithSequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView

@@ -13,7 +13,7 @@
 
 - (void)actionForInStreamCommentSelection:(VComment *)comment fromSequence:(VSequence *)sequence
 {
-    [self.sequenceActionController showCommentsWithSequence:sequence withSelectedComment:comment];
+    [self.sequenceActionController showCommentsWithSequence:sequence];
 }
 
 - (void)actionForInStreamHashtagSelection:(NSString *)hashtag

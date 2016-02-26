@@ -115,12 +115,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)sequenceActionControllerDidDeleteContent
 {
-    [self.delegate sequenceActionControllerDidDeleteContent];
+    [self dismissViewControllerAnimated:true completion:^
+    {
+        [self.delegate sequenceActionControllerDidDeleteContent];
+    }];
 }
 
 - (void)sequenceActionControllerDidFlagContent
 {
-    [self.delegate sequenceActionControllerDidFlagContent];
+    [self dismissViewControllerAnimated:true completion:^
+     {
+         [self.delegate sequenceActionControllerDidFlagContent];
+     }];
 }
 
 #pragma mark - Factory Methods
@@ -1466,7 +1472,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsWithSequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject];
 }
 
 #pragma mark - UINavigationControllerDelegate

@@ -12,8 +12,7 @@ import Foundation
     
     private(set) var dependencyManager: VDependencyManager
     private(set) var originViewController: UIViewController
-    private(set) var delegate: VSequenceActionControllerDelegate
-    private(set) var shouldDismissOnDelete: Bool
+    private(set) var delegate: VSequenceActionControllerDelegate?
     
     //  MARK: - Initializer
     
@@ -29,11 +28,10 @@ import Foundation
     /// callbacks
     ///
     
-    init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate, shouldDismissOnDelete: Bool) {
+    init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate?) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.delegate = delegate
-        self.shouldDismissOnDelete = shouldDismissOnDelete
         super.init()
     }
     
@@ -176,8 +174,7 @@ import Foundation
     /// displaying. Should not be nil.
     ///
     
-    func showCommentsWithSequence(sequence: VSequence?, withSelectedComment selectedComment: VComment?) {
-        // selected comment is not used
+    func showCommentsWithSequence(sequence: VSequence?) {
         guard let sequence = sequence else {
             return
         }
@@ -381,9 +378,14 @@ import Foundation
             return
         }
         
-        if let vc: VReposterTableViewController = VReposterTableViewController(sequence: sequence, dependencyManager: dependencyManager) {
-            originViewController.navigationController?.pushViewController(vc, animated: true)
-        }
+        let childDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration([:])
+        let usersViewController = VUsersViewController(dependencyManager: childDependencyManager)
+        
+        usersViewController.title = NSLocalizedString("LikersTitle", comment: "")
+        usersViewController.usersDataSource = VLikersDataSource(sequence: sequence)
+        usersViewController.usersViewContext = VUsersViewContext.Likers
+        
+        originViewController.navigationController?.pushViewController(usersViewController, animated: true)
     }
     
     ///
@@ -455,7 +457,7 @@ extension VSequenceActionController {
         case Delete
     }
     
-    func setupActionSheetViewController(actionSheetViewController: VActionSheetViewController, sequence: VSequence, streamId: String?) {
+    private func setupActionSheetViewController(actionSheetViewController: VActionSheetViewController, sequence: VSequence, streamId: String?) {
         var actionItems: [VActionItem] = []
         
         actionItems.append(userActionItem(forSequence: sequence))
@@ -494,20 +496,9 @@ extension VSequenceActionController {
     private func callDelegateWith(delegateCallback: DelegateCallback) {
         switch delegateCallback {
         case DelegateCallback.Flag:
-            delegate.sequenceActionControllerDidFlagContent?()
+            delegate?.sequenceActionControllerDidFlagContent?()
         case DelegateCallback.Delete:
-            delegate.sequenceActionControllerDidDeleteContent?()
-        }
-    }
-    
-    private func dismissAndCallDelegateCallbackWith(delegateCallbackType: DelegateCallback) {
-        if self.shouldDismissOnDelete {
-            self.originViewController.presentingViewController?.dismissViewControllerAnimated(true) {
-                self.callDelegateWith(delegateCallbackType)
-            }
-        }
-        else {
-            callDelegateWith(delegateCallbackType)
+            delegate?.sequenceActionControllerDidDeleteContent?()
         }
     }
     
@@ -518,11 +509,7 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "icon_flag"),
             detailText: "")
         flagItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true) {
-                self.flagSequence(sequence) { success in
-                    self.dismissAndCallDelegateCallbackWith(DelegateCallback.Flag)
-                }
-            }
+            self.callDelegateWith(DelegateCallback.Flag)
         }
         return flagItem
     }
@@ -532,11 +519,7 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "delete-icon"),
             detailText: "")
         deleteItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true) {
-                self.deleteSequence(sequence) { success in
-                    self.dismissAndCallDelegateCallbackWith(DelegateCallback.Delete)
-                }
-            }
+            self.callDelegateWith(DelegateCallback.Delete)
         }
         return deleteItem
     }
@@ -549,7 +532,7 @@ extension VSequenceActionController {
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.shareSequence(sequence,
                     node: sequence.firstNode(),
-                    streamID: streamId, //self.viewModel.streamId -> might be causing an issue here
+                    streamID: streamId,
                     completion: nil)
             })
         }
