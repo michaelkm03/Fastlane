@@ -121,8 +121,6 @@ import Foundation
     /// - parameter sequence: The sequence we want to flag. Should not be nil.
     /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
     
-    
-    // FIXME: Test with Queueable 2.0 completion fix
     func flagSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
             completion?(false)
@@ -175,7 +173,6 @@ import Foundation
     /// - parameter sequence: The sequence we want to delete. Should not be nil.
     /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
     
-    // FIXME: Test with Queueable 2.0 completion fix
     func deleteSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
             completion?(false)
@@ -394,8 +391,10 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "icon_flag"),
             detailText: "")
         flagItem.selectionHandler = { item in
-            self.flagSequence(sequence, completion: { success in
-                self.callDelegateWith(DelegateCallback.Flag)
+            self.originViewController.dismissViewControllerAnimated(true, completion: {
+                self.flagSequence(sequence, completion: { success in
+                    self.callDelegateWith(DelegateCallback.Flag)
+                })
             })
         }
         return flagItem
@@ -406,8 +405,10 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "delete-icon"),
             detailText: "")
         deleteItem.selectionHandler = { item in
-            self.deleteSequence(sequence, completion: { success in
-                self.callDelegateWith(DelegateCallback.Delete)
+            self.originViewController.dismissViewControllerAnimated(true, completion: {
+                self.deleteSequence(sequence, completion: { success in
+                    self.callDelegateWith(DelegateCallback.Delete)
+                })
             })
         }
         return deleteItem

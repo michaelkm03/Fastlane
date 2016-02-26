@@ -33,10 +33,7 @@ class DeleteSequenceAlertOperation: NavigationOperation {
         let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
                                                 message: nil,
                                                 preferredStyle: UIAlertControllerStyle.ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
-            style: UIAlertActionStyle.Cancel,
-            handler:nil))
-
+        
         alertController.addAction(UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
             style: UIAlertActionStyle.Cancel,
             handler: { action in
@@ -44,13 +41,13 @@ class DeleteSequenceAlertOperation: NavigationOperation {
         }))
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
-        style: UIAlertActionStyle.Destructive) { action in
-            
-            DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { results, error in
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
-                self.didDeleteSequence = error == nil
-                self.finishedExecuting()
-            }
+            style: UIAlertActionStyle.Destructive) { action in
+                
+                DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { results, error in
+                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
+                    self.didDeleteSequence = error == nil
+                    self.finishedExecuting()
+                }
             
         })
         
