@@ -10,6 +10,9 @@ import Foundation
 
 class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
+    
     var achievement: Achievement? {
         didSet {
             if let achievement = self.achievement {
@@ -19,6 +22,9 @@ class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureCellWithAchievement(achievement: Achievement) {
-        
+        titleLabel.text = achievement.title
+        if let icon = achievement.iconImageURL {
+            iconImageView.sd_setImageWithURL(icon)
+        }
     }
 }

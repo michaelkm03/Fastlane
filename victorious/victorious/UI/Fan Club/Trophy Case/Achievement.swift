@@ -14,8 +14,19 @@ import Foundation
     let title: String
     let detailedDescription: String
     let displayOrder: Int
-    private(set) var iconAssets: [NSURL]?
     private(set) var dependencyManager: VDependencyManager?
+    var iconImageURL: NSURL? {
+        return isUnlocked ? iconURL : lockedIconURL
+    }
+    
+    private var iconURL: NSURL?
+    private var lockedIconURL: NSURL?
+    private var isUnlocked: Bool {
+        guard let unlockedAchievementsIdentifiers = VCurrentUser.user()?.achievementsUnlocked as? [String] else {
+            return false
+        }
+        return unlockedAchievementsIdentifiers.contains(identifier)
+    }
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -23,8 +34,22 @@ import Foundation
         self.title = dependencyManager.stringForKey("title")
         self.detailedDescription = dependencyManager.stringForKey("description")
         self.displayOrder = dependencyManager.numberForKey("display_order").integerValue
-        if let assets = dependencyManager.arrayForKey("assets") as? [NSDictionary] {
-            iconAssets = assets.flatMap { NSURL(string: ($0["imageUrl"] as? String)!) }
+        self.iconURL = dependencyManager.iconImageURLAtDesiredScaleForKey("assets")
+        self.lockedIconURL = dependencyManager.iconImageURLAtDesiredScaleForKey("locked_icon")
+    }
+}
+
+private extension VDependencyManager {
+    func iconImageURLAtDesiredScaleForKey(key: String) -> NSURL? {
+        guard let assets = self.arrayForKey(key) as? [NSDictionary] else {
+                return nil
+        }
+        let assetAtDesiredScale = assets.filter { $0["scale"] as? Int == Int(UIScreen.mainScreen().scale) }.first
+        
+        if let imageURLString = assetAtDesiredScale?["imageUrl"] as? String {
+            return NSURL(string: imageURLString)
+        } else {
+            return nil
         }
     }
 }
