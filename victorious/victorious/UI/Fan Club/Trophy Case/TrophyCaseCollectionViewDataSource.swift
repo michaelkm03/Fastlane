@@ -12,7 +12,7 @@ class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
     private(set) var dependencyManager: VDependencyManager?
     private lazy var allPossibleAchievements: [Achievement] = {
-       return self.dependencyManager!.arrayForKey("achievements") as! [Achievement]
+        return self.dependencyManager!.arrayOfValuesOfType(Achievement.self, forKey: "achievements") as! [Achievement]
     }()
     
     private struct UIConstant {
