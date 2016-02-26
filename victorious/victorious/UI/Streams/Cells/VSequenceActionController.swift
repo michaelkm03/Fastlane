@@ -323,16 +323,7 @@ import Foundation
         if let memeStream = dependencyManager.memeStreamForSequence(sequence) {
             originViewController.navigationController?.pushViewController(memeStream, animated: true)
         }
-    }
-    
-    func showGiffersWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-            return
-        }
         
-        if let gifStream = dependencyManager.gifStreamForSequence(sequence) {
-            originViewController.navigationController?.pushViewController(gifStream, animated: true)
-        }
     }
     
     func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
@@ -364,10 +355,6 @@ extension VSequenceActionController {
         actionItems.append(userActionItem(forSequence: sequence))
         
         actionItems.append(descriptionActionItem(forSequence: sequence))
-        
-        if sequence.permissions.canGIF {
-            actionItems.append(gifActionItem(forSequence: sequence))
-        }
         
         if sequence.permissions.canMeme {
             actionItems.append(memeActionItem(forSequence: sequence))
@@ -533,22 +520,6 @@ extension VSequenceActionController {
         })
         
         return memeItem
-    }
-    
-    private func gifActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let gifItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Create a GIF", comment: ""),
-            actionIcon: UIImage(named: "D_gifIcon"),
-            detailText: "\(sequence.gifCount)")
-        
-        setupRemixActionItem(gifItem,
-            block: {
-                self.showRemixWithSequence(sequence)
-            },
-            dismissCompletionBlock: {
-                self.showMemersWithSequence(sequence)
-        })
-        
-        return gifItem
     }
     
     // MARK: Action Item Setup Helper
