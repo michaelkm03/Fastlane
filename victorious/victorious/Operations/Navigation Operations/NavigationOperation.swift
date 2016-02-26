@@ -48,8 +48,12 @@ class NavigationOperation: NSOperation, Queueable {
     // MARK: - Queueable
     
     func executeCompletionBlock(completionBlock: ()->()) {
-        assert( NSThread.isMainThread(), "This operation must only ever be added to NSOperationQueue.mainQueue()")
-        completionBlock()
+        // This ensures that every subclass of `NavigationOperation` has its completion block
+        // executed on the main queue, which saves the trouble of having to wrap
+        // in dispatch block in calling code.
+        dispatch_async( dispatch_get_main_queue() ) {
+            completionBlock()
+        }
     }
     
     override var defaultQueue: NSOperationQueue {
