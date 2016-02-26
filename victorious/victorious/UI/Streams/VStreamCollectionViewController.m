@@ -185,7 +185,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)sharedInit
 {
-    self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
     self.contentViewPresenter.delegate = self;
     self.streamLikeHelper = [[SequenceActionHelper alloc] init];

@@ -269,15 +269,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return thresholdEnd;
 }
 
-#pragma mark -
-
-- (BOOL)canShowMarquee
-{
-    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or
-    // not the profileHeader is shown, based on whether or not this stream contains a marquee
-    return NO;
-}
-
 #pragma mark - Loading data
 
 - (void)setInitialHeaderState
