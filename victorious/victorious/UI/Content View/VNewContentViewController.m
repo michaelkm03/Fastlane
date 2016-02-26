@@ -138,7 +138,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController shouldDismissOnDelete:YES];
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
