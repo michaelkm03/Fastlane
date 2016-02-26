@@ -74,19 +74,8 @@ import Foundation
     /// - parameter remoteId: The remoteID of the user whose profile
     /// we want to display.
     
-    func showProfileWithRemoteId(remoteId: Int) -> Bool {
-        guard let navigationViewController = originViewController.navigationController else {
-                return false
-        }
-        
-        if let originViewControllerProfile = originViewController as? VUserProfileViewController where originViewControllerProfile.user.remoteId.integerValue == remoteId {
-            return false
-        }
-        
-        let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(remoteId)
-        navigationViewController.pushViewController(profileViewController, animated: true)
-        
-        return true
+    func showProfileWithRemoteId(remoteId: Int) {
+        ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: remoteId).queue()
     }
     
     // MARK: - Share
@@ -105,55 +94,7 @@ import Foundation
                 return
         }
         
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShare)
-        let appInfo: VAppInfo = VAppInfo(dependencyManager: dependencyManager)
-        
-        let fbActivity: VFacebookActivity = VFacebookActivity()
-        let activityViewController: UIActivityViewController = UIActivityViewController(activityItems:
-            [
-                sequence ?? NSNull(),
-                shareTextForSequence(sequence),
-                NSURL(string: node.shareUrlPath) ?? NSNull()
-            ], applicationActivities:[fbActivity])
-        
-        let creatorName = appInfo.appName
-        let emailSubject = String(format: NSLocalizedString("EmailShareSubjectFormat", comment: ""), creatorName)
-        activityViewController.setValue(emailSubject, forKey: "subject")
-        activityViewController.excludedActivityTypes = [UIActivityTypePostToFacebook]
-        activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
-            
-            var tracking: VTracking?
-            if let streamID = streamID {
-                tracking = sequence.streamItemPointer(streamID: streamID)?.tracking
-            }
-            else {
-                tracking = sequence.streamItemPointerForStandloneStreamItem()?.tracking
-            }
-            assert(tracking != nil, "Cannot track 'share' event because tracking data is missing.")
-            
-            if completed {
-                let params = [
-                    VTrackingKeySequenceCategory : sequence.category ?? "",
-                    VTrackingKeyShareDestination : activityType ?? "",
-                    VTrackingKeyUrls : tracking?.share ?? []
-                ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
-            }
-            else if let activityError = activityError {
-                let params = [
-                    VTrackingKeySequenceCategory : sequence.category ?? "",
-                    VTrackingKeyShareDestination : activityType ?? "",
-                    VTrackingKeyUrls : tracking?.share ?? [],
-                    VTrackingKeyErrorMessage : activityError.localizedDescription
-                ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
-            }
-            
-            self.originViewController.reloadInputViews()
-            completion?()
-        }
-        
-        self.originViewController.presentViewController(activityViewController, animated: true, completion: nil)
+        ShowShareSequenceOperation(originViewController: originViewController, dependencyManager: dependencyManager, sequence: sequence, node: node, streamID: streamID, shareCompletion: completion).queue()
     }
     
     // MARK: - Comments
@@ -180,48 +121,50 @@ import Foundation
     /// - parameter sequence: The sequence we want to flag. Should not be nil.
     /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
     
+    
+    // FIXME: Test with Queueable 2.0 completion fix
     func flagSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
             completion?(false)
             return
         }
         
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
-        
-        let flagBlock = {
-            FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
+        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { results, error in
+            
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
                 
-                if let error = error {
-                    let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                    
-                    if error.code == Int(kVCommentAlreadyFlaggedError) {
-                        self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-                    } else {
-                        self.originViewController.v_showErrorDefaultError()
-                    }
-                    
-                } else {
-                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                if error.code == Int(kVCommentAlreadyFlaggedError) {
                     self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+                } else {
+                    self.originViewController.v_showErrorDefaultError()
                 }
+                
+            } else {
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
             }
         }
         
-        let alertController = UIAlertController(title: nil,
-            message: nil,
-            preferredStyle: UIAlertControllerStyle.ActionSheet)
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
-            style: UIAlertActionStyle.Default,
-            handler: { action in
-                flagBlock()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
-            style: UIAlertActionStyle.Default,
-            handler:nil))
-        originViewController.presentViewController(alertController, animated: true, completion: nil)
+        let flagAlertOperation: FlagSequenceAlertOperation =
+            FlagSequenceAlertOperation(originViewController: originViewController,
+                                         dependencyManager: dependencyManager,
+                                         sequence: sequence,
+                                         presentationCompletion: nil)
+        flagAlertOperation.queue() {
+            if flagAlertOperation.didFlagSequence {
+                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+            }
+            else if flagAlertOperation.errorCode == Int(kVCommentAlreadyFlaggedError) {
+                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+            }
+            else {
+                self.originViewController.v_showErrorDefaultError()
+                completion?(false)
+            }
+        }
+
     }
     
     // MARK: - Delete
@@ -232,39 +175,21 @@ import Foundation
     /// - parameter sequence: The sequence we want to delete. Should not be nil.
     /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
     
+    // FIXME: Test with Queueable 2.0 completion fix
     func deleteSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
             completion?(false)
             return
         }
-        let deleteBlock = {
-            let deleteOperation = DeleteSequenceOperation(sequenceID: sequence.remoteId)
-            deleteOperation.queueOn(deleteOperation.defaultQueue) { results, error in
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidDeletePost)
-                if let error = error {
-                    print ("Error: \(error.code)")
-                    completion?(false)
-                }
-                else {
-                    completion?(true)
-                }
-            }
+        
+        let deleteAlertOperation: DeleteSequenceAlertOperation =
+            DeleteSequenceAlertOperation(originViewController: originViewController,
+                                         dependencyManager: dependencyManager,
+                                         sequence: sequence,
+                                         presentationCompletion: nil)
+        deleteAlertOperation.queueOn(deleteAlertOperation.defaultQueue) {
+                completion?(deleteAlertOperation.didDeleteSequence)
         }
-        
-        let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
-            message: nil,
-            preferredStyle: UIAlertControllerStyle.ActionSheet)
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
-            style: UIAlertActionStyle.Cancel,
-            handler: nil))
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
-            style: UIAlertActionStyle.Destructive) { action in
-                deleteBlock()
-            })
-        
-        self.originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Like
@@ -282,13 +207,14 @@ import Foundation
                 return
         }
         
-        if sequence.isLikedByMainUser.boolValue {
-            UnlikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
+        // toggle like operation
+//        let initiallyLiked: Bool = sequence.isLikedByMainUser.boolValue
+        
+        ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
+            if sequence.isLikedByMainUser.boolValue {
                 completion?( error == nil )
             }
-        }
-        else {
-            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { results, error in
+            else {
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,
@@ -468,7 +394,9 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "icon_flag"),
             detailText: "")
         flagItem.selectionHandler = { item in
-            self.callDelegateWith(DelegateCallback.Flag)
+            self.flagSequence(sequence, completion: { success in
+                self.callDelegateWith(DelegateCallback.Flag)
+            })
         }
         return flagItem
     }
@@ -478,7 +406,9 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "delete-icon"),
             detailText: "")
         deleteItem.selectionHandler = { item in
-            self.callDelegateWith(DelegateCallback.Delete)
+            self.deleteSequence(sequence, completion: { success in
+                self.callDelegateWith(DelegateCallback.Delete)
+            })
         }
         return deleteItem
     }
@@ -588,33 +518,6 @@ extension VSequenceActionController {
                 dismissCompletionBlock()
             }
         }
-    }
-    
-    // MARK: Helper
-    
-    func shareTextForSequence(sequence: VSequence) -> String {
-        var shareText = ""
-        
-        if sequence.isPoll() {
-            shareText = NSLocalizedString("UGCSharePollFormat", comment: "")
-        }
-        else if sequence.isGIFVideo() {
-            shareText = NSLocalizedString("UGCShareGIFFormat", comment: "")
-        }
-        else if sequence.isVideo() {
-            shareText = NSLocalizedString("UGCShareVideoFormat", comment: "")
-        }
-        else if sequence.isImage() {
-            shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
-        }
-        else if sequence.isText() {
-            shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
-        }
-        else {
-            shareText = NSLocalizedString("UGCShareLinkFormat", comment: "")
-        }
-        
-        return shareText
     }
     
     //MARK: Alert Controller
