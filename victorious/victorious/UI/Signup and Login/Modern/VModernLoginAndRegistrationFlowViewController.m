@@ -335,13 +335,21 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)handleTwitterLoginError:(NSError *)error
 {
-    if (error.code == VTwitterManagerErrorCanceled)
+    switch ( error.code )
     {
-        return;
+        case VTwitterManagerErrorCancelled:
+            break;
+            
+        case VTwitterManagerErrorUnavailable:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
+                                  message:NSLocalizedString(@"NoTwitterMessage", @"")];
+            break;
+            
+        default:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                  message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
+            break;
     }
-    
-    [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                          message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
 }
 
 - (void)showAlertErrorWithTitle:(NSString *)title message:(NSString *)message

@@ -353,11 +353,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)marqueeController:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
-    if ( self.canShowMarquee )
-    {
-        self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    }
-    
     // Update scroll offset to account for marquee
     [self updateNavigationBarScrollOffset];
 }

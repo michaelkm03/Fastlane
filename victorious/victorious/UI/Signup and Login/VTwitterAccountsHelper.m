@@ -102,27 +102,15 @@
                                                error:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
-                   {
-                       NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                       [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
-                       
-                       UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
-                                                                                                message:NSLocalizedString(@"NoTwitterMessage", @"")
-                                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                       UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"")
-                                                                          style:UIAlertActionStyleCancel
-                                                                        handler:^(UIAlertAction *action)
-                                                  {
-                                                      if (completion != nil)
-                                                      {
-                                                          completion(nil);
-                                                      }
-                                                  }];
-                       [alertController addAction:okAction];
-                       [viewControllerToPresentOnIfNeeded presentViewController:alertController
-                                                                       animated:YES
-                                                                     completion:nil];
-                   });
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
+        
+        if (completion != nil)
+        {
+            completion(nil);
+        }
+    });
 }
 
 - (void)twitterAccessGrantedWithAtLeastOneAccount:(VTwitterAccountsHelperCompletion)completion
