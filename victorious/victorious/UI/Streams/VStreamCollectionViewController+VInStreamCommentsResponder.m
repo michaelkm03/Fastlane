@@ -23,7 +23,7 @@
 
 - (void)actionForInStreamUserSelection:(NSNumber *)userId
 {
-//    [self.sequenceActionController showProfileWithRemoteId:userId];
+    [self.sequenceActionController showProfileWithRemoteId:userId.integerValue];
 }
 
 - (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType

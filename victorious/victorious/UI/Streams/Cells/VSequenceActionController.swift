@@ -63,16 +63,8 @@ import Foundation
     
     // MARK: - User
     
-    func showPosterProfileWithSequence(sequence: VSequence?) -> Bool {
-        guard let sequence = sequence else {
-            return false
-        }
-        return showProfileWithUser(sequence.user)
-    }
-    
-    func showProfileWithRemoteId(remoteId: Int?) -> Bool {
-        guard let remoteId = remoteId,
-            navigationViewController = originViewController.navigationController else {
+    func showProfileWithRemoteId(remoteId: Int) -> Bool {
+        guard let navigationViewController = originViewController.navigationController else {
                 return false
         }
         
@@ -81,22 +73,6 @@ import Foundation
         }
         
         let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(remoteId)
-        navigationViewController.pushViewController(profileViewController, animated: true)
-        
-        return true
-    }
-    
-    func showProfileWithUser(user: VUser?) -> Bool {
-        guard let user = user,
-            navigationViewController = originViewController.navigationController else {
-                return false
-        }
-        
-        if let originViewControllerProfile = originViewController as? VUserProfileViewController where originViewControllerProfile.user.isEqual(user) {
-            return false
-        }
-        
-        let profileViewController = dependencyManager.userProfileViewControllerWithUser(user)
         navigationViewController.pushViewController(profileViewController, animated: true)
         
         return true
@@ -534,10 +510,9 @@ extension VSequenceActionController {
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
         let userItem = VActionItem.userActionItemUserWithTitle(sequence.user.name, user: sequence.user, detailText: "")
-        
         userItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.showPosterProfileWithSequence(sequence)
+                self.showProfileWithRemoteId(sequence.user.remoteId.integerValue)
             })
         }
         

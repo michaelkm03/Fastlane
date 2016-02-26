@@ -694,7 +694,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
 {
-    [self.sequenceActionController showProfileWithUser:user];
+    [self.sequenceActionController showProfileWithRemoteId:user.remoteId.integerValue];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
