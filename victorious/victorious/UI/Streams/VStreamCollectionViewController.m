@@ -188,7 +188,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
-    self.contentViewPresenter.delegate = self;
 }
 
 #pragma mark - View Heirarchy

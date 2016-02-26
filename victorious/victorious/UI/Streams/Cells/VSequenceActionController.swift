@@ -132,9 +132,9 @@ import Foundation
             
             self.originViewController.reloadInputViews()
             completion?()
-            
-            self.originViewController.presentViewController(activityViewController, animated: true, completion: nil)
         }
+        
+        self.originViewController.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     // MARK: - Comments
@@ -573,43 +573,30 @@ extension VSequenceActionController {
     
     // MARK: Helper
     
-    //TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
     func shareTextForSequence(sequence: VSequence) -> String {
         var shareText = ""
+        
+        if sequence.isPoll() {
+            shareText = NSLocalizedString("UGCSharePollFormat", comment: "")
+        }
+        else if sequence.isGIFVideo() {
+            shareText = NSLocalizedString("UGCShareGIFFormat", comment: "")
+        }
+        else if sequence.isVideo() {
+            shareText = NSLocalizedString("UGCShareVideoFormat", comment: "")
+        }
+        else if sequence.isImage() {
+            shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
+        }
+        else if sequence.isText() {
+            shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
+        }
+        else {
+            shareText = NSLocalizedString("UGCShareLinkFormat", comment: "")
+        }
+        
         return shareText
     }
-    
-    //    - (NSString *)shareTextForSequence:(VSequence *)sequence
-    //    {
-    //    NSString *shareText = @"";
-    //
-    //    if ([sequence isPoll])
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
-    //    }
-    //    else if ([sequence isGIFVideo])
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
-    //    }
-    //    else if ([sequence isVideo])
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
-    //    }
-    //    else if ([sequence isImage])
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
-    //    }
-    //    else if ([sequence isText])
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareTextFormat", nil), sequence.user.name];
-    //    }
-    //    else
-    //    {
-    //    shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareLinkFormat", nil), sequence.user.name];
-    //    }
-    //
-    //    return shareText;
-    //    }
     
     //MARK: Alert Controller
     

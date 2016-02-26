@@ -68,7 +68,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -111,6 +111,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @implementation VNewContentViewController
 
+#pragma mark - SequenceActionController Delegate
+
+- (void)sequenceActionControllerDidDeleteContent
+{
+    [self.delegate sequenceActionControllerDidDeleteContent];
+}
+
+- (void)sequenceActionControllerDidFlagContent
+{
+    [self.delegate sequenceActionControllerDidFlagContent];
+}
+
 #pragma mark - Factory Methods
 
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
@@ -120,7 +132,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:nil shouldDismissOnDelete:YES];
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController shouldDismissOnDelete:YES];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];

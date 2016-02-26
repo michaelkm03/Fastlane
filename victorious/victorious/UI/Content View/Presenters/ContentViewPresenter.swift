@@ -26,9 +26,7 @@ class ContentViewContext: NSObject {
 
 /// A helper presenter class that helps VStreamCollectionViewController
 /// or VScaffoldViewController to present a VNewContentView
-class ContentViewPresenter: NSObject, VSequenceActionControllerDelegate {
-    
-    weak var delegate: VSequenceActionControllerDelegate?
+class ContentViewPresenter: NSObject {
     let transitionDelegate = VTransitionDelegate(transition: ContentViewStreamTransition() )
     
     /// Presents a content view for the specified VSequence object.
@@ -58,22 +56,8 @@ class ContentViewPresenter: NSObject, VSequenceActionControllerDelegate {
                     if context.contentPreviewProvider != nil {
                         contentViewController.transitioningDelegate = transitionDelegate;
                     }
-                    if let contentViewNavigationController = contentViewController as? VNavigationController,
-                        let contentViewController = contentViewNavigationController.innerNavigationController.viewControllers.first as? VNewContentViewController {
-                            contentViewController.delegate = self
-                    }
                     viewController.presentViewController( contentViewController, animated: true, completion: nil )
                 }
         }
-    }
-    
-    //MARK: - VSequenceActionControllerDelegate
-    
-    func sequenceActionControllerDidDeleteContent() {
-        delegate?.sequenceActionControllerDidDeleteContent?()
-    }
-    
-    func sequenceActionControllerDidFlagContent() {
-        delegate?.sequenceActionControllerDidFlagContent?()
     }
 }
