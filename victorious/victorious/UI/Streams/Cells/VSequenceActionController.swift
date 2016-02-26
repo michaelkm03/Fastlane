@@ -20,15 +20,20 @@ import Foundation
     /// Sets up the SequenceActionController with the dependency manager and
     /// the view controller on which it should be presented.
     ///
-    /// - parameter dependencyManager:      The dependency manager.
+    /// - parameter dependencyManager:      The dependency manager. Should not
+    /// be nil.
     /// - parameter originViewController:   The view controller on which the 
-    /// Action Sheet should displayed.
+    /// Action Sheet should displayed. Should not be nil.
     /// - parameter delegate:               The delegate conforming to protocol 
     /// "VSequenceActionControllerDelegate" to handle the deletion/flagging 
     /// callbacks
     ///
     
-    init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate?) {
+    init?(dependencyManager: VDependencyManager?, originViewController: UIViewController?, delegate: VSequenceActionControllerDelegate?) {
+        guard let dependencyManager = dependencyManager,
+            originViewController = originViewController else {
+                return nil
+        }
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.delegate = delegate
