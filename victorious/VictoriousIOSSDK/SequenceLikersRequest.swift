@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
 public struct SequenceLikersRequest: PaginatorPageable, ResultBasedPageable {

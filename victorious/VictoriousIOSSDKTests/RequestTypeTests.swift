@@ -6,7 +6,6 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-import SwiftyJSON
 import Nocilla
 import UIKit
 import VictoriousIOSSDK

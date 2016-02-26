@@ -8,7 +8,6 @@
 
 import XCTest
 import VictoriousIOSSDK
-import SwiftyJSON
 @testable import victorious
 
 class SuggestedUsersOperationTests: BaseRequestOperationTestCase {

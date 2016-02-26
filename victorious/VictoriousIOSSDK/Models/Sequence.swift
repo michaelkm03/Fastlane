@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct Sequence: StreamItemType, JSONDeseriealizable {
     public let sequenceID: String
