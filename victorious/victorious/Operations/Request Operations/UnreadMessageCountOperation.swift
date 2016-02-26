@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UnreadMessageCountOperation: RequestOperation {
+final class UnreadMessageCountOperation: FetcherOperation, RequestOperation {
     
-    private let request = UnreadMessageCountRequest()
+    let request: UnreadMessageCountRequest! = UnreadMessageCountRequest()
     
     var unreadMessagesCount: NSNumber?
     

@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FollowCountOperation: RequestOperation {
+class FollowCountOperation: FetcherOperation, RequestOperation {
     
-    var request: FollowCountRequest
+    var request: FollowCountRequest!
     private let userID: Int
     
     required init( request: FollowCountRequest ) {

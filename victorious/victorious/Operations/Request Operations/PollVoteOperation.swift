@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollVoteOperation: RequestOperation {
+final class PollVoteOperation: FetcherOperation, RequestOperation {
     
-    var request: PollVoteRequest
+    let request: PollVoteRequest!
     
     init(sequenceID: String, answerID: Int) {
         self.request = PollVoteRequest(sequenceID: sequenceID, answerID: answerID)

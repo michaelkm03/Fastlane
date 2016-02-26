@@ -10,7 +10,7 @@ import XCTest
 import SwiftyJSON
 @testable import victorious
 
-class LoginOperationTests: BaseRequestOperationTestCase {
+class LoginOperationTests: BaseFetcherOperationTestCase {
     
     func testLogin() {
         guard let user = self.loadUser(), let email = user.email else {
@@ -29,8 +29,9 @@ class LoginOperationTests: BaseRequestOperationTestCase {
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.onComplete(response) {
             
-            XCTAssertEqual( operation.dependentOperationsInQueue().count, 1 );
-            guard let successOperation = operation.dependentOperationsInQueue().first as? LoginSuccessOperation else {
+            let dependentOperations = operation.defaultQueue.v_dependentOperationsOf(operation)
+            XCTAssertEqual( dependentOperations.count, 1 );
+            guard let successOperation = dependentOperations.first as? LoginSuccessOperation else {
                 XCTFail("Expecting an operaiton to be queued after onComplete is called.")
                 return
             }

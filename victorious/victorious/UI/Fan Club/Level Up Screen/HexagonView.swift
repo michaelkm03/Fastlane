@@ -12,7 +12,7 @@ import Foundation
 class HexagonView: UIView {
     
     private var shapeLayer: CAShapeLayer {
-        return self.layer as! CAShapeLayer
+        return layer as! CAShapeLayer
     }
     
     override init(frame: CGRect) {
@@ -26,7 +26,8 @@ class HexagonView: UIView {
     }
     
     func sharedInit() {
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
+        strokeEnd = 0
     }
     
     override class func layerClass() -> AnyClass {
@@ -168,13 +169,13 @@ struct Line {
     // Returns the intersect this line with another
     func intersect(secondLine: Line) -> CGPoint {
         
-        let x1 = self.start.x
-        let x2 = self.end.x
+        let x1 = start.x
+        let x2 = end.x
         let x3 = secondLine.start.x
         let x4 = secondLine.end.x
         
-        let y1 = self.start.y
-        let y2 = self.end.y
+        let y1 = start.y
+        let y2 = end.y
         let y3 = secondLine.start.y
         let y4 = secondLine.end.y
         

@@ -1,5 +1,5 @@
 //
-//  PaginatedOperation.swift
+//  PaginatedRequestOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.
@@ -21,9 +21,63 @@ protocol ResultsOperation {
     var results: [AnyObject]? { set get }
 }
 
+protocol Paginated: ResultsOperation {
+    
+    /// The type of Paginator used by this operation
+    typealias PaginatorType: Paginator
+    
+    /// The current paginator used for this operation, required in order to get
+    /// the next/prev paginators from which to maket the next/prev operations.
+    var paginator: PaginatorType { get }
+    
+    /// Returns a copy of this operation configured for loading next page worth of data
+    func next() -> Self?
+    
+    /// Returns a copy of this operation configured for loading previous page worth of data
+    func prev() -> Self?
+}
+
+/// Defines an object that must use a RequestType to perform its function
+protocol RequestOperation {
+    
+    /// The type of RequestType request used by this operation
+    typealias SingleRequestType: RequestType
+    
+    /// The current request used for this operation
+    ///
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
+    var request: SingleRequestType! { get }
+}
+
+protocol PaginatedOperation: Paginated {
+    
+    /// Required initializer that takes a value typed to PaginatorType
+    init( operation: Self, paginator: PaginatorType )
+}
+
+extension Paginated where Self : PaginatedOperation {
+    
+    func prev() -> Self? {
+        if let previousPaginator = self.paginator.previousPage() {
+            return self.dynamicType.init(operation: self, paginator: previousPaginator)
+        }
+        return nil
+    }
+    
+    func next() -> Self? {
+        let results = self.results ?? []
+        if let nextPaginator = self.paginator.nextPage( results.count ) {
+            return self.dynamicType.init(operation: self, paginator: nextPaginator)
+        }
+        return nil
+    }
+}
+
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedOperation: ResultsOperation {
+protocol PaginatedRequestOperation: Paginated {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -34,16 +88,17 @@ protocol PaginatedOperation: ResultsOperation {
     
     /// Required initializer that takes a value typed to PaginatedRequestType
     init( request: PaginatedRequestType )
-    
-    /// Returns a copy of this operation configured for loading next page worth of data
-    func next() -> Self?
-    
-    /// Returns a copy of this operation configured for loading previous page worth of data
-    func prev() -> Self?
 }
 
-extension PaginatedOperation {
+extension Paginated where Self : PaginatedRequestOperation {
+    
+    var paginator: Self.PaginatedRequestType.PaginatorType {
+        return request.paginator
+    }
+}
 
+extension PaginatedRequestOperation {
+    
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)
@@ -52,7 +107,7 @@ extension PaginatedOperation {
     }
 }
 
-extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
+extension PaginatedRequestOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
         let results = self.results ?? []

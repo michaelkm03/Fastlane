@@ -203,7 +203,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super viewDidLoad];
     
     self.hasRefreshed = NO;
-    self.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:self.dependencyManager.contentViewDependencyManager originViewController:self delegate:self shouldDismissOnDelete:NO];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:self.dependencyManager.contentViewDependencyManager originViewController:self delegate:self];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     
@@ -258,8 +258,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     [self updateNavigationItems];
     
-    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
-
     if ( self.streamDataSource.count != 0 )
     {
         // We already have marquee content so we need to restart the timer to make sure the marquee continues
@@ -301,9 +299,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self.dependencyManager trackViewWillDisappear:self];
-    
+        
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 

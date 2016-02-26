@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class RegisterPushNotificationOperation: RequestOperation {
+final class RegisterPushNotificationOperation: FetcherOperation, RequestOperation {
     
-    let request: RegisterPushNotificationRequest
+    let request: RegisterPushNotificationRequest!
     
     init(pushNotificationID: String) {
         self.request = RegisterPushNotificationRequest(pushNotificationID: pushNotificationID)

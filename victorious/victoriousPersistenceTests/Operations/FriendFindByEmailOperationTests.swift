@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
+class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
     
     let testUserID: Int = 1
     let emails = ["h@h.hh", "mike@msena.com"]

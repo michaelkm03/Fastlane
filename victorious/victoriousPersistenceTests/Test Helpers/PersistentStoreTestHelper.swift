@@ -8,7 +8,7 @@
 import XCTest
 @testable import victorious
 
-/// Helper for testing a RequestOperation or it's subclass.
+/// Helper for testing a FetcherOperation or it's subclass.
 struct PersistentStoreTestHelper {
 
     let persistentStore: TestPersistentStore

@@ -9,9 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingUsersOperation: RequestOperation {
+class TrendingUsersOperation: FetcherOperation, RequestOperation {
     
-    let request = TrendingUsersRequest()
+    let request: TrendingUsersRequest! = TrendingUsersRequest()
+    
     private var resultObjectIDs = [NSManagedObjectID]()
     
     override func main() {

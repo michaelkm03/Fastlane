@@ -146,7 +146,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController shouldDismissOnDelete:YES];
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -1402,7 +1402,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
      }];
@@ -1412,7 +1412,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
          [self v_showFlaggedCommentAlertWithCompletion:nil];

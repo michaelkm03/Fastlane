@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UnreadNotificationsCountOperation: RequestOperation {
+final class UnreadNotificationsCountOperation: FetcherOperation, RequestOperation {
     
-    private let request = UnreadNotificationsCountRequest()
+    let request: UnreadNotificationsCountRequest! = UnreadNotificationsCountRequest()
     
     var unreadNotificationsCount: NSNumber?
     

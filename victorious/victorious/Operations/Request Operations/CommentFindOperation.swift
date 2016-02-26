@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CommentFindOperation: RequestOperation {
+class CommentFindOperation: FetcherOperation, RequestOperation {
     
-    var request: CommentFindRequest
+    var request: CommentFindRequest!
     
     private let flaggedContent = VFlaggedContent()
     

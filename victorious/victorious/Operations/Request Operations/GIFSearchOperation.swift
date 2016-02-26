@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class GIFSearchOperation: RequestOperation, PaginatedOperation {
+final class GIFSearchOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: GIFSearchRequest
     
