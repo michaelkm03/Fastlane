@@ -109,6 +109,10 @@
 {
     [super viewWillAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    
     const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
@@ -125,8 +129,6 @@
              }];
         }
     }
-    
-    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
     if ( self.streamDataSource.count != 0 )
     {
@@ -164,6 +166,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
                                                   isBeingDismissed:self.isBeingDismissed];
