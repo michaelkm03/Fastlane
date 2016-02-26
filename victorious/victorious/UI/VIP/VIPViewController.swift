@@ -14,6 +14,13 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
 
     //MARK: - Initialization
 
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPViewController {
+        return VIPViewController(nibName: nil,
+            bundle: nil,
+            dependencyManager: dependencyManager,
+            purchaseManager: VPurchaseManager.sharedInstance())
+    }
+
     init(nibName nibNameOrNil: String?,
         bundle nibBundleOrNil: NSBundle?,
         dependencyManager: VDependencyManager,
