@@ -7,6 +7,7 @@
 //
 
 #import "VStreamCollectionViewController+VInStreamCommentsResponder.h"
+#import "victorious-Swift.h"
 
 @implementation VStreamCollectionViewController (VInStreamCommentsResponder)
 
@@ -27,7 +28,7 @@
 
 - (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType
 {
-    [self.sequenceActionController showMediaContentViewForUrl:mediaUrl withMediaLinkType:linkType];
+    [self.sequenceActionController showMediaContentForUrl:mediaUrl withLinkType:linkType];
 }
 
 @end

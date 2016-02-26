@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 
 @class VSequence, VHashtag, VUser;
 

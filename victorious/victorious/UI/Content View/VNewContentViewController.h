@@ -14,18 +14,11 @@
 #import "VPollResultReceiver.h"
 #import "VRenderablePreviewView.h"
 #import "VVideoPreviewView.h"
+#import "VSequenceActionControllerDelegate.h"
 
 @class VDependencyManager, VSequenceActionController, VContentCell, VExperienceEnhancerBarCell, VNewContentViewController;
 
 NS_ASSUME_NONNULL_BEGIN
-
-@protocol VNewContentViewControllerDelegate <NSObject>
-@optional
-
-- (void)contentViewDidDeleteContent:(VNewContentViewController *)contentViewController;
-- (void)contentViewDidFlagContent:(VNewContentViewController *)contentViewController;
-
-@end
 
 
 /**
@@ -50,13 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
-@property (nonatomic, strong) VSequenceActionController *sequenceActionController;
-
 @property (nonatomic, strong, nullable) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly, nullable) VContentCell *contentCell;
 
-@property (nonatomic, weak, nullable) id<VNewContentViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<VSequenceActionControllerDelegate> delegate;
 
 /*
  Provides playback controls and other interactions

@@ -42,7 +42,7 @@
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 #import "VSleekStreamCellFactory.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamCellFactory.h"
@@ -84,7 +84,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, ContentViewPresenterDelegate>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -204,7 +204,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super viewDidLoad];
     
     self.hasRefreshed = NO;
-    self.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:self.dependencyManager andOriginViewController:self andDelegate:self shouldDismissOnDelete:NO];
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:self.dependencyManager originViewController:self delegate:self shouldDismissOnDelete:NO];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     
@@ -673,14 +673,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
-#pragma mark - ContentViewPresenterDelegate
+#pragma mark - VSequenceActionControllerDelegate
 
-- (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
+- (void)sequenceActionControllerDidDeleteContent
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
-- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+- (void)sequenceActionControllerDidFlagContent
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
@@ -694,17 +694,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
 {
-    [self.sequenceActionController showProfile:user];
+    [self.sequenceActionController showProfileWithUser:user];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    [self.sequenceActionController showRemixWithSequence:sequence
-                                          preloadedImage:nil
-                                        defaultVideoEdit:defaultEdit
-                                              completion:nil];
+    [self.sequenceActionController showRemixWithSequence:sequence];
 }
 
 - (void)setupRemixActionItem:(VActionItem *)remixItem
@@ -740,7 +737,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceActionController moreButtonActionWithSequence:sequence
+    [self.sequenceActionController showMoreWithSequence:sequence
                                                        streamId:self.currentStream.remoteId
                                                      completion:^
      {
@@ -766,10 +763,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController shareWithSequence:sequence
-                                                    node:[sequence firstNode]
-                                                streamID:self.streamDataSource.stream.remoteId
-                                              completion:nil];
+    [self.sequenceActionController shareSequence:sequence
+                                            node:[sequence firstNode]
+                                        streamID:self.streamDataSource.stream.remoteId
+                                      completion:nil];
 }
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -788,7 +785,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
 {
-    [self.sequenceActionController repostActionFromNode:[sequence firstNode] completion:completion];
+    [self.sequenceActionController repostNode:[sequence firstNode]
+                                   completion:completion];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view

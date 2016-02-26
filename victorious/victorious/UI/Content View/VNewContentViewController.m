@@ -48,7 +48,7 @@
 #import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 #import "VSequencePreviewViewProtocols.h"
 #import "VShrinkingContentLayout.h"
 #import "VSimpleModalTransition.h"
@@ -105,6 +105,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
+@property (nonatomic, strong) VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -119,7 +120,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDepencencyManager:dependencyManager andOriginViewController:contentViewController andDelegate:self shouldDismissOnDelete:YES];
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:nil shouldDismissOnDelete:YES];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -129,12 +130,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     viewModel.delegate = contentViewController;
     
     return contentViewController;
-}
-
-- (void)setDelegate:(id<VNewContentViewControllerDelegate>)delegate
-{
-    _delegate = delegate;
-    self.sequenceActionController.delegate = delegate;
 }
 
 #pragma mark - Dealloc
@@ -577,9 +572,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         [self.videoPlayer pause];
     }
-    [self.sequenceActionController moreButtonActionWithSequence:self.viewModel.sequence
-                                                       streamId:self.viewModel.streamId
-                                                     completion:nil];
+    [self.sequenceActionController showMoreWithSequence:self.viewModel.sequence
+                                               streamId:self.viewModel.streamId
+                                             completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -1542,7 +1537,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
 {
     [self.sequenceActionController likeSequence:self.viewModel.sequence
-                                 withActionView:previewView.likeButton
+                                 triggeringView:previewView.likeButton
                                      completion:^(BOOL success)
      {
          if ( completion != nil )

@@ -24,17 +24,11 @@ class ContentViewContext: NSObject {
     var contentPreviewProvider: VContentPreviewViewProvider?
 }
 
-@objc protocol ContentViewPresenterDelegate: class {
-    
-    optional func contentViewPresenterDidDeleteContent(presenter: ContentViewPresenter)
-    optional func contentViewPresenterDidFlagContent(presenter: ContentViewPresenter)
-}
-
 /// A helper presenter class that helps VStreamCollectionViewController
 /// or VScaffoldViewController to present a VNewContentView
-class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
+class ContentViewPresenter: NSObject, VSequenceActionControllerDelegate {
     
-    weak var delegate: ContentViewPresenterDelegate?
+    weak var delegate: VSequenceActionControllerDelegate?
     let transitionDelegate = VTransitionDelegate(transition: ContentViewStreamTransition() )
     
     /// Presents a content view for the specified VSequence object.
@@ -73,13 +67,13 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
         }
     }
     
-    //MARK: - VNewContentViewControllerDelegate
+    //MARK: - VSequenceActionControllerDelegate
     
-    func contentViewDidDeleteContent(contentViewController: VNewContentViewController) {
-        delegate?.contentViewPresenterDidDeleteContent?(self)
+    func sequenceActionControllerDidDeleteContent() {
+        delegate?.sequenceActionControllerDidDeleteContent?()
     }
     
-    func contentViewDidFlagContent(contentViewController: VNewContentViewController) {
-        delegate?.contentViewPresenterDidFlagContent?(self)
+    func sequenceActionControllerDidFlagContent() {
+        delegate?.sequenceActionControllerDidFlagContent?()
     }
 }
