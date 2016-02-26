@@ -1254,6 +1254,7 @@
 		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
 		A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */; };
 		A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */; };
+		A7DECE6D1C80D11B00F414D0 /* MessageCollectionCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DECE6C1C80D11B00F414D0 /* MessageCollectionCellDecorator.swift */; };
 		A7E2918B1C3B403C00B84127 /* UnfollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2918A1C3B403C00B84127 /* UnfollowUserOperation.swift */; };
 		A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2918C1C3B452B00B84127 /* FollowHashtagOperation.swift */; };
 		A7E2918F1C3B462D00B84127 /* UnfollowHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2918E1C3B462D00B84127 /* UnfollowHashtagOperation.swift */; };
@@ -3641,6 +3642,7 @@
 		A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsEmptyCell.swift; sourceTree = "<group>"; };
 		A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
+		A7DECE6C1C80D11B00F414D0 /* MessageCollectionCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCollectionCellDecorator.swift; path = LiveStream/MessageCollectionCellDecorator.swift; sourceTree = "<group>"; };
 		A7E2918A1C3B403C00B84127 /* UnfollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperation.swift; sourceTree = "<group>"; };
 		A7E2918C1C3B452B00B84127 /* FollowHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowHashtagOperation.swift; sourceTree = "<group>"; };
 		A7E2918E1C3B462D00B84127 /* UnfollowHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowHashtagOperation.swift; sourceTree = "<group>"; };
@@ -7051,6 +7053,7 @@
 			isa = PBXGroup;
 			children = (
 				A74050141C77E02300120A23 /* VMessageCollectionCell.swift */,
+				A7DECE6C1C80D11B00F414D0 /* MessageCollectionCellDecorator.swift */,
 				A74050151C77E02300120A23 /* VMessageCollectionCell.xib */,
 				A74050181C77ED2000120A23 /* LiveStreamOperation.swift */,
 				A740500C1C77D10600120A23 /* LiveStreamViewController.swift */,
@@ -11898,6 +11901,7 @@
 				A7245F071C04105400187825 /* SequenceRepostersOperation.swift in Sources */,
 				A7078CF41BFBD969008FB7FF /* SequenceActionHelper.swift in Sources */,
 				A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */,
+				A7DECE6D1C80D11B00F414D0 /* MessageCollectionCellDecorator.swift in Sources */,
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,

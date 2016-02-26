@@ -25,7 +25,7 @@ extension UICollectionView {
     }
     
     func v_scrollToBottomAnimated(animated: Bool) {
-        let height = contentSize.height + contentInset.top + contentInset.bottom - CGRectGetHeight(bounds)
+        let height = contentSize.height - (contentInset.top + contentInset.bottom) - bounds.height
         let yValue = max(height, 0)
         let offset = CGPoint(x: 0, y: yValue)
         setContentOffset(offset, animated:animated)

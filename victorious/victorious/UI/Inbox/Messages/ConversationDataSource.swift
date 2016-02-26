@@ -16,8 +16,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     
     let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
     
-    let cellDecorator: MessageCollectionCellDecorator
-    
     private lazy var paginatedDataSource: PaginatedDataSource = {
         let dataSource = PaginatedDataSource()
         dataSource.delegate = self
@@ -55,7 +53,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         self.dependencyManager = dependencyManager
         self.conversation = conversation
         self.messageCellDecorator = MessageTableCellDecorator(dependencyManager: dependencyManager)
-        self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
         self.KVOController.observe( conversation,

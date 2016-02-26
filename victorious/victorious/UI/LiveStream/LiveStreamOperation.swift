@@ -39,6 +39,7 @@ final class LiveStreamOperation: FetcherOperation, PaginatedOperation {
     }
 }
 
+
 final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
@@ -66,9 +67,9 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
             conversation.user = user
             
             var messagesCreated = [VMessage]()
-            var displayOrder = (conversation.messages?.lastObject as? VMessage)?.displayOrder.integerValue ?? 0
+            var displayOrder = conversation.messages?.count ?? 0
             
-            let messagesCount = 1 + Int(arc4random() % 4)
+            let messagesCount = 1 + Int(arc4random() % 3)
             for _ in 0..<messagesCount {
                 let sender: VUser
                 if arc4random() % 5 == 1 {
@@ -83,7 +84,7 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
                 message.sender = sender
                 message.text = text
                 message.postedAt = NSDate()
-                message.displayOrder = --displayOrder
+                message.displayOrder = displayOrder++
                 messagesCreated.append(message)
             }
             

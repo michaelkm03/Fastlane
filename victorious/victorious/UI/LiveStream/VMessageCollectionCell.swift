@@ -12,59 +12,68 @@ import UIKit
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
-enum ChatAlignment {
-    case Left, Right
-    
-    var textAlignment: NSTextAlignment {
-        switch self {
-        case .Left:
-            return .Left
-        case .Right:
-            return .Right
-        }
+extension CGRect {
+    init(minX: CGFloat, minY: CGFloat, maxX: CGFloat, maxY: CGFloat ) {
+        self.init(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
     }
 }
 
-struct StreamCellAligner {
+struct LeftAlignmentedLayout: AlignmentLayout {
     
-    let cell: VMessageCollectionCell
-    
-    init(cell: VMessageCollectionCell) {
-        self.cell = cell
-    }
-    
-    func align(alignment: ChatAlignment) {
-        cell.textView.textAlignment = alignment.textAlignment
+    func layoutSubviews(cell: VMessageCollectionCell) {
+        cell.textView.textAlignment = .Left
         
-        switch alignment {
-        case .Left:
-            // Activate constraints for left alignment
-            cell.constraintAvatarLeading?.active = true
-            cell.constraintHorizontalSpacingLeft?.active = true
-            cell.constraintBubbleTrailing?.active = true
-            
-            // Deactivate constraints for right alignment
-            cell.constraintAvatarTrailing?.active = false
-            cell.constraintBubbleLeading?.active = false
-            cell.constraintHorizontalSpacingRight?.active = false
-            
-        case .Right:
-            // Aactivate constraints for right alignment
-            cell.constraintAvatarTrailing?.active = true
-            cell.constraintBubbleLeading?.active = true
-            cell.constraintHorizontalSpacingRight?.active = true
-            
-            // Deactivate constraints for left alignment
-            cell.constraintAvatarLeading?.active = false
-            cell.constraintHorizontalSpacingLeft?.active = false
-            cell.constraintBubbleTrailing?.active = false
-        }
+        cell.avatarView.frame = CGRect(
+            x: cell.avatarEdges.left,
+            y: cell.avatarEdges.top,
+            width: cell.avatarView.bounds.width,
+            height: cell.avatarView.bounds.height)
+        
+        cell.bubbleView.frame = CGRect(
+            minX: cell.avatarView.frame.maxX + cell.bubbleEdges.left,
+            minY: cell.avatarView.frame.minY,
+            maxX: cell.bounds.width - cell.bubbleEdges.right,
+            maxY: max(cell.bounds.height - cell.bubbleEdges.top, cell.avatarView.frame.maxY)
+        )
+        
+        cell.textView.frame = cell.bubbleView.bounds
+    }
+}
+
+struct RightAlignmentedLayout: AlignmentLayout {
+    
+    func layoutSubviews(cell: VMessageCollectionCell) {
+        cell.textView.textAlignment = .Left
+        
+        cell.avatarView.frame = CGRect(
+            x: cell.bounds.width - cell.avatarView.bounds.width - cell.avatarEdges.right,
+            y: cell.bubbleEdges.top,
+            width: cell.avatarView.bounds.width,
+            height: cell.avatarView.bounds.height)
+        
+        cell.bubbleView.frame = CGRect(
+            minX: cell.bubbleEdges.right,
+            minY: cell.avatarView.frame.minY,
+            maxX: cell.avatarView.frame.minX - cell.bubbleEdges.left,
+            maxY: max(cell.bounds.height - cell.bubbleEdges.top, cell.avatarView.frame.maxY)
+        )
+        
+        cell.textView.frame = cell.bubbleView.bounds
     }
 }
 
 class VMessageCollectionCell: UICollectionViewCell {
     
     static var suggestedReuseIdentifier = "VMessageCollectionCell"
+    
+    var alignmentLayout: AlignmentLayout! {
+        didSet {
+            alignmentLayout.layoutSubviews(self)
+        }
+    }
+    
+    let bubbleEdges = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 65)
+    let avatarEdges = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     
     struct Style {
         let textColor: UIColor
@@ -94,6 +103,11 @@ class VMessageCollectionCell: UICollectionViewCell {
         storyboardTextViewWidth = textView.bounds.width
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        alignmentLayout.layoutSubviews(self)
+    }
+    
     struct ViewData {
         let text: String
         let createdAt: NSDate
@@ -106,16 +120,6 @@ class VMessageCollectionCell: UICollectionViewCell {
         }
     }
     
-    // Constraints for left alignment
-    @IBOutlet private(set) weak var constraintAvatarLeading: NSLayoutConstraint!
-    @IBOutlet private(set) weak var constraintHorizontalSpacingLeft: NSLayoutConstraint!
-    @IBOutlet private(set) weak var constraintBubbleTrailing: NSLayoutConstraint!
-    
-    // Constraints for right alignment
-    @IBOutlet private(set) weak var constraintAvatarTrailing: NSLayoutConstraint!
-    @IBOutlet private(set) weak var constraintBubbleLeading: NSLayoutConstraint!
-    @IBOutlet private(set) weak var constraintHorizontalSpacingRight: NSLayoutConstraint!
-    
     @IBOutlet private(set) weak var textView: UITextView!
     @IBOutlet private weak var bubbleView: UIView!
     @IBOutlet private weak var avatarView: UIView!
@@ -125,10 +129,15 @@ class VMessageCollectionCell: UICollectionViewCell {
     // MARK: - SelfSizingCell
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        let availableTextViewSize = CGSize(width: storyboardTextViewWidth - 10, height: CGFloat.max)
-        var sizeNeeded = textView.sizeThatFits(availableTextViewSize)
+        var sizeNeeded = textViewSize
         sizeNeeded.width = bounds.width
-        sizeNeeded.height += textView.frame.minY + self.bounds.maxY - textView.frame.maxY
+        sizeNeeded.height += (bubbleEdges.top + bubbleEdges.bottom)
         return sizeNeeded
+    }
+    
+    var textViewSize: CGSize {
+        let maxTextWidth = bounds.width - bubbleEdges.left - bubbleEdges.right - 20
+        let availableTextViewSize = CGSize(width: maxTextWidth, height: CGFloat.max)
+        return textView.sizeThatFits( availableTextViewSize )
     }
 }

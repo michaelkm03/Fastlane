@@ -10,125 +10,84 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-@objc protocol LiveStreamDataSourceDelegate: VPaginatedDataSourceDelegate {
-    func liveStreamDataSourceDidUpdateStashedItems( liveStreamDataSource: LiveStreamDataSource)
-}
-
-class LiveStreamDataSource: NSObject, UICollectionViewDataSource, VPaginatedDataSourceDelegate {
+class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
-    static var liveUpdateFrequency: NSTimeInterval = 5.0
-    
-    let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
-    
-    let cellDecorator: MessageCollectionCellDecorator
-    
-    private lazy var paginatedDataSource: PaginatedDataSource = {
-        let dataSource = PaginatedDataSource()
-        dataSource.delegate = self
-        return dataSource
-    }()
-    
-    private(set) var stashedItems = NSOrderedSet() {
-        didSet {
-            self.delegate?.liveStreamDataSourceDidUpdateStashedItems(self)
-        }
-    }
-    
-    private(set) var visibleItems = NSOrderedSet()
-    
-    func isLoading() -> Bool {
-        return self.paginatedDataSource.isLoading()
-    }
-    
-    var delegate: LiveStreamDataSourceDelegate?
-    
-    var state: VDataSourceState {
-        return self.paginatedDataSource.state
-    }
-    
-    func removeDeletedItems() {
-        self.paginatedDataSource.removeDeletedItems()
-    }
-    
-    var shouldStashNewContent: Bool = false {
-        didSet {
-            if !shouldStashNewContent && stashedItems.count > 0 {
-                let oldValue = visibleItems
-                visibleItems = NSOrderedSet(array: oldValue.array + stashedItems.array)
-                self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
-                stashedItems = NSOrderedSet()
-            }
-        }
-    }
+    let itemsPerPage = 15
+    let maxVisibleItems = 45
     
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
-    let messageCellDecorator: MessageTableCellDecorator
+    let cellDecorator: MessageCollectionCellDecorator
+    let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
     
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        self.messageCellDecorator = MessageTableCellDecorator(dependencyManager: dependencyManager)
         self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
     }
     
-    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
+    func loadUnstashedPage( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
+        
+        let pageDisplayOrder: Int?
+        switch pageType {
+        case .Next:
+            pageDisplayOrder = (visibleItems.lastObject as? PaginatedObjectType)?.displayOrder.integerValue
+        case .Previous:
+            pageDisplayOrder = (visibleItems.firstObject as? PaginatedObjectType)?.displayOrder.integerValue
+        default:
+            pageDisplayOrder = nil
+        }
+        
+        guard let displayOrder = pageDisplayOrder,
+            let paginator = StandardPaginator(displayOrder: displayOrder, pageType: pageType, itemsPerPage: itemsPerPage) else {
+                return
+        }
         
         let conversationID = self.conversation.remoteId!.integerValue
-        self.paginatedDataSource.loadPage( pageType,
-            createOperation: {
-                return LiveStreamOperation(conversationID: conversationID)
-            },
-            completion: { (results, error) in
-                completion?( results, error)
-            }
-        )
+        if let op = currentPaginatedRequestOperation as? FetcherOperation where op.results?.count > 0 {
+            self.loadPage( pageType,
+                createOperation: {
+                    return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
+                },
+                completion: completion
+            )
+        } else {
+            self.loadPage( .First,
+                createOperation: {
+                    return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
+                },
+                completion: completion
+            )
+        }
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
-        
+    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
         let conversationID = self.conversation.remoteId!.integerValue
-        self.paginatedDataSource.refreshRemote(
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
+        
+        self.loadPage( pageType,
             createOperation: {
-                return LiveStreamOperationUpdate(conversationID: conversationID)
+                return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
             },
             completion: completion
         )
     }
     
-    func purgeVisibleItemsWithinLimit(limit: Int) {
-        paginatedDataSource.purgeVisibleItemsWithinLimit(limit)
-    }
-    
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder.compare($1.displayOrder) == .OrderedDescending }
-        
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         if !shouldStashNewContent {
-            self.visibleItems = NSOrderedSet(array: sortedArray)
-            self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
-        
-        } else {
-            let existing = self.stashedItems.array
-            let new = sortedArray.filter { !oldValue.containsObject($0) }
-            self.stashedItems = NSOrderedSet(array: existing + new)
+            purgeVisibleItemsWithinLimit(maxVisibleItems)
         }
-    }
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
-    }
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        self.delegate?.paginatedDataSource( paginatedDataSource, didReceiveError: error)
-    }
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didPurgeItems items: NSOrderedSet) {
-        self.visibleItems = paginatedDataSource.visibleItems
-        self.delegate?.paginatedDataSource?( paginatedDataSource, didPurgeItems: items)
+        
+        let conversationID = self.conversation.remoteId!.integerValue
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
+        
+        self.refreshRemote(
+            createOperation: {
+                return LiveStreamOperationUpdate(conversationID: conversationID, paginator: paginator)
+            },
+            completion: completion
+        )
     }
     
     // MARK: - UICollectionViewDataSource
@@ -163,30 +122,5 @@ class LiveStreamDataSource: NSObject, UICollectionViewDataSource, VPaginatedData
             let message = visibleItems[ indexPath.row ] as! VMessage
             cellDecorator.decorateCell(cell, withMessage:message)
         }
-    }
-}
-
-struct MessageCollectionCellDecorator {
-    
-    let dependencyManager: VDependencyManager
-    
-    func decorateCell( cell: VMessageCollectionCell, withMessage message: VMessage) {
-        let aligner = StreamCellAligner(cell:cell)
-        /*if message.sender == VCurrentUser.user() {
-            aligner.align( .Right )
-        } else {
-            aligner.align( .Left )
-        }*/
-        
-        cell.style = VMessageCollectionCell.Style(
-            textColor: UIColor.v_colorFromHexString("b294ca"),
-            backgroundColor: UIColor.v_colorFromHexString("1b1c34"),
-            font: UIFont.systemFontOfSize(16.0))
-        
-        cell.viewData = VMessageCollectionCell.ViewData(
-            text: "\(message.displayOrder): \(message.text ?? "")",
-            createdAt: message.postedAt,
-            username: message.sender.name ?? ""
-        )
     }
 }
