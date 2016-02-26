@@ -10,8 +10,8 @@ import Foundation
 
 @objc class VSequenceActionController : NSObject {
     
-    private(set) var dependencyManager: VDependencyManager
-    private(set) var originViewController: UIViewController
+    private(set) var dependencyManager: VDependencyManager!
+    private(set) var originViewController: UIViewController!
     private(set) var delegate: VSequenceActionControllerDelegate?
     
     //  MARK: - Initializer
@@ -26,13 +26,16 @@ import Foundation
     /// to handle the deletion/flagging callbacks
     
     init?(dependencyManager: VDependencyManager?, originViewController: UIViewController?, delegate: VSequenceActionControllerDelegate?) {
+        self.delegate = delegate
         guard let dependencyManager = dependencyManager,
             originViewController = originViewController else {
+                self.dependencyManager = nil
+                self.originViewController = nil
+                super.init()
                 return nil
         }
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
-        self.delegate = delegate
         super.init()
     }
     

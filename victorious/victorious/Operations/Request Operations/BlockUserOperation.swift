@@ -18,7 +18,7 @@ class BlockUserOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = BlockUserRemoteOperation(userID: userID)
-        remoteOperation.queueAfter( self )
+        remoteOperation.after(self).queue()
     }
     
     override func main() {        
@@ -46,9 +46,9 @@ class BlockUserOperation: FetcherOperation {
     }
 }
 
-class BlockUserRemoteOperation: RequestOperation {
+class BlockUserRemoteOperation: FetcherOperation, RequestOperation {
     
-    let request: BlockUserRequest
+    let request: BlockUserRequest!
     
     init( userID: Int ) {
         self.request = BlockUserRequest(userID: userID)

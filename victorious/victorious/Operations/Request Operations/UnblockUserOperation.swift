@@ -22,9 +22,9 @@ class UnblockUserOperation: FetcherOperation {
     }
 }
 
-class UnblockUserRemoteOperation: RequestOperation {
+class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
     
-    let request: UnblockUserRequest
+    let request: UnblockUserRequest!
     
     init( userID: Int ) {
         self.request = UnblockUserRequest(userID: userID)
