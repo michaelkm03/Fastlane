@@ -1,5 +1,5 @@
 //
-//  Composer.swift
+//  ComposerController.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/26/16.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Composer: NSObject {
+class ComposerController: NSObject {
     
-    let attachmentTabs: [ComposerAttachmentTab]
+    let attachmentTabs: [ComposerControllerAttachmentTab]
     
     var maximumHeight: CGFloat = CGFloat.max {
         didSet {
@@ -18,7 +18,7 @@ class Composer: NSObject {
         }
     }
     
-    init(attachmentTabs: [ComposerAttachmentTab]) {
+    init(attachmentTabs: [ComposerControllerAttachmentTab]) {
         self.attachmentTabs = attachmentTabs
         super.init()
     }

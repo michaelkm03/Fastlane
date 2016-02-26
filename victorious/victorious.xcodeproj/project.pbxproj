@@ -1656,9 +1656,9 @@
 		F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */; };
 		F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */; };
 		F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */; };
-		F048AFD11C8109E2004F516A /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* Composer.swift */; };
+		F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* ComposerController.swift */; };
 		F048AFD21C8109E2004F516A /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */; };
-		F048AFD31C8109E2004F516A /* ComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerDelegate.swift */; };
+		F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
@@ -4330,9 +4330,9 @@
 		F0411E8B1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingMarqueeLabel.h; sourceTree = "<group>"; };
 		F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingMarqueeLabel.m; sourceTree = "<group>"; };
 		F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCaptionView.xib; sourceTree = "<group>"; };
-		F048AFCE1C8109E2004F516A /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Composer.swift; path = Composer/Composer.swift; sourceTree = "<group>"; };
+		F048AFCE1C8109E2004F516A /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerController.swift; path = Composer/ComposerController.swift; sourceTree = "<group>"; };
 		F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = Composer/ComposerAttachmentTab.swift; sourceTree = "<group>"; };
-		F048AFD01C8109E2004F516A /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerDelegate.swift; path = Composer/ComposerDelegate.swift; sourceTree = "<group>"; };
+		F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -9138,9 +9138,9 @@
 		F048AFCD1C81096F004F516A /* Composer */ = {
 			isa = PBXGroup;
 			children = (
-				F048AFCE1C8109E2004F516A /* Composer.swift */,
+				F048AFCE1C8109E2004F516A /* ComposerController.swift */,
 				F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */,
-				F048AFD01C8109E2004F516A /* ComposerDelegate.swift */,
+				F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */,
 			);
 			name = Composer;
 			sourceTree = "<group>";
@@ -11197,7 +11197,7 @@
 				A7EBF53E1C2B9BDD0080C7CF /* VLikersDataSource.swift in Sources */,
 				D89367501ADDE1B9001D2426 /* VActionButtonAnimationController.m in Sources */,
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
-				F048AFD11C8109E2004F516A /* Composer.swift in Sources */,
+				F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */,
 				F03C135A1B698F6F00287F4C /* VAsset.m in Sources */,
 				C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */,
 				A73D16BB1C24F98D00497F83 /* StreamOperation.swift in Sources */,
@@ -11355,7 +11355,7 @@
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
-				F048AFD31C8109E2004F516A /* ComposerDelegate.swift in Sources */,
+				F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
