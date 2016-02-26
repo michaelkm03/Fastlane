@@ -76,25 +76,14 @@
                                         error:(NSError *)error
 {
     NSParameterAssert(completion != nil);
-
+    
     dispatch_async(dispatch_get_main_queue(), ^(void)
-                   {
-                       NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                       [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
-                       
-                       UIAlertController *accessNotGrantedAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                                      message:NSLocalizedString(@"TwitterDenied", @"")
-                                                                                               preferredStyle:UIAlertControllerStyleAlert];
-                       [accessNotGrantedAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                 style:UIAlertActionStyleCancel
-                                                                               handler:^(UIAlertAction *action)
-                                                         {
-                                                             completion(nil);
-                                                         }]];
-                       [viewControllerToPresentOnIfNeeded presentViewController:accessNotGrantedAlert
-                                                                       animated:YES
-                                                                     completion:nil];
-                   });
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
+        NSError *error = [NSError errorWithDomain:@"" code:-99 userInfo:nil];
+        completion(nil, error);
+    });
 }
 
 - (void)twitterAccessGrantedWithNoAccountsCompletion:(VTwitterAccountsHelperCompletion)completion
@@ -108,7 +97,7 @@
         
         if (completion != nil)
         {
-            completion(nil);
+            completion(nil, error);
         }
     });
 }
@@ -125,7 +114,7 @@
         
         if (accounts.count == 1)
         {
-            completion([accounts firstObject]);
+            completion([accounts firstObject], nil);
             return;
         }
         
@@ -141,7 +130,7 @@
                                                    [viewControllerToPresentOnIfNeeded dismissViewControllerAnimated:YES
                                                                                                          completion:^
                                                     {
-                                                        completion(selectedItem);
+                                                        completion(selectedItem, nil);
                                                     }];
                                                }];
         selectorVC.navigationItem.prompt = NSLocalizedString(@"SelectTwitter", @"");

@@ -12,7 +12,7 @@
 
 @import Accounts;
 
-NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
+NSString * const VSocialLoginErrorDomain = @"twitterManagerError";
 
 @interface VTwitterManager()
 
@@ -56,7 +56,7 @@ NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
     [self.accountsHelper selectTwitterAccountWithViewControler:viewController
-                                                    completion:^(ACAccount *twitterAccount)
+                                                    completion:^(ACAccount *twitterAccount, NSError *error)
      {
          if ( twitterAccount == nil )
          {
@@ -67,7 +67,7 @@ NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
              
              if ( completionBlock != nil )
              {
-                 completionBlock(NO, [NSError errorWithDomain:VTwitterManagerErrorDomain code:VTwitterManagerErrorUnavailable userInfo:nil]);
+                 completionBlock(NO, [NSError errorWithDomain:VSocialLoginErrorDomain code:VSocialLoginErrorUnavailable userInfo:nil]);
              }
              
              return;
@@ -86,7 +86,7 @@ NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
                   
                   if ( completionBlock != nil )
                   {
-                      completionBlock(NO, [NSError errorWithDomain:VTwitterManagerErrorDomain code:VTwitterManagerErrorFailed userInfo:error.userInfo]);
+                      completionBlock(NO, [NSError errorWithDomain:VSocialLoginErrorDomain code:VSocialLoginErrorFailed userInfo:error.userInfo]);
                   }
                   
                   return;

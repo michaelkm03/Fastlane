@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VPermission.h"
+#import "VSocialLoginErrors.h"
 
 /**
  *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.
@@ -16,18 +17,6 @@
  *  @param error The error returned from the api call.
  */
 typedef void (^VTWitterCompletionBlock) (BOOL success, NSError *error);
-
-/**
- *  Error domain for all non-Twitter-API errors
- */
-extern NSString * const VTwitterManagerErrorDomain;
-
-typedef NS_ENUM(NSInteger, VTwitterManagerError)
-{
-    VTwitterManagerErrorCancelled,
-    VTwitterManagerErrorFailed,
-    VTwitterManagerErrorUnavailable
-};
 
 @interface VTwitterManager : NSObject
 
