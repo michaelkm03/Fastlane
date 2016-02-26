@@ -23,12 +23,12 @@
 
 - (void)actionForInStreamUserSelection:(NSNumber *)userId
 {
-    [self.sequenceActionController showProfileWithRemoteId:userId];
+//    [self.sequenceActionController showProfileWithRemoteId:userId];
 }
 
 - (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType
 {
-    [self.sequenceActionController showMediaContentForUrl:mediaUrl withLinkType:linkType];
+    [self.sequenceActionController showMediaContent:mediaUrl mediaLinkType:linkType];
 }
 
 @end

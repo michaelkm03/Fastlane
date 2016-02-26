@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class VSequenceActionController : NSObject {
+@objc class VSequenceActionController : NSObject {
     
     private(set) var dependencyManager: VDependencyManager
     private(set) var originViewController: UIViewController
@@ -33,13 +33,12 @@ public class VSequenceActionController : NSObject {
     
     //   MARK: - Show Media
     
-    func showMediaContentForUrl(url: NSURL?, mediaLinkType linkType:VCommentMediaType?) -> Bool{
-        guard let url = url, linkType = linkType else {
-            return false
+    func showMediaContent(url: NSURL?, mediaLinkType linkType: VCommentMediaType) {
+        guard let url = url else {
+            return
         }
         let mediaLinkViewController = VAbstractMediaLinkViewController.newWithMediaUrl(url, andMediaLinkType: linkType)
         originViewController.presentViewController(mediaLinkViewController, animated: true, completion: nil)
-        return true
     }
     
     // MARK: - Remix
