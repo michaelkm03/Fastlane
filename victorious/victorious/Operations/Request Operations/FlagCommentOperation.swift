@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagCommentOperation: RequestOperation {
+class FlagCommentOperation: FetcherOperation, RequestOperation {
     
-    var request: FlagCommentRequest
+    let request: FlagCommentRequest!
     
     private let flaggedContent = VFlaggedContent()
     
@@ -19,8 +19,8 @@ class FlagCommentOperation: RequestOperation {
         self.request = FlagCommentRequest(commentID: commentID)
         super.init()
         
-        let remoteOperation = FlagCommentRemoteOperation(commentID: commentID)
-        remoteOperation.queueAfter( self )
+        let remoteOperation = FlagCommentRequestOperation(commentID: commentID)
+        remoteOperation.after( self ).queue()
     }
     
     override func main() {
@@ -39,9 +39,9 @@ class FlagCommentOperation: RequestOperation {
 }
 
 
-class FlagCommentRemoteOperation: RequestOperation {
+class FlagCommentRequestOperation: FetcherOperation, RequestOperation {
     
-    var request: FlagCommentRequest
+    let request: FlagCommentRequest!
     
     init( commentID: Int ) {
         self.request = FlagCommentRequest(commentID: commentID)

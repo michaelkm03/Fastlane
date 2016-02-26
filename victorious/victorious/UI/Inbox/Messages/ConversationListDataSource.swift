@@ -37,12 +37,12 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         self.refreshLocal( createOperation: {
             return FetchConverationListOperation(userID: userID)
         },
-        completion: { results in
+        completion: { (results, error) in
             completion?(results)
         })
     }
     
-    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         
         self.refreshRemote(
             createOperation: {

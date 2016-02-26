@@ -132,7 +132,7 @@ static NSString * const kMenuKey = @"menu";
                                                                                         dependencyManager:self.dependencyManager
                                                                                                   context:VAuthorizationContextDefault
                                                                                                  animated:YES];
-        [showLoginOperation queueOn:showLoginOperation.defaultQueue completionBlock:nil];
+        [showLoginOperation queueWithCompletion:nil];
     }
 }
 

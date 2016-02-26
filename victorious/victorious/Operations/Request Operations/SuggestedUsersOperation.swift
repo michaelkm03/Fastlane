@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SuggestedUsersOperation: RequestOperation {
+class SuggestedUsersOperation: FetcherOperation, RequestOperation {
     
-    let request = SuggestedUsersRequest()
+    let request: SuggestedUsersRequest! = SuggestedUsersRequest()
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )

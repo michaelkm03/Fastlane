@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class ShowCreateSheetOperation: Operation {
+@objc class ShowCreateSheetOperation: NavigationOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
@@ -22,25 +22,24 @@ import UIKit
     
     override func start() {
         super.start()
+        self.beganExecuting()
         
-        dispatch_async( dispatch_get_main_queue() ) {
-            guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
-                self.finishedExecuting()
-                return
-            }
+        guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+            self.finishedExecuting()
+            return
+        }
+        
+        if let createSheet = self.dependencyManager.templateValueOfType( VCreateSheetViewController.self, forKey:"createSheet" ) as? VCreateSheetViewController {
             
-            if let createSheet = self.dependencyManager.templateValueOfType( VCreateSheetViewController.self, forKey:"createSheet" ) as? VCreateSheetViewController {
-                
-                createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
-                    self.chosenCreationType = chosenCreationType
-                    self.finishedExecuting()
-                }
-                self.originViewController.presentViewController(createSheet, animated: true, completion: nil)
-            }
-            else {
-                self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment:"" ))
+            createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
+                self.chosenCreationType = chosenCreationType
                 self.finishedExecuting()
             }
+            self.originViewController.presentViewController(createSheet, animated: true, completion: nil)
+        }
+        else {
+            self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment:"" ))
+            self.finishedExecuting()
         }
     }
 }

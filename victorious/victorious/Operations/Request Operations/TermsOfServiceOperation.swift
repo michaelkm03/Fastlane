@@ -9,9 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TermsOfServiceOperation: RequestOperation {
+class TermsOfServiceOperation: FetcherOperation, RequestOperation {
     
-    let request = TermsOfServiceRequest()
+    let request: TermsOfServiceRequest! = TermsOfServiceRequest()
+    
     var resultHTMLString: String?
     
     override func main() {

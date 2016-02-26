@@ -39,29 +39,21 @@ class StoredLoginOperation: Operation {
             }
             user.setAsCurrentUser()
             
-            PreloadUserInfoOperation().queueAfter(self)
+            PreloadUserInfoOperation().after(self).queue()
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
                 
                 // Next, if login with a stored token failed, use any stored credentials to login automatically
                 let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-                let operation = AccountCreateOperation(
+                let accountCreateOperation = AccountCreateOperation(
                     request: accountCreateRequest,
                     parameters: AccountCreateParameters(
                         loginType: loginType,
                         accountIdentifier: accountIdentifier
                     )
                 )
-                
-                // We want to queue AccountCreateOperation next and to transfer all of
-                // self's dependencies to it--bassically inserting a new operation into
-                // the dependency chain.
-                let dependentOperations = dependentOperationsInQueues( [Operation.sharedQueue, NSOperationQueue.mainQueue()] )
-                for dependentOperation in dependentOperations {
-                    dependentOperation.addDependency( operation )
-                }
-                operation.queue()
+                accountCreateOperation.rechainAfter(self).queue()
                 
         } else {
             // Or finally, just let this operation finish up without doing anthing.

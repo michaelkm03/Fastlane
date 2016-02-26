@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class NotificationsOperation: RequestOperation, PaginatedOperation {
+final class NotificationsOperation: FetcherOperation, PaginatedRequestOperation {
     
     var request: NotificationsRequest
     

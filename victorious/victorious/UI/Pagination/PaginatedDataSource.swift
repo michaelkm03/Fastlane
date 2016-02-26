@@ -9,13 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
+/// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
+@objc public class PaginatedDataSource: NSObject { //, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentPaginatedOperation: NSOperation?
+    private(set) weak var currentPaginatedRequestOperation: NSOperation?
     private(set) weak var currentLocalOperation: NSOperation?
     
     private(set) var state: VDataSourceState = .Cleared {
@@ -51,21 +51,21 @@ import VictoriousIOSSDK
     
     func unload() {
         visibleItems = NSOrderedSet()
-        currentPaginatedOperation = nil
+        currentPaginatedRequestOperation = nil
         currentLocalOperation = nil
         pagesLoaded = Set<Int>()
         state = .Cleared
     }
     
     func cancelCurrentOperation() {
-        currentPaginatedOperation?.cancel()
-        currentPaginatedOperation = nil
+        currentPaginatedRequestOperation?.cancel()
+        currentPaginatedRequestOperation = nil
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
     /// operations locally on the persistent store only and does not send a network request.
-    func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
+    func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         guard currentLocalOperation == nil else {
             return
         }
@@ -75,14 +75,13 @@ import VictoriousIOSSDK
             if let error = error {
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
-                completion?([])
                 
             } else if let results = results {
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Previous)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 self.currentLocalOperation = nil
-                completion?(results)
             }
+            completion?(results, error)
         }
         self.currentLocalOperation = operation
     }
@@ -98,21 +97,21 @@ import VictoriousIOSSDK
         }
     }
     
-    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
+    func refreshRemote<T: Paginated>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
         
-        guard self.currentPaginatedOperation != nil else {
+        guard self.currentPaginatedRequestOperation != nil else {
             return
         }
         
         var operation: T = createOperation()
-        guard let requestOperation = operation as? RequestOperation else {
+        guard let requestOperation = operation as? FetcherOperation else {
             return
         }
         
         self.state = .Loading
-        requestOperation.queue() { error in
+        requestOperation.queue() { (results, error) in
             
             if let error = error {
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
@@ -132,7 +131,7 @@ import VictoriousIOSSDK
         }
     }
     
-    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
+    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
         
         guard !isLoading() else {
             return
@@ -148,31 +147,31 @@ import VictoriousIOSSDK
         case .First:
             operationToQueue = createOperation()
         case .Next:
-            operationToQueue = (currentPaginatedOperation as? T)?.next()
+            operationToQueue = (currentPaginatedRequestOperation as? T)?.next()
         case .Previous:
-            operationToQueue = (currentPaginatedOperation as? T)?.prev()
+            operationToQueue = (currentPaginatedRequestOperation as? T)?.prev()
         }
         
         // Return early if there is no operation to queue, i.e. no work to do
-        guard let requestOperation = operationToQueue as? RequestOperation,
+        guard let requestOperation = operationToQueue as? FetcherOperation,
             var operation = operationToQueue else {
                 return
         }
         
         // Return early if we've already loaded this page
-        guard !pagesLoaded.contains(operation.request.paginator.pageNumber) else {
+        guard !pagesLoaded.contains(operation.paginator.pageNumber) else {
             return
         }
         
         // Add the page from `pagesLoaded` so it won't be loaded again
-        pagesLoaded.insert(operation.request.paginator.pageNumber)
+        pagesLoaded.insert(operation.paginator.pageNumber)
         
         self.state = .Loading
-        requestOperation.queue() { error in
+        requestOperation.queue() { (results, error) in
             
             if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
-                self.pagesLoaded.remove( operation.request.paginator.pageNumber )
+                self.pagesLoaded.remove( operation.paginator.pageNumber )
                 
                 // Return no results
                 operation.results = []
@@ -185,10 +184,10 @@ import VictoriousIOSSDK
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
-            completion?( operation: operation, error: error )
+            completion?( results: results, error: error )
         }
         
-        self.currentPaginatedOperation = requestOperation
+        self.currentPaginatedRequestOperation = requestOperation
     }
 }
 

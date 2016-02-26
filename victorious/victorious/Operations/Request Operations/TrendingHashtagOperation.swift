@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingHashtagOperation: RequestOperation {
+class TrendingHashtagOperation: FetcherOperation, RequestOperation {
     
-    let request = TrendingHashtagRequest()
+    let request: TrendingHashtagRequest! = TrendingHashtagRequest()
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
@@ -21,7 +21,7 @@ class TrendingHashtagOperation: RequestOperation {
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Queue a follow-up operation that parses to persistent store
-        SaveHashtagsOperation(hashtags: networkResult).queueAfter(self)
+        SaveHashtagsOperation(hashtags: networkResult).after(self).queue()
         
         completion()
     }

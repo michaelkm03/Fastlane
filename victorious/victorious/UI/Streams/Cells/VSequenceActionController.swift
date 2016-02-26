@@ -358,7 +358,7 @@ import Foundation
             return
         }
         
-        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { error in
+        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { results, error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )

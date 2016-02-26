@@ -16,7 +16,7 @@ extension VNotificationSettingsViewController {
         self.settingsError = nil
         
         let notificationPreferencesOperation = DevicePreferencesOperation()
-        notificationPreferencesOperation.queue() { error in
+        notificationPreferencesOperation.queue() { (results, error) in
             guard error == nil, let mainQueueSettings = notificationPreferencesOperation.mainQueueSettings else {
                 self.setSettings(nil)
                 self.stateManager.errorDidOccur(error)
@@ -33,7 +33,7 @@ extension VNotificationSettingsViewController {
         let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: notificationSettings.networkPreferences())
         let navigationController = self.navigationController
         
-        notificationUpdateOperation.queue() { [weak navigationController] error in
+        notificationUpdateOperation.queue() { [weak navigationController] (results, error) in
             if let _ = error where navigationController != nil {
                 let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "" )
                 let message = NSLocalizedString("ErrorPushNotificationsNotSavedMessage", comment: "" )

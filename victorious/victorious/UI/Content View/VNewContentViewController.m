@@ -1394,7 +1394,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
      }];
@@ -1404,7 +1404,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
          [self v_showFlaggedCommentAlertWithCompletion:nil];

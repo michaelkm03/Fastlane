@@ -30,6 +30,7 @@ class CreateMediaUploadOperation: Operation {
     
     override func start() {
         super.start()
+        self.beganExecuting()
         upload(uploadManager)
     }
     
@@ -55,7 +56,7 @@ class CreateMediaUploadOperation: Operation {
         
         dispatch_async(dispatch_get_main_queue()) {
             self.uploadCompletion(nil)
-            self.mainQueueCompletionBlock?(self)
+            self.finishedExecuting()
         }
     }
     

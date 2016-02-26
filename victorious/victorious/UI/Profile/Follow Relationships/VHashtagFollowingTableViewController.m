@@ -125,7 +125,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
         }
         
         FetcherOperation *operation = [[ToggleFollowHashtagOperation alloc] initWithHashtag:hashtagText];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error) {
+        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
             [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
         }];
     };

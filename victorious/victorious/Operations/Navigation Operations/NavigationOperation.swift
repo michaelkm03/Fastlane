@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NavigationOperation: NSOperation, Queuable {
+class NavigationOperation: NSOperation, Queueable {
     
     private var _executing = false
     private var _finished = false
@@ -45,14 +45,23 @@ class NavigationOperation: NSOperation, Queuable {
         }
     }
     
-    // MARK: - Queuable
+    // MARK: - Queueable
     
-    var defaultQueue: NSOperationQueue {
+    func executeCompletionBlock(completionBlock: ()->()) {
+        assert( NSThread.isMainThread(), "This operation must only ever be added to NSOperationQueue.mainQueue()")
+        completionBlock()
+    }
+    
+    override var defaultQueue: NSOperationQueue {
+        // By overriding `defaultQueue` we are selecting the queue on which to add operations
+        // when no other specifiec queue is provided by calling code.
         return NSOperationQueue.mainQueue()
     }
     
-    func queueOn( queue: NSOperationQueue, completionBlock:(()->())?) {
-        self.completionBlock = completionBlock
-        queue.addOperation( self )
+    /// A manual implementation of a method provided by a Swift protocol extension
+    /// so that Objective-C can still easily queue and operation like other functions
+    /// in the `Queueable` protocol.
+    func queueWithCompletion(completion:(()->())?) {
+        queue(completion: completion)
     }
 }

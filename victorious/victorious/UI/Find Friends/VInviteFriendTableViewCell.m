@@ -109,7 +109,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
 {
     NSInteger userId = self.profile.remoteId.integerValue;
     FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:self.sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 @end

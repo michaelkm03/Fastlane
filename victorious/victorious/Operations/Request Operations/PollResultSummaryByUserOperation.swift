@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperation {
+final class PollResultSummaryByUserOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: PollResultSummaryRequest
     

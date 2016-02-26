@@ -19,7 +19,7 @@ class FollowHashtagOperation: FetcherOperation {
         self.hashtag = hashtag
         super.init()
         
-        FollowHashtagRemoteOperation(hashtag: hashtag).queueAfter(self)
+        FollowHashtagRequestOperation(hashtag: hashtag).after(self).queue()
     }
     
     override func main() {
@@ -46,9 +46,9 @@ class FollowHashtagOperation: FetcherOperation {
 }
 
 
-class FollowHashtagRemoteOperation: RequestOperation {
+class FollowHashtagRequestOperation: FetcherOperation, RequestOperation {
     
-    private let request: FollowHashtagRequest
+    let request: FollowHashtagRequest!
     
     required init(hashtag: String) {
         self.request = FollowHashtagRequest(hashtag: hashtag)
