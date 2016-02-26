@@ -15,12 +15,18 @@ import Foundation
     private(set) var delegate: VSequenceActionControllerDelegate
     private(set) var shouldDismissOnDelete: Bool
     
-    //   MARK: - Initializer
+    //  MARK: - Initializer
     
     ///
-    ///  Sets up the SequenceActionController with the dependency manager and the view controller that it should be presented on
+    /// Sets up the SequenceActionController with the dependency manager and
+    /// the view controller on which it should be presented.
     ///
-    ///  - parameter shouldDismissOnDelete:      Should originViewController be dismissed if the sequence is flagged/deleted
+    /// - parameter dependencyManager:      The dependency manager.
+    /// - parameter originViewController:   The view controller on which the 
+    /// Action Sheet should displayed.
+    /// - parameter delegate:               The delegate conforming to protocol 
+    /// "VSequenceActionControllerDelegate" to handle the deletion/flagging 
+    /// callbacks
     ///
     
     init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate, shouldDismissOnDelete: Bool) {
@@ -32,6 +38,14 @@ import Foundation
     }
     
     //   MARK: - Show Media
+    ///
+    /// Presents a UI on the ViewController given in the initializer to present 
+    /// the media at the URL.
+    ///
+    /// - parameter url:                The url which contains the media. Should 
+    /// not be nil.
+    /// - parameter linkType:           The link type.
+    ///
     
     func showMediaContent(url: NSURL?, mediaLinkType linkType: VCommentMediaType) {
         guard let url = url else {
@@ -43,12 +57,10 @@ import Foundation
     
     // MARK: - Remix
     ///
-    ///  Presents remix UI on the ViewController given in the initializer with a given sequence to remix.
-    ///  Will present a UIViewController for the remix UI on the passed in originViewController.
+    /// Presents remix UI on the ViewController given in the initializer with a 
+    /// given sequence to remix.
     ///
-    ///  - parameter sequence:          The sequence to remix.
-    ///  - parameter defaultVideoEdit:  The default video editing state.
-    ///  - parameter completion:        A completion block. BOOL is YES if successful publish, NO if cancelled out.
+    /// - parameter sequence:           The sequence to remix. Shouldn't be nil.
     ///
     
     func showRemixWithSequence(sequence: VSequence?) {
@@ -62,6 +74,13 @@ import Foundation
     }
     
     // MARK: - User
+    ///
+    /// Presents User Profile UI on the ViewController given in the initializer
+    /// with a given user ID.
+    ///
+    /// - parameter remoteId:           The remoteID of the user whose profile 
+    /// we want to display.
+    ///
     
     func showProfileWithRemoteId(remoteId: Int) -> Bool {
         guard let navigationViewController = originViewController.navigationController else {
@@ -79,6 +98,17 @@ import Foundation
     }
     
     // MARK: - Share
+    ///
+    /// Presents Share Sequence UI on the ViewController given in the initializer
+    /// with a given sequence, node, streamId, and completion.
+    ///
+    /// - parameter sequence:           The sequence we want to share. Should 
+    /// not be nil.
+    /// - parameter node:               The node. Should not be nil.
+    /// - parameter streamID:           The streamID.
+    /// - parameter completion:         Completion block to call upon completion 
+    /// of sharing.
+    ///
     
     func shareSequence(sequence: VSequence?, node: VNode?, streamID: String?, completion: (()->())? ) {
         guard let sequence = sequence,
@@ -138,6 +168,13 @@ import Foundation
     }
     
     // MARK: - Comments
+    ///
+    /// Presents a UI on the ViewController given in the initializer to display 
+    /// comments for a given sequence.
+    ///
+    /// - parameter sequence:           The sequence whose comments we are 
+    /// displaying. Should not be nil.
+    ///
     
     func showCommentsWithSequence(sequence: VSequence?, withSelectedComment selectedComment: VComment?) {
         // selected comment is not used
@@ -151,6 +188,16 @@ import Foundation
     }
     
     // MARK: - Flag
+    ///
+    /// Presents an Alert Controller to confirm flagging of a sequence. Upon 
+    /// confirmation, flags the sequence and calls the completion block with a 
+    /// Boolean representing success/failure of the operation.
+    ///
+    /// - parameter sequence:           The sequence we want to flag. Should not 
+    /// be nil.
+    /// - parameter completion:         A completion block takes in a Boolean
+    /// argument representing success/failure.
+    ///
     
     func flagSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
@@ -197,6 +244,16 @@ import Foundation
     }
     
     // MARK: - Delete
+    ///
+    /// Presents an Alert Controller to confirm deletion of a sequence. Upon
+    /// confirmation, flags the sequence and calls the completion block with a
+    /// Boolean representing success/failure of the operation.
+    ///
+    /// - parameter sequence:           The sequence we want to delete. Should 
+    /// not be nil.
+    /// - parameter completion:         A completion block takes in a Boolean
+    /// argument representing success/failure.
+    ///
     
     func deleteSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
         guard let sequence = sequence else {
@@ -234,6 +291,17 @@ import Foundation
     }
     
     // MARK: - Like
+    ///
+    /// Presents a UI on the ViewController given in the initializer to display
+    /// comments for a given sequence.
+    ///
+    /// - parameter sequence:           The sequence we are liking. Should not 
+    /// be nil.
+    /// - parameter triggeringView      The view that triggered this action. 
+    /// Should not be nil.
+    /// - parameter completion:         A completion block takes in a Boolean
+    /// argument representing success/failure.
+    ///
     
     func likeSequence(sequence: VSequence?, triggeringView: UIView?, completion: ((Bool) -> Void)?) {
         guard let sequence = sequence,
@@ -264,11 +332,24 @@ import Foundation
     }
     
     // MARK: - Repost
-    
+    ///
+    /// Reposts a node. Internally calls "repostNode: completion:"
+    ///
+    /// - parameter node:               The node we are reposting. Should not 
+    /// be nil.
+    ///
     func repostNode(node: VNode?) {
         repostNode(node, completion: nil)
     }
     
+    ///
+    /// Reposts a node.
+    ///
+    /// - parameter node:               The node we are reposting. Should not
+    /// be nil.
+    /// - parameter completion:         A completion block takes in a Boolean
+    /// argument representing success/failure.
+    ///
     func repostNode(node: VNode?, completion: ((Bool) -> Void)?) {
         guard let node = node else {
             completion?(false)
@@ -288,12 +369,12 @@ import Foundation
     }
     
     // MARK: - Show
-    
-    /**
-    *  Pushes a remixers VC on the given navigation controller for the given sequence.
-    *
-    *  @param sequence             A valid sequence. Can't be nil.
-    */
+    ///
+    /// Presents a UI to show the likers of a sequence.
+    ///
+    /// - parameter sequence:           The sequence whose likers we want to
+    /// show. Should not be nil.
+    ///
     
     func showLikersWithSequence(sequence: VSequence?) {
         guard let sequence = sequence else {
@@ -305,6 +386,13 @@ import Foundation
         }
     }
     
+    ///
+    /// Presents a UI to show the reposters of a sequence.
+    ///
+    /// - parameter sequence:           The sequence whose reposters we want to
+    /// show. Should not be nil.
+    ///
+    
     func showRepostersWithSequence(sequence: VSequence?) {
         guard let sequence = sequence else {
             return
@@ -314,6 +402,13 @@ import Foundation
             originViewController.navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    ///
+    /// Presents a UI to show the memers of a sequence.
+    ///
+    /// - parameter sequence:           The sequence whose memers we want to 
+    /// show. Should not be nil.
+    ///
     
     func showMemersWithSequence(sequence: VSequence?) {
         guard let sequence = sequence else {
@@ -325,6 +420,17 @@ import Foundation
         }
         
     }
+    
+    ///
+    /// Presents a VActionSheetViewController set up with options based off of 
+    /// the VSequence object provided.
+    ///
+    /// - parameter sequence:           The sequence whose available actions we
+    /// want to display on the action sheet. Should not be nil.
+    /// - parameter streamId:           The streamID.
+    /// - parameter completion:         Completion block to be called after the 
+    /// action sheet has been presented.
+    ///
     
     func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)

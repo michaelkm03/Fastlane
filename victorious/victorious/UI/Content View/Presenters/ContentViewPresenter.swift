@@ -8,11 +8,14 @@
 
 import UIKit
 
-/// :param: sequence The sequence to display
-/// :param: placeHolderImage  An image, typically the sequence's thumbnail, that can be displayed
-/// in the place of content while the real thing is being loaded
-/// :param: comment A comment ID to scroll to and highlight, typically used when content view
-/// is being presented when the app is launched with a deep link URL.
+/// - parameter sequence:           The sequence to display
+/// - parameter placeHolderImage:   An image, typically the sequence's 
+/// thumbnail, that can be displayed in the place of content while the real 
+/// thing is being loaded
+/// - parameter comment:            A comment ID to scroll to and highlight, 
+/// typically used when content view is being presented when the app is launched 
+/// with a deep link URL.
+
 class ContentViewContext: NSObject {
     var viewController: UIViewController?
     var originDependencyManager: VDependencyManager?
@@ -31,11 +34,14 @@ class ContentViewPresenter: NSObject {
     
     /// Presents a content view for the specified VSequence object.
     ///
-    /// :param: viewController the view controller from where the presentation message was sent
-    /// :param: placeHolderImage An image, typically the sequence's thumbnail, that can be displayed
-    /// in the place of content while the real thing is being loaded
-    /// :param: comment A comment ID to scroll to and highlight, typically used when content view
-    /// is being presented when the app is launched with a deep link URL.
+    /// - parameter viewController:         the view controller from where the
+    /// presentation message was sent
+    /// - parameter placeHolderImage:       An image, typically the sequence's
+    /// thumbnail, that can be displayed in the place of content while the real
+    /// thing is being loaded
+    /// - parameter comment:                A comment ID to scroll to and
+    /// highlight, typically used when content view is being presented when the
+    /// app is launched with a deep link URL.
     func presentContentView( context context: ContentViewContext ) {
         
         if let originDependencyManager = context.originDependencyManager,
