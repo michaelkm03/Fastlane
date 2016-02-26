@@ -186,5 +186,7 @@
 	<string>victorious.AchievementViewController</string>
 	<key>trophyCase.screen</key>
 	<string>victorious.TrophyCaseViewController</string>
+	<key>trophyCase.achievement</key>
+	<string>victorious.Achievement</string>
 </dict>
 </plist>

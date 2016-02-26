@@ -10,4 +10,15 @@ import Foundation
 
 class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     
+    var achievement: Achievement? {
+        didSet {
+            if let achievement = self.achievement {
+                configureCellWithAchievement(achievement)
+            }
+        }
+    }
+    
+    private func configureCellWithAchievement(achievement: Achievement) {
+        
+    }
 }

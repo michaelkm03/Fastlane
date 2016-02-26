@@ -38,9 +38,4 @@ class TrophyCaseViewController: UIViewController {
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        collectionView.reloadData()
-    }
 }

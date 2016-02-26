@@ -524,6 +524,7 @@
 		67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */; };
 		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
+		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
 		67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */; };
 		67C2101E1BFA797E0074E40E /* FollowHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */; };
 		67C210231BFA7A210074E40E /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */; };
@@ -2652,6 +2653,7 @@
 		67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequest.swift; sourceTree = "<group>"; };
 		67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequestTests.swift; sourceTree = "<group>"; };
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
+		67B783BD1C80F98900940D61 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Achievement.swift; path = "Trophy Case/Achievement.swift"; sourceTree = "<group>"; };
 		67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
 		67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowHashtagResponse.json; sourceTree = "<group>"; };
 		67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowingHashtagsResponse.json; sourceTree = "<group>"; };
@@ -6629,6 +6631,7 @@
 		67C7764D1C7E6C3700BE65CE /* Trophy Case */ = {
 			isa = PBXGroup;
 			children = (
+				67B783BD1C80F98900940D61 /* Achievement.swift */,
 				675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */,
 				675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */,
 				675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */,
@@ -11278,6 +11281,7 @@
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
+				67B783BE1C80F98900940D61 /* Achievement.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,

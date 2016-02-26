@@ -12,7 +12,10 @@ class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
     private(set) var dependencyManager: VDependencyManager?
     private lazy var allPossibleAchievements: [Achievement] = {
-        return self.dependencyManager!.arrayOfValuesOfType(Achievement.self, forKey: "achievements") as! [Achievement]
+        let achievements: [Achievement] = self.dependencyManager?.arrayOfValuesOfType(Achievement.self, forKey: "achievements") as? [Achievement] ?? []
+        return achievements.sort { item1, item2 in
+            item1.displayOrder < item2.displayOrder
+        }
     }()
     
     private struct UIConstant {
@@ -29,27 +32,12 @@ class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCellWithReuseIdentifier(UIConstant.achievementCellIdentifier, forIndexPath: indexPath)
-    }
-}
-
-class Achievement {
-    
-    let name: String
-    let title: String
-    let description: String
-    let displayOrder: Int
-    private(set) var iconAssets: [NSURL]?
-    private(set) var dependencyManager: VDependencyManager?
-    
-    init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
-        self.name = dependencyManager.stringForKey("name")
-        self.title = dependencyManager.stringForKey("title")
-        self.description = dependencyManager.stringForKey("description")
-        self.displayOrder = dependencyManager.numberForKey("displayOrder").integerValue
-        if let assets = dependencyManager.arrayForKey("assets") as? [NSDictionary] {
-            iconAssets = assets.flatMap { NSURL(string: ($0["imageUrl"] as? String)!) }
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(UIConstant.achievementCellIdentifier, forIndexPath: indexPath) as? TrophyCaseAchievementCollectionViewCell else {
+            assertionFailure("Failed to dequeue a correct collection view cell for trophy case")
+            return UICollectionViewCell()
         }
+        
+        cell.achievement = allPossibleAchievements[indexPath.item]
+        return cell
     }
 }
