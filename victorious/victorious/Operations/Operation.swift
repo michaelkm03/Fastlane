@@ -12,10 +12,6 @@ let _sharedQueue = NSOperationQueue()
 
 class Operation: NSOperation, Queueable {
     
-    static var sharedQueue: NSOperationQueue {
-        return _sharedQueue
-    }
-    
     private var _executing = false
     private var _finished = false
     

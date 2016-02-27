@@ -56,7 +56,7 @@ class NavigationOperation: NSOperation, Queueable {
         }
     }
     
-    override var defaultQueue: NSOperationQueue {
+    override var v_defaultQueue: NSOperationQueue {
         // By overriding `defaultQueue` we are selecting the queue on which to add operations
         // when no other specifiec queue is provided by calling code.
         return NSOperationQueue.mainQueue()
