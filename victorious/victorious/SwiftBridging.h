@@ -163,7 +163,6 @@
 #import "VPhotoFilter.h"
 #import "VPollResult.h"
 #import "VPrivacyPoliciesViewController.h"
-#import "VProfileCreateViewController.h"
 #import "VProfileEditViewController.h"
 #import "VPublishParameters.h"
 #import "VPushNotificationManager.h"
