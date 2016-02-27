@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// Defines an object that manages PaginatedRequestOperation instances by using them
+/// Defines an object that manages PaginatedOperation instances by using them
 /// to load pages worth of data and collect them in a backing store for a tableview
 /// or collection view.
 @objc protocol PaginatedDataSourceType: class {
@@ -34,7 +34,6 @@ protocol GenericPaginatedDataSourceType: PaginatedDataSourceType {
     /// (i.e. the one provided by calling the `createOperation` closure) to load a page of results
     /// from the network.  When finished, internal state changes and changes to the backing store
     /// may occur, which will in turn call the appropriate delegate methods.
-    func loadPage<T: PaginatedRequestOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType,
-        @noescape createOperation: () -> T,
+    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T,
         completion: ((results: [AnyObject]?, error: NSError?) -> Void)? )
 }

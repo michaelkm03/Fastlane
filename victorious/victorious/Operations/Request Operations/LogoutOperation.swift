@@ -6,6 +6,7 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+import FBSDKLoginKit
 import Foundation
 import VictoriousIOSSDK
 
@@ -44,6 +45,7 @@ class LogoutOperation: FetcherOperation {
             
             VStoredLogin().clearLoggedInUserFromDisk()
             VStoredPassword().clearSavedPassword()
+            FBSDKLoginManager().logOut()
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
             VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)

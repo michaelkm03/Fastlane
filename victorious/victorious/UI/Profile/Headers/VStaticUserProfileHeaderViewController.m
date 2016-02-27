@@ -20,7 +20,6 @@
 
 @import KVOController;
 
-static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
 static NSString * const kLevelBadgeKey = @"animatedBadge";
 
@@ -49,15 +48,11 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         self.state = self.state; // Trigger a state refresh
     }
-    
-    // Setup badge view
-    [self updateBadgeView];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-    
+    [super viewWillAppear:animated];
     [self updateBadgeView];
 }
 
@@ -86,21 +81,17 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         {
             [self.badgeContainerView addSubview:viewToContain];
             [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
-            // Otherwise the badge's shape layer won't always animate it's stroke
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [self animateProgress];
-            });
+            [self updateLevelBadgeProgress];
         }
     }
 }
 
-- (void)animateProgress
+- (void)updateLevelBadgeProgress
 {
     if (self.state == VUserProfileHeaderStateCurrentUser)
     {
         NSInteger progress = self.user.levelProgressPercentage.integerValue;
-        [self.badgeView animateProgress:levelProgressAnimationTime * (progress / 100.0f) endPercentage:progress completion:nil];
+        self.badgeView.progress = progress;
     }
 }
 

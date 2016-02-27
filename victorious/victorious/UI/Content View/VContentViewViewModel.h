@@ -7,7 +7,6 @@
 //
 
 #import "VSequence.h"
-#import "VRealtimeCommentsViewModel.h"
 #import "VAdViewControllerType.h"
 #import "VExperienceEnhancerController.h"
 #import "VPublishParameters.h"
@@ -75,11 +74,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
  *  The type of asset we are currently viewing.
  */
 @property (nonatomic, assign, readonly) VContentViewType type;
-
-/**
- *  A view model for the real time comments for the given sequence.
- */
-@property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 
 @property (nonatomic, strong, readonly) VExperienceEnhancerController *experienceEnhancerController;
 
