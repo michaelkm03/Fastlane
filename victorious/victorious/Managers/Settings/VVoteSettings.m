@@ -9,6 +9,7 @@
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VPurchaseManager.h"
+#import "NSArray+VMap.h"
 
 @implementation VVoteSettings
 
@@ -27,8 +28,6 @@
                               }];
     _voteTypes = [(_voteTypes ?: @[]) arrayByAddingObjectsFromArray:voteTypes];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
-    
-    [self fetchProducts];
 }
 
 - (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier
@@ -37,19 +36,12 @@
     return [self.voteTypes filteredArrayUsingPredicate:predicate].firstObject;
 }
 
-- (void)fetchProducts
+- (NSArray<NSString *> *)getProductIdentifiers
 {
-    if ( self.voteTypes == nil || self.voteTypes.count == 0 )
+    return [self.voteTypes v_map:^(VVoteType *voteType)
     {
-        return;
-    }
-    
-    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
-    VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
-    if ( !purchaseManager.isPurchaseRequestActive )
-    {
-        [purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-    }
+        return voteType.productIdentifier;
+    }];
 }
 
 @end

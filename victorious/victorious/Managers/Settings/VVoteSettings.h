@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSArray *voteTypes;
 
 - (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier;
+- (NSArray<NSString *> *)getProductIdentifiers;
 
 @end

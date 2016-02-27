@@ -265,10 +265,17 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
+    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager];
 
-    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager
-                                                                        purchaseManager:[VPurchaseManager sharedInstance]];
-    [self.subscriptionSettings fetchProducts:nil failure:nil];
+    NSArray *voteSettingProductIdentifiers = self.voteSettings.getProductIdentifiers;
+    NSString *subscriptionProductIdentifier = self.subscriptionSettings.getProductIdentifier;
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteSettingProductIdentifiers];
+    [productIdentifiers addObject:subscriptionProductIdentifier];
+
+    NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
+    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error) {
+        VLog(@"Failed to fetch products with identifiers %@", productIdentifiers);
+    }];
 
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
