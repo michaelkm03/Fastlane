@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
+@property (nonatomic, strong) SubscriptionSettings *subscriptionSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -264,7 +265,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
-    
+
+    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager
+                                                                        purchaseManager:[VPurchaseManager sharedInstance]];
+    [self.subscriptionSettings fetchProducts:nil failure:nil];
+
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
     NSURL *appStoreURL = appInfo.appURL;
