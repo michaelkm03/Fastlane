@@ -35,7 +35,15 @@ class TrophyCaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureUIComponents()
+    }
+    
+    func configureUIComponents() {
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
+        
+        if let dependencyManager = dependencyManager {
+            navigationItem.title = dependencyManager.stringForKey("title")
+        }
     }
 }
