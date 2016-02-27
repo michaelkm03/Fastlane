@@ -8,8 +8,6 @@
 
 import Foundation
 
-let _sharedQueue = NSOperationQueue()
-
 class Operation: NSOperation, Queueable {
     
     private var _executing = false
