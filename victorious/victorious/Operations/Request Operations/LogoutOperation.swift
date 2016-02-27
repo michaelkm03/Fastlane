@@ -10,7 +10,7 @@ import FBSDKLoginKit
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: RequestOperation {
+class LogoutOperation: FetcherOperation {
 
     override init() {
         super.init()
@@ -23,8 +23,8 @@ class LogoutOperation: RequestOperation {
         // Before cleaning out current user data, prune the persistent store first,
         // and make the remote logout call to backend
         let pruneOperation = LogoutPrunePersistentStoreOperation()
-        pruneOperation.queueBefore(self)
-        LogoutRemoteOperation().rechainAndQueueAfter(pruneOperation)
+        pruneOperation.before(self).queue()
+        LogoutRequestOperation().rechainAfter(pruneOperation).queue()
     }
     
     override func main() {
@@ -57,9 +57,9 @@ class LogoutOperation: RequestOperation {
     }
 }
 
-private class LogoutRemoteOperation: RequestOperation {
+private class LogoutRequestOperation: FetcherOperation, RequestOperation {
     
-    let request = LogoutRequest()
+    let request: LogoutRequest! = LogoutRequest()
     
     override init() {
         super.init()

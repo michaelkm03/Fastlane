@@ -318,7 +318,7 @@
     }];
     
     FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {

@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UserInfoOperation: RequestOperation {
+class UserInfoOperation: FetcherOperation, RequestOperation {
     
-    let request: UserInfoRequest
+    let request: UserInfoRequest!
     
     /// The result (if successfuly), a user loaded from the main context
     var user: VUser?

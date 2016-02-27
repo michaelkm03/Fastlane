@@ -9,11 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RepostSequenceOperation: RequestOperation {
+class RepostSequenceOperation: FetcherOperation, RequestOperation {
     
     private let nodeID: Int
     
-    var request: RepostSequenceRequest
+    var request: RepostSequenceRequest!
     
     init( nodeID: Int ) {
         self.nodeID = nodeID

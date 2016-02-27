@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class AcknowledgeAlertOperationTests: BaseRequestOperationTestCase {
+class AcknowledgeAlertOperationTests: BaseFetcherOperationTestCase {
 
     var operation: AcknowledgeAlertOperation!
     let alertID = 99

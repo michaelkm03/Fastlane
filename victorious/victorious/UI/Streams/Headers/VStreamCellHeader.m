@@ -242,7 +242,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     NSInteger userId = self.sequence.user.remoteId.integerValue;
     NSString *sourceScreenName = self.sourceScreenName != nil ? self.sourceScreenName : VFollowSourceScreenSteamSleekCell;
     FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 #pragma mark - Internal Methods

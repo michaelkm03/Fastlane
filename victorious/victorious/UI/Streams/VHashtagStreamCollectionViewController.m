@@ -157,7 +157,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)toggleFollowHashtag
 {
     FetcherOperation *operation = [[ToggleFollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          self.followingEnabled = YES;
      }];

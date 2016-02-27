@@ -9,12 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DevicePreferencesOperation: RequestOperation {
+class DevicePreferencesOperation: FetcherOperation, RequestOperation {
     
     // These settings were created with an appropriate ManagedObjectContext for main queue use
     var mainQueueSettings: VNotificationSettings?
     
-    private var request: DevicePreferencesRequest
+    let request: DevicePreferencesRequest!
 
     override init() {
         request = DevicePreferencesRequest()

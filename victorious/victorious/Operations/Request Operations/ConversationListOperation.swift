@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ConversationListOperation: RequestOperation, PaginatedOperation {
+final class ConversationListOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: ConversationListRequest
     

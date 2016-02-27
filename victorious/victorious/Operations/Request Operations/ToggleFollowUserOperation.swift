@@ -24,9 +24,9 @@ class ToggleFollowUserOperation: FetcherOperation {
                 return
             }
             if currentUser.isFollowingUserID(self.userID) {
-                UnfollowUserOperation(userID: self.userID, sourceScreenName: self.sourceScreenName).rechainAndQueueAfter(self)
+                UnfollowUserOperation(userID: self.userID, sourceScreenName: self.sourceScreenName).rechainAfter(self).queue()
             } else {
-                FollowUsersOperation(userIDs: [self.userID], sourceScreenName: self.sourceScreenName).rechainAndQueueAfter(self)
+                FollowUsersOperation(userIDs: [self.userID], sourceScreenName: self.sourceScreenName).rechainAfter(self).queue()
             }
         }
     }

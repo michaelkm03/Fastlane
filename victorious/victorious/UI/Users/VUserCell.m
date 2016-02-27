@@ -101,7 +101,7 @@ static const CGFloat kUserCellHeight = 51.0f;
     NSInteger userId = self.user.remoteId.integerValue;
     FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId
                                                                    sourceScreenName:self.sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated

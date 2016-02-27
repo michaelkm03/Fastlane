@@ -9,11 +9,8 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class CreatePollOperation: Operation {
+final class CreatePollOperation: Operation, RequestOperation {
     
-    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
-    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
-    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
     let request: PollCreateRequest!
     let previewImage: UIImage
     let uploadManager: VUploadManager
@@ -60,9 +57,7 @@ final class CreatePollOperation: Operation {
         do {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.mainQueueCompletionBlock?(self)
-                }
+                self.finishedExecuting()
             }
             
             if let answer1media = formFields["answer1_media"] as? NSURL {
