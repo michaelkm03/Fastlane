@@ -98,12 +98,12 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)showOptions
 {
-    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
+    NSString *blockTitle = NSLocalizedString(@"BlockInappropriate", @"Comment block inappropriate button");
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:reportTitle
+    [alertController addAction:[UIAlertAction actionWithTitle:blockTitle
                                                         style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction *action)
                                 {
