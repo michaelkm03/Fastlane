@@ -32,6 +32,25 @@ import Foundation
         super.init()
     }
     
+    /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
+    ///
+    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
+    /// Should not be nil.
+    /// - parameter streamId: The streamID.
+    /// - parameter completion: Completion block to be called after the action sheet has been presented.
+    
+    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        
+        let actionSheetViewController = VActionSheetViewController()
+        actionSheetViewController.dependencyManager = dependencyManager
+        VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
+        setupActionSheetViewController(actionSheetViewController, sequence: sequence, streamId: streamId)
+        originViewController.presentViewController(actionSheetViewController, animated: true) {
+            completion?()
+        }
+    }
+    
     //   MARK: - Show Media
 
     /// Presents a UI on the ViewController given in the initializer to present the media at the URL.
@@ -295,36 +314,8 @@ import Foundation
                             dependencyManager: dependencyManager,
                             sequence: sequence).queue()
     }
-    
-    /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
-    ///
-    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
-    /// Should not be nil.
-    /// - parameter streamId: The streamID.
-    /// - parameter completion: Completion block to be called after the action sheet has been presented.
-    
-    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
-        
-        let actionSheetViewController = VActionSheetViewController()
-        actionSheetViewController.dependencyManager = dependencyManager
-        VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
-        setupActionSheetViewController(actionSheetViewController, sequence: sequence, streamId: streamId)
-        originViewController.presentViewController(actionSheetViewController, animated: true) {
-            completion?()
-        }
-    }
 
-}
-
-// MARK: - Extension
-
-extension VSequenceActionController {
-    
-    enum DelegateCallback {
-        case Flag
-        case Delete
-    }
+    // MARK: - Private Helpers
     
     private func setupActionSheetViewController(actionSheetViewController: VActionSheetViewController, sequence: VSequence, streamId: String?) {
         var actionItems: [VActionItem] = []
@@ -359,8 +350,6 @@ extension VSequenceActionController {
         
         actionSheetViewController.addActionItems(actionItems)
     }
-    
-    // MARK: Action Item Setup Helpers
     
     private func flagActionItem(forSequence sequence: VSequence) -> VActionItem {
         let flagItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""),
@@ -476,8 +465,6 @@ extension VSequenceActionController {
         
         return memeItem
     }
-    
-    // MARK: Action Item Setup Helper
     
     private func setupRemixActionItem(remixItem: VActionItem, block: ()->(), dismissCompletionBlock: ()->()) {
         remixItem.selectionHandler = { item in
