@@ -94,7 +94,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/SwiftyJSON.framework"
   install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
 fi
@@ -109,7 +108,6 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/SwiftyJSON.framework"
   install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
 fi
@@ -124,7 +122,6 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/SwiftyJSON.framework"
   install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
 fi
@@ -139,7 +136,6 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/SwiftyJSON.framework"
   install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
 fi
@@ -154,7 +150,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/SwiftyJSON.framework"
   install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
 fi

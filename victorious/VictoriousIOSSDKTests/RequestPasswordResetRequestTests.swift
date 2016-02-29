@@ -8,7 +8,6 @@
 
 import XCTest
 import VictoriousIOSSDK
-import SwiftyJSON
 
 class RequestPasswordResetRequestTests: XCTestCase {
     

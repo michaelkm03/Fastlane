@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 public struct GIFSearchResult {
     public let gifURL: String
     public let gifSize: Int?

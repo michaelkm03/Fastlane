@@ -6,7 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 

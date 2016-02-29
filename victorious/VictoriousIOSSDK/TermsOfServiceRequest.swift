@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 public struct TermsOfServiceRequest: RequestType {
     
     public init(){

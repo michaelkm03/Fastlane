@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 /// Request for editing a particular comment
 public struct CommentEditRequest: RequestType {
     

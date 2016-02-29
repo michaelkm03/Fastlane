@@ -6,8 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 protocol JSONDeseriealizable {
     init?(json: JSON)
 }

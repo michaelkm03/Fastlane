@@ -6,8 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 public struct VoteResult {
     public let voteID: String
     public let voteCount: Int
