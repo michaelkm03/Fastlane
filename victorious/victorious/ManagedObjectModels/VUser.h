@@ -14,7 +14,7 @@
 @interface VUser : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) NSNumber * isBlocked;
+@property (nonatomic, retain) NSNumber * isBlockedByMainUser;
 @property (nonatomic, retain) NSNumber * isCreator;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSNumber * isFollowedByMainUser;

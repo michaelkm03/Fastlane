@@ -188,7 +188,7 @@ import Foundation
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
         let blockUserBlock = {
-            if let blocked = user.isBlocked?.boolValue where blocked {
+            if let blocked = user.isBlockedByMainUser?.boolValue where blocked {
                 
                 UnblockUserOperation(userID: user.remoteId.integerValue).queue() { (results, error) in
                     
@@ -475,7 +475,7 @@ extension VSequenceActionController {
     }
     
     private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let title = sequence.user.isBlocked == true ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let title = sequence.user.isBlockedByMainUser == true ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         let blockItem = VActionItem.defaultActionItemWithTitle(title,
             actionIcon: UIImage(named: "action_sheet_block"),
             detailText: "")

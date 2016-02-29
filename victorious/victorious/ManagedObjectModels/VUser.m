@@ -21,7 +21,7 @@
 @implementation VUser
 
 @dynamic email;
-@dynamic isBlocked;
+@dynamic isBlockedByMainUser;
 @dynamic isCreator;
 @dynamic isDirectMessagingDisabled;
 @dynamic isFollowedByMainUser;
