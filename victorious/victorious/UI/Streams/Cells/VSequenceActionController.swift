@@ -98,23 +98,6 @@ import Foundation
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { results, error in
-            
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                
-                if error.code == Int(kVCommentAlreadyFlaggedError) {
-                    self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-                } else {
-                    self.originViewController.v_showErrorDefaultError()
-                }
-                
-            } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-            }
-        }
         
         let flagAlertOperation: FlagSequenceAlertOperation =
             FlagSequenceAlertOperation(originViewController: originViewController,
@@ -123,6 +106,9 @@ import Foundation
         flagAlertOperation.queue() {
             if flagAlertOperation.didFlagSequence {
                 self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+            }
+            else if flagAlertOperation.didCancelFlag {
+                completion?(false)
             }
             else if flagAlertOperation.errorCode == Int(kVCommentAlreadyFlaggedError) {
                 self.originViewController.v_showFlaggedConversationAlert(completion: completion)
@@ -145,9 +131,7 @@ import Foundation
                                          dependencyManager: dependencyManager,
                                          sequence: sequence)
         deleteAlertOperation.queue() {
-            if deleteAlertOperation.didDeleteSequence {
-                completion?(deleteAlertOperation.didDeleteSequence)
-            }
+            completion?(deleteAlertOperation.didDeleteSequence)
         }
     }
     
@@ -254,7 +238,9 @@ import Foundation
         flagItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.flagSequence(sequence, completion: { success in
-                    self.delegate?.sequenceActionControllerDidFlagContent?()
+                    if success {
+                        self.delegate?.sequenceActionControllerDidFlagContent?()
+                    }
                 })
             })
         }
@@ -268,7 +254,9 @@ import Foundation
         deleteItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.deleteSequence(sequence, completion: { success in
-                    self.delegate?.sequenceActionControllerDidDeleteContent?()
+                    if success {
+                        self.delegate?.sequenceActionControllerDidDeleteContent?()
+                    }
                 })
             })
         }

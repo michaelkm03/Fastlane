@@ -14,6 +14,7 @@ class FlagSequenceAlertOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     var didFlagSequence: Bool
+    var didCancelFlag: Bool
     var errorCode: Int
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
@@ -21,6 +22,7 @@ class FlagSequenceAlertOperation: NavigationOperation {
         self.dependencyManager = dependencyManager
         self.sequence = sequence
         self.didFlagSequence = false
+        self.didCancelFlag = false
         self.errorCode = 0
         super.init()
     }
@@ -36,6 +38,7 @@ class FlagSequenceAlertOperation: NavigationOperation {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
             style: UIAlertActionStyle.Cancel,
             handler: { action in
+                self.didCancelFlag = true
                 self.finishedExecuting()
         }))
         
