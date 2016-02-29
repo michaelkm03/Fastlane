@@ -360,17 +360,6 @@ extension VSequenceActionController {
         actionSheetViewController.addActionItems(actionItems)
     }
     
-    // MARK: Delegate Helpers
-    
-    private func callDelegateWith(delegateCallback: DelegateCallback) {
-        switch delegateCallback {
-        case DelegateCallback.Flag:
-            delegate?.sequenceActionControllerDidFlagContent?()
-        case DelegateCallback.Delete:
-            delegate?.sequenceActionControllerDidDeleteContent?()
-        }
-    }
-    
     // MARK: Action Item Setup Helpers
     
     private func flagActionItem(forSequence sequence: VSequence) -> VActionItem {
@@ -380,7 +369,7 @@ extension VSequenceActionController {
         flagItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.flagSequence(sequence, completion: { success in
-                    self.callDelegateWith(DelegateCallback.Flag)
+                    self.delegate?.sequenceActionControllerDidFlagContent?()
                 })
             })
         }
@@ -394,7 +383,7 @@ extension VSequenceActionController {
         deleteItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.deleteSequence(sequence, completion: { success in
-                    self.callDelegateWith(DelegateCallback.Delete)
+                    self.delegate?.sequenceActionControllerDidDeleteContent?()
                 })
             })
         }
