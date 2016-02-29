@@ -20,7 +20,7 @@ class DebugErrorHanlder: RequestErrorHandler {
     }
     
     func handleError(error: NSError) -> Bool {
-        VLog("RequestOperation `\(requestIdentifier)` failed with error: \(error)")
+        VLog("FetcherOperation `\(requestIdentifier)` failed with error: \(error)")
         
         // Doesn't actually handle/swallow errors, just logs them
         return false

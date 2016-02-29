@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class PasswordResetOperationTests: BaseRequestOperationTestCase {
+class PasswordResetOperationTests: BaseFetcherOperationTestCase {
     
     func testMain() {
         let operation = PasswordResetOperation(newPassword: "password", userToken: "usertoken", deviceToken: "devicetoken")

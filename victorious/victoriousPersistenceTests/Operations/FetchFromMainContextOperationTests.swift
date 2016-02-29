@@ -1,5 +1,5 @@
 //
-//  FetchManagedObjectsOnMainContextOperationTests.swift
+//  FetchFromMainContextOperationTests.swift
 //  victorious
 //
 //  Created by Michael Sena on 1/28/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class FetchManagedObjectsOnMainContextOperationTests: XCTestCase {
+class FetchFromMainContextOperationTests: XCTestCase {
 
     private let testRemoteID = 666
     
@@ -24,11 +24,15 @@ class FetchManagedObjectsOnMainContextOperationTests: XCTestCase {
     
     func testFindsExpectedManagedObjects() {
         persistentStoreHelper.createUser(remoteId: testRemoteID)
-        let fetchManagedObjectsOperation = FetchManagedObjectsOnMainContextOperation(withEntityName: VUser.v_entityName(), queryDictionary: ["remoteId": testRemoteID])
         
-        queueExpectedOperation(operation: fetchManagedObjectsOperation)
+        let fetchOperation = FetchFromMainContextOperation(
+            entityName: VUser.v_entityName(),
+            predicate: NSPredicate(format:"remoteId == %i", testRemoteID)
+        )
+        
+        queueExpectedOperation(operation: fetchOperation)
         waitForExpectationsWithTimeout(1) { error in
-            guard let results = fetchManagedObjectsOperation.result else {
+            guard let results = fetchOperation.results else {
                 XCTFail("We should have results.")
                 return
             }
@@ -41,9 +45,9 @@ class FetchManagedObjectsOnMainContextOperationTests: XCTestCase {
         }
     }
 
-    func queueExpectedOperation(operation operation: Operation) -> XCTestExpectation {
+    func queueExpectedOperation(operation operation: FetcherOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
-        operation.queue() { error in
+        operation.queue() { (results, error) in
             expectation.fulfill()
         }
         return expectation

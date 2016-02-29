@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
+final class SequenceLikersOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: SequenceLikersRequest
     
@@ -52,7 +52,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    // MARK: - PaginatedOperation
+    // MARK: - PaginatedRequestOperation
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in

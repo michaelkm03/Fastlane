@@ -14,9 +14,9 @@ struct AccountCreateParameters {
     let accountIdentifier: String?
 }
 
-class AccountCreateOperation: RequestOperation {
+class AccountCreateOperation: FetcherOperation, RequestOperation {
     
-    let request: AccountCreateRequest
+    let request: AccountCreateRequest!
     let parameters: AccountCreateParameters
     
     init( request: AccountCreateRequest, parameters: AccountCreateParameters) {
@@ -35,7 +35,7 @@ class AccountCreateOperation: RequestOperation {
     
     func onComplete( response: AccountCreateResponse, completion:()->() ) {
         let successOperation = LoginSuccessOperation(response: response, parameters: self.parameters)
-        successOperation.rechainAndQueueAfter(self)
+        successOperation.rechainAfter(self).queue()
         completion()
     }
 }

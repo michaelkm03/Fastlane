@@ -63,7 +63,7 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
         return streamItem.remoteId;
     }];
     Operation *operation = [[RemoveStreamItemOperation alloc] initWithStreamItemIDs:streamItemIDs];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    [operation queueWithCompletion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated

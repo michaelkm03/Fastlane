@@ -83,14 +83,14 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },
-            completion: { (operation, error) in
+            completion: { (results, error) in
                 self.hasLoadedOnce = true
-                completion?(operation?.results, error)
+                completion?( results, error)
             }
         )
     }
     
-    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         

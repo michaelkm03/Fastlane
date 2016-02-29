@@ -9,11 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindBySocialNetworkOperation: RequestOperation {
+class FriendFindBySocialNetworkOperation: FetcherOperation, RequestOperation {
     
     private var resultObjectIDs = [NSManagedObjectID]()
 
-    private var request: FriendFindBySocialNetworkRequest
+    let request: FriendFindBySocialNetworkRequest!
     
     convenience init(token: String) {
         let request = FriendFindBySocialNetworkRequest(socialNetwork: .Facebook(accessToken: token))

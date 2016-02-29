@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
+final class SequenceCommentsOperation: FetcherOperation, PaginatedRequestOperation {
     
     var request: SequenceCommentsRequest
     

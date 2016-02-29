@@ -211,7 +211,7 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:^
      {
          DeleteSequenceOperation *deleteOperation = [[DeleteSequenceOperation alloc] initWithSequenceID:self.viewModel.sequence.remoteId];
-         [deleteOperation queueOn:deleteOperation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+         [deleteOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
           {
               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
               if ([self.delegate respondsToSelector:@selector(contentViewDidDeleteContent:)])

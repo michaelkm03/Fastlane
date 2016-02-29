@@ -24,7 +24,7 @@ extension VProfileCreateViewController {
         )
         
         if let operation = updateOperation {
-            operation.queue() { error in
+            operation.queue() { (results, error) in
                 completion?( error )
             }
             return operation

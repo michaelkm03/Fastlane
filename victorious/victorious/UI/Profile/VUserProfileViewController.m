@@ -287,7 +287,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self updateProfileHeaderState];
      }];
@@ -379,7 +379,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
     FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -418,7 +418,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     _userRemoteId = userRemoteId;
     
     UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
-    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )
         {
@@ -760,7 +760,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
             LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull op)
+            [operation queueWithCompletion:^(Operation *_Nonnull op)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )

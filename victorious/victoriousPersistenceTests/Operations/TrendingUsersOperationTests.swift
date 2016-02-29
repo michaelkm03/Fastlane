@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class TrendingUsersOperationTests: BaseRequestOperationTestCase {
+class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
 
     var operation: TrendingUsersOperation!
 
