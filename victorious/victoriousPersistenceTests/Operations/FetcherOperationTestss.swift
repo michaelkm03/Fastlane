@@ -30,7 +30,7 @@ class FetcherOperationTests: XCTestCase {
         
         stubRequest("GET", url)
         
-        requestOperation.queueOn(requestOperation.defaultQueue) { (results, error) in
+        requestOperation.queueOn(requestOperation.v_defaultQueue) { (results, error) in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -45,7 +45,7 @@ class FetcherOperationTests: XCTestCase {
         
         stubRequest("GET", url)
         
-        errorOperation.queueOn(errorOperation.defaultQueue) { (results, error) in
+        errorOperation.queueOn(errorOperation.v_defaultQueue) { (results, error) in
             XCTAssertNotNil(error)
             expectation.fulfill()
         }

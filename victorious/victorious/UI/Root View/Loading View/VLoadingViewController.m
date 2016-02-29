@@ -186,8 +186,9 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     }
     
-    [[Operation sharedQueue] addOperation:self.templateDownloadOperation];
-    [[Operation sharedQueue] addOperation:self.loginOperation];
+    NSOperationQueue *backgroundQueue = NSOperationQueue.v_globalBackgroundQueue;
+    [backgroundQueue addOperation:self.templateDownloadOperation];
+    [backgroundQueue addOperation:self.loginOperation];
     [[NSOperationQueue mainQueue] addOperation:self.finishLoadingOperation];
     
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

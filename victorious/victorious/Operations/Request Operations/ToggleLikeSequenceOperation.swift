@@ -19,13 +19,14 @@ class ToggleLikeSequenceOperation: FetcherOperation {
     
     override func main() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
-            if let sequence = context.objectWithID(self.sequenceObjectId) as? VSequence {
-                if sequence.isLikedByMainUser.boolValue {
-                    UnlikeSequenceOperation( sequenceID: sequence.remoteId ).rechainAfter(self).queue()
-                }
-                else {
-                    LikeSequenceOperation( sequenceID: sequence.remoteId ).rechainAfter(self).queue()
-                }
+            guard let sequence = context.objectWithID(self.sequenceObjectId) as? VSequence else {
+                return
+            }
+            if sequence.isLikedByMainUser.boolValue {
+                UnlikeSequenceOperation( sequenceID: sequence.remoteId ).rechainAfter(self).queue()
+            }
+            else {
+                LikeSequenceOperation( sequenceID: sequence.remoteId ).rechainAfter(self).queue()
             }
         }
     }

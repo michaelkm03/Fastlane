@@ -10,8 +10,8 @@ import Foundation
 
 @objc class VSequenceActionController : NSObject {
     
-    private(set) var dependencyManager: VDependencyManager!
-    private(set) var originViewController: UIViewController!
+    private(set) var dependencyManager: VDependencyManager
+    private(set) var originViewController: UIViewController
     private(set) var delegate: VSequenceActionControllerDelegate?
     
     //  MARK: - Initializer
@@ -25,15 +25,7 @@ import Foundation
     /// - parameter delegate: The delegate conforming to protocol "VSequenceActionControllerDelegate" 
     /// to handle the deletion/flagging callbacks
     
-    init?(dependencyManager: VDependencyManager?, originViewController: UIViewController?, delegate: VSequenceActionControllerDelegate?) {
-        self.delegate = delegate
-        guard let dependencyManager = dependencyManager,
-            originViewController = originViewController else {
-                self.dependencyManager = nil
-                self.originViewController = nil
-                super.init()
-                return nil
-        }
+    init?(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate?) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         super.init()
@@ -253,7 +245,7 @@ import Foundation
                                          dependencyManager: dependencyManager,
                                          sequence: sequence,
                                          presentationCompletion: nil)
-        deleteAlertOperation.queueOn(deleteAlertOperation.defaultQueue) {
+        deleteAlertOperation.queue() {
                 completion?(deleteAlertOperation.didDeleteSequence)
         }
     }
@@ -272,9 +264,6 @@ import Foundation
                 completion?(false)
                 return
         }
-        
-        // toggle like operation
-//        let initiallyLiked: Bool = sequence.isLikedByMainUser.boolValue
         
         ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
             if sequence.isLikedByMainUser.boolValue {
@@ -339,14 +328,11 @@ import Foundation
             return
         }
         
-        let childDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration([:])
-        let usersViewController = VUsersViewController(dependencyManager: childDependencyManager)
-        
-        usersViewController.title = NSLocalizedString("LikersTitle", comment: "")
-        usersViewController.usersDataSource = VLikersDataSource(sequence: sequence)
-        usersViewController.usersViewContext = VUsersViewContext.Likers
-        
-        originViewController.navigationController?.pushViewController(usersViewController, animated: true)
+        ShowSequenceDetailsOperation(originViewController: originViewController,
+                                     dependencyManager: dependencyManager,
+                                     sequence: sequence,
+                                     detailType: SequenceDetailType.Likers,
+                                     presentationCompletion: nil).queue()
     }
     
     /// Presents a UI to show the reposters of a sequence.
@@ -358,9 +344,11 @@ import Foundation
             return
         }
         
-        if let vc: VReposterTableViewController = VReposterTableViewController(sequence: sequence, dependencyManager: dependencyManager) {
-            originViewController.navigationController?.pushViewController(vc, animated: true)
-        }
+        ShowSequenceDetailsOperation(originViewController: originViewController,
+                                     dependencyManager: dependencyManager,
+                                     sequence: sequence,
+                                     detailType: SequenceDetailType.Reposters,
+                                     presentationCompletion: nil).queue()
     }
     
     /// Presents a UI to show the memers of a sequence.
@@ -372,10 +360,11 @@ import Foundation
             return
         }
         
-        if let memeStream = dependencyManager.memeStreamForSequence(sequence) {
-            originViewController.navigationController?.pushViewController(memeStream, animated: true)
-        }
-        
+        ShowSequenceDetailsOperation(originViewController: originViewController,
+                                     dependencyManager: dependencyManager,
+                                     sequence: sequence,
+                                     detailType: SequenceDetailType.Memers,
+                                     presentationCompletion: nil).queue()
     }
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.

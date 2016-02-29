@@ -20,7 +20,7 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
         user = persistentStoreHelper.createUser(remoteId: 1)
         persistentStoreHelper.createUser(remoteId: 2).setAsCurrentUser()
         cell.user = user
-        sharedQueue = FetcherOperation().defaultQueue
+        sharedQueue = FetcherOperation().v_defaultQueue
     }
 
     override func tearDown() {

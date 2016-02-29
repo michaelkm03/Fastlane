@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10089" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -17,7 +16,6 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="21k-Mb-C9q" customClass="VStreamCellHeader">
                         <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="15G-8r-57d"/>
@@ -25,7 +23,6 @@
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-Bo-1cB" customClass="VHashTagTextView">
                         <rect key="frame" x="50" y="50" width="238" height="33"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" priority="1" constant="33" id="hNl-bg-Zz4"/>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="vjm-N9-XLg"/>
@@ -38,11 +35,9 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JB7-zc-ces" userLabel="Loading View">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <animations/>
                         <constraints>
                             <constraint firstItem="JB7-zc-ces" firstAttribute="leading" secondItem="0yG-Rl-S8H" secondAttribute="leading" id="B28-jo-gXV"/>
                             <constraint firstAttribute="trailing" secondItem="JB7-zc-ces" secondAttribute="trailing" id="EHi-qo-WZK"/>
@@ -53,14 +48,12 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekActionView">
                         <rect key="frame" x="-1" y="392" width="304" height="48"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="48" id="A5s-XV-LD2"/>
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txH-sw-s2T" userLabel="Counts Text View" customClass="VSequenceCountsTextView">
                         <rect key="frame" x="27" y="440" width="248" height="33"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" id="cfE-4e-8TD"/>
                         </constraints>
@@ -69,7 +62,6 @@
                     </textView>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="j5x-K6-9xu">
                         <rect key="frame" x="0.0" y="473" width="302" height="49"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="990" id="4i1-ib-Uqw"/>
@@ -88,7 +80,6 @@
                     </collectionView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="73D-7F-ayQ" customClass="VListicleView">
                         <rect key="frame" x="0.0" y="101" width="302" height="39"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.68992757084049083" green="1" blue="0.88098909418334959" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="39" id="bK9-ma-8mL"/>
@@ -98,10 +89,8 @@
                         </connections>
                     </view>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <animations/>
             <constraints>
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="top" secondItem="21k-Mb-C9q" secondAttribute="bottom" id="6Ss-kI-5vd"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="top" secondItem="k5V-32-ew9" secondAttribute="top" id="7cz-ba-bg5"/>
