@@ -13,14 +13,12 @@ class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfir
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let shouldUnblockUser: Bool
-    private let presentationCompletion: (()->())?
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.shouldUnblockUser = shouldUnblockUser
-        self.presentationCompletion = presentationCompletion
         super.init()
     }
     
@@ -45,6 +43,6 @@ class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfir
                 self.finishedExecuting()
         }))
         
-        originViewController.presentViewController(alertController, animated: true, completion: presentationCompletion)
+        originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

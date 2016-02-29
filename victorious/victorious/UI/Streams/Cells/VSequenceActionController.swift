@@ -139,10 +139,13 @@ import Foundation
         let blockUserOperation: ToggleBlockUserOperation =
         ToggleBlockUserOperation(originViewController: originViewController,
             dependencyManager: dependencyManager,
-            user: user,
-            presentationCompletion: nil)
+            user: user)
         
         blockUserOperation.queue() { results, error in
+            
+            if !blockUserOperation.didConfirmAction {
+                return
+            }
             
             if error != nil {
                 self.originViewController.v_showErrorDefaultError()

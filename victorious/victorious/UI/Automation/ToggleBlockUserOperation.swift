@@ -8,14 +8,15 @@
 
 import Foundation
 
-class ToggleBlockUserOperation: FetcherOperation {
+class ToggleBlockUserOperation: FetcherOperation, ActionConfirmationOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let userId: Int
+    private(set) var didConfirmAction: Bool = false
     let isUnblockOperation: Bool
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, user: VUser, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, user: VUser ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.userId = user.remoteId.integerValue
@@ -23,7 +24,7 @@ class ToggleBlockUserOperation: FetcherOperation {
         
         super.init()
         
-        ShowBlockUserConfirmationAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager, shouldUnblockUser: isUnblockOperation, presentationCompletion: nil).before(self).queue()
+        ShowBlockUserConfirmationAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager, shouldUnblockUser: isUnblockOperation).before(self).queue()
     }
     
     override func main() {
@@ -33,6 +34,7 @@ class ToggleBlockUserOperation: FetcherOperation {
                 return
         }
         
+        didConfirmAction = true
         if isUnblockOperation {
             UnblockUserOperation(userID: userId).rechainAfter(self).queue()
         } else {
