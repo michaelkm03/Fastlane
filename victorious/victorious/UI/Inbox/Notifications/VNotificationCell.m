@@ -67,7 +67,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:mutableAttributedString.string attributes:stringAttributes];
     self.messageLabel.attributedText = attributedString;
 
-    self.dateLabel.text = [notification.createdAt timeSince];
+    self.dateLabel.text = [notification.createdAt stringDescribingTimeIntervalSinceNow];
     
     if ([notification.deepLink length] > 0)
     {
