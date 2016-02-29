@@ -36,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return An initialized content view controller.
  */
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
-                                                dependencyManager:(VDependencyManager *)dependencyManager;
+                                                dependencyManager:(VDependencyManager *)dependencyManager
+                                                         delegate:(id <VSequenceActionControllerDelegate>)delegate;
 
 /**
  *  The viewModel that was passed in to the content viewController's factory method.

@@ -130,13 +130,6 @@
         }
     }
     
-    if ( self.streamDataSource.count != 0 )
-    {
-        // This is HIGHLY important to call on `viewWillAppear:` because any deleted sequences
-        // that are still being displayed in the stream are ticking timebombs waiting to crash.
-        [self.streamDataSource removeDeletedItems];
-    }
-    
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
@@ -153,6 +146,13 @@
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
+    }
+    
+    if ( self.streamDataSource.count != 0 )
+    {
+        // This is HIGHLY important to call because any deleted sequences that are still being displayed
+        // in the stream are ticking timebombs waiting to crash.
+        [self.streamDataSource removeDeletedItems];
     }
     
     // Adjust our scroll indicator insets to account for nav bar
