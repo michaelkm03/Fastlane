@@ -26,7 +26,7 @@ class ShowProfileOperation: NavigationOperation {
         self.beganExecuting()
         
         guard let navigationViewController = originViewController.navigationController else {
-            self.finishedExecuting()
+            assertionFailure("\(self.dynamicType) requires a navigation controller.")
             return
         }
         
