@@ -180,7 +180,7 @@ import Foundation
                                          dependencyManager: dependencyManager,
                                          sequence: sequence,
                                          presentationCompletion: nil)
-        deleteAlertOperation.queueOn(deleteAlertOperation.defaultQueue) {
+        deleteAlertOperation.queue() {
                 completion?(deleteAlertOperation.didDeleteSequence)
         }
     }
