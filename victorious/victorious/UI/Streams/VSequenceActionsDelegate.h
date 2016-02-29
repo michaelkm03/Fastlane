@@ -20,7 +20,7 @@
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit;
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 

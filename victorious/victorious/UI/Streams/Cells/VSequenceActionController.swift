@@ -10,9 +10,11 @@ import Foundation
 
 @objc class VSequenceActionController : NSObject {
     
-    private(set) var dependencyManager: VDependencyManager
-    private(set) var originViewController: UIViewController
-    private(set) var delegate: VSequenceActionControllerDelegate?
+    let dependencyManager: VDependencyManager
+    let originViewController: UIViewController
+    private var remixPresenter: VRemixPresenter?
+    
+    private(set) weak var delegate: VSequenceActionControllerDelegate?
     
     //  MARK: - Initializer
     
@@ -25,85 +27,69 @@ import Foundation
     /// - parameter delegate: The delegate conforming to protocol "VSequenceActionControllerDelegate" 
     /// to handle the deletion/flagging callbacks
     
-    init?(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate?) {
+    init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.delegate = delegate
         super.init()
     }
     
-    //   MARK: - Show Media
-
-    /// Presents a UI on the ViewController given in the initializer to present the media at the URL.
+    /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
     ///
-    /// - parameter url: The url which contains the media. Should not be nil.
-    /// - parameter linkType: The link type.
+    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
+    /// Should not be nil.
+    /// - parameter streamId: The streamID.
+    /// - parameter completion: Completion block to be called after the action sheet has been presented.
     
-    func showMediaContent(url: NSURL?, mediaLinkType linkType: VCommentMediaType) {
-        guard let url = url else {
-            return
+    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        
+        let actionSheetViewController = VActionSheetViewController()
+        actionSheetViewController.dependencyManager = dependencyManager
+        VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
+        setupActionSheetViewController(actionSheetViewController, sequence: sequence, streamId: streamId)
+        originViewController.presentViewController(actionSheetViewController, animated: true) {
+            completion?()
         }
-        let mediaLinkViewController = VAbstractMediaLinkViewController.newWithMediaUrl(url, andMediaLinkType: linkType)
+    }
+    
+    //   MARK: - Show Media
+    
+    func showMediaContent(mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
+        let mediaLinkViewController = VAbstractMediaLinkViewController.newWithMediaUrl(mediaUrl, andMediaLinkType: linkType)
         originViewController.presentViewController(mediaLinkViewController, animated: true, completion: nil)
     }
     
     // MARK: - Remix
     
-    /// Presents remix UI on the ViewController given in the initializer with a given sequence to remix.
-    ///
-    /// - parameter sequence: The sequence to remix. Shouldn't be nil.
-    
-    func showRemixWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-                return
-        }
+    func showRemixWithSequence(sequence: VSequence) {
         assert(!sequence.isPoll(), "You cannot remix polls.")
         
-        let remixPresenter = VRemixPresenter(dependencymanager: dependencyManager, sequenceToRemix: sequence)
-        remixPresenter.presentOnViewController(originViewController)
+        remixPresenter = VRemixPresenter(dependencymanager: dependencyManager, sequenceToRemix: sequence)
+        remixPresenter?.presentOnViewController(originViewController)
     }
     
     // MARK: - User
     
-    /// Presents User Profile UI on the ViewController given in the initializer with a given user ID.
-    ///
-    /// - parameter remoteId: The remoteID of the user whose profile
-    /// we want to display.
-    
-    func showProfileWithRemoteId(remoteId: Int) {
-        ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: remoteId).queue()
+    func showProfileWithRemoteId(userId: Int) {
+        ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userId).queue()
     }
     
     // MARK: - Share
     
-    /// Presents Share Sequence UI on the ViewController given in the initializer with a given sequence,
-    /// node, streamId, and completion.
-    ///
-    /// - parameter sequence: The sequence we want to share. Should not be nil.
-    /// - parameter node: The node. Should not be nil.
-    /// - parameter streamID: The streamID.
-    /// - parameter completion: Completion block to call upon completion of sharing.
-    
-    func shareSequence(sequence: VSequence?, node: VNode?, streamID: String?, completion: (()->())? ) {
-        guard let sequence = sequence,
-            node = node else {
-                return
+    func shareSequence(sequence: VSequence, node: VNode, streamID: String?, completion: (()->())? ) {
+        ShowShareSequenceOperation(originViewController: originViewController,
+                                   dependencyManager: dependencyManager,
+                                   sequence: sequence,
+                                   node: node,
+                                   streamID: streamID).queue() {
+                                       completion?()
         }
-        
-        ShowShareSequenceOperation(originViewController: originViewController, dependencyManager: dependencyManager, sequence: sequence, node: node, streamID: streamID, shareCompletion: completion).queue()
     }
     
     // MARK: - Comments
     
-    /// Presents a UI on the ViewController given in the initializer to display comments for a given sequence.
-    ///
-    /// - parameter sequence: The sequence whose comments we are displaying. Should not be nil.
-    
-    func showCommentsWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-            return
-        }
-        
+    func showCommentsWithSequence(sequence: VSequence) {
         if let commentsViewController: CommentsViewController = dependencyManager.commentsViewController(sequence) {
             originViewController.navigationController?.pushViewController(commentsViewController, animated: true)
         }
@@ -113,42 +99,18 @@ import Foundation
     
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
-    ///
-    /// - parameter sequence: The sequence we want to flag. Should not be nil.
-    /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
-    
-    func flagSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
-        guard let sequence = sequence else {
-            completion?(false)
-            return
-        }
-        
-        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { results, error in
-            
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                
-                if error.code == Int(kVCommentAlreadyFlaggedError) {
-                    self.originViewController.v_showFlaggedUserAlert(completion: completion)
-                } else {
-                    self.originViewController.v_showErrorDefaultError()
-                }
-                
-            } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
-            }
-        }
+    func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
         
         let flagAlertOperation: FlagSequenceAlertOperation =
             FlagSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
-                                         sequence: sequence,
-                                         presentationCompletion: nil)
+                                         sequence: sequence)
         flagAlertOperation.queue() {
             if flagAlertOperation.didFlagSequence {
                 self.originViewController.v_showFlaggedContentAlert(completion: completion)
+            }
+            else if flagAlertOperation.didCancelFlag {
+                completion?(false)
             }
             else if flagAlertOperation.errorCode == Int(kVSequenceAlreadyFlagged) {
                 self.originViewController.v_showFlaggedContentAlert(completion: completion)
@@ -193,43 +155,20 @@ import Foundation
     
     // MARK: - Delete
     
-    /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, flags the
+    /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
-    ///
-    /// - parameter sequence: The sequence we want to delete. Should not be nil.
-    /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
-    
-    func deleteSequence(sequence: VSequence?, completion: ((Bool)->())? ) {
-        guard let sequence = sequence else {
-            completion?(false)
-            return
-        }
-        
+    func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
         let deleteAlertOperation: DeleteSequenceAlertOperation =
             DeleteSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
-                                         sequence: sequence,
-                                         presentationCompletion: nil)
+                                         sequence: sequence)
         deleteAlertOperation.queue() {
-                completion?(deleteAlertOperation.didDeleteSequence)
+            completion?(deleteAlertOperation.didDeleteSequence)
         }
     }
     
     // MARK: - Like
-    
-    /// Presents a UI on the ViewController given in the initializer to display comments for a given sequence.
-    ///
-    /// - parameter sequence: The sequence we are liking. Should not be nil.
-    /// - parameter triggeringView: The view that triggered this action. Should not be nil.
-    /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
-    
-    func likeSequence(sequence: VSequence?, triggeringView: UIView?, completion: ((Bool) -> Void)?) {
-        guard let sequence = sequence,
-            triggeringView = triggeringView else {
-                completion?(false)
-                return
-        }
-        
+    func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
         ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
             if sequence.isLikedByMainUser.boolValue {
                 completion?( error == nil )
@@ -250,26 +189,12 @@ import Foundation
     }
     
     // MARK: - Repost
-
-    /// Reposts a node. Internally calls "repostNode: completion:"
-    ///
-    /// - parameter node: The node we are reposting. Should not be nil.
     
-    func repostNode(node: VNode?) {
+    func repostNode(node: VNode) {
         repostNode(node, completion: nil)
     }
     
-    /// Reposts a node.
-    ///
-    /// - parameter node: The node we are reposting. Should not be nil.
-    /// - parameter completion: A completion block takes in a Boolean argument representing success/failure.
-
-    func repostNode(node: VNode?, completion: ((Bool) -> Void)?) {
-        guard let node = node else {
-            completion?(false)
-            return
-        }
-        
+    func repostNode(node: VNode, completion: ((Bool) -> Void)?) {
         RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { results, error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
@@ -284,78 +209,25 @@ import Foundation
     
     // MARK: - Show
     
-    /// Presents a UI to show the likers of a sequence.
-    ///
-    /// - parameter sequence: The sequence whose likers we want to show. Should not be nil.
-    
-    func showLikersWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-            return
-        }
-        
+    func showLikersWithSequence(sequence: VSequence) {
         ShowLikersOperation(originViewController: originViewController,
                             dependencyManager: dependencyManager,
                             sequence: sequence).queue()
     }
     
-    /// Presents a UI to show the reposters of a sequence.
-    ///
-    /// - parameter sequence: The sequence whose reposters we want to show. Should not be nil.
-    
-    func showRepostersWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-            return
-        }
-        
+    func showRepostersWithSequence(sequence: VSequence) {
         ShowRepostersOperation(originViewController: originViewController,
                                 dependencyManager: dependencyManager,
                                 sequence: sequence).queue()
     }
     
-    /// Presents a UI to show the memers of a sequence.
-    ///
-    /// - parameter sequence: The sequence whose memers we want to show. Should not be nil.
-    
-    func showMemersWithSequence(sequence: VSequence?) {
-        guard let sequence = sequence else {
-            return
-        }
-        
+    func showMemersWithSequence(sequence: VSequence) {
         ShowMemersOperation(originViewController: originViewController,
                             dependencyManager: dependencyManager,
                             sequence: sequence).queue()
     }
-    
-    /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
-    ///
-    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
-    /// Should not be nil.
-    /// - parameter streamId: The streamID.
-    /// - parameter completion: Completion block to be called after the action sheet has been presented.
-    
-    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
-        
-        let actionSheetViewController = VActionSheetViewController()
-        actionSheetViewController.dependencyManager = dependencyManager
-        VActionSheetTransitioningDelegate.addNewTransitioningDelegateToActionSheetController(actionSheetViewController)
-        setupActionSheetViewController(actionSheetViewController, sequence: sequence, streamId: streamId)
-        originViewController.presentViewController(actionSheetViewController, animated: true) {
-            completion?()
-        }
-    }
 
-}
-
-// MARK: - Extension
-
-extension VSequenceActionController {
-    
-    enum DelegateCallback {
-        case Flag
-        case Block
-        case Delete
-    }
+    // MARK: - Private Helpers
     
     private func setupActionSheetViewController(actionSheetViewController: VActionSheetViewController, sequence: VSequence, streamId: String?) {
         var actionItems: [VActionItem] = []
@@ -393,21 +265,6 @@ extension VSequenceActionController {
         actionSheetViewController.addActionItems(actionItems)
     }
     
-    // MARK: Delegate Helpers
-    
-    private func callDelegateWith(delegateCallback: DelegateCallback) {
-        switch delegateCallback {
-        case DelegateCallback.Flag:
-            delegate?.sequenceActionControllerDidFlagContent?()
-        case DelegateCallback.Delete:
-            delegate?.sequenceActionControllerDidDeleteContent?()
-        case DelegateCallback.Block:
-            delegate?.sequenceActionControllerDidBlockUser?()
-        }
-    }
-    
-    // MARK: Action Item Setup Helpers
-    
     private func flagActionItem(forSequence sequence: VSequence) -> VActionItem {
         let flagItem = VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""),
             actionIcon: UIImage(named: "icon_flag"),
@@ -415,7 +272,9 @@ extension VSequenceActionController {
         flagItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.flagSequence(sequence, completion: { success in
-                    self.callDelegateWith(DelegateCallback.Flag)
+                    if success {
+                        self.delegate?.sequenceActionControllerDidFlagContent?()
+                    }
                 })
             })
         }
@@ -444,7 +303,9 @@ extension VSequenceActionController {
         deleteItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.deleteSequence(sequence, completion: { success in
-                    self.callDelegateWith(DelegateCallback.Delete)
+                    if success {
+                        self.delegate?.sequenceActionControllerDidDeleteContent?()
+                    }
                 })
             })
         }
@@ -538,8 +399,6 @@ extension VSequenceActionController {
         return memeItem
     }
     
-    // MARK: Action Item Setup Helper
-    
     private func setupRemixActionItem(remixItem: VActionItem, block: ()->(), dismissCompletionBlock: ()->()) {
         remixItem.selectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectRemix)
@@ -556,25 +415,6 @@ extension VSequenceActionController {
                 dismissCompletionBlock()
             }
         }
-    }
-    
-    //MARK: Alert Controller
-    
-    func standardAlertControllerWithTitle(title: String, message: String) -> UIAlertController {
-        return standardAlertControllerWithTitle(title, message: message, handler: nil)
-    }
-    
-    func standardAlertControllerWithTitle(title: String, message: String, handler: ((UIAlertAction)->())? ) -> UIAlertController {
-        let alertController = UIAlertController(title: title,
-            message: message,
-            preferredStyle: UIAlertControllerStyle.Alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("OK",
-            comment: "OK Action"),
-            style: UIAlertActionStyle.Default,
-            handler: handler)
-        alertController.addAction(okAction)
-        
-        return alertController
     }
     
 }
