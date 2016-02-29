@@ -144,10 +144,11 @@ import Foundation
         let deleteAlertOperation: DeleteSequenceAlertOperation =
             DeleteSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
-                                         sequence: sequence,
-                                         presentationCompletion: nil)
+                                         sequence: sequence)
         deleteAlertOperation.queue() {
+            if deleteAlertOperation.didDeleteSequence {
                 completion?(deleteAlertOperation.didDeleteSequence)
+            }
         }
     }
     

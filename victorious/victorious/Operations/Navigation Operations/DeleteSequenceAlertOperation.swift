@@ -13,14 +13,12 @@ class DeleteSequenceAlertOperation: NavigationOperation {
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let sequence: VSequence
-    private let presentationCompletion: (()->())?
     var didDeleteSequence: Bool
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        self.presentationCompletion = presentationCompletion
         self.didDeleteSequence = false
         super.init()
     }
