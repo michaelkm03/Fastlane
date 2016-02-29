@@ -692,7 +692,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.sequenceActionController showProfileWithRemoteId:user.remoteId.integerValue];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
