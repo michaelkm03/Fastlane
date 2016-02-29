@@ -15,15 +15,13 @@ class ShowShareSequenceOperation: NavigationOperation {
     private let sequence: VSequence
     private let node: VNode
     private let streamID: String?
-    private let shareCompletion: (()->())?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, node: VNode, streamID: String?, shareCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, node: VNode, streamID: String?) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
         self.node = node
         self.streamID = streamID
-        self.shareCompletion = shareCompletion
         super.init()
     }
     
@@ -77,12 +75,10 @@ class ShowShareSequenceOperation: NavigationOperation {
             }
             
             self.originViewController.reloadInputViews()
-            self.shareCompletion?()
+            self.finishedExecuting()
         }
         
         originViewController.presentViewController(activityViewController, animated: true, completion: nil)
-        
-        self.finishedExecuting()
     }
     
 }
