@@ -1664,6 +1664,7 @@
 		F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */; };
 		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
 		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
+		F048B00F1C84B394004F516A /* BlockUserAlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B00E1C84B394004F516A /* BlockUserAlertOperation.swift */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
@@ -4342,6 +4343,7 @@
 		F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperation.swift; sourceTree = "<group>"; };
 		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
 		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
+		F048B00E1C84B394004F516A /* BlockUserAlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserAlertOperation.swift; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -6782,6 +6784,7 @@
 		A7078CC81BFA7D2B008FB7FF /* Navigation Operations */ = {
 			isa = PBXGroup;
 			children = (
+				F048B00E1C84B394004F516A /* BlockUserAlertOperation.swift */,
 				A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */,
 				BFD131AF1C80F0A0003ADD64 /* ShowProfileOperation.swift */,
 				A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */,
@@ -11327,6 +11330,7 @@
 				A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */,
 				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
+				F048B00F1C84B394004F516A /* BlockUserAlertOperation.swift in Sources */,
 				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */,

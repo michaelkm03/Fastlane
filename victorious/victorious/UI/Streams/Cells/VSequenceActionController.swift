@@ -122,23 +122,6 @@ import Foundation
             return
         }
         
-        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { results, error in
-            
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                
-                if error.code == Int(kVSequenceAlreadyFlagged) {
-                    self.originViewController.v_showFlaggedContentAlert(completion: completion)
-                } else {
-                    self.originViewController.v_showErrorDefaultError()
-                }
-            } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
-            }
-        }
-        
         let flagAlertOperation: FlagSequenceAlertOperation =
             FlagSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
@@ -146,10 +129,10 @@ import Foundation
                                          presentationCompletion: nil)
         flagAlertOperation.queue() {
             if flagAlertOperation.didFlagSequence {
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
+                self.originViewController.v_showFlaggedContentAlert(completion: completion)
             }
-            else if flagAlertOperation.errorCode == Int(kVCommentAlreadyFlaggedError) {
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
+            else if flagAlertOperation.errorCode == Int(kVSequenceAlreadyFlagged) {
+                self.originViewController.v_showFlaggedContentAlert(completion: completion)
             }
             else {
                 self.originViewController.v_showErrorDefaultError()
@@ -177,53 +160,21 @@ import Foundation
             return
         }
         
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        let blockUserOperation: BlockUserAlertOperation =
+        BlockUserAlertOperation(originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            user: user,
+            presentationCompletion: nil)
         
-        let blockUserBlock = {
-            if let blocked = user.isBlockedByMainUser?.boolValue where blocked {
-                
-                UnblockUserOperation(userID: user.remoteId.integerValue).queue() { (results, error) in
-                    
-                    if let error = error {
-                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
-                        self.originViewController.v_showErrorDefaultError()
-                        
-                    } else {
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
-                        completion?(true)
-                    }
-                }
-            } else {
-                BlockUserOperation(userID: user.remoteId.integerValue).queue() { (results, error) in
-                    
-                    if let error = error {
-                        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
-                        self.originViewController.v_showErrorDefaultError()
-                        
-                    } else {
-                        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
-                        self.originViewController.v_showFlaggedUserAlert(completion: completion)
-                    }
-                }
+        blockUserOperation.queue() {
+            if blockUserOperation.didBlockUser {
+                self.originViewController.v_showFlaggedUserAlert(completion: completion)
+            }
+            else {
+                self.originViewController.v_showErrorDefaultError()
+                completion?(false)
             }
         }
-        
-        let alertController = UIAlertController(title: nil,
-            message: nil,
-            preferredStyle: UIAlertControllerStyle.ActionSheet)
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
-            style: UIAlertActionStyle.Default,
-            handler: { action in
-                blockUserBlock()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
-            style: UIAlertActionStyle.Default,
-            handler:nil))
-        originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Delete
@@ -469,7 +420,11 @@ extension VSequenceActionController {
             actionIcon: UIImage(named: "action_sheet_block"),
             detailText: "")
         blockItem.selectionHandler = { item in
-            self.callDelegateWith(DelegateCallback.Block)
+            self.originViewController.dismissViewControllerAnimated(true, completion: {
+                self.blockUser(sequence.user, completion: { success in
+                    self.callDelegateWith(DelegateCallback.Block)
+                })
+            })
         }
         return blockItem
     }
