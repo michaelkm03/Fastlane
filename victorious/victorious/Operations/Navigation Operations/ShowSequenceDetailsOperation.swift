@@ -13,13 +13,11 @@ class ShowLikersOperation: NavigationOperation {
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let sequence: VSequence
-    private let presentationCompletion: (()->())?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        self.presentationCompletion = presentationCompletion
         super.init()
     }
     
@@ -36,7 +34,6 @@ class ShowLikersOperation: NavigationOperation {
         
         originViewController.navigationController?.pushViewController(usersViewController, animated: true)
         
-        presentationCompletion?()
         self.finishedExecuting()
     }
     
@@ -48,13 +45,11 @@ class ShowMemersOperation: NavigationOperation {
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let sequence: VSequence
-    private let presentationCompletion: (()->())?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        self.presentationCompletion = presentationCompletion
         super.init()
     }
     
@@ -66,7 +61,6 @@ class ShowMemersOperation: NavigationOperation {
             originViewController.navigationController?.pushViewController(memeStream, animated: true)
         }
         
-        presentationCompletion?()
         self.finishedExecuting()
     }
     
@@ -80,11 +74,10 @@ class ShowRepostersOperation: NavigationOperation {
     private let sequence: VSequence
     private let presentationCompletion: (()->())?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, presentationCompletion: (()->())? ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        self.presentationCompletion = presentationCompletion
         super.init()
     }
     
@@ -96,7 +89,6 @@ class ShowRepostersOperation: NavigationOperation {
             originViewController.navigationController?.pushViewController(vc, animated: true)
         }
         
-        presentationCompletion?()
         self.finishedExecuting()
     }
     

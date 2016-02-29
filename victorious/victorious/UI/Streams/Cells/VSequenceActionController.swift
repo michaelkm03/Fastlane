@@ -263,11 +263,9 @@ import Foundation
             return
         }
         
-        ShowSequenceDetailsOperation(originViewController: originViewController,
-                                     dependencyManager: dependencyManager,
-                                     sequence: sequence,
-                                     detailType: SequenceDetailType.Likers,
-                                     presentationCompletion: nil).queue()
+        ShowLikersOperation(originViewController: originViewController,
+                            dependencyManager: dependencyManager,
+                            sequence: sequence).queue()
     }
     
     /// Presents a UI to show the reposters of a sequence.
@@ -279,11 +277,9 @@ import Foundation
             return
         }
         
-        ShowSequenceDetailsOperation(originViewController: originViewController,
-                                     dependencyManager: dependencyManager,
-                                     sequence: sequence,
-                                     detailType: SequenceDetailType.Reposters,
-                                     presentationCompletion: nil).queue()
+        ShowRepostersOperation(originViewController: originViewController,
+                                dependencyManager: dependencyManager,
+                                sequence: sequence).queue()
     }
     
     /// Presents a UI to show the memers of a sequence.
@@ -295,11 +291,9 @@ import Foundation
             return
         }
         
-        ShowSequenceDetailsOperation(originViewController: originViewController,
-                                     dependencyManager: dependencyManager,
-                                     sequence: sequence,
-                                     detailType: SequenceDetailType.Memers,
-                                     presentationCompletion: nil).queue()
+        ShowMemersOperation(originViewController: originViewController,
+                            dependencyManager: dependencyManager,
+                            sequence: sequence).queue()
     }
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
