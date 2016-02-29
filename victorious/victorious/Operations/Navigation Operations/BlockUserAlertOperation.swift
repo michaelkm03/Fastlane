@@ -46,16 +46,15 @@ class BlockUserAlertOperation: NavigationOperation {
         let blockUserBlock: (UIAlertAction) -> () = { action in
             
             if shouldUnblockUser {
-                
                 UnblockUserOperation(userID: userID).queue() { (results, error) in
                     
                     if let error = error {
                         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
-                        self.originViewController.v_showErrorDefaultError()
                         
                     } else if error == nil {
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
+                        self.didBlockUser = true
                     }
                     self.finishedExecuting()
                 }
@@ -65,11 +64,10 @@ class BlockUserAlertOperation: NavigationOperation {
                     if let error = error {
                         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
-                        self.originViewController.v_showErrorDefaultError()
                         
                     } else if error == nil {
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
-                        self.originViewController.v_showFlaggedUserAlert()
+                        self.didBlockUser = true
                     }
                     self.finishedExecuting()
                 }
