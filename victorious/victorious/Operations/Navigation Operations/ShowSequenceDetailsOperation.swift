@@ -72,7 +72,6 @@ class ShowRepostersOperation: NavigationOperation {
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let sequence: VSequence
-    private let presentationCompletion: (()->())?
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
