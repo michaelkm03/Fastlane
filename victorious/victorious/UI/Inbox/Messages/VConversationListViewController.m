@@ -271,7 +271,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     if ( messageViewController == nil )
     {
         NSString *title = NSLocalizedString( @"More", @"" );
-        NSString *imageName = @"A_more";
+        NSString *imageName = @"OverFlowIcon";
         NSDictionary *moreAcessory = @{ VDependencyManagerDestinationKey: [NSNull null],
                                         VDependencyManagerTitleKey: title,
                                         VDependencyManagerIconKey: [UIImage imageNamed:imageName],
