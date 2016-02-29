@@ -497,23 +497,4 @@ extension VSequenceActionController {
         }
     }
     
-    //MARK: Alert Controller
-    
-    func standardAlertControllerWithTitle(title: String, message: String) -> UIAlertController {
-        return standardAlertControllerWithTitle(title, message: message, handler: nil)
-    }
-    
-    func standardAlertControllerWithTitle(title: String, message: String, handler: ((UIAlertAction)->())? ) -> UIAlertController {
-        let alertController = UIAlertController(title: title,
-            message: message,
-            preferredStyle: UIAlertControllerStyle.Alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("OK",
-            comment: "OK Action"),
-            style: UIAlertActionStyle.Default,
-            handler: handler)
-        alertController.addAction(okAction)
-        
-        return alertController
-    }
-    
 }
