@@ -8,14 +8,14 @@
 
 import Foundation
 
-private let _sharedOperationQueue = NSOperationQueue()
+private let sharedOperationQueue = NSOperationQueue()
 
 extension NSOperationQueue {
     
     /// An application-wide default queue for all operations that are not required to
     /// execute on the main queue.
     static var v_globalBackgroundQueue: NSOperationQueue {
-        return _sharedOperationQueue
+        return sharedOperationQueue
     }
     
     func v_dependentOperationsOf(operation: NSOperation) -> [NSOperation] {
@@ -49,11 +49,6 @@ extension NSOperationQueue {
             lastOp = nextOp
         }
         operations.last?.completionBlock = completion
-    }
-    
-    func v_queueChainedOperations( operations: [NSOperation], completion:(()->())? = nil ) {
-        v_chainOperations( operations, completion: completion )
-        addOperations( operations, waitUntilFinished: false )
     }
 }
 

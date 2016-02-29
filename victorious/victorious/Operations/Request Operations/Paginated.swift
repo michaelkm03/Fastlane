@@ -1,5 +1,5 @@
 //
-//  PaginatedRequestOperation.swift
+//  Paginated.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.

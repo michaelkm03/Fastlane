@@ -29,7 +29,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.onComplete(response) {
             
-            let dependentOperations = operation.defaultQueue.v_dependentOperationsOf(operation)
+            let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
             XCTAssertEqual( dependentOperations.count, 1 );
             guard let successOperation = dependentOperations.first as? LoginSuccessOperation else {
                 XCTFail("Expecting an operaiton to be queued after onComplete is called.")
