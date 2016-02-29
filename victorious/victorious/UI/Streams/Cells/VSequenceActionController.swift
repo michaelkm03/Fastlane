@@ -12,6 +12,8 @@ import Foundation
     
     let dependencyManager: VDependencyManager
     let originViewController: UIViewController
+    private var remixPresenter: VRemixPresenter?
+    
     private(set) weak var delegate: VSequenceActionControllerDelegate?
     
     //  MARK: - Initializer
@@ -63,8 +65,8 @@ import Foundation
     func showRemixWithSequence(sequence: VSequence) {
         assert(!sequence.isPoll(), "You cannot remix polls.")
         
-        let remixPresenter = VRemixPresenter(dependencymanager: dependencyManager, sequenceToRemix: sequence)
-        remixPresenter.presentOnViewController(originViewController)
+        remixPresenter = VRemixPresenter(dependencymanager: dependencyManager, sequenceToRemix: sequence)
+        remixPresenter?.presentOnViewController(originViewController)
     }
     
     // MARK: - User
