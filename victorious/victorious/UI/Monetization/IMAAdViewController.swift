@@ -18,7 +18,7 @@ import SafariServices
     let adView: UIView
     let adDetailViewController: UIViewController
     var adsManager: IMAAdsManager?
-    var delegate: AdLifecycleDelegate?
+    weak var delegate: AdLifecycleDelegate?
     private var hasBeenCalled = false
 
     //MARK: - Initializers
