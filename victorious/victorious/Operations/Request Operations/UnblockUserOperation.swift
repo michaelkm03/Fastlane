@@ -20,6 +20,19 @@ class UnblockUserOperation: FetcherOperation {
         let remoteOperation = UnblockUserRemoteOperation(userID: userID)
         remoteOperation.queue()
     }
+    
+    override func main() {
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            if let users: [VUser] = context.v_findObjects(["remoteId" : self.userID]) {
+                for user in users {
+                    user.isBlockedByMainUser = NSNumber(bool: false)
+                }
+            }
+            
+            context.v_saveAndBubbleToParentContext()
+        }
+    }
 }
 
 class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {

@@ -41,6 +41,12 @@ class BlockUserOperation: FetcherOperation {
             
             context.v_deleteObjects(deleteSequenceRequest)
             
+            if let users: [VUser] = context.v_findObjects(["remoteId" : self.userID]) {
+                for user in users {
+                    user.isBlockedByMainUser = NSNumber(bool: true)
+                }
+            }
+            
             context.v_saveAndBubbleToParentContext()
         }
     }

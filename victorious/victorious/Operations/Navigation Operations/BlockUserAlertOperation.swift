@@ -10,11 +10,15 @@ import Foundation
 
 class BlockUserAlertOperation: NavigationOperation {
     
+    enum BlockState {
+        case blockSucceeded, unblockSucceeded, blockFailed, unblockFailed, unknown
+    }
+    
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let user: VUser
     private let presentationCompletion: (()->())?
-    var didBlockUser: Bool
+    var blockState: BlockState
     var errorCode: Int
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager, user: VUser, presentationCompletion: (()->())? ) {
@@ -22,7 +26,7 @@ class BlockUserAlertOperation: NavigationOperation {
         self.dependencyManager = dependencyManager
         self.user = user
         self.presentationCompletion = presentationCompletion
-        self.didBlockUser = false
+        self.blockState = .unknown
         self.errorCode = 0
         super.init()
     }
@@ -51,10 +55,11 @@ class BlockUserAlertOperation: NavigationOperation {
                     if let error = error {
                         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
+                        self.blockState = .unblockFailed
                         
-                    } else if error == nil {
+                    } else {
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
-                        self.didBlockUser = true
+                        self.blockState = .unblockSucceeded
                     }
                     self.finishedExecuting()
                 }
@@ -64,10 +69,11 @@ class BlockUserAlertOperation: NavigationOperation {
                     if let error = error {
                         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
+                        self.blockState = .blockFailed
                         
-                    } else if error == nil {
+                    } else {
                         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
-                        self.didBlockUser = true
+                        self.blockState = .blockSucceeded
                     }
                     self.finishedExecuting()
                 }

@@ -167,10 +167,10 @@ import Foundation
             presentationCompletion: nil)
         
         blockUserOperation.queue() {
-            if blockUserOperation.didBlockUser {
+            if blockUserOperation.blockState == .blockSucceeded {
                 self.originViewController.v_showFlaggedUserAlert(completion: completion)
             }
-            else {
+            else if blockUserOperation.blockState != .unblockSucceeded {
                 self.originViewController.v_showErrorDefaultError()
                 completion?(false)
             }

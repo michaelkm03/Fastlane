@@ -55,7 +55,7 @@ extension User {
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByMainUser         = json["isBlocked"].bool ?? false
+        isBlockedByMainUser         = json["is_blocked"].bool ?? false
         isCreator                   = json["isCreator"].bool
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false
