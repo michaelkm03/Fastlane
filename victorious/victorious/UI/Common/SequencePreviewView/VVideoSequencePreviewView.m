@@ -318,6 +318,8 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)updateQuartileTracking
 {
+    VLog( @"Playing video :: %@", self.sequence.remoteId );
+    
     if ( self.trackingData == nil )
     {
         VLog( @"Cannot track video events without a valid `trackingData`" );
