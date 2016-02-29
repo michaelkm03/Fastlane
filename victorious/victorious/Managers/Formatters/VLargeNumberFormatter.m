@@ -36,7 +36,7 @@ static const int  kMultiplier = 1000;
 - (NSString *)stringForInteger:(NSInteger)integer
 {
     int exponent = 0;
-    CGFloat decimalNumber = (CGFloat)integer;
+    Float64 decimalNumber = (Float64)integer;
 
     while ((decimalNumber >= kMultiplier) && (exponent < kMaxUnits))
     {

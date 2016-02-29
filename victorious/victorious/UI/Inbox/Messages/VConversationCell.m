@@ -86,7 +86,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     }
     
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
-    self.dateLabel.text = [conversation.postedAt timeSince];
+    self.dateLabel.text = [conversation.postedAt stringDescribingTimeIntervalSinceNow];
     self.profileButton.user = conversation.user;
 }
 
