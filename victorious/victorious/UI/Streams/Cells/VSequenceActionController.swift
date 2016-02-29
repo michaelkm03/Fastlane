@@ -119,8 +119,7 @@ import Foundation
         let flagAlertOperation: FlagSequenceAlertOperation =
             FlagSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
-                                         sequence: sequence,
-                                         presentationCompletion: nil)
+                                         sequence: sequence)
         flagAlertOperation.queue() {
             if flagAlertOperation.didFlagSequence {
                 self.originViewController.v_showFlaggedConversationAlert(completion: completion)
