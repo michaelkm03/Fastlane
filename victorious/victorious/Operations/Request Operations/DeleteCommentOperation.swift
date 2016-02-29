@@ -40,7 +40,7 @@ class DeleteCommentOperation: FetcherOperation {
     }
 }
 
-class DeleteCommentRequestOperation: FetcherOperation, RequestOperation {
+class DeleteCommentRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: DeleteCommentRequest!
     

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RepostSequenceOperation: FetcherOperation, RequestOperation {
+class RepostSequenceOperation: RemoteFetcherOperation, RequestOperation {
     
     private let nodeID: Int
     

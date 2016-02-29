@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceRepostersOperation: FetcherOperation, PaginatedRequestOperation {
+final class SequenceRepostersOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: SequenceRepostersRequest
     
@@ -32,7 +32,7 @@ final class SequenceRepostersOperation: FetcherOperation, PaginatedRequestOperat
     
     func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()

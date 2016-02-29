@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceLikersOperation: FetcherOperation, PaginatedRequestOperation {
+final class SequenceLikersOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: SequenceLikersRequest
     
@@ -30,7 +30,7 @@ final class SequenceLikersOperation: FetcherOperation, PaginatedRequestOperation
     
     private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             var displayOrder = self.request.paginator.displayOrderCounterStart
 
             let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])

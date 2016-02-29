@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DevicePreferencesOperation: FetcherOperation, RequestOperation {
+class DevicePreferencesOperation: RemoteFetcherOperation, RequestOperation {
     
     // These settings were created with an appropriate ManagedObjectContext for main queue use
     var mainQueueSettings: VNotificationSettings?
@@ -31,7 +31,7 @@ class DevicePreferencesOperation: FetcherOperation, RequestOperation {
     }
     
     private func onComplete( result: DevicePreferencesRequest.ResultType, completion: () -> () ) {
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // Grab the background current user's notificationSettings, creating if none already exist
             let currentUser = VCurrentUser.user(inManagedObjectContext: context)

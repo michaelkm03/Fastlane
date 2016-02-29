@@ -46,7 +46,7 @@ class DeleteSequenceOperation: FetcherOperation {
     }
 }
 
-class DeleteSequenceRequestOperation: FetcherOperation, RequestOperation {
+class DeleteSequenceRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: DeleteSequenceRequest!
     

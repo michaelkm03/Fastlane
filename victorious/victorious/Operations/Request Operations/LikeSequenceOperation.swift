@@ -44,7 +44,7 @@ class LikeSequenceOperation: FetcherOperation {
     }
 }
 
-class LikeSequenceRequestOperation: FetcherOperation, RequestOperation {
+class LikeSequenceRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: LikeSequenceRequest!
     

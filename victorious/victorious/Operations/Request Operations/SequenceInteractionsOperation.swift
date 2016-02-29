@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceUserInterationsOperation: FetcherOperation, RequestOperation {
+class SequenceUserInterationsOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: SequenceUserInteractionsRequest!
     
@@ -25,7 +25,7 @@ class SequenceUserInterationsOperation: FetcherOperation, RequestOperation {
     }
     
     private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let sequence: VSequence = context.v_findOrCreateObject([ "remoteId" : self.sequenceID ])
             sequence.hasBeenRepostedByMainUser = result
             context.v_save()

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UsersFollowingUserOperation: FetcherOperation, PaginatedRequestOperation {
+final class UsersFollowingUserOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: FollowersListRequest
     
@@ -30,7 +30,7 @@ final class UsersFollowingUserOperation: FetcherOperation, PaginatedRequestOpera
     
     private func onComplete( results: SequenceLikersRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             // The user being followed
             let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
             

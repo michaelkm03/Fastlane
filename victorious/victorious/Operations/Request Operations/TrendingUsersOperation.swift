@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingUsersOperation: FetcherOperation, RequestOperation {
+class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: TrendingUsersRequest! = TrendingUsersRequest()
     
@@ -20,16 +20,8 @@ class TrendingUsersOperation: FetcherOperation, RequestOperation {
     }
     
     func onComplete( networkResult: TrendingUsersRequest.ResultType, completion: () -> () ) {
-        self.results = []
         
-        guard self.cancelled == false else {
-            dispatch_async( dispatch_get_main_queue() ) {
-                completion()
-            }
-            return
-        }
-        
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             var persistentUsers = [VUser]()
             for networkUser in networkResult {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])

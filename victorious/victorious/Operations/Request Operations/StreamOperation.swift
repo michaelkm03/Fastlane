@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: FetcherOperation, PaginatedRequestOperation {
+final class StreamOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: StreamRequest
     
@@ -41,16 +41,8 @@ final class StreamOperation: FetcherOperation, PaginatedRequestOperation {
     
     func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
         
-        guard self.cancelled == false else {
-            dispatch_async( dispatch_get_main_queue() ) {
-                completion()
-            }
-            return
-        }
-
-        
         // Make changes on background queue
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // This is a hack to refresh streams.  `PaginatedDataSource` should really handle
             // this logic for all paginated operations.

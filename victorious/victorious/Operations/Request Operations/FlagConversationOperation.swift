@@ -41,7 +41,7 @@ class FlagConversationOperation: FetcherOperation {
     }
 }
 
-class FlagConversationRequestOperation: FetcherOperation, RequestOperation {
+class FlagConversationRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: FlagConversationRequest!
     

@@ -36,6 +36,21 @@ class CommentEditOperation: FetcherOperation, RequestOperation {
         }
         
         // Then fire and forget
+        CommentEditRemoteOperation(commentID: self.commentID, text: self.text).after(self).queue()
+    }
+}
+
+class CommentEditRemoteOperation: RemoteFetcherOperation, RequestOperation {
+    
+    var request: CommentEditRequest!
+    
+    private var optimisticObjectID: NSManagedObjectID?
+    
+    init( commentID: Int, text: String ) {
+        self.request = CommentEditRequest(commentID: commentID, text: text)
+    }
+    
+    override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
@@ -47,7 +62,7 @@ class CommentEditOperation: FetcherOperation, RequestOperation {
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             defer {
                 completion()
             }

@@ -19,7 +19,7 @@ import VictoriousIOSSDK
     }
 }
 
-final class HashtagSearchOperation: FetcherOperation, PaginatedRequestOperation {
+final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: HashtagSearchRequest
     

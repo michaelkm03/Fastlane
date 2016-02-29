@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SuggestedUsersOperation: FetcherOperation, RequestOperation {
+class SuggestedUsersOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: SuggestedUsersRequest! = SuggestedUsersRequest()
     
@@ -19,7 +19,7 @@ class SuggestedUsersOperation: FetcherOperation, RequestOperation {
     
     func onComplete( users: SuggestedUsersRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
@@ -46,8 +46,6 @@ class SuggestedUsersOperation: FetcherOperation, RequestOperation {
                     finishOperation()
                 }
             }
-
-            return context
         }
     }
     

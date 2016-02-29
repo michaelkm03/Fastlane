@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ImageSearchOperation: FetcherOperation, PaginatedRequestOperation {
+final class ImageSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
 	
     let request: ImageSearchRequest
 	

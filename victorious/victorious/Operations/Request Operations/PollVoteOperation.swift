@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollVoteOperation: FetcherOperation, RequestOperation {
+final class PollVoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: PollVoteRequest!
     

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingHashtagOperation: FetcherOperation, RequestOperation {
+class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: TrendingHashtagRequest! = TrendingHashtagRequest()
     

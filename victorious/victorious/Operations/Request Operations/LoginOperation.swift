@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class LoginOperation: FetcherOperation, RequestOperation {
+class LoginOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: LoginRequest!
     

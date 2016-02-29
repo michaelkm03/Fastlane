@@ -13,8 +13,10 @@ protocol RequestExecutorType: class {
     
     /// Objects must be able to provide any errors encountered during executing.
     /// This value, if defined, should reference the same `NSError` instance returned in the `onError:` closure
-    /// provided to `executeRequest(_:onComplete:onError:)`
+    /// provided to `requestExecutor.executeRequest(_:onComplete:onError:)`
     var error: NSError? { get }
+    
+    var cancelled: Bool { set get }
     
     var errorHandlers: [RequestErrorHandler] { get set }
     

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
+final class ConversationOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let conversationID: Int?
     let userID: Int?
@@ -49,7 +49,7 @@ final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
             return
         }
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : conversationID ])
             var displayOrder = self.request.paginator.displayOrderCounterStart
             var messagesLoaded = [VMessage]()

@@ -46,7 +46,7 @@ class FlagSequenceOperation: FetcherOperation {
     }
 }
 
-class FlagSequenceRequestOperation: FetcherOperation, RequestOperation {
+class FlagSequenceRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: FlagSequenceRequest!
     

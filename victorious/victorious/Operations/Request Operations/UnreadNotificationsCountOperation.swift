@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UnreadNotificationsCountOperation: FetcherOperation, RequestOperation {
+final class UnreadNotificationsCountOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnreadNotificationsCountRequest! = UnreadNotificationsCountRequest()
     

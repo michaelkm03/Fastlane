@@ -33,6 +33,12 @@ class MainRequestExecutor: RequestExecutorType {
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     
+    var cancelled: Bool = false
+    
+    private func cancelledError() -> NSError {
+        return NSError(domain:kVictoriousErrorDomain, code: kVCanceledError, userInfo:nil)
+    }
+    
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
@@ -53,12 +59,23 @@ class MainRequestExecutor: RequestExecutorType {
             callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
                     
-                    if let error = error as? RequestErrorType {
-                        let nsError = NSError(error)
-                        self.error = nsError
-                        self.handleError( nsError )
+                    let nsError: NSError?
+                    
+                    if let requestError = error as? RequestErrorType {
+                        nsError = NSError(requestError)
+                    
+                    } else if self.cancelled {
+                        nsError = self.cancelledError()
+                   
+                    } else {
+                        nsError = nil
+                    }
+                    
+                    if let error = nsError {
+                        self.error = error
+                        self.handleError( error )
                         if let onError = onError {
-                            onError( nsError ) {
+                            onError( error ) {
                                 dispatch_semaphore_signal( executeSemphore )
                             }
                         } else {

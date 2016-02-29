@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryByUserOperation: FetcherOperation, PaginatedRequestOperation {
+final class PollResultSummaryByUserOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: PollResultSummaryRequest
     
@@ -35,7 +35,7 @@ final class PollResultSummaryByUserOperation: FetcherOperation, PaginatedRequest
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             guard let user: VUser = context.v_findObjects( [ "remoteId" :  self.userID ] ).first else {
                 completion()

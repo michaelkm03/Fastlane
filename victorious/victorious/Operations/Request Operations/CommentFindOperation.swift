@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CommentFindOperation: FetcherOperation, RequestOperation {
+class CommentFindOperation: RemoteFetcherOperation, RequestOperation {
     
     var request: CommentFindRequest!
     
@@ -35,7 +35,7 @@ class CommentFindOperation: FetcherOperation, RequestOperation {
         
         let flaggedCommentIds: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
         if !response.comments.isEmpty {
-            storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
                 var comments = [VComment]()
                 for comment in response.comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
                     let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )

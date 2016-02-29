@@ -46,7 +46,7 @@ class FollowHashtagOperation: FetcherOperation {
 }
 
 
-class FollowHashtagRequestOperation: FetcherOperation, RequestOperation {
+class FollowHashtagRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: FollowHashtagRequest!
     

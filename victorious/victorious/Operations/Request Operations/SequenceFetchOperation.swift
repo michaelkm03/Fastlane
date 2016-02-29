@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceFetchOperation: FetcherOperation, RequestOperation {
+class SequenceFetchOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: SequenceFetchRequest!
     var result: VSequence?

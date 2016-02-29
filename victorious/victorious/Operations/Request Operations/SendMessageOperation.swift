@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SendMessageOperation: FetcherOperation, RequestOperation {
+class SendMessageOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: SendMessageRequest!
     let localMessageID: NSManagedObjectID

@@ -38,7 +38,7 @@ class UnlikeSequenceOperation: FetcherOperation {
     }
 }
 
-class UnlikeSequenceRequestOperation: FetcherOperation, RequestOperation {
+class UnlikeSequenceRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnlikeSequenceRequest!
     

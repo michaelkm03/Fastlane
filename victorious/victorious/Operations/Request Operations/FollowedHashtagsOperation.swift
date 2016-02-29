@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class FollowedHashtagsOperation: FetcherOperation, PaginatedRequestOperation {
+final class FollowedHashtagsOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: HashtagSubscribedToListRequest
     
@@ -27,7 +27,7 @@ final class FollowedHashtagsOperation: FetcherOperation, PaginatedRequestOperati
     
     func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 completion()
                 return

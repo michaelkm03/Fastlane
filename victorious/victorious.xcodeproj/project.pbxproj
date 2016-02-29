@@ -1097,6 +1097,7 @@
 		A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22041BA77E0400F2CD37 /* ContentViewHandoffController.swift */; };
 		A7BA22081BA7825200F2CD37 /* VVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */; };
 		A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */; };
+		A7BA37DD1C84F5560095CFA9 /* RemoteFetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA37DC1C84F5560095CFA9 /* RemoteFetcherOperation.swift */; };
 		A7BAD63D1BF144800076D3B7 /* StreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BAD63C1BF144800076D3B7 /* StreamTests.swift */; };
 		A7BBB8EC1C167858009319D9 /* VSDKURLMacroReplacement.h in Headers */ = {isa = PBXBuildFile; fileRef = A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7BBB8ED1C167858009319D9 /* VSDKURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */; };
@@ -3520,6 +3521,7 @@
 		A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayerToolbarView.m; sourceTree = "<group>"; };
 		A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewProvider.swift; sourceTree = "<group>"; };
 		A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayer.h; sourceTree = "<group>"; };
+		A7BA37DC1C84F5560095CFA9 /* RemoteFetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteFetcherOperation.swift; sourceTree = "<group>"; };
 		A7BAD63C1BF144800076D3B7 /* StreamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTests.swift; sourceTree = "<group>"; };
 		A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSDKURLMacroReplacement.h; sourceTree = "<group>"; };
 		A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSDKURLMacroReplacement.m; sourceTree = "<group>"; };
@@ -7312,6 +7314,7 @@
 				A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A702C8541C12462A001EE1D5 /* FetcherOperation.swift */,
+				A7BA37DC1C84F5560095CFA9 /* RemoteFetcherOperation.swift */,
 				6756B5141C3DED910074B14F /* RequestPasswordResetOperation.swift */,
 				A7AF87341C461AB500B49478 /* SendMessageOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
@@ -11814,6 +11817,7 @@
 				A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				A7B1330D1C606C2C006EC4F5 /* VStreamItemPointer.swift in Sources */,
+				A7BA37DD1C84F5560095CFA9 /* RemoteFetcherOperation.swift in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,

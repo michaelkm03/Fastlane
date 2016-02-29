@@ -39,7 +39,7 @@ class FlagCommentOperation: FetcherOperation, RequestOperation {
 }
 
 
-class FlagCommentRequestOperation: FetcherOperation, RequestOperation {
+class FlagCommentRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: FlagCommentRequest!
     

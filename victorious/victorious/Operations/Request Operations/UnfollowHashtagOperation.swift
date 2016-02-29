@@ -41,7 +41,7 @@ class UnfollowHashtagOperation: FetcherOperation {
 }
 
 
-class UnfollowHashtagRequestOperation: FetcherOperation, RequestOperation {
+class UnfollowHashtagRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnfollowHashtagRequest!
     

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ConversationListOperation: FetcherOperation, PaginatedRequestOperation {
+final class ConversationListOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: ConversationListRequest
     
@@ -27,7 +27,7 @@ final class ConversationListOperation: FetcherOperation, PaginatedRequestOperati
             return
         }
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {

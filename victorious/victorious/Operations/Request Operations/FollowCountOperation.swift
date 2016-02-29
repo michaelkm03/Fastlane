@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FollowCountOperation: FetcherOperation, RequestOperation {
+class FollowCountOperation: RemoteFetcherOperation, RequestOperation {
     
     var request: FollowCountRequest!
     private let userID: Int
@@ -29,7 +29,7 @@ class FollowCountOperation: FetcherOperation, RequestOperation {
     
     func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let user: VUser = context.v_findObjects( [ "remoteId" : Int(self.userID) ]).first else {
                 completion()
                 return

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DeviceExperimentsOperation: FetcherOperation, RequestOperation {
+class DeviceExperimentsOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: DeviceExperimentsRequest! = DeviceExperimentsRequest()
     
@@ -21,7 +21,7 @@ class DeviceExperimentsOperation: FetcherOperation, RequestOperation {
     
     private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]), completion:() -> () ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             for experiment in result.experiments {
                 let uniqueElements = [ "id" : experiment.id, "layerId" : experiment.layerID ]
                 let persistentExperiment: Experiment = context.v_findOrCreateObject(uniqueElements)

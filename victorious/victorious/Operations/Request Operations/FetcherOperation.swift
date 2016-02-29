@@ -10,45 +10,17 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-class FetcherOperation: NSOperation, Queueable, ErrorOperation {
-    
-    var results: [AnyObject]?
-    
-    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
+class FetcherOperation: NSOperation, Queueable, ErrorOperation, ResultsOperation {
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
-    /// A place to store a background context so that it is retained for as long as expected during the operation
-    var storedBackgroundContext: NSManagedObjectContext?
+    // MARK: - ResultsOperation
     
-    lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
-    
-    override init() {
-        super.init()
-        
-        requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
-        requestExecutor.errorHandlers.append( DebugErrorHanlder(requestIdentifier: "\(self.dynamicType)") )
-    }
-    
-    /// Allows subclasses to override to disabled unauthorized (401) error handling.
-    /// Otherwise, these errors are handled by default.
-    var requiresAuthorization: Bool = true {
-        didSet {
-            if requiresAuthorization {
-                if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
-                    requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
-                }
-            } else {
-                requestExecutor.errorHandlers = requestExecutor.errorHandlers.filter { ($0 is UnauthorizedErrorHandler) == false }
-            }
-        }
-    }
+    var results: [AnyObject]?
     
     // MARK: - ErrorOperation
     
-    var error: NSError? {
-        return self.requestExecutor.error
-    }
+    var error: NSError?
     
     // MARK: - Queueable
     

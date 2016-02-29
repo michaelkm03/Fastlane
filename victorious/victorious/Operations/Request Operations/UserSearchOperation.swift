@@ -21,7 +21,7 @@ import VictoriousIOSSDK
     }
 }
 
-final class UserSearchOperation: FetcherOperation, PaginatedRequestOperation {
+final class UserSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     internal(set) var didClearResults = false
     
     let request: UserSearchRequest
@@ -62,7 +62,7 @@ final class UserSearchOperation: FetcherOperation, PaginatedRequestOperation {
         completion()
 
         // Populate our local users cache based off the new data
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard !networkResult.isEmpty else {
                 return
             }

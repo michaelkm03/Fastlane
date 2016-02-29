@@ -59,7 +59,7 @@ class FollowUsersOperation: FetcherOperation {
     }
 }
 
-class FollowUsersRequestOperation: FetcherOperation, RequestOperation {
+class FollowUsersRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: FollowUsersRequest!
     

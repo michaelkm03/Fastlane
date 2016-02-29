@@ -10,7 +10,7 @@ import FBSDKLoginKit
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: FetcherOperation {
+class LogoutOperation: RemoteFetcherOperation {
 
     override init() {
         super.init()
@@ -57,7 +57,7 @@ class LogoutOperation: FetcherOperation {
     }
 }
 
-private class LogoutRequestOperation: FetcherOperation, RequestOperation {
+private class LogoutRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: LogoutRequest! = LogoutRequest()
     

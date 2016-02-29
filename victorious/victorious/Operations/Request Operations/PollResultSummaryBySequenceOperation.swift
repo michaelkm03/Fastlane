@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryBySequenceOperation: FetcherOperation, RequestOperation {
+final class PollResultSummaryBySequenceOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: PollResultSummaryRequest!
     
@@ -30,7 +30,7 @@ final class PollResultSummaryBySequenceOperation: FetcherOperation, RequestOpera
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             for pollResult in pollResults {
                 // Populate a persistent VPollResult object
                 guard let answerID = pollResult.answerID else {

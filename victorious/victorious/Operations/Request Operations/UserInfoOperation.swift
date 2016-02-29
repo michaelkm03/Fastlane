@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UserInfoOperation: FetcherOperation, RequestOperation {
+class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UserInfoRequest!
     
@@ -25,7 +25,7 @@ class UserInfoOperation: FetcherOperation, RequestOperation {
     }
     
     private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.userID ])
             persistentUser.populate(fromSourceModel: user)
             context.v_save()

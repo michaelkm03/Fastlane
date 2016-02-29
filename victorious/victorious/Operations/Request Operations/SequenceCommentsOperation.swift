@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceCommentsOperation: FetcherOperation, PaginatedRequestOperation {
+final class SequenceCommentsOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     var request: SequenceCommentsRequest
     
@@ -40,7 +40,7 @@ final class SequenceCommentsOperation: FetcherOperation, PaginatedRequestOperati
         let unflaggedResults = comments.filter { flaggedIDs.contains($0.commentID) == false }
         
         // Make changes on background queue
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             var displayOrder = self.request.paginator.displayOrderCounterStart

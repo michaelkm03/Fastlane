@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class MarkConversationReadOperation: FetcherOperation, RequestOperation {
+class MarkConversationReadOperation: RemoteFetcherOperation, RequestOperation {
     
     let conversationID: Int
     

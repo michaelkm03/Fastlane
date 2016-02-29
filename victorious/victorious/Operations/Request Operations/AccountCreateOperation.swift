@@ -14,7 +14,7 @@ struct AccountCreateParameters {
     let accountIdentifier: String?
 }
 
-class AccountCreateOperation: FetcherOperation, RequestOperation {
+class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: AccountCreateRequest!
     let parameters: AccountCreateParameters

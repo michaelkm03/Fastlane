@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Sends a recently-created local comment over the network to be saved to the Victorious backend
-class CommentAddOperation: FetcherOperation, RequestOperation {
+class CommentAddOperation: RemoteFetcherOperation, RequestOperation {
     
     var request: CommentAddRequest!
     
@@ -32,8 +32,8 @@ class CommentAddOperation: FetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+    func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             guard let optimisticObject = context.objectWithID( self.localCommentID ) as? VComment else {
                     completion()

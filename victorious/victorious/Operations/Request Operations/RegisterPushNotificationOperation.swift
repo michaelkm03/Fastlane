@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class RegisterPushNotificationOperation: FetcherOperation, RequestOperation {
+final class RegisterPushNotificationOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: RegisterPushNotificationRequest!
     

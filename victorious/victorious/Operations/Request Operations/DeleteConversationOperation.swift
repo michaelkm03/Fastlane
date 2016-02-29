@@ -37,7 +37,7 @@ class DeleteConversationOperation: FetcherOperation {
     }
 }
 
-class DeleteConversationRequestOperation: FetcherOperation, RequestOperation {
+class DeleteConversationRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: DeleteConversationRequest!
     

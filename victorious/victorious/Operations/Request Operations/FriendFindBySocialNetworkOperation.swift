@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindBySocialNetworkOperation: FetcherOperation, RequestOperation {
+class FriendFindBySocialNetworkOperation: RemoteFetcherOperation, RequestOperation {
     
     private var resultObjectIDs = [NSManagedObjectID]()
 
@@ -29,7 +29,7 @@ class FriendFindBySocialNetworkOperation: FetcherOperation, RequestOperation {
     }
     
     func onComplete( results: [User], completion:()->() ) {
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             self.resultObjectIDs = results.flatMap {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
                 persistentUser.populate(fromSourceModel: $0)
@@ -39,8 +39,6 @@ class FriendFindBySocialNetworkOperation: FetcherOperation, RequestOperation {
             
             self.results = self.fetchResults()
             completion()
-            
-            return context
         }
     }
     

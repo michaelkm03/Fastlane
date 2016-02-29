@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TermsOfServiceOperation: FetcherOperation, RequestOperation {
+class TermsOfServiceOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: TermsOfServiceRequest! = TermsOfServiceRequest()
     

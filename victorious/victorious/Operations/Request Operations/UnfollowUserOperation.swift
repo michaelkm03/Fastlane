@@ -51,7 +51,7 @@ class UnfollowUserOperation: FetcherOperation {
     }
 }
 
-class UnfollowUserRequestOperation: FetcherOperation, RequestOperation {
+class UnfollowUserRequestOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnfollowUserRequest!
     

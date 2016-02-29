@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UsersFollowedByUserOperation: FetcherOperation, PaginatedRequestOperation {
+final class UsersFollowedByUserOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: SubscribedToListRequest
     
@@ -30,7 +30,7 @@ final class UsersFollowedByUserOperation: FetcherOperation, PaginatedRequestOper
     
     func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
         
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // The user who is doing the following of other users
             let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
