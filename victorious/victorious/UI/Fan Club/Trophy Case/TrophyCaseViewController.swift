@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TrophyCaseViewController: UIViewController {
+class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
     
     var dependencyManager: VDependencyManager?
     private(set) var trophyCaseDataSource: TrophyCaseCollectionViewDataSource?
@@ -17,6 +17,7 @@ class TrophyCaseViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = trophyCaseDataSource
+            collectionView.delegate = self
         }
     }
     
@@ -45,5 +46,20 @@ class TrophyCaseViewController: UIViewController {
         if let dependencyManager = dependencyManager {
             navigationItem.title = dependencyManager.stringForKey("title")
         }
+    }
+    
+    //MARK: - UICollectionViewDelegate
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+        
+        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
+        let achievement = cell.achievement else {
+            return
+        }
+        let detailViewController: AchievementDetailViewController = AchievementDetailViewController.v_fromStoryboard(StringFromClass(TrophyCaseViewController), identifier: StringFromClass(AchievementDetailViewController))
+        detailViewController.achievement = achievement
+        
+        presentViewController(detailViewController, animated: true, completion: nil)
     }
 }
