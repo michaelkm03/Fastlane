@@ -42,9 +42,11 @@
                                                                  configuration:nil
                                              dictionaryOfClassesByTemplateName:nil];
     
-    self.origImp = [VUserProfileViewController v_swizzleMethod:@selector(userProfileViewControllerWithRemoteId:) withBlock:^VUserProfileViewController *(NSNumber *userID)
+    self.origImp = [VDependencyManager v_swizzleMethod:@selector(userProfileViewControllerWithRemoteId:)
+                                             withBlock:^VUserProfileViewController *(VDependencyManager *dependencyManager, NSNumber *userID)
                     {
                         VUserProfileViewController *profileVC = [[VUserProfileViewController alloc] init];
+                        profileVC.dependencyManager = self.dependencyManager;
                         VUser *user = [VDummyModels objectWithEntityName:@"User" subclass:[VUser class]];
                         user.remoteId = userID;
                         profileVC.user = user;
@@ -55,92 +57,79 @@
 - (void)tearDown
 {
     [super tearDown];
-    [VUserProfileViewController v_restoreOriginalImplementation:self.origImp
+    [VDependencyManager v_restoreOriginalImplementation:self.origImp
                                                  forClassMethod:@selector(userProfileViewControllerWithRemoteId:)];
 }
 
-//- (void)testNotOnNavigationController
-//{
-//    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:self.viewController
-//                                                                                dependencyManager:self.dependencyManager
-//                                                                                          userId:self.sequence.user.remoteId.integerValue];
-//    
-//    [operation queueWithCompletion:^
-//     {
-//         // Make sure the View Controller is still shown
-//         XCTAssert([self.viewController isViewLoaded] && self.viewController.view.window != nil);
-//     }];
-//}
-//
-//- (void)testNotOnProfile
-//{
-//    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
-//    
-//    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:self.viewController
-//                                                                               dependencyManager:self.dependencyManager
-//                                                                                          userId:USER_ID];
-//    
-//    [operation queueWithCompletion:^
-//     {
-//         UIViewController *topVC = self.navigationController.topViewController;
-//         XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
-//         
-//         VUserProfileViewController *topProfileVC = (VUserProfileViewController *)topVC;
-//         
-//         // Make sure that we didn't change to another profile
-//         XCTAssert(topProfileVC.user.remoteId.integerValue == USER_ID);
-//         
-//         [topProfileVC dismissViewControllerAnimated:NO completion:^
-//         {
-//             XCTAssert([self.navigationController.viewControllers isEqualToArray:@[self.viewController]]);
-//         }];
-//     }];
-//}
-//
-//- (void)testOnOtherUserProfile
-//{
-//    VUserProfileViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
-//    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
-//    [self.navigationController pushViewController:otherProfileViewController animated:NO];
-//    
-//    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:otherProfileViewController
-//                                                                               dependencyManager:self.dependencyManager
-//                                                                                          userId:USER_ID];
-//    
-//    NSArray *expectedViewControllers = @[self.viewController, otherProfileViewController];
-//    [operation queueWithCompletion:^
-//     {
-//         UIViewController *topVC = self.navigationController.topViewController;
-//         XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
-//         
-//         VUserProfileViewController *topProfileVC = (VUserProfileViewController *)topVC;
-//         
-//         // Make sure that we changed to the new profile
-//         XCTAssert(topProfileVC.user.remoteId.integerValue == USER_ID);
-//         
-//         [topProfileVC dismissViewControllerAnimated:NO completion:^
-//         {
-//             XCTAssert([self.navigationController.viewControllers isEqualToArray:expectedViewControllers]);
-//         }];
-//     }];
-//}
-//
-//- (void)testOnCurrentUserProfile
-//{
-//    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
-//    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
-//    [self.navigationController pushViewController:profileViewController animated:NO];
-//    
-//    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:profileViewController
-//                                                                               dependencyManager:self.dependencyManager
-//                                                                                          userId:USER_ID];
-//
-//    NSArray *expectedViewControllers = @[self.viewController, profileViewController];
-//    [operation queueWithCompletion:^
-//     {
-//         // Make sure that we didn't change
-//         XCTAssert([self.navigationController.viewControllers isEqualToArray:expectedViewControllers]);
-//     }];
-//}
+- (void)testNotOnProfile
+{
+    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
+    
+    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:self.viewController
+                                                                               dependencyManager:self.dependencyManager
+                                                                                          userId:USER_ID];
+    
+    [operation queueWithCompletion:^
+     {
+         UIViewController *topVC = self.navigationController.topViewController;
+         XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
+         
+         VUserProfileViewController *topProfileVC = (VUserProfileViewController *)topVC;
+         
+         // Make sure that we didn't change to another profile
+         XCTAssert(topProfileVC.user.remoteId.integerValue == USER_ID);
+         
+         [topProfileVC dismissViewControllerAnimated:NO completion:^
+         {
+             XCTAssert([self.navigationController.viewControllers isEqualToArray:@[self.viewController]]);
+         }];
+     }];
+}
+
+- (void)testOnOtherUserProfile
+{
+    VUserProfileViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
+    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
+    [self.navigationController pushViewController:otherProfileViewController animated:NO];
+    
+    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:otherProfileViewController
+                                                                               dependencyManager:self.dependencyManager
+                                                                                          userId:USER_ID];
+    
+    NSArray *expectedViewControllers = @[self.viewController, otherProfileViewController];
+    [operation queueWithCompletion:^
+     {
+         UIViewController *topVC = self.navigationController.topViewController;
+         XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
+         
+         VUserProfileViewController *topProfileVC = (VUserProfileViewController *)topVC;
+         
+         // Make sure that we changed to the new profile
+         XCTAssert(topProfileVC.user.remoteId.integerValue == USER_ID);
+         
+         [topProfileVC dismissViewControllerAnimated:NO completion:^
+         {
+             XCTAssert([self.navigationController.viewControllers isEqualToArray:expectedViewControllers]);
+         }];
+     }];
+}
+
+- (void)testOnCurrentUserProfile
+{
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
+    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
+    [self.navigationController pushViewController:profileViewController animated:NO];
+    
+    ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:profileViewController
+                                                                               dependencyManager:self.dependencyManager
+                                                                                          userId:USER_ID];
+
+    NSArray *expectedViewControllers = @[self.viewController, profileViewController];
+    [operation queueWithCompletion:^
+     {
+         // Make sure that we didn't change
+         XCTAssert([self.navigationController.viewControllers isEqualToArray:expectedViewControllers]);
+     }];
+}
 
 @end
