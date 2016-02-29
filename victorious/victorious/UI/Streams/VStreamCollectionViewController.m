@@ -699,37 +699,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.sequenceActionController showRemixWithSequence:sequence];
 }
 
-- (void)setupRemixActionItem:(VActionItem *)remixItem
-   withContentViewController:(UIViewController *)contentViewController
-   actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
-                   withBlock:(void (^)(void))block
-      dismissCompletionBlock:(void (^)(void))dismissCompletionBlock
-{
-    NSAssert(block != nil, @"block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
-    NSAssert(dismissCompletionBlock != nil, @"dismiss completion block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
-    
-    remixItem.selectionHandler = ^(VActionItem *item)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
-        
-        [contentViewController dismissViewControllerAnimated:YES
-                                                  completion:^
-         {
-             block();
-         }];
-    };
-    remixItem.detailSelectionHandler = ^(VActionItem *item)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowRemixes];
-        
-        [contentViewController dismissViewControllerAnimated:YES
-                                                  completion:^
-         {
-             dismissCompletionBlock();
-         }];
-    };
-}
-
 - (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
     [self.sequenceActionController showMoreWithSequence:sequence
