@@ -9,14 +9,6 @@
 #ifndef SequenceActionControllerDelegate_h
 #define SequenceActionControllerDelegate_h
 
-
-typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
-{
-    VDefaultVideoEditVideo,
-    VDefaultVideoEditGIF,
-    VDefaultVideoEditSnapshot,
-};
-
 @protocol VSequenceActionControllerDelegate <NSObject>
 @optional
 

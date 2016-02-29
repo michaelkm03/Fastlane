@@ -25,7 +25,7 @@ import Foundation
     /// - parameter delegate: The delegate conforming to protocol "VSequenceActionControllerDelegate" 
     /// to handle the deletion/flagging callbacks
     
-    init?(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate) {
+    init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.delegate = delegate
