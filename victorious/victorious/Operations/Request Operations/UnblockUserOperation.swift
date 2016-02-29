@@ -18,7 +18,15 @@ class UnblockUserOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = UnblockUserRemoteOperation(userID: userID)
-        remoteOperation.queue()
+        remoteOperation.queue() { result, error in
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
+                
+            } else {
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
+            }
+        }
     }
     
     override func main() {
@@ -30,7 +38,7 @@ class UnblockUserOperation: FetcherOperation {
                 }
             }
             
-            context.v_saveAndBubbleToParentContext()
+            context.v_save()
         }
     }
 }

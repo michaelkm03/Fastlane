@@ -18,10 +18,19 @@ class BlockUserOperation: FetcherOperation {
         super.init()
         
         let remoteOperation = BlockUserRemoteOperation(userID: userID)
-        remoteOperation.after(self).queue()
+        remoteOperation.after(self).queue() { result, error in
+            
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
+                
+            } else {
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
+            }
+        }
     }
     
-    override func main() {        
+    override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let deleteSequenceRequest = NSFetchRequest(entityName: VSequence.v_entityName())
@@ -47,7 +56,7 @@ class BlockUserOperation: FetcherOperation {
                 }
             }
             
-            context.v_saveAndBubbleToParentContext()
+            context.v_save()
         }
     }
 }

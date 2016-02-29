@@ -28,6 +28,7 @@ import Foundation
     init?(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate?) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
+        self.delegate = delegate
         super.init()
     }
     
@@ -122,6 +123,24 @@ import Foundation
             return
         }
         
+        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { results, error in
+            
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
+                
+                if error.code == Int(kVCommentAlreadyFlaggedError) {
+                    self.originViewController.v_showFlaggedUserAlert(completion: completion)
+                } else {
+                    self.originViewController.v_showErrorDefaultError()
+                }
+                
+            } else {
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                self.originViewController.v_showFlaggedUserAlert(completion: completion)
+            }
+        }
+        
         let flagAlertOperation: FlagSequenceAlertOperation =
             FlagSequenceAlertOperation(originViewController: originViewController,
                                          dependencyManager: dependencyManager,
@@ -143,7 +162,7 @@ import Foundation
     }
     
     // MARK: - Block
-    ///
+
     /// Presents an Alert Controller to confirm blocking of a user. Upon
     /// confirmation, blocks the user and calls the completion block with a
     /// Boolean representing success/failure of the operation.
@@ -152,27 +171,22 @@ import Foundation
     /// be nil.
     /// - parameter completion:         A completion block takes in a Boolean
     /// argument representing success/failure.
-    ///
     
-    func blockUser(user: VUser?, completion: ((Bool)->())? ) {
-        guard let user = user else {
-            completion?(false)
-            return
-        }
+    func blockUser(user: VUser, completion: ((Bool)->())? ) {
         
-        let blockUserOperation: BlockUserAlertOperation =
-        BlockUserAlertOperation(originViewController: originViewController,
+        let blockUserOperation: ToggleBlockUserOperation =
+        ToggleBlockUserOperation(originViewController: originViewController,
             dependencyManager: dependencyManager,
             user: user,
             presentationCompletion: nil)
         
-        blockUserOperation.queue() {
-            if blockUserOperation.blockState == .blockSucceeded {
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
-            }
-            else if blockUserOperation.blockState != .unblockSucceeded {
+        blockUserOperation.queue() { results, error in
+            
+            if error != nil {
                 self.originViewController.v_showErrorDefaultError()
                 completion?(false)
+            } else if !blockUserOperation.isUnblockOperation {
+                self.originViewController.v_showFlaggedUserAlert(completion: completion)
             }
         }
     }
@@ -416,7 +430,7 @@ extension VSequenceActionController {
         blockItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.blockUser(sequence.user, completion: { success in
-                    self.callDelegateWith(DelegateCallback.Block)
+                    self.delegate?.sequenceActionControllerDidBlockUser?()
                 })
             })
         }
