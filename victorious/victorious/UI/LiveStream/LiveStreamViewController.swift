@@ -44,7 +44,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }()
     
-    private var timer: VTimerManager?
+    private var timerManager: VTimerManager?
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
     
@@ -192,20 +192,24 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     // MARK: - Live Update
     
     func beginLiveUpdates() {
-        guard self.timer == nil else {
+        guard self.timerManager == nil else {
             return
         }
-        self.timer = VTimerManager.scheduledTimerManagerWithTimeInterval( 1.0,
+        let timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval( 1.0,
             target: self,
             selector: Selector("onUpdate"),
             userInfo: nil,
             repeats: true
         )
+        // To keep the timer running while scrolling:
+        NSRunLoop.mainRunLoop().addTimer(timerManager.timer, forMode: NSRunLoopCommonModes)
+        
+        self.timerManager = timerManager
     }
     
     func endLiveUpdates() {
-        self.timer?.invalidate()
-        self.timer = nil
+        self.timerManager?.invalidate()
+        self.timerManager = nil
     }
     
     func onUpdate() {
