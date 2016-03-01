@@ -39,7 +39,8 @@ import Foundation
     }
 }
 
-private extension VDependencyManager {
+//TODO: Get rid of this extension and use image for key
+extension VDependencyManager {
     func iconImageURLAtDesiredScaleForKey(key: String) -> NSURL? {
         guard let assets = self.arrayForKey(key) as? [NSDictionary] else {
                 return nil

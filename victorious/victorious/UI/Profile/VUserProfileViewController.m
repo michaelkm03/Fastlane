@@ -58,6 +58,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
+@property (nonatomic, strong, nullable) TrophyCaseViewController *trophyCaseViewController;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
 @property (nonatomic, strong) NSNumber *userRemoteId;
@@ -118,6 +119,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
 
     [self initializeProfileHeader];
+    [self initializeTrophyCaseScreen];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -156,6 +158,22 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.collectionView reloadData];
         self.collectionView.alwaysBounceVertical = YES;
     }
+}
+
+- (void)initializeTrophyCaseScreen
+{
+    self.trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
+    if (self.trophyCaseViewController == nil)
+    {
+        return;
+    }
+    
+    UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    VDependencyManager *trophyCaseDependencyManager = self.trophyCaseViewController.dependencyManager;
+    NSURL *buttonIconURL = [trophyCaseDependencyManager iconImageURLAtDesiredScaleForKey: @"trophy_icon"];
+    [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
+    
+    [self.profileHeaderViewController setupTrophyCaseButton: trophyCaseButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -567,8 +585,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)openTrophyCase
 {
-    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
-    [self.navigationController pushViewController:trophyCaseViewController animated:YES];
+    [self.navigationController pushViewController:self.trophyCaseViewController animated:YES];
 }
 
 #pragma mark - Navigation

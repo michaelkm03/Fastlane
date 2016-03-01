@@ -90,12 +90,10 @@
     return nil;
 }
 
-- (void)setupTrophyCaseButton
-{
-    UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-#warning TODO: WIP: Setting the trophy case button up from the dependency manager
-    NSURL *buttonIconURL = [NSURL URLWithString:[self.dependencyManager stringForKey:@"abc"]];
-    [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
+- (void)setupTrophyCaseButton:(UIButton *)button
+{    
+    [self.view addSubview:button];
+    [self.view v_addCenterToParentContraintsToSubview:button];
 }
 
 #pragma mark - VBackgroundContainer

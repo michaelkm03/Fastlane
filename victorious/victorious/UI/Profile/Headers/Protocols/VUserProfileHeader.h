@@ -75,7 +75,7 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
 /**
  Configures and adds a trophy case button to the profile header
  */
-- (void)setupTrophyCaseButton;
+- (void)setupTrophyCaseButton:(UIButton *)button;
 
 /**
  Delegate that will receive forwarded input from the user.
