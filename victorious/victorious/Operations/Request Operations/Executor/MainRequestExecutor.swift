@@ -22,12 +22,13 @@ class MainRequestExecutor: RequestExecutorType {
     /// handle the error, then returns so that each error is handler by only one handler.
     var errorHandlers = [RequestErrorHandler]()
     
-    private func handleError(error: NSError) {
+    private func handleError(error: NSError) -> NSError? {
         for handler in errorHandlers {
             if handler.handleError(error) {
-                return
+                return nil
             }
         }
+        return error
     }
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
@@ -55,8 +56,7 @@ class MainRequestExecutor: RequestExecutorType {
                     
                     if let error = error as? RequestErrorType {
                         let nsError = NSError(error)
-                        self.error = nsError
-                        self.handleError( nsError )
+                        self.error = self.handleError( nsError )
                         if let onError = onError {
                             onError( nsError ) {
                                 dispatch_semaphore_signal( executeSemphore )

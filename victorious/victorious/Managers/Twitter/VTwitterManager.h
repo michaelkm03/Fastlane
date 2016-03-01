@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VPermission.h"
+#import "VSocialLoginErrors.h"
 
 /**
  *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.
@@ -16,23 +17,6 @@
  *  @param error The error returned from the api call.
  */
 typedef void (^VTWitterCompletionBlock) (BOOL success, NSError *error);
-
-/**
- *  Error domain for all non-Twitter-API errors
- */
-extern NSString * const VTwitterManagerErrorDomain;
-
-/**
- *  Error code representing that the user canceled the share.
- *  The Twitter acounts manager already shows an alert in these cases.
- */
-extern CGFloat const VTwitterManagerErrorCanceled;
-
-/**
- *  Error code representing that we failed to get the user's access token.
- *  The Twitter acounts manager DOES NOT show an alert in these cases.
- */
-extern CGFloat const VTwitterManagerErrorFailed;
 
 @interface VTwitterManager : NSObject
 

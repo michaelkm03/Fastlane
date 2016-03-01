@@ -7,15 +7,11 @@
 //
 
 #import "VModernLoginAndRegistrationFlowViewController.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VDependencyManager+VStatusBarStyle.h"
 #import "VDependencyManager+VKeyboardStyle.h"
-
-// Views + Helpers
 #import "UIAlertController+VSimpleAlert.h"
 #import "VBackgroundContainer.h"
 #import "VLoginFlowAPIHelper.h"
@@ -28,7 +24,7 @@
 #import "VPermissionsTrackingHelper.h"
 #import "victorious-Swift.h"
 #import "VTwitterAccountsHelper.h"
-
+#import "VSocialLoginErrors.h"
 #import "VForcedWorkspaceContainerViewController.h"
 
 @import FBSDKCoreKit;
@@ -335,13 +331,27 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)handleTwitterLoginError:(NSError *)error
 {
-    if (error.code == VTwitterManagerErrorCanceled)
+    switch ( error.code )
     {
-        return;
+        case VSocialLoginErrorCancelled:
+            [self dismissLoadingScreen];
+            break;
+            
+        case VSocialLoginErrorDenied:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                  message:NSLocalizedString(@"TwitterDenied", @"")];
+            break;
+            
+        case VSocialLoginErrorUnavailable:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
+                                  message:NSLocalizedString(@"NoTwitterMessage", @"")];
+            break;
+            
+        default:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                  message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
+            break;
     }
-    
-    [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                          message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
 }
 
 - (void)showAlertErrorWithTitle:(NSString *)title message:(NSString *)message
@@ -395,8 +405,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
                                                         parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
                                                                       VTrackingKeyPermissionName : VTrackingValueDenied }];
+                     NSError *cancelledError = [NSError errorWithDomain:VFacebookErrorDomain code:VSocialLoginErrorCancelled userInfo:nil];
+                     [self handleFacebookLoginError:cancelledError];
                  }
-                 [self handleFacebookLoginError:error];
+                 else
+                 {
+                     [self handleFacebookLoginError:error];
+                 }
+                 
                  NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
                  if ( error != nil )
                  {
@@ -440,8 +456,16 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [[[FBSDKLoginManager alloc] init] logOut];
     
-    [self showAlertErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
-                          message:NSLocalizedString(@"FacebookLoginFailed", @"")];
+    switch ( error.code )
+    {
+        case VSocialLoginErrorCancelled:
+            break;
+            
+        default:
+            [self showAlertErrorWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                  message:NSLocalizedString(@"FacebookLoginFailed", @"")];
+            break;
+    }
 }
 
 - (void)loginWithEmail:(NSString *)email
