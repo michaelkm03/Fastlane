@@ -43,7 +43,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         XCTAssertNotEqual(sequences.count, 0)
         
         let expectation = expectationWithDescription("BlockUserOperation")
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             XCTAssertNil(error)
             expectation.fulfill()
         }

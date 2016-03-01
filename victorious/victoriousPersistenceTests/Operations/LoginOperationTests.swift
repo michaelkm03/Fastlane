@@ -26,7 +26,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = TestRequestExecutor(result: response)
         
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
             XCTAssertEqual( dependentOperations.count, 1 );
@@ -39,6 +39,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
+        NSOperationQueue.v_globalBackgroundQueue.suspended = true
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     

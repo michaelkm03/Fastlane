@@ -32,7 +32,7 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("SuggestedUsersOperation")
-        operation.queueOn(testQueue) { results, error in
+        operation.queue() { results, error in
             
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 1 )
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
