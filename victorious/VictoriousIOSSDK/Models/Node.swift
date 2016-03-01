@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct Node {
     public let nodeID: Int

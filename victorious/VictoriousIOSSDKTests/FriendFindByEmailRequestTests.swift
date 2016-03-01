@@ -8,7 +8,6 @@
 
 import XCTest
 @testable import VictoriousIOSSDK
-import SwiftyJSON
 
 class FriendFindByEmailRequestTests: XCTestCase {
 

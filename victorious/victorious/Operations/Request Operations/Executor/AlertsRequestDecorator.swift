@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 import VictoriousIOSSDK
 
 /// Extends an existing RequestType by adding alert parsing

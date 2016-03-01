@@ -111,34 +111,23 @@
                              completion:nil];
 }
 
-- (void)meme:(id)sender
-{
-    UIResponder<VSequenceActionsDelegate> *targetForMeme = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
-                                                                      withSender:self];
-    NSAssert( targetForMeme != nil, @"We need an object in the responder chain for memeing.");
-    [targetForMeme willRemixSequence:self.sequence
-                            fromView:self
-                           videoEdit:VDefaultVideoEditSnapshot];
-}
-
-- (void)gif:(id)sender
-{
-    UIResponder<VSequenceActionsDelegate> *targetForGIF = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
-                                                                     withSender:self];
-    NSAssert( targetForGIF != nil , @"We need an object in the responder chain for gifing.");
-    [targetForGIF willRemixSequence:self.sequence
-                           fromView:self
-                          videoEdit:VDefaultVideoEditGIF];
-}
-
 - (void)like:(id)sender
 {
     UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:withView:completion:)
-                                                                     withSender:self];
+                                                                  withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     
     [responder willLikeSequence:self.sequence withView:sender completion:nil];
+}
+
+- (void)more:(id)sender
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willSelectMoreForSequence:withView:completion:)
+                                                                  withSender:self];
+    
+    NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
+    [responder willSelectMoreForSequence:self.sequence withView:sender completion:nil];
 }
 
 @end

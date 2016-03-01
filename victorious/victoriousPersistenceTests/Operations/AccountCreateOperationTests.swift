@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import SwiftyJSON
 import VictoriousIOSSDK
 @testable import victorious
 

@@ -136,10 +136,10 @@ import Foundation
         let accessoryButtonConfig = [
             "title": "Legal Information",
             "icon": [
-                "imageURL": "D_more"
+                "imageURL": "OverFlowIcon"
             ],
             "selectedIcon": [
-                "imageURL": "D_more"
+                "imageURL": "OverFlowIcon"
             ],
             "identifier": "Accessory Legal Information",
             "position": "left",

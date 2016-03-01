@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct HashtagShelf: StreamItemType {
     public let shelf: Shelf

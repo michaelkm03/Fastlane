@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-import SwiftyJSON
-
 /// The status of a user's profile information
 public enum ProfileStatus: String {
     /// We have enough information about this user

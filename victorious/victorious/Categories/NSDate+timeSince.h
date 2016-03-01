@@ -10,6 +10,7 @@
 
 @interface NSDate (timeSince)
 
-- (NSString *)timeSince;
+- (NSString *)stringDescribingTimeIntervalSinceNow;
+- (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date;
 
 @end

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public enum AssetType: String {
     case Media  = "media"

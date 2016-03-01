@@ -17,8 +17,6 @@
  */
 @interface VActionSheetViewController : UIViewController
 
-+ (VActionSheetViewController *)actionSheetViewController;
-
 /**
  *  Add these action items to the action sheet viewcontroller. Must be of class VActionItem.
  *
