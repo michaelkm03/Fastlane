@@ -34,7 +34,7 @@ class ActionConfirmationOperationTests: XCTestCase {
     func testNoConfirmation() {
         let operation = MockOperationWithPreconfrmation()
         queue.addOperations( [operation], waitUntilFinished:true )
-        XCTAssertFalse( operation.didExecute )
+        XCTAssert( operation.didExecute )
     }
     
     func testConfirmationMultipleConfirmed() {
