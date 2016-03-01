@@ -20,13 +20,6 @@ import Foundation
     
     /// Sets up the SequenceActionController with the dependency manager and the view controller on
     /// which it should be presented.
-    ///
-    /// - parameter dependencyManager: The dependency manager. Should not be nil.
-    /// - parameter originViewController: The view controller on which the Action Sheet should displayed.
-    /// Should not be nil.
-    /// - parameter delegate: The delegate conforming to protocol "VSequenceActionControllerDelegate" 
-    /// to handle the deletion/flagging callbacks
-    
     init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
@@ -35,12 +28,6 @@ import Foundation
     }
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
-    ///
-    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
-    /// Should not be nil.
-    /// - parameter streamId: The streamID.
-    /// - parameter completion: Completion block to be called after the action sheet has been presented.
-    
     func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
