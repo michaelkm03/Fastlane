@@ -213,7 +213,9 @@ import Foundation
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
-        actionItems.append(blockUserActionItem(forSequence: sequence))
+        if !sequence.user.isCurrentUser() {
+            actionItems.append(blockUserActionItem(forSequence: sequence))
+        }
         
         if AgeGate.isAnonymousUser() {
             actionItems = AgeGate.filterMoreButtonItems(actionItems)
