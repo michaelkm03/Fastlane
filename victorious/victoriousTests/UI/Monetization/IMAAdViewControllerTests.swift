@@ -15,7 +15,7 @@ class IMAAdViewControllerTests: XCTestCase {
     var player: TestVideoPlayer!
     var testAdsLoader: TestIMAAdsLoader!
     var controller: IMAAdViewController!
-    var testAdDelegate: TestAdLifecycleDelegate!
+    weak var testAdDelegate: TestAdLifecycleDelegate!
 
     override func setUp() {
         super.setUp()
