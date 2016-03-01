@@ -6,16 +6,15 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-#ifndef SequenceActionControllerDelegate_h
-#define SequenceActionControllerDelegate_h
+@class VUser, VSequence;
 
 @protocol VSequenceActionControllerDelegate <NSObject>
 @optional
 
-- (void)sequenceActionControllerDidDeleteContent;
-- (void)sequenceActionControllerDidFlagContent;
-- (void)sequenceActionControllerDidBlockUser;
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence;
+
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence;
+
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user;
 
 @end
-
-#endif /* VSequenceActionControllerDelegate_h */

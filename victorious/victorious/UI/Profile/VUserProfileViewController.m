@@ -111,7 +111,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                              selector:@selector(loginStateDidChange:)
                                                  name:kLoggedInChangedNotification object:nil];
 }
-
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad

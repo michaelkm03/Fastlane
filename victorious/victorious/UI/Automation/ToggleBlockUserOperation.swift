@@ -27,20 +27,12 @@ class ToggleBlockUserOperation: FetcherOperation {
     }
     
     override func main() {
-        guard didConfirmActionFromDependencies else {
-            self.cancel()
-            return
+        let isBlocked: Bool = persistentStore.mainContext.v_performBlockAndWait() { context in
+            if let user: VUser = context.v_findObjects(["remoteId" : self.userID]).first {
+                return user.isBlockedByMainUser.boolValue ?? false
+            }
+            return false
         }
-        
-        let fetchedUser: VUser? = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return context.v_findObjects(["remoteId" : self.userID]).first
-        }
-        guard let user = fetchedUser else {
-            assertionFailure("Unable to load user with ID: \(self.userID)")
-            return
-        }
-        
-        let isBlocked = user.isBlockedByMainUser.boolValue
         
         let nextOperation: FetcherOperation
         if isBlocked {

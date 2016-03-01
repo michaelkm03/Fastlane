@@ -15,12 +15,16 @@ class BlockUserOperation: FetcherOperation {
     
     init( userID: Int ) {
         self.userID = userID
-        super.init()
-        
-        BlockUserRemoteOperation(userID: userID).after(self).queue()
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            self.cancel()
+            return
+        }
+        
+        BlockUserRemoteOperation(userID: userID).after(self).queue()
+        
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let deleteSequenceRequest = NSFetchRequest(entityName: VSequence.v_entityName())

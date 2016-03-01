@@ -15,12 +15,15 @@ class UnblockUserOperation: FetcherOperation {
     
     init( userID: Int ) {
         self.userID = userID
-        super.init()
-        
-        UnblockUserRemoteOperation(userID: userID).after(self).queue()
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            self.cancel()
+            return
+        }
+        
+        UnblockUserRemoteOperation(userID: userID).after(self).queue()
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             

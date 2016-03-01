@@ -230,7 +230,7 @@ import Foundation
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.flagSequence(sequence, completion: { success in
                     if success {
-                        self.delegate?.sequenceActionControllerDidFlagContent?()
+                        self.delegate?.sequenceActionControllerDidFlagSequence?(sequence)
                     }
                 })
             })
@@ -239,16 +239,16 @@ import Foundation
     }
     
     private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let title = sequence.user.isBlockedByMainUser == true ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let title = sequence.user.isBlockedByMainUser.boolValue ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         let blockItem = VActionItem.defaultActionItemWithTitle(title,
             actionIcon: UIImage(named: "action_sheet_block"),
             detailText: "")
         blockItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.blockUser(sequence.user, completion: { success in
-                    self.delegate?.sequenceActionControllerDidBlockUser?()
-                })
-            })
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.blockUser(sequence.user) { success in
+                    self.delegate?.sequenceActionControllerDidBlockUser?(sequence.user)
+                }
+            }
         }
         return blockItem
     }
@@ -258,13 +258,13 @@ import Foundation
             actionIcon: UIImage(named: "delete-icon"),
             detailText: "")
         deleteItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.deleteSequence(sequence, completion: { success in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.deleteSequence(sequence) { success in
                     if success {
-                        self.delegate?.sequenceActionControllerDidDeleteContent?()
+                        self.delegate?.sequenceActionControllerDidDeleteSequence?(sequence)
                     }
-                })
-            })
+                }
+            }
         }
         return deleteItem
     }

@@ -662,17 +662,17 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VSequenceActionControllerDelegate
 
-- (void)sequenceActionControllerDidDeleteContent
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
-- (void)sequenceActionControllerDidFlagContent
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
-- (void)sequenceActionControllerDidBlockUser
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
