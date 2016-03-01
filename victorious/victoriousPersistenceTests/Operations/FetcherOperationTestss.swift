@@ -11,29 +11,38 @@ import XCTest
 
 class FetcherOperationTests: BaseFetcherOperationTestCase {
     
-    func testOnCompletion() {
-        let requestOperation = MockFetcherOperation(request: MockRequest())
-        requestOperation.requestExecutor = TestRequestExecutor()
+    func testSuccess() {
+        let operation = MockFetcherOperation()
+        testRequestExecutor = TestRequestExecutor(result: true)
+        operation.requestExecutor = testRequestExecutor
+        XCTAssert( operation.requiresAuthorization )
         
         let expectation = expectationWithDescription("MockFetcherOperation")
-        requestOperation.queueOn(requestOperation.v_defaultQueue) { (results, error) in
+        operation.queue() { (results, error) in
             XCTAssertNil(error)
+            XCTAssertEqual(results?.count, 2)
+            XCTAssert( NSThread.isMainThread() )
             expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
-    func testOnError() {
-        let errorOperation = MockFetcherOperation(request: MockRequest())
-        let expectedError = NSError(domain:"test", code:-1, userInfo:nil)
-        errorOperation.requestExecutor = TestRequestExecutor(error: expectedError)
+    func testError() {
+        let operation = MockFetcherOperation()
+        let expectedError = NSError(domain: "Really Bad Error", code: 99, userInfo: nil)
+        testRequestExecutor = TestRequestExecutor(error: expectedError)
+        operation.requestExecutor = testRequestExecutor
+        XCTAssert( operation.requiresAuthorization )
         
-        let expectation = expectationWithDescription("MockErrorFetcherOperation")
-        errorOperation.queue() { (results, error) in
+        let expectation = expectationWithDescription("MockFetcherOperation")
+        operation.queue() { (results, error) in
             XCTAssertEqual(expectedError, error)
+            XCTAssertNil(results)
+            XCTAssert( NSThread.isMainThread() )
             expectation.fulfill()
         }
+        
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
