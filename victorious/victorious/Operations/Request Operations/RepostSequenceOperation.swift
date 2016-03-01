@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RepostSequenceOperation: RemoteFetcherOperation, RequestOperation {
+class RepostSequenceOperation: FetcherOperation, RequestOperation {
     
     private let sequenceID: String
     
@@ -44,7 +44,7 @@ class RepostSequenceOperation: RemoteFetcherOperation, RequestOperation {
     }
 }
 
-class RepostSequenceRemoteOperation: FetcherOperation, RequestOperation {
+class RepostSequenceRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     var request: RepostSequenceRequest!
     

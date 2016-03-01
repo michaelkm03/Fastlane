@@ -55,7 +55,7 @@ class BlockUserOperation: FetcherOperation {
     }
 }
 
-class BlockUserRemoteOperation: FetcherOperation, RequestOperation {
+class BlockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: BlockUserRequest!
     
