@@ -31,7 +31,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         testStore.mainContext.v_save()
         
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
-        operation.trackingManager = testTrackingManager
+        // operation.trackingManager = testTrackingManager
     }
 
     func testBlockingUser() {

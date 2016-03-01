@@ -26,7 +26,7 @@ class UnblockUserOperationTests: BaseFetcherOperationTestCase {
         testStore.mainContext.v_save()
         
         operation = UnblockUserOperation(userID: objectUser.remoteId.integerValue)
-        operation.trackingManager = testTrackingManager
+        // operation.trackingManager = testTrackingManager
     }
     
     func testUnblockingUser() {

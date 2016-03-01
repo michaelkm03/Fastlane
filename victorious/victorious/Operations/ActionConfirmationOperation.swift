@@ -22,7 +22,7 @@ extension NSOperation {
         
         // Make sure *any* previous confirmation operations did confirm this action
         return dependencies.flatMap { $0 as? ActionConfirmationOperation }.reduce( true ) {
-            $0 || $1.didConfirmAction
+            return $0 && $1.didConfirmAction
         }
     }
 }
