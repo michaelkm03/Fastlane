@@ -31,7 +31,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         testStore.mainContext.v_save()
         
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
-        // operation.trackingManager = testTrackingManager
     }
 
     func testBlockingUser() {
@@ -48,13 +47,5 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         
         XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
         XCTAssertEqual(sequences.count, 0)
-        
-        XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidBlockUser, testTrackingManager.trackEventCalls.first?.eventName)
-        
-        operation.main()
-        
-        XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventBlockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
     }
 }

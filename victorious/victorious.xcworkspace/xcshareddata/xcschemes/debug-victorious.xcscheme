@@ -68,6 +68,17 @@
                BlueprintName = "victoriousPersistenceTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BlockUserRemoteOperationTests">
+               </Test>
+               <Test
+                  Identifier = "FetchFromMainContextOperationTests">
+               </Test>
+               <Test
+                  Identifier = "UnblockUserRemoteOperationTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

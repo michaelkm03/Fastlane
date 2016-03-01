@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class UnblockUserOperation: FetcherOperation {
     
     private let userID: Int
-    
+        
     init( userID: Int ) {
         self.userID = userID
     }
@@ -40,9 +40,9 @@ class UnblockUserOperation: FetcherOperation {
 
 class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
     
-    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
-    
     let request: UnblockUserRequest!
+    
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
     init( userID: Int ) {
         request = UnblockUserRequest(userID: userID)
