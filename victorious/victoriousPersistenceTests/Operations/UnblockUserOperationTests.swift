@@ -35,13 +35,5 @@ class UnblockUserOperationTests: BaseFetcherOperationTestCase {
         operation.main()
         
         XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
-        
-        XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidUnblockUser, testTrackingManager.trackEventCalls.first?.eventName)
-        
-        operation.main()
-        
-        XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUnblockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
     }
 }

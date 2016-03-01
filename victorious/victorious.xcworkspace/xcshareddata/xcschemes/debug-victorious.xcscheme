@@ -73,6 +73,9 @@
                   Identifier = "BlockUserRemoteOperationTests">
                </Test>
                <Test
+                  Identifier = "FetchFromMainContextOperationTests">
+               </Test>
+               <Test
                   Identifier = "UnblockUserRemoteOperationTests">
                </Test>
             </SkippedTests>
