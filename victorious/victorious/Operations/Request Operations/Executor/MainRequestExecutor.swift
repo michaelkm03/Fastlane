@@ -55,16 +55,16 @@ class MainRequestExecutor: RequestExecutorType {
             authenticationContext: authenticationContext,
             callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
-                    let nsError: NSError?
                     
                     if self.cancelled {
                         dispatch_semaphore_signal( executeSemphore )
                         
-                    } else if let error = nsError {
-                        self.error = error
-                        self.handleError( error )
+                    } else if let error = error as? RequestErrorType {
+                        let nsError = NSError(error)
+                        self.error = nsError
+                        self.handleError( nsError )
                         if let onError = onError {
-                            onError( error ) {
+                            onError( nsError ) {
                                 dispatch_semaphore_signal( executeSemphore )
                             }
                         } else {

@@ -38,7 +38,7 @@ class UnblockUserOperation: FetcherOperation {
     }
 }
 
-class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
+class UnblockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnblockUserRequest!
     
