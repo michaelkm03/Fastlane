@@ -345,7 +345,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didReceiveError:(NSError *)error
 {
-    [self v_showErrorDefaultError];
+    UIViewController *viewControllerForError = self.navigationController ?: self;
+    [viewControllerForError v_showErrorDefaultError];
 }
 
 @end

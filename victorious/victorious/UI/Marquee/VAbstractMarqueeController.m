@@ -78,13 +78,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         return;
     }
     
-    [self.KVOController unobserve:_stream];
     _stream = stream;
     [self reset];
-    [self.KVOController observe:stream
-                        keyPath:NSStringFromSelector(@selector(marqueeItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(marqueeItemsUpdated)];
+    [self marqueeItemsUpdated];
 }
 
 - (void)setShelf:(Shelf *)shelf
@@ -94,13 +90,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         return;
     }
     
-    [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:_shelf
-                        keyPath:NSStringFromSelector(@selector(streamItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(marqueeItemsUpdated)];
+    [self marqueeItemsUpdated];
 }
 
 - (VStream *)currentStream

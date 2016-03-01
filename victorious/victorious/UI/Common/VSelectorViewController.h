@@ -16,7 +16,7 @@ typedef void (^VSelectionItemConfigureCellBlock)(UITableViewCell *cell, id item)
 /**
  *  A selection block for VSelectorViewController.
  */
-typedef void (^VSelectorViewControllerCompletionBlock)(id selectedItem);
+typedef void (^VSelectorViewControllerCompletionBlock)(id selectedItem, NSError *error);
 
 /**
  *  VSelectorViewController provides a system-like UI for choosing among an array of items.

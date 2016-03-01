@@ -8,6 +8,7 @@
 
 #import "VSelectorViewController.h"
 #import "VThemeManager.h"
+#import "VSocialLoginErrors.h"
 
 @interface VSelectorViewController ()
 
@@ -23,7 +24,7 @@ NSString *const kSelectorCellIdentifier = @"cell";
 
 + (instancetype)selectorViewControllerWithItemsToSelectFrom:(NSArray *)items
                                          withConfigureBlock:(VSelectionItemConfigureCellBlock)configureBlock
-                                                 completion:(void(^)(id selectedItem))completion
+                                                 completion:(VSelectorViewControllerCompletionBlock)completion
 {
     NSParameterAssert(configureBlock != nil);
     NSParameterAssert(completion != nil);
@@ -74,14 +75,14 @@ NSString *const kSelectorCellIdentifier = @"cell";
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.completion([self.items objectAtIndex:indexPath.row]);
+    self.completion([self.items objectAtIndex:indexPath.row], nil);
 }
 
 #pragma mark - Actions
 
 - (void)cancel:(id)sender
 {
-    self.completion(nil);
+    self.completion(nil, [[NSError alloc] initWithDomain:@"TwitterAccountSelectionErrorDomain" code:VSocialLoginErrorCancelled userInfo:nil]);
 }
 
 @end
