@@ -129,39 +129,28 @@ import Foundation
     // MARK: - Like
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
         ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
-            if sequence.isLikedByMainUser.boolValue {
-                completion?( error == nil )
-            }
-            else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
-                self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
-                    VLikeButtonCoachmarkIdentifier,
-                    inViewController:self.originViewController,
-                    atLocation:triggeringView.convertRect(
-                        triggeringView.bounds,
-                        toView:self.originViewController.view
-                    )
+            
+            self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
+                VLikeButtonCoachmarkIdentifier,
+                inViewController:self.originViewController,
+                atLocation:triggeringView.convertRect(
+                    triggeringView.bounds,
+                    toView:self.originViewController.view
                 )
-                completion?( error == nil )
-            }
+            )
+            
+            completion?( error == nil )
         }
     }
     
     // MARK: - Repost
     
-    func repostNode(node: VNode) {
-        repostNode(node, completion: nil)
+    func repostSequence(sequence: VSequence) {
+        repostSequence(sequence, completion: nil)
     }
     
-    func repostNode(node: VNode, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { results, error in
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
-                
-            } else {
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
-            }
+    func repostSequence(sequence: VSequence, completion: ((Bool) -> Void)?) {
+        RepostSequenceOperation(sequenceID: sequence.remoteId).queue { results, error in
             completion?( error == nil )
         }
     }
@@ -282,10 +271,10 @@ import Foundation
             enabled: !hasReposted)
         
         repostItem.selectionHandler = { item in
-            if (!hasReposted) {
+            if !hasReposted {
                 loadingBlock(item)
-                self.repostNode(sequence.firstNode())  { didSucceed in
-                    if (didSucceed) {
+                self.repostSequence(sequence) { didSucceed in
+                    if didSucceed {
                         sequence.hasReposted = 1
                     }
                     self.originViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -304,23 +293,22 @@ import Foundation
     }
     
     private func descriptionActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let descriptionItem = VActionItem.descriptionActionItemWithText(sequence.name ?? "", hashTagSelectionHandler: { hashtag in
+        let descriptionItem = VActionItem.descriptionActionItemWithText(sequence.name ?? "") { hashtag in
             let vc: VHashtagStreamCollectionViewController = self.dependencyManager.hashtagStreamWithHashtag(hashtag)
             self.originViewController.dismissViewControllerAnimated(true) {
                 self.originViewController.navigationController?.pushViewController(vc, animated: true)
             }
-        })
+        }
         return descriptionItem
     }
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
         let userItem = VActionItem.userActionItemUserWithTitle(sequence.user.name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 self.showProfileWithRemoteId(sequence.user.remoteId.integerValue)
-            })
+            }
         }
-        
         return userItem
     }
     
@@ -329,33 +317,21 @@ import Foundation
             actionIcon: UIImage(named: "D_memeIcon"),
             detailText: "\(sequence.memeCount)")
         
-        setupRemixActionItem(memeItem,
-            block: {
-                self.showRemixWithSequence(sequence)
-            },
-            dismissCompletionBlock: {
-                self.showMemersWithSequence(sequence)
-        })
-        
-        return memeItem
-    }
-    
-    private func setupRemixActionItem(remixItem: VActionItem, block: ()->(), dismissCompletionBlock: ()->()) {
-        remixItem.selectionHandler = { item in
+        memeItem.selectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectRemix)
             
             self.originViewController.dismissViewControllerAnimated(true) {
-                block()
+                self.showRemixWithSequence(sequence)
             }
         }
         
-        remixItem.detailSelectionHandler = { item in
+        memeItem.detailSelectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShowRemixes)
             
             self.originViewController.dismissViewControllerAnimated(true) {
-                dismissCompletionBlock()
+                self.showMemersWithSequence(sequence)
             }
         }
+        return memeItem
     }
-    
 }

@@ -22,9 +22,10 @@
 
 @import KVOController;
 
-static NSString * const kStreamURLKey = @"streamURL";
-static NSString * const kSequenceIDKey = @"sequenceID";
-static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
+NSString * const VStreamURLKey = @"streamURL";
+NSString * const VSequenceIDKey = @"sequenceID";
+NSString * const VSequenceIDMacro = @"%%SEQUENCE_ID%%";
+
 static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 @interface VAbstractMarqueeController ()

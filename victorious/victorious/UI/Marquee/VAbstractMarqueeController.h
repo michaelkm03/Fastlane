@@ -10,8 +10,10 @@
 #import "VMarqueeDataDelegate.h"
 #import "VMarqueeSelectionDelegate.h"
 #import "VMarqueeController.h"
-
-extern NSString * const kMarqueeURLKey;
+;
+extern NSString * const VStreamURLKey;
+extern NSString * const VSequenceIDKey;
+extern NSString * const VSequenceIDMacro;
 
 @class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell, Shelf;
 

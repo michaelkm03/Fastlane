@@ -27,6 +27,7 @@ class DeleteSequenceOperation: FetcherOperation {
         DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
     }
     
+    /// Deletes the sequence without asking for the user to confirm the action first
     init( sequenceID: String) {
         self.sequenceID = sequenceID
         super.init()

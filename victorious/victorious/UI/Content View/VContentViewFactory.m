@@ -62,7 +62,8 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dict];
     
     id <VSequenceActionControllerDelegate> delegate = nil;
-    if ([context.viewController conformsToProtocol:@protocol(VSequenceActionControllerDelegate)]) {
+    if ([context.viewController conformsToProtocol:@protocol(VSequenceActionControllerDelegate)])
+    {
         delegate = (id <VSequenceActionControllerDelegate>)context.viewController;
     }
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager delegate:delegate];

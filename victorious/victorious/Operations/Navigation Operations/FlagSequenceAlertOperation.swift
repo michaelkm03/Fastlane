@@ -8,12 +8,12 @@
 
 import UIKit
 
-class FlagSequenceAlertOperation: NavigationOperation, UserConfirmationOperation {
+class FlagSequenceAlertOperation: NavigationOperation, ActionConfirmationOperation {
 
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     
-    // MARK: - UserConfirmationOperation
+    // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     

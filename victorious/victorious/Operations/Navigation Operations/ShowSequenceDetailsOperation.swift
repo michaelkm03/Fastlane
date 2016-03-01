@@ -54,9 +54,24 @@ class ShowMemersOperation: NavigationOperation {
         super.start()
         self.beganExecuting()
         
-        if let memeStream = dependencyManager.memeStreamForSequence(sequence) {
-            originViewController.navigationController?.pushViewController(memeStream, animated: true)
+        guard let memeStream = dependencyManager.templateValueOfType(VStreamCollectionViewController.self,
+            forKey: "memeStream",
+            withAddedDependencies:[ VStreamURLKey: sequence.remoteId ]) as? VStreamCollectionViewController else  {
+                self.finishedExecuting()
+                return
         }
+        
+        let noContentView: VNoContentView = VNoContentView.v_fromNib()
+        noContentView.icon = UIImage(named: "noMemeIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        noContentView.title = NSLocalizedString("NoMemersTitle", comment:"")
+        noContentView.message = NSLocalizedString("NoMemersMessage", comment:"")
+        noContentView.resetInitialAnimationState()
+        noContentView.setDependencyManager(self.dependencyManager)
+        
+        memeStream.navigationItem.title = memeStream.currentStream.name
+        memeStream.noContentView = noContentView
+        
+        originViewController.navigationController?.pushViewController(memeStream, animated: true)
         
         self.finishedExecuting()
     }
