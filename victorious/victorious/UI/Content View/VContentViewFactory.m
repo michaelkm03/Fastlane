@@ -16,6 +16,7 @@
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VSequenceActionControllerDelegate.h"
 @import SafariServices;
 
 static NSString * const kContentViewComponentKey = @"contentView";
@@ -59,7 +60,13 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     NSDictionary *dict = @{ kSequenceIdKey : context.sequence.remoteId};
     
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dict];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
+    
+    id <VSequenceActionControllerDelegate> delegate = nil;
+    if ([context.viewController conformsToProtocol:@protocol(VSequenceActionControllerDelegate)])
+    {
+        delegate = (id <VSequenceActionControllerDelegate>)context.viewController;
+    }
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager delegate:delegate];
     contentViewController.placeholderImage = context.placeholderImage;
     
     if ( contentViewController == nil )

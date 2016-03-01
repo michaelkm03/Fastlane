@@ -8,7 +8,6 @@
 
 import Foundation
 import VictoriousIOSSDK
-import SwiftyJSON
 
 struct MockRequest: RequestType {
     let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockrequest.com" )! )

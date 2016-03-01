@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 public struct PrivacyPolicyRequest: RequestType {
     
     public var urlRequest: NSURLRequest {

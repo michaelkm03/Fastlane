@@ -41,6 +41,14 @@ final class StreamOperation: FetcherOperation, PaginatedRequestOperation {
     
     func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
         
+        guard self.cancelled == false else {
+            dispatch_async( dispatch_get_main_queue() ) {
+                completion()
+            }
+            return
+        }
+
+        
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             

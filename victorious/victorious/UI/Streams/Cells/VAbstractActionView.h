@@ -53,19 +53,14 @@
 - (void)repost:(id)sender;
 
 /**
- *  Dispatch the sequence meme message to the current sequence actions delegate.
- */
-- (void)meme:(id)sender;
-
-/**
- *  Dispatch the sequence gif message to the current sequence actions delegate.
- */
-- (void)gif:(id)sender;
-
-/**
  *  Dispatch the sequence like message to the current sequence actions delegate.
  */
 - (void)like:(id)sender;
+
+/**
+ * Dispatch the sequence more message to the current sequence actions delegate.
+ */
+- (void)more:(id)sender;
 
 @end
 

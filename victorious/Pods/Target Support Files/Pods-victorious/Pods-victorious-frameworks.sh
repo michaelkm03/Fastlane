@@ -94,7 +94,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-victorious/MBProgressHUD.framework"
   install_framework "Pods-victorious/OAStackView.framework"
   install_framework "Pods-victorious/SDWebImage.framework"
-  install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
@@ -108,7 +107,6 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious/MBProgressHUD.framework"
   install_framework "Pods-victorious/OAStackView.framework"
   install_framework "Pods-victorious/SDWebImage.framework"
-  install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
@@ -122,7 +120,6 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious/MBProgressHUD.framework"
   install_framework "Pods-victorious/OAStackView.framework"
   install_framework "Pods-victorious/SDWebImage.framework"
-  install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
@@ -136,7 +133,6 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious/MBProgressHUD.framework"
   install_framework "Pods-victorious/OAStackView.framework"
   install_framework "Pods-victorious/SDWebImage.framework"
-  install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -150,6 +146,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious/MBProgressHUD.framework"
   install_framework "Pods-victorious/OAStackView.framework"
   install_framework "Pods-victorious/SDWebImage.framework"
-  install_framework "Pods-victorious/SwiftyJSON.framework"
   install_framework "Pods-victorious/TTTAttributedLabel.framework"
 fi

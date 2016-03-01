@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Unfollow a hashtag
 public struct UnfollowHashtagRequest: RequestType {

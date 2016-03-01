@@ -247,7 +247,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
         }
         if ( [transition isAnimated] )
         {
-            [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            BOOL successfulAnimation = [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
             {
                 if ( animation != nil )
                 {
@@ -261,6 +261,11 @@ static const CGFloat kStatusBarHeight = 20.0f;
                     completion();
                 }
             }];
+            
+            if (!successfulAnimation && animation != nil)
+            {
+                animation();
+            }
         }
         else
         {

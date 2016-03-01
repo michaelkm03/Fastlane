@@ -10,16 +10,20 @@ import Foundation
 
 class NavigationOperation: NSOperation, Queueable {
     
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    
     private var _executing = false
     private var _finished = false
     
-    /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move into an excuting state.
+    /// Subclasses that do not implement `main()` and need to maintain excuting
+    /// state call this to move into an excuting state.
     final func beganExecuting () {
         executing = true
         finished = false
     }
     
-    /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move out of an executing state and are finished doing work.
+    /// Subclasses that do not implement `main()` and need to maintain excuting
+    /// state call this to move out of an executing state and are finished doing work.
     final func finishedExecuting () {
         executing = false
         finished = true
@@ -65,7 +69,7 @@ class NavigationOperation: NSOperation, Queueable {
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion:(()->())?) {
+    func queueWithCompletion(completion:(()->())? = nil) {
         queue(completion: completion)
     }
 }

@@ -22,6 +22,13 @@ class TrendingUsersOperation: FetcherOperation, RequestOperation {
     func onComplete( networkResult: TrendingUsersRequest.ResultType, completion: () -> () ) {
         self.results = []
         
+        guard self.cancelled == false else {
+            dispatch_async( dispatch_get_main_queue() ) {
+                completion()
+            }
+            return
+        }
+        
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var persistentUsers = [VUser]()
             for networkUser in networkResult {

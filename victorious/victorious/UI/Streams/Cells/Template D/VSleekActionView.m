@@ -31,9 +31,8 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
 
 @property (nonatomic, strong, readwrite) VSleekActionButton *commentButton;
 @property (nonatomic, strong, readwrite) VSleekActionButton *repostButton;
-@property (nonatomic, strong, readwrite) VSleekActionButton *memeButton;
-@property (nonatomic, strong, readwrite) VSleekActionButton *gifButton;
 @property (nonatomic, strong, readwrite) VSleekActionButton *likeButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *moreButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -121,24 +120,6 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     return _repostButton;
 }
 
-- (VSleekActionButton *)memeButton
-{
-    if (_memeButton == nil)
-    {
-        _memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
-    }
-    return _memeButton;
-}
-
-- (VSleekActionButton *)gifButton
-{
-    if (_gifButton == nil)
-    {
-        _gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
-    }
-    return _gifButton;
-}
-
 - (VSleekActionButton *)likeButton
 {
     if (_likeButton == nil)
@@ -150,6 +131,17 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     return _likeButton;
 }
 
+- (VSleekActionButton *)moreButton
+{
+    if (_moreButton == nil)
+    {
+        UIImage *image = [UIImage imageNamed:@"OverFlowIcon"];
+        UIImage *selectedImage = [UIImage imageNamed:@"OverFlowIcon"];
+        _moreButton = [self actionButtonWithImage:image selectedImage:selectedImage action:@selector(more:)];
+    }
+    return _moreButton;
+}
+
 #pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -157,7 +149,7 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     _dependencyManager = dependencyManager;
     if (_dependencyManager != nil)
     {
-        self.actionButtons = @[ self.likeButton, self.repostButton, self.memeButton, self.gifButton, self.commentButton ];
+        self.actionButtons = @[ self.likeButton, self.repostButton, self.commentButton, self.moreButton ];
         [self.actionButtons enumerateObjectsUsingBlock:^(VSleekActionButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -214,15 +206,7 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     {
         [actionButtons addObject:self.repostButton];
     }
-    if ( sequence.permissions.canGIF )
-    {
-        [actionButtons addObject:self.gifButton];
-    }
-    //Only add meme for image content
-    if ( sequence.permissions.canMeme && sequence.isImage )
-    {
-        [actionButtons addObject:self.memeButton];
-    }
+    [actionButtons addObject:self.moreButton];
     
     self.leftMargin = [[self class] outerMarginForBarWidth:actionBarWidth];
     CGFloat summedButtonWidths = VActionButtonHeight * kMaxNumberOfActionButtons;

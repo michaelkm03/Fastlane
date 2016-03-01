@@ -147,9 +147,8 @@ struct MessageTableCellDecorator {
     
     let dependencyManager: VDependencyManager
     
-    func decorateCell( cell: VMessageCell, withMessage message: VMessage) {
-        
-        cell.timeLabel?.text = message.postedAt.timeSince()
+    private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
+        cell.timeLabel?.text = message.postedAt?.stringDescribingTimeIntervalSinceNow() ?? ""
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)

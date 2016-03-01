@@ -6,7 +6,6 @@ inhibit_all_warnings!
 use_frameworks!
 
 target :victorious do
-    pod 'SwiftyJSON'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
     pod 'KVOController'
@@ -23,11 +22,6 @@ target :victorious do
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
         link_with 'victoriousTests', 'VictoriousCommonTests'
     end
-end
-
-target :VictoriousIOSSDK do
-    pod 'SwiftyJSON'
-    link_with 'VictoriousIOSSDK'
 end
 
 target :VictoriousIOSSDKTests do

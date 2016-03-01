@@ -7,8 +7,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
-
 public struct SequenceUserInteractionsRequest: RequestType {
     
     public let sequenceID: String

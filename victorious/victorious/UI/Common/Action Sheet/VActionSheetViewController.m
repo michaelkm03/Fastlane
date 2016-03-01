@@ -63,9 +63,9 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 @implementation VActionSheetViewController
 
-#pragma mark - Factory Methods
+#pragma mark - Initializers
 
-+ (VActionSheetViewController *)actionSheetViewController
+- (instancetype)init
 {
     UIStoryboard *ourStoryboard = [UIStoryboard storyboardWithName:@"ActionSheet" bundle:nil];
     return [ourStoryboard instantiateInitialViewController];

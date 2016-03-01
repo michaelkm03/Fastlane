@@ -74,6 +74,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager; //< Set the dependencyManager before setting the profile
     [viewController addLoginStatusChangeObserver];
+    [viewController updateAccessoryItems];
     
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
     NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
@@ -267,15 +268,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
     const CGFloat thresholdEnd = middle + kScrollAnimationThreshholdHeight * 0.5f;
     return thresholdEnd;
-}
-
-#pragma mark -
-
-- (BOOL)canShowMarquee
-{
-    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or
-    // not the profileHeader is shown, based on whether or not this stream contains a marquee
-    return NO;
 }
 
 #pragma mark - Loading data
@@ -794,6 +786,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (NSInteger)badgeNumber
+{
+    NSArray *menuItems = self.dependencyManager.accessoryMenuItems;
+    NSInteger badgeNumber = 0;
+    for ( VNavigationMenuItem *accessoryItem in menuItems )
+    {
+        id destination = accessoryItem.destination;
+        if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+        {
+            badgeNumber += [(id <VProvidesNavigationMenuItemBadge>)destination badgeNumber];
+        }
+    }
+    return badgeNumber;
+}
 
 #pragma mark - VDeepLinkSupporter
 

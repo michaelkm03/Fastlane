@@ -29,8 +29,6 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic, strong) VNoContentView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 
-@property (nonatomic, assign) BOOL canShowMarquee; ///< Defaults to YES; if NO, we won't adjust the "hasHeaderCell" variable even when a marquee is available in the stream
-
 @property (nonatomic, assign) BOOL suppressShelves; ///< Default to NO. When YES, shelves from the stream will not be displayed.
 
 /**
@@ -62,21 +60,5 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @property (nonatomic, strong, readwrite) NSString *sourceScreenName;
-
-@end
-
-#pragma mark - 
-
-@interface VDependencyManager (VStreamCollectionViewController)
-
-/**
- Returns a stream of memes for the given sequence.
- */
-- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence;
-
-/**
- Returns a stream of gifs for the given sequence.
- */
-- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence;
 
 @end
