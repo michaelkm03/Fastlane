@@ -40,16 +40,3 @@ class MockFetcherOperation: FetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
-
-class MockErrorFetcherOperation: FetcherOperation, RequestOperation {
-    
-    let request: MockErrorRequest!
-    
-    init(request: MockErrorRequest) {
-        self.request = request
-    }
-    
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
-    }
-}

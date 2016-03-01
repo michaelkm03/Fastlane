@@ -16,6 +16,7 @@ import VictoriousIOSSDK
 class BaseFetcherOperationTestCase: BasePersistentStoreTestCase {
 
     let expectationThreshold: Double = 1
+    
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
 
@@ -27,6 +28,8 @@ class BaseFetcherOperationTestCase: BasePersistentStoreTestCase {
         
         NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
         NSOperationQueue.v_globalBackgroundQueue.suspended = false
+        
         NSOperationQueue.mainQueue().cancelAllOperations()
+        NSOperationQueue.mainQueue().suspended = false
     }
 }

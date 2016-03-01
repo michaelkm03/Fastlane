@@ -8,48 +8,32 @@
 
 import XCTest
 @testable import victorious
-import Nocilla
 
-class FetcherOperationTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        LSNocilla.sharedInstance().start()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-        LSNocilla.sharedInstance().clearStubs()
-        LSNocilla.sharedInstance().stop()
-    }
+class FetcherOperationTests: BaseFetcherOperationTestCase {
     
     func testOnCompletion() {
-        let expectation = self.expectationWithDescription("testOnCompletion")
         let requestOperation = MockFetcherOperation(request: MockRequest())
-        let url = requestOperation.request.urlRequest.URL?.absoluteString
+        requestOperation.requestExecutor = TestRequestExecutor()
         
-        stubRequest("GET", url)
-        
+        let expectation = expectationWithDescription("MockFetcherOperation")
         requestOperation.queueOn(requestOperation.v_defaultQueue) { (results, error) in
             XCTAssertNil(error)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testOnError() {
-        let expectation = self.expectationWithDescription("testOnError")
-        let errorOperation = MockErrorFetcherOperation(request: MockErrorRequest())
-        let url = errorOperation.request.urlRequest.URL?.absoluteString
+        let errorOperation = MockFetcherOperation(request: MockRequest())
+        let expectedError = NSError(domain:"test", code:-1, userInfo:nil)
+        errorOperation.requestExecutor = TestRequestExecutor(error: expectedError)
         
-        stubRequest("GET", url)
-        
-        errorOperation.queueOn(errorOperation.v_defaultQueue) { (results, error) in
-            XCTAssertNotNil(error)
+        let expectation = expectationWithDescription("MockErrorFetcherOperation")
+        errorOperation.queue() { (results, error) in
+            XCTAssertEqual(expectedError, error)
             expectation.fulfill()
         }
-        
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
