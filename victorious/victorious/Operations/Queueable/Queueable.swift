@@ -55,7 +55,7 @@ protocol Chainable {
     func after(dependency: NSOperation) -> Self
     
     /// Add the receiver as a dependency to the provided operation, i.e. the operation
-    /// becomes dependent and will not execute until the provided receiver is finished.
+    /// becomes dependent and will not execute until the receiver is finished.
     /// Returns itself so that the operation can be modified or queued immediately after:
     /// `operationA.before(operationB).queue()`
     func before(dependent: NSOperation) -> Self
