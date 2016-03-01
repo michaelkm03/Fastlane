@@ -1,45 +1,51 @@
 //
-//  DeleteSequenceAlertOperation.swift
+//  ShowBlockUserConfirmationAlertOperation.swift
 //  victorious
 //
-//  Created by Vincent Ho on 2/26/16.
+//  Created by Sharif Ahmed on 2/29/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class DeleteSequenceAlertOperation: NavigationOperation, ActionConfirmationOperation {
+class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfirmationOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
+    private let shouldUnblockUser: Bool
     
     // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
+        self.shouldUnblockUser = shouldUnblockUser
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
         
-        let alertController = UIAlertController(title: NSLocalizedString("AreYouSureYouWantToDelete", comment: ""),
+        let alertController = UIAlertController(title: nil,
             message: nil,
-            preferredStyle: UIAlertControllerStyle.ActionSheet)
+            preferredStyle: .ActionSheet)
         
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
+            UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "Cancel Button"),
                 style: .Cancel,
                 handler: { action in
                     self.finishedExecuting()
                 }
             )
         )
+        
+        let title = shouldUnblockUser ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("DeleteButton", comment: ""),
+            UIAlertAction(
+                title: title,
                 style: .Destructive,
                 handler: { action in
                     self.didConfirmAction = true
@@ -47,6 +53,7 @@ class DeleteSequenceAlertOperation: NavigationOperation, ActionConfirmationOpera
                 }
             )
         )
+        
         originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

@@ -8,59 +8,42 @@
 
 import UIKit
 
-class FlagSequenceAlertOperation: NavigationOperation {
+class FlagSequenceAlertOperation: NavigationOperation, ActionConfirmationOperation {
 
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
-    private let sequence: VSequence
-    var didFlagSequence: Bool
-    var didCancelFlag: Bool
-    var errorCode: Int
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    // MARK: - ActionConfirmationOperation
+    
+    var didConfirmAction: Bool = false
+    
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        self.sequence = sequence
-        self.didFlagSequence = false
-        self.didCancelFlag = false
-        self.errorCode = 0
-        super.init()
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
         
-        let alertController = UIAlertController(title: nil,
-                                                message: nil,
-                                                preferredStyle: UIAlertControllerStyle.ActionSheet)
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
-            style: UIAlertActionStyle.Cancel,
-            handler: { action in
-                self.didCancelFlag = true
-                self.finishedExecuting()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
-        style: UIAlertActionStyle.Destructive) { action in
-            
-            FlagSequenceOperation(sequenceID: self.sequence.remoteId ).queue() { results, error in
-                self.didFlagSequence = error == nil
-                
-                if let error = error {
-                    let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-                    self.errorCode == error.code
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(
+            UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+                style: .Cancel,
+                handler: { action in
+                    self.finishedExecuting()
                 }
-                else {
-                    VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+            )
+        )
+        alertController.addAction(
+            UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
+                style: .Destructive,
+                handler: { action in
+                    self.didConfirmAction = true
+                    self.finishedExecuting()
                 }
-                self.finishedExecuting()
-            }
-            
-        })
-        
+            )
+        )
         originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

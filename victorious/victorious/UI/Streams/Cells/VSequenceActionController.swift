@@ -20,13 +20,6 @@ import Foundation
     
     /// Sets up the SequenceActionController with the dependency manager and the view controller on
     /// which it should be presented.
-    ///
-    /// - parameter dependencyManager: The dependency manager. Should not be nil.
-    /// - parameter originViewController: The view controller on which the Action Sheet should displayed.
-    /// Should not be nil.
-    /// - parameter delegate: The delegate conforming to protocol "VSequenceActionControllerDelegate" 
-    /// to handle the deletion/flagging callbacks
-    
     init(dependencyManager: VDependencyManager, originViewController: UIViewController, delegate: VSequenceActionControllerDelegate) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
@@ -35,12 +28,6 @@ import Foundation
     }
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
-    ///
-    /// - parameter sequence: The sequence whose available actions we want to display on the action sheet.
-    /// Should not be nil.
-    /// - parameter streamId: The streamID.
-    /// - parameter completion: Completion block to be called after the action sheet has been presented.
-    
     func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
         
@@ -77,11 +64,10 @@ import Foundation
     
     // MARK: - Share
     
-    func shareSequence(sequence: VSequence, node: VNode, streamID: String?, completion: (()->())? ) {
+    func shareSequence(sequence: VSequence, streamID: String?, completion: (()->())? ) {
         ShowShareSequenceOperation(originViewController: originViewController,
                                    dependencyManager: dependencyManager,
                                    sequence: sequence,
-                                   node: node,
                                    streamID: streamID).queue() {
                                        completion?()
         }
@@ -101,26 +87,37 @@ import Foundation
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
         
-        let flagAlertOperation: FlagSequenceAlertOperation =
-            FlagSequenceAlertOperation(originViewController: originViewController,
-                                         dependencyManager: dependencyManager,
-                                         sequence: sequence)
-        flagAlertOperation.queue() {
-            if flagAlertOperation.didFlagSequence {
-                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+        let operation = FlagSequenceOperation(
+            originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            sequenceID: sequence.remoteId
+        )
+        operation.queue() { (results, error) in
+            completion?( error == nil && !operation.cancelled )
+        }
+    }
+    
+    // MARK: - Block
+
+    /// Presents an Alert Controller to confirm blocking of a user. Upon
+    /// confirmation, blocks the user and calls the completion block with a
+    /// Boolean representing success/failure of the operation.
+    func blockUser(user: VUser, completion: ((Bool)->())? ) {
+        
+        let operation = ToggleBlockUserOperation(
+            originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            userID: user.remoteId.integerValue
+        )
+        operation.queue() { results, error in
+            guard !operation.cancelled else {
+                return
             }
-            else if flagAlertOperation.didCancelFlag {
-                completion?(false)
-            }
-            else if flagAlertOperation.errorCode == Int(kVCommentAlreadyFlaggedError) {
-                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-            }
-            else {
-                self.originViewController.v_showErrorDefaultError()
-                completion?(false)
+            let didBlockUser = user.isBlockedByMainUser.boolValue
+            if didBlockUser {
+                self.originViewController.v_showBlockedUserAlert(completion: completion)
             }
         }
-
     }
     
     // MARK: - Delete
@@ -128,51 +125,39 @@ import Foundation
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let deleteAlertOperation: DeleteSequenceAlertOperation =
-            DeleteSequenceAlertOperation(originViewController: originViewController,
-                                         dependencyManager: dependencyManager,
-                                         sequence: sequence)
-        deleteAlertOperation.queue() {
-            completion?(deleteAlertOperation.didDeleteSequence)
+        let operation = DeleteSequenceOperation(originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            sequenceID: sequence.remoteId)
+        operation.queue() { (results, error) in
+            completion?( !operation.cancelled )
         }
     }
     
     // MARK: - Like
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
         ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
-            if sequence.isLikedByMainUser.boolValue {
-                completion?( error == nil )
-            }
-            else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
-                self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
-                    VLikeButtonCoachmarkIdentifier,
-                    inViewController:self.originViewController,
-                    atLocation:triggeringView.convertRect(
-                        triggeringView.bounds,
-                        toView:self.originViewController.view
-                    )
+            
+            self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
+                VLikeButtonCoachmarkIdentifier,
+                inViewController:self.originViewController,
+                atLocation:triggeringView.convertRect(
+                    triggeringView.bounds,
+                    toView:self.originViewController.view
                 )
-                completion?( error == nil )
-            }
+            )
+            
+            completion?( error == nil )
         }
     }
     
     // MARK: - Repost
     
-    func repostNode(node: VNode) {
-        repostNode(node, completion: nil)
+    func repostSequence(sequence: VSequence) {
+        repostSequence(sequence, completion: nil)
     }
     
-    func repostNode(node: VNode, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { results, error in
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
-                
-            } else {
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
-            }
+    func repostSequence(sequence: VSequence, completion: ((Bool) -> Void)?) {
+        RepostSequenceOperation(sequenceID: sequence.remoteId).queue { results, error in
             completion?( error == nil )
         }
     }
@@ -226,6 +211,10 @@ import Foundation
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
+        if !sequence.user.isCurrentUser() {
+            actionItems.append(blockUserActionItem(forSequence: sequence))
+        }
+        
         if AgeGate.isAnonymousUser() {
             actionItems = AgeGate.filterMoreButtonItems(actionItems)
         }
@@ -238,15 +227,32 @@ import Foundation
             actionIcon: UIImage(named: "icon_flag"),
             detailText: "")
         flagItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.flagSequence(sequence, completion: { success in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.flagSequence(sequence) { success in
                     if success {
-                        self.delegate?.sequenceActionControllerDidFlagContent?()
+                        self.originViewController.v_showFlaggedContentAlert() { success in
+                            self.delegate?.sequenceActionControllerDidFlagSequence?(sequence)
+                        }
                     }
-                })
-            })
+                }
+            }
         }
         return flagItem
+    }
+    
+    private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
+        let title = sequence.user.isBlockedByMainUser.boolValue ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let blockItem = VActionItem.defaultActionItemWithTitle(title,
+            actionIcon: UIImage(named: "action_sheet_block"),
+            detailText: "")
+        blockItem.selectionHandler = { item in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.blockUser(sequence.user) { success in
+                    self.delegate?.sequenceActionControllerDidBlockUser?(sequence.user)
+                }
+            }
+        }
+        return blockItem
     }
     
     private func deleteActionItem(forSequence sequence: VSequence) -> VActionItem {
@@ -254,13 +260,13 @@ import Foundation
             actionIcon: UIImage(named: "delete-icon"),
             detailText: "")
         deleteItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.deleteSequence(sequence, completion: { success in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.deleteSequence(sequence) { success in
                     if success {
-                        self.delegate?.sequenceActionControllerDidDeleteContent?()
+                        self.delegate?.sequenceActionControllerDidDeleteSequence?(sequence)
                     }
-                })
-            })
+                }
+            }
         }
         return deleteItem
     }
@@ -272,7 +278,6 @@ import Foundation
         let shareHandler: (VActionItem)->() = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.shareSequence(sequence,
-                    node: sequence.firstNode(),
                     streamID: streamId,
                     completion: nil)
             })
@@ -294,10 +299,10 @@ import Foundation
             enabled: !hasReposted)
         
         repostItem.selectionHandler = { item in
-            if (!hasReposted) {
+            if !hasReposted {
                 loadingBlock(item)
-                self.repostNode(sequence.firstNode())  { didSucceed in
-                    if (didSucceed) {
+                self.repostSequence(sequence) { didSucceed in
+                    if didSucceed {
                         sequence.hasReposted = 1
                     }
                     self.originViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -316,23 +321,22 @@ import Foundation
     }
     
     private func descriptionActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let descriptionItem = VActionItem.descriptionActionItemWithText(sequence.name ?? "", hashTagSelectionHandler: { hashtag in
+        let descriptionItem = VActionItem.descriptionActionItemWithText(sequence.name ?? "") { hashtag in
             let vc: VHashtagStreamCollectionViewController = self.dependencyManager.hashtagStreamWithHashtag(hashtag)
             self.originViewController.dismissViewControllerAnimated(true) {
                 self.originViewController.navigationController?.pushViewController(vc, animated: true)
             }
-        })
+        }
         return descriptionItem
     }
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
         let userItem = VActionItem.userActionItemUserWithTitle(sequence.user.name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
+            self.originViewController.dismissViewControllerAnimated(true) {
                 self.showProfileWithRemoteId(sequence.user.remoteId.integerValue)
-            })
+            }
         }
-        
         return userItem
     }
     
@@ -341,33 +345,21 @@ import Foundation
             actionIcon: UIImage(named: "D_memeIcon"),
             detailText: "\(sequence.memeCount)")
         
-        setupRemixActionItem(memeItem,
-            block: {
-                self.showRemixWithSequence(sequence)
-            },
-            dismissCompletionBlock: {
-                self.showMemersWithSequence(sequence)
-        })
-        
-        return memeItem
-    }
-    
-    private func setupRemixActionItem(remixItem: VActionItem, block: ()->(), dismissCompletionBlock: ()->()) {
-        remixItem.selectionHandler = { item in
+        memeItem.selectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectRemix)
             
             self.originViewController.dismissViewControllerAnimated(true) {
-                block()
+                self.showRemixWithSequence(sequence)
             }
         }
         
-        remixItem.detailSelectionHandler = { item in
+        memeItem.detailSelectionHandler = { item in
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShowRemixes)
             
             self.originViewController.dismissViewControllerAnimated(true) {
-                dismissCompletionBlock()
+                self.showMemersWithSequence(sequence)
             }
         }
+        return memeItem
     }
-    
 }

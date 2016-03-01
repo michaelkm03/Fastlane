@@ -10,6 +10,8 @@ import Foundation
 
 class NavigationOperation: NSOperation, Queueable {
     
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    
     private var _executing = false
     private var _finished = false
     
