@@ -93,9 +93,7 @@ import Foundation
             sequenceID: sequence.remoteId
         )
         operation.queue() { (results, error) in
-            guard !operation.cancelled else {
-                return
-            }
+            completion?( error == nil && !operation.cancelled )
         }
     }
     
@@ -229,13 +227,15 @@ import Foundation
             actionIcon: UIImage(named: "icon_flag"),
             detailText: "")
         flagItem.selectionHandler = { item in
-            self.originViewController.dismissViewControllerAnimated(true, completion: {
-                self.flagSequence(sequence, completion: { success in
+            self.originViewController.dismissViewControllerAnimated(true) {
+                self.flagSequence(sequence) { success in
                     if success {
-                        self.delegate?.sequenceActionControllerDidFlagSequence?(sequence)
+                        self.originViewController.v_showFlaggedContentAlert() { success in
+                            self.delegate?.sequenceActionControllerDidFlagSequence?(sequence)
+                        }
                     }
-                })
-            })
+                }
+            }
         }
         return flagItem
     }
