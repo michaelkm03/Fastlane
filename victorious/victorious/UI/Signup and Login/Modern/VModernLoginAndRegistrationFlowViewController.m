@@ -334,6 +334,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     switch ( error.code )
     {
         case VSocialLoginErrorCancelled:
+            [self dismissLoadingScreen];
             break;
             
         case VSocialLoginErrorDenied:

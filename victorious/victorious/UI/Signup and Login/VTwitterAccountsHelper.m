@@ -125,12 +125,12 @@
                                                    cell.textLabel.text = account.username;
                                                    cell.detailTextLabel.text = account.accountDescription;
                                                }
-                                                                                                        completion:^(id selectedItem)
+                                                                                                        completion:^(id selectedItem, NSError *error)
                                                {
                                                    [viewControllerToPresentOnIfNeeded dismissViewControllerAnimated:YES
                                                                                                          completion:^
                                                     {
-                                                        completion(selectedItem, nil);
+                                                        completion(selectedItem, error);
                                                     }];
                                                }];
         selectorVC.navigationItem.prompt = NSLocalizedString(@"SelectTwitter", @"");

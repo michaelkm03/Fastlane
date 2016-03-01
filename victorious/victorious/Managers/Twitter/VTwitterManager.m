@@ -67,7 +67,7 @@ NSString * const VSocialLoginErrorDomain = @"twitterManagerError";
              
              if ( completionBlock != nil )
              {
-                 completionBlock(NO, [NSError errorWithDomain:VSocialLoginErrorDomain code:VSocialLoginErrorUnavailable userInfo:nil]);
+                 completionBlock(NO, error);
              }
              
              return;
