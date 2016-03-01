@@ -48,7 +48,7 @@ class TestRequestExecutor: RequestExecutorType {
                 dispatch_semaphore_signal( executeSemphore )
             }
             
-        } else if let result = Void() as? T.ResultType ?? self.result as? T.ResultType {
+        } else if let result = (Void() as? T.ResultType) ?? (self.result as? T.ResultType) {
             if let onComplete = onComplete {
                 onComplete( result ) {
                     dispatch_semaphore_signal( executeSemphore )
