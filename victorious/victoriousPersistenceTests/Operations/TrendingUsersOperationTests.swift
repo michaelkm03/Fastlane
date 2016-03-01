@@ -17,32 +17,30 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
     override func setUp() {
         super.setUp()
         operation = TrendingUsersOperation()
-        operation.requestExecutor = testRequestExecutor
-    }
-
-    func testRequestExecution() {
-        operation.main()
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 
     func testResults() {
         let userID = 20160118
         let user = User(userID: userID)
-        let expectation = expectationWithDescription("TrendingUsersOperationOnCopmlete")
-
-        operation.onComplete([user]) {
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
-            XCTAssertEqual(self.operation.results?.count, 1)
+        
+        testRequestExecutor = TestRequestExecutor(result:[user])
+        operation.requestExecutor = testRequestExecutor
+        operation.persistentStore = testStore
+        
+        let expectation = expectationWithDescription("TrendingUsersOperation")
+        operation.queue() { (results, error) in
+            XCTAssertNil(error)
+            XCTAssertEqual(results?.count, 1)
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             
-            guard let firstResult = self.operation.results?.first as? VUser else {
-                XCTFail("first object in results should be an instance of HashtagSearchResultObject")
+            guard let loadedUser = results?.first as? VUser else {
+                XCTFail("first object in results should be an instance of VUser")
                 return
             }
             
-            XCTAssertEqual(firstResult.remoteId.integerValue, userID)
+            XCTAssertEqual(loadedUser.remoteId?.integerValue, userID)
+            expectation.fulfill()
         }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
 }

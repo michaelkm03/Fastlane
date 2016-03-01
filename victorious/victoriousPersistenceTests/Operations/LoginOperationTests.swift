@@ -18,18 +18,20 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         }
         
         let operation = LoginOperation(email: email, password: "password")
+        operation.persistentStore = testStore
         
-        operation.persistentStore = TestPersistentStore()
-        operation.requestExecutor = TestRequestExecutor()
+        XCTAssertFalse( operation.requiresAuthorization )
         
         let token = "ABCDEFGabcdefg"
         let response = AccountCreateResponse(token: token, user: user)
+        operation.requestExecutor = TestRequestExecutor(result: response)
         
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
-        operation.onComplete(response) {
+        operation.queue() { (results, error) in
             
+            XCTAssertNil( error )
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
-            XCTAssertEqual( dependentOperations.count, 1 );
+            XCTAssertEqual( dependentOperations.count, 1 )
             guard let successOperation = dependentOperations.first as? LoginSuccessOperation else {
                 XCTFail("Expecting an operaiton to be queued after onComplete is called.")
                 return
@@ -39,7 +41,15 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        
+        // Don't allow any of the operation's supporting operations to execute
+        operation.v_defaultQueue.suspended = true
+        
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            
+            // But make sure they've been queued as expected
+            XCTAssertEqual( operation.v_defaultQueue.operations.flatMap { $0 as? LoginSuccessOperation }.count, 1)
+        }
     }
     
     private func loadUser() -> User? {

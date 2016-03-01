@@ -8,48 +8,41 @@
 
 import XCTest
 @testable import victorious
-import Nocilla
 
-class FetcherOperationTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        LSNocilla.sharedInstance().start()
-    }
+class FetcherOperationTests: BaseFetcherOperationTestCase {
     
-    override func tearDown() {
-        super.tearDown()
-        LSNocilla.sharedInstance().clearStubs()
-        LSNocilla.sharedInstance().stop()
-    }
-    
-    func testOnCompletion() {
-        let expectation = self.expectationWithDescription("testOnCompletion")
-        let requestOperation = MockFetcherOperation(request: MockRequest())
-        let url = requestOperation.request.urlRequest.URL?.absoluteString
+    func testSuccess() {
+        let operation = MockFetcherOperation()
+        testRequestExecutor = TestRequestExecutor(result: true)
+        operation.requestExecutor = testRequestExecutor
+        XCTAssert( operation.requiresAuthorization )
         
-        stubRequest("GET", url)
-        
-        requestOperation.queueOn(requestOperation.v_defaultQueue) { (results, error) in
+        let expectation = expectationWithDescription("MockFetcherOperation")
+        operation.queue() { (results, error) in
             XCTAssertNil(error)
+            XCTAssertEqual(results?.count, 2)
+            XCTAssert( NSThread.isMainThread() )
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
-    func testOnError() {
-        let expectation = self.expectationWithDescription("testOnError")
-        let errorOperation = MockErrorFetcherOperation(request: MockErrorRequest())
-        let url = errorOperation.request.urlRequest.URL?.absoluteString
+    func testError() {
+        let operation = MockFetcherOperation()
+        let expectedError = NSError(domain: "Really Bad Error", code: 99, userInfo: nil)
+        testRequestExecutor = TestRequestExecutor(error: expectedError)
+        operation.requestExecutor = testRequestExecutor
+        XCTAssert( operation.requiresAuthorization )
         
-        stubRequest("GET", url)
-        
-        errorOperation.queueOn(errorOperation.v_defaultQueue) { (results, error) in
-            XCTAssertNotNil(error)
+        let expectation = expectationWithDescription("MockFetcherOperation")
+        operation.queue() { (results, error) in
+            XCTAssertEqual(expectedError, error)
+            XCTAssertNil(results)
+            XCTAssert( NSThread.isMainThread() )
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

@@ -33,14 +33,14 @@ class UnblockUserRemoteOperationTests: BaseFetcherOperationTestCase {
     
     func testRemoteOperationTracking() {
         
-        operation.main()
+        let expectation = expectationWithDescription("UnblockUserRemoteOperation")
+        operation.queue() { (results, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
         
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidBlockUser, testTrackingManager.trackEventCalls.first?.eventName)
-        
-        operation.main()
-        
-        XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventBlockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
+        XCTAssertEqual(VTrackingEventUserDidUnblockUser, testTrackingManager.trackEventCalls.first?.eventName)
     }
 }
