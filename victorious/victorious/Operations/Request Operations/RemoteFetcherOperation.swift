@@ -28,17 +28,17 @@ class RemoteFetcherOperation: FetcherOperation {
         }
     }
     
-    private func handleError(error: NSError) -> NSError? {
-        for handler in errorHandlers {
-            if handler.handleError(error) {
-                return nil
-            }
-        }
-        return error
-    }
-    
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
+    
+    override var error: NSError? {
+        set {
+            super.error = newValue
+        }
+        get {
+            return requestExecutor.error ?? super.error
+        }
+    }
     
     /// Allows subclasses to override to disabled unauthorized (401) error handling.
     /// Otherwise, these errors are handled by default.

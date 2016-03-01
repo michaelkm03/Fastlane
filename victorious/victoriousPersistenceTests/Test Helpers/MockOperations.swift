@@ -28,7 +28,7 @@ class MockErrorHandler: NSObject, RequestErrorHandler {
     }
 }
 
-class MockFetcherOperation: FetcherOperation, RequestOperation {
+class MockFetcherOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: MockRequest!
     
@@ -41,7 +41,7 @@ class MockFetcherOperation: FetcherOperation, RequestOperation {
     }
 }
 
-class MockErrorFetcherOperation: FetcherOperation, RequestOperation {
+class MockErrorFetcherOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: MockErrorRequest!
     

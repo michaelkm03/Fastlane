@@ -68,6 +68,30 @@ class MainRequestExecutorTests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
+    func testCancelled() {
+        let expectation = self.expectationWithDescription("testError")
+        let request = MockRequest()
+        let url = request.urlRequest.URL?.absoluteString
+        
+        stubRequest("GET", url)
+        
+        self.requestExecutor.cancelled = true
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+            self.requestExecutor.executeRequest( request,
+                onComplete: { (result, completion:()->() ) in
+                    XCTFail( "Should not be called" )
+                },
+                onError: { (error, completion:()->() ) in
+                    completion()
+                    XCTAssertEqual( error.code, kVCanceledError )
+                    XCTAssertEqual( error.domain, kVictoriousErrorDomain )
+                    expectation.fulfill()
+                }
+            )
+        }
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
     func testErrorWithErrorHandlers() {
         let expectation = self.expectationWithDescription("testError")
         let request = MockErrorRequest(code: 999)
