@@ -14,11 +14,10 @@ class ShowLikersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
@@ -36,7 +35,6 @@ class ShowLikersOperation: NavigationOperation {
         
         self.finishedExecuting()
     }
-    
 }
 
 
@@ -46,11 +44,10 @@ class ShowMemersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
@@ -63,7 +60,6 @@ class ShowMemersOperation: NavigationOperation {
         
         self.finishedExecuting()
     }
-    
 }
 
 
@@ -73,11 +69,10 @@ class ShowRepostersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
@@ -90,5 +85,4 @@ class ShowRepostersOperation: NavigationOperation {
         
         self.finishedExecuting()
     }
-    
 }

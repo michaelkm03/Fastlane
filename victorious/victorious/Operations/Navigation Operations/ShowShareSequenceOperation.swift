@@ -13,33 +13,33 @@ class ShowShareSequenceOperation: NavigationOperation {
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let sequence: VSequence
-    private let node: VNode
     private let streamID: String?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, node: VNode, streamID: String?) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence, streamID: String?) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        self.node = node
         self.streamID = streamID
-        super.init()
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
         
-        
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShare)
         let appInfo: VAppInfo = VAppInfo(dependencyManager: dependencyManager)
         
         let fbActivity: VFacebookActivity = VFacebookActivity()
-        let activityViewController: UIActivityViewController = UIActivityViewController(activityItems:
-            [
-                sequence ?? NSNull(),
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: [
+                sequence,
                 sequence.textForSharing(),
-                NSURL(string: node.shareUrlPath) ?? NSNull()
-            ], applicationActivities:[fbActivity])
+                sequence.shareURL() ?? NSNull()
+            ],
+            applicationActivities:[
+                fbActivity
+            ]
+        )
         
         let creatorName = appInfo.appName
         let emailSubject = String(format: NSLocalizedString("EmailShareSubjectFormat", comment: ""), creatorName)

@@ -77,11 +77,10 @@ import Foundation
     
     // MARK: - Share
     
-    func shareSequence(sequence: VSequence, node: VNode, streamID: String?, completion: (()->())? ) {
+    func shareSequence(sequence: VSequence, streamID: String?, completion: (()->())? ) {
         ShowShareSequenceOperation(originViewController: originViewController,
                                    dependencyManager: dependencyManager,
                                    sequence: sequence,
-                                   node: node,
                                    streamID: streamID).queue() {
                                        completion?()
         }
@@ -101,26 +100,17 @@ import Foundation
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
         
-        let flagAlertOperation: FlagSequenceAlertOperation =
-            FlagSequenceAlertOperation(originViewController: originViewController,
-                                         dependencyManager: dependencyManager,
-                                         sequence: sequence)
-        flagAlertOperation.queue() {
-            if flagAlertOperation.didFlagSequence {
-                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
+        let operation = FlagSequenceOperation(
+            originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            sequenceID: sequence.remoteId
+        )
+        operation.queue() { (results, error) in
+            guard !operation.cancelled else {
+                return
             }
-            else if flagAlertOperation.didCancelFlag {
-                completion?(false)
-            }
-            else if flagAlertOperation.errorCode == Int(kVCommentAlreadyFlaggedError) {
-                self.originViewController.v_showFlaggedConversationAlert(completion: completion)
-            }
-            else {
-                self.originViewController.v_showErrorDefaultError()
-                completion?(false)
-            }
+            self.originViewController.v_showFlaggedConversationAlert(completion: completion)
         }
-
     }
     
     // MARK: - Delete
@@ -128,12 +118,11 @@ import Foundation
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let deleteAlertOperation: DeleteSequenceAlertOperation =
-            DeleteSequenceAlertOperation(originViewController: originViewController,
-                                         dependencyManager: dependencyManager,
-                                         sequence: sequence)
-        deleteAlertOperation.queue() {
-            completion?(deleteAlertOperation.didDeleteSequence)
+        let operation = DeleteSequenceOperation(originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            sequenceID: sequence.remoteId)
+        operation.queue() { (results, error) in
+            completion?( !operation.cancelled )
         }
     }
     
@@ -272,7 +261,6 @@ import Foundation
         let shareHandler: (VActionItem)->() = { item in
             self.originViewController.dismissViewControllerAnimated(true, completion: {
                 self.shareSequence(sequence,
-                    node: sequence.firstNode(),
                     streamID: streamId,
                     completion: nil)
             })

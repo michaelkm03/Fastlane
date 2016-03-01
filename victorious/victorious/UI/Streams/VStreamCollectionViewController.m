@@ -728,7 +728,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController shareSequence:sequence
-                                            node:[sequence firstNode]
                                         streamID:self.streamDataSource.stream.remoteId
                                       completion:nil];
 }

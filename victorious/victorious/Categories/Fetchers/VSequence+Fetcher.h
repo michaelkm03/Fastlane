@@ -69,4 +69,6 @@
  */
 - (NSURL *)inStreamPreviewImageURL;
 
+- (NSURL *)shareURL;
+
 @end
