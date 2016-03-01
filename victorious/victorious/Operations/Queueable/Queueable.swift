@@ -22,19 +22,18 @@ extension NSOperation {
 /// methods for adding it to an NSOperationQueue.
 protocol Queueable {
     
-    /// Conformers are requiest to define a completion block type that is
+    /// Conformers are required to define a completion block type that is
     /// specific to the actions it performs.  This allows calling code to have
     /// meaningful completion blocks that pass back results or other data.
     typealias CompletionBlockType
     
     /// Conformers must handle executing their own completion block in order
-    /// to provide data to a parameterzied completion block.
+    /// to provide data typed to its signature.
     func executeCompletionBlock(completionBlock: CompletionBlockType)
     
     /// Adds the operation to the provided queue and sets up the typed completion
     /// block to be called from the standard ()->() block of NSOperation.
     func queueOn(queue: NSOperationQueue, completion: CompletionBlockType?)
-    
     
     /// Adds the operation to `v_defaultQueue` and sets up the typed completion
     /// block to be called from the standard ()->() block of NSOperation.
@@ -45,26 +44,26 @@ protocol Queueable {
 }
 
 /// Defines an object that offers a little twist on NSOperation's dependency API
-/// with the purpose of composing operations into linear chain structures (instead of
-/// a branched tree structure).
+/// with the purpose of composing operations into linear chain structures instead of
+/// a branched tree structure.
 protocol Chainable {
     
-    /// Add the provided operation as a dependency to the receiver, i.e. the operation
-    /// becomes dependent and will not execute until the receiver is finished.  Returns
+    /// Add the provided operation as a dependency to the receiver, i.e. the receiver
+    /// becomes dependent and will not execute until the operation is finished.  Returns
     /// itself so that the operation can be modified or queued immediately after:
-    /// `operationB.after(operationB).queue()
+    /// `operationB.after(operationB).queue()`
     func after(dependency: NSOperation) -> Self
     
-    /// Add the receiver operation as a dependency to the provided operation, i.e.
-    /// the receiver becomes dependent and will not execute until the provided operation
-    /// is finished.  Returns itself so that the operation can be modified or queued immediately
-    /// after: `operationA.before(operationB).queue()
+    /// Add the receiver as a dependency to the provided operation, i.e. the operation
+    /// becomes dependent and will not execute until the receiver is finished.
+    /// Returns itself so that the operation can be modified or queued immediately after:
+    /// `operationA.before(operationB).queue()`
     func before(dependent: NSOperation) -> Self
     
     /// Add the provided operation as a dependency to the receiver, i.e. the operation
     /// becomes dependent and will not execute until the receiver is finished.  The receiver
     /// also takes on the completion block and any dependent operations in operation's
-    ///  `v_defaultQueue`, essentially "rechaining" the order of execution.
+    /// `v_defaultQueue`, essentially "rechaining" the order of execution.
     func rechainAfter(dependency: NSOperation) -> Self
     
     /// Add the provided operation as a dependency to the receiver, i.e. the operation
