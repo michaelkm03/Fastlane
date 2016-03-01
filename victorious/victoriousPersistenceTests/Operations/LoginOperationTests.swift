@@ -17,16 +17,16 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             return
         }
         
-        let operation = LoginOperation(email: email, password: "password")
-        
-        operation.persistentStore = TestPersistentStore()
-        operation.requestExecutor = TestRequestExecutor()
-        
         let token = "ABCDEFGabcdefg"
         let response = AccountCreateResponse(token: token, user: user)
         
+        let operation = LoginOperation(email: email, password: "password")
+        
+        operation.persistentStore = TestPersistentStore()
+        operation.requestExecutor = TestRequestExecutor(result: response)
+        
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
-        operation.onComplete(response) {
+        operation.queueOn(testQueue) { (results, error) in
             
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
             XCTAssertEqual( dependentOperations.count, 1 );
