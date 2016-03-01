@@ -19,8 +19,8 @@ class UnblockUserOperation: FetcherOperation {
         self.userID = userID
         super.init()
         
-        let remoteOperation = UnblockUserRemoteOperation(userID: userID)
-        remoteOperation.queue() { result, error in
+        UnblockUserRemoteOperation(userID: userID).queue() { result, error in
+            
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 self.trackingManager.trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
@@ -51,7 +51,7 @@ class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
     let request: UnblockUserRequest!
     
     init( userID: Int ) {
-        self.request = UnblockUserRequest(userID: userID)
+        request = UnblockUserRequest(userID: userID)
     }
     
     override func main() {

@@ -14,7 +14,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     var operation: BlockUserOperation!
     var currentUser: VUser!
     var objectUser: VUser!
-    var objectUserSequences = [VSequence]()
     
     override func setUp() {
         super.setUp()
@@ -25,19 +24,10 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         for index in 0..<5 {
             let sequence = persistentStoreHelper.createSequence(remoteId: index)
             sequence.user = objectUser
-            objectUserSequences.append(sequence)
         }
         
         currentUser.setAsCurrentUser()
-        objectUser.isFollowedByMainUser = true
-        objectUser.numberOfFollowers = 1
-        currentUser.numberOfFollowing = 1
         
-        let uniqueElements = [ "subjectUser" : currentUser, "objectUser" : objectUser ]
-        let followedUser: VFollowedUser = testStore.mainContext.v_findOrCreateObject( uniqueElements )
-        followedUser.objectUser = objectUser
-        followedUser.subjectUser = currentUser
-        followedUser.displayOrder = -1
         testStore.mainContext.v_save()
         
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
@@ -50,7 +40,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         var sequences = context.v_findObjectsWithEntityName(VSequence.v_entityName(), queryDictionary: ["user.remoteId" : objectUser.remoteId.integerValue])
         
         XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
-        XCTAssertNotEqual(objectUserSequences.count, 0)
+        XCTAssertNotEqual(sequences.count, 0)
         
         operation.main()
         
@@ -61,6 +51,10 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
         XCTAssertEqual(VTrackingEventUserDidBlockUser, testTrackingManager.trackEventCalls.first?.eventName)
+        
+        operation.main()
+        
+        XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
+        XCTAssertEqual(VTrackingEventBlockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
     }
-    
 }

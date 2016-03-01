@@ -19,8 +19,7 @@ class BlockUserOperation: FetcherOperation {
         self.userID = userID
         super.init()
         
-        let remoteOperation = BlockUserRemoteOperation(userID: userID)
-        remoteOperation.after(self).queue() { result, error in
+        BlockUserRemoteOperation(userID: userID).queue() { result, error in
             
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
@@ -68,7 +67,7 @@ class BlockUserRemoteOperation: FetcherOperation, RequestOperation {
     let request: BlockUserRequest!
     
     init( userID: Int ) {
-        self.request = BlockUserRequest(userID: userID)
+        request = BlockUserRequest(userID: userID)
     }
     
     override func main() {

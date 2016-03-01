@@ -1643,6 +1643,7 @@
 		DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */; };
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
+		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -4309,6 +4310,7 @@
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
+		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -7467,6 +7469,7 @@
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
 				67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */,
 				6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */,
+				F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */,
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
@@ -10933,6 +10936,7 @@
 				A7B0A63A1C347A01008B875C /* CoreDataPathHelper.swift in Sources */,
 				62575F001C54CD9400B49CB0 /* VSequenceTests.swift in Sources */,
 				F048B01B1C84FDA7004F516A /* BlockUserOperationTests.swift in Sources */,
+				F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */,
 				6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */,
 				67AB78211C40823800BA00FE /* MockRequests.swift in Sources */,
 				674B66F01C3F0A1C00938EB5 /* PasswordResetOperationTests.swift in Sources */,
