@@ -549,6 +549,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          {
              [welf continueRegistrationFlow];
          }
+         else
+         {
+             [welf v_showErrorDefaultError];
+         }
      }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];

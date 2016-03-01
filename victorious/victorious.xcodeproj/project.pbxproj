@@ -958,7 +958,6 @@
 		A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */; };
 		A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */; };
 		A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */; };
-		A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */; };
 		A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */; };
 		A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */; };
 		A76AEAE11C038E0000E8A26F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */; };
@@ -1516,7 +1515,6 @@
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */; };
 		D858E0D31B1FC32300437DDE /* VModernEnterNameViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */; };
-		D85B706B1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */; };
 		D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */; };
 		D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D85B70391B0EAF3F0038CA5B /* FindFriendsTableView.xib */; };
 		D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70401B0EAF3F0038CA5B /* VFindContactsTableViewController.m */; };
@@ -1529,7 +1527,6 @@
 		D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70531B0EAF3F0038CA5B /* VTabBarViewController.m */; };
 		D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70551B0EAF3F0038CA5B /* VTabInfo.m */; };
 		D85B707F1B0EAF3F0038CA5B /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B705E1B0EAF3F0038CA5B /* VRegistrationModel.m */; };
-		D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */; };
 		D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */; };
 		D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */; };
 		D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */; };
@@ -2026,7 +2023,6 @@
 		0340337A1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VModernEnterNameViewController.strings"; sourceTree = "<group>"; };
 		0340337B1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		0340337C1BD085A0000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VNoContentView.strings"; sourceTree = "<group>"; };
-		0340337D1BD085A0000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VProfileCreateViewController.strings"; sourceTree = "<group>"; };
 		034033831BD085A1000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VFindFriendsViewController.strings"; sourceTree = "<group>"; };
 		034033841BD085A1000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Workspace.strings"; sourceTree = "<group>"; };
 		034033851BD085A1000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VModernLandingViewController.strings"; sourceTree = "<group>"; };
@@ -2121,7 +2117,6 @@
 		03669B6C1B632D52003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03669B6D1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		03669B6E1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		03669B6F1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		03669B701B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		03669B711B632D54003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/settings.strings; sourceTree = "<group>"; };
 		03669B721B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2140,7 +2135,6 @@
 		03669B8D1B6332D7003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		03669B8E1B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03669B8F1B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		03669B901B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		03669B911B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		03669B921B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/settings.strings; sourceTree = "<group>"; };
 		03669B931B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2283,7 +2277,6 @@
 		038A6B1D1B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
 		038A6B1E1B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
 		038A6B1F1B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		038A6B201B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		038A6B221B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Workspace.strings; sourceTree = "<group>"; };
 		038A6B231B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		038A6B241B23C671004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2455,7 +2448,6 @@
 		03F2F75A1B55828E00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03F2F75B1B55828E00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		03F2F75C1B55828E00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Workspace.strings; sourceTree = "<group>"; };
-		03F2F75D1B55828F00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		03F2F75E1B55828F00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		03F2F75F1B55829000F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/settings.strings; sourceTree = "<group>"; };
 		03F2F7601B55829000F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3297,7 +3289,6 @@
 		A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchOperation.swift; sourceTree = "<group>"; };
 		A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileEditViewController.swift; sourceTree = "<group>"; };
 		A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VChangePasswordViewController.swift; sourceTree = "<group>"; };
-		A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileCreateViewController.swift; sourceTree = "<group>"; };
 		A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequestBodyWriter.swift; sourceTree = "<group>"; };
 		A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
@@ -4054,7 +4045,6 @@
 		D858E0D91B1FC32700437DDE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0DB1B1FC32900437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0DD1B1FC32B00437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
-		D85B702E1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VProfileCreateViewController.storyboard; sourceTree = "<group>"; };
 		D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateBackgroundView.h; sourceTree = "<group>"; };
 		D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateBackgroundView.m; sourceTree = "<group>"; };
 		D85B703A1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
@@ -4078,8 +4068,6 @@
 		D85B705C1B0EAF3F0038CA5B /* VRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistration.h; sourceTree = "<group>"; };
 		D85B705D1B0EAF3F0038CA5B /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistrationModel.h; sourceTree = "<group>"; };
 		D85B705E1B0EAF3F0038CA5B /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRegistrationModel.m; sourceTree = "<group>"; };
-		D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileCreateViewController.h; sourceTree = "<group>"; };
-		D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileCreateViewController.m; sourceTree = "<group>"; };
 		D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginRegistrationFlow.h; sourceTree = "<group>"; };
 		D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLoginAndRegistrationFlowViewController.h; sourceTree = "<group>"; };
 		D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginAndRegistrationFlowViewController.m; sourceTree = "<group>"; };
@@ -4548,9 +4536,6 @@
 		F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VAccessoryScreens.m"; sourceTree = "<group>"; };
 		F0FC98201B6298620098AFCB /* VNavigationTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationTitleView.h; sourceTree = "<group>"; };
 		F0FC98211B6298620098AFCB /* VNavigationTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationTitleView.m; sourceTree = "<group>"; };
-		F0FDB3621BAB2D95002DFE5B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
-		F0FDB3631BAB2D99002DFE5B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
-		F0FDB3641BAB2D9D002DFE5B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VProfileCreateViewController.strings; sourceTree = "<group>"; };
 		F0FDB3661BAB2DCC002DFE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VFindFriendsViewController.storyboard; sourceTree = "<group>"; };
 		F0FDB3691BAB2DD4002DFE5B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VFindFriendsViewController.strings; sourceTree = "<group>"; };
 		F0FDB36B1BAB2DD7002DFE5B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VFindFriendsViewController.strings; sourceTree = "<group>"; };
@@ -8736,10 +8721,6 @@
 				D8D812AE1B14EAA200E93B37 /* VModernResetTokenViewController.h */,
 				D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */,
 				D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */,
-				D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */,
-				A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */,
-				D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */,
-				D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */,
 				D80536221B17B4310049B77A /* VPromptCarouselViewController.h */,
 				D80536231B17B4310049B77A /* VPromptCarouselViewController.m */,
 				D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */,
@@ -9982,7 +9963,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D85B706B1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard in Resources */,
 				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
 				D858E0D31B1FC32300437DDE /* VModernEnterNameViewController.storyboard in Resources */,
@@ -11407,7 +11387,6 @@
 				A7B133621C6178FD006EC4F5 /* UICollectionView+OrderedSet.swift in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
-				A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */,
 				A7EBF5381C2B99F40080C7CF /* UsersFollowedByUserOperation.swift in Sources */,
 				DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */,
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
@@ -12308,22 +12287,6 @@
 				0340337A1BD0859F000A8137 /* zh-Hant */,
 			);
 			name = VModernEnterNameViewController.storyboard;
-			sourceTree = "<group>";
-		};
-		D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D85B702E1B0EAF3F0038CA5B /* Base */,
-				038A6B201B23C671004C8D03 /* pt */,
-				03F2F75D1B55828F00F2EF16 /* ja */,
-				03669B6F1B632D53003C2D8F /* ko */,
-				03669B901B6332D8003C2D8F /* vi */,
-				F0FDB3621BAB2D95002DFE5B /* es */,
-				F0FDB3631BAB2D99002DFE5B /* fr */,
-				F0FDB3641BAB2D9D002DFE5B /* de */,
-				0340337D1BD085A0000A8137 /* zh-Hant */,
-			);
-			name = VProfileCreateViewController.storyboard;
 			sourceTree = "<group>";
 		};
 		D85B70391B0EAF3F0038CA5B /* FindFriendsTableView.xib */ = {
