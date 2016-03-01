@@ -18,7 +18,10 @@ class ToggleLikeSequenceOperation: FetcherOperation {
     }
     
     override func main() {
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
+        
         persistentStore.mainContext.v_performBlockAndWait() { context in
+            
             guard let sequence = context.objectWithID(self.sequenceObjectId) as? VSequence else {
                 return
             }

@@ -22,5 +22,7 @@ class TestRequestExecutor: RequestExecutorType {
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         executeRequestCallCount += 1
+        
+        //TODO: Figure out how to call onComplete or onError here
     }
 }

@@ -24,6 +24,7 @@ public struct User {
     public let location: String?
     public let tagline: String?
     public let fanLoyalty: FanLoyalty?
+    public let isBlockedByMainUser: Bool?
     public let isCreator: Bool?
     public let isDirectMessagingDisabled: Bool?
     public let isFollowedByMainUser: Bool?
@@ -52,6 +53,7 @@ extension User {
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
+        isBlockedByMainUser         = json["is_blocked"].bool ?? false
         isCreator                   = json["isCreator"].bool
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false

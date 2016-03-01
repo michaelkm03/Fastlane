@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
                                                 dependencyManager:(VDependencyManager *)dependencyManager
-                                                         delegate:(id <VSequenceActionControllerDelegate>)delegate;
+                                                         delegate:(nullable id <VSequenceActionControllerDelegate>)delegate;
 
 /**
  *  The viewModel that was passed in to the content viewController's factory method.

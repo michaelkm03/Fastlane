@@ -158,6 +158,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return [self.nodes.array firstObject];
 }
 
+- (NSURL *)shareURL
+{
+    return [NSURL URLWithString:[self firstNode].shareUrlPath];
+}
+
 - (BOOL)isRemoteVideoWithSource:(NSString *)source
 {
     VNode *node = self.firstNode;

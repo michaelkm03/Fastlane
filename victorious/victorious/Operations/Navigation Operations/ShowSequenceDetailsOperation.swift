@@ -14,11 +14,10 @@ class ShowLikersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
@@ -36,7 +35,6 @@ class ShowLikersOperation: NavigationOperation {
         
         self.finishedExecuting()
     }
-    
 }
 
 
@@ -46,24 +44,37 @@ class ShowMemersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
         
-        if let memeStream = dependencyManager.memeStreamForSequence(sequence) {
-            originViewController.navigationController?.pushViewController(memeStream, animated: true)
+        guard let memeStream = dependencyManager.templateValueOfType(VStreamCollectionViewController.self,
+            forKey: "memeStream",
+            withAddedDependencies:[ VSequenceIDKey: sequence.remoteId ]) as? VStreamCollectionViewController else  {
+                self.finishedExecuting()
+                return
         }
+        
+        let noContentView: VNoContentView = VNoContentView.v_fromNib()
+        noContentView.icon = UIImage(named: "noMemeIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        noContentView.title = NSLocalizedString("NoMemersTitle", comment:"")
+        noContentView.message = NSLocalizedString("NoMemersMessage", comment:"")
+        noContentView.resetInitialAnimationState()
+        noContentView.setDependencyManager(self.dependencyManager)
+        
+        memeStream.navigationItem.title = memeStream.currentStream.name
+        memeStream.noContentView = noContentView
+        
+        originViewController.navigationController?.pushViewController(memeStream, animated: true)
         
         self.finishedExecuting()
     }
-    
 }
 
 
@@ -73,11 +84,10 @@ class ShowRepostersOperation: NavigationOperation {
     private let originViewController: UIViewController
     private let sequence: VSequence
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequence: VSequence) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.sequence = sequence
-        super.init()
     }
     
     override func start() {
@@ -90,5 +100,4 @@ class ShowRepostersOperation: NavigationOperation {
         
         self.finishedExecuting()
     }
-    
 }

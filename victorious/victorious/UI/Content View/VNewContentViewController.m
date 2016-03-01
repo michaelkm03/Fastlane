@@ -111,21 +111,29 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @implementation VNewContentViewController
 
-#pragma mark - SequenceActionController Delegate
+#pragma mark - VSequenceActionControllerDelegate
 
-- (void)sequenceActionControllerDidDeleteContent
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self dismissViewControllerAnimated:true completion:^
     {
-        [self.delegate sequenceActionControllerDidDeleteContent];
+        [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
     }];
 }
 
-- (void)sequenceActionControllerDidFlagContent
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
 {
     [self dismissViewControllerAnimated:true completion:^
      {
-         [self.delegate sequenceActionControllerDidFlagContent];
+         [self.delegate sequenceActionControllerDidFlagSequence:sequence];
+     }];
+}
+
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user
+{
+    [self dismissViewControllerAnimated:true completion:^
+     {
+         [self.delegate sequenceActionControllerDidBlockUser:user];
      }];
 }
 

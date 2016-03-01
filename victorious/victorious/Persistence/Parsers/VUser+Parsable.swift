@@ -18,6 +18,7 @@ extension VUser: PersistenceParsable {
         name                        = user.name ?? name
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
+        isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
         isCreator                   = user.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser

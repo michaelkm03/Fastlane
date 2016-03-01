@@ -30,8 +30,10 @@ class ShowProfileOperation: NavigationOperation {
             return
         }
         
-        if let originViewControllerProfile = originViewController as? VUserProfileViewController where originViewControllerProfile.user.remoteId.integerValue == userId {
-            self.finishedExecuting()
+        if let originViewControllerProfile = originViewController as? VUserProfileViewController
+            where originViewControllerProfile.user.remoteId.integerValue == userId {
+                self.finishedExecuting()
+                return
         }
         
         if let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(userId) {

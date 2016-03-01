@@ -77,8 +77,6 @@ NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
-static NSString * const kMemeStreamKey = @"memeStream";
-static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
@@ -664,12 +662,17 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VSequenceActionControllerDelegate
 
-- (void)sequenceActionControllerDidDeleteContent
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
-- (void)sequenceActionControllerDidFlagContent
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
+{
+    [self.streamDataSource.paginatedDataSource removeDeletedItems];
+}
+
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
@@ -722,7 +725,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController shareSequence:sequence
-                                            node:[sequence firstNode]
                                         streamID:self.streamDataSource.stream.remoteId
                                       completion:nil];
 }
@@ -743,8 +745,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
 {
-    [self.sequenceActionController repostNode:[sequence firstNode]
-                                   completion:completion];
+    [self.sequenceActionController repostSequence:sequence completion:completion];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -1175,50 +1176,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (NSDictionary *__nonnull)additionalInfo
 {
     return @{};
-}
-
-@end
-
-#pragma mark -
-
-@implementation VDependencyManager (VStreamCollectionViewController)
-
-- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence
-{
-    NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *memeStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                     forKey:kMemeStreamKey
-                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
-    
-    memeStream.navigationItem.title = memeStream.currentStream.name;
-    
-    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:memeStream.view.bounds];
-    noContentView.dependencyManager = self;
-    noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
-    noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
-    noContentView.icon = [UIImage imageNamed:@"noMemeIcon"];
-    memeStream.noContentView = noContentView;
-    
-    return memeStream;
-}
-
-- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence
-{
-    NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *gifStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                    forKey:kGifStreamKey
-                                                     withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
-    
-    gifStream.navigationItem.title = gifStream.currentStream.name;
-    
-    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:gifStream.view.bounds];
-    noContentView.dependencyManager = self;
-    noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
-    noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");
-    noContentView.icon = [UIImage imageNamed:@"noGifIcon"];
-    gifStream.noContentView = noContentView;
-    
-    return gifStream;
 }
 
 @end
