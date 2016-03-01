@@ -129,6 +129,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
      }];
 }
 
+- (void)sequenceActionControllerDidBlockUser
+{
+    [self dismissViewControllerAnimated:true completion:^
+     {
+         [self.delegate sequenceActionControllerDidBlockUser];
+     }];
+}
+
 #pragma mark - Factory Methods
 
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel

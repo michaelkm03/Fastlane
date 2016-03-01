@@ -146,6 +146,10 @@ extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, Ti
 extern NSString * const VTrackingEventRepostDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidFlagPost; //< Params: Context
 extern NSString * const VTrackingEventFlagPostDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidBlockUser; //< Params: Context
+extern NSString * const VTrackingEventBlockUserDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidUnblockUser; //< Params: Context
+extern NSString * const VTrackingEventUnblockUserDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectShare; //< Params: Context
 extern NSString * const VTrackingEventUserDidShare; //< "Params: Context, ShareDestination"
 extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage

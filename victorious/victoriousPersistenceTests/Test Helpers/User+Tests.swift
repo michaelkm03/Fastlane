@@ -19,6 +19,7 @@ extension User {
         self.location = nil
         self.tagline = nil
         self.fanLoyalty = nil
+        self.isBlockedByMainUser = nil
         self.isCreator = nil
         self.isDirectMessagingDisabled = nil
         self.isFollowedByMainUser = nil

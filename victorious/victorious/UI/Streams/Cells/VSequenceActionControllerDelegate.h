@@ -14,6 +14,7 @@
 
 - (void)sequenceActionControllerDidDeleteContent;
 - (void)sequenceActionControllerDidFlagContent;
+- (void)sequenceActionControllerDidBlockUser;
 
 @end
 
