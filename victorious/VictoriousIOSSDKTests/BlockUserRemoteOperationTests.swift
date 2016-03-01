@@ -22,25 +22,43 @@ class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
         objectUser = persistentStoreHelper.createUser(remoteId: 1)
         currentUser = persistentStoreHelper.createUser(remoteId: 2)
         
+        operation = BlockUserRemoteOperation(userID: objectUser.remoteId.integerValue)
+        operation.trackingManager = testTrackingManager
+        
         currentUser.setAsCurrentUser()
         
         testStore.mainContext.v_save()
-        
-        operation = BlockUserRemoteOperation(userID: objectUser.remoteId.integerValue)
-        operation.trackingManager = testTrackingManager
-        operation.requestExecutor = testRequestExecutor
     }
-
-    func testRemoteOperationTracking() {
+    
+    func testTrackingSuccess() {
         
-        operation.main()
+        let expectation = expectationWithDescription("BlockUserRemoteOperation")
         
-        XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidBlockUser, testTrackingManager.trackEventCalls.first?.eventName)
+        operation.requestExecutor = TestRequestExecutor()
+        operation.queue() { (results, error) in
+            
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
+            XCTAssertEqual(VTrackingEventUserDidBlockUser, self.testTrackingManager.trackEventCalls.first?.eventName)
+            
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+    }
+    
+    func testTrackingFailure() {
         
-        operation.main()
+        let expectation = expectationWithDescription("BlockUserRemoteOperation")
+        let testError = NSError(domain:"", code:9809, userInfo:nil)
         
-        XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventBlockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
+        operation.requestExecutor = TestRequestExecutor(error: testError)
+        operation.queue() { (results, error) in
+            XCTAssertEqual(testError, error)
+            
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
+            XCTAssertEqual(VTrackingEventBlockUserDidFail, self.testTrackingManager.trackEventCalls.first?.eventName)
+            
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
 }

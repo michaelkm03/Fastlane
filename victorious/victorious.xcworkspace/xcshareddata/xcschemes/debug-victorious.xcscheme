@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0720"
-   version = "1.8">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -68,17 +68,6 @@
                BlueprintName = "victoriousPersistenceTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "BlockUserRemoteOperationTests">
-               </Test>
-               <Test
-                  Identifier = "FetchFromMainContextOperationTests">
-               </Test>
-               <Test
-                  Identifier = "UnblockUserRemoteOperationTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

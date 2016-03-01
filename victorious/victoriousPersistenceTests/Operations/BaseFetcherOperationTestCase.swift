@@ -18,6 +18,7 @@ class BaseFetcherOperationTestCase: BasePersistentStoreTestCase {
     let expectationThreshold: Double = 1
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
+    let testQueue = NSOperationQueue()
 
     override func setUp() {
         super.setUp()
