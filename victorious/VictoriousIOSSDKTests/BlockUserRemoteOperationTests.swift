@@ -1,5 +1,5 @@
 //
-//  UnblockUserOperationTests.swift
+//  BlockUserRemoteOperationTests.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/29/16.
@@ -10,8 +10,9 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UnblockUserOperationTests: BaseFetcherOperationTestCase {
-    var operation: UnblockUserOperation!
+class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
+    
+    var operation: BlockUserRemoteOperation!
     var currentUser: VUser!
     var objectUser: VUser!
     
@@ -22,26 +23,24 @@ class UnblockUserOperationTests: BaseFetcherOperationTestCase {
         currentUser = persistentStoreHelper.createUser(remoteId: 2)
         
         currentUser.setAsCurrentUser()
-        objectUser.isBlockedByMainUser = NSNumber(bool: true)
+        
         testStore.mainContext.v_save()
         
-        operation = UnblockUserOperation(userID: objectUser.remoteId.integerValue)
+        operation = BlockUserRemoteOperation(userID: objectUser.remoteId.integerValue)
+        operation.trackingManager = testTrackingManager
+        operation.requestExecutor = testRequestExecutor
     }
-    
-    func testUnblockingUser() {
-        
-        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+
+    func testRemoteOperationTracking() {
         
         operation.main()
         
-        XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
-        
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidUnblockUser, testTrackingManager.trackEventCalls.first?.eventName)
+        XCTAssertEqual(VTrackingEventUserDidBlockUser, testTrackingManager.trackEventCalls.first?.eventName)
         
         operation.main()
         
         XCTAssertEqual(2, testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUnblockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
+        XCTAssertEqual(VTrackingEventBlockUserDidFail, testTrackingManager.trackEventCalls.last?.eventName)
     }
 }

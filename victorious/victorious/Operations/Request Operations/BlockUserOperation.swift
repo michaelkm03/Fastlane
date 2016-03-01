@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class BlockUserOperation: FetcherOperation {
     
     private let userID: Int
-    
+        
     init( userID: Int ) {
         self.userID = userID
         super.init()

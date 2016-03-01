@@ -9,9 +9,20 @@
 @testable import victorious
 @testable import VictoriousIOSSDK
 
+protocol TestRequestExecutorDelegate {
+    
+    func stubOnComplete<T: RequestType>() -> T.ResultType
+}
+
 class TestRequestExecutor: RequestExecutorType {
 
     private(set) var error: NSError?
+    
+    init(delegate: TestRequestExecutorDelegate) {
+        self.delegate = delegate
+    }
+    
+    var delegate: TestRequestExecutorDelegate
     
     var errorHandlers = [RequestErrorHandler]()
 
@@ -21,12 +32,6 @@ class TestRequestExecutor: RequestExecutorType {
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         executeRequestCallCount += 1
         
-        /*if let onCompleteResult = onCompleteResult, let onComplete = onComplete {
-            let emptyClosure = {}
-            let onCompleteCall = { (onCompleteResult, emptyClosure) }
-            onComplete(onCompleteResult) {
-                print("HERE!")
-            }
-        }*/
+        //TODO: Figure out how to call onComplete or onError here
     }
 }
