@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class UnblockUserOperation: FetcherOperation {
     
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+    
     private let userID: Int
     
     init( userID: Int ) {
@@ -21,15 +23,16 @@ class UnblockUserOperation: FetcherOperation {
         remoteOperation.queue() { result, error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
+                self.trackingManager.trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
                 
             } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidUnblockUser )
+                self.trackingManager.trackEvent( VTrackingEventUserDidUnblockUser )
             }
         }
     }
     
     override func main() {
+        
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             if let users: [VUser] = context.v_findObjects(["remoteId" : self.userID]) {

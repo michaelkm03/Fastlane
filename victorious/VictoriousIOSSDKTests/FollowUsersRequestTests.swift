@@ -50,7 +50,7 @@ class FollowUsersRequestTests: XCTestCase {
     func testMultipleUsers() {
         
         let userIDsToFollow: [Int] = [266, 3787]
-        let followRequest = FollowUsersRequest(userIDs: userIDsToFollow, sourceScreenName: nil)
+        let followRequest = FollowUsersRequest(userIDs: userIDsToFollow, sourceScreenName: "profile")
         
         let request = followRequest.urlRequest
         

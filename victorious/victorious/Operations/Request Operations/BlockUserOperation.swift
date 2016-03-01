@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class BlockUserOperation: FetcherOperation {
     
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+    
     private let userID: Int
     
     init( userID: Int ) {
@@ -22,10 +24,10 @@ class BlockUserOperation: FetcherOperation {
             
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
+                self.trackingManager.trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
                 
             } else {
-                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidBlockUser )
+                self.trackingManager.trackEvent( VTrackingEventUserDidBlockUser )
             }
         }
     }
