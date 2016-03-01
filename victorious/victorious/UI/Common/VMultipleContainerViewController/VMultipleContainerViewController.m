@@ -362,12 +362,22 @@ static NSString * const kInitialKey = @"initial";
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
     _badgeNumberUpdateBlock = nil;
+    __weak VMultipleContainerViewController *weakSelf = self;
     for (UIViewController *vc in _viewControllers)
     {
         if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
         {
             UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
-            viewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+            viewController.badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
+            {
+                VMultipleContainerViewController *strongSelf = weakSelf;
+                if (strongSelf == nil)
+                {
+                    return;
+                }
+                
+                badgeNumberUpdateBlock(strongSelf.badgeNumber);
+            };
         }
     }
 }

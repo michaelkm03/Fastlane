@@ -247,7 +247,7 @@
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.sequence.comments objectAtIndex:commentIndex];
-    return [commentForIndex.postedAt timeSince];
+    return [commentForIndex.postedAt stringDescribingTimeIntervalSinceNow];
 }
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex

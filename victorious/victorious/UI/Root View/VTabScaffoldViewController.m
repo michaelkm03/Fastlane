@@ -375,9 +375,8 @@ static NSString * const kMenuKey = @"menu";
     // Order doesn't matter in this array, dependencies ensure order
     NSArray *operationsToAdd = @[ pushNotificationOperation,
                                   ftueVideoOperation,
-                                  showLoginOperation,
                                   showQueuedDeeplinkOperation ];
-    
+    [[NSOperationQueue mainQueue] addOperation:showLoginOperation];
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 

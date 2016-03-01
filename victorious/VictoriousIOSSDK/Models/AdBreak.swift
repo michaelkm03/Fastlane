@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct AdBreak: JSONDeseriealizable {
     public let adSystemID: Int

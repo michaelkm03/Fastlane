@@ -455,7 +455,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NewSessionPrunePersistentStoreOperation *operation = [[NewSessionPrunePersistentStoreOperation alloc] init];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self showLoadingViewController];
+         [self showInitialScreen];
      }];
 }
 

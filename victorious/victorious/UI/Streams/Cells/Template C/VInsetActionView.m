@@ -45,28 +45,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - Property Accessors
 
-- (UIButton *)gifButton
-{
-    if (_gifButton == nil)
-    {
-        UIImage *image = [UIImage imageNamed:@"C_gif"];
-        UIImage *background = [UIImage imageNamed:@"C_background"];
-        _gifButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(gif:)];
-    }
-    return _gifButton;
-}
-
-- (UIButton *)memeButton
-{
-    if (_memeButton == nil)
-    {
-        UIImage *image = [UIImage imageNamed:@"C_meme"];
-        UIImage *background = [UIImage imageNamed:@"C_background"];
-        _memeButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(meme:)];
-    }
-    return _memeButton;
-}
-
 - (UIButton *)repostButton
 {
     if (_repostButton == nil)

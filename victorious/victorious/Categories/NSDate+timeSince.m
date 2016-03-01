@@ -10,10 +10,14 @@
 
 @implementation NSDate (timeSince)
 
-- (NSString *)timeSince
+- (NSString *)stringDescribingTimeIntervalSinceNow
+{
+    return [self stringDescribingTimeIntervalSince:[NSDate date]];
+}
+
+- (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate *now =   [NSDate date];
     NSDateComponents *components = [calendar components:
                                     NSCalendarUnitYear|
                                     NSCalendarUnitMonth|
@@ -23,7 +27,7 @@
                                     NSCalendarUnitMinute|
                                     NSCalendarUnitSecond
                                                fromDate:self
-                                                 toDate:now
+                                                 toDate:date
                                                 options:0];
     
     if (components.year >= 1)

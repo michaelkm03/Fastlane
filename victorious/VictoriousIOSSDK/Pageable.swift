@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Defines an object as a specialized RequestType that that can initialize a copy
 /// of itself that is configured to load the previous or next page(s) of the same endpoint.

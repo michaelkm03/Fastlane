@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct ListShelf: StreamItemType {
     public let shelf: Shelf

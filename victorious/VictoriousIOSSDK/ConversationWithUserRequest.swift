@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 // A request to the backend to determine whether or not the currently logged
 // in user has an existing conversation with the passed in userID.

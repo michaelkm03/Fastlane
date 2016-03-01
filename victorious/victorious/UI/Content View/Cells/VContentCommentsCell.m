@@ -166,7 +166,7 @@ static NSCache *_sharedImageCache = nil;
     self.commentBody = comment.text;
     self.commenterName = comment.user.name;
     self.commentersAvatarButton.user = comment.user;
-    self.timestampText = [comment.postedAt timeSince];
+    self.timestampText = [comment.postedAt stringDescribingTimeIntervalSinceNow];
     self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
