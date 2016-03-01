@@ -117,7 +117,7 @@ import Foundation
             }
             let didBlockUser = user.isBlockedByMainUser.boolValue
             if didBlockUser {
-                self.originViewController.v_showFlaggedUserAlert(completion: completion)
+                self.originViewController.v_showBlockedUserAlert(completion: completion)
             }
         }
     }
@@ -213,7 +213,9 @@ import Foundation
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
-        actionItems.append(blockUserActionItem(forSequence: sequence))
+        if !sequence.user.isCurrentUser() {
+            actionItems.append(blockUserActionItem(forSequence: sequence))
+        }
         
         if AgeGate.isAnonymousUser() {
             actionItems = AgeGate.filterMoreButtonItems(actionItems)

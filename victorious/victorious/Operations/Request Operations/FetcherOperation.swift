@@ -53,6 +53,13 @@ class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     // MARK: - Queueable
     
     func executeCompletionBlock(completionBlock: ([AnyObject]?, NSError?)->()) {
+
+        // Calling the completion block on a cancelled requests can result in unexpected behaviour
+        // since the reciver might not be in the right state to receive it.
+        guard self.cancelled == false else {
+            return
+        }
+        
         // This ensures that every subclass of `FetcherOperation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.

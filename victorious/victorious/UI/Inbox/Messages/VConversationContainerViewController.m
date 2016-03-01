@@ -132,7 +132,7 @@ static const NSUInteger kCharacterLimit = 1024;
                                                                                  mostRecentMessageID:mostRecentMessageID];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self v_showFlaggedUserAlertWithCompletion:^(BOOL success)
+         [self v_showBlockedUserAlertWithCompletion:^(BOOL success)
           {
               [self.navigationController popViewControllerAnimated:YES];
           }];
