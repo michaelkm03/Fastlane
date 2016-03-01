@@ -13,13 +13,15 @@ class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfir
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let shouldUnblockUser: Bool
+    
+    // MARK: - ActionConfirmationOperation
+    
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.shouldUnblockUser = shouldUnblockUser
-        super.init()
     }
     
     override func start() {
@@ -28,20 +30,29 @@ class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfir
         
         let alertController = UIAlertController(title: nil,
             message: nil,
-            preferredStyle: UIAlertControllerStyle.ActionSheet)
+            preferredStyle: .ActionSheet)
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
-            style: UIAlertActionStyle.Cancel,
-            handler: { action in
-                self.finishedExecuting()
-        }))
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+                style: .Cancel,
+                handler: { action in
+                    self.finishedExecuting()
+                }
+            )
+        )
         
         let title = shouldUnblockUser ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
-        alertController.addAction(UIAlertAction(title: title,
-            style: UIAlertActionStyle.Destructive, handler: { action in
-                self.didConfirmAction = true
-                self.finishedExecuting()
-        }))
+        alertController.addAction(
+            UIAlertAction(
+                title: title,
+                style: .Destructive,
+                handler: { action in
+                    self.didConfirmAction = true
+                    self.finishedExecuting()
+                }
+            )
+        )
         
         originViewController.presentViewController(alertController, animated: true, completion: nil)
     }

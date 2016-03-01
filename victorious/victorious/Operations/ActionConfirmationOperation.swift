@@ -11,7 +11,6 @@ import Foundation
 protocol ActionConfirmationOperation {
     var didConfirmAction: Bool { get }
 }
-<<<<<<< HEAD
 
 extension NSOperation {
     
@@ -27,5 +26,3 @@ extension NSOperation {
         }
     }
 }
-=======
->>>>>>> 8013cebfd9b16c6f64f22706fe927cd346a244f7

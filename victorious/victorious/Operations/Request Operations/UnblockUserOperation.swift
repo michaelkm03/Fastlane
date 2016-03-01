@@ -11,24 +11,13 @@ import VictoriousIOSSDK
 
 class UnblockUserOperation: FetcherOperation {
     
-    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
-    
     private let userID: Int
     
     init( userID: Int ) {
         self.userID = userID
         super.init()
         
-        UnblockUserRemoteOperation(userID: userID).queue() { result, error in
-            
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                self.trackingManager.trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
-                
-            } else {
-                self.trackingManager.trackEvent( VTrackingEventUserDidUnblockUser )
-            }
-        }
+        UnblockUserRemoteOperation(userID: userID).after(self).queue()
     }
     
     override func main() {
@@ -48,6 +37,8 @@ class UnblockUserOperation: FetcherOperation {
 
 class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
     
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+    
     let request: UnblockUserRequest!
     
     init( userID: Int ) {
@@ -55,6 +46,17 @@ class UnblockUserRemoteOperation: FetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+    }
+    
+    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+        self.trackingManager.trackEvent( VTrackingEventUserDidUnblockUser )
+        completion()
+    }
+    
+    private func onError( error: NSError, completion:()->() ) {
+        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+        self.trackingManager.trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
+        completion()
     }
 }

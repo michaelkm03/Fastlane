@@ -109,7 +109,6 @@ import Foundation
             guard !operation.cancelled else {
                 return
             }
-            self.originViewController.v_showFlaggedConversationAlert(completion: completion)
         }
     }
     
@@ -118,29 +117,19 @@ import Foundation
     /// Presents an Alert Controller to confirm blocking of a user. Upon
     /// confirmation, blocks the user and calls the completion block with a
     /// Boolean representing success/failure of the operation.
-    ///
-    /// - parameter sequence:           The user we want to block. Should not
-    /// be nil.
-    /// - parameter completion:         A completion block takes in a Boolean
-    /// argument representing success/failure.
-    
     func blockUser(user: VUser, completion: ((Bool)->())? ) {
         
-        let blockUserOperation: ToggleBlockUserOperation =
-        ToggleBlockUserOperation(originViewController: originViewController,
+        let operation = ToggleBlockUserOperation(
+            originViewController: originViewController,
             dependencyManager: dependencyManager,
-            user: user)
-        
-        blockUserOperation.queue() { results, error in
-            
-            if !blockUserOperation.didConfirmAction {
+            userID: user.remoteId.integerValue
+        )
+        operation.queue() { results, error in
+            guard !operation.cancelled else {
                 return
             }
-            
-            if error != nil {
-                self.originViewController.v_showErrorDefaultError()
-                completion?(false)
-            } else if !blockUserOperation.isUnblockOperation {
+            let didBlockUser = user.isBlockedByMainUser.boolValue
+            if didBlockUser {
                 self.originViewController.v_showFlaggedUserAlert(completion: completion)
             }
         }

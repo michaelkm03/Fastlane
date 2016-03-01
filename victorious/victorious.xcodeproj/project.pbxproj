@@ -1662,16 +1662,15 @@
 		F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */; };
 		F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */; };
 		F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */; };
-		F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* ComposerController.swift */; };
-		F048AFD21C8109E2004F516A /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */; };
-		F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */; };
 		F048AFC51C80DCC2004F516A /* BlockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */; };
 		F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */; };
 		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
 		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
+		F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* ComposerController.swift */; };
+		F048AFD21C8109E2004F516A /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */; };
+		F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */; };
 		F048B00F1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B00E1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift */; };
 		F048B0111C84CE93004F516A /* ToggleBlockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0101C84CE93004F516A /* ToggleBlockUserOperation.swift */; };
-		F048B0131C84ED84004F516A /* ActionConfirmationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0121C84ED84004F516A /* ActionConfirmationOperation.swift */; };
 		F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0161C84F973004F516A /* BlockUserRequestTests.swift */; };
 		F048B0191C84FCC5004F516A /* UnblockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */; };
 		F048B01B1C84FDA7004F516A /* BlockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */; };
@@ -4351,16 +4350,15 @@
 		F0411E8B1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingMarqueeLabel.h; sourceTree = "<group>"; };
 		F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingMarqueeLabel.m; sourceTree = "<group>"; };
 		F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCaptionView.xib; sourceTree = "<group>"; };
-		F048AFCE1C8109E2004F516A /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerController.swift; path = Composer/ComposerController.swift; sourceTree = "<group>"; };
-		F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = Composer/ComposerAttachmentTab.swift; sourceTree = "<group>"; };
-		F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
 		F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperation.swift; sourceTree = "<group>"; };
 		F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperation.swift; sourceTree = "<group>"; };
 		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
 		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
+		F048AFCE1C8109E2004F516A /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerController.swift; path = Composer/ComposerController.swift; sourceTree = "<group>"; };
+		F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = Composer/ComposerAttachmentTab.swift; sourceTree = "<group>"; };
+		F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
 		F048B00E1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowBlockUserConfirmationAlertOperation.swift; sourceTree = "<group>"; };
 		F048B0101C84CE93004F516A /* ToggleBlockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToggleBlockUserOperation.swift; path = ../../UI/Automation/ToggleBlockUserOperation.swift; sourceTree = "<group>"; };
-		F048B0121C84ED84004F516A /* ActionConfirmationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionConfirmationOperation.swift; sourceTree = "<group>"; };
 		F048B0161C84F973004F516A /* BlockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequestTests.swift; sourceTree = "<group>"; };
 		F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequestTests.swift; sourceTree = "<group>"; };
 		F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperationTests.swift; sourceTree = "<group>"; };
@@ -11305,7 +11303,6 @@
 				A75DF5271C3DE23300A4C82A /* DiscoverSearchViewController.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
-				F048B0131C84ED84004F516A /* ActionConfirmationOperation.swift in Sources */,
 				A7E2918F1C3B462D00B84127 /* UnfollowHashtagOperation.swift in Sources */,
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,

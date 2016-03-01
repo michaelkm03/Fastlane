@@ -11,24 +11,13 @@ import VictoriousIOSSDK
 
 class BlockUserOperation: FetcherOperation {
     
-    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
-    
     private let userID: Int
     
     init( userID: Int ) {
         self.userID = userID
         super.init()
         
-        BlockUserRemoteOperation(userID: userID).queue() { result, error in
-            
-            if let error = error {
-                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                self.trackingManager.trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
-                
-            } else {
-                self.trackingManager.trackEvent( VTrackingEventUserDidBlockUser )
-            }
-        }
+        BlockUserRemoteOperation(userID: userID).after(self).queue()
     }
     
     override func main() {
@@ -66,11 +55,24 @@ class BlockUserRemoteOperation: FetcherOperation, RequestOperation {
     
     let request: BlockUserRequest!
     
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+    
     init( userID: Int ) {
         request = BlockUserRequest(userID: userID)
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+    }
+    
+    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+        self.trackingManager.trackEvent( VTrackingEventUserDidBlockUser )
+        completion()
+    }
+    
+    private func onError( error: NSError, completion:()->() ) {
+        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+        self.trackingManager.trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
+        completion()
     }
 }

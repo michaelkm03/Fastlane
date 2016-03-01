@@ -8,37 +8,57 @@
 
 import Foundation
 
-class ToggleBlockUserOperation: FetcherOperation, ActionConfirmationOperation {
+class ToggleBlockUserOperation: FetcherOperation {
     
-    private let dependencyManager: VDependencyManager
-    private let originViewController: UIViewController
-    private let userId: Int
-    private(set) var didConfirmAction: Bool = false
-    let isUnblockOperation: Bool
+    private let userID: Int
+    private let dependencyManager: VDependencyManager?
+    private let originViewController: UIViewController?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, user: VUser ) {
-        self.originViewController = originViewController
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, userID: Int ) {
+        self.userID = userID
         self.dependencyManager = dependencyManager
-        self.userId = user.remoteId.integerValue
-        self.isUnblockOperation = user.isBlockedByMainUser?.boolValue == true
-        
-        super.init()
-        
-        ShowBlockUserConfirmationAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager, shouldUnblockUser: isUnblockOperation).before(self).queue()
+        self.originViewController = originViewController
+    }
+    
+    init(userID: Int ) {
+        self.userID = userID
+        self.dependencyManager = nil
+        self.originViewController = nil
     }
     
     override func main() {
-        
-        guard let confirmationOperation = dependencies.flatMap({ $0 as? ActionConfirmationOperation }).first
-            where confirmationOperation.didConfirmAction else {
-                return
+        guard didConfirmActionFromDependencies else {
+            self.cancel()
+            return
         }
         
-        didConfirmAction = true
-        if isUnblockOperation {
-            UnblockUserOperation(userID: userId).rechainAfter(self).queue()
+        let fetchedUser: VUser? = persistentStore.mainContext.v_performBlockAndWait() { context in
+            return context.v_findObjects(["remoteId" : self.userID]).first
+        }
+        guard let user = fetchedUser else {
+            assertionFailure("Unable to load user with ID: \(self.userID)")
+            return
+        }
+        
+        let isBlocked = user.isBlockedByMainUser.boolValue
+        
+        let nextOperation: FetcherOperation
+        if isBlocked {
+            nextOperation = UnblockUserOperation(userID: userID)
         } else {
-            BlockUserOperation(userID: userId).rechainAfter(self).queue()
+            nextOperation = BlockUserOperation(userID: userID)
         }
+        
+        if let originViewController = originViewController, let dependencyManager = dependencyManager {
+            
+            let confirmation = ShowBlockUserConfirmationAlertOperation(
+                originViewController: originViewController,
+                dependencyManager: dependencyManager,
+                shouldUnblockUser: isBlocked
+            )
+            confirmation.before(nextOperation).queue()
+        }
+        
+        nextOperation.rechainAfter(self).queue()
     }
 }
