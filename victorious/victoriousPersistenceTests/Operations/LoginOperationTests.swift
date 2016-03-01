@@ -42,7 +42,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        // Don't allow any of the operation's supporting operations the execute
+        // Don't allow any of the operation's supporting operations to execute
         operation.v_defaultQueue.suspended = true
         
         waitForExpectationsWithTimeout(expectationThreshold) { error in
