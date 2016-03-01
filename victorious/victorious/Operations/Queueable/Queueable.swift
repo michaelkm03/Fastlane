@@ -48,16 +48,16 @@ protocol Queueable {
 /// a branched tree structure.
 protocol Chainable {
     
-    /// Add the provided operation as a dependency to the receiver, i.e. the operation
-    /// becomes dependent and will not execute until the receiver is finished.  Returns
+    /// Add the provided operation as a dependency to the receiver, i.e. the receiver
+    /// becomes dependent and will not execute until the operation is finished.  Returns
     /// itself so that the operation can be modified or queued immediately after:
     /// `operationB.after(operationB).queue()`
     func after(dependency: NSOperation) -> Self
     
-    /// Add the receiver as a dependency to the provided operation, i.e. the receiver
-    /// becomes dependent and will not execute until the provided operation
-    /// is finished.  Returns itself so that the operation can be modified or queued
-    /// immediately after: `operationA.before(operationB).queue()`
+    /// Add the receiver as a dependency to the provided operation, i.e. the operation
+    /// becomes dependent and will not execute until the provided receiver is finished.
+    /// Returns itself so that the operation can be modified or queued immediately after:
+    /// `operationA.before(operationB).queue()`
     func before(dependent: NSOperation) -> Self
     
     /// Add the provided operation as a dependency to the receiver, i.e. the operation
