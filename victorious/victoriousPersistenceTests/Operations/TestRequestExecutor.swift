@@ -9,20 +9,9 @@
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-protocol TestRequestExecutorDelegate {
-    
-    func stubOnComplete<T: RequestType>() -> T.ResultType
-}
-
 class TestRequestExecutor: RequestExecutorType {
 
     private(set) var error: NSError?
-    
-    init(delegate: TestRequestExecutorDelegate) {
-        self.delegate = delegate
-    }
-    
-    var delegate: TestRequestExecutorDelegate
     
     var errorHandlers = [RequestErrorHandler]()
 
