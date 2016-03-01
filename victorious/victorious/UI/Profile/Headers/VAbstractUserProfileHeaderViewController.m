@@ -15,9 +15,9 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
+@import SDWebImage;
 @import KVOController;
 
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
@@ -88,6 +88,14 @@
 - (UIView *)floatingProfileImage
 {
     return nil;
+}
+
+- (void)setupTrophyCaseButton
+{
+    UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+#warning TODO: WIP: Setting the trophy case button up from the dependency manager
+    NSURL *buttonIconURL = [NSURL URLWithString:[self.dependencyManager stringForKey:@"abc"]];
+    [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
 }
 
 #pragma mark - VBackgroundContainer

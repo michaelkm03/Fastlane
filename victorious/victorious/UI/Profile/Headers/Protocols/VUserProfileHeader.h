@@ -53,11 +53,6 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 - (void)primaryActionHandler;
 
-/**
- User tapped on the trophy case button on profile header. We should open the trophy case for them.
- */
-- (void)openTrophyCase;
-
 @end
 
 /**
@@ -76,6 +71,11 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  Gets called after the user changes.
  */
 - (void)userHasChanged;
+
+/**
+ Configures and adds a trophy case button to the profile header
+ */
+- (void)setupTrophyCaseButton;
 
 /**
  Delegate that will receive forwarded input from the user.

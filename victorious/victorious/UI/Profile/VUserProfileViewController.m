@@ -43,7 +43,6 @@
 @import SDWebImage;
 
 static NSString * const kEditProfileSegueIdentifier = @"toEditProfile";
-static NSString * const kTrophyCaseScreenKey = @"trophyCaseScreen";
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
@@ -568,7 +567,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)openTrophyCase
 {
-    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:kTrophyCaseScreenKey];
+    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
     [self.navigationController pushViewController:trophyCaseViewController animated:YES];
 }
 

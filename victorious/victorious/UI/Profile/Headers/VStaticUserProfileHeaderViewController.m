@@ -27,7 +27,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
-@property (nonatomic, weak) IBOutlet UIButton *trophyCaseButton;
+@property (nonatomic, weak) UIButton *trophyCaseButton;
 @property (nonatomic, weak) IBOutlet UIView *badgeContainerView;
 @property (nonatomic, strong) AnimatedBadgeView *badgeView;
 
@@ -142,13 +142,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     return ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
     self.badgeView.progress != self.user.levelProgressPercentage.integerValue ||
     self.badgeView.superview == nil;
-}
-
-#pragma mark - IBActions
-
-- (IBAction)trophyCaseButtonTapped:(id)sender
-{
-    [self.delegate openTrophyCase];
 }
 
 #pragma mark - VUserProfileHeader

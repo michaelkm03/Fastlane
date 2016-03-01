@@ -93,7 +93,7 @@
                                 <rect key="frame" x="24" y="171" width="552" height="258"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3T-Un-jvL">
-                                        <rect key="frame" x="-9" y="191" width="561" height="67"/>
+                                        <rect key="frame" x="0.0" y="191" width="552" height="67"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="67" id="SKu-x9-GZz"/>
@@ -119,7 +119,7 @@
                                 <constraints>
                                     <constraint firstItem="8uB-sz-btw" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="4QH-3w-2zL"/>
                                     <constraint firstAttribute="trailing" secondItem="Jtf-Jp-hKf" secondAttribute="trailing" constant="30" id="5Ps-mA-iUw"/>
-                                    <constraint firstItem="Y3T-Un-jvL" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="-9" id="Adm-2E-Th0"/>
+                                    <constraint firstItem="Y3T-Un-jvL" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" id="Adm-2E-Th0"/>
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="H9b-ZJ-wTG"/>
                                     <constraint firstAttribute="trailing" secondItem="Y3T-Un-jvL" secondAttribute="trailing" id="KLk-er-Mha"/>
                                     <constraint firstAttribute="height" constant="258" id="NbI-9W-h6n"/>

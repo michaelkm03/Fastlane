@@ -263,7 +263,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.commentsUtilitiesDelegate = self
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
-                let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user)
+                guard let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user) else {
+                    return
+                }
                 strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
             }
         }
