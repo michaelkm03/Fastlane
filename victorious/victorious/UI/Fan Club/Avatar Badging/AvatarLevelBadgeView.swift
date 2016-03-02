@@ -135,16 +135,6 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    /// Whether or not the user being displayed an app "creator". Defaults to false.
-    var isCreator = false {
-        didSet {
-            if isCreator != oldValue {
-                updateBadgeIcon()
-                updateBadgeText()
-            }
-        }
-    }
-    
     /// The desired level badge image type. Defaults to Small.
     var levelBadgeImageType = VLevelBadgeImageType.Small {
         didSet {
@@ -234,7 +224,9 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         if avatarBadgeType == AvatarBadgeTypeVerified {
             return true
         }
-        return isCreator
+        else {
+            return false
+        }
     }
     
     private func updateBadgeText() {

@@ -121,21 +121,14 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     // Make sure we have a badge component and that this user is a high enough level to show it
     if (self.user.level.integerValue > 0 && self.user.level.integerValue >= animatedBadgeView.minLevel)
     {
-        if (self.user.isCreator.boolValue)
-        {
-            return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
-        }
-        else
-        {
-            self.badgeView = animatedBadgeView;
-            self.badgeView.cornerRadius = 4;
-            self.badgeView.animatedBorderWidth = 3;
-            self.badgeView.progressBarInset = 3;
-            self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
-            self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
-            self.badgeView.levelNumberString = self.user.level.stringValue;
-            return self.badgeView;
-        }
+        self.badgeView = animatedBadgeView;
+        self.badgeView.cornerRadius = 4;
+        self.badgeView.animatedBorderWidth = 3;
+        self.badgeView.progressBarInset = 3;
+        self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+        self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+        self.badgeView.levelNumberString = self.user.level.stringValue;
+        return self.badgeView;
     }
         
     return nil;
