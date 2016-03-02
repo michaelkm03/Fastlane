@@ -118,7 +118,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
         NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
         self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue || userLevel.integerValue == 0;
         self.levelBadgeView.level = userLevel.integerValue;
-        self.levelBadgeView.avatarBadgeType = self.user.avatarBadgeType;
+        self.levelBadgeView.avatarBadgeType = [self.user badgeType];
         self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
         self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
         [self setNeedsLayout];

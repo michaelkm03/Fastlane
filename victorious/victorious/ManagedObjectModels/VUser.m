@@ -58,4 +58,16 @@
 @dynamic isNewUser;
 @dynamic avatarBadgeType;
 
+- (AvatarBadgeType)badgeType
+{
+    if ([self.avatarBadgeType isEqualToString:@"verified"])
+    {
+        return AvatarBadgeTypeVerified;
+    }
+    else
+    {
+        return AvatarBadgeTypeNone;
+    }
+}
+
 @end

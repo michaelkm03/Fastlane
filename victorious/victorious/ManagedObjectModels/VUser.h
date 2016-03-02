@@ -11,6 +11,11 @@
 
 @class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
 
+typedef enum : NSUInteger {
+    AvatarBadgeTypeVerified,
+    AvatarBadgeTypeNone
+} AvatarBadgeType;
+
 @interface VUser : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
@@ -50,5 +55,7 @@
 @property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
 @property (nonatomic, retain) NSNumber * isNewUser; //< Transient
 @property (nonatomic, retain) NSString * avatarBadgeType;
+
+- (AvatarBadgeType)badgeType;
 
 @end

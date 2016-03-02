@@ -105,6 +105,11 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         return nil;
     }
     
+    if ([self.user badgeType] == AvatarBadgeTypeVerified)
+    {
+        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+    }
+    
     // Make sure we have a badge component and that this user is a high enough level to show it
     if (self.user.level.integerValue > 0 && self.user.level.integerValue >= animatedBadgeView.minLevel)
     {

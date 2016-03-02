@@ -126,7 +126,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    var avatarBadgeType: String? {
+    var avatarBadgeType: AvatarBadgeType = AvatarBadgeTypeNone{
         didSet {
             if avatarBadgeType != oldValue {
                 updateBadgeIcon()
@@ -231,7 +231,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     }
     
     private func verified() -> Bool {
-        if avatarBadgeType != nil {
+        if avatarBadgeType == AvatarBadgeTypeVerified {
             return true
         }
         return isCreator
