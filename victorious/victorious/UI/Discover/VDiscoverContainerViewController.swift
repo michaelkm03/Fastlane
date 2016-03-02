@@ -8,9 +8,7 @@
 
 import Foundation
 
-extension VDiscoverContainerViewController {
-    
-    // MARK: - SearchResultsViewControllerDelegate
+extension VDiscoverContainerViewController: SearchResultsViewControllerDelegate {
     
     func searchResultsViewControllerDidSelectCancel() { }
     

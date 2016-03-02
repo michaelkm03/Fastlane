@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public struct NotificationPreference: OptionSetType, Hashable {
     public let rawValue: Int

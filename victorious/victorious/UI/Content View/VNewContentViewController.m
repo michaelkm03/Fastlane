@@ -48,7 +48,7 @@
 #import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 #import "VSequencePreviewViewProtocols.h"
 #import "VShrinkingContentLayout.h"
 #import "VSimpleModalTransition.h"
@@ -68,7 +68,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -102,25 +102,53 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 @property (nonatomic, strong) NSOperationQueue *experienceEnhancerCompletionQueue;
+@property (nonatomic, strong) VSequenceActionController *sequenceActionController;
 
 @end
 
 @implementation VNewContentViewController
 
+#pragma mark - VSequenceActionControllerDelegate
+
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
+{
+    [self dismissViewControllerAnimated:true completion:^
+    {
+        [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
+    }];
+}
+
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
+{
+    [self dismissViewControllerAnimated:true completion:^
+     {
+         [self.delegate sequenceActionControllerDidFlagSequence:sequence];
+     }];
+}
+
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user
+{
+    [self dismissViewControllerAnimated:true completion:^
+     {
+         [self.delegate sequenceActionControllerDidBlockUser:user];
+     }];
+}
+
 #pragma mark - Factory Methods
 
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
                                                 dependencyManager:(VDependencyManager *)dependencyManager
+                                                         delegate:(id <VSequenceActionControllerDelegate>)delegate
 {
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.dependencyManager = dependencyManager;
-    contentViewController.sequenceActionController.dependencyManager = dependencyManager;
+    contentViewController.delegate = delegate;
+    contentViewController.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:dependencyManager originViewController:contentViewController delegate:contentViewController];
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -563,6 +591,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self setAccessoryButtonsHidden:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     [self.sequencePreviewView showLikeButton:NO];
+}
+
+- (IBAction)pressedMore:(id)sender
+{
+    // Pause video when presenting action sheet
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        [self.videoPlayer pause];
+    }
+    [self.sequenceActionController showMoreWithSequence:self.viewModel.sequence
+                                               streamId:self.viewModel.streamId
+                                             completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -1364,7 +1404,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
      }];
@@ -1374,7 +1414,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSInteger commentID = comment.remoteId.integerValue;
     FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
          [self v_showFlaggedCommentAlertWithCompletion:nil];
@@ -1442,7 +1482,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject];
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -1525,8 +1565,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
 {
     [self.sequenceActionController likeSequence:self.viewModel.sequence
-                             fromViewController:self
-                                 withActionView:previewView.likeButton
+                                 triggeringView:previewView.likeButton
                                      completion:^(BOOL success)
      {
          if ( completion != nil )

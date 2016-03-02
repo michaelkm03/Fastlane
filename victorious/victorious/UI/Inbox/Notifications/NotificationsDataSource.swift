@@ -27,7 +27,7 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         
         self.refreshRemote(
             createOperation: {

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Retrieves a list of comments for a certain sequence
 public struct SequenceCommentsRequest: PaginatorPageable, ResultBasedPageable {

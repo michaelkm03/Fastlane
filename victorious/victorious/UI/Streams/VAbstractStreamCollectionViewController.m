@@ -109,6 +109,10 @@
 {
     [super viewWillAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    
     const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
@@ -124,15 +128,6 @@
                  [self.refreshControl endRefreshing];
              }];
         }
-    }
-    
-    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
-    
-    if ( self.streamDataSource.count != 0 )
-    {
-        // This is HIGHLY important to call on `viewWillAppear:` because any deleted sequences
-        // that are still being displayed in the stream are ticking timebombs waiting to crash.
-        [self.streamDataSource removeDeletedItems];
     }
     
     
@@ -153,6 +148,13 @@
         [self addScrollDelegate];
     }
     
+    if ( self.streamDataSource.count != 0 )
+    {
+        // This is HIGHLY important to call because any deleted sequences that are still being displayed
+        // in the stream are ticking timebombs waiting to crash.
+        [self.streamDataSource removeDeletedItems];
+    }
+    
     // Adjust our scroll indicator insets to account for nav bar
     CGRect navBarFrame = self.v_navigationController.innerNavigationController.navigationBar.frame;
     CGRect supplementaryViewFrame = self.v_navigationController.supplementaryHeaderView.frame;
@@ -164,6 +166,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
                                                   isBeingDismissed:self.isBeingDismissed];

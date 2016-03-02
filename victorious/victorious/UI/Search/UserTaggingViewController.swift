@@ -52,19 +52,22 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     //MARK: - SearchResultsViewControllerDelegate
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {
-        if let result: UserSearchResultObject = result as? UserSearchResultObject {
-            let fetchUserOperation = FetchManagedObjectsOnMainContextOperation(withEntityName: VUser.v_entityName(),
-                queryDictionary: ["remoteId": result.sourceResult.userID])
-            fetchUserOperation.queueOn(NSOperationQueue.mainQueue(), completionBlock: { operation in
-                if let user = fetchUserOperation.result?.first as? VUser {
-                    self.searchResultsDelegate?.searchResultsViewControllerDidSelectResult(user)
-                }
-            })
+        guard let result: UserSearchResultObject = result as? UserSearchResultObject else {
+            return
+        }
+        
+        let fetchUserOperation = FetchFromMainContextOperation(
+            entityName: VUser.v_entityName(),
+            predicate: NSPredicate(format:"remoteId == %i", result.sourceResult.userID)
+        )
+        fetchUserOperation.queue() { (results, error) in
+            if let user = results?.first as? VUser {
+                self.searchResultsDelegate?.searchResultsViewControllerDidSelectResult(user)
+            }
         }
     }
-    
+
     func searchResultsViewControllerDidSelectCancel() {
         self.searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
     }
-    
 }

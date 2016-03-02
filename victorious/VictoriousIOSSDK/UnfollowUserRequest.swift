@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Unfollow a user
 public struct UnfollowUserRequest: RequestType {

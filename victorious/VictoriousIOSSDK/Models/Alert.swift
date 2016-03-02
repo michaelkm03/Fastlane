@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public enum AlertType : String {
     case LevelUp = "levelUp"

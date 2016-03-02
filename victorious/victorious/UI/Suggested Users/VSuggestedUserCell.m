@@ -114,21 +114,11 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenRegistrationSuggestedUsers;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-    {
-        [self updateFollowingStateAnimated:YES];
-    }];
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
+     {
+         [self updateFollowingStateAnimated:YES];
+     }];
 }
 
 #pragma mark - VBackgroundContainer

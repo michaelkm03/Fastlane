@@ -106,7 +106,12 @@
         mediaDataURLString = self.mediaUrl;
     }
     
-    return [NSURL URLWithString:mediaDataURLString];
+    if ( mediaDataURLString != nil )
+    {
+        return [NSURL URLWithString:mediaDataURLString];
+    }
+    
+    return nil;
 }
 
 - (NSString *)messageMediaURLForMimeType:(NSString *)mimeType

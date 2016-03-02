@@ -10,7 +10,6 @@
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VFindFriendsTableViewController.h"
-#import "VSuggestedFriendsTableViewController.h"
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
@@ -261,9 +260,9 @@
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
-
-    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:nil];
-    [operation queueOn:operation.defaultQueue completionBlock:nil];
+    
+    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:@""];
+    [operation queueWithCompletion:nil];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

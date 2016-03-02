@@ -8,7 +8,6 @@
 
 
 import Foundation
-import SwiftyJSON
 
 public enum FriendFindBySocialNetworkCredentials {
     case Facebook(accessToken: String)

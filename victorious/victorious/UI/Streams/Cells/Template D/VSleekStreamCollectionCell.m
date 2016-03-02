@@ -78,7 +78,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)setSourceScreenName:(NSString *)sourceScreenName
 {
-    if(self.headerView != nil)
+    if (self.headerView != nil)
     {
         self.headerView.sourceScreenName = sourceScreenName;
     }

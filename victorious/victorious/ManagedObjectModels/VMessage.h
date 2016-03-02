@@ -9,34 +9,28 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VConversation, VNotification, VUser, VMediaAttachment;
 
 @interface VMessage : NSManagedObject
 
-@property (nonatomic, retain) NSString * mediaUrl;
-@property (nonatomic, retain) NSDate * postedAt;
-@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain, nullable) NSString * mediaUrl;
+@property (nonatomic, retain, nullable) NSDate * postedAt;
+@property (nonatomic, retain, nullable) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * displayOrder;
-@property (nonatomic, retain) NSNumber * senderUserId;
-@property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * thumbnailUrl;
+@property (nonatomic, retain, nullable) NSString * text;
+@property (nonatomic, retain, nullable) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSString * mediaType;
-@property (nonatomic, retain) NSNumber * isRead;
+@property (nonatomic, retain, nullable) NSNumber * isRead;
 @property (nonatomic, retain) VConversation *conversation;
-@property (nonatomic, retain) VNotification *notification;
+@property (nonatomic, retain, nullable) VNotification *notification;
 @property (nonatomic, retain) VUser *sender;
 @property (nonatomic, retain) NSSet *mediaAttachments;
-@property (nonatomic, retain) NSNumber * shouldAutoplay;
-@property (nonatomic, retain) NSNumber *mediaWidth;
-@property (nonatomic, retain) NSNumber *mediaHeight;
+@property (nonatomic, retain, nullable) NSNumber * shouldAutoplay;
+@property (nonatomic, retain, nullable) NSNumber *mediaWidth;
+@property (nonatomic, retain, nullable) NSNumber *mediaHeight;
 
 @end
 
-@interface VMessage (CoreDataGeneratedAccessors)
-
-- (void)addMediaAttachmentsObject:(VMediaAttachment *)value;
-- (void)removeMediaAttachmentsObject:(VMediaAttachment *)value;
-- (void)addMediaAttachments:(NSSet *)values;
-- (void)removeMediaAttachments:(NSSet *)values;
-
-@end
+NS_ASSUME_NONNULL_END

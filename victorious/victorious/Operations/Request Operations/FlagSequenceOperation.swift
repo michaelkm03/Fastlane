@@ -14,15 +14,24 @@ class FlagSequenceOperation: FetcherOperation {
     private let sequenceID: String
     private let flaggedContent = VFlaggedContent()
     
-    init( sequenceID: String ) {
+    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequenceID: String) {
         self.sequenceID = sequenceID
+        
         super.init()
         
-        let remoteOperation = FlagSequenceRemoteOperation(sequenceID: sequenceID)
-        remoteOperation.queueAfter( self )
+        // Before, confirm with an alert
+        FlagSequenceAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager).before(self).queue()
+        
+        // After, fire and forget the remote request
+        FlagSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            cancel()
+            return
+        }
+        
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -46,9 +55,9 @@ class FlagSequenceOperation: FetcherOperation {
     }
 }
 
-class FlagSequenceRemoteOperation: RequestOperation {
+class FlagSequenceRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: FlagSequenceRequest
+    let request: FlagSequenceRequest!
     
     init( sequenceID: String ) {
         self.request = FlagSequenceRequest(sequenceID: sequenceID)

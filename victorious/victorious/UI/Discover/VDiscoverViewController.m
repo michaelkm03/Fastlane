@@ -213,7 +213,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)reload
 {
     TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
     {
         if (error == nil)
         {
@@ -373,17 +373,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                     return;
                 }
                 
-                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                RequestOperation *operation;
-                if ([[VCurrentUser user] isFollowingHashtagString:hashtagText] )
-                {
-                    operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtagText];
-                }
-                else
-                {
-                    operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtagText];
-                }
-                [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+                FetcherOperation *operation = [[ToggleFollowHashtagOperation alloc] initWithHashtag:hashtagText];
+                [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
                     [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
                 }];
             };

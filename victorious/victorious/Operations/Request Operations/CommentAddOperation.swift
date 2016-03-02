@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Sends a recently-created local comment over the network to be saved to the Victorious backend
-class CommentAddOperation: RequestOperation {
+class CommentAddOperation: FetcherOperation, RequestOperation {
     
     var request: CommentAddRequest!
     
@@ -104,7 +104,7 @@ class CreateCommentOperation: FetcherOperation {
         
         if let newCommentObjectID = newCommentObjectID,
             let remoteOperation = CommentAddOperation(localCommentID: newCommentObjectID, creationParameters: self.creationParameters) {
-                remoteOperation.queueAfter(self)
+                remoteOperation.after(self).queue()
         }
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,

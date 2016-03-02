@@ -19,7 +19,7 @@ extension UIViewController {
         )
     }
     
-    func v_showFlaggedConversationAlert( completion completion: (Bool->())? = nil ) {
+    func v_showBlockedUserAlert( completion completion: (Bool->())? = nil ) {
         v_showAlert(
             title: NSLocalizedString( "ReportedTitle", comment:""),
             message: NSLocalizedString( "ReportUserMessage", comment:""),

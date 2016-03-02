@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UserSearchOperationTests: BaseRequestOperationTestCase {
+class UserSearchOperationTests: BaseFetcherOperationTestCase {
 
     let testUserID: Int = 1
     var operation: UserSearchOperation!
@@ -18,17 +18,6 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         operation = UserSearchOperation(searchTerm: "test")
-        operation.requestExecutor = testRequestExecutor
-    }
-    
-    func testBasicSearch() {
-        guard let operation = UserSearchOperation(searchTerm: "test") else {
-            XCTFail("Operation initialization should not fail here")
-            return
-        }
-        operation.requestExecutor = testRequestExecutor
-        operation.main()
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 
     func testInitializationFail() {
@@ -43,21 +32,28 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
             XCTFail("Operation initialization should not fail here")
             return
         }
-        operation.requestExecutor = testRequestExecutor
 
         let user = User(userID: testUserID)
-        operation.onComplete([user]) { }
+        testRequestExecutor = TestRequestExecutor(result:[user])
+        operation.requestExecutor = testRequestExecutor
         
-        guard let results = operation.results else {
-            XCTFail("results should be set by now")
-            return
+        let expectation = expectationWithDescription("TrendingUsersOperation")
+        operation.queue() { (results, error) in
+            
+            guard let results = results else {
+                XCTFail("results should be set by now")
+                return
+            }
+            XCTAssertEqual(1, results.count)
+            if let firstResultsObject = results.first as? UserSearchResultObject {
+                let sourceResult = firstResultsObject.sourceResult
+                XCTAssertEqual(sourceResult.userID, self.testUserID)
+            } else {
+                XCTFail("should have at least one results object")
+            }
+            
+            expectation.fulfill()
         }
-        XCTAssertEqual(1, results.count)
-        if let firstResultsObject = results.first as? UserSearchResultObject {
-            let sourceResult = firstResultsObject.sourceResult
-            XCTAssertEqual(sourceResult.userID, testUserID)
-        } else {
-            XCTFail("should have at least one results object")
-        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
 }

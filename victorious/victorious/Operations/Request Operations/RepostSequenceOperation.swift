@@ -9,15 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RepostSequenceOperation: RequestOperation {
+class RepostSequenceOperation: FetcherOperation {
     
-    private let nodeID: Int
+    private let sequenceID: String
     
-    var request: RepostSequenceRequest
-    
-    init( nodeID: Int ) {
-        self.nodeID = nodeID
-        self.request = RepostSequenceRequest(nodeID: nodeID)
+    init( sequenceID: String ) {
+        self.sequenceID = sequenceID
     }
     
     override func main() {
@@ -27,20 +24,47 @@ class RepostSequenceOperation: RequestOperation {
             guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
                 return false
             }
-            let node:VNode = context.v_findOrCreateObject( [ "remoteId" : self.nodeID ] )
+            let sequence:VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
+            guard let node = sequence.firstNode(), let nodeID = node.remoteId?.integerValue else {
+                return false
+            }
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.v_addObject(node.sequence, to: "repostedSequences")
             
             context.v_save()
+            
+            RepostSequenceRemoteOperation(nodeID: nodeID).after(self).queue()
             return true
         }
         
         guard didSucceed else {
             return
         }
-        
-        // Then execute the request
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+    }
+}
+
+
+class RepostSequenceRemoteOperation: FetcherOperation, RequestOperation {
+    
+    var request: RepostSequenceRequest!
+    
+    init( nodeID: Int ) {
+        self.request = RepostSequenceRequest(nodeID: nodeID)
+    }
+    
+    override func main() {
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+    }
+    
+    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
+        completion()
+    }
+    
+    private func onError( error: NSError, completion:()->() ) {
+        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
+        completion()
     }
 }

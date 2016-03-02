@@ -164,24 +164,6 @@
     XCTAssertFalse( self.viewController.hasValidSettings );
 }
 
-- (void)testHandleLoadResponse
-{
-    [VNotificationSettings v_swizzleClassMethod:@selector(createDefaultSettings) withBlock:(VNotificationSettings *)^
-    {
-        return self.defaultSettings;
-    }
-                                   executeBlock:^
-    {
-        [self.viewController setSettings:self.randomSettings];
-        XCTAssertNil( self.viewController.settingsError );
-        XCTAssert( self.viewController.hasValidSettings );
-        XCTAssertEqualObjects( self.viewController.settings, self.randomSettings );
-        [self assertSectionsAndRowsDefined];
-        [self assertSectionStructureMatchesSettings:self.randomSettings  ];
-        XCTAssert( self.viewController.hasValidSettings );
-    }];
-}
-
 - (void)assertSectionStructureMatchesSettings:(VNotificationSettings *)settings
 {
     XCTAssertEqual( [self.viewController.sections[0] rowAtIndex:0].isEnabled,

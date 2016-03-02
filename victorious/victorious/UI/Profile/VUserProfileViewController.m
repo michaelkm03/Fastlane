@@ -74,6 +74,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager; //< Set the dependencyManager before setting the profile
     [viewController addLoginStatusChangeObserver];
+    [viewController updateAccessoryItems];
     
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
     NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
@@ -269,15 +270,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return thresholdEnd;
 }
 
-#pragma mark -
-
-- (BOOL)canShowMarquee
-{
-    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or
-    // not the profileHeader is shown, based on whether or not this stream contains a marquee
-    return NO;
-}
-
 #pragma mark - Loading data
 
 - (void)setInitialHeaderState
@@ -296,7 +288,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self updateProfileHeaderState];
      }];
@@ -387,17 +379,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
-    
-    RequestOperation *operation;
-    if ( self.user.isFollowedByMainUser.boolValue )
-    {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    else
-    {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    }
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
+    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -436,7 +419,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     _userRemoteId = userRemoteId;
     
     UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
-    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )
         {
@@ -778,7 +761,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
             LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull op)
+            [operation queueWithCompletion:^(Operation *_Nonnull op)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )
@@ -803,6 +786,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (NSInteger)badgeNumber
+{
+    NSArray *menuItems = self.dependencyManager.accessoryMenuItems;
+    NSInteger badgeNumber = 0;
+    for ( VNavigationMenuItem *accessoryItem in menuItems )
+    {
+        id destination = accessoryItem.destination;
+        if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+        {
+            badgeNumber += [(id <VProvidesNavigationMenuItemBadge>)destination badgeNumber];
+        }
+    }
+    return badgeNumber;
+}
 
 #pragma mark - VDeepLinkSupporter
 

@@ -9,14 +9,17 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FollowHashtagOperation: RequestOperation {
+class FollowHashtagOperation: FetcherOperation {
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: FollowHashtagRequest
+    let hashtag: String
     
     required init(hashtag: String) {
-        self.request = FollowHashtagRequest(hashtag: hashtag)
+        self.hashtag = hashtag
+        super.init()
+        
+        FollowHashtagRequestOperation(hashtag: hashtag).after(self).queue()
     }
     
     override func main() {
@@ -25,11 +28,11 @@ class FollowHashtagOperation: RequestOperation {
                 return
             }
             
-            let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.request.hashtag ] )
-            persistentHashtag.tag = self.request.hashtag
+            let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.hashtag ] )
+            persistentHashtag.tag = self.hashtag
             
             // Find or create the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.request.hashtag ]
+            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.hashtag ]
             let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueElements )
             followedHashtag.user = currentUser
             followedHashtag.hashtag = persistentHashtag
@@ -38,7 +41,20 @@ class FollowHashtagOperation: RequestOperation {
             context.v_save()
         }
         
-        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         self.trackingManager.trackEvent(VTrackingEventUserDidFollowHashtag)
+    }
+}
+
+
+class FollowHashtagRequestOperation: FetcherOperation, RequestOperation {
+    
+    let request: FollowHashtagRequest!
+    
+    required init(hashtag: String) {
+        self.request = FollowHashtagRequest(hashtag: hashtag)
+    }
+    
+    override func main() {
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }

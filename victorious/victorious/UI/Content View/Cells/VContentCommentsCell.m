@@ -21,13 +21,11 @@
 #import "UIImage+ImageCreation.h"
 #import "AVAsset+Orientation.h"
 #import "NSDate+timeSince.h"
-#import "VRTCUserPostedAtFormatter.h"
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
 #import "UIView+AutoLayout.h"
 #import "VTagStringFormatter.h"
 
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "VTagSensitiveTextView.h"
 
 #import "VSequence+Fetcher.h"
@@ -35,6 +33,8 @@
 #import "VComment+Fetcher.h"
 
 #import "victorious-Swift.h"
+
+@import SDWebImage;
 
 static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 20.0f, 55.0f };
 
@@ -45,14 +45,12 @@ static NSCache *_sharedImageCache = nil;
 @property (weak, nonatomic) IBOutlet VDefaultProfileButton *commentersAvatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
-@property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *seperatorImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *clockIconImageView;
 
 @property (nonatomic, strong) NSNumber *mediaAssetOrientation;
 @property (nonatomic, copy) NSString *commenterName;
 @property (nonatomic, copy) NSString *timestampText;
-@property (nonatomic, copy) NSString *realTimeCommentText;
 @property (nonatomic, copy) NSString *commentBody;
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
@@ -154,7 +152,6 @@ static NSCache *_sharedImageCache = nil;
         self.commentersUsernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.commentersUsernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.timestampLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-        self.realtimeCommentLocationLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         self.commentAndMediaView.textFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         self.commentersAvatarButton.dependencyManager = dependencyManager;
     }
@@ -169,19 +166,8 @@ static NSCache *_sharedImageCache = nil;
     self.commentBody = comment.text;
     self.commenterName = comment.user.name;
     self.commentersAvatarButton.user = comment.user;
-    self.timestampText = [comment.postedAt timeSince];
+    self.timestampText = [comment.postedAt stringDescribingTimeIntervalSinceNow];
     self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
-    
-    if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
-    {
-        self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
-                                                                                            andPostedTime:comment.realtime
-                                                                                    withDependencyManager:self.dependencyManager] string];
-    }
-    else
-    {
-        self.realTimeCommentText = @"";
-    }
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
     [self.commentAndMediaView setComment:comment];
@@ -214,12 +200,6 @@ static NSCache *_sharedImageCache = nil;
 {
     _timestampText = [timestampText copy];
     self.timestampLabel.text = timestampText;
-}
-
-- (void)setRealTimeCommentText:(NSString *)realTimeCommentText
-{
-    _realTimeCommentText = [realTimeCommentText copy];
-    self.realtimeCommentLocationLabel.text  = realTimeCommentText;
 }
 
 - (NSURL *)mediaURL

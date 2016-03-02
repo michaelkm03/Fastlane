@@ -88,7 +88,7 @@ static const CGFloat kSpacing = 2.0f;
 {
     _sequence = sequence;
     
-    self.timeSinceLabel.text = [sequence.releasedAt timeSince];
+    self.timeSinceLabel.text = [sequence.releasedAt stringDescribingTimeIntervalSinceNow];
     [self invalidateIntrinsicContentSize];
 }
 

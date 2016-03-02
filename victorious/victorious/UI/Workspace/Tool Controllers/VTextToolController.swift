@@ -40,7 +40,7 @@ extension VTextToolController {
         return image
     }
     
-    func publishTextPost(renderedAssetURL: NSURL, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
+    func publishTextPost(renderedAssetURL: NSURL?, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
         
         let parameters = TextPostParameters(content: currentText, backgroundImageURL: renderedAssetURL, backgroundColor: currentColorSelection)
         let previewImage = textPostPreviewImage
@@ -48,9 +48,8 @@ extension VTextToolController {
         guard let operation = CreateTextPostOperation(parameters: parameters, previewImage: previewImage, uploadManager: uploadManager) else {
             return
         }
-        operation.mainQueueCompletionBlock = { _ in
+        operation.queue() { (results, error) in
             completion(finished: true, renderedMediaURL: nil, previewImage: nil, error: nil)
         }
-        operation.queue()
     }
 }

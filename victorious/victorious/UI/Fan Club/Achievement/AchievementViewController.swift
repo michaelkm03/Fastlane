@@ -19,7 +19,6 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         static let presentationDuration = 0.5
         static let dismissalDuration = 0.3
         static let containerWidth: CGFloat = 292
-        static let badgeAnimationTotalDuration = 2.0
     }
     
     private let achievementAnimator = AchievementAnimator()
@@ -90,17 +89,14 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     /// MARK: Actions
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         guard let alert = alert else {
             return
         }
         
-        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
-        self.animatedBadge?.animateProgress(duration,
-            endPercentage: Int(alert.parameters.userFanLoyalty.progress),
-            completion: nil)
+        self.animatedBadge?.progress = alert.parameters.userFanLoyalty.progress
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears

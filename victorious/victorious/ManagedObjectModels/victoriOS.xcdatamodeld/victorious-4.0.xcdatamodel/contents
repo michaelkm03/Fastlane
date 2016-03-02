@@ -86,18 +86,18 @@
     </entity>
     <entity name="FollowedHashtag" representedClassName="VFollowedHashtag" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Hashtag" inverseName="followedHashtags" inverseEntity="Hashtag" syncable="YES"/>
+        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="followedHashtags" inverseEntity="Hashtag" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followedHashtags" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="FollowedUser" representedClassName="VFollowedUser" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
+        <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
         <relationship name="subjectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
+        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
     </entity>
     <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
         <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -148,7 +148,6 @@
         <attribute name="mediaWidth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 32" indexed="YES" syncable="YES"/>
-        <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
@@ -298,6 +297,7 @@
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isBlockedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isFollowedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -321,8 +321,8 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedHashtag" inverseName="user" inverseEntity="FollowedHashtag" syncable="YES"/>
-        <relationship name="followers" optional="YES" toMany="YES" deletionRule="No Action" ordered="YES" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
-        <relationship name="following" optional="YES" toMany="YES" deletionRule="No Action" ordered="YES" destinationEntity="FollowedUser" inverseName="subjectUser" inverseEntity="FollowedUser" syncable="YES"/>
+        <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
+        <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedUser" inverseName="subjectUser" inverseEntity="FollowedUser" syncable="YES"/>
         <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
@@ -361,7 +361,7 @@
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
         <element name="ListShelf" positionX="0" positionY="0" width="128" height="60"/>
         <element name="MediaAttachment" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Message" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="Message" positionX="0" positionY="0" width="128" height="255"/>
         <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
         <element name="NodeAction" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Notification" positionX="0" positionY="0" width="128" height="195"/>

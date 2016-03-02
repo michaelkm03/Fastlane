@@ -9,14 +9,20 @@
 import XCTest
 @testable import victorious
 
-class ValidatePasswordResetTokenOperationTests: BaseRequestOperationTestCase {
+class ValidatePasswordResetTokenOperationTests: BaseFetcherOperationTestCase {
     
     func testMain() {
         let operation = ValidatePasswordResetTokenOperation(userToken: "usertoken", deviceToken: "devicetoken")
+        testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = testRequestExecutor
-
-        operation.main()
         
-        XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
+        let expectation = expectationWithDescription("ValidatePasswordResetTokenOperation")
+        operation.queue() { (results, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+        }
     }
 }

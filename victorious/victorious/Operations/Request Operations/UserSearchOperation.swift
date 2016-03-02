@@ -15,9 +15,13 @@ import VictoriousIOSSDK
     init(user: VictoriousIOSSDK.User) {
         sourceResult = user
     }
+    
+    var remoteId: NSNumber {
+        return sourceResult.userID
+    }
 }
 
-final class UserSearchOperation: RequestOperation, PaginatedOperation {
+final class UserSearchOperation: FetcherOperation, PaginatedRequestOperation {
     internal(set) var didClearResults = false
     
     let request: UserSearchRequest

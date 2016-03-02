@@ -28,16 +28,9 @@
 {
     [super setUp];
     
-    //Setup a dependencyManager with a valid objectManager to allow the marquee to fetch a stream during init
-#warning FIXME: New archicture
-    // [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
+    NSString *urlString = @"http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%";
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                configuration:
-                                             @{
-                                               @"marqueeURL" : @"http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-#warning FIXME: New archicture
-                                               // @"objectManager" : [VObjectManager sharedManager]
-                                               }
+                                                                                configuration:@{ @"marqueeURL" : urlString }
                                                             dictionaryOfClassesByTemplateName:nil];
     self.marquee = [[VAbstractMarqueeController alloc] initWithDependencyManager:dependencyManager];
 }

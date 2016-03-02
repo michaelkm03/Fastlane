@@ -14,7 +14,7 @@
  *  The selection block type for the account selection helper. 
  *  Twitter account may be nil if permission was denied or the user cancelled.
  */
-typedef void (^VTwitterAccountsHelperCompletion)(ACAccount *twitterAccount);
+typedef void (^VTwitterAccountsHelperCompletion)(ACAccount *twitterAccount, NSError *error);
 
 /**
  *  A VTwitterAccountsHelper assists a viewController with selecting among the user's twitter accounts.

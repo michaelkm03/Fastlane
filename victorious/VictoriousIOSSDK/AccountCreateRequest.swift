@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-import SwiftyJSON
-
 /// The different ways a new account can be established at Victorious
 public enum NewAccountCredentials {
     /// An account based on an e-mail address and password combination

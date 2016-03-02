@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SendMessageOperation: RequestOperation {
+class SendMessageOperation: FetcherOperation, RequestOperation {
     
-    let request: SendMessageRequest
+    let request: SendMessageRequest!
     let localMessageID: NSManagedObjectID
     
     required init( request: SendMessageRequest, localMessageID: NSManagedObjectID) {
@@ -71,7 +71,6 @@ class CreateMessageOperation: FetcherOperation {
             
             let message: VMessage = context.v_createObject()
             message.sender = currentUser
-            message.senderUserId = currentUser.remoteId
             message.text = self.creationParameters.text
             message.postedAt = creationDate
             message.displayOrder = newDisplayOrder
@@ -98,7 +97,7 @@ class CreateMessageOperation: FetcherOperation {
         
         if let messageObjectID = newMessageObjectID,
             let remoteOperation = SendMessageOperation(localMessageID: messageObjectID, creationParameters: self.creationParameters) {
-                remoteOperation.queueAfter(self)
+                remoteOperation.after(self).queue()
         }
     }
 }

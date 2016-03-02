@@ -83,14 +83,14 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },
-            completion: { (operation, error) in
+            completion: { (results, error) in
                 self.hasLoadedOnce = true
-                completion?(operation?.results, error)
+                completion?( results, error)
             }
         )
     }
     
-    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
@@ -105,7 +105,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder?.compare($1.displayOrder) == .OrderedDescending }
+        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder.compare($1.displayOrder) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
@@ -140,14 +140,14 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     // MARK: - Private helpers
     
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
-        cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
+        cell.timeLabel?.text = message.postedAt?.stringDescribingTimeIntervalSinceNow() ?? ""
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
-        cell.profileImageOnRight = message.sender?.isCurrentUser() ?? false
+        cell.profileImageOnRight = message.sender.isCurrentUser() ?? false
         cell.selectionStyle = .None
         
-        if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
+        if let urlString = message.sender.pictureUrl, let imageURL = NSURL(string: urlString) {
             cell.profileImageView?.setProfileImageURL(imageURL)
         }
     }

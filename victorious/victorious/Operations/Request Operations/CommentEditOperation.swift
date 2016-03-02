@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CommentEditOperation: RequestOperation {
+class CommentEditOperation: FetcherOperation, RequestOperation {
     
-    var request: CommentEditRequest
+    var request: CommentEditRequest!
     
     private let text: String
     private let commentID: Int

@@ -13,12 +13,12 @@ import UIKit
     func likeSequence(sequence: VSequence, triggeringView: UIView, originViewController: UIViewController, dependencyManager: VDependencyManager, completion: ((Bool) -> Void)?) {
         
         if sequence.isLikedByMainUser.boolValue {
-            UnlikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
+            UnlikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { (results, error) in
                 completion?( error == nil )
             }
             
         } else {
-            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
+            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { (results, error) in
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,
@@ -34,7 +34,7 @@ import UIKit
     }
     
     func repostNode( node: VNode, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { error in
+        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { (results, error) in
             
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
