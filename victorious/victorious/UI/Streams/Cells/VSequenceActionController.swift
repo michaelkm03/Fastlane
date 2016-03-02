@@ -129,6 +129,9 @@ import Foundation
             dependencyManager: dependencyManager,
             sequenceID: sequence.remoteId)
         operation.queue() { (results, error) in
+            guard !operation.cancelled else {
+                return
+            }
             completion?( !operation.cancelled )
         }
     }

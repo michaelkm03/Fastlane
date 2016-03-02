@@ -22,7 +22,7 @@ class DeleteSequenceOperation: FetcherOperation {
         super.init()
         
         DeleteSequenceAlertOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager).after(self).queue()
+            dependencyManager: dependencyManager).before(self).queue()
         
         DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
     }
