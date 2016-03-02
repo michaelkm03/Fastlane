@@ -10,6 +10,8 @@ import Foundation
 
 class ComposerController: NSObject {
     
+    weak var delegate: ComposerControllerDelegate?
+    
     let attachmentTabs: [ComposerControllerAttachmentTab]
     
     var maximumHeight: CGFloat = CGFloat.max {
@@ -21,5 +23,13 @@ class ComposerController: NSObject {
     init(attachmentTabs: [ComposerControllerAttachmentTab]) {
         self.attachmentTabs = attachmentTabs
         super.init()
+    }
+    
+    func addTagForUser(user: VUser) {
+        
+    }
+    
+    func addTagForHashtag(hashtag: VHashtag) {
+        
     }
 }

@@ -1650,6 +1650,13 @@
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
+		F03B203C1C865EC3005E83A0 /* StageControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */; };
+		F03B203E1C865FDA005E83A0 /* StageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203D1C865FDA005E83A0 /* StageController.swift */; };
+		F03B20421C866161005E83A0 /* ChatFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20411C866161005E83A0 /* ChatFeedController.swift */; };
+		F03B20441C86616F005E83A0 /* ChatFeedControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */; };
+		F03B20461C86656B005E83A0 /* LightboxController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20451C86656B005E83A0 /* LightboxController.swift */; };
+		F03B20481C866581005E83A0 /* LightboxControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20471C866581005E83A0 /* LightboxControllerDelegate.swift */; };
+		F03B204A1C8665CF005E83A0 /* LightboxControllerOverflowMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20491C8665CF005E83A0 /* LightboxControllerOverflowMenuItem.swift */; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
@@ -4324,6 +4331,13 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
+		F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageControllerDelegate.swift; sourceTree = "<group>"; };
+		F03B203D1C865FDA005E83A0 /* StageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageController.swift; sourceTree = "<group>"; };
+		F03B20411C866161005E83A0 /* ChatFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedController.swift; sourceTree = "<group>"; };
+		F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedControllerDelegate.swift; sourceTree = "<group>"; };
+		F03B20451C86656B005E83A0 /* LightboxController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxController.swift; sourceTree = "<group>"; };
+		F03B20471C866581005E83A0 /* LightboxControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxControllerDelegate.swift; sourceTree = "<group>"; };
+		F03B20491C8665CF005E83A0 /* LightboxControllerOverflowMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxControllerOverflowMenuItem.swift; sourceTree = "<group>"; };
 		F03C134B1B69373200287F4C /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		F03C134C1B69373200287F4C /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -4841,7 +4855,6 @@
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
-				F048AFCD1C81096F004F516A /* Composer */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
@@ -4872,6 +4885,7 @@
 				D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */,
 				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
 				A7AEF9CB1A83F2DC00A3D3A0 /* Video */,
+				F03B20371C865C1B005E83A0 /* VIP */,
 				D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */,
 				D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */,
 				D8B70FE81A805CC800090C5E /* VInlineValidationView.h */,
@@ -9196,6 +9210,45 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		F03B20371C865C1B005E83A0 /* VIP */ = {
+			isa = PBXGroup;
+			children = (
+				F03B203A1C865C44005E83A0 /* Lightbox */,
+				F03B20391C865C3B005E83A0 /* ChatFeed */,
+				F03B20381C865C33005E83A0 /* Stage */,
+				F048AFCD1C81096F004F516A /* Composer */,
+			);
+			name = VIP;
+			sourceTree = "<group>";
+		};
+		F03B20381C865C33005E83A0 /* Stage */ = {
+			isa = PBXGroup;
+			children = (
+				F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */,
+				F03B203D1C865FDA005E83A0 /* StageController.swift */,
+			);
+			name = Stage;
+			sourceTree = "<group>";
+		};
+		F03B20391C865C3B005E83A0 /* ChatFeed */ = {
+			isa = PBXGroup;
+			children = (
+				F03B20411C866161005E83A0 /* ChatFeedController.swift */,
+				F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */,
+			);
+			name = ChatFeed;
+			sourceTree = "<group>";
+		};
+		F03B203A1C865C44005E83A0 /* Lightbox */ = {
+			isa = PBXGroup;
+			children = (
+				F03B20451C86656B005E83A0 /* LightboxController.swift */,
+				F03B20491C8665CF005E83A0 /* LightboxControllerOverflowMenuItem.swift */,
+				F03B20471C866581005E83A0 /* LightboxControllerDelegate.swift */,
+			);
+			name = Lightbox;
+			sourceTree = "<group>";
+		};
 		F048AFCD1C81096F004F516A /* Composer */ = {
 			isa = PBXGroup;
 			children = (
@@ -11082,6 +11135,7 @@
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A75DF5231C3DBD5100A4C82A /* UserSearchResultTableViewCell.swift in Sources */,
+				F03B20421C866161005E83A0 /* ChatFeedController.swift in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
@@ -11113,6 +11167,7 @@
 				03CA69621C5485200039BD01 /* PersistenceTemplateDownloader.swift in Sources */,
 				A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */,
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
+				F03B203E1C865FDA005E83A0 /* StageController.swift in Sources */,
 				F06B41CF1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift in Sources */,
 				A7EBF53C1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift in Sources */,
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
@@ -11225,6 +11280,7 @@
 				A76DD75F1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */,
+				F03B204A1C8665CF005E83A0 /* LightboxControllerOverflowMenuItem.swift in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				798AA5911C3B033D00D267C3 /* LogoutOperation.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
@@ -11355,6 +11411,7 @@
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				F048B00F1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift in Sources */,
 				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
+				F03B20461C86656B005E83A0 /* LightboxController.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */,
 				A7EBF5331C2B99A20080C7CF /* VFollowersDataSource.swift in Sources */,
@@ -11374,6 +11431,7 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
+				F03B203C1C865EC3005E83A0 /* StageControllerDelegate.swift in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,
 				A7B1335C1C6178FD006EC4F5 /* ActivityIndicatorCollectionCell.swift in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
@@ -11914,6 +11972,7 @@
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
+				F03B20441C86616F005E83A0 /* ChatFeedControllerDelegate.swift in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
 				A76363691C5036BF000887C4 /* VSequenceLiker.m in Sources */,
@@ -11938,12 +11997,12 @@
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
+				F03B20481C866581005E83A0 /* LightboxControllerDelegate.swift in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
 				A74C2C601C7410620022AC35 /* DebugErrorHanlder.swift in Sources */,
-				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,
 				A7DECE6A1C7EA13700F414D0 /* NSOperationQueue+Queuable.swift in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */,
