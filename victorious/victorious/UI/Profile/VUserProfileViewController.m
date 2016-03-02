@@ -448,7 +448,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( _user == nil )
     {
-        self.representsMainUser = NO;
         return;
     }
     
