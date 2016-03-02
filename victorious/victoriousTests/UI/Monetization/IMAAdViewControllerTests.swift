@@ -12,17 +12,16 @@ import XCTest
 class IMAAdViewControllerTests: XCTestCase {
     let testAdTag = "http://example.com/adTag"
     let testAdsManager = TestIMAAdsManager(test: true)
-    var player: TestVideoPlayer!
-    var testAdsLoader: TestIMAAdsLoader!
-    var controller: IMAAdViewController!
-    weak var testAdDelegate: TestAdLifecycleDelegate!
+    let player = TestVideoPlayer()
+    let testAdsLoader = TestIMAAdsLoader()
+    let testAdDelegate = TestAdLifecycleDelegate()
+    
+    var controller:IMAAdViewController!
 
     override func setUp() {
         super.setUp()
-        player = TestVideoPlayer()
-        testAdsLoader = TestIMAAdsLoader()
+
         controller = IMAAdViewController(player: player, adTag: testAdTag, adsLoader: testAdsLoader)
-        testAdDelegate = TestAdLifecycleDelegate()
         controller.adsManager = testAdsManager
         controller.delegate = testAdDelegate
     }
