@@ -107,7 +107,15 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     
     if ([self.user badgeType] == AvatarBadgeTypeVerified)
     {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+        // Created another container view since we are automatically scaling the size of the returned
+        // view to be the size of the container.
+        UIView *verifiedContainerView = [[UIView alloc] init];
+        UIImageView *verifiedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+        [verifiedContainerView addSubview:verifiedImageView];
+        [verifiedContainerView v_addCenterAndFitToParentConstraintsToSubview:verifiedImageView
+                                                                       width:0.5
+                                                                      height:0.5];
+        return verifiedContainerView;
     }
     
     // Make sure we have a badge component and that this user is a high enough level to show it
