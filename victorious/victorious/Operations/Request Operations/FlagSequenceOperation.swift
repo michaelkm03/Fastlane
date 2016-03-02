@@ -14,13 +14,8 @@ class FlagSequenceOperation: FetcherOperation {
     private let sequenceID: String
     private let flaggedContent = VFlaggedContent()
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequenceID: String) {
+    init(sequenceID: String) {
         self.sequenceID = sequenceID
-        
-        super.init()
-        
-        // Before, confirm with an alert
-        FlagSequenceAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager).before(self).queue()
     }
     
     override func main() {

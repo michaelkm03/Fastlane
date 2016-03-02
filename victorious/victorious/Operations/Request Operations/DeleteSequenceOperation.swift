@@ -14,17 +14,6 @@ class DeleteSequenceOperation: FetcherOperation {
     private let sequenceID: String
     private let flaggedContent = VFlaggedContent()
     
-    /// After presenting an alert in the the provided originViewController, this operation
-    /// deletes the sequence that corresponds to the provided sequenceID if it exists and
-    /// if the user confirmed in the alert.
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, sequenceID: String) {
-        self.sequenceID = sequenceID
-        super.init()
-        
-        DeleteSequenceAlertOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager).before(self).queue()
-    }
-    
     /// Deletes the sequence without asking for the user to confirm the action first
     init( sequenceID: String) {
         self.sequenceID = sequenceID

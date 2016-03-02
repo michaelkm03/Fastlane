@@ -7,26 +7,6 @@
     "name": "Patrick's Fantastic Sequence",
     "description": "Describe me a sequence, yo",
     "permissions": 3486,
-    "preview": {
-        "type": "media",
-        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e063eaca658538013574646353759e8\/thumbnail-00001.jpg",
-        "assets": [{
-                   "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e063eaca658538013574646353759e8\/560x320.jpg",
-                   "type": "image\/jpeg",
-                   "width": 560,
-                   "height": 320
-                   }, {
-                   "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e063eaca658538013574646353759e8\/80x46.jpg",
-                   "type": "image\/jpeg",
-                   "width": 80,
-                   "height": 46
-                   }, {
-                   "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e063eaca658538013574646353759e8\/320x183.jpg",
-                   "type": "image\/jpeg",
-                   "width": 320,
-                   "height": 183
-                   }]
-    },
     "entry_label" : "Headline!!!",
     "status": "public",
     "am_liking": true,

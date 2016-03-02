@@ -8,16 +8,20 @@
 
 import UIKit
 
-class FlagSequenceAlertOperation: NavigationOperation, ActionConfirmationOperation {
-
+class ConfirmDestructiveActionOperation: NavigationOperation, ActionConfirmationOperation {
+    
+    private let actionTitle: String
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
+    
+    private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager) {
+    init( actionTitle: String, originViewController: UIViewController, dependencyManager: VDependencyManager) {
+        self.actionTitle = actionTitle
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
     }
@@ -28,7 +32,7 @@ class FlagSequenceAlertOperation: NavigationOperation, ActionConfirmationOperati
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+            UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
                 handler: { action in
                     self.finishedExecuting()
@@ -36,7 +40,7 @@ class FlagSequenceAlertOperation: NavigationOperation, ActionConfirmationOperati
             )
         )
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("Report/Flag", comment: ""),
+            UIAlertAction(title: self.actionTitle,
                 style: .Destructive,
                 handler: { action in
                     self.didConfirmAction = true
