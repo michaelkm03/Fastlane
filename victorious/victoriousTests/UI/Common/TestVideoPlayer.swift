@@ -20,7 +20,7 @@ class TestVideoPlayer: NSObject, VVideoPlayer {
     var currentTimeMilliseconds: UInt = 0
     var currentTimeSeconds: Float64 = 0
     var durationSeconds: Float64 = 0
-    var delegate: VVideoPlayerDelegate?
+    weak var delegate: VVideoPlayerDelegate?
     var isPlaying = false
     var useAspectFit = false
     var muted = false

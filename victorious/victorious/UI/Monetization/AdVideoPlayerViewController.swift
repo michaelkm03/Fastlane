@@ -7,7 +7,7 @@
 //
 
 class AdVideoPlayerViewController: UIViewController, AdLifecycleDelegate {
-    var delegate: AdLifecycleDelegate?
+    weak var delegate: AdLifecycleDelegate?
     var adViewController: VAdViewControllerType
 
     //MARK: - Initializers
