@@ -12,7 +12,9 @@ import VictoriousIOSSDK
 extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel sourceStream: Stream ) {
+        apiPath                 = sourceStream.apiPath
         remoteId                = sourceStream.streamID
+        
         itemType                = sourceStream.type?.rawValue ?? itemType
         itemSubType             = sourceStream.subtype?.rawValue ?? itemSubType
         name                    = sourceStream.name ?? name

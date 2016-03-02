@@ -23,12 +23,10 @@ class PreloadUserInfoOperation: Operation {
                 return
             }
             
-            let userID = currentUser.remoteId.integerValue
             let apiPath = VStreamItem.apiPathForStreamWithUserID(currentUser.remoteId)
-            let paginator = StreamPaginator(apiPath: apiPath, sequenceID: nil, pageNumber: 1, itemsPerPage: 45)
-            if let request = StreamRequest(apiPath: apiPath, sequenceID: nil, paginator: paginator) {
-                StreamOperation(request: request).queue()
-            }
+            let userID = currentUser.remoteId.integerValue
+            
+            StreamOperation(apiPath: apiPath).queue()
             
             UserInfoOperation(userID: userID).queue()
             
