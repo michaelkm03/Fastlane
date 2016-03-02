@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isUserScrolling;
 
+@property (nonatomic, assign) BOOL disabled;
+
 /*
  Drives the calculations of when next and previous pages should be loaded,
  which then triggers the calling of the methods in `VScrollPaginatorDelegate`.
@@ -44,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
 
 @end
 

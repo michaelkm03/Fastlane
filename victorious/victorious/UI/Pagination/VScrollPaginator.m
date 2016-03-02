@@ -20,7 +20,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( self.delegate == nil )
+    if ( !self.isUserScrolling || self.delegate == nil || self.disabled)
     {
         return;
     }
@@ -36,21 +36,18 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    // Only if the user started the scroll with a drag do we mark this YES
     self.isUserScrolling = YES;
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    // When scrolling comes to a stop (having been started by user or not), we mark this as NO
     self.isUserScrolling = NO;
 }
 
 - (void)calculate:(UIScrollView *)scrollView
 {
-    if (self.isUserScrolling)
-    {
-        return;
-    }
-    
     const CGFloat contentHeight = scrollView.contentSize.height;
     if (contentHeight <= scrollView.bounds.size.height)
     {

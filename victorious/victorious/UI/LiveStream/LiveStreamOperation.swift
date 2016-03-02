@@ -69,7 +69,7 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
             var messagesCreated = [VMessage]()
             var displayOrder = conversation.messages?.count ?? 0
             
-            let messagesCount = 1 + Int(arc4random() % 3)
+            let messagesCount = 120 //1 + Int(arc4random() % 5)
             for _ in 0..<messagesCount {
                 let sender: VUser
                 if arc4random() % 5 == 1 {

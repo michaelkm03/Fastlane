@@ -15,6 +15,8 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     let itemsPerPage = 15
     let maxVisibleItems = 45
     
+    var currentPageType: VPageType?
+    
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
@@ -27,8 +29,7 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
         self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
     }
     
-    func loadUnstashedPage( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        
+    func paginatorForPageType(pageType: VPageType) -> StandardPaginator? {
         let pageDisplayOrder: Int?
         switch pageType {
         case .Next:
@@ -41,8 +42,18 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
         
         guard let displayOrder = pageDisplayOrder,
             let paginator = StandardPaginator(displayOrder: displayOrder, pageType: pageType, itemsPerPage: itemsPerPage) else {
-                return
+                return nil
         }
+        return paginator
+    }
+    
+    func loadUnstashedPage( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
+        
+        guard let paginator = paginatorForPageType(pageType) else {
+            return
+        }
+        
+        currentPageType = pageType
         
         let conversationID = self.conversation.remoteId!.integerValue
         if let op = currentPaginatedRequestOperation as? FetcherOperation where op.results?.count > 0 {
@@ -50,14 +61,20 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
                 createOperation: {
                     return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
                 },
-                completion: completion
+                completion: { (results, error) in
+                    completion?(results, error)
+                    self.currentPageType = nil
+                }
             )
         } else {
             self.loadPage( .First,
                 createOperation: {
                     return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
                 },
-                completion: completion
+                completion: { (results, error) in
+                    completion?(results, error)
+                    self.currentPageType = nil
+                }
             )
         }
     }
@@ -75,9 +92,6 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
-        if !shouldStashNewContent {
-            purgeVisibleItemsWithinLimit(maxVisibleItems)
-        }
         
         let conversationID = self.conversation.remoteId!.integerValue
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)

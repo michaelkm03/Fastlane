@@ -60,7 +60,7 @@ extension UICollectionView {
         let oldContentSize = contentSize
         let oldOffset = contentOffset
         
-        //Must call reloadData() to get contentSize to update instantly
+        // Must call reloadData() to get contentSize to update instantly
         reloadData()
         
         let newContentSize = contentSize
@@ -80,6 +80,7 @@ extension UICollectionView {
             } else {
                 UIView.performWithoutAnimation(performChangesBlock)
             }
+            completion?()
             return
         }
         
