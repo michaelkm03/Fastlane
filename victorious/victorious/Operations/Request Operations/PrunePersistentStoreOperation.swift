@@ -39,8 +39,8 @@ class LogoutPrunePersistentStoreOperation: FetcherOperation {
     persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            let followingStreamPredicate = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
-            let userPostPredicate = NSPredicate(format: "streamParent.streamId == %@", "user_posts")
+            let userPostPredicate = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
+            let followingStreamPredicate = NSPredicate(format: "streamParent.streamId == %@", "user_posts")
             fetchRequest.predicate = userPostPredicate + followingStreamPredicate
             
             context.v_deleteObjects(fetchRequest)
