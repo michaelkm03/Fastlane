@@ -263,22 +263,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
-    self.voteSettings = [[VVoteSettings alloc] init];
-    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
-    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager];
-
-    NSArray *voteSettingProductIdentifiers = self.voteSettings.getProductIdentifiers;
-    NSString *subscriptionProductIdentifier = self.subscriptionSettings.getProductIdentifier;
-    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteSettingProductIdentifiers];
-    if (subscriptionProductIdentifier != nil)
-    {
-        [productIdentifiers addObject:subscriptionProductIdentifier];
-    }
-
-    NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
-    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error) {
-        VLog(@"Failed to fetch products with identifiers %@", productIdentifiers);
-    }];
+    [self fetchProductIdentifiersIfNeeded];
 
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
@@ -295,6 +280,26 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
+    }];
+}
+
+- (void)fetchProductIdentifiersIfNeeded
+{
+    self.voteSettings = [[VVoteSettings alloc] init];
+    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
+    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager];
+
+    NSArray *voteSettingProductIdentifiers = self.voteSettings.getProductIdentifiers;
+    NSString *subscriptionProductIdentifier = self.subscriptionSettings.getProductIdentifier;
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteSettingProductIdentifiers];
+    if (subscriptionProductIdentifier != nil)
+    {
+        [productIdentifiers addObject:subscriptionProductIdentifier];
+    }
+
+    NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
+    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error) {
+        VLog(@"Failed to fetch products with identifiers %@", productIdentifiers);
     }];
 }
 

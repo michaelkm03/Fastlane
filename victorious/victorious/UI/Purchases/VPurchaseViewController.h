@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSString * _Nonnull productIdentifier;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic) IBOutlet UIView * backgroundScreen;
+@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
 
 /** Exposing public property so that external classes/categories can animate it */
 @property (weak, nonatomic) IBOutlet UIView *modalContainer;
