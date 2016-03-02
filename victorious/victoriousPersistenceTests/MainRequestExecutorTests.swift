@@ -82,14 +82,14 @@ class MainRequestExecutorTests: XCTestCase {
                     XCTFail( "Should not be called" )
                 },
                 onError: { (error, completion:()->() ) in
-                    completion()
-                    XCTAssertEqual( error.code, kVCanceledError )
-                    XCTAssertEqual( error.domain, kVictoriousErrorDomain )
-                    expectation.fulfill()
+                    XCTFail( "Should not be called" )
                 }
             )
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        dispatch_after(1.0) {
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(2.0, handler: nil)
     }
     
     func testErrorWithErrorHandlers() {
