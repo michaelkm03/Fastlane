@@ -29,7 +29,6 @@ class FlagSequenceOperation: FetcherOperation {
             return
         }
         
-        // After, fire and forget the remote request
         FlagSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()
         
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
@@ -64,6 +63,10 @@ class FlagSequenceRequestOperation: FetcherOperation, RequestOperation {
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            cancel()
+            return
+        }
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
