@@ -29,7 +29,7 @@
 
 static NSString * const kURLKey = @"url";
 static NSString * const kOKButtonKey = @"OK";
-static NSString * const kCancelButtonKey = @"CancelButton";
+static NSString * const kCancelButtonKey = @"Cancel";
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {

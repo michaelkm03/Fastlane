@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "확인";
-"CancelButton"          =   "취소";
 "DeleteButton"          =   "삭제";
 "ResetButton"           =   "초기화";
 "Publish"               =   "게재하기";

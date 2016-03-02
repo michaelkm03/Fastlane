@@ -31,7 +31,7 @@ class DeleteSequenceAlertOperation: NavigationOperation, ActionConfirmationOpera
             preferredStyle: UIAlertControllerStyle.ActionSheet)
         
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("CancelButton", comment: ""),
+            UIAlertAction(title: NSLocalizedString("Cancel", comment: ""),
                 style: .Cancel,
                 handler: { action in
                     self.finishedExecuting()
