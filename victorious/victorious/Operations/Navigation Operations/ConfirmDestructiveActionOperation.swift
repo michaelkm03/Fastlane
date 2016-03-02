@@ -1,5 +1,5 @@
 //
-//  FlagSequenceAlertOperation.swift
+//  ConfirmDestructiveActionOperation.swift
 //  victorious
 //
 //  Created by Vincent Ho on 2/26/16.
