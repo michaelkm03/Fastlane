@@ -11,9 +11,9 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: (sequence: Sequence, stream: VStream?) ) {
+    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamParent: Stream?) ) {
         let sequence = sourceModel.sequence
-        let stream = sourceModel.stream
+        let streamParent = sourceModel.streamParent
         
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
@@ -45,7 +45,7 @@ extension VSequence: PersistenceParsable {
             return
         }
         
-        if let stream = stream {
+        if let stream = streamParent {
             let streamItemPointer = self.parseStreamItemPointerForStream(stream)
             streamItemPointer.populate(fromSourceModel: sequence)
             streamItemPointer.streamItem = self
@@ -113,9 +113,9 @@ extension VSequence: PersistenceParsable {
 
 private extension VStreamItem {
     
-    func parseStreamItemPointerForStream(stream: VStream) -> VStreamItemPointer {
+    func parseStreamItemPointerForStream(stream: Stream) -> VStreamItemPointer {
         let uniqueInfo: [String : NSObject]
-        if let apiPath = stream.apiPath {
+        if let apiPath = stream.streamUrl {
             uniqueInfo = ["streamItem" : self, "streamParent.apiPath" : apiPath]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,

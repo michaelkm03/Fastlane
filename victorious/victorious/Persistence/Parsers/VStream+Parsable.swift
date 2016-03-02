@@ -35,7 +35,7 @@ extension VStream: PersistenceParsable {
         let sourceMarqueeItems = sourceStream.marqueeItems ?? []
         let marqueeItems = VStream.persistentStreamItems(
             fromStreamItems: sourceMarqueeItems,
-            parentStream: self,
+            parentStream: sourceStream,
             context: v_managedObjectContext
         )
         for marqueeItem in marqueeItems {
@@ -49,7 +49,7 @@ extension VStream: PersistenceParsable {
         let sourceStreamItems = sourceStream.items ?? []
         let streamItems = VStream.persistentStreamItems(
             fromStreamItems: sourceStreamItems,
-            parentStream: self,
+            parentStream: sourceStream,
             context: v_managedObjectContext
         )
         for streamItem in streamItems {
@@ -65,7 +65,7 @@ extension VStream: PersistenceParsable {
         }
     }
     
-    private static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStream: VStream, context: NSManagedObjectContext) -> [VStreamItem] {
+    private static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStream: Stream, context: NSManagedObjectContext) -> [VStreamItem] {
         
         let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
         let unflaggedItems = items.filter { !flaggedIds.contains( $0.streamItemID ) }
