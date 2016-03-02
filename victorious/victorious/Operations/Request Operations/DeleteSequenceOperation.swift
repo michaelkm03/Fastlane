@@ -21,8 +21,7 @@ class DeleteSequenceOperation: FetcherOperation {
         self.sequenceID = sequenceID
         super.init()
         
-        DeleteSequenceAlertOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager).after(self).queue()
+        DeleteSequenceAlertOperation(originViewController: originViewController).after(self).queue()
         
         DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
     }

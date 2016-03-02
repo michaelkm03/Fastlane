@@ -20,7 +20,7 @@ class FlagSequenceOperation: FetcherOperation {
         super.init()
         
         // Before, confirm with an alert
-        FlagSequenceAlertOperation(originViewController: originViewController, dependencyManager: dependencyManager).before(self).queue()
+        FlagSequenceAlertOperation(originViewController: originViewController).before(self).queue()
         
         // After, fire and forget the remote request
         FlagSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()

@@ -10,14 +10,12 @@ import UIKit
 
 class ShowMediaContentOperation: NavigationOperation {
     
-    private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     private let mediaUrl: NSURL
     private let linkType: VCommentMediaType
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
+    init( originViewController: UIViewController, mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
         self.originViewController = originViewController
-        self.dependencyManager = dependencyManager
         self.mediaUrl = mediaUrl
         self.linkType = linkType
     }
@@ -27,9 +25,9 @@ class ShowMediaContentOperation: NavigationOperation {
         self.beganExecuting()
         
         let mediaLinkViewController = VAbstractMediaLinkViewController.newWithMediaUrl(mediaUrl, andMediaLinkType: linkType)
-        originViewController.presentViewController(mediaLinkViewController, animated: true, completion: nil)
-        
-        self.finishedExecuting()
+        originViewController.presentViewController(mediaLinkViewController, animated: true) {
+            self.finishedExecuting()
+        }
     }
     
 }

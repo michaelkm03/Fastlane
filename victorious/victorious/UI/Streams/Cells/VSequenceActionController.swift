@@ -44,7 +44,6 @@ import Foundation
     
     func showMediaContent(mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
         ShowMediaContentOperation(originViewController: originViewController,
-                                dependencyManager: dependencyManager,
                                 mediaUrl: mediaUrl,
                                 mediaLinkType: linkType).queue()
     }

@@ -10,16 +10,14 @@ import UIKit
 
 class DeleteSequenceAlertOperation: NavigationOperation, ActionConfirmationOperation {
     
-    private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     
     // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager) {
+    init( originViewController: UIViewController) {
         self.originViewController = originViewController
-        self.dependencyManager = dependencyManager
     }
     
     override func start() {
