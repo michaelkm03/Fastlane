@@ -173,7 +173,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSURL *buttonIconURL = [trophyCaseDependencyManager iconImageURLAtDesiredScaleForKey: @"trophy_icon"];
     [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
     
-    [self.profileHeaderViewController setupTrophyCaseButton: trophyCaseButton];
+    [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated

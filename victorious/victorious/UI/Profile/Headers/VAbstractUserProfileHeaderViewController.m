@@ -90,10 +90,12 @@
     return nil;
 }
 
-- (void)setupTrophyCaseButton:(UIButton *)button
-{    
+- (void)addTrophyCaseButton:(UIButton *)button
+{
     [self.view addSubview:button];
-    [self.view v_addCenterToParentContraintsToSubview:button];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button.topAnchor constraintEqualToAnchor:self.profileImageView.topAnchor].active = YES;
+    [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:5.0f].active = YES;
 }
 
 #pragma mark - VBackgroundContainer
