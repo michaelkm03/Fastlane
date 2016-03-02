@@ -172,6 +172,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VDependencyManager *trophyCaseDependencyManager = self.trophyCaseViewController.dependencyManager;
     NSURL *buttonIconURL = [trophyCaseDependencyManager iconImageURLAtDesiredScaleForKey: @"trophy_icon"];
     [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
+    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     
     [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
@@ -583,7 +584,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)openTrophyCase
+#pragma mark - User Actions
+
+- (void)trophyCaseButtonTapped
 {
     [self.navigationController pushViewController:self.trophyCaseViewController animated:YES];
 }
