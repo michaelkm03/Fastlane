@@ -8,38 +8,6 @@
 
 import Foundation
 
-final class LiveStreamOperation: FetcherOperation, PaginatedOperation {
-    
-    let paginator: StandardPaginator
-    let conversationID: Int
-    
-    required init(conversationID: Int, paginator: StandardPaginator = StandardPaginator()) {
-        self.paginator = paginator
-        self.conversationID = conversationID
-        super.init()
-        
-        if self.paginator.pageNumber == 1 {
-            LiveStreamOperationUpdate(conversationID: conversationID).before(self).queue()
-        }
-    }
-    
-    required convenience init(operation: LiveStreamOperation, paginator: StandardPaginator) {
-        self.init(conversationID: operation.conversationID, paginator: paginator)
-    }
-    
-    override func main() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let conversation: VConversation = context.v_findObjects(["remoteId" : self.conversationID ]).first else {
-                return
-            }
-            
-            let predicate = self.paginator.paginatorPredicate
-            self.results = conversation.messages?.filteredOrderedSetUsingPredicate( predicate ).array
-        }
-    }
-}
-
-
 final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
@@ -69,7 +37,7 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
             var messagesCreated = [VMessage]()
             var displayOrder = conversation.messages?.count ?? 0
             
-            let messagesCount = 120 //1 + Int(arc4random() % 5)
+            let messagesCount = 1 + Int(arc4random() % 6)
             for _ in 0..<messagesCount {
                 let sender: VUser
                 if arc4random() % 5 == 1 {
@@ -102,22 +70,19 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
     }
 }
 
-
 private let testMessageText = [
-    "I love you Ariana!",
-    "You rocked at iHeartRadio!!",
-    "OMG your so cute your dimple!  Why can't I look like you!",
-    "I have no words",
-    "I love you Ariana!",
-    "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!",
-    "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!",
-    "I have no words",
-    "I love you Ariana!",
-    "You rocked at iHeartRadio!!",
-    "OMG your so cute your dimple!  Why can't I look like you!",
-    "I have no words",
-    "I love you Ariana!",
-    "You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!  You rocked at iHeartRadio!!",
-    "OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!  OMG your so cute your dimple!  Why can't I look like you!",
-    "I have no words"
+    "I'm so awesome because i can trip over flat surfaces and fall up the stairs. Now that's a talented skill right there :D I can also fall up. Yep",
+    "Shanaynay: Ahh! \nShane: What!?\nShanaynay: Was I sleepin?\nShane:Yes!\n Shanaynay:Did you try to touch me? \nShane: No!\nShanaynay: Don't Lie!! Freaky Ass",
+    "Guess who's pregnant again!! Not me so take a deep breath before you have a heart attack...",
+    "ur profile picture is a car does this mean your a TRANSFORMER!!!",
+    "Surgical removal of appendix- Appendectomy. Male sterilization procedure- Vasectomy. Female to male sex change operation- Add-a-dick-to-me",
+    "I put a note on my mirror this morning. It says \"objects are smaller than they appear.\"",
+    "have you ever wanted to dress like the grim reaperV and go to a retirement home and tap on the windows!?comment below if you would or wouldn't",
+    "BUT my best friends think I'm completely insane! oh think if there were two of me...",
+    "Wonders why I turn the radio down in my car while looking for an address, like it helps me see better lol:)",
+    "OK just out of curiosity, why is it every time someone sees me smile they give me a smirk & ask what I am up to ??",
+    "I know you are jealous. I have an awesome jacket that allows me to hug myself and you don't",
+    "No, I did not trip, I attacked the floor with my Awesome NINJA skills",
+    "mom mom mom mommy mommy mom mom mom ma ma ma mummy mummy mummy WHAT?! hi hahahahaha",
+    "Officer:Any last requests? Man in jail cell :Yes.Hold my,hold my,hold my,HOLD MY HAND!"
 ]

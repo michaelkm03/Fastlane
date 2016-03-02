@@ -13,9 +13,13 @@ import KVOController
 class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     let itemsPerPage = 15
-    let maxVisibleItems = 45
+    
+    /// If this interval is too small, the scrolling animations will become choppy
+    /// as they step on each other before finishing.
+    private let kFetchMessagesInterval: NSTimeInterval = 1.5
     
     var currentPageType: VPageType?
+    private var timerManager: VTimerManager?
     
     let dependencyManager: VDependencyManager
     let conversation: VConversation
@@ -27,72 +31,12 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
         self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
+        super.init()
+        
+        super.maxVisibleItems = 50
     }
     
-    func paginatorForPageType(pageType: VPageType) -> StandardPaginator? {
-        let pageDisplayOrder: Int?
-        switch pageType {
-        case .Next:
-            pageDisplayOrder = (visibleItems.lastObject as? PaginatedObjectType)?.displayOrder.integerValue
-        case .Previous:
-            pageDisplayOrder = (visibleItems.firstObject as? PaginatedObjectType)?.displayOrder.integerValue
-        default:
-            pageDisplayOrder = nil
-        }
-        
-        guard let displayOrder = pageDisplayOrder,
-            let paginator = StandardPaginator(displayOrder: displayOrder, pageType: pageType, itemsPerPage: itemsPerPage) else {
-                return nil
-        }
-        return paginator
-    }
-    
-    func loadUnstashedPage( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        
-        guard let paginator = paginatorForPageType(pageType) else {
-            return
-        }
-        
-        currentPageType = pageType
-        
-        let conversationID = self.conversation.remoteId!.integerValue
-        if let op = currentPaginatedRequestOperation as? FetcherOperation where op.results?.count > 0 {
-            self.loadPage( pageType,
-                createOperation: {
-                    return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
-                },
-                completion: { (results, error) in
-                    completion?(results, error)
-                    self.currentPageType = nil
-                }
-            )
-        } else {
-            self.loadPage( .First,
-                createOperation: {
-                    return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
-                },
-                completion: { (results, error) in
-                    completion?(results, error)
-                    self.currentPageType = nil
-                }
-            )
-        }
-    }
-    
-    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        let conversationID = self.conversation.remoteId!.integerValue
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
-        
-        self.loadPage( pageType,
-            createOperation: {
-                return LiveStreamOperation(conversationID: conversationID, paginator: paginator)
-            },
-            completion: completion
-        )
-    }
-    
-    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
-        
+    func refreshRemote() {
         let conversationID = self.conversation.remoteId!.integerValue
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
         
@@ -100,8 +44,31 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
             createOperation: {
                 return LiveStreamOperationUpdate(conversationID: conversationID, paginator: paginator)
             },
-            completion: completion
+            completion: nil
         )
+    }
+    
+    // MARK: - Live Update
+    
+    func beginLiveUpdates() {
+        guard self.timerManager == nil else {
+            return
+        }
+        let timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval( kFetchMessagesInterval,
+            target: self,
+            selector: Selector("refreshRemote"),
+            userInfo: nil,
+            repeats: true
+        )
+        // To keep the timer running while scrolling:
+        NSRunLoop.mainRunLoop().addTimer(timerManager.timer, forMode: NSRunLoopCommonModes)
+        
+        self.timerManager = timerManager
+    }
+    
+    func endLiveUpdates() {
+        self.timerManager?.invalidate()
+        self.timerManager = nil
     }
     
     // MARK: - UICollectionViewDataSource

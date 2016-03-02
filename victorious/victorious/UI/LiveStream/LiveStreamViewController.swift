@@ -12,10 +12,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private let kSectionBottomMargin: CGFloat = 60.0
     
-    /// If this interval is too small, the scrolling animations will become choppy
-    /// as they step on each other before finishing.
-    private let kFetchMessagesInterval: NSTimeInterval = 2.0
-    
     private var dependencyManager: VDependencyManager!
     
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> LiveStreamViewController {
@@ -48,7 +44,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }()
     
-    private var timerManager: VTimerManager?
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
     
@@ -90,22 +85,17 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
-        
-        let conversationID = dataSource.conversation.remoteId!.integerValue
-        LiveStreamOperationUpdate(conversationID: conversationID).queue() { (results, error) in
-            self.dataSource.loadMessages(pageType: .First)
-        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        //beginLiveUpdates()
+        dataSource.beginLiveUpdates()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        endLiveUpdates()
+        dataSource.endLiveUpdates()
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -130,15 +120,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        
-        scrollPaginator.disabled = true
-        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true) {
-            dispatch_after(1.0) {
-                self.scrollPaginator.disabled = false
-            }
-        }
-        
-        return
         
         let willScroll = collectionView.contentSize.height > collectionView.bounds.height
         guard willScroll else {
@@ -185,7 +166,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         let oldContentSize = self.collectionView.contentSize
         let oldOffset = self.collectionView.contentOffset
         
-        scrollPaginator.disabled = true
         collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: false) {
             let newContentSize = self.collectionView.contentSize
             let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
@@ -195,36 +175,28 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - VScrollPaginatorDelegate
     
-    func shouldLoadNextPage() {
-        if !dataSource.isLoading() {
-            dataSource.loadMessages(pageType: .Next)
-        }
-        //self.dataSource.loadUnstashedPage(.Next)
-    }
+    func shouldLoadNextPage() { }
     
-    func shouldLoadPreviousPage() {
-        if !dataSource.isLoading() {
-            dataSource.loadMessages(pageType: .Previous)
-        }
-        //self.dataSource.loadUnstashedPage(.Previous)
-    }
+    func shouldLoadPreviousPage() { }
     
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
-        // Regular pagination through `scrollPaginator` should only be active when
-        // new items are not being stashed
-        /*if dataSource.shouldStashNewContent {
-            scrollPaginator.scrollViewDidScroll(scrollView)
+        if scrollPaginator.isUserScrolling {
+            
+            if scrollView.contentOffset.y <= previousScrollPosition.y {
+                // When scrolling up to look at older items
+                dataSource.shouldStashNewContent = true
+                
+            } else if scrollView.v_isScrolledToBottom {
+                // When scrolling to bottom, unstash as if the user interacted with `moreContentController`
+                dataSource.shouldStashNewContent = false
+            }
         }
         
-        if scrollPaginator.isUserScrolling && scrollView.contentOffset.y <= previousScrollPosition.y {
-            // When scrolling up to look at older items
-            dataSource.shouldStashNewContent = true
-        }
-        previousScrollPosition = scrollView.contentOffset*/
+        previousScrollPosition = scrollView.contentOffset
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -235,30 +207,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         scrollPaginator.scrollViewDidEndDecelerating(scrollView)
     }
     
-    // MARK: - Live Update
-    
-    func beginLiveUpdates() {
-        guard self.timerManager == nil else {
-            return
-        }
-        let timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval( kFetchMessagesInterval,
-            target: self,
-            selector: Selector("onUpdate"),
-            userInfo: nil,
-            repeats: true
-        )
-        // To keep the timer running while scrolling:
-        NSRunLoop.mainRunLoop().addTimer(timerManager.timer, forMode: NSRunLoopCommonModes)
-        
-        self.timerManager = timerManager
-    }
-    
-    func endLiveUpdates() {
-        self.timerManager?.invalidate()
-        self.timerManager = nil
-    }
-    
-    func onUpdate() {
-        dataSource.refreshRemote()
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
 }

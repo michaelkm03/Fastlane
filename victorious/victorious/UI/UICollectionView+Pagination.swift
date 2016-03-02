@@ -8,6 +8,23 @@
 
 import UIKit
 
+extension UIScrollView {
+    
+    var v_bottomOffset: CGPoint {
+        let height = contentSize.height - (contentInset.top + contentInset.bottom) - bounds.height
+        let yValue = max(height, 0)
+        return CGPoint(x: 0, y: yValue)
+    }
+    
+    var v_isScrolledToBottom: Bool {
+        return contentOffset.y >= v_bottomOffset.y
+    }
+    
+    func v_scrollToBottomAnimated(animated: Bool) {
+        setContentOffset(v_bottomOffset, animated:animated)
+    }
+}
+
 extension UICollectionView {
     
     func v_reloadDataAndCalculateContentOffset() -> CGPoint {
@@ -22,13 +39,6 @@ extension UICollectionView {
         
         let newContentSize = contentSize
         return CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
-    }
-    
-    func v_scrollToBottomAnimated(animated: Bool) {
-        let height = contentSize.height - (contentInset.top + contentInset.bottom) - bounds.height
-        let yValue = max(height, 0)
-        let offset = CGPoint(x: 0, y: yValue)
-        setContentOffset(offset, animated:animated)
     }
     
     func v_updateState(state: VDataSourceState, noContentView: VNoContentView ) {

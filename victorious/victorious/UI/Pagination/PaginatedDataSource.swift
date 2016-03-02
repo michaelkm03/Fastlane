@@ -18,6 +18,10 @@ import VictoriousIOSSDK
     private(set) weak var currentPaginatedRequestOperation: NSOperation?
     private(set) weak var currentLocalOperation: NSOperation?
     
+    /// Determines how many visible items are allowed before older items are purged.
+    /// Default is 0, which indicates no limit.
+    var maxVisibleItems: Int = 0
+    
     private(set) var state: VDataSourceState = .Cleared {
         didSet {
             if oldValue != state {
@@ -60,22 +64,16 @@ import VictoriousIOSSDK
     private var isPurging = false
     private(set) var visibleItems: NSOrderedSet {
         set {
-            _visibleItems = newValue
-            
-            /*if stashedItems.count >= 15 {
-                // Unstash only any newly added visible items that are current stashed
-                let predicate1 = NSPredicate() { newValue.containsObject( $0.0 ) }
-                let toUnstash = stashedItems.filteredOrderedSetUsingPredicate( predicate1 )
-                let predicate2 = NSPredicate() { !toUnstash.containsObject( $0.0 ) }
-                stashedItems = stashedItems.filteredOrderedSetUsingPredicate( predicate2 )
-            } else {
-                stashedItems = NSOrderedSet()
-            }
+            // Unstash only any newly added visible items that are current stashed
+            let predicate1 = NSPredicate() { newValue.containsObject( $0.0 ) }
+            let toUnstash = stashedItems.filteredOrderedSetUsingPredicate( predicate1 )
+            let predicate2 = NSPredicate() { !toUnstash.containsObject( $0.0 ) }
+            stashedItems = stashedItems.filteredOrderedSetUsingPredicate( predicate2 )
             
             // Set the visible items after sorting by displayOrder
             let array = newValue.array as? [PaginatedObjectType] ?? []
             let sortedArray = array.sort { $0.displayOrder.compare($1.displayOrder) == .OrderedAscending }
-            _visibleItems = NSOrderedSet(array: sortedArray)*/
+            _visibleItems = NSOrderedSet(array: sortedArray)
         }
         get {
             return _visibleItems
@@ -172,6 +170,15 @@ import VictoriousIOSSDK
                 if !results.isEmpty {
                     if self.shouldStashNewContent {
                         self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
+                    } else if self.maxVisibleItems > 0 {
+                        let (newItems, removed) = self.visibleItems.v_orderedSetPurgedToLimit(self.maxVisibleItems)
+                        if removed.count > 0 {
+                            self.isPurging = true
+                            self.visibleItems = newItems
+                            self.isPurging = false
+                        } else {
+                            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
+                        }
                     } else {
                         self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
                     }
@@ -193,8 +200,6 @@ import VictoriousIOSSDK
             pagesLoaded = Set<Int>()
         }
         
-        let op = createOperation()
-        
         let operationToQueue: T?
         switch pageType {
         case .First:
@@ -208,15 +213,11 @@ import VictoriousIOSSDK
         // Return early if there is no operation to queue, i.e. no work to do
         guard let requestOperation = operationToQueue as? FetcherOperation,
             var operation = operationToQueue else {
-                print( "\nLoading page: \(op.paginator.pageNumber) [\(op.paginator.displayOrderRangeStart) - \(op.paginator.displayOrderRangeEnd)]"
-                    + "\n\t...FAILED: No more pages beyond \(op.paginator.pageNumber)." )
                 return
         }
         
         // Return early if we've already loaded this page
         guard !pagesLoaded.contains(operation.paginator.pageNumber) else {
-            print( "\nLoading page: \(op.paginator.pageNumber) [\(op.paginator.displayOrderRangeStart) - \(op.paginator.displayOrderRangeEnd)]"
-                + "\n\t...FAILED: Already loaded page \(op.paginator.pageNumber)." )
             return
         }
         
@@ -225,9 +226,6 @@ import VictoriousIOSSDK
         
         state = .Loading
         requestOperation.queue() { (results, error) in
-            
-            print( "\nLoading page: \(op.paginator.pageNumber) [\(op.paginator.displayOrderRangeStart) - \(op.paginator.displayOrderRangeEnd)]"
-                + "\n\t...SUCCESS!" )
             
             if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
@@ -240,26 +238,8 @@ import VictoriousIOSSDK
                 
             } else {
                 let results = operation.results ?? []
-                if !results.isEmpty {
-                    let maxPages = 2
-                    let pageSize = operation.paginator.itemsPerPage
-                    let maxItems = pageSize * maxPages
-                    let (newItems, removed) = self.visibleItems.v_orderedSetPurgedToLimit(maxItems, pageType: pageType)
-                    if removed.count > 0 {
-                        let pageNum = operation.paginator.pageNumber-1
-                        if pageNum >= 0 {
-                            print("Pursing page \(pageNum)")
-                            self.pagesLoaded.remove( pageNum )
-                        }
-                        self.isPurging = true
-                        self.visibleItems = newItems
-                        self.isPurging = false
-                    }
-                }
-                dispatch_after(0.0) {
-                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-                }
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
             completion?( results: results, error: error )
@@ -293,10 +273,7 @@ private extension NSOrderedSet {
         return output.v_orderedSetFitleredForDeletedObjects()
     }
     
-    func v_orderedSetPurgedToLimit(limit: Int, pageType: VPageType) -> (result: NSOrderedSet, removed: NSOrderedSet) {
-        guard pageType == .Next else { //< TODO: Support prev page
-            return (self, NSOrderedSet())
-        }
+    func v_orderedSetPurgedToLimit(limit: Int) -> (result: NSOrderedSet, removed: NSOrderedSet) {
         guard self.count > limit else {
             return (self, NSOrderedSet())
         }

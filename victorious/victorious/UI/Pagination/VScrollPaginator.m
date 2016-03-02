@@ -20,7 +20,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( !self.isUserScrolling || self.delegate == nil || self.disabled)
+    if ( !self.isUserScrolling || self.delegate == nil)
     {
         return;
     }
@@ -42,7 +42,13 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // When scrolling comes to a stop (having been started by user or not), we mark this as NO
+    // As soon as a scroll initializted by a user or not comes to a stop
+    // self.isUserScrolling = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // As soon as the user lifts his/her finger
     self.isUserScrolling = NO;
 }
 

@@ -25,14 +25,30 @@ struct MessageCollectionCellDecorator {
         }
         
         cell.style = VMessageCollectionCell.Style(
-            textColor: UIColor.v_colorFromHexString("b294ca"),
-            backgroundColor: UIColor.v_colorFromHexString("1b1c34"),
-            font: UIFont.systemFontOfSize(16.0))
+            textColor: dependencyManager.textColor,
+            backgroundColor: dependencyManager.backgroundColor,
+            font: dependencyManager.titleFont
+        )
         
         cell.viewData = VMessageCollectionCell.ViewData(
-            text: "\(message.displayOrder): \(message.text ?? "")",
+            text: "\(message.text ?? "")",
             createdAt: message.postedAt,
             username: message.sender.name ?? ""
         )
+    }
+}
+
+private extension VDependencyManager {
+    
+    var textColor: UIColor {
+        return self.colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var backgroundColor: UIColor {
+        return self.colorForKey(VDependencyManagerSecondaryAccentColorKey)
+    }
+    
+    var titleFont: UIFont {
+        return self.fontForKey(VDependencyManagerLabel1FontKey)
     }
 }
