@@ -11,10 +11,9 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamID: String?) ) {
-        
+    func populate( fromSourceModel sourceModel: (sequence: Sequence, stream: VStream?) ) {
         let sequence = sourceModel.sequence
-        let streamID = sourceModel.streamID
+        let stream = sourceModel.stream
         
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
@@ -46,9 +45,11 @@ extension VSequence: PersistenceParsable {
             return
         }
         
-        let streamItemPointer = self.parseStreamItemPointer(forStreamWithStreamID: streamID)
-        streamItemPointer.populate(fromSourceModel: sequence)
-        streamItemPointer.streamItem = self
+        if let stream = stream {
+            let streamItemPointer = self.parseStreamItemPointerForStream(stream)
+            streamItemPointer.populate(fromSourceModel: sequence)
+            streamItemPointer.streamItem = self
+        }
 
         if let adBreak = sequence.adBreak {
             let persistentAdBreak = context.v_createObject() as VAdBreak
@@ -112,12 +113,10 @@ extension VSequence: PersistenceParsable {
 
 private extension VStreamItem {
     
-    func parseStreamItemPointer(forStreamWithStreamID streamID: String?) -> VStreamItemPointer {
+    func parseStreamItemPointerForStream(stream: VStream) -> VStreamItemPointer {
         let uniqueInfo: [String : NSObject]
-        if let streamID = streamID {
-            // If we have a `streamID`, create VStreamItemPointer for that stream
-            let stream: VStream = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : streamID])
-            uniqueInfo = ["streamItem" : self, "streamParent" : stream]
+        if let apiPath = stream.apiPath {
+            uniqueInfo = ["streamItem" : self, "streamParent.apiPath" : apiPath]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
             // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.

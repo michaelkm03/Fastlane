@@ -55,6 +55,18 @@ extern NSString * const VStreamItemSubTypeStream;
 @property (nonatomic, readonly) BOOL isShelf;
 
 /**
+ *  Creates a value for a stream's `apiPath` property that is
+ *  configured for loading a user's posts with provided userID.
+ */
++ (NSString *)apiPathForStreamWithUserID:(NSNumber *)userID;
+
+/**
+ *  Creates a VStream with its `apiPath` configured for loading a user's
+ *  posts with provided userID.
+ */
++ (VStream *)userProfileStreamWithUserID:(NSNumber *)userID;
+
+/**
  *  Returns URL Paths of all the preview images in self.previewImageObject
  *
  *  @return An NSArray of all preview image paths

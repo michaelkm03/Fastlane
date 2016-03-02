@@ -130,7 +130,6 @@
         }
     }
     
-    
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
         [self.navigationController setNavigationBarHidden:NO animated:animated];

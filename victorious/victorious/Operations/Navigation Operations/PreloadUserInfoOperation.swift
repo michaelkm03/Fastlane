@@ -24,8 +24,11 @@ class PreloadUserInfoOperation: Operation {
             }
             
             let userID = currentUser.remoteId.integerValue
-            let apiPath = "/api/sequence/detail_list_by_user/\(userID)/\(VSDKPaginatorMacroPageNumber)/\(VSDKPaginatorMacroItemsPerPage)"
-            StreamOperation(apiPath: apiPath).queue()
+            let apiPath = VStreamItem.apiPathForStreamWithUserID(currentUser.remoteId)
+            let paginator = StreamPaginator(apiPath: apiPath, sequenceID: nil, pageNumber: 1, itemsPerPage: 45)
+            if let request = StreamRequest(apiPath: apiPath, sequenceID: nil, paginator: paginator) {
+                StreamOperation(request: request).queue()
+            }
             
             UserInfoOperation(userID: userID).queue()
             

@@ -36,13 +36,20 @@ class LogoutPrunePersistentStoreOperation: FetcherOperation {
     override func main() {
         
         // Perform on main context for high-priority, thread-blocking results:
-    persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                assertionFailure("Must have a current user to continue with this operation")
+                return
+            }
+            
+            let apiPath = VStreamItem.apiPathForStreamWithUserID( currentUser.remoteId )
+            let userProfileStream = NSPredicate(format: "streamParent.apiPath == %@", apiPath)
+            
+            let followingStream = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
             
             let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
-            let userPostPredicate = NSPredicate(format: "streamParent.streamId == %@", "feed:following")
-            let followingStreamPredicate = NSPredicate(format: "streamParent.streamId == %@", "user_posts")
-            fetchRequest.predicate = userPostPredicate + followingStreamPredicate
-            
+            fetchRequest.predicate = followingStream + userProfileStream
             context.v_deleteObjects(fetchRequest)
             
             // Delete all objects that only exist for a current user.
