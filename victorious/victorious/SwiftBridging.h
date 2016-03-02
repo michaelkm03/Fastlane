@@ -193,6 +193,7 @@
 #import "VSimpleModalTransition.h"
 #import "VSleekStreamCellFactory.h"
 #import "VShrinkingContentLayout.h"
+#import "VSolidColorBackground.h"
 #import "VStoredLogin.h"
 #import "VStoredPassword.h"
 #import "VStream.h"

@@ -12,6 +12,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     let purchaseManager: VPurchaseManager
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     let subscriptionSettings: SubscriptionSettings
+    let vipAppearanceSettings: VIPAppearanceSettings
 
     //MARK: - Initialization
 
@@ -33,6 +34,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
             self.dependencyManager = dependencyManager
             self.purchaseManager = purchaseManager
             self.subscriptionSettings = subscriptionSettings
+            self.vipAppearanceSettings = VIPAppearanceSettings(dependencyManager: dependencyManager)
             super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -43,7 +45,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     //MARK: - View Lifecycle
 
     override func viewDidLoad() {
-        self.view.backgroundColor = UIColor.magentaColor()
+        self.view.backgroundColor = self.vipAppearanceSettings.backgroundColor
 
         if VCurrentUser.user()?.isVIPSubscriber == true {
             let receipt = NSBundle.mainBundle().readReceiptData()
