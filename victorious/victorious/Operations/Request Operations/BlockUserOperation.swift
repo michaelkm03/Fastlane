@@ -50,7 +50,9 @@ class BlockUserOperation: FetcherOperation {
                 }
             }
             
-            context.v_save()
+            //This must bubble up to parent to ensure the parent context knows
+            //what sequences have been deleted as soon as this operation completes
+            context.v_saveAndBubbleToParentContext()
         }
     }
 }
