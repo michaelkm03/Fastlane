@@ -38,10 +38,15 @@
 
 - (NSArray<NSString *> *)getProductIdentifiers
 {
-    return [self.voteTypes v_map:^(VVoteType *voteType)
-    {
-        return voteType.productIdentifier;
-    }];
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    for (VVoteType *voteType in self.voteTypes) {
+        if (voteType.productIdentifier == nil) {
+            continue;
+        }
+        [result addObject:voteType.productIdentifier];
+    }
+
+    return result;
 }
 
 @end

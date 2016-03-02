@@ -103,7 +103,7 @@ static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 #pragma mark - Purchases
 
 static NSString * const kTestSubscriptionProductIdentifier = @"com.getvictorious.leachypeachy99.vip1";
-static NSString * const kProductIdentifierTemplateKey = @"productIdentifier";
+static NSString * const kProductIdentifierTemplateKey = @"appleProductId";
 static NSString * const kSubscriptionTemplateKey = @"subscription";
 
 #pragma mark - Sequence Categories

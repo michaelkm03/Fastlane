@@ -270,7 +270,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSArray *voteSettingProductIdentifiers = self.voteSettings.getProductIdentifiers;
     NSString *subscriptionProductIdentifier = self.subscriptionSettings.getProductIdentifier;
     NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteSettingProductIdentifiers];
-    [productIdentifiers addObject:subscriptionProductIdentifier];
+    if (subscriptionProductIdentifier != nil)
+    {
+        [productIdentifiers addObject:subscriptionProductIdentifier];
+    }
 
     NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
     [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error) {
