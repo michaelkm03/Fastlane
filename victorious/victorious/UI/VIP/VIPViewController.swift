@@ -86,6 +86,8 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
                 VCurrentUser.user()?.isVIPSubscriber = true
                 self.setUpVIPViews()
             }
+        } else {
+            self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
     }
 }
