@@ -102,7 +102,7 @@ static const CGFloat kMaxImageDimension = 640.0f;
     if (self != nil)
     {
         _captureController = [[VCameraCaptureController alloc] init];
-        [_captureController setSessionPreset:AVCaptureSessionPresetMedium
+        [_captureController setSessionPreset:AVCaptureSessionPresetPhoto
                                   completion:nil];
     }
     return self;
@@ -260,7 +260,7 @@ static const CGFloat kMaxImageDimension = 640.0f;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                        {
                            __strong typeof(welf) strongSelf = welf;
-                           UIImage *smallerImage = [[image scaledImageWithMaxDimension:kMaxImageDimension] fixOrientation];
+                           UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension:kMaxImageDimension];
                            UIImage *previewImage = [smallerImage squareImageByCropping];
                            NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
                            dispatch_async(dispatch_get_main_queue(), ^

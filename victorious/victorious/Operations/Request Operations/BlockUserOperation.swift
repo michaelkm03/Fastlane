@@ -69,7 +69,7 @@ class BlockUserRemoteOperation: FetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: BlockUserRequest.ResultType, completion:()->() ) {
         self.trackingManager.trackEvent( VTrackingEventUserDidBlockUser )
         completion()
     }
