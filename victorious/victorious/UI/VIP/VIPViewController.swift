@@ -11,6 +11,7 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     let dependencyManager: VDependencyManager
     let purchaseManager: VPurchaseManager
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
+    let subscriptionSettings: SubscriptionSettings
 
     //MARK: - Initialization
 
@@ -18,16 +19,20 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
         return VIPViewController(nibName: nil,
             bundle: nil,
             dependencyManager: dependencyManager,
-            purchaseManager: VPurchaseManager.sharedInstance())
+            purchaseManager: VPurchaseManager.sharedInstance(),
+            subscriptionSettings: SubscriptionSettings(dependencyManager: dependencyManager)
+        )
     }
 
     init(nibName nibNameOrNil: String?,
         bundle nibBundleOrNil: NSBundle?,
         dependencyManager: VDependencyManager,
-        purchaseManager: VPurchaseManager) {
+        purchaseManager: VPurchaseManager,
+        subscriptionSettings: SubscriptionSettings) {
 
             self.dependencyManager = dependencyManager
             self.purchaseManager = purchaseManager
+            self.subscriptionSettings = subscriptionSettings
             super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -70,8 +75,11 @@ class VIPViewController: UIViewController, VPurchaseViewControllerDelegate {
     }
 
     private func showPurchaseSubscriptionScreen() {
+        guard let productIdentifier = subscriptionSettings.getProductIdentifier() else {
+            fatalError("There should alway be a subscription product identifier when showing a VIP screen")
+        }
         let purchaseViewController = VPurchaseViewController.newWithDependencyManager(self.dependencyManager,
-            productIdentifier: kTestSubscriptionProductIdentifier,
+            productIdentifier: productIdentifier,
             largeIcon: kLargeSubscribeImage)
         purchaseViewController.transitioningDelegate = self.transitionDelegate
         purchaseViewController.delegate = self
