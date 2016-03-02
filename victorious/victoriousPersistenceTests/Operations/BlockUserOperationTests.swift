@@ -31,21 +31,26 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         testStore.mainContext.v_save()
         
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
+        operation.persistentStore = testStore
     }
 
     func testBlockingUser() {
-        
         let context = testStore.mainContext
-        var sequences = context.v_findObjectsWithEntityName(VSequence.v_entityName(), queryDictionary: ["user.remoteId" : objectUser.remoteId.integerValue])
+        var sequences = [VSequence]()
+        sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         
         XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
         XCTAssertNotEqual(sequences.count, 0)
         
-        operation.main()
+        let expectation = expectationWithDescription("BlockUserOperation")
+        operation.queue() { (results, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
         
-        sequences = context.v_findObjectsWithEntityName(VSequence.v_entityName(), queryDictionary: ["user.remoteId" : objectUser.remoteId.integerValue])
-        
-        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+        sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)
+        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
     }
 }

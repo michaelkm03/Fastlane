@@ -52,7 +52,7 @@ class UnblockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: UnblockUserRequest.ResultType, completion:()->() ) {
         self.trackingManager.trackEvent( VTrackingEventUserDidUnblockUser )
         completion()
     }
