@@ -142,7 +142,7 @@ import Foundation
                 "imageURL": "OverFlowIcon"
             ],
             "identifier": "Accessory Legal Information",
-            "position": "left",
+            "position": "right",
             "color.text": navigationBarItemTextColor
         ]
         
