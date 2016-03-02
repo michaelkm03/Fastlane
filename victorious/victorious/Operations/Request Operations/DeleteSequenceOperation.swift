@@ -23,16 +23,11 @@ class DeleteSequenceOperation: FetcherOperation {
         
         DeleteSequenceAlertOperation(originViewController: originViewController,
             dependencyManager: dependencyManager).before(self).queue()
-        
-        DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
     }
     
     /// Deletes the sequence without asking for the user to confirm the action first
     init( sequenceID: String) {
         self.sequenceID = sequenceID
-        super.init()
-        
-        DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
     }
     
     override func main() {
@@ -40,6 +35,8 @@ class DeleteSequenceOperation: FetcherOperation {
             cancel()
             return
         }
+        
+        DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
         
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
