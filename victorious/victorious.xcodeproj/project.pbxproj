@@ -1346,6 +1346,8 @@
 		BF4D7E161C8502DA00D42852 /* VShowLikersOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */; };
 		BF4D7E181C861ABE00D42852 /* VShowMemersOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */; };
 		BF4D7E1A1C86209000D42852 /* VShowRepostersOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E191C86209000D42852 /* VShowRepostersOperationTests.m */; };
+		BF4D7E1E1C8743BE00D42852 /* ShowCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E1D1C8743BE00D42852 /* ShowCommentsOperation.swift */; };
+		BF4D7E221C87457300D42852 /* ShowMediaContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E211C87457300D42852 /* ShowMediaContentOperation.swift */; };
 		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
 		BF55772C1C8101B2003C02E3 /* FlagSequenceAlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF55772B1C8101B2003C02E3 /* FlagSequenceAlertOperation.swift */; };
 		BF55772E1C8111C1003C02E3 /* ToggleLikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF55772D1C8111C1003C02E3 /* ToggleLikeSequenceOperation.swift */; };
@@ -3814,6 +3816,8 @@
 		BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowLikersOperationTests.m; sourceTree = "<group>"; };
 		BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowMemersOperationTests.m; sourceTree = "<group>"; };
 		BF4D7E191C86209000D42852 /* VShowRepostersOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowRepostersOperationTests.m; sourceTree = "<group>"; };
+		BF4D7E1D1C8743BE00D42852 /* ShowCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCommentsOperation.swift; sourceTree = "<group>"; };
+		BF4D7E211C87457300D42852 /* ShowMediaContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaContentOperation.swift; sourceTree = "<group>"; };
 		BF52E83F1C6137F500FB6C8F /* VScrollingTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollingTextContainerView.h; sourceTree = "<group>"; };
 		BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextContainerView.m; sourceTree = "<group>"; };
 		BF55772B1C8101B2003C02E3 /* FlagSequenceAlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceAlertOperation.swift; sourceTree = "<group>"; };
@@ -6834,7 +6838,9 @@
 				A7AF17AB1C584BF1007BCAFE /* ShowSearchResultOperation.swift */,
 				BF55772F1C811CBD003C02E3 /* ShowSequenceDetailsOperation.swift */,
 				BFD131B11C80F2C2003ADD64 /* ShowShareSequenceOperation.swift */,
+				BF4D7E1D1C8743BE00D42852 /* ShowCommentsOperation.swift */,
 				A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */,
+				BF4D7E211C87457300D42852 /* ShowMediaContentOperation.swift */,
 			);
 			path = "Navigation Operations";
 			sourceTree = "<group>";
@@ -11196,6 +11202,7 @@
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
+				BF4D7E1E1C8743BE00D42852 /* ShowCommentsOperation.swift in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				670334B31C49D58500E24967 /* CreatePollOperation.swift in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
@@ -11536,6 +11543,7 @@
 				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,
 				798AA5961C3B429900D267C3 /* FriendFindByEmailOperation.swift in Sources */,
 				A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */,
+				BF4D7E221C87457300D42852 /* ShowMediaContentOperation.swift in Sources */,
 				F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A7AF17B01C5855B7007BCAFE /* VDependencyManager+SearchBar.swift in Sources */,

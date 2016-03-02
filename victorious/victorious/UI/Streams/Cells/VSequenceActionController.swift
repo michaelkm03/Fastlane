@@ -43,8 +43,10 @@ import Foundation
     //   MARK: - Show Media
     
     func showMediaContent(mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
-        let mediaLinkViewController = VAbstractMediaLinkViewController.newWithMediaUrl(mediaUrl, andMediaLinkType: linkType)
-        originViewController.presentViewController(mediaLinkViewController, animated: true, completion: nil)
+        ShowMediaContentOperation(originViewController: originViewController,
+                                dependencyManager: dependencyManager,
+                                mediaUrl: mediaUrl,
+                                mediaLinkType: linkType).queue()
     }
     
     // MARK: - Remix
@@ -59,7 +61,9 @@ import Foundation
     // MARK: - User
     
     func showProfileWithRemoteId(userId: Int) {
-        ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userId).queue()
+        ShowProfileOperation(originViewController: originViewController,
+                            dependencyManager: dependencyManager,
+                            userId: userId).queue()
     }
     
     // MARK: - Share
@@ -76,9 +80,7 @@ import Foundation
     // MARK: - Comments
     
     func showCommentsWithSequence(sequence: VSequence) {
-        if let commentsViewController: CommentsViewController = dependencyManager.commentsViewController(sequence) {
-            originViewController.navigationController?.pushViewController(commentsViewController, animated: true)
-        }
+        ShowCommentsOperation(originViewController: originViewController, dependencyManager: dependencyManager, sequence: sequence).queue()
     }
     
     // MARK: - Flag
