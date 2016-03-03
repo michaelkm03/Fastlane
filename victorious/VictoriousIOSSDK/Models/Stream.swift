@@ -11,6 +11,7 @@ import Foundation
 public struct Stream: StreamItemType {
     
     public let streamID: String
+    public let apiPath: String?
     public let name: String?
     public let title: String?
     public let postCount: Int?
@@ -49,8 +50,9 @@ extension Stream {
         title                       = json["title"].string
         postCount                   = json["postCount"].int ?? json["count"].int
         streamUrl                   = json["streamUrl"].string
-        trackingIdentifier          = json["stream_id"].string
+        trackingIdentifier          = json["apiPath"].string
         isUserPostAllowed           = json["ugc_post_allowed"].bool
+        apiPath                     = json["streamUrl"].string ?? json["apiPath"].string
         
         items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
             switch $0["type"].stringValue {
