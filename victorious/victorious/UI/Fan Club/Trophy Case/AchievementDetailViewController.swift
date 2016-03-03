@@ -11,7 +11,7 @@ import UIKit
 
 class AchievementDetailViewController: UIViewController {
     
-    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var semiTransparentBackgroundButton: UIButton!
     @IBOutlet private weak var achievementTitleLabel: UILabel!
     @IBOutlet private weak var achievementDetailLabel: UILabel!
     @IBOutlet private weak var confirmationButton: UIButton! {
@@ -27,6 +27,12 @@ class AchievementDetailViewController: UIViewController {
     
     var dependencyManager: VDependencyManager?
     var achievement: Achievement?
+    
+    private struct AnimationConstants {
+        static let initialAlertScale: CGFloat = 1.2
+        static let alertFadeInAnimationTime: NSTimeInterval = 0.35
+        static let backgroundButtonAlpha: CGFloat = 0.7
+    }
     
     static func makeAchievementDetailViewControllerWithDependencyManager(dependencyManager: VDependencyManager, achievement: Achievement) -> AchievementDetailViewController {
         let detailViewController: AchievementDetailViewController = AchievementDetailViewController.v_fromStoryboard(StringFromClass(TrophyCaseViewController), identifier: StringFromClass(AchievementDetailViewController))
@@ -47,9 +53,31 @@ class AchievementDetailViewController: UIViewController {
             achievementTitleLabel.text = achievement.title
             achievementDetailLabel.text = achievement.detailedDescription
         }
+        
+        alertView.transform = CGAffineTransformMakeScale(AnimationConstants.initialAlertScale, AnimationConstants.initialAlertScale )
+        alertView.alpha = 0.0
+        semiTransparentBackgroundButton.alpha = 0.0
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        showAlertViewWithAnimation()
     }
     
     @IBAction func dismiss(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    private func showAlertViewWithAnimation() {
+        UIView.animateWithDuration(AnimationConstants.alertFadeInAnimationTime,
+            delay: 0.0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0.0,
+            options: [],
+            animations: {
+                self.alertView.transform = CGAffineTransformIdentity
+                self.alertView.alpha = 1.0
+                self.semiTransparentBackgroundButton.alpha = AnimationConstants.backgroundButtonAlpha
+            }, completion: nil)
     }
 }

@@ -83,7 +83,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-UM-aoU" userLabel="Dismiss">
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-UM-aoU" userLabel="Background Button">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal">
@@ -166,7 +166,7 @@
                         <outlet property="achievementTitleLabel" destination="8uB-sz-btw" id="lZt-no-6Za"/>
                         <outlet property="alertView" destination="ZM3-iY-oQD" id="aeU-uB-Gwf"/>
                         <outlet property="confirmationButton" destination="Y3T-Un-jvL" id="ntc-3H-U3t"/>
-                        <outlet property="dismissButton" destination="NVn-UM-aoU" id="CK1-je-4ZJ"/>
+                        <outlet property="semiTransparentBackgroundButton" destination="NVn-UM-aoU" id="R8d-kV-iwA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TkT-yt-yVt" userLabel="First Responder" sceneMemberID="firstResponder"/>

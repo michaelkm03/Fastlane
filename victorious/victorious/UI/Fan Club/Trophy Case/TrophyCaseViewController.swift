@@ -60,6 +60,6 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
         }
         
         let detailViewController = AchievementDetailViewController.makeAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
-        presentViewController(detailViewController, animated: true, completion: nil)
+        presentViewController(detailViewController, animated: false, completion: nil)
     }
 }
