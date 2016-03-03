@@ -87,13 +87,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         viewController.dependencyManager = dependencyManager;
         viewController.userRemoteId = userRemoteId;
-        viewController.representsMainUser = YES;
     }
     else
     {
         viewController.dependencyManager = dependencyManager;
         viewController.user = [VCurrentUser user];
-        viewController.representsMainUser = YES;
     }
 
     viewController.sourceScreenName = VFollowSourceScreenProfileSleekCell;
@@ -453,41 +451,26 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
+    self.representsMainUser = [VCurrentUser user].isCurrentUser;
+    
     [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;
     [self.KVOController observe:_user
                         keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
                         options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              [welf updateProfileHeaderState];
-                          }];
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateProfileHeaderState];
+     }];
     
-    self.currentStream = [self createUserProfileStreamWithUserID:_user.remoteId.stringValue];
+    self.currentStream = [VStreamItem userProfileStreamWithUserID:_user.remoteId];
     
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
-}
-
-- (VStream *)createUserProfileStreamWithUserID:(NSString *)userID
-{
-    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartAllowedCharacterSet];
-    NSString *escapedRemoteId = [(userID ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
-                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
-    NSDictionary *query = @{ @"apiPath" : apiPath };
-    
-    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
-    __block VStream *stream;
-    [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName]
-                                                                            queryDictionary:query];
-        [persistentStore.mainContext save:nil];
-    }];
-    return stream;
 }
 
 - (NSString *)title

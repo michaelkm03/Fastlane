@@ -52,11 +52,17 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
             let mockUserData = NSData(contentsOfURL: mockUserDataURL),
             let user = User(json: JSON(data: mockUserData)),
-            let sequenceUrl = NSBundle(forClass: self.dynamicType).URLForResource("Sequence", withExtension: "json" ),
-            let mockSequenceData = NSData(contentsOfURL: sequenceUrl),
-            let sequence = Sequence(json: JSON(data: mockSequenceData)) else {
+            let sequence = createSequence() else {
                 return nil
         }
         return SuggestedUser(user: user, recentSequences: [sequence])
+    }
+    
+    private func createSequence() -> Sequence? {
+        guard let sequenceUrl = NSBundle(forClass: self.dynamicType).URLForResource("Sequence", withExtension: "json" ),
+            let mockSequenceData = NSData(contentsOfURL: sequenceUrl) else {
+                return nil
+        }
+        return Sequence(json: JSON(data: mockSequenceData))
     }
 }
