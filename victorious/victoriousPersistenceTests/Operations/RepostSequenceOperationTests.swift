@@ -46,7 +46,7 @@ class RepostSequenceOperationTests: XCTestCase {
         return self.user
     }
 
-    func testExample() {
+    func testRepostSequence() {
         RepostSequenceOperation(sequenceID: sequenceRemoteId).queue() { results, error in
             XCTAssert(self.sequence != nil)
             XCTAssert(self.user != nil)
@@ -62,7 +62,7 @@ class RepostSequenceOperationTests: XCTestCase {
             XCTAssert(user.repostedSequences.contains(sequence));
             self.expectation?.fulfill()
         }
-        waitForExpectationsWithTimeout(15,
+        waitForExpectationsWithTimeout(5,
             handler: { error in
                 if let error = error {
                     XCTFail("timeout error: \(error)")
