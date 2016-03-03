@@ -28,6 +28,15 @@
 - (void)v_addPintoTopBottomToSubview:(UIView *)subview
                                  top:(CGFloat)top
                               bottom:(CGFloat)bottom;
+
+/**
+ Applies constraints necessary to center the subview and resize to a percentage of the 
+ parent's dimensions with the values provided.
+ */
+- (void)v_addCenterAndFitToParentConstraintsToSubview:(UIView *)subview
+                                                width:(CGFloat)widthPercentage
+                                               height:(CGFloat)heightPercentage;
+
 /**
  Applies constraints necessary to fit the subview's leading, trailing, top and bottom
  space to this view as its container with constant values provided.  Uses VFL like so:

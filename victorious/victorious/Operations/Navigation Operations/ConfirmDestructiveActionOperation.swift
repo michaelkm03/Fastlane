@@ -1,51 +1,46 @@
 //
-//  ShowBlockUserConfirmationAlertOperation.swift
+//  ConfirmDestructiveActionOperation.swift
 //  victorious
 //
-//  Created by Sharif Ahmed on 2/29/16.
+//  Created by Vincent Ho on 2/26/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfirmationOperation {
+class ConfirmDestructiveActionOperation: NavigationOperation, ActionConfirmationOperation {
     
+    private let actionTitle: String
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
-    private let shouldUnblockUser: Bool
+    
+    private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, shouldUnblockUser: Bool) {
+    init( actionTitle: String, originViewController: UIViewController, dependencyManager: VDependencyManager) {
+        self.actionTitle = actionTitle
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        self.shouldUnblockUser = shouldUnblockUser
     }
     
     override func start() {
         super.start()
         self.beganExecuting()
         
-        let alertController = UIAlertController(title: nil,
-            message: nil,
-            preferredStyle: .ActionSheet)
-        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "Cancel Button"),
+            UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
                 handler: { action in
                     self.finishedExecuting()
                 }
             )
         )
-        
-        let title = shouldUnblockUser ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         alertController.addAction(
-            UIAlertAction(
-                title: title,
+            UIAlertAction(title: self.actionTitle,
                 style: .Destructive,
                 handler: { action in
                     self.didConfirmAction = true
@@ -53,7 +48,6 @@ class ShowBlockUserConfirmationAlertOperation: NavigationOperation, ActionConfir
                 }
             )
         )
-        
         originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

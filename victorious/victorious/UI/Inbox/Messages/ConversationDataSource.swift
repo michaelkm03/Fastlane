@@ -30,7 +30,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         return self.paginatedDataSource.isLoading()
     }
     
-    var delegate: VPaginatedDataSourceDelegate?
+    weak var delegate: VPaginatedDataSourceDelegate?
     
     var state: VDataSourceState {
         return self.paginatedDataSource.state

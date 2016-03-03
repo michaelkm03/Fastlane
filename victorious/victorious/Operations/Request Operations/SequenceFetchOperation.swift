@@ -31,7 +31,7 @@ class SequenceFetchOperation: RemoteFetcherOperation, RequestOperation {
         
         let persistentSequenceID: NSManagedObjectID = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : sequence.sequenceID ])
-            persistentSequence.populate(fromSourceModel: (sequence, self.streamID) )
+            persistentSequence.populate(fromSourceModel: (sequence, nil) )
             context.v_save()
             
             return persistentSequence.objectID
