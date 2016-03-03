@@ -24,10 +24,16 @@ class ShowCommentsOperation: NavigationOperation {
         super.start()
         self.beganExecuting()
         
+        guard let navigationViewController = originViewController.navigationController else {
+            assertionFailure("\(self.dynamicType) requires a navigation controller.")
+            return
+        }
+        
         guard let commentsViewController: CommentsViewController = dependencyManager.commentsViewController(sequence) else {
             return
         }
-        originViewController.navigationController?.pushViewController(commentsViewController, animated: true)
+        
+        navigationViewController.pushViewController(commentsViewController, animated: true)
         self.finishedExecuting()
     }
     

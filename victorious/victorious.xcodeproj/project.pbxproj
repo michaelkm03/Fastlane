@@ -1342,6 +1342,7 @@
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */; };
+		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */; };
 		BF4D7E161C8502DA00D42852 /* VShowLikersOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */; };
 		BF4D7E181C861ABE00D42852 /* VShowMemersOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */; };
@@ -3812,6 +3813,7 @@
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowProfileOperationTests.m; sourceTree = "<group>"; };
+		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF4CE0DB1C5825540073ABDF /* VImageAnimationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAnimationOperation.swift; sourceTree = "<group>"; };
 		BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowLikersOperationTests.m; sourceTree = "<group>"; };
 		BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowMemersOperationTests.m; sourceTree = "<group>"; };
@@ -8302,6 +8304,7 @@
 				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
 				BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */,
 				BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */,
+				BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */,
 				BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */,
 				BF4D7E191C86209000D42852 /* VShowRepostersOperationTests.m */,
 				A7D378621AF2F368007FF197 /* VStoredLoginTests.m */,
@@ -12072,6 +12075,7 @@
 				A7D0AD321C0D453D0018C63E /* NSStringVCryptoTests.m in Sources */,
 				A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */,
 				67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */,
+				BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,8 +1,8 @@
 //
-//  VShowMemersOperationTests.m
+//  VShowCommentsOperationTests.m
 //  victorious
 //
-//  Created by Vincent Ho on 3/1/16.
+//  Created by Vincent Ho on 3/2/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
@@ -12,11 +12,10 @@
 #import "VDummyModels.h"
 #import "VSequence.h"
 #import "VUser.h"
-#import "VStreamCollectionViewController.h"
 
 #import "victorious-Swift.h"
 
-@interface VShowMemersOperationTests : XCTestCase
+@interface VShowCommentsOperationTests : XCTestCase
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UIViewController *viewController;
@@ -25,7 +24,7 @@
 
 @end
 
-@implementation VShowMemersOperationTests
+@implementation VShowCommentsOperationTests
 
 - (void)setUp
 {
@@ -46,19 +45,23 @@
     [super tearDown];
 }
 
-- (void)testStreamPushed
+- (void)testCommentsViewController
 {
-    ShowMemersOperation *operation = [[ShowMemersOperation alloc] initWithOriginViewController:self.viewController
+    ShowCommentsOperation *operation = [[ShowCommentsOperation alloc] initWithOriginViewController:self.viewController
                                                                              dependencyManager:self.dependencyManager
                                                                                       sequence:self.sequence];
     [operation queueWithCompletion:^
      {
          UIViewController *topVC = self.navigationController.topViewController;
-         XCTAssert([topVC isKindOfClass:[VStreamCollectionViewController class]]);
+         XCTAssert([topVC isKindOfClass:[CommentsViewController class]]);
          
-         VStreamCollectionViewController *memeStream = (VStreamCollectionViewController *)topVC;
+         CommentsViewController *commentsVC = (CommentsViewController *)topVC;
          
-         [memeStream dismissViewControllerAnimated:NO completion:^
+         // Check to see if properly configured with sequence & dependency manager
+         XCTAssert(commentsVC.sequence == self.sequence);
+         XCTAssert(commentsVC.dependencyManager == self.dependencyManager);
+         
+         [commentsVC dismissViewControllerAnimated:NO completion:^
           {
               XCTAssert([self.navigationController.viewControllers isEqualToArray:@[self.viewController]]);
           }];

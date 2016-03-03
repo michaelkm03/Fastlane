@@ -59,7 +59,7 @@
 {
     [super tearDown];
     [VDependencyManager v_restoreOriginalImplementation:self.origImp
-                                                 forClassMethod:@selector(userProfileViewControllerWithRemoteId:)];
+                                              forMethod:@selector(userProfileViewControllerWithRemoteId:)];
 }
 
 - (void)testNotOnProfile
