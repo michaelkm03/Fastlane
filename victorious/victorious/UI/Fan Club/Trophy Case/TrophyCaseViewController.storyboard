@@ -8,7 +8,7 @@
         <!--Trophy Case View Controller-->
         <scene sceneID="UbA-CQ-LMM">
             <objects>
-                <viewController storyboardIdentifier="TrophyCaseViewController" id="DcT-Qg-s51" customClass="TrophyCaseViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TrophyCaseViewController" modalPresentationStyle="currentContext" id="DcT-Qg-s51" customClass="TrophyCaseViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uq4-yN-Gp0"/>
                         <viewControllerLayoutGuide type="bottom" id="fbw-pc-vQY"/>
@@ -74,7 +74,7 @@
         <!--Achievement Detail View Controller-->
         <scene sceneID="hM4-Oa-crU">
             <objects>
-                <viewController storyboardIdentifier="AchievementDetailViewController" id="LEf-3l-MHk" customClass="AchievementDetailViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AchievementDetailViewController" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="LEf-3l-MHk" customClass="AchievementDetailViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ge3-aL-qdM"/>
                         <viewControllerLayoutGuide type="bottom" id="MLC-3f-daj"/>
@@ -83,49 +83,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-UM-aoU" userLabel="Dismiss">
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-UM-aoU" userLabel="Dismiss">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="dismiss:" destination="LEf-3l-MHk" eventType="touchUpInside" id="szd-Sv-3ty"/>
+                                </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZM3-iY-oQD" userLabel="Alert">
-                                <rect key="frame" x="24" y="171" width="552" height="258"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZM3-iY-oQD" userLabel="Alert">
+                                <rect key="frame" x="35" y="210" width="530" height="180"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-sz-btw">
+                                        <rect key="frame" x="30" y="30" width="470" height="29"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Detail" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jtf-Jp-hKf">
+                                        <rect key="frame" x="30" y="79" width="470" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3T-Un-jvL">
-                                        <rect key="frame" x="0.0" y="191" width="552" height="67"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <rect key="frame" x="0.0" y="125" width="530" height="55"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="67" id="SKu-x9-GZz"/>
+                                            <constraint firstAttribute="height" constant="55" id="SKu-x9-GZz"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <state key="normal" title="Okay!">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="dismiss:" destination="LEf-3l-MHk" eventType="touchUpInside" id="vtZ-GG-y50"/>
+                                        </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-sz-btw">
-                                        <rect key="frame" x="30" y="8" width="492" height="26"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Detail" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jtf-Jp-hKf">
-                                        <rect key="frame" x="30" y="119" width="492" height="20"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.92941176469999998" green="0.0" blue="0.066666666669999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="8uB-sz-btw" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="4QH-3w-2zL"/>
                                     <constraint firstAttribute="trailing" secondItem="Jtf-Jp-hKf" secondAttribute="trailing" constant="30" id="5Ps-mA-iUw"/>
                                     <constraint firstItem="Y3T-Un-jvL" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" id="Adm-2E-Th0"/>
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="H9b-ZJ-wTG"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="HDO-f3-Vdj"/>
                                     <constraint firstAttribute="trailing" secondItem="Y3T-Un-jvL" secondAttribute="trailing" id="KLk-er-Mha"/>
-                                    <constraint firstAttribute="height" constant="258" id="NbI-9W-h6n"/>
+                                    <constraint firstAttribute="height" constant="180" id="NbI-9W-h6n"/>
                                     <constraint firstAttribute="trailing" secondItem="8uB-sz-btw" secondAttribute="trailing" constant="30" id="S3o-cW-wlV"/>
-                                    <constraint firstItem="8uB-sz-btw" firstAttribute="top" secondItem="ZM3-iY-oQD" secondAttribute="top" constant="8" id="S75-Ek-ijQ"/>
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="centerY" secondItem="ZM3-iY-oQD" secondAttribute="centerY" id="alE-wt-ES1"/>
+                                    <constraint firstItem="Jtf-Jp-hKf" firstAttribute="top" secondItem="8uB-sz-btw" secondAttribute="bottom" constant="20" id="do6-Bx-0Ab"/>
                                     <constraint firstAttribute="bottom" secondItem="Y3T-Un-jvL" secondAttribute="bottom" id="qsn-Rd-lod"/>
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -135,10 +145,10 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="ZM3-iY-oQD" secondAttribute="trailing" constant="4" id="31a-i2-2yH"/>
-                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" constant="4" id="8px-Jx-Awu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZM3-iY-oQD" secondAttribute="trailing" priority="750" constant="15" id="31a-i2-2yH"/>
+                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" priority="750" constant="15" id="8px-Jx-Awu"/>
                             <constraint firstItem="ZM3-iY-oQD" firstAttribute="centerY" secondItem="KyQ-C1-BRR" secondAttribute="centerY" id="GP6-OF-22l"/>
                             <constraint firstItem="MLC-3f-daj" firstAttribute="top" secondItem="NVn-UM-aoU" secondAttribute="bottom" id="UlU-sb-nth"/>
                             <constraint firstItem="NVn-UM-aoU" firstAttribute="top" secondItem="ge3-aL-qdM" secondAttribute="bottom" constant="-20" id="f1d-IN-p6S"/>
@@ -154,6 +164,7 @@
                     <connections>
                         <outlet property="achievementDetailLabel" destination="Jtf-Jp-hKf" id="rx9-4Y-d1w"/>
                         <outlet property="achievementTitleLabel" destination="8uB-sz-btw" id="lZt-no-6Za"/>
+                        <outlet property="alertView" destination="ZM3-iY-oQD" id="aeU-uB-Gwf"/>
                         <outlet property="confirmationButton" destination="Y3T-Un-jvL" id="ntc-3H-U3t"/>
                         <outlet property="dismissButton" destination="NVn-UM-aoU" id="CK1-je-4ZJ"/>
                     </connections>

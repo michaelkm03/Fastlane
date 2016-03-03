@@ -54,12 +54,12 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
-        let achievement = cell.achievement else {
-            return
+            let achievement = cell.achievement,
+            let dependencyManager = dependencyManager else {
+                return
         }
-        let detailViewController: AchievementDetailViewController = AchievementDetailViewController.v_fromStoryboard(StringFromClass(TrophyCaseViewController), identifier: StringFromClass(AchievementDetailViewController))
-        detailViewController.achievement = achievement
         
+        let detailViewController = AchievementDetailViewController.makeAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
         presentViewController(detailViewController, animated: true, completion: nil)
     }
 }
