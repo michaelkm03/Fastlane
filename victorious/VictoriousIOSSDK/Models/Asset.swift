@@ -16,7 +16,7 @@ public enum AssetType: String {
 }
 
 public struct Asset {
-    public let assetID: Int
+    public let assetID: Int?
     public let audioMuted: Bool?
     public let backgroundColor: String?
     public let backgroundImageUrl: String?
@@ -35,15 +35,15 @@ public struct Asset {
 
 extension Asset {
     public init?(json: JSON) {
-        guard let assetID = Int(json["asset_id"].string ?? ""),
-            let type = AssetType(rawValue: json["type"].string ?? ""),
+        guard let type = AssetType(rawValue: json["type"].string ?? ""),
             let data = json["data"].string else {
                 return nil
         }
+
         self.type               = type
         self.data               = data
-        self.assetID            = assetID
         
+        assetID                 = json["asset_id"].int
         audioMuted              = json["audio_muted"].v_boolFromAnyValue
         backgroundColor         = json["background_color"].string
         backgroundImageUrl      = json["background_image"].string
