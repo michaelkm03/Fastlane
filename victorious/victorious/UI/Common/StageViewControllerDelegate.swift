@@ -1,5 +1,5 @@
 //
-//  StageControllerDelegate.swift
+//  StageViewControllerDelegate.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol StageControllerDelegate: class {
+protocol StageViewControllerDelegate: class {
     
     /// Called when the media on the stage changes
-    func stage(stage: StageController, updatedToMedia media: VAsset, withSize size: CGSize)
+    func stage(stage: StageViewController, updatedToMedia media: VAsset, withSize size: CGSize)
     
     /// Called when the user taps on a piece of media on the stage
-    func stage(stage: StageController, selectedMedia media: VAsset)
+    func stage(stage: StageViewController, selectedMedia media: VAsset)
 }

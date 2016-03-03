@@ -1,5 +1,5 @@
 //
-//  LightboxControllerOverflowMenuItem.swift
+//  LightboxViewControllerOverflowMenuItem.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum LightboxControllerOverflowMenuItem {
+enum LightboxViewControllerOverflowMenuItem {
     
     private struct Icon {
         
