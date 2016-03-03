@@ -9,8 +9,8 @@
 import Foundation
 
 extension Dictionary {
-    mutating func vsdk_unionInPlace<S: SequenceType where S.Generator.Element == (Key,Value)>(sequence: S) {
-        for (key, value) in sequence {
+    mutating func vsdk_unionInPlace(dictionary: Dictionary<Key, Value>) {
+        for (key, value) in dictionary {
             self[key] = value
         }
     }
