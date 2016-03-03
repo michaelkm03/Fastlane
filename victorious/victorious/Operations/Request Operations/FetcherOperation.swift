@@ -12,6 +12,8 @@ import VictoriousCommon
 
 class FetcherOperation: NSOperation, Queueable, ErrorOperation, ResultsOperation {
     
+    var localFetch: Bool = false
+    
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     // MARK: - ResultsOperation

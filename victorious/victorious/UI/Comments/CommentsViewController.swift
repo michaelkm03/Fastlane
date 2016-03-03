@@ -430,7 +430,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             realtimeAttachment: nil
         )
         
-        CreateCommentOperation(creationParameters: creationParameters).queue()
+        CommentCreateOperation(creationParameters: creationParameters).queue()
         self.keyboardBar?.clearTextAndResign()
         self.publishParameters?.mediaToUploadURL = nil
     }

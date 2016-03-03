@@ -71,7 +71,6 @@ static NSUInteger const kVSequenceAlreadyFlagged        = 1005;
 
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
-static NSInteger const kVCanceledError                 = -99;
 
 #pragma mark - API Payload keys
 

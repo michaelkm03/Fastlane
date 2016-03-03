@@ -12,15 +12,9 @@ import XCTest
 
 class TestRequestExecutor: RequestExecutorType {
 
-    let error: NSError?
     let result: Any?
-    
-    var cancelled: Bool = false
-    
-    var errorHandlers = [RequestErrorHandler]()
 
     var executeRequestCallCount = 0
-    var hasNetworkConnection: Bool = true
     
     init(error: NSError) {
         self.error = error
@@ -36,6 +30,14 @@ class TestRequestExecutor: RequestExecutorType {
         self.error = nil
         self.result = nil
     }
+    
+    // MARKL - RequestExecutorType
+    
+    let error: NSError?
+    
+    var errorHandlers = [RequestErrorHandler]()
+    
+    var cancelled: Bool = false
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         executeRequestCallCount += 1

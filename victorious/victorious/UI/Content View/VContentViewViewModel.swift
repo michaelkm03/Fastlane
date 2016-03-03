@@ -75,7 +75,7 @@ extension VContentViewViewModel {
             realtimeAttachment: realtimeAttachment
         )
         
-        CreateCommentOperation(creationParameters: creationParameters).queue()
+        CommentCreateOperation(creationParameters: creationParameters).queue()
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {

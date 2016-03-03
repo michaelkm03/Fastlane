@@ -2,147 +2,70 @@
 //  ConversationOperation.swift
 //  victorious
 //
-//  Created by Michael Sena on 12/3/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 3/3/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
-import VictoriousIOSSDK
 
-final class ConversationOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class ConversationOperation: FetcherOperation, PaginatedOperation {
     
     let conversationID: Int?
     let userID: Int?
-    let request: ConversationRequest
+    let paginator: StandardPaginator
     
     var conversation: VConversation?
-
+    
+    /// For Objective-C
     convenience init(conversationID: NSNumber?, userID: NSNumber?) {
-        let request = ConversationRequest(
-            conversationID: conversationID?.integerValue ?? 0,
-            userID: userID?.integerValue
-        )
-        self.init( request: request )
+        self.init(conversationID: conversationID?.integerValue, userID: conversationID?.integerValue)
     }
     
-    required init( request: ConversationRequest ) {
-        self.request = request
-        self.conversationID = request.conversationID
-        self.userID = request.userID
+    required init( conversationID: Int?, userID: Int?, paginator: StandardPaginator = StandardPaginator() ) {
+        self.conversationID = conversationID
+        self.userID = userID
+        self.paginator = paginator
+        super.init()
+        
+        if !localFetch {
+            let request = ConversationRequest(conversationID: conversationID ?? 0, userID: userID, paginator: paginator)
+            ConversationRemoteOperation(request: request).before(self).queue()
+        }
+    }
+    
+    required convenience init(operation: ConversationOperation, paginator: StandardPaginator) {
+        self.init(conversationID: operation.conversationID, userID: operation.userID, paginator: paginator)
     }
     
     override func main() {
-        
-        // If we have a valid conversationID, reload it remotely first
-        if let conversationID = self.conversationID where conversationID > 0 {
-                        
-            requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-            
-        } else {
-            self.results = self.fetchResults()
-        }
-    }
-    
-    func onComplete( results: ConversationRequest.ResultType, completion:()->() ) {
-        guard let conversationID = self.conversationID where !results.isEmpty else {
-            completion()
-            return
-        }
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : conversationID ])
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            var messagesLoaded = [VMessage]()
-            for result in results {
-                let uniqueElements = [ "remoteId" : result.messageID ]
-                let newMessage: VMessage
-                if let message: VMessage = context.v_findObjects( uniqueElements ).first {
-                    newMessage = message
-                } else {
-                    newMessage = context.v_createObject()
-                    newMessage.populate( fromSourceModel: result )
-                }
-                if conversation.user == nil {
-                    conversation.user = newMessage.sender
-                }
-                if conversation.postedAt == nil {
-                    conversation.postedAt = newMessage.postedAt
-                }
-                newMessage.displayOrder = displayOrder++
-                messagesLoaded.append( newMessage )
-            }
-            conversation.v_addObjects( messagesLoaded, to: "messages" )
-            conversation.lastMessageText = messagesLoaded.first?.text ?? conversation.lastMessageText
-            
-            context.v_save()
-            
-            let objectID = conversation.objectID
-            
-            if conversation.user == nil {
-                // If conversation has been deleted
-                completion()
-            }
-            else {
-                self.persistentStore.mainContext.v_performBlock() { context in
-                    self.results = self.fetchResults()
-                    self.conversation = context.objectWithID(objectID) as? VConversation
-                    completion()
-                }
-            }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let messagesPredicate = self.messagesPredicate else {
-                VLog("Unable to load messages without a converationID or userID.")
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
+            fetchRequest.predicate = self.conversationPredicate
+            guard let conversation = context.v_executeFetchRequest( fetchRequest ).first as? VConversation else {
+                VLog("Unable to load conversation.")
                 assertionFailure()
-                return []
+                return
             }
             
-            let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
-            fetchRequest.predicate = self.request.paginator.paginatorPredicate + messagesPredicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
-            return results
+            let predicate = self.paginator.paginatorPredicate
+            guard let messages = conversation.messages?.filteredOrderedSetUsingPredicate(predicate) else {
+                self.results = []
+                return
+            }
+            let sortDescriptor = NSSortDescriptor(key: "displayOrder", ascending: false)
+            self.results = messages.sortedArrayUsingDescriptors( [sortDescriptor] )
         }
     }
     
-    private var messagesPredicate: NSPredicate? {
+    private var conversationPredicate: NSPredicate? {
         if let conversationID = self.conversationID where conversationID > 0 {
-            return NSPredicate(format: "conversation.remoteId == %i", conversationID)
+            return NSPredicate(format: "remoteId == %i", conversationID)
             
         } else if let userID = self.userID {
-            return NSPredicate(format: "conversation.user.remoteId == %i", userID)
+            return NSPredicate(format: "user.remoteId == %i", userID)
             
         } else {
             return nil
-        }
-    }
-}
-
-class FetchConverationOperation: FetcherOperation {
-    
-    let userID: Int
-    let paginator: NumericPaginator
-    
-    init( userID: Int, paginator: NumericPaginator = StandardPaginator() ) {
-        self.userID = userID
-        self.paginator = paginator
-    }
-    
-    override func main() {
-        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            let predicate = NSPredicate(
-                vsdk_format: "conversation.user.remoteId == %@",
-                vsdk_argumentArray: [ self.userID ],
-                vsdk_paginator: self.paginator )
-            
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
-            fetchRequest.predicate = predicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
-            return results
         }
     }
 }

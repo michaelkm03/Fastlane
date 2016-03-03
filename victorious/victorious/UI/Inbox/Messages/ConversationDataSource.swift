@@ -68,7 +68,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         }
         self.paginatedDataSource.refreshLocal(
             createOperation: {
-                return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
+                return ConversationOperation(conversationID: nil, userID: userID)
             },
             completion: nil
         )

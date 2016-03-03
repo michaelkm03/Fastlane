@@ -30,12 +30,10 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func refreshLocal( completion completion: (([AnyObject]?)->())? = nil) {
-        // Populates the view with newly added conversations upon observing the change
-        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
-            return
-        }
         self.refreshLocal( createOperation: {
-            return FetchConverationListOperation(userID: userID)
+            let op = ConversationListOperation()
+            op.localFetch = true
+            return op
         },
         completion: { (results, error) in
             completion?(results)
