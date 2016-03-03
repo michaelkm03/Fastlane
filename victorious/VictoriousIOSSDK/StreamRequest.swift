@@ -49,7 +49,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
             
             // User profile and other streams with `stream_id` in the response
             var dictionary = [ "id" : responseJSON["stream_id"], "items" : payload ]
-            dictionary.unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
             
             if let streamFromItems = Stream(json: JSON(dictionary)) {
                 stream = streamFromItems
@@ -61,7 +61,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
             
             // Liked posts, and other weird responses with no `stream_id` information
             var dictionary = [ "id" : "anonymous:stream", "items" : payload["content"] ]
-            dictionary.unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
             
             if let streamFromItems = Stream(json: JSON(dictionary)) {
                 
@@ -73,7 +73,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         } else if var dictionary = payload.dictionary {
             
             // Regular Streams
-            dictionary.unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
             if let streamFromObject = Stream(json: JSON(dictionary)) {
                 stream = streamFromObject
                 
@@ -97,13 +97,5 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         dictionary["ugc_post_allowed"]     = responseJSON["ugc_post_allowed"]
         
         return dictionary
-    }
-}
-
-private extension Dictionary {
-    mutating func unionInPlace<S: SequenceType where S.Generator.Element == (Key,Value)>(sequence: S) {
-        for (key, value) in sequence {
-            self[key] = value
-        }
     }
 }

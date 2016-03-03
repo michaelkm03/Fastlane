@@ -451,7 +451,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    self.representsMainUser = _user == [VCurrentUser user];
+    self.representsMainUser = [VCurrentUser user].isCurrentUser;
     
     [self initializeProfileHeader];
     
