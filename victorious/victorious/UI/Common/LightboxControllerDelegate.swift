@@ -10,7 +10,9 @@ import Foundation
 
 protocol LightboxControllerDelegate: class {
     
+    /// Called when the dismiss button is pressed on the lightboxController
     func lightboxPressedDismiss(lightbox: LightboxController)
     
+    /// Called when an overflow menu item is selected from the lightbox's overflow menu
     func lightbox(lightbox: LightboxController, selectedOverflowMenuItem: LightboxControllerOverflowMenuItem)
 }

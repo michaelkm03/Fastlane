@@ -10,13 +10,13 @@ import Foundation
 
 class ChatFeedController: NSObject {
     
-    var updateInRealtime: Bool = false
-    
-    func addChatItems(chatItems: [VStreamItem]) {
-        
+    var updateInRealtime: Bool = false {
+        didSet {
+            //Stop or start retrieving information from socket
+        }
     }
     
-    func loadOlderChatItems() {
+    func addChatItems(chatItems: [ChatItem]) {
         
     }
 }

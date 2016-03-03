@@ -29,7 +29,7 @@ class ComposerController: NSObject {
         
     }
     
-    func addTagForHashtag(hashtag: VHashtag) {
+    func add(add: Bool, tagForHashtag hashtag: VHashtag) {
         
     }
 }
