@@ -1,5 +1,5 @@
 //
-//  ChatFeedController.swift
+//  ChatFeedViewController.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ChatFeedController: NSObject {
+class ChatFeedViewController: UIViewController {
     
     var updateInRealtime: Bool = false {
         didSet {

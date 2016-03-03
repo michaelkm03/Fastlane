@@ -1,5 +1,5 @@
 //
-//  ComposerController.swift
+//  ComposerViewController.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/26/16.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-class ComposerController: NSObject {
+class ComposerViewController: NSObject {
     
-    weak var delegate: ComposerControllerDelegate?
+    weak var delegate: ComposerViewControllerDelegate?
     
-    let attachmentTabs: [ComposerControllerAttachmentTab]
+    let attachmentTabs: [ComposerViewControllerAttachmentTab]
     
     var maximumHeight: CGFloat = CGFloat.max {
         didSet {
@@ -20,7 +20,7 @@ class ComposerController: NSObject {
         }
     }
     
-    init(attachmentTabs: [ComposerControllerAttachmentTab]) {
+    init(attachmentTabs: [ComposerViewControllerAttachmentTab]) {
         self.attachmentTabs = attachmentTabs
         super.init()
     }

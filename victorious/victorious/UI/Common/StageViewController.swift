@@ -1,14 +1,14 @@
 //
-//  StageController.swift
+//  StageViewController.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class StageController: NSObject {
+class StageViewController: UIViewController {
     
     func startPlayingMedia(media: VAsset) {
         
