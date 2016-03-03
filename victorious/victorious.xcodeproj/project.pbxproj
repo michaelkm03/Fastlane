@@ -1733,6 +1733,8 @@
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C6A1C88F03400437ACD /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C691C88F03400437ACD /* ChatItem.swift */; };
+		F09E8C6C1C88FDA900437ACD /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */; };
+		F09E8C6E1C88FDC800437ACD /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
@@ -4459,6 +4461,8 @@
 		F098D81B1A9E4A890003B6D4 /* VUserTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTag.h; sourceTree = "<group>"; };
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F09E8C691C88F03400437ACD /* ChatItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
+		F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
+		F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForumViewController.storyboard; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
@@ -9219,6 +9223,8 @@
 				F03B20391C865C3B005E83A0 /* ChatFeed */,
 				F03B20381C865C33005E83A0 /* Stage */,
 				F048AFCD1C81096F004F516A /* Composer */,
+				F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */,
+				F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */,
 			);
 			name = VIP;
 			sourceTree = "<group>";
@@ -10163,6 +10169,7 @@
 				036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */,
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
+				F09E8C6E1C88FDC800437ACD /* ForumViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
@@ -11385,6 +11392,7 @@
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
+				F09E8C6C1C88FDA900437ACD /* ForumViewController.swift in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				67C9ADAB1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
