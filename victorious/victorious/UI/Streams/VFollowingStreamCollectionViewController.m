@@ -53,6 +53,10 @@
     {
         [self loadPage:VPageTypeFirst completion:nil];
     }
+    else
+    {
+        [self.streamDataSource.paginatedDataSource unload];
+    }
 }
 
 @end

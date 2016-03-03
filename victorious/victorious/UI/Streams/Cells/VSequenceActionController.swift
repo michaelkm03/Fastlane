@@ -86,14 +86,20 @@ import Foundation
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        
-        let operation = FlagSequenceOperation(
+        let flag = FlagSequenceOperation(sequenceID: sequence.remoteId)
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
             originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            sequenceID: sequence.remoteId
+            dependencyManager: dependencyManager
         )
-        operation.queue() { (results, error) in
-            completion?( error == nil && !operation.cancelled )
+        
+        confirm.before(flag)
+        confirm.queue()
+        flag.queue() { (results, error) in
+            guard !flag.cancelled else {
+                return
+            }
+            completion?( error == nil )
         }
     }
     
@@ -104,13 +110,25 @@ import Foundation
     /// Boolean representing success/failure of the operation.
     func blockUser(user: VUser, completion: ((Bool)->())? ) {
         
-        let operation = ToggleBlockUserOperation(
+        let blockOrUnblock: FetcherOperation
+        let actionTitle: String
+        if user.isBlockedByMainUser.boolValue {
+            actionTitle = NSLocalizedString("UnblockUser", comment: "")
+            blockOrUnblock = UnblockUserOperation(userID: user.remoteId.integerValue)
+        } else {
+            blockOrUnblock = BlockUserOperation(userID: user.remoteId.integerValue)
+            actionTitle = NSLocalizedString("BlockUser", comment: "")
+        }
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
             originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            userID: user.remoteId.integerValue
+            dependencyManager: dependencyManager
         )
-        operation.queue() { results, error in
-            guard !operation.cancelled else {
+        
+        confirm.before(blockOrUnblock)
+        confirm.queue()
+        blockOrUnblock.queue() { (results, error) in
+            guard !blockOrUnblock.cancelled else {
                 return
             }
             let didBlockUser = user.isBlockedByMainUser.boolValue
@@ -125,14 +143,20 @@ import Foundation
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let operation = DeleteSequenceOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            sequenceID: sequence.remoteId)
-        operation.queue() { (results, error) in
-            guard !operation.cancelled else {
+        let delete = DeleteSequenceOperation(sequenceID: sequence.remoteId)
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: NSLocalizedString("DeleteButton", comment: ""),
+            originViewController: originViewController,
+            dependencyManager: dependencyManager
+        )
+        
+        confirm.before(delete)
+        confirm.queue()
+        delete.queue() { (results, error) in
+            guard !delete.cancelled else {
                 return
             }
-            completion?( !operation.cancelled )
+            completion?( error == nil )
         }
     }
     

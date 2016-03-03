@@ -21,7 +21,7 @@ class VSequenceTests: BasePersistentStoreTestCase {
             XCTFail("Failed to create a sequence model")
             return
         }
-        let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: 1)
+        let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: "1")
         persistentSequenceModel.populate(fromSourceModel: (sequenceModel, nil) )
         XCTAssertNotNil(persistentSequenceModel.adBreak)
         XCTAssertEqual(persistentSequenceModel.voteResults?.count, 5)
