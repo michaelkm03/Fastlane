@@ -30,26 +30,18 @@ class MockErrorHandler: NSObject, RequestErrorHandler {
 
 class MockFetcherOperation: FetcherOperation, RequestOperation {
     
-    let request: MockRequest!
-    
-    init(request: MockRequest) {
-        self.request = request
-    }
+    let request: MockRequest! = MockRequest()
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
-    }
-}
-
-class MockErrorFetcherOperation: FetcherOperation, RequestOperation {
-    
-    let request: MockErrorRequest!
-    
-    init(request: MockErrorRequest) {
-        self.request = request
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+    private func onComplete( sequence: MockRequest.ResultType, completion:()->() ) {
+        self.results = [NSObject(), NSObject()]
+        completion()
+    }
+    
+    private func onError( error: NSError, completion:()->() ) {
+        completion()
     }
 }

@@ -27,7 +27,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         operation.persistentStore = testStore
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             expectation.fulfill()
             
             guard let results = operation.results,
@@ -59,7 +59,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         operation.persistentStore = testStore
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             expectation.fulfill()
             
             guard let results = operation.results,

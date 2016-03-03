@@ -28,17 +28,17 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
         operation.persistentStore = testStore
         
         let expectation = expectationWithDescription("TrendingUsersOperation")
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             XCTAssertNil(error)
             XCTAssertEqual(results?.count, 1)
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             
-            guard let firstResult = results?.first as? VUser else {
+            guard let loadedUser = results?.first as? VUser else {
                 XCTFail("first object in results should be an instance of VUser")
                 return
             }
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             
-            XCTAssertEqual(firstResult.remoteId.integerValue, userID)
+            XCTAssertEqual(loadedUser.remoteId?.integerValue, userID)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)

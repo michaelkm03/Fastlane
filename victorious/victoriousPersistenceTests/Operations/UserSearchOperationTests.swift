@@ -38,7 +38,7 @@ class UserSearchOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("TrendingUsersOperation")
-        operation.queueOn(testQueue) { (results, error) in
+        operation.queue() { (results, error) in
             
             guard let results = results else {
                 XCTFail("results should be set by now")

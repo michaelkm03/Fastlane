@@ -18,7 +18,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
 	}
     
-    var delegate: VPaginatedDataSourceDelegate?
+    weak var delegate: VPaginatedDataSourceDelegate?
 	
 	/// A type used to record data source chanages that can then be applied to the collection
 	/// view in a `performBatchUpdates(_:completion)` call.
