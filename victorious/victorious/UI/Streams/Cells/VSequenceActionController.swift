@@ -96,7 +96,10 @@ import Foundation
         confirm.before(flag)
         confirm.queue()
         flag.queue() { (results, error) in
-            completion?( error == nil && !flag.cancelled )
+            guard !flag.cancelled else {
+                return
+            }
+            completion?( error == nil )
         }
     }
     
@@ -142,7 +145,7 @@ import Foundation
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
         let delete = DeleteSequenceOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: NSLocalizedString("DeleteButon", comment: ""),
+            actionTitle: NSLocalizedString("DeleteButton", comment: ""),
             originViewController: originViewController,
             dependencyManager: dependencyManager
         )
@@ -153,7 +156,7 @@ import Foundation
             guard !delete.cancelled else {
                 return
             }
-            completion?( !delete.cancelled )
+            completion?( error == nil )
         }
     }
     

@@ -6671,8 +6671,8 @@
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */,
 				A7BA37DE1C8528190095CFA9 /* ActionConfirmationOperation.swift */,
+				A7B1330A1C604CE9006EC4F5 /* ErrorOperation.swift */,
 				A7D618F01C2A8DD6007F46EA /* GIFSearchResultObject.swift */,
 				A746796D1BF6CC7B0026FD2E /* Helpers */,
 				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
@@ -7463,14 +7463,17 @@
 			children = (
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
 				A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */,
+				A7BA37E01C8544080095CFA9 /* ActionConfirmationOperationTests.swift */,
 				79CBAC121C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift */,
 				F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */,
 				F04CDB9A1C85465100696ADA /* BlockUserRemoteOperationTests.swift */,
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
+				A748BCBE1C878659003D5F5F /* DeleteSequenceOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* FetcherOperationTestss.swift */,
 				A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */,
+				A748BCC01C878B8C003D5F5F /* FlagSequenceOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUsersOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
@@ -7490,9 +7493,6 @@
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
-				A7BA37E01C8544080095CFA9 /* ActionConfirmationOperationTests.swift */,
-				A748BCBE1C878659003D5F5F /* DeleteSequenceOperationTests.swift */,
-				A748BCC01C878B8C003D5F5F /* FlagSequenceOperationTests.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";

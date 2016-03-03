@@ -25,7 +25,7 @@ class DeleteSequenceOperation: FetcherOperation {
             return
         }
         
-        DeleteSequenceRequestOperation(sequenceID: sequenceID).after( self ).queue()
+        DeleteSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()
         
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
