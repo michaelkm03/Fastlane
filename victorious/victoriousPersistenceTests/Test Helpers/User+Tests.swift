@@ -29,5 +29,6 @@ extension User {
         self.tokenUpdatedAt = nil
         self.previewImageAssets = nil
         self.maxVideoUploadDuration = nil
+        self.avatar = nil
     }
 }

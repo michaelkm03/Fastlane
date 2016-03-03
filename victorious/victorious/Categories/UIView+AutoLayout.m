@@ -83,11 +83,33 @@
                                 bottom:0.0f];
 }
 
+- (void)v_addCenterAndFitToParentConstraintsToSubview:(UIView *)subview
+                                                width:(CGFloat)widthPercentage
+                                                height:(CGFloat)heightPercentage
+{
+    [self v_addCenterToParentContraintsToSubview:subview];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:widthPercentage
+                                                      constant:0.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:heightPercentage
+                                                      constant:0.0f]];
+}
+
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
-                                   leading:(CGFloat)leading
-                                  trailing:(CGFloat)trailing
-                                       top:(CGFloat)top
-                                    bottom:(CGFloat)bottom
+                                     leading:(CGFloat)leading
+                                    trailing:(CGFloat)trailing
+                                         top:(CGFloat)top
+                                      bottom:(CGFloat)bottom
 {
     [self v_addPinToLeadingTrailingToSubview:subview leading:leading trailing:trailing];
     [self v_addPintoTopBottomToSubview:subview top:top bottom:bottom];
