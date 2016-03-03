@@ -29,7 +29,7 @@ public extension VConversationContainerViewController {
             conversationID: nil,
             mediaAttachment: mediaAttachment
         )
-        CreateMessageOperation(creationParameters: parameters).queue() { results in
+        MessageCreateOperation(creationParameters: parameters).queue() { results in
             completion?()
             self.delegate?.onConversationUpdated( conversation )
         }

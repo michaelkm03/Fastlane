@@ -86,7 +86,7 @@ import Foundation
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let flag = FlagSequenceOperation(sequenceID: sequence.remoteId)
+        let flag = SequenceFlagOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("Report/Flag", comment: ""),
             originViewController: originViewController,
@@ -143,7 +143,7 @@ import Foundation
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let delete = DeleteSequenceOperation(sequenceID: sequence.remoteId)
+        let delete = SequenceDeleteOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("DeleteButton", comment: ""),
             originViewController: originViewController,
@@ -162,7 +162,7 @@ import Foundation
     
     // MARK: - Like
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
-        ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
+        SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
             
             self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                 VLikeButtonCoachmarkIdentifier,
@@ -184,7 +184,7 @@ import Foundation
     }
     
     func repostSequence(sequence: VSequence, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(sequenceID: sequence.remoteId).queue { results, error in
+        SequenceRepostOperation(sequenceID: sequence.remoteId).queue { results, error in
             completion?( error == nil )
         }
     }

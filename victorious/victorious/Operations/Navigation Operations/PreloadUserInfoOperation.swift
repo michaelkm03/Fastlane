@@ -10,7 +10,7 @@ import Foundation
 
 /// Executes several sub operations that pre-load user info including conversations, poll responses,
 /// profile data, profile stream, etc.  Intended to be called just after login.
-class PreloadUserInfoOperation: Operation {
+class PreloadUserInfoOperation: BackgroundOperation {
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -41,7 +41,7 @@ class PreloadUserInfoOperation: Operation {
             UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
             
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
-            FollowedHashtagsOperation(request: request).queue()
+            FollowedHashtagsRemoteOperation(request: request).queue()
         }
         
         finishedExecuting()

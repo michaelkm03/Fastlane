@@ -19,7 +19,7 @@ class UnfollowHashtagOperation: FetcherOperation {
         self.hashtag = hashtag
         super.init()
         
-        UnfollowHashtagRequestOperation(hashtag: hashtag).after(self).queue()
+        UnfollowHashtagRemoteOperation(hashtag: hashtag).after(self).queue()
     }
     
     override func main() {
@@ -41,7 +41,7 @@ class UnfollowHashtagOperation: FetcherOperation {
 }
 
 
-class UnfollowHashtagRequestOperation: RemoteFetcherOperation, RequestOperation {
+class UnfollowHashtagRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UnfollowHashtagRequest!
     

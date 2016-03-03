@@ -377,7 +377,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
-    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
+    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
     [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
@@ -743,8 +743,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
-            LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueWithCompletion:^(Operation *_Nonnull op)
+            ConversationForUserOperation *operation = [[ConversationForUserOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )

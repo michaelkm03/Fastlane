@@ -305,7 +305,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
     NSNumber *userRemoteId = conversation.user.remoteId;
-    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
+    ConversationDeleteOperation *operation = [[ConversationDeleteOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          self.shouldAnimateDataSourceChanges = YES;

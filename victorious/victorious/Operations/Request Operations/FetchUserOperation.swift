@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FetchUserOperation: Operation {
+class FetchUserOperation: BackgroundOperation {
     
     private let userID: Int
     private let sourceUser: VictoriousIOSSDK.User?

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
+class FTUEVideoOperation: BackgroundOperation, VLightweightContentViewControllerDelegate {
     
     // Constant Keys
     let kFirstTimeContentKey = "firstTimeContent"

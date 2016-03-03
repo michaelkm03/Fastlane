@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class StoredLoginOperation: Operation {
+class StoredLoginOperation: BackgroundOperation {
     
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     

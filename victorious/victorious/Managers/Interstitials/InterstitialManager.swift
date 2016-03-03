@@ -66,7 +66,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
         presentingViewController.presentViewController(viewController, animated: true, completion: nil)
         
-        AcknowledgeAlertOperation(alertID: alert.alertID).queue()
+        AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         shownAlerts.append( alert )
         isShowingInterstital = true
     }

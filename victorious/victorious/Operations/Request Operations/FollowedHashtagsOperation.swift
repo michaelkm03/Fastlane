@@ -9,53 +9,31 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class FollowedHashtagsOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class FollowedHashtagsOperation: FetcherOperation, PaginatedOperation {
     
-    let request: HashtagSubscribedToListRequest
+    let paginator: StandardPaginator
     
-    required init( request: HashtagSubscribedToListRequest ) {
-        self.request = request
+    required init(paginator: StandardPaginator = StandardPaginator()) {
+        self.paginator = paginator
     }
     
-    convenience init(paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30)) {
-        self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
+    required convenience init(operation: FollowedHashtagsOperation, paginator: StandardPaginator) {
+        self.init(paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = HashtagSubscribedToListRequest(paginator: paginator)
+            FollowedHashtagsRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                completion()
+                self.results = []
                 return
-            }
-        
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            for hashtag in hashtags {
-                let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
-                persistentHashtag.populate(fromSourceModel: hashtag)
-                
-                let uniqueInfo = [ "user" : currentUser, "hashtag" : persistentHashtag ]
-                let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueInfo )
-                followedHashtag.user = currentUser
-                followedHashtag.hashtag = persistentHashtag
-                followedHashtag.displayOrder = displayOrder++
-            }
-            context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return []
             }
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
@@ -64,8 +42,8 @@ final class FollowedHashtagsOperation: RemoteFetcherOperation, PaginatedRequestO
                 argumentArray: [ currentUser.remoteId.integerValue ]
             )
             fetchRequest.predicate = predicate
-            let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )
-            return results.map { $0.hashtag }
+            let fetchResults: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )
+            self.results = fetchResults.map { $0.hashtag }
         }
     }
 }

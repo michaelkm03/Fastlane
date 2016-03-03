@@ -114,7 +114,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenRegistrationSuggestedUsers;
-    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
      {
          [self updateFollowingStateAnimated:YES];

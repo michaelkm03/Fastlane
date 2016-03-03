@@ -21,7 +21,7 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Queue a follow-up operation that parses to persistent store
-        SaveHashtagsOperation(hashtags: networkResult).after(self).queue()
+        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
         
         completion()
     }

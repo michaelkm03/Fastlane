@@ -9,65 +9,37 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UsersFollowedByUserOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class UsersFollowedByUserOperation: FetcherOperation, PaginatedOperation {
     
-    let request: SubscribedToListRequest
+    let paginator: StandardPaginator
+    let userID: Int
     
-    private var userID: Int
-    
-    required init( request: SubscribedToListRequest ) {
-        self.userID = request.userID
-        self.request = request
+    required init( userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
+        self.userID = userID
+        self.paginator = paginator
     }
     
-    convenience init( userID: Int ) {
-        self.init( request: SubscribedToListRequest(userID: userID) )
+    required convenience init(operation: UsersFollowedByUserOperation, paginator: StandardPaginator) {
+        self.init(userID: operation.userID, paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = SubscribedToListRequest(userID: userID, paginator: paginator)
+            UsersFollowedByUserRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            
-            // The user who is doing the following of other users
-            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
-            
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            for user in users {
-                
-                // Load a user who is followed by self.userID according to the results
-                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
-                objectUser.populate(fromSourceModel: user)
-                
-                let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
-                let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
-                followedUser.objectUser = objectUser
-                followedUser.subjectUser = subjectUser
-                followedUser.displayOrder = displayOrder++
-            }
-            context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "subjectUser.remoteId == %@ && objectUser.remoteId != %@",
-                vsdk_argumentArray: [ self.userID, self.userID ],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = predicate
-            let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
-            return results.flatMap { $0.objectUser }
+            let followPredicate =  NSPredicate(format: "subjectUser.remoteId == %i && objectUser.remoteId != %i",self.userID, self.userID)
+            let paginatorPredicate = self.paginator.paginatorPredicate
+            fetchRequest.predicate = followPredicate + paginatorPredicate
+            let fetchResults: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
+            self.results = fetchResults.flatMap { $0.objectUser }
         }
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 import FBSDKCoreKit
 
-class CreateMediaUploadOperation: Operation {
+class CreateMediaUploadOperation: BackgroundOperation {
     
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AnonymousLoginOperation: Operation {
+class AnonymousLoginOperation: BackgroundOperation {
     
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     

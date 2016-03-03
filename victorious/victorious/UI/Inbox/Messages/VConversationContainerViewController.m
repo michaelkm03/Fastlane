@@ -128,7 +128,7 @@ static const NSUInteger kCharacterLimit = 1024;
     
     NSInteger conversationID = self.conversation.remoteId.integerValue;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
-    FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
+    ConversationFlagOperation *operation = [[ConversationFlagOperation alloc] initWithConversationID:conversationID
                                                                                  mostRecentMessageID:mostRecentMessageID];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {

@@ -46,44 +46,8 @@ final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOper
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Queue a follow-up operation that parses to persistent store
-        SaveHashtagsOperation(hashtags: networkResult).after(self).queue()
+        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
         
         completion()
-    }
-}
-
-class SaveHashtagsOperation: Operation {
-    
-    let hashtags: [Hashtag]
-    
-    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
-    
-    required init( hashtags: [Hashtag] ) {
-        self.hashtags = hashtags
-    }
-    
-    override func start() {
-        super.start()
-        
-        guard !hashtags.isEmpty else {
-            self.finishedExecuting()
-            return
-        }
-        
-        self.beganExecuting()
-        
-        guard !hashtags.isEmpty else {
-            return
-        }
-        
-        // Populate our local hashtags cache based off the new data
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            for hashtag in self.hashtags {
-                let persistentHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : hashtag.tag ])
-                persistentHashtag.populate(fromSourceModel: hashtag)
-            }
-            context.v_save()
-            self.finishedExecuting()
-        }
     }
 }

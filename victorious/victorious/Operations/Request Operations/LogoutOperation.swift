@@ -24,7 +24,7 @@ class LogoutOperation: RemoteFetcherOperation {
         // and make the remote logout call to backend
         let pruneOperation = LogoutPrunePersistentStoreOperation()
         pruneOperation.before(self).queue()
-        LogoutRequestOperation().rechainAfter(pruneOperation).queue()
+        LogoutRemoteOperation().rechainAfter(pruneOperation).queue()
     }
     
     override func main() {
@@ -57,7 +57,7 @@ class LogoutOperation: RemoteFetcherOperation {
     }
 }
 
-private class LogoutRequestOperation: RemoteFetcherOperation, RequestOperation {
+private class LogoutRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: LogoutRequest! = LogoutRequest()
     

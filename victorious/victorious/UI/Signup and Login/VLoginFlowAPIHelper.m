@@ -164,7 +164,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    RequestPasswordResetOperation *operation = [[RequestPasswordResetOperation alloc] initWithEmail:email];
+    PasswordRequestResetOperation *operation = [[PasswordRequestResetOperation alloc] initWithEmail:email];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          if (error == nil)
@@ -218,8 +218,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    ValidatePasswordResetTokenOperation *operation = [[ValidatePasswordResetTokenOperation alloc] initWithUserToken:self.userToken
-                                                                                           deviceToken:self.deviceToken];
+    PasswordValidateResetTokenOperation *operation = [[PasswordValidateResetTokenOperation alloc] initWithUserToken:self.userToken deviceToken:self.deviceToken];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
     {
         if (error == nil)

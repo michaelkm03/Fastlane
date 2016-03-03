@@ -77,7 +77,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         self.updateFollowControlState(cell.followControl, forHashtag: hashtag, animated: false)
         cell.followControl?.onToggleFollow = { [weak self] in
             
-            ToggleFollowHashtagOperation(hashtag: hashtag).queue() { (results, error) in
+            FollowHashtagToggleOperation(hashtag: hashtag).queue() { (results, error) in
                 self?.onFollowingUpdated()
             }
         }

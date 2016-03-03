@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Creates a local comment in the persistent store and then queues `CommentAddOperation` when
+// Creates a local comment in the persistent store and then queues `CommentCreateRemoteOperation` when
 // complete to send the comment to the Victorious backend
 class CommentCreateOperation: FetcherOperation {
     
@@ -63,7 +63,7 @@ class CommentCreateOperation: FetcherOperation {
         }
         
         if let newCommentObjectID = newCommentObjectID,
-            let remoteOperation = CommentAddOperation(localCommentID: newCommentObjectID, creationParameters: self.creationParameters) {
+            let remoteOperation = CommentCreateRemoteOperation(localCommentID: newCommentObjectID, creationParameters: self.creationParameters) {
                 remoteOperation.after(self).queue()
         }
         

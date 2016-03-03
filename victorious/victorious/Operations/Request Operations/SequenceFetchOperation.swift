@@ -44,7 +44,7 @@ class SequenceFetchOperation: RemoteFetcherOperation, RequestOperation {
     }
 }
 
-class LoadStreamOperation: FetcherOperation {
+class LoadStreamFetcherOperation: FetcherOperation {
     
     private let apiPath: String
     

@@ -19,9 +19,6 @@ class UnfollowUserOperation: FetcherOperation {
     init( userID: Int, sourceScreenName: String ) {
         self.userID = userID
         self.sourceScreenName = sourceScreenName
-        super.init()
-        
-        UnfollowUserRequestOperation(userID: userID, sourceScreenName: sourceScreenName).after(self).queue()
     }
     
     override func main() {
@@ -47,19 +44,8 @@ class UnfollowUserOperation: FetcherOperation {
             context.v_save()
         }
         
+        UnfollowUserRemoteOperation(userID: userID,sourceScreenName: sourceScreenName).after(self).queue()
+        
         self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
-    }
-}
-
-class UnfollowUserRequestOperation: RemoteFetcherOperation, RequestOperation {
-    
-    let request: UnfollowUserRequest!
-    
-    init( userID: Int, sourceScreenName: String ) {
-        self.request = UnfollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
-    }
-    
-    override func main() {
-        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }

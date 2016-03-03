@@ -25,12 +25,18 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
         self.conversationID = conversationID
         self.userID = userID
         self.paginator = paginator
-        super.init()
-        
+    }
+    
+    override func start() {
         if !localFetch {
-            let request = ConversationRequest(conversationID: conversationID ?? 0, userID: userID, paginator: paginator)
+            let request = ConversationRequest(
+                conversationID: conversationID ?? 0,
+                userID: userID,
+                paginator: paginator
+            )
             ConversationRemoteOperation(request: request).before(self).queue()
         }
+        super.start()
     }
     
     required convenience init(operation: ConversationOperation, paginator: StandardPaginator) {

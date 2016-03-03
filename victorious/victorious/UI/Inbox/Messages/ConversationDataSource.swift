@@ -66,9 +66,11 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
                 return
         }
-        self.paginatedDataSource.refreshLocal(
+        self.paginatedDataSource.loadNewItems(
             createOperation: {
-                return ConversationOperation(conversationID: nil, userID: userID)
+                let op = ConversationOperation(conversationID: nil, userID: userID)
+                op.localFetch = true
+                return op
             },
             completion: nil
         )
@@ -94,7 +96,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
-        self.paginatedDataSource.refreshRemote(
+        self.paginatedDataSource.loadNewItems(
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },

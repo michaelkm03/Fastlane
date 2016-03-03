@@ -20,7 +20,7 @@ class TrendingHashtagOperationTests: BaseFetcherOperationTestCase {
         testRequestExecutor = TestRequestExecutor(result:[hashtag])
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("RequestPasswordResetOperation")
+        let expectation = expectationWithDescription("PasswordRequestResetOperation")
         operation.queue() { (results, error) in
             
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)

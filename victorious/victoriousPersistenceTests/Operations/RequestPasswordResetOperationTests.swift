@@ -1,5 +1,5 @@
 //
-//  RequestPasswordResetOperationTests.swift
+//  PasswordRequestResetOperationTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 1/7/16.
@@ -9,17 +9,17 @@
 import XCTest
 @testable import victorious
 
-class RequestPasswordResetOperationTests: BaseFetcherOperationTestCase {
+class PasswordRequestResetOperationTests: BaseFetcherOperationTestCase {
 
     let mockDeviceToken = "MockDeviceToken"
     
     func test() {
-        let operation = RequestPasswordResetOperation(email: "mockEmail")
+        let operation = PasswordRequestResetOperation(email: "mockEmail")
         testRequestExecutor = TestRequestExecutor(result: mockDeviceToken)
         operation.requestExecutor = testRequestExecutor
         operation.persistentStore = testStore
         
-        let expectation = expectationWithDescription("RequestPasswordResetOperation")
+        let expectation = expectationWithDescription("PasswordRequestResetOperation")
         operation.queue() { (results, error) in
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             XCTAssertEqual(operation.deviceToken, self.mockDeviceToken)

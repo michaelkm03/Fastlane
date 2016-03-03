@@ -18,7 +18,7 @@ extension InterstitialManager {
             
             if let addtionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
+                    AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
                         self.disabled = false
                     }
             }
@@ -33,7 +33,7 @@ extension InterstitialManager {
             
             if let addtionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
+                    AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
                         self.disabled = false
                     }
             }

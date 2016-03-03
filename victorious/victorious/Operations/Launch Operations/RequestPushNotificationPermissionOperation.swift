@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestPushNotificationPermissionOperation : Operation {
+class RequestPushNotificationPermissionOperation: BackgroundOperation {
     
     // MARK: - Override
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Operation: NSOperation, Queueable {
+class BackgroundOperation: NSOperation, Queueable {
     
     private var _executing = false
     private var _finished = false
@@ -47,7 +47,7 @@ class Operation: NSOperation, Queueable {
     
     // MARK: - Queueable
     
-    func executeCompletionBlock(completionBlock: Operation->()) {
+    func executeCompletionBlock(completionBlock: BackgroundOperation->()) {
         // This ensures that every subclass of `Operation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.
@@ -59,7 +59,7 @@ class Operation: NSOperation, Queueable {
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion: (Operation->())? ) {
+    func queueWithCompletion(completion: (BackgroundOperation->())? ) {
         queue(completion: completion)
     }
 }

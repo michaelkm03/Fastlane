@@ -36,12 +36,14 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
             let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
                 return
         }
-        self.refreshLocal(
+        /*self.refreshRemote(
             createOperation: {
-                return FetchCommentsOperation(sequenceID: sequence.remoteId)
+                let op = SequenceCommentsOperation(sequenceID: sequence.remoteId)
+                op.localFetch = true
+                return op
             },
-            completion: nil
-        )
+            completion:nil
+        )*/
     }
     
     func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
@@ -57,7 +59,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func deleteSequence( completion: (([AnyObject]?, NSError?)->())? = nil ) {
-        DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { (results, error) in
+        SequenceDeleteOperation(sequenceID: self.sequence.remoteId).queue() { (results, error) in
             completion?(results, error)
         }
     }

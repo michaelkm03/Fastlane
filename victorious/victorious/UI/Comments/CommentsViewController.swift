@@ -352,14 +352,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func flagComment(comment: VComment) {
-        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue() { (results, error) in
+        CommentFlagOperation(commentID: comment.remoteId.integerValue).queue() { (results, error) in
             self.dataSource?.removeDeletedItems()
             self.v_showFlaggedCommentAlert()
         }
     }
     
     func deleteComment(comment: VComment) {
-        DeleteCommentOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { (results, error) in
+        CommentDeleteOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { (results, error) in
             self.dataSource?.removeDeletedItems()
         }
     }
