@@ -48,7 +48,7 @@ extension Stream {
         name                        = json["name"].string
         title                       = json["title"].string
         postCount                   = json["postCount"].int ?? json["count"].int
-        trackingIdentifier          = json["apiPath"].string
+        trackingIdentifier          = json["stream_id"].string
         isUserPostAllowed           = json["ugc_post_allowed"].bool
         apiPath                     = json["streamUrl"].string ?? json["apiPath"].string
         
