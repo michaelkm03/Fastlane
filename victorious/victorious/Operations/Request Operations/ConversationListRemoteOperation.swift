@@ -20,9 +20,8 @@ final class ConversationListRemoteOperation: RemoteFetcherOperation, PaginatedRe
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( results: ConversationListRequest.ResultType, completion:()->() ) {
+    func onComplete( results: ConversationListRequest.ResultType) {
         guard !results.isEmpty else {
-            completion()
             return
         }
         
@@ -36,7 +35,5 @@ final class ConversationListRemoteOperation: RemoteFetcherOperation, PaginatedRe
             }
             context.v_save()
         }
-        
-        completion()
     }
 }

@@ -36,7 +36,7 @@ class MainRequestExecutor: RequestExecutorType {
     
     var cancelled: Bool = false
     
-    func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
+    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType->())?, onError: (NSError->())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
@@ -55,33 +55,23 @@ class MainRequestExecutor: RequestExecutorType {
             authenticationContext: authenticationContext,
             callback: { (result, error) in
                 dispatch_async( dispatch_get_main_queue() ) {
-                    
-                    if self.cancelled {
+                    defer {
                         dispatch_semaphore_signal( executeSemphore )
-                        
+                    }
+                    if self.cancelled {
+                        return
+                    
                     } else if let error = error as? RequestErrorType {
                         let nsError = NSError(error)
                         self.error = nsError
                         self.handleError( nsError )
-                        if let onError = onError {
-                            onError( nsError ) {
-                                dispatch_semaphore_signal( executeSemphore )
-                            }
-                        } else {
-                            dispatch_semaphore_signal( executeSemphore )
-                        }
+                        onError?( nsError )
                         
                     } else if let result = result {
                         if !result.alerts.isEmpty {
                             self.alertsReceiver.onAlertsReceived( result.alerts )
                         }
-                        if let onComplete = onComplete {
-                            onComplete( result.result ) {
-                                dispatch_semaphore_signal( executeSemphore )
-                            }
-                        } else {
-                            dispatch_semaphore_signal( executeSemphore )
-                        }
+                        onComplete?( result.result )
                     }
                 }
             }

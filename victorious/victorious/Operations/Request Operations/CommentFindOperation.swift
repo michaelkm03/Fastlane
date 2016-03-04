@@ -30,7 +30,7 @@ class CommentFindOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
-    private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {
+    private func onComplete( response: CommentFindRequest.ResultType) {
         self.pageNumber = response.pageNumber
         
         let flaggedCommentIds: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
@@ -46,7 +46,6 @@ class CommentFindOperation: RemoteFetcherOperation, RequestOperation {
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + comments )
                 context.v_save()
             }
-            completion()
         }
     }
 }

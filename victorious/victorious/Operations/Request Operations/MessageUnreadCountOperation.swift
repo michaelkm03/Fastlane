@@ -19,8 +19,7 @@ final class MessageUnreadCountOperation: RemoteFetcherOperation, RequestOperatio
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( result: UnreadMessageCountRequest.ResultType, completion:()->() ) {
+    func onComplete( result: UnreadMessageCountRequest.ResultType) {
         self.unreadMessagesCount = result
-        completion()
     }
 }

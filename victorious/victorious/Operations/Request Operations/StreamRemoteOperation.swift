@@ -26,7 +26,7 @@ final class StreamRemoteOperation: RemoteFetcherOperation, PaginatedRequestOpera
         requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
     }
     
-    func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
+    func onComplete( sourceStream: StreamRequest.ResultType) {
         
         // Make changes on background queue
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -71,6 +71,5 @@ final class StreamRemoteOperation: RemoteFetcherOperation, PaginatedRequestOpera
                 }
             }
         }
-        completion()
     }
 }

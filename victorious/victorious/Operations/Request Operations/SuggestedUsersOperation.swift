@@ -17,7 +17,7 @@ class SuggestedUsersOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( users: SuggestedUsersRequest.ResultType, completion:()->() ) {
+    func onComplete( users: SuggestedUsersRequest.ResultType) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
@@ -36,7 +36,6 @@ class SuggestedUsersOperation: RemoteFetcherOperation, RequestOperation {
 
             let finishOperation = {
                 self.results = self.fetchResults( suggestedUsers )
-                completion()
             }
 
             if NSBundle.v_isTestBundle {

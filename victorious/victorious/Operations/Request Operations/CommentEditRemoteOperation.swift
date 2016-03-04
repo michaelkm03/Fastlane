@@ -19,22 +19,17 @@ class CommentEditRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onError( error: NSError, completion:()->() ) {
+    private func onError( error: NSError ) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventEditCommentDidFail, parameters:params)
-        completion()
     }
     
-    private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
+    private func onComplete( comment: CommentAddRequest.ResultType) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            defer {
-                completion()
-            }
-            
             guard let objectID = self.optimisticObjectID,
                 let optimisticObject = context.objectWithID( objectID ) as? VComment else {
                     return
@@ -43,7 +38,6 @@ class CommentEditRemoteOperation: RemoteFetcherOperation, RequestOperation {
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
-            completion()
         }
         
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidCompleteEditComment)

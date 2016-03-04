@@ -21,9 +21,8 @@ class LoginOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete(response: AccountCreateResponse, completion: () -> ()) {
+    func onComplete(response: AccountCreateResponse) {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: self.request.email)
         LoginSuccessOperation(response: response, parameters: parameters).after(self).queue()
-        completion()
     }
 }

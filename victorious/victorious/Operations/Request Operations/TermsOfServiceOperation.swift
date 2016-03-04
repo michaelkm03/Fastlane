@@ -19,8 +19,7 @@ class TermsOfServiceOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( htmlString: TermsOfServiceRequest.ResultType, completion: () -> () ) {
+    private func onComplete( htmlString: TermsOfServiceRequest.ResultType ) {
         resultHTMLString = htmlString
-        completion()
     }
 }

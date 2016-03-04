@@ -27,18 +27,16 @@ class FollowCountOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
+    func onComplete( response: FollowCountRequest.ResultType) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let user: VUser = context.v_findObjects( [ "remoteId" : Int(self.userID) ]).first else {
-                completion()
                 return
             }
             
             user.numberOfFollowers = response.followersCount
             user.numberOfFollowing = response.followingCount
             context.v_save()
-            completion()
         }
     }
 }

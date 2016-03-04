@@ -15,13 +15,11 @@ extension VApplicationTracking {
         let request = ApplicationTrackingRequest(trackingURL: url, eventIndex: eventIndex)
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
             MainRequestExecutor().executeRequest(request,
-                onComplete: { (_, requestCompletion) in
+                onComplete: { _ in
                     completion(nil)
-                    requestCompletion()
                 },
-                onError: { (error, errorCompletion) in
+                onError: { error in
                     completion(error)
-                    errorCompletion()
                 }
             )
         }

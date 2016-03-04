@@ -9,63 +9,37 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceLikersOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class SequenceLikersOperation: FetcherOperation, PaginatedOperation {
     
-    let request: SequenceLikersRequest
+    let paginator: StandardPaginator
     
     private var sequenceID: String
     
-    required init( request: SequenceLikersRequest ) {
-        self.sequenceID = request.sequenceID
-        self.request = request
+    required init( sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
+        self.sequenceID = sequenceID
+        self.paginator = paginator
     }
     
-    convenience init( sequenceID: String ) {
-        self.init( request: SequenceLikersRequest(sequenceID: sequenceID) )
+    required convenience init(operation: SequenceLikersOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = SequenceLikersRequest(sequenceID: sequenceID, paginator: paginator)
+            SequenceLikersRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-
-            let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])
-            for user in users {
-                let persistentUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID ] )
-                persistentUser.populate(fromSourceModel: user)
-
-                let uniqueElements = [ "sequence"  : sequence, "user" : persistentUser ]
-                let userSequenceContext: VSequenceLiker = context.v_findOrCreateObject( uniqueElements )
-                userSequenceContext.sequence = sequence
-                userSequenceContext.user = persistentUser
-                userSequenceContext.displayOrder = displayOrder++
-            }
-            context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    // MARK: - PaginatedRequestOperation
-    
-    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "sequence.remoteId = %@",
-                vsdk_argumentArray: [ self.sequenceID ],
-                vsdk_paginator: self.request.paginator
-            )
-            fetchRequest.predicate = predicate
-            let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
-            return results.flatMap { $0.user }
+            let predicate = NSPredicate(format: "sequence.remoteId = %@", self.sequenceID )
+            fetchRequest.predicate = predicate + self.paginator.paginatorPredicate
+            let fetchResults: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
+            self.results = fetchResults.flatMap { $0.user }
         }
     }
 }

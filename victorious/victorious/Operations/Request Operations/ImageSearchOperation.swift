@@ -26,17 +26,11 @@ final class ImageSearchOperation: RemoteFetcherOperation, PaginatedRequestOperat
 	}
 	
 	override func main() {
-		requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+		requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
 	}
 	
-	func onError( error: NSError, completion:()->() ) {
-		self.results = []
-		completion()
-	}
-	
-	func onComplete( results: ImageSearchRequest.ResultType, completion:()->() ) {
+	func onComplete( results: ImageSearchRequest.ResultType) {
 		self.results = results.map { ImageSearchResultObject( $0 ) }
-		completion()
     }
 }
 

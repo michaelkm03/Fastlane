@@ -9,51 +9,31 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class NotificationsOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class NotificationsOperation: FetcherOperation, PaginatedOperation {
     
-    var request: NotificationsRequest
+    let paginator: StandardPaginator
     
-    required init( request: NotificationsRequest = NotificationsRequest() ) {
-        self.request = request
+    required init(paginator: StandardPaginator = StandardPaginator()) {
+        self.paginator = paginator
+    }
+    
+    required convenience init(operation: NotificationsOperation, paginator: StandardPaginator) {
+        self.init(paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = NotificationsRequest(paginator: paginator)
+            NotificationsRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    func onComplete( results: NotificationsRequest.ResultType, completion:()->() ) {
-        guard !results.isEmpty else {
-            completion()
-            return
-        }
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            for result in results {
-                
-                /// Determining uniqueness based on time of creation and subject of the notification
-                let uniqueElements : [String : AnyObject] = [
-                    "createdAt" : result.createdAt,
-                    "subject" : result.subject
-                ]
-                
-                let notification: VNotification = context.v_findOrCreateObject(uniqueElements)
-                notification.populate(fromSourceModel: result)
-                notification.displayOrder = displayOrder++
-            }
-            context.v_save()
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VNotification.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            return context.v_executeFetchRequest( fetchRequest ) as [VNotification]
+            self.results = context.v_executeFetchRequest( fetchRequest ) as [VNotification]
         }
     }
 }

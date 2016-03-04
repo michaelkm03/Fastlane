@@ -1,5 +1,5 @@
 //
-//  UsersFollowedByUserRemoteOperation.swift
+//  UsersFollowingUserRemoteOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/3/16.
@@ -8,45 +8,46 @@
 
 import Foundation
 
-final class UsersFollowedByUserRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class UsersFollowingUserRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
-    let request: SubscribedToListRequest
+    let request: FollowersListRequest
     
     private var userID: Int
     
-    required init( request: SubscribedToListRequest ) {
+    required init( request: FollowersListRequest ) {
         self.userID = request.userID
         self.request = request
     }
     
-    convenience init( userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
-        self.init( request: SubscribedToListRequest(userID: userID) )
+    convenience init( userID: Int ) {
+        self.init( request: FollowersListRequest(userID: userID) )
     }
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( users: SubscribedToListRequest.ResultType) {
+    private func onComplete( results: SequenceLikersRequest.ResultType) {
+        
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            // The user who is doing the following of other users
-            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
+            // The user being followed
+            let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
             
             var displayOrder = self.request.paginator.displayOrderCounterStart
-            for user in users {
+            for user in results {
                 
-                // Load a user who is followed by self.userID according to the results
-                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
-                objectUser.populate(fromSourceModel: user)
+                // Load a user who is following self.userID according to the results
+                let subjectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
+                subjectUser.populate(fromSourceModel: user)
                 
+                // Find or create the following relationship
                 let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
                 let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
                 followedUser.objectUser = objectUser
                 followedUser.subjectUser = subjectUser
                 followedUser.displayOrder = displayOrder++
             }
-            context.v_save()
         }
     }
 }

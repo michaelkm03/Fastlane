@@ -28,10 +28,9 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
+    func onComplete( comments: SequenceCommentsRequest.ResultType) {
         guard !comments.isEmpty else {
             self.results = []
-            completion()
             return
         }
         
@@ -57,7 +56,5 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
             
             context.v_save()
         }
-        
-        completion()
     }
 }

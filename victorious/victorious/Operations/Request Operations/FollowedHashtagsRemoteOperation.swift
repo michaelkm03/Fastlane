@@ -24,11 +24,10 @@ final class FollowedHashtagsRemoteOperation: RemoteFetcherOperation, PaginatedRe
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
+    func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                completion()
                 return
             }
             
@@ -45,6 +44,5 @@ final class FollowedHashtagsRemoteOperation: RemoteFetcherOperation, PaginatedRe
             }
             context.v_save()
         }
-        completion()
     }
 }

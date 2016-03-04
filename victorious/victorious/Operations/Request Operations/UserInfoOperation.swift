@@ -24,7 +24,7 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
+    private func onComplete( user: UserInfoRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.userID ])
             persistentUser.populate(fromSourceModel: user)
@@ -33,7 +33,6 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
             
             self.persistentStore.mainContext.v_performBlock() { context in
                 self.user = context.objectWithID(objectID) as? VUser
-                completion()
             }
         }
     }

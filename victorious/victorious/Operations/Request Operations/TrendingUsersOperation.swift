@@ -19,7 +19,7 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete( networkResult: TrendingUsersRequest.ResultType, completion: () -> () ) {
+    func onComplete( networkResult: TrendingUsersRequest.ResultType ) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             var persistentUsers = [VUser]()
@@ -33,7 +33,6 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
             
             dispatch_async( dispatch_get_main_queue() ) {
                 self.results = self.fetchResults()
-                completion()
             }
         }
     }

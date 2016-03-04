@@ -52,14 +52,12 @@ class UnblockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: UnblockUserRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: UnblockUserRequest.ResultType) {
         self.trackingManager.trackEvent( VTrackingEventUserDidUnblockUser )
-        completion()
     }
     
-    private func onError( error: NSError, completion:()->() ) {
+    private func onError( error: NSError) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         self.trackingManager.trackEvent( VTrackingEventUnblockUserDidFail, parameters: params )
-        completion()
     }
 }

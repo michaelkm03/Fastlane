@@ -9,56 +9,35 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryBySequenceOperation: RemoteFetcherOperation, RequestOperation {
+final class PollResultSummaryBySequenceOperation: FetcherOperation {
     
-    let request: PollResultSummaryRequest!
+    let paginator: StandardPaginator
     
-    private let sequenceID: String
+    private var sequenceID: String
     
-    required init( request: PollResultSummaryRequest ) {
-        self.sequenceID = request.sequenceID!
-        self.request = request
+    required init( sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
+        self.sequenceID = sequenceID
+        self.paginator = paginator
     }
     
-    convenience init( sequenceID: String ) {
-        self.init( request: PollResultSummaryRequest(sequenceID: sequenceID) )
+    required convenience init(operation: PollResultSummaryBySequenceOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = PollResultSummaryRequest(sequenceID: sequenceID, paginator: paginator)
+            PollResultSummaryBySequenceRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
-    }
-    
-    private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            for pollResult in pollResults {
-                // Populate a persistent VPollResult object
-                guard let answerID = pollResult.answerID else {
-                    continue
-                }
-                let uniqueElements: [String : AnyObject] = [
-                    "answerId" : NSNumber(integer: answerID),
-                    "sequenceId" : self.sequenceID
-                ]
-                
-                let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
-                persistentResult.populate(fromSourceModel:pollResult)
-            }
-            context.v_save()
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.results = self.fetchResults()
-                completion()
-            }
-        }
-    }
-    
-    private func fetchResults() -> [AnyObject] {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VPollResult.v_entityName())
-            let predicate = NSPredicate(format: "sequenceId == %@", argumentArray: [self.sequenceID])
-            fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest(fetchRequest)
+            let predicate = NSPredicate(format: "sequenceId == %@", self.sequenceID)
+            fetchRequest.predicate = predicate + self.paginator.paginatorPredicate
+            self.results = context.v_executeFetchRequest(fetchRequest)
         }
     }
 }

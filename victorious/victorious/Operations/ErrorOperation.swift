@@ -13,3 +13,7 @@ import Foundation
 protocol ErrorOperation: class {
     var error: NSError? { get }
 }
+
+protocol PrefetchedResultsOperation: class {
+    var resultObjectIDs: [NSManagedObjectID]? { get }
+}

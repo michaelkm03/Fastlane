@@ -28,17 +28,11 @@ final class PollResultSummaryByUserOperation: RemoteFetcherOperation, PaginatedR
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onError( error: NSError, completion:()->() ) {
-        self.results = []
-        completion()
-    }
-    
-    private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
+    private func onComplete( pollResults: PollResultSummaryRequest.ResultType) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             guard let user: VUser = context.v_findObjects( [ "remoteId" :  self.userID ] ).first else {
-                completion()
                 return
             }
             
@@ -60,7 +54,6 @@ final class PollResultSummaryByUserOperation: RemoteFetcherOperation, PaginatedR
             }
             
             context.v_save()
-            completion()
         }
     }
 }

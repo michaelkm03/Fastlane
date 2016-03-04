@@ -20,14 +20,12 @@ class SequenceRepostRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: RepostSequenceRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: RepostSequenceRequest.ResultType) {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
-        completion()
     }
     
-    private func onError( error: NSError, completion:()->() ) {
+    private func onError( error: NSError) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
-        completion()
     }
 }

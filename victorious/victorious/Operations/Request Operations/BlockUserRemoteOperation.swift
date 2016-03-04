@@ -22,14 +22,12 @@ class BlockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: BlockUserRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: BlockUserRequest.ResultType) {
         self.trackingManager.trackEvent( VTrackingEventUserDidBlockUser )
-        completion()
     }
     
-    private func onError( error: NSError, completion:()->() ) {
+    private func onError( error: NSError) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         self.trackingManager.trackEvent( VTrackingEventBlockUserDidFail, parameters: params )
-        completion()
     }
 }

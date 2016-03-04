@@ -35,11 +35,10 @@ class MainRequestExecutorTests: XCTestCase {
 
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
-                    completion()
+                onComplete: { result in
                     expectation.fulfill()
                 },
-                onError: { (error, completion:()->() ) in
+                onError: { error in
                     XCTFail( "Should not be called" )
                 }
             )
@@ -56,11 +55,10 @@ class MainRequestExecutorTests: XCTestCase {
         
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
+                onComplete: { result in
                     XCTFail( "Should not be called" )
                 },
-                onError: { (error, completion:()->() ) in
-                    completion()
+                onError: { error in
                     expectation.fulfill()
                 }
             )
@@ -78,10 +76,10 @@ class MainRequestExecutorTests: XCTestCase {
         self.requestExecutor.cancelled = true
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
+                onComplete: { result in
                     XCTFail( "Should not be called" )
                 },
-                onError: { (error, completion:()->() ) in
+                onError: { error in
                     XCTFail( "Should not be called" )
                 }
             )
@@ -107,11 +105,10 @@ class MainRequestExecutorTests: XCTestCase {
         
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
+                onComplete: { result in
                     XCTFail( "Should not be called" )
                 },
-                onError: { (error, completion:()->() ) in
-                    completion()
+                onError: { error in
                     XCTAssertEqual( errorHandler1.errorsHandled.count, 1 )
                     XCTAssertEqual( errorHandler2.errorsHandled.count, 0 )
                     expectation.fulfill()

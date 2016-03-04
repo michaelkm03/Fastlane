@@ -17,12 +17,10 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
 
-    func onComplete( networkResult: TrendingHashtagRequest.ResultType, completion: () -> () ) {
+    func onComplete( networkResult: TrendingHashtagRequest.ResultType ) {
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Queue a follow-up operation that parses to persistent store
         HashtagSaveOperation(hashtags: networkResult).after(self).queue()
-        
-        completion()
     }
 }

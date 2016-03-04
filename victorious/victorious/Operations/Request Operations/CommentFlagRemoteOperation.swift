@@ -20,14 +20,12 @@ class CommentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError)
     }
     
-    private func onError( error: NSError, completion:()->() ) {
+    private func onError( error: NSError) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagCommentDidFail, parameters:params)
-        completion()
     }
     
-    private func onComplete( response: FlagCommentRequest.ResultType, completion:()->() ) {
+    private func onComplete( response: FlagCommentRequest.ResultType) {
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagComment)
-        completion()
     }
 }

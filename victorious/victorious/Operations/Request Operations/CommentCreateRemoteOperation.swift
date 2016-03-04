@@ -32,18 +32,16 @@ class CommentCreateRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
+    func onComplete( comment: CommentAddRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             guard let optimisticObject = context.objectWithID( self.localCommentID ) as? VComment else {
-                    completion()
-                    return
+                return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
-            completion()
         }
     }
 }

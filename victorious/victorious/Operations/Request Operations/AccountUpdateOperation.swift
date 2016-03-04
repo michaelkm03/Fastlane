@@ -69,10 +69,9 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: AccountUpdateRequest.ResultType) {
         if let passwordUpdate = self.request.passwordUpdate {
             self.storedPassword.savePassword( passwordUpdate.passwordNew, forEmail: passwordUpdate.email )
         }
-        completion()
     }
 }

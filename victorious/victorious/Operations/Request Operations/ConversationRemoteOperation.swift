@@ -27,9 +27,8 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
         }
     }
     
-    func onComplete( results: ConversationRequest.ResultType, completion:()->() ) {
+    func onComplete( results: ConversationRequest.ResultType) {
         guard let conversationID = self.conversationID where !results.isEmpty else {
-            completion()
             return
         }
         
@@ -60,7 +59,5 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
             
             context.v_save()
         }
-        
-        completion()
     }
 }

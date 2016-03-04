@@ -45,28 +45,26 @@ final class UserSearchOperation: RemoteFetcherOperation, PaginatedRequestOperati
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: nil)
+        requestExecutor.executeRequest(self.request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
+    func onComplete(networkResult: UserSearchRequest.ResultType) {
         
         guard !networkResult.isEmpty else {
             results = []
-            completion()
             return
         }
         
         self.results = networkResult.map{ UserSearchResultObject( user: $0) }
         
-        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
-        completion()
-
-        // Populate our local users cache based off the new data
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        // Use `v_performBlock` to allow operation execution to end while the following
+        // block parses results into the persistent storein the background
+        persistentStore.createBackgroundContext().v_performBlock() { context in
             guard !networkResult.isEmpty else {
                 return
             }
             
+            // Populate our local users cache based off the new data
             for networkUser in networkResult {
                 let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID])
                 localUser.populate(fromSourceModel: networkUser)

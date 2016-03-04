@@ -27,7 +27,7 @@ class SequenceFetchOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: SequenceFetchRequest.ResultType) {
         
         let persistentSequenceID: NSManagedObjectID = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : sequence.sequenceID ])
@@ -40,7 +40,6 @@ class SequenceFetchOperation: RemoteFetcherOperation, RequestOperation {
         persistentStore.mainContext.v_performBlockAndWait { context in
             self.result = context.objectWithID(persistentSequenceID) as? VSequence
         }
-        completion()
     }
 }
 

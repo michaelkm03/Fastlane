@@ -17,5 +17,6 @@
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * sequenceId;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) NSNumber * displayOrder;
 
 @end

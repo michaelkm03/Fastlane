@@ -36,12 +36,11 @@ class MockFetcherOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: MockRequest.ResultType, completion:()->() ) {
+    private func onComplete( sequence: MockRequest.ResultType) {
         self.results = [NSObject(), NSObject()]
-        completion()
     }
     
-    private func onError( error: NSError, completion:()->() ) {
-        completion()
+    private func onError( error: NSError) {
+        self.error = error
     }
 }

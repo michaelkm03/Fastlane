@@ -28,7 +28,7 @@ class FriendFindBySocialNetworkOperation: RemoteFetcherOperation, RequestOperati
         requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
     }
     
-    func onComplete( results: [User], completion:()->() ) {
+    func onComplete( results: [User] ) {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             self.resultObjectIDs = results.flatMap {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
@@ -38,7 +38,6 @@ class FriendFindBySocialNetworkOperation: RemoteFetcherOperation, RequestOperati
             context.v_save()
             
             self.results = self.fetchResults()
-            completion()
         }
     }
     

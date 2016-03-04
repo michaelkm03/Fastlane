@@ -19,7 +19,7 @@ class DeviceExperimentsOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]), completion:() -> () ) {
+    private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]) ) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             for experiment in result.experiments {
@@ -32,8 +32,6 @@ class DeviceExperimentsOperation: RemoteFetcherOperation, RequestOperation {
             for defaultID in result.defaultExperimentIDs {
                 self.defaultExperimentIDs.insert(Int(defaultID))
             }
-
-            completion()
         }
     }
 }

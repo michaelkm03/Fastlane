@@ -30,16 +30,14 @@ class MessageSendRemoteOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete(result: SendMessageRequest.ResultType, completion: () -> () ) {
+    func onComplete(result: SendMessageRequest.ResultType ) {
         persistentStore.createBackgroundContext().v_performBlock() { context in
             guard let message = context.objectWithID( self.localMessageID ) as? VMessage else {
-                completion()
                 return
             }
             message.conversation.remoteId = result.conversationID
             message.remoteId = result.messageID
             context.v_save()
-            completion()
         }
     }
 }

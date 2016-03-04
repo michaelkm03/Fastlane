@@ -9,56 +9,45 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceRepostersOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class SequenceRepostersOperation: FetcherOperation, PaginatedOperation {
     
-    let request: SequenceRepostersRequest
+    let paginator: StandardPaginator
     
     private var sequenceID: String
     
-    private var resultObjectIDs = [NSManagedObjectID]()
-    
-    required init( request: SequenceRepostersRequest ) {
-        self.sequenceID = request.sequenceID
-        self.request = request
+    required init( sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
+        self.sequenceID = sequenceID
+        self.paginator = paginator
     }
     
-    convenience init( sequenceID: String ) {
-        self.init( request: SequenceRepostersRequest(sequenceID: sequenceID) )
+    required convenience init(operation: SequenceRepostersOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
+    }
+    
+    override func start() {
+        if !localFetch {
+            let request = SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator)
+            SequenceRepostersRemoteOperation(request: request).before(self).queue()
+        }
+        super.start()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            
-            // Load the persistent models (VUser) from the provided networking models (User)
-            var reposters = [VUser]()
-            for user in users {
-                let reposter: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ] )
-                reposter.populate(fromSourceModel: user )
-                reposters.append( reposter )
-            }
-            
-            // Add the loaded persistent models to the sequence as `reposters`
-            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            sequence.v_addObjects( reposters, to: "reposters" )
-            context.v_save()
-            
-            self.resultObjectIDs = reposters.map { $0.objectID }
-            
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
+        // TODO:
+        /*if let objectIDs = dependencies.flatMap { $0 as? PrefetchedResultsOperation }.first {
+            // Reload objectIDs in main context
+        } else {
+            // Fetch request
+        }*/
+
+        // TOOD: Make sure this works
+        
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VUser.v_entityName())
+            let predicate = NSPredicate(format: "ANY resposedSequences.remoteId = %@", self.sequenceID)
+            fetchRequest.predicate = predicate + self.paginator.paginatorPredicate
+            self.results = context.v_executeFetchRequest(fetchRequest)
         }
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        return self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            return self.resultObjectIDs.flatMap { context.objectWithID($0) as? VUser }
-        } as [VUser]
     }
 }

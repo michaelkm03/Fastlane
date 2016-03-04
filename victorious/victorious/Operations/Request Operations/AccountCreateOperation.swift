@@ -33,9 +33,8 @@ class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( response: AccountCreateResponse, completion:()->() ) {
+    func onComplete( response: AccountCreateResponse) {
         let successOperation = LoginSuccessOperation(response: response, parameters: self.parameters)
         successOperation.rechainAfter(self).queue()
-        completion()
     }
 }

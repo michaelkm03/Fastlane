@@ -29,13 +29,11 @@ final class GIFSearchOperation: RemoteFetcherOperation, PaginatedRequestOperatio
         requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
-    func onError( error: NSError, completion:()->() ) {
+    func onError( error: NSError) {
         self.results = []
-        completion()
     }
     
-    func onComplete( results: GIFSearchRequest.ResultType, completion:()->() ) {
+    func onComplete( results: GIFSearchRequest.ResultType) {
         self.results = results.map { GIFSearchResultObject( $0 ) }
-        completion()
     }
 }

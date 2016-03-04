@@ -24,12 +24,11 @@ class SequenceUserInterationsOperation: RemoteFetcherOperation, RequestOperation
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
-    private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {
+    private func onComplete( result: SequenceUserInteractionsRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let sequence: VSequence = context.v_findOrCreateObject([ "remoteId" : self.sequenceID ])
             sequence.hasBeenRepostedByMainUser = result
             context.v_save()
-            completion()
         }
     }
 }

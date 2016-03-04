@@ -22,8 +22,7 @@ final class PasswordRequestResetOperation: RemoteFetcherOperation, RequestOperat
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete( results: RequestPasswordResetRequest.ResultType, completion:()->() ) {
+    func onComplete( results: RequestPasswordResetRequest.ResultType) {
         deviceToken = results
-        completion()
     }
 }

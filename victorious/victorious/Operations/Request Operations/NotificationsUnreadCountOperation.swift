@@ -19,8 +19,7 @@ final class NotificationsUnreadCountOperation: RemoteFetcherOperation, RequestOp
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( result: UnreadNotificationsCountRequest.ResultType, completion:()->() ) {
+    func onComplete( result: UnreadNotificationsCountRequest.ResultType) {
         self.unreadNotificationsCount = result
-        completion()
     }
 }

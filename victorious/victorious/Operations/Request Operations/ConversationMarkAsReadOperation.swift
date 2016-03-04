@@ -34,10 +34,9 @@ class ConversationMarkAsReadOperation: RemoteFetcherOperation, RequestOperation 
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete(result: Int?, completion: () -> () ) {
+    func onComplete(result: Int?) {
         if let unreadConversationsCount = result {
             self.unreadConversationsCount = unreadConversationsCount
         }
-        completion()
     }
 }
