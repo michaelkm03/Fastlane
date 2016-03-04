@@ -12,7 +12,7 @@ import XCTest
 class UnblockUserRequestTests: XCTestCase {
 
     func testRequest() {
-        //let request = BlockUserRequest(userID: 10, trackingManager: VTrackingManager.sharedInstance())
-        //XCTAssertEqual(request.urlRequest.URL?.absoluteString, "/api/user/unblock")
+        let request = UnblockUserRequest(userID: 10)
+        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "/api/user/unblock")
     }
 }

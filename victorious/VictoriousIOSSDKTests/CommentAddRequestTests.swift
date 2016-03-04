@@ -32,7 +32,7 @@ class CommentAddRequestTests: XCTestCase {
             sequenceID: "17100",
             replyToCommentID: nil,
             mediaAttachment: nil,
-            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
+            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54)
         )
         
         let request = CommentAddRequest(creationParameters: params)!
