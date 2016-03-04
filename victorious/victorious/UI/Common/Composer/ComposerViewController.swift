@@ -6,23 +6,18 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ComposerViewController: NSObject {
+class ComposerViewController: UIViewController {
     
     weak var delegate: ComposerViewControllerDelegate?
     
-    let attachmentTabs: [ComposerViewControllerAttachmentTab]
+    var attachmentTabs: [ComposerViewControllerAttachmentTab]?
     
     var maximumHeight: CGFloat = CGFloat.max {
         didSet {
             //Update height if maximumHeight is now less than the current height
         }
-    }
-    
-    init(attachmentTabs: [ComposerViewControllerAttachmentTab]) {
-        self.attachmentTabs = attachmentTabs
-        super.init()
     }
     
     func addTagForUser(user: VUser) {
