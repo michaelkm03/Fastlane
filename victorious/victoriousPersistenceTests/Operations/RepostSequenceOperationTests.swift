@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class RepostSequenceOperationTests: XCTestCase {
+class RepostSequenceOperationTests: BaseFetcherOperationTestCase {
     var user: VUser?
     var sequence: VSequence?
     
@@ -17,15 +17,8 @@ class RepostSequenceOperationTests: XCTestCase {
     let userRemoteId = 12345
     var expectation: XCTestExpectation?
     
-    var persistentStoreHelper: PersistentStoreTestHelper!
-    var testStore: TestPersistentStore!
-    
     override func setUp() {
         super.setUp()
-        
-        testStore = TestPersistentStore()
-        testStore.deletePersistentStore()
-        persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
         
         sequence = persistentStoreHelper.createEmptySequence(remoteId: sequenceRemoteId)
         
@@ -52,21 +45,17 @@ class RepostSequenceOperationTests: XCTestCase {
             XCTAssert(self.user != nil)
             guard let sequence: VSequence = self.sequence,
                 user = self.user else {
-                XCTFail()
+                XCTFail("Sequence or user should not be nil")
                 return
             }
             XCTAssert(sequence.hasReposted.boolValue);
             
-            XCTAssert(sequence.hasReposted.integerValue == 1);
+            XCTAssertEqual(sequence.hasReposted.integerValue, 1)
             
-            XCTAssert(user.repostedSequences.contains(sequence));
+            XCTAssert(user.repostedSequences.contains(sequence))
             self.expectation?.fulfill()
         }
         waitForExpectationsWithTimeout(5,
-            handler: { error in
-                if let error = error {
-                    XCTFail("timeout error: \(error)")
-                }
-        })
+            handler: nil)
     }
 }

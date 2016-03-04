@@ -50,11 +50,7 @@ class ToggleLikeSequenceOperationTests: XCTestCase {
             XCTAssert(self.sequence?.isLikedByMainUser.boolValue == false);
             self.expectation?.fulfill()
         }
-        waitForExpectationsWithTimeout(15,
-            handler: { error in
-                if let error = error {
-                    XCTFail("timeout error: \(error)")
-                }
-        })
+        waitForExpectationsWithTimeout(5,
+            handler: nil)
     }
 }
