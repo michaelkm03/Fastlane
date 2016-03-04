@@ -8,50 +8,32 @@
 
 import UIKit
 
-class RequestPushNotificationPermissionOperation: BackgroundOperation {
+class RequestPushNotificationPermissionOperation: NavigationOperation {
     
-    // MARK: - Override
-    
-    override init() {
-        super.init()
-        qualityOfService = .UserInteractive
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func start() {
         super.start()
         
-        dispatch_async( dispatch_get_main_queue() ) {
-            guard !self.cancelled && !VPushNotificationManager.sharedPushNotificationManager().started else {
-                self.finishedExecuting()
-                return
-            }
-            
-            self.beganExecuting()
-            
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
-                name: VPushNotificationManagerDidReceiveResponse,
-                object: VPushNotificationManager.sharedPushNotificationManager())
-            VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
-            
-            self.finishedExecuting()
+        beganExecuting()
+        
+        guard !cancelled && !VPushNotificationManager.sharedPushNotificationManager().started else {
+            finishedExecuting()
+            return
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
+            name: VPushNotificationManagerDidReceiveResponse,
+            object: VPushNotificationManager.sharedPushNotificationManager())
+        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+        finishedExecuting()
     }
     
     // MARK: - Notification Observer
     
     func userRespondedToPushNotification() {
-        onPermissionGranted()
-    }
-    
-    // MARK: - Internal
-    
-    deinit
-    {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
-    private func onPermissionGranted() {
         finishedExecuting()
     }
-    
 }

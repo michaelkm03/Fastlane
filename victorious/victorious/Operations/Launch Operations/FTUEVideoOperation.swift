@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FTUEVideoOperation: BackgroundOperation, VLightweightContentViewControllerDelegate {
+class FTUEVideoOperation: NavigationOperation, VLightweightContentViewControllerDelegate {
     
     // Constant Keys
     let kFirstTimeContentKey = "firstTimeContent"
@@ -23,14 +23,9 @@ class FTUEVideoOperation: BackgroundOperation, VLightweightContentViewController
     private let sessionTimer: VSessionTimer
     
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
-        
         self.dependencyManager = dependencyManager
         self.sessionTimer = sessionTimer
         self.viewControllerToPresentOn = viewControllerToPresentOn
-
-        super.init()
-        
-        qualityOfService = .UserInteractive
     }
     
     // MARK: - Override
@@ -38,28 +33,25 @@ class FTUEVideoOperation: BackgroundOperation, VLightweightContentViewController
     override func start() {
         super.start()
         
-        dispatch_async( dispatch_get_main_queue() ) {
-            
-            self.beganExecuting()
-            
-            // Bail early if we have already seen the FTUE Video
-            guard self.firstTimeInstallHelper.hasBeenShown() == false else {
-                self.finishedExecuting()
-                return
-            }
-            
-            guard let config = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: self.kFirstTimeContentKey) as? [NSObject : AnyObject],
-                let firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(config),
-                let lightWeightContentVC = firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self,
-                    forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController else {
-                        self.finishedExecuting()
-                        return
-            }
-            
-            lightWeightContentVC.delegate = self;
-            self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
-                self.firstTimeInstallHelper.savePlaybackDefaults()
-            }
+        self.beganExecuting()
+        
+        // Bail early if we have already seen the FTUE Video
+        guard self.firstTimeInstallHelper.hasBeenShown() == false else {
+            self.finishedExecuting()
+            return
+        }
+        
+        guard let config = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: self.kFirstTimeContentKey) as? [NSObject : AnyObject],
+            let firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(config),
+            let lightWeightContentVC = firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self,
+                forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController else {
+                    self.finishedExecuting()
+                    return
+        }
+        
+        lightWeightContentVC.delegate = self;
+        self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
+            self.firstTimeInstallHelper.savePlaybackDefaults()
         }
     }
     
