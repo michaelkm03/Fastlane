@@ -1727,6 +1727,8 @@
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
+		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
+		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
@@ -4447,6 +4449,8 @@
 		F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextViewTests.m; sourceTree = "<group>"; };
 		F098D81B1A9E4A890003B6D4 /* VUserTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTag.h; sourceTree = "<group>"; };
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
+		F09E8C651C88CBAA00437ACD /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
+		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
@@ -5452,6 +5456,7 @@
 			children = (
 				62B509731C5492C1008C8D38 /* AdBreakTests.swift */,
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
+				F09E8C651C88CBAA00437ACD /* AssetTests.swift */,
 				C3D956141BF4321100069FD6 /* CommentTests.swift */,
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
@@ -5480,6 +5485,7 @@
 				0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */,
 				62575EC11C54BD0A00B49CB0 /* AdBreak */,
 				A7039CF71C24A9270023DE6F /* Alert.json */,
+				F09E8C671C88CBF300437ACD /* Asset.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
 				A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */,
 				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
@@ -9902,6 +9908,7 @@
 				62575EFA1C54CB2000B49CB0 /* SequenceWithoutCategory.json in Resources */,
 				62575EF11C54CB2000B49CB0 /* SequenceCommentsResponse.json in Resources */,
 				C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */,
+				F09E8C681C88CBF300437ACD /* Asset.json in Resources */,
 				62575EF61C54CB2000B49CB0 /* SequenceRepostersEmptyResponse.json in Resources */,
 				678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */,
 				670C65931C52BA1800BD7F3F /* FeaturedHashtagResponse.json in Resources */,
@@ -10820,6 +10827,7 @@
 				C352CF381BF2834E00790921 /* FollowUsersRequestTests.swift in Sources */,
 				C32D8BE01BF2E08900AB5085 /* ImageSearchResultTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
+				F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */,
 				79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */,
 				A716F3EB1C050A15003068A2 /* RequestErrorTypeTests.swift in Sources */,
 				79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */,

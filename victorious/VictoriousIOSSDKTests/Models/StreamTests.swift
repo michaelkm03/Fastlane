@@ -34,7 +34,7 @@ class StreamTests: XCTestCase {
         XCTAssertEqual( stream.items?.filter { $0 is Sequence }.count, 2)
         XCTAssertEqual( stream.items?.filter { $0 is Stream }.count, 1)
         XCTAssertEqual( (stream.previewImagesObject as! [String]).count, 3 )
-        XCTAssertNil( stream.previewTextPostAsset )
+        XCTAssertNil( stream.previewAsset )
         XCTAssertNil( stream.previewImageAssets )
     }
     
@@ -52,7 +52,7 @@ class StreamTests: XCTestCase {
         XCTAssertNil( stream.streamUrl )
         XCTAssertNil( stream.items )
         XCTAssertNil( stream.previewImagesObject )
-        XCTAssertNil( stream.previewTextPostAsset )
+        XCTAssertNil( stream.previewAsset )
         XCTAssertNil( stream.previewImageAssets )
     }
     
