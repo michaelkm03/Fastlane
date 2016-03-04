@@ -30,7 +30,7 @@ public struct Stream: StreamItemType {
     public let type: StreamContentType?
     public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
-    public let previewTextPostAsset: Asset?
+    public let previewAsset: Asset?
     public let previewImageAssets: [ImageAsset]?
     public let releasedAt: NSDate?
 }
@@ -85,7 +85,7 @@ extension Stream {
         
         // MARK: - StreamItemType
         
-        previewTextPostAsset    = Asset(json: json["preview"])
+        previewAsset            = Asset(json: json["preview"])
         previewImageAssets      = json["preview"]["assets"].array?.flatMap { ImageAsset(json: $0) }
         
         let previewImage = json["preview_image"]

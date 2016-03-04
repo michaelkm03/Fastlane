@@ -32,7 +32,6 @@
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="playerControlsDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="remoteContentId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remotePlayback" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="remoteSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
@@ -347,7 +346,7 @@
         <element name="AdBreak" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Asset" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
