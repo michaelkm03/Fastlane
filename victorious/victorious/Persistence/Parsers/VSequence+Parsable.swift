@@ -115,8 +115,9 @@ private extension VStreamItem {
     
     func parseStreamItemPointerForStream(stream: Stream) -> VStreamItemPointer {
         let uniqueInfo: [String : NSObject]
-        if let apiPath = stream.streamUrl {
-            uniqueInfo = ["streamItem" : self, "streamParent.apiPath" : apiPath]
+        if let apiPath = stream.apiPath {
+            let stream: VStream = v_managedObjectContext.v_findOrCreateObject( [ "apiPath" : apiPath ] )
+            uniqueInfo = ["streamItem" : self, "streamParent" : stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
             // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
