@@ -425,14 +425,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     if ( !self.hasBeenPresented )
     {
         self.hasBeenPresented = YES;
-        if (self.isVideoContent)
-        {
-            [self trackVideoViewStart];
-        }
-        else
-        {
-            [self trackNonVideoViewStart];
-        }
+        [self trackUserDidStartViewContent];
     }
     
     if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
@@ -557,22 +550,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Tracking
 
-- (void)trackNonVideoViewStart
-{
-    if ( self.viewModel.trackingData == nil )
-    {
-        VLog( @"Cannot track `viewStart` events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
-        return;
-    }
-    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyStreamId : self.viewModel.streamId,
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.trackingData.viewStart ?: @[],
-                              VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-}
-
-- (void)trackVideoViewStart
+- (void)trackUserDidStartViewContent
 {
     if ( self.viewModel.trackingData == nil )
     {
