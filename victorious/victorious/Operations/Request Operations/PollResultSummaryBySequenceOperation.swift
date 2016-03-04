@@ -18,18 +18,16 @@ final class PollResultSummaryBySequenceOperation: FetcherOperation {
     required init( sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: PollResultSummaryBySequenceOperation, paginator: StandardPaginator) {
-        self.init(sequenceID: operation.sequenceID, paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = PollResultSummaryRequest(sequenceID: sequenceID, paginator: paginator)
             PollResultSummaryBySequenceRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: PollResultSummaryBySequenceOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
     }
     
     override func main() {

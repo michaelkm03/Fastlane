@@ -18,18 +18,16 @@ final class SequenceRepostersOperation: FetcherOperation, PaginatedOperation {
     required init( sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: SequenceRepostersOperation, paginator: StandardPaginator) {
-        self.init(sequenceID: operation.sequenceID, paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator)
             SequenceRepostersRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: SequenceRepostersOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
     }
     
     override func main() {

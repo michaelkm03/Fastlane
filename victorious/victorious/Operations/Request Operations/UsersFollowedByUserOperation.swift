@@ -17,18 +17,16 @@ final class UsersFollowedByUserOperation: FetcherOperation, PaginatedOperation {
     required init( userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
         self.userID = userID
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: UsersFollowedByUserOperation, paginator: StandardPaginator) {
-        self.init(userID: operation.userID, paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = SubscribedToListRequest(userID: userID, paginator: paginator)
             UsersFollowedByUserRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: UsersFollowedByUserOperation, paginator: StandardPaginator) {
+        self.init(userID: operation.userID, paginator: paginator)
     }
     
     override func main() {

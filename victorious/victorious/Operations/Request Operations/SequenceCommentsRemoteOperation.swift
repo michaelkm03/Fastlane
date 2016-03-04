@@ -17,18 +17,16 @@ final class SequenceCommentsOperation: FetcherOperation, PaginatedOperation {
     required init(sequenceID: String, paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
         self.sequenceID = sequenceID
-    }
-    
-    required convenience init(operation: SequenceCommentsOperation, paginator: StandardPaginator) {
-        self.init(sequenceID: operation.sequenceID, paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = SequenceCommentsRequest(sequenceID: sequenceID, paginator: paginator)
             SequenceCommentsRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: SequenceCommentsOperation, paginator: StandardPaginator) {
+        self.init(sequenceID: operation.sequenceID, paginator: paginator)
     }
     
     override func main() {

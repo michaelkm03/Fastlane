@@ -15,18 +15,16 @@ final class NotificationsOperation: FetcherOperation, PaginatedOperation {
     
     required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: NotificationsOperation, paginator: StandardPaginator) {
-        self.init(paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = NotificationsRequest(paginator: paginator)
             NotificationsRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: NotificationsOperation, paginator: StandardPaginator) {
+        self.init(paginator: paginator)
     }
     
     override func main() {

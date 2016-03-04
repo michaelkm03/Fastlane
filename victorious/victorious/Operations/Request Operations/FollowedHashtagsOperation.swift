@@ -15,18 +15,16 @@ final class FollowedHashtagsOperation: FetcherOperation, PaginatedOperation {
     
     required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: FollowedHashtagsOperation, paginator: StandardPaginator) {
-        self.init(paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = HashtagSubscribedToListRequest(paginator: paginator)
             FollowedHashtagsRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: FollowedHashtagsOperation, paginator: StandardPaginator) {
+        self.init(paginator: paginator)
     }
     
     override func main() {

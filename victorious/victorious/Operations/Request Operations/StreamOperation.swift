@@ -16,6 +16,16 @@ final class StreamOperation: FetcherOperation, PaginatedOperation {
     
     required init(paginator: StreamPaginator) {
         self.paginator = paginator
+        super.init()
+        
+        if preloadedStreamObjectID == nil && !localFetch {
+            let request = StreamRequest(
+                apiPath: paginator.apiPath,
+                sequenceID: paginator.sequenceID,
+                paginator: paginator
+            )
+            StreamRemoteOperation(request: request).before(self).queue()
+        }
     }
     
     required convenience init(operation: StreamOperation, paginator: StreamPaginator) {
@@ -27,33 +37,21 @@ final class StreamOperation: FetcherOperation, PaginatedOperation {
         preloadedStreamObjectID = existingStreamID
     }
     
-    override func start() {
-        if preloadedStreamObjectID == nil && !localFetch {
-            let request = StreamRequest(
-                apiPath: paginator.apiPath,
-                sequenceID: paginator.sequenceID,
-                paginator: paginator
-            )
-            StreamRemoteOperation(request: request).before(self).queue()
-        }
-        super.start()
-    }
-    
     override func main() {
         if let preloadedStreamObjectID = self.preloadedStreamObjectID {
-            self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            persistentStore.mainContext.v_performBlockAndWait() { context in
                 guard let stream = context.objectWithID(preloadedStreamObjectID) as? VStream else {
-                    return []
+                    return
                 }
                 let persistentStreamItemPointers = stream.streamItemPointers.array
                 let persistentStreamItemIDs = persistentStreamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem.objectID }
-                return persistentStreamItemIDs.flatMap {
+                self.results = persistentStreamItemIDs.flatMap {
                     context.objectWithID($0) as? VStreamItem
                 }
             }
             
         } else {
-            self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            persistentStore.mainContext.v_performBlockAndWait() { context in
                 let fetchRequest = NSFetchRequest(entityName: VStreamItemPointer.v_entityName())
                 fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
                 
@@ -61,8 +59,8 @@ final class StreamOperation: FetcherOperation, PaginatedOperation {
                 let paginationPredicate = self.paginator.paginatorPredicate
                 fetchRequest.predicate = paginationPredicate + streamItemPredicate
                 
-                let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]
-                return results.map { $0.streamItem }
+                let fetchResults = context.v_executeFetchRequest( fetchRequest ) as [VStreamItemPointer]
+                self.results = fetchResults.map { $0.streamItem }
             }
         }
     }

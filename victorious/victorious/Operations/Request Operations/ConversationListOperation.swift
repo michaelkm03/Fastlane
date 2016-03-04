@@ -15,18 +15,16 @@ final class ConversationListOperation: FetcherOperation, PaginatedOperation {
     
     required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
-    }
-    
-    required convenience init(operation: ConversationListOperation, paginator: StandardPaginator) {
-        self.init(paginator: paginator)
-    }
-    
-    override func start() {
+        super.init()
+        
         if !localFetch {
             let request = ConversationListRequest(paginator: paginator)
             ConversationListRemoteOperation(request: request).before(self).queue()
         }
-        super.start()
+    }
+    
+    required convenience init(operation: ConversationListOperation, paginator: StandardPaginator) {
+        self.init(paginator: paginator)
     }
     
     override func main() {
