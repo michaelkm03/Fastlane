@@ -42,12 +42,6 @@ class TestRequestExecutor: RequestExecutorType {
     func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType->())?, onError: (NSError->())?) {
         executeRequestCallCount += 1
         
-        let executeSemphore = dispatch_semaphore_create(0)
-        
-        defer {
-            dispatch_semaphore_signal( executeSemphore )
-        }
-        
         if cancelled {
             return
         }
@@ -61,7 +55,5 @@ class TestRequestExecutor: RequestExecutorType {
         } else {
             XCTFail("Unable to provide properly typed parameter to `onComplete` closure.")
         }
-    
-        dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
     }
 }

@@ -16,7 +16,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         let operation = GIFSearchOperation(searchTerm: "fun")
         operation.persistentStore = testStore
         
-        testRequestExecutor = TestRequestExecutor(result: [])
+        testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
