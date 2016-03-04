@@ -21,7 +21,6 @@ extension VAsset: PersistenceParsable {
         mimeType                = asset.mimeType ?? mimeType
         playerControlsDisabled  = asset.playerControlsDisabled ?? playerControlsDisabled
         remoteContentId         = asset.remoteContentID ?? remoteContentId
-        remoteId                = asset.assetID ?? remoteId
         remotePlayback          = asset.remotePlayback ?? remotePlayback
         remoteSource            = asset.remoteSource ?? remoteSource
         speed                   = asset.speed ?? speed

@@ -35,7 +35,7 @@ class ShelfTests: XCTestCase {
         XCTAssertEqual(shelf.items?.filter { $0 is Stream }.count, 12)
         
         XCTAssertNil(shelf.previewImagesObject)
-        XCTAssertNil(shelf.previewTextPostAsset)
+        XCTAssertNil(shelf.previewAsset)
         XCTAssertNil(shelf.previewImageAssets)
     }
     
@@ -53,7 +53,7 @@ class ShelfTests: XCTestCase {
         XCTAssertNil( shelf.streamUrl )
         XCTAssertNil( shelf.items )
         XCTAssertNil( shelf.previewImagesObject )
-        XCTAssertNil( shelf.previewTextPostAsset )
+        XCTAssertNil( shelf.previewAsset )
         XCTAssertNil( shelf.previewImageAssets )
     }
     

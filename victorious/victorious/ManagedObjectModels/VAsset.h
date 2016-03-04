@@ -21,7 +21,6 @@
 @property (nonatomic, retain) NSString * mimeType;
 @property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSNumber * playerControlsDisabled;
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * streamAutoplay;
 @property (nonatomic, retain) NSNumber * duration;

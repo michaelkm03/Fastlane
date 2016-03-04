@@ -20,7 +20,6 @@
 @dynamic mimeType;
 @dynamic nodeId;
 @dynamic playerControlsDisabled;
-@dynamic remoteId;
 @dynamic speed;
 @dynamic streamAutoplay;
 @dynamic duration;
