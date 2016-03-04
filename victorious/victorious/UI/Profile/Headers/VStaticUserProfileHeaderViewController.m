@@ -105,24 +105,30 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         return nil;
     }
     
+    if ([self.user badgeType] == AvatarBadgeTypeVerified)
+    {
+        // Created another container view since we are automatically scaling the size of the returned
+        // view to be the size of the container.
+        UIView *verifiedContainerView = [[UIView alloc] init];
+        UIImageView *verifiedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+        [verifiedContainerView addSubview:verifiedImageView];
+        [verifiedContainerView v_addCenterAndFitToParentConstraintsToSubview:verifiedImageView
+                                                                       width:0.5
+                                                                      height:0.5];
+        return verifiedContainerView;
+    }
+    
     // Make sure we have a badge component and that this user is a high enough level to show it
     if (self.user.level.integerValue > 0 && self.user.level.integerValue >= animatedBadgeView.minLevel)
     {
-        if (self.user.isCreator.boolValue)
-        {
-            return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
-        }
-        else
-        {
-            self.badgeView = animatedBadgeView;
-            self.badgeView.cornerRadius = 4;
-            self.badgeView.animatedBorderWidth = 3;
-            self.badgeView.progressBarInset = 3;
-            self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
-            self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
-            self.badgeView.levelNumberString = self.user.level.stringValue;
-            return self.badgeView;
-        }
+        self.badgeView = animatedBadgeView;
+        self.badgeView.cornerRadius = 4;
+        self.badgeView.animatedBorderWidth = 3;
+        self.badgeView.progressBarInset = 3;
+        self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+        self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+        self.badgeView.levelNumberString = self.user.level.stringValue;
+        return self.badgeView;
     }
         
     return nil;

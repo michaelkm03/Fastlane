@@ -30,6 +30,7 @@ extension VUser: PersistenceParsable {
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage        
+        avatarBadgeType             = user.avatar?.badgeType ?? avatarBadgeType
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {

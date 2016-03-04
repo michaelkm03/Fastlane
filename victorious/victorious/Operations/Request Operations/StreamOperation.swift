@@ -62,6 +62,7 @@ final class StreamOperation: FetcherOperation, PaginatedRequestOperation {
             
             // Parse stream
             let stream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
+            
             stream.populate(fromSourceModel: sourceStream)
             
             // If there are any stream items returned from the network:

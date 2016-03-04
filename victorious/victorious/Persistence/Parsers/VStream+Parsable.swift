@@ -12,7 +12,9 @@ import VictoriousIOSSDK
 extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel sourceStream: Stream ) {
+        apiPath                 = sourceStream.apiPath
         remoteId                = sourceStream.streamID
+        
         itemType                = sourceStream.type?.rawValue ?? itemType
         itemSubType             = sourceStream.subtype?.rawValue ?? itemSubType
         name                    = sourceStream.name ?? name
@@ -35,7 +37,7 @@ extension VStream: PersistenceParsable {
         let sourceMarqueeItems = sourceStream.marqueeItems ?? []
         let marqueeItems = VStream.persistentStreamItems(
             fromStreamItems: sourceMarqueeItems,
-            parentStreamID: sourceStream.streamID,
+            parentStream: sourceStream,
             context: v_managedObjectContext
         )
         for marqueeItem in marqueeItems {
@@ -49,13 +51,13 @@ extension VStream: PersistenceParsable {
         let sourceStreamItems = sourceStream.items ?? []
         let streamItems = VStream.persistentStreamItems(
             fromStreamItems: sourceStreamItems,
-            parentStreamID: sourceStream.streamID,
+            parentStream: sourceStream,
             context: v_managedObjectContext
         )
         for streamItem in streamItems {
             let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
-            let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
-            self.v_addObject( child, to: "streamItemPointers" )
+            let pointer: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
+            self.v_addObject( pointer, to: "streamItemPointers" )
         }
         
         if let textPostAsset = sourceStream.previewTextPostAsset {
@@ -65,7 +67,7 @@ extension VStream: PersistenceParsable {
         }
     }
     
-    private static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStreamID: String, context: NSManagedObjectContext) -> [VStreamItem] {
+    private static func persistentStreamItems(fromStreamItems items: [StreamItemType], parentStream: Stream, context: NSManagedObjectContext) -> [VStreamItem] {
         
         let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
         let unflaggedItems = items.filter { !flaggedIds.contains( $0.streamItemID ) }
@@ -79,7 +81,7 @@ extension VStream: PersistenceParsable {
                     return nil
                 }
                 let persistentSequence = context.v_findOrCreateObject( uniqueElements ) as VSequence
-                persistentSequence.populate( fromSourceModel: (sequence, parentStreamID) )
+                persistentSequence.populate( fromSourceModel: (sequence, parentStream) )
                 return persistentSequence
                 
             case .Some(.Stream):
