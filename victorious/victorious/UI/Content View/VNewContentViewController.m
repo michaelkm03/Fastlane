@@ -393,7 +393,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    [self trackVideoViewStart];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -423,10 +422,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented && !self.isVideoContent )
+    if ( !self.hasBeenPresented )
     {
         self.hasBeenPresented = YES;
-        [self trackNonVideoViewStart];
+        if (self.isVideoContent)
+        {
+            [self trackVideoViewStart];
+        }
+        else
+        {
+            [self trackNonVideoViewStart];
+        }
     }
     
     if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
