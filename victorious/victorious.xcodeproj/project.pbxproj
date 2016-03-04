@@ -1674,7 +1674,7 @@
 		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
 		F048AFD11C8109E2004F516A /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* ComposerViewController.swift */; };
 		F048AFD21C8109E2004F516A /* ComposerViewControllerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCF1C8109E2004F516A /* ComposerViewControllerAttachmentTab.swift */; };
-		F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */; };
+		F048AFD31C8109E2004F516A /* ComposerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerViewControllerDelegate.swift */; };
 		F048B00F1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B00E1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift */; };
 		F048B0111C84CE93004F516A /* ToggleBlockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0101C84CE93004F516A /* ToggleBlockUserOperation.swift */; };
 		F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0161C84F973004F516A /* BlockUserRequestTests.swift */; };
@@ -4366,7 +4366,7 @@
 		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
 		F048AFCE1C8109E2004F516A /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewController.swift; path = Composer/ComposerViewController.swift; sourceTree = "<group>"; };
 		F048AFCF1C8109E2004F516A /* ComposerViewControllerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewControllerAttachmentTab.swift; path = Composer/ComposerViewControllerAttachmentTab.swift; sourceTree = "<group>"; };
-		F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
+		F048AFD01C8109E2004F516A /* ComposerViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewControllerDelegate.swift; path = Composer/ComposerViewControllerDelegate.swift; sourceTree = "<group>"; };
 		F048B00E1C84B394004F516A /* ShowBlockUserConfirmationAlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowBlockUserConfirmationAlertOperation.swift; sourceTree = "<group>"; };
 		F048B0101C84CE93004F516A /* ToggleBlockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToggleBlockUserOperation.swift; path = ../../UI/Automation/ToggleBlockUserOperation.swift; sourceTree = "<group>"; };
 		F048B0161C84F973004F516A /* BlockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequestTests.swift; sourceTree = "<group>"; };
@@ -9257,7 +9257,7 @@
 			children = (
 				F048AFCE1C8109E2004F516A /* ComposerViewController.swift */,
 				F048AFCF1C8109E2004F516A /* ComposerViewControllerAttachmentTab.swift */,
-				F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */,
+				F048AFD01C8109E2004F516A /* ComposerViewControllerDelegate.swift */,
 			);
 			name = Composer;
 			sourceTree = "<group>";
@@ -11460,7 +11460,7 @@
 				F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */,
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
-				F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */,
+				F048AFD31C8109E2004F516A /* ComposerViewControllerDelegate.swift in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,

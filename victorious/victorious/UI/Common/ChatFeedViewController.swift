@@ -10,6 +10,12 @@ import Foundation
 
 class ChatFeedViewController: UIViewController {
     
+    private enum ChatItemDisplayState {
+        case Detail, Collapsed
+    }
+    
+    private var chatItems = [(ChatItem, ChatItemDisplayState)]()
+    
     var updateInRealtime: Bool = false {
         didSet {
             //Stop or start retrieving information from socket
@@ -17,6 +23,10 @@ class ChatFeedViewController: UIViewController {
     }
     
     func addChatItems(chatItems: [ChatItem]) {
+        
+    }
+    
+    func toggleDetailDisplayOfChatItem(chatItem: ChatItem) {
         
     }
 }
