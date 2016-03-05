@@ -425,7 +425,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     if ( !self.hasBeenPresented )
     {
         self.hasBeenPresented = YES;
-        [self trackUserDidStartViewContent];
+        [self trackViewDidStart];
     }
     
     if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
@@ -550,7 +550,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Tracking
 
-- (void)trackUserDidStartViewContent
+- (void)trackViewDidStart
 {
     if ( self.viewModel.trackingData == nil )
     {
