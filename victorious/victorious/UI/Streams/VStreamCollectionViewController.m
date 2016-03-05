@@ -228,7 +228,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
-    self.marqueeCellController.stream = self.currentStream;
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
@@ -442,7 +441,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:marquee.shelf ?: marquee.stream
+                                                                          stream:marquee.shelf
                                                                        fromShelf:YES];
         event.indexPath = path;
         event.collectionView = collectionView;
