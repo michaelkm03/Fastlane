@@ -8,47 +8,125 @@
 
 import Foundation
 
-protocol AlignmentLayout {
-    func layoutSubviews(cell: VMessageCollectionCell)
+extension NSURL {
+    convenience init?(v_string string: String?) {
+        guard let string = string where !string.characters.isEmpty else {
+            self.init(string: "")
+            return nil
+        }
+        self.init(string: string)
+    }
 }
+
 
 struct MessageCollectionCellDecorator {
     
     let dependencyManager: VDependencyManager
     
     func decorateCell( cell: VMessageCollectionCell, withMessage message: VMessage) {
-
-        if message.sender == VCurrentUser.user() {
-            cell.alignmentLayout = RightAlignmentedLayout()
+        
+        if message.sender.isCurrentUser() {
+            cell.alignmentDecorator = RightAlignmentDecorator()
         } else {
-            cell.alignmentLayout = LeftAlignmentedLayout()
+            cell.alignmentDecorator = LeftAlignmentDecorator()
         }
         
-        cell.style = VMessageCollectionCell.Style(
-            textColor: dependencyManager.textColor,
-            backgroundColor: dependencyManager.backgroundColor,
-            font: dependencyManager.titleFont
-        )
+        cell.dependencyManager = dependencyManager
+        
         
         cell.viewData = VMessageCollectionCell.ViewData(
             text: "\(message.text ?? "")",
             createdAt: message.postedAt,
-            username: message.sender.name ?? ""
+            username: message.sender.name ?? "",
+            avatarImageURL: NSURL(string: message.sender.pictureUrl ?? ""),
+            mediaURL: NSURL(v_string: message.mediaUrl)
+        )
+        
+        cell.mediaContainer.frame = cell.contentContainer.bounds
+    }
+}
+
+protocol AlignmentDecorator {
+    func updateLayout(cell: VMessageCollectionCell)
+}
+
+struct LeftAlignmentDecorator: AlignmentDecorator {
+    
+    func updateLayout(cell: VMessageCollectionCell) {
+        let textSize = cell.calculateContentSize()
+        
+        cell.textView.textAlignment = .Left
+        cell.bubbleView.frame = CGRect(x: 0,
+            y: cell.detailTextView.frame.height,
+            width: textSize.width,
+            height: textSize.height
+        )
+        cell.textView.frame = cell.bubbleView.bounds
+        
+        cell.mediaContainer.frame = cell.bubbleView.bounds
+        
+        cell.detailTextView.frame = CGRect(x: 0, y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: cell.detailTextView.frame.height
+        )
+        
+        cell.avatarContainer.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: cell.avatarContainer.bounds.width,
+            height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
+        )
+        cell.messageContainer.frame = CGRect(
+            x: cell.avatarContainer.frame.maxX + cell.spacing,
+            y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
+        )
+        cell.contentContainer.frame = CGRect(
+            x: cell.contentMargin.left,
+            y: cell.contentMargin.top,
+            width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
+            height: cell.messageContainer.bounds.height
         )
     }
 }
 
-private extension VDependencyManager {
+struct RightAlignmentDecorator: AlignmentDecorator {
     
-    var textColor: UIColor {
-        return self.colorForKey(VDependencyManagerSecondaryTextColorKey)
-    }
-    
-    var backgroundColor: UIColor {
-        return self.colorForKey(VDependencyManagerSecondaryAccentColorKey)
-    }
-    
-    var titleFont: UIFont {
-        return self.fontForKey(VDependencyManagerLabel1FontKey)
+    func updateLayout(cell: VMessageCollectionCell) {
+        let textSize = cell.calculateContentSize()
+        
+        cell.textView.textAlignment = .Right
+        cell.bubbleView.frame = CGRect(x: 0,
+            y: cell.detailTextView.frame.height,
+            width: textSize.width,
+            height: textSize.height
+        )
+        cell.textView.frame = cell.bubbleView.bounds
+        
+        cell.mediaContainer.frame = cell.bubbleView.bounds
+        
+        cell.detailTextView.frame = CGRect(x: 0, y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: cell.detailTextView.frame.height
+        )
+        cell.messageContainer.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
+        )
+        cell.avatarContainer.frame = CGRect(
+            x: cell.messageContainer.bounds.width + cell.spacing,
+            y: 0,
+            width: cell.avatarContainer.bounds.width,
+            height: cell.messageContainer.bounds.height
+        )
+        cell.contentContainer.frame = CGRect(
+            x: cell.bounds.width - (cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width) - cell.contentMargin.left,
+            y: cell.contentMargin.top,
+            width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
+            height: cell.messageContainer.bounds.height
+        )
     }
 }

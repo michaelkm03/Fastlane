@@ -30,7 +30,7 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
                 return []
             }
             
-            let user: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Franky"])
+            let user: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Gg", "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"])
             user.status = "test"
             conversation.user = user
             
@@ -53,6 +53,11 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
                 message.text = text
                 message.postedAt = NSDate()
                 message.displayOrder = displayOrder++
+                
+                if arc4random() % 10 > 5 {
+                    message.mediaUrl = "https://media2.giphy.com/media/Qq1o7kVIWl1lK/giphy.mp4"
+                }
+                
                 messagesCreated.append(message)
             }
             
@@ -71,18 +76,23 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
 }
 
 private let testMessageText = [
+    "Don't Lie!! Freaky Ass",
     "I'm so awesome because i can trip over flat surfaces and fall up the stairs. Now that's a talented skill right there :D I can also fall up. Yep",
-    "Shanaynay: Ahh! \nShane: What!?\nShanaynay: Was I sleepin?\nShane:Yes!\n Shanaynay:Did you try to touch me? \nShane: No!\nShanaynay: Don't Lie!! Freaky Ass",
+    "Shanaynay: Ahh!\nShane: What!?\nShanaynay: Was I sleepin?\nShane:Yes!\n Shanaynay: Did you try to touch me? \nShane: No!\nShanaynay: Don't Lie!! Freaky Ass",
     "Guess who's pregnant again!! Not me so take a deep breath before you have a heart attack...",
     "ur profile picture is a car does this mean your a TRANSFORMER!!!",
     "Surgical removal of appendix- Appendectomy. Male sterilization procedure- Vasectomy. Female to male sex change operation- Add-a-dick-to-me",
+    "I'm so awesome.",
     "I put a note on my mirror this morning. It says \"objects are smaller than they appear.\"",
     "have you ever wanted to dress like the grim reaperV and go to a retirement home and tap on the windows!?comment below if you would or wouldn't",
     "BUT my best friends think I'm completely insane! oh think if there were two of me...",
     "Wonders why I turn the radio down in my car while looking for an address, like it helps me see better lol:)",
+    "OK just out of curiosity",
     "OK just out of curiosity, why is it every time someone sees me smile they give me a smirk & ask what I am up to ??",
-    "I know you are jealous. I have an awesome jacket that allows me to hug myself and you don't",
+    "I know you are jealous.",
+    "I have an awesome jacket that allows me to hug myself and you don't",
     "No, I did not trip, I attacked the floor with my Awesome NINJA skills",
     "mom mom mom mommy mommy mom mom mom ma ma ma mummy mummy mummy WHAT?! hi hahahahaha",
-    "Officer:Any last requests? Man in jail cell :Yes.Hold my,hold my,hold my,HOLD MY HAND!"
+    "HOLD MY HAND!",
+    "Officer: Any last requests?\nMan in jail cell: Yes.Hold my, hold my, hold my, HOLD MY HAND!"
 ]

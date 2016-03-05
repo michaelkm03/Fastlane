@@ -12,89 +12,43 @@ import UIKit
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
-extension CGRect {
-    init(minX: CGFloat, minY: CGFloat, maxX: CGFloat, maxY: CGFloat ) {
-        self.init(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
-    }
-}
-
-struct LeftAlignmentedLayout: AlignmentLayout {
-    
-    func layoutSubviews(cell: VMessageCollectionCell) {
-        cell.textView.textAlignment = .Left
-        
-        cell.avatarView.frame = CGRect(
-            x: cell.avatarEdges.left,
-            y: cell.avatarEdges.top,
-            width: cell.avatarView.bounds.width,
-            height: cell.avatarView.bounds.height)
-        
-        cell.bubbleView.frame = CGRect(
-            minX: cell.avatarView.frame.maxX + cell.bubbleEdges.left,
-            minY: cell.avatarView.frame.minY,
-            maxX: cell.bounds.width - cell.bubbleEdges.right,
-            maxY: max(cell.bounds.height - cell.bubbleEdges.top, cell.avatarView.frame.maxY)
-        )
-        
-        cell.textView.frame = cell.bubbleView.bounds
-    }
-}
-
-struct RightAlignmentedLayout: AlignmentLayout {
-    
-    func layoutSubviews(cell: VMessageCollectionCell) {
-        cell.textView.textAlignment = .Left
-        
-        cell.avatarView.frame = CGRect(
-            x: cell.bounds.width - cell.avatarView.bounds.width - cell.avatarEdges.right,
-            y: cell.bubbleEdges.top,
-            width: cell.avatarView.bounds.width,
-            height: cell.avatarView.bounds.height)
-        
-        cell.bubbleView.frame = CGRect(
-            minX: cell.bubbleEdges.right,
-            minY: cell.avatarView.frame.minY,
-            maxX: cell.avatarView.frame.minX - cell.bubbleEdges.left,
-            maxY: max(cell.bounds.height - cell.bubbleEdges.top, cell.avatarView.frame.maxY)
-        )
-        
-        cell.textView.frame = cell.bubbleView.bounds
-    }
-}
-
 class VMessageCollectionCell: UICollectionViewCell {
     
     static var suggestedReuseIdentifier = "VMessageCollectionCell"
     
-    var alignmentLayout: AlignmentLayout! {
+    let spacing: CGFloat = 10.0
+    let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 65)
+    
+    private var storyboardTextViewWidth: CGFloat!
+    var alignmentDecorator: AlignmentDecorator! {
         didSet {
-            alignmentLayout.layoutSubviews(self)
+            alignmentDecorator.updateLayout(self)
         }
     }
     
-    let bubbleEdges = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 65)
-    let avatarEdges = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    
-    struct Style {
-        let textColor: UIColor
-        let backgroundColor: UIColor
-        let font: UIFont
-    }
-    
-    private var storyboardTextViewWidth: CGFloat!
-    
-    var style: Style! {
+    var dependencyManager: VDependencyManager! {
         didSet {
-            textView.font = style.font
-            textView.textColor = style.textColor
+            textView.font = dependencyManager.messageFont
+            textView.textColor = dependencyManager.textColor
             
-            bubbleView.backgroundColor = style.backgroundColor
+            detailTextView.contentInset = UIEdgeInsetsZero
+            detailTextView.font = dependencyManager.labelFont
+            detailTextView.textColor = dependencyManager.textColor
+            
+            
+            bubbleView.backgroundColor = dependencyManager.backgroundColor
             bubbleView.layer.cornerRadius = 5.0
-            bubbleView.layer.borderColor = style.textColor.CGColor
+            bubbleView.layer.borderColor = dependencyManager.textColor.CGColor
             bubbleView.layer.borderWidth = 1.0
             
             avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
-            avatarView.backgroundColor = UIColor.v_colorFromHexString("5e8d98")
+            avatarView.backgroundColor = dependencyManager.backgroundColor
+            
+            backgroundColor = UIColor.clearColor()
+            contentContainer.backgroundColor = UIColor.clearColor()
+            messageContainer.backgroundColor = UIColor.clearColor()
+            avatarContainer.backgroundColor = UIColor.clearColor()
+            //mediaContainer.backgroundColor = UIColor.clearColor()
         }
     }
     
@@ -105,39 +59,94 @@ class VMessageCollectionCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        alignmentLayout.layoutSubviews(self)
+    
+        alignmentDecorator.updateLayout(self)
     }
     
     struct ViewData {
         let text: String
         let createdAt: NSDate
         let username: String
+        let avatarImageURL: NSURL?
+        let mediaURL: NSURL?
     }
-    
     var viewData: ViewData! {
         didSet {
-            textView.text = viewData.text
+            if let mediaURL = viewData?.mediaURL {
+                mediaContainer.hidden = false
+                textView.hidden = true
+                mediaContainer.backgroundColor = UIColor.redColor()
+            } else {
+                mediaContainer.hidden = true
+                textView.hidden = false
+                textView.text = viewData.text
+                mediaContainer.backgroundColor = UIColor.clearColor() //< Remove this
+            }
+            
+            let timeStamp = NSDateFormatter.vsdk_defaultDateFormatter().stringFromDate(viewData.createdAt)
+            detailTextView.text = "\(viewData.username) (\(timeStamp))"
+            avatarView.setProfileImageURL(viewData.avatarImageURL)
+            
+            setNeedsLayout()
         }
     }
     
+    @IBOutlet private(set) weak var avatarContainer: UIView!
+    @IBOutlet private(set) weak var avatarView: VDefaultProfileImageView!
+    @IBOutlet private(set) weak var bubbleView: UIView!
+    @IBOutlet private(set) weak var contentContainer: UIView!
+    @IBOutlet private(set) weak var detailTextView: UITextView!
+    @IBOutlet private(set) weak var messageContainer: UIView!
+    @IBOutlet private(set) weak var mediaContainer: UIView!
     @IBOutlet private(set) weak var textView: UITextView!
-    @IBOutlet private weak var bubbleView: UIView!
-    @IBOutlet private weak var avatarView: UIView!
-    @IBOutlet private weak var nameLabel: UITextView!
-    @IBOutlet private weak var timeLabel: UITextView!
+    
+    private var mediaAttachmentView: MediaAttachmentView?
     
     // MARK: - SelfSizingCell
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        var sizeNeeded = textViewSize
-        sizeNeeded.width = bounds.width
-        sizeNeeded.height += (bubbleEdges.top + bubbleEdges.bottom)
-        return sizeNeeded
+        alignmentDecorator.updateLayout(self)
+        
+        return CGSize(
+            width: bounds.width,
+            height: contentContainer.bounds.height + (contentMargin.top + contentMargin.bottom)
+        )
     }
     
-    var textViewSize: CGSize {
-        let maxTextWidth = bounds.width - bubbleEdges.left - bubbleEdges.right - 20
-        let availableTextViewSize = CGSize(width: maxTextWidth, height: CGFloat.max)
-        return textView.sizeThatFits( availableTextViewSize )
+    func calculateContentSize() -> CGSize {
+        let maxContentWidth = bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width)
+        if let mediaURL = viewData?.mediaURL {
+            return CGSize(
+                width: maxContentWidth,
+                height: 100.0
+            )
+        } else {
+            let availableTextViewSize = CGSize(width: maxContentWidth, height: CGFloat.max)
+            let heightDrivenSize = textView.sizeThatFits( availableTextViewSize )
+            return textView.sizeThatFits( heightDrivenSize )
+        }
+    }
+}
+
+private extension VDependencyManager {
+    
+    var textColor: UIColor {
+        return self.colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    var backgroundColor: UIColor {
+        return self.colorForKey(VDependencyManagerSecondaryAccentColorKey)
+    }
+    
+    var borderColor: UIColor {
+        return self.colorForKey(VDependencyManagerLinkColorKey)
+    }
+    
+    var messageFont: UIFont {
+        return self.fontForKey(VDependencyManagerHeading3FontKey)
+    }
+    
+    var labelFont: UIFont {
+        return self.fontForKey(VDependencyManagerLabel2FontKey)
     }
 }

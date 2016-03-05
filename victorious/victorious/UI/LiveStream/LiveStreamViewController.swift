@@ -100,6 +100,12 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let message = dataSource.visibleItems[ indexPath.row ] as! VMessage
+        let userID = message.sender.remoteId.integerValue
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource.collectionView( collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
     }
