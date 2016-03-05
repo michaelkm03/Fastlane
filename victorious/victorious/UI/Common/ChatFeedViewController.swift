@@ -10,8 +10,13 @@ import Foundation
 
 class ChatFeedViewController: UIViewController {
     
+    /// The maximum number of lines shown when a chat item is
+    /// in the "collapsed" state. Defaults to 0, allowing chat
+    /// items to always show all content regardless of length.
+    var maximumNumberOfChatItemLines = 0
+    
     private enum ChatItemDisplayState {
-        case Detail, Collapsed
+        case Expanded, Collapsed
     }
     
     private var chatItems = [(ChatItem, ChatItemDisplayState)]()
