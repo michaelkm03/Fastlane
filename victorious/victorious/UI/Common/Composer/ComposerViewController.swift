@@ -29,10 +29,6 @@ class ComposerViewController: UIViewController {
         }
     }
     
-    func addTagForUser(user: VUser) {
-        
-    }
-    
     func add(add: Bool, tagForHashtag hashtag: VHashtag) {
         
     }
