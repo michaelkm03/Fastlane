@@ -321,35 +321,13 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #else
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
 #endif
-    NSData *receipt = [[NSBundle mainBundle] readReceiptData];
-    [self validateReceipt:receipt success:^(BOOL isValidReceipt) {
-        if (self.activePurchase != nil && isValidProduct && isValidReceipt)
-        {
-            NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
-            [self.purchaseRecord addProductIdentifier:productIdentifier];
-            self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
-            self.activePurchase = nil;
-        }
-    } failure:^(NSError * error) {
-        self.activePurchase.failureCallback(error);
-    }];
-}
-
-- (void)validateReceipt:(NSData *)receipt
-                success:(ReceiptValidationSuccessBlock)successCallback
-                failure:(ReceiptValidationFailureBlock)failureCallback
-{
-    if (receipt)
+    if (self.activePurchase != nil && isValidProduct)
     {
-        successCallback(YES);
-    }
-    else
-    {
-        NSError *noReceiptError = [NSError errorWithDomain:kVictoriousErrorDomain
-                                                      code:kErrorCodeNoReceipt
-                                                  userInfo:nil];
-        failureCallback(noReceiptError);
+        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
+        [self.purchaseRecord addProductIdentifier:productIdentifier];
+        self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
+        self.activePurchase = nil;
     }
 }
 

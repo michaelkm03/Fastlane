@@ -230,6 +230,10 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             [AgeGate decorateTemplateForLegalInfoAccessoryButton:templateDecorator];
         }
+        
+        
+        NSDictionary *config = [VTemplateDecorator dictionaryFromJSONFile:@"vip.purchase"];
+        NSParameterAssert( [templateDecorator setTemplateValue:config forKeyPath:@"scaffold/menu/items/0"] );
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

@@ -1,0 +1,64 @@
+{
+    "destination": {
+        "name": "vip.screen",
+        "title": "VIP",
+        "greeting.text": "Are you ready\nfor exclusive content,\nexclusive merchandise\nand private chats?",
+        "greeting.font": {
+            "fontName": "Avenir-Roman",
+            "fontSize": 22
+        },
+        "greeting.color": {
+            "red": 0,
+            "green": 0,
+            "blue": 0,
+            "alpha": 255
+        },
+        "subscribe.color": {
+            "red": 0,
+            "green": 221,
+            "blue": 255,
+            "alpha": 255
+        },
+        "subscribe.text": "Subscribe",
+        "subscribe.font": {
+            "fontName": "Avenir-Roman",
+            "fontSize": 16
+        },
+        "background": {
+            "name": "solidColor.background",
+            "color": {
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255
+            }
+        }
+    },
+    "subscription" : "com.getvictorious.leachypeachy99.vip1",
+    "title": "VIP",
+    "icon": {
+        "imageSet": [{
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected.png",
+            "scale": 1
+        }, {
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected@2x.png",
+            "scale": 2
+        }, {
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected@3x.png",
+            "scale": 3
+        }]
+    },
+    "identifier": "Menu VIP",
+    "selectedIcon": {
+        "imageSet": [{
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected.png",
+            "scale": 1
+        }, {
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected@2x.png",
+            "scale": 2
+        }, {
+            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected@3x.png",
+            "scale": 3
+        }]
+    }
+}

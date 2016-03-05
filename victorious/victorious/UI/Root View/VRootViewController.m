@@ -19,7 +19,6 @@
 #import "VTracking.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
-#import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
@@ -48,8 +47,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VVoteSettings *voteSettings;
-@property (nonatomic, strong) SubscriptionSettings *subscriptionSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -285,18 +282,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)fetchProductIdentifiersIfNeeded
 {
-    self.voteSettings = [[VVoteSettings alloc] init];
-    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
-    self.subscriptionSettings = [[SubscriptionSettings alloc] initWithDependencyManager:self.dependencyManager];
-
-    NSArray *voteSettingProductIdentifiers = self.voteSettings.getProductIdentifiers;
-    NSString *subscriptionProductIdentifier = self.subscriptionSettings.getProductIdentifier;
-    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteSettingProductIdentifiers];
-    if (subscriptionProductIdentifier != nil)
-    {
-        [productIdentifiers addObject:subscriptionProductIdentifier];
-    }
-
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:self.dependencyManager.voteTypes];
+    [productIdentifiers addObject:self.dependencyManager.subscriptionProductIdentifier];
     NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
     [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error) {
         VLog(@"Failed to fetch products with identifiers %@", productIdentifiers);

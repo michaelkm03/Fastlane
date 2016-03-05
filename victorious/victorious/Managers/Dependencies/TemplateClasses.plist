@@ -185,6 +185,6 @@
 	<key>achievement.interstitial</key>
 	<string>victorious.AchievementViewController</string>
 	<key>vip.screen</key>
-	<string>victorious.VIPViewController</string>
+	<string>victorious.VIPGateViewController</string>
 </dict>
 </plist>

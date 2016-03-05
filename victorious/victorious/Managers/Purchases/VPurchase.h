@@ -13,8 +13,6 @@
 
 typedef void (^VPurchaseSuccessBlock) (NSSet *);
 typedef void (^VPurchaseFailBlock) (NSError *);
-typedef void (^ReceiptValidationSuccessBlock) (BOOL);
-typedef void (^ReceiptValidationFailureBlock) (NSError *);
 
 @interface VPurchase : NSObject
 

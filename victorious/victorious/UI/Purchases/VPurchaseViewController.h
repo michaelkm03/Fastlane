@@ -10,6 +10,8 @@
 #import "VVoteType.h"
 #import "VSimpleModalTransition.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VDependencyManager;
 
 @protocol VPurchaseViewControllerDelegate <NSObject>
@@ -27,19 +29,21 @@
 
 @property (nonatomic, weak) id<VPurchaseViewControllerDelegate> _Nullable delegate;
 
-@property (nonatomic, strong) UIImage * _Nonnull largeIcon;
-@property (nonatomic, strong) NSString * _Nonnull productIdentifier;
+@property (nonatomic, strong) UIImage * largeIcon;
+@property (nonatomic, strong) NSString *productIdentifier;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
+@property (weak, nonatomic, null_unspecified) IBOutlet UIView *backgroundScreen;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic) IBOutlet UIView *modalContainer;
+@property (weak, nonatomic, null_unspecified) IBOutlet UIView *modalContainer;
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager * _Nonnull)dependencyManager
-                       productIdentifier:(NSString * _Nonnull)productIdentifier
-                               largeIcon:(UIImage * _Nonnull)largeIcon;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+                       productIdentifier:(NSString *)productIdentifier
+                               largeIcon:(UIImage *)largeIcon;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager * _Nonnull)dependencyManager NS_UNAVAILABLE;
 
 @end
+
+NS_ASSUME_NONNULL_END

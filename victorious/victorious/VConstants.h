@@ -47,6 +47,7 @@ static float kExperienceEnhancerBarFadeOutOpacity = 0.15f;
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
 static NSString * const kVictoriousErrorMessageKey      = @"VictoriousErrorMessage";
 
+#warning Remove this
 static NSUInteger const kErrorCodeNoReceipt             = 5400;
 
 static NSUInteger const kVStillTranscodingError         = 5500;
@@ -99,22 +100,6 @@ static NSString * const VConstantMediaExtensionMP4       = @"mp4";
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
 static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
-
-#pragma mark - Purchases
-
-static NSString * const kTestSubscriptionProductIdentifier = @"com.getvictorious.leachypeachy99.vip1";
-static NSString * const kProductIdentifierTemplateKey      = @"appleProductId";
-static NSString * const kSubscriptionTemplateKey           = @"subscription";
-
-#pragma mark - VIP Section
-static NSString * const kVIPGreetingTextTemplateKey    = @"greeting.text";
-static NSString * const kVIPGreetingFontTemplateKey    = @"greeting.font";
-static NSString * const kVIPGreetingColorTemplateKey   = @"greeting.color";
-static NSString * const kVIPSubscribeColorTemplateKey  = @"subscribe.color";
-static NSString * const kVIPSubscribeTextTemplateKey   = @"subscribe.text";
-static NSString * const kVIPSubscribeFontTemplateKey   = @"subscribe.font";
-static NSString * const kVIPBackgroundTemplateKey      = @"background";
-static NSString * const kVIPDefaultGreetingText        = @"Are you ready for Exclusive Content, Exclusive Merchandise and Private Live Chats?";
 
 #pragma mark - Sequence Categories
 

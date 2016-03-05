@@ -57,6 +57,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 #pragma mark - View controller lifecycle
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
