@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
+class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBackgroundContainer {
     
     var dependencyManager: VDependencyManager?
     private(set) var trophyCaseDataSource: TrophyCaseCollectionViewDataSource?
@@ -45,6 +45,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
         
         if let dependencyManager = dependencyManager {
             navigationItem.title = dependencyManager.stringForKey("title")
+            dependencyManager.addBackgroundToBackgroundHost(self)
         }
     }
     
@@ -61,5 +62,11 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate {
         
         let detailViewController = AchievementDetailViewController.makeAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
         presentViewController(detailViewController, animated: false, completion: nil)
+    }
+    
+    //MARK: - Background Container
+    
+    func backgroundContainerView() -> UIView {
+        return self.view
     }
 }
