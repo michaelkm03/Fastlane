@@ -16,6 +16,8 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     private(set) var isPlaying: Bool = false
     
+    private var isReadyToPlay: Bool = false
+    
     private func updateMute() {
         if muted {
             playerView.mute()
@@ -38,6 +40,8 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         delegate?.videoPlayerDidStartBuffering?(self)
         playerView.loadWithVideoId( videoId, playerVars: playerVars )
         playerView.playVideo()
+        
+        isReadyToPlay = true
     }
     
     private var playerVars: [NSObject: AnyObject] {
@@ -95,6 +99,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func reset() {
+        isReadyToPlay = false
         playerView.clearVideo()
     }
     
@@ -102,7 +107,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         let wasPlaying = isPlaying
         if !wasPlaying {
             isPlaying = true
-            if playerView.videoUrl() == nil {
+            if !isReadyToPlay {
                 loadCurrentItem()
             }
             
@@ -123,7 +128,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     func playFromStart() {
         let wasPlaying = isPlaying
         if !wasPlaying {
-            if playerView.videoUrl() == nil {
+            if !isReadyToPlay {
                 loadCurrentItem()
             }
             playerView.seekToSeconds( 0.0, allowSeekAhead: true)
@@ -155,6 +160,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     func playerView(playerView: YTPlayerView!, didChangeToState state: YTPlayerState) {
         switch state {
         case .Ended:
+            playerView.userInteractionEnabled = true
             isPlaying = false
             delegate?.videoPlayerDidReachEnd?(self)
         case .Paused:
@@ -166,6 +172,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         case .Unknown:()
         case .Unstarted:()
         case .Playing:
+            playerView.userInteractionEnabled = false
             isPlaying = true
             delegate?.videoPlayerDidStopBuffering?(self)
             delegate?.videoPlayerDidPlay?(self)

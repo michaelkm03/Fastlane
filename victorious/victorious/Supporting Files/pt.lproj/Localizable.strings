@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Selecione uma conta do Twitter";
 
-"BlockInappropriate"    =   "Denunciar como Impróprio";
+"BlockInappropriate"    =   "Bloquear";
 "ReportedTitle"         =   "Tudo certo!";
 "ReportContentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
 "ReportCommentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
@@ -277,6 +277,8 @@
 "NoFriendsDetail"       =   "Não encontramos nenhum dos seus amigos que usam o nosso aplicativo. Vá em frente e convide-os!";
 
 "Report/Flag"           =   "Denunciar/Sinalizar";
+"BlockUser"             =   "Bloquear Usuário";
+"UnblockUser"           =   "Desbloquear Usuário";
 "REPOSTERS"             =   "Quem repostou"; // Title for a list of users who have reposted something
 "Repost"                =   "Repostar";
 "Reposted"              =   "Repostado";

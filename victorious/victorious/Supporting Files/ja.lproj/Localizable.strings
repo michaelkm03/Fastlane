@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Twitterアカウントを選択してください";
 
-"BlockInappropriate"   =   "不適切な内容を報告";
+"BlockInappropriate"    =   "ブロック";
 "ReportedTitle"         =   "了解！";
 "ReportContentMessage"  =   "このコンテンツは24時間以内に審査されます。";
 "ReportCommentMessage"  =   "このコンテンツは24時間以内に審査されます。";
@@ -277,6 +277,8 @@
 "NoFriendsDetail"       =   "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
 
 "Report/Flag"           =   "報告/フラグ";
+"BlockUser"             =   "ユーザーをブロック";
+"UnblockUser"           =   "ユーザーのブロックを解除";
 "REPOSTERS"             =   "再投稿者"; // Title for a list of users who have reposted something
 "Repost"                =   "再投稿";
 "Reposted"              =   "再投稿済";

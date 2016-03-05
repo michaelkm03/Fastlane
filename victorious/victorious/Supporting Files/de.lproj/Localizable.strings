@@ -151,7 +151,7 @@
 
 "SelectTwitter"         =   "Wähle ein Twitter-Konto aus";
 
-"BlockInappropriate"    =   "Als Unangebracht melden";
+"BlockInappropriate"    =   "Sperren";
 "ReportedTitle"         =   "Fertig!";
 "ReportContentMessage"  =   "Wir werden diesen Inhalt binnen 24 Stunden überprüfen.";
 "ReportCommentMessage"  =   "Wir werden diesen Inhalt binnen 24 Stunden überprüfen.";
@@ -277,6 +277,8 @@
 "NoFriendsDetail"       =   "Wir konnten unter den aktuellen Nutzern unserer App keine deiner Freunde finden. Lade sie einfach ein!";
 
 "Report/Flag"           =   "Melden/Markieren";
+"BlockUser"             =   "Benutzer sperren";
+"UnblockUser"           =   "Benutzer entsperren";
 "REPOSTERS"             =   "Teiler"; // Title for a list of users who have reposted something
 "Repost"                =   "Erneut posten";
 "Reposted"              =   "Erneut geposted";

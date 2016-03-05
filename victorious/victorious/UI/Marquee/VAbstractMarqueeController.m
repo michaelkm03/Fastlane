@@ -259,7 +259,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                 StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
                                                                                   stream:self.shelf ?: self.stream
                                                                                fromShelf:YES];
-                
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
             }
         }
@@ -322,6 +321,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];
+    
+    // Add sequence tracking data to the marquee cell
+    if ([cell.previewView isKindOfClass:[VSequencePreviewView class]])
+    {
+        ((VSequencePreviewView *)cell.previewView).trackingData = [item streamItemPointerWithStreamID:self.shelf.remoteId].tracking;
+    }
     
     return cell;
 }
