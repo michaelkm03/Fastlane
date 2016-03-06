@@ -198,7 +198,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
                 
             } else if scrollView.v_isScrolledToBottom {
                 // When scrolling to bottom, unstash as if the user interacted with `moreContentController`
-                dataSource.shouldStashNewContent = false
+                onMoreContentSelected()
             }
         }
         
