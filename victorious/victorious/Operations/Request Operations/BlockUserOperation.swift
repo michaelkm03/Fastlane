@@ -12,13 +12,9 @@ import VictoriousIOSSDK
 class BlockUserOperation: FetcherOperation {
     
     private let userID: Int
-    private var conversationID: Int = -1
+    private var conversationID: Int
     
-    init( userID: Int ) {
-        self.userID = userID
-    }
-    
-    init( userID: Int, conversationId: Int) {
+    init( userID: Int, conversationId: Int = -1) {
         self.userID = userID
         self.conversationID = conversationId
     }
@@ -31,6 +27,7 @@ class BlockUserOperation: FetcherOperation {
         
         BlockUserRemoteOperation(userID: userID).after(self).queue()
         
+        // Delete the conversation locally
         if conversationID != -1 {
             persistentStore.createBackgroundContext().v_performBlockAndWait { context in
                 let uniqueElements = [ "remoteId" : self.conversationID ]
