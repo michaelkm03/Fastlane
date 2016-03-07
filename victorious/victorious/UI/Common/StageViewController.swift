@@ -10,10 +10,14 @@ import UIKit
 
 class StageViewController: UIViewController {
     
+    weak var delegate: StageViewControllerDelegate?
+    
+    /// Replaces the currently playing media with the one provided.
     func startPlayingMedia(media: VAsset) {
         
     }
     
+    /// Stops displaying the currently shown media.
     func stopPlayingContent() {
         
     }

@@ -12,7 +12,7 @@ enum ComposerViewControllerAttachmentTab {
     
     private struct Icon {
         
-        //TODO: Replace with real icon names once assets are imported
+        //TODO: Replace with real icon names once assets are imported.
         static let camera = UIImage(named: "camera")!
         static let library = UIImage(named: "library")!
         static let gif = UIImage(named: "gif")!
