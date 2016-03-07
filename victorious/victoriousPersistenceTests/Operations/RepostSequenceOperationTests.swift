@@ -20,7 +20,9 @@ class RepostSequenceOperationTests: BaseFetcherOperationTestCase {
     override func setUp() {
         super.setUp()
         
-        sequence = persistentStoreHelper.createEmptySequence(remoteId: sequenceRemoteId)
+        sequence = persistentStoreHelper.createSequence(remoteId: sequenceRemoteId)
+        sequence?.repostCount = 0
+        sequence?.hasBeenRepostedByMainUser = false
         
         let node: VNode = persistentStoreHelper.createNode(123, sequence: sequence!)
         sequence?.v_addObject(node, to: "nodes")
@@ -30,19 +32,11 @@ class RepostSequenceOperationTests: BaseFetcherOperationTestCase {
 
         expectation = expectationWithDescription("Finished Operation")
     }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
-    func returnUser() -> VUser?{
-        return self.user
-    }
 
     func testRepostSequence() {
         RepostSequenceOperation(sequenceID: sequenceRemoteId).queue() { results, error in
-            XCTAssert(self.sequence != nil)
-            XCTAssert(self.user != nil)
+            XCTAssertNotNil(self.sequence)
+            XCTAssertNotNil(self.user)
             guard let sequence: VSequence = self.sequence,
                 user = self.user else {
                 XCTFail("Sequence or user should not be nil")

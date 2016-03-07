@@ -48,31 +48,6 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createEmptySequence(remoteId remoteId: String, category: String = kVOwnerVideoCategory) -> VSequence {
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            return context.v_createObjectAndSave { sequence in
-                sequence.remoteId = remoteId
-                sequence.category = category
-                sequence.commentCount = 0
-                sequence.createdBy = 1
-                sequence.gifCount = 0
-                sequence.hasBeenRepostedByMainUser = false
-                sequence.hasReposted = false
-                sequence.isComplete = true
-                sequence.isLikedByMainUser = false
-                sequence.isComplete = true
-                sequence.isGifStyle = false
-                sequence.isRemix = false
-                sequence.isRepost = false
-                sequence.likeCount = 0
-                sequence.memeCount = 0
-                sequence.nameEmbeddedInContent = true
-                sequence.permissionsMask = 1
-                sequence.repostCount = 0
-            }
-        }
-    }
-    
     func createNode(remoteId: Int, sequence: VSequence) -> VNode {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { node in

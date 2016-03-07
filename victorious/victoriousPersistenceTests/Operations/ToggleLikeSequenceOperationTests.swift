@@ -30,18 +30,11 @@ class ToggleLikeSequenceOperationTests: XCTestCase {
         let user = persistentStoreHelper.createUser(remoteId: userRemoteId)
         user.setAsCurrentUser()
     }
-    
-    func setupSequenceLiked(liked: Bool) {
-        sequence = persistentStoreHelper.createEmptySequence(remoteId: sequenceRemoteId)
-        sequence?.isLikedByMainUser = liked ? 1 : 0
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
 
     func testInitiallyLiked() {
-        setupSequenceLiked(true)
+        sequence = persistentStoreHelper.createSequence(remoteId: sequenceRemoteId)
+        sequence?.isLikedByMainUser = true
+        
         XCTAssert(sequence?.isLikedByMainUser.boolValue == true)
         XCTAssert(sequence?.objectID != nil)
         let objectId: NSManagedObjectID = (sequence?.objectID)!
