@@ -96,7 +96,7 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZM3-iY-oQD" userLabel="Alert">
                                 <rect key="frame" x="35" y="210" width="530" height="180"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-sz-btw">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Title" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-sz-btw">
                                         <rect key="frame" x="30" y="30" width="470" height="29"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -132,10 +132,10 @@
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="H9b-ZJ-wTG"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="HDO-f3-Vdj"/>
                                     <constraint firstAttribute="trailing" secondItem="Y3T-Un-jvL" secondAttribute="trailing" id="KLk-er-Mha"/>
-                                    <constraint firstAttribute="height" constant="180" id="NbI-9W-h6n"/>
                                     <constraint firstAttribute="trailing" secondItem="8uB-sz-btw" secondAttribute="trailing" constant="30" id="S3o-cW-wlV"/>
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="centerY" secondItem="ZM3-iY-oQD" secondAttribute="centerY" id="alE-wt-ES1"/>
                                     <constraint firstItem="Jtf-Jp-hKf" firstAttribute="top" secondItem="8uB-sz-btw" secondAttribute="bottom" constant="20" id="do6-Bx-0Ab"/>
+                                    <constraint firstItem="8uB-sz-btw" firstAttribute="top" secondItem="ZM3-iY-oQD" secondAttribute="top" constant="30" id="hQX-5d-24o"/>
                                     <constraint firstAttribute="bottom" secondItem="Y3T-Un-jvL" secondAttribute="bottom" id="qsn-Rd-lod"/>
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -147,8 +147,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="ZM3-iY-oQD" secondAttribute="trailing" priority="750" constant="15" id="31a-i2-2yH"/>
-                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" priority="750" constant="15" id="8px-Jx-Awu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZM3-iY-oQD" secondAttribute="trailing" constant="15" id="31a-i2-2yH"/>
+                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" constant="15" id="8px-Jx-Awu"/>
                             <constraint firstItem="ZM3-iY-oQD" firstAttribute="centerY" secondItem="KyQ-C1-BRR" secondAttribute="centerY" id="GP6-OF-22l"/>
                             <constraint firstItem="MLC-3f-daj" firstAttribute="top" secondItem="NVn-UM-aoU" secondAttribute="bottom" id="UlU-sb-nth"/>
                             <constraint firstItem="NVn-UM-aoU" firstAttribute="top" secondItem="ge3-aL-qdM" secondAttribute="bottom" constant="-20" id="f1d-IN-p6S"/>
