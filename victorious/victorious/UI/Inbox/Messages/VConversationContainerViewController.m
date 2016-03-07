@@ -115,15 +115,6 @@ static const NSUInteger kCharacterLimit = 1024;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)flagConversation
-{
-    BlockUserOperation *operation = [[BlockUserOperation alloc] initWithUserID:self.conversation.user.remoteId.integerValue conversationId:self.conversation.remoteId.integerValue];
-    [operation queueWithCompletion:^(NSArray *results, NSError *error)
-     {
-         [self.navigationController popViewControllerAnimated:YES];
-     }];
-}
-
 - (void)setConversation:(VConversation *)conversation
 {
     _conversation = conversation;

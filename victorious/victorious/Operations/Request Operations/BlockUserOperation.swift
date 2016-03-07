@@ -14,9 +14,9 @@ class BlockUserOperation: FetcherOperation {
     private let userID: Int
     private var conversationID: Int
     
-    init( userID: Int, conversationId: Int = -1) {
+    init( userID: Int, conversationID: Int = -1) {
         self.userID = userID
-        self.conversationID = conversationId
+        self.conversationID = conversationID
     }
     
     override func main() {
@@ -43,8 +43,6 @@ class BlockUserOperation: FetcherOperation {
                 context.v_save()
             }
         }
-        
-
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
