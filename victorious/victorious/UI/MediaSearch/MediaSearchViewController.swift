@@ -123,18 +123,20 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		
 		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
         
-        let view = UIView(frame: CGRectMake(0, 0, 100, 100))
+        let view = UIView(frame: CGRectMake(0, 0, 80, 80))
         
         let spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
         spinner.startAnimating()
-        spinner.frame = CGRectMake(25, 0, 50, 50)
+        spinner.frame = CGRectMake(15, 0, 50, 50)
         
-        let button = UIButton()
-        button.setTitle(NSLocalizedString("Abbrechen", comment: ""), forState: UIControlState.Normal)
+        let button = UIButton(type: .System)
+        button.setTitle(NSLocalizedString("Cancel", comment: ""), forState: UIControlState.Normal)
         button.titleLabel?.textAlignment = NSTextAlignment.Center
-        button.titleLabel?.font = UIFont.systemFontOfSize(16, weight: UIFontWeightSemibold)
-        button.frame = CGRectMake(0, 70, 100, 30)
-        button.showsTouchWhenHighlighted = true
+        button.titleLabel?.font = UIFont.systemFontOfSize(20, weight: UIFontWeightSemibold)
+        button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        button.titleLabel?.minimumScaleFactor = 0.5
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.frame = CGRectMake(-10, 50, 100, 30)
         button.addTarget(self, action: "cancel:", forControlEvents: UIControlEvents.TouchUpInside)
         
         view.addSubview(spinner)
@@ -150,7 +152,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         
         let gestureRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: "cancel:")
 		progressHUD?.addGestureRecognizer(gestureRecognizer)
-		
+        
 		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
 			
 			if let previewImage = previewImage, let mediaURL = mediaURL {
