@@ -119,7 +119,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
 
     [self initializeProfileHeader];
-    [self initializeTrophyCaseScreen];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -163,7 +162,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)initializeTrophyCaseScreen
 {
     self.trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
-    if (self.trophyCaseViewController == nil)
+    if (self.trophyCaseViewController == nil || !self.representsMainUser)
     {
         return;
     }
@@ -191,6 +190,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self addAccessoryItems];
+    [self initializeTrophyCaseScreen];
     
     self.navigationViewfloatingController.animationEnabled = YES;
     
