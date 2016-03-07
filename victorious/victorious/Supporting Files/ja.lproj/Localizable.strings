@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "OK";
-"CancelButton"          =   "キャンセル";
 "DeleteButton"          =   "削除";
 "ResetButton"           =   "リセット";
 "Publish"               =   "公開";
