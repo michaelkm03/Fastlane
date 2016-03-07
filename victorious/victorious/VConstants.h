@@ -47,9 +47,6 @@ static float kExperienceEnhancerBarFadeOutOpacity = 0.15f;
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
 static NSString * const kVictoriousErrorMessageKey      = @"VictoriousErrorMessage";
 
-#warning Remove this
-static NSUInteger const kErrorCodeNoReceipt             = 5400;
-
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 

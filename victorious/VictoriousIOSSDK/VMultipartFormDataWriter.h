@@ -62,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
 
+- (BOOL)appendData:(NSData *)data withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
 /**
  Writes the contents of the given input stream as a new field.
  The input stream should be open and ready for reading.

@@ -83,6 +83,30 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     return success;
 }
 
+- (BOOL)appendData:(NSData *)data withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
+{
+    __block BOOL success = YES;
+    dispatch_sync(self.outputQueue, ^(void)
+      {
+          if (![self appendDelimiterWithError:error])
+          {
+              success = NO;
+              return;
+          }
+          if (![self appendHeadersWithFieldName:fieldName filename:nil contentType:@"application/octet-stream" error:error])
+          {
+              success = NO;
+              return;
+          }
+          if (![self appendData:data error:error])
+          {
+              success = NO;
+              return;
+          }
+      });
+    return success;
+}
+
 - (BOOL)appendFileWithName:(NSString *)filename
                contentType:(NSString *)contentType
                     stream:(NSInputStream *)inputStream

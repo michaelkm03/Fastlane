@@ -34,7 +34,9 @@
             }
         }
     },
-    "subscription" : "com.getvictorious.leachypeachy99.vip1",
+    "subscription" : {
+        "appleProductId" : "com.getvictorious.leachypeachy99.vip1"
+    },
     "title": "VIP",
     "icon": {
         "imageSet": [{

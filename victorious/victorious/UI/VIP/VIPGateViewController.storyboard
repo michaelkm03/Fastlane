@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MQ0-ua-9uX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MQ0-ua-9uX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
     </dependencies>
@@ -16,8 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SFG-D0-TY1">
+                                <rect key="frame" x="169" y="281" width="37" height="37"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vs2-RQ-Upq">
-                                <rect key="frame" x="50" y="145" width="277" height="250"/>
+                                <rect key="frame" x="50" y="125" width="277" height="250"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="1" constant="253" id="rCf-mp-zh4"/>
@@ -27,7 +31,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-D1-PHE">
-                                <rect key="frame" x="111" y="421" width="154" height="40"/>
+                                <rect key="frame" x="111" y="401" width="154" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="aS0-9l-dTO"/>
@@ -57,19 +61,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Vs2-RQ-Upq" firstAttribute="centerY" secondItem="mrS-g3-Djq" secondAttribute="centerY" constant="-30" id="1WV-ZX-fP9"/>
+                            <constraint firstItem="Vs2-RQ-Upq" firstAttribute="centerY" secondItem="mrS-g3-Djq" secondAttribute="centerY" constant="-50" id="1WV-ZX-fP9"/>
                             <constraint firstAttribute="trailing" secondItem="Vs2-RQ-Upq" secondAttribute="trailing" constant="48" id="2wr-dt-3bv"/>
                             <constraint firstItem="Agc-D1-PHE" firstAttribute="top" secondItem="Vs2-RQ-Upq" secondAttribute="bottom" constant="26" id="3en-ny-ydB"/>
                             <constraint firstItem="Agc-D1-PHE" firstAttribute="centerX" secondItem="Vs2-RQ-Upq" secondAttribute="centerX" id="3od-pu-kVn"/>
                             <constraint firstItem="a7h-W7-OqM" firstAttribute="leading" secondItem="mrS-g3-Djq" secondAttribute="leading" constant="20" id="6E5-O6-WqX"/>
                             <constraint firstItem="bKM-kk-4LK" firstAttribute="top" secondItem="a7h-W7-OqM" secondAttribute="bottom" constant="20" id="Cwp-Vr-6gc"/>
                             <constraint firstAttribute="trailing" secondItem="a7h-W7-OqM" secondAttribute="trailing" constant="20" id="Tde-tk-YAc"/>
+                            <constraint firstItem="SFG-D0-TY1" firstAttribute="centerY" secondItem="mrS-g3-Djq" secondAttribute="centerY" id="XPp-Ec-LnR"/>
+                            <constraint firstItem="SFG-D0-TY1" firstAttribute="centerX" secondItem="mrS-g3-Djq" secondAttribute="centerX" id="ung-AB-xPU"/>
                             <constraint firstItem="Vs2-RQ-Upq" firstAttribute="leading" secondItem="mrS-g3-Djq" secondAttribute="leading" constant="50" id="z7g-VT-XTJ"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="600"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="SFG-D0-TY1" id="u6i-1K-a74"/>
                         <outlet property="restoreButton" destination="a7h-W7-OqM" id="tEn-W8-bZq"/>
                         <outlet property="subscribeButton" destination="Agc-D1-PHE" id="IAJ-1E-ygT"/>
                         <outlet property="textView" destination="Vs2-RQ-Upq" id="do5-KN-QP2"/>
