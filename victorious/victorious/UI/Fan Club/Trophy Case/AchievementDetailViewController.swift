@@ -45,7 +45,19 @@ class AchievementDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        initializeAlertViewBeforeAnimation()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        showAlertViewWithAnimation()
+    }
+    
+    @IBAction func dismiss(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    private func initializeAlertViewBeforeAnimation() {
         if let dependencyManager = dependencyManager {
             confirmationButton.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
         }
@@ -57,15 +69,6 @@ class AchievementDetailViewController: UIViewController {
         alertView.transform = CGAffineTransformMakeScale(AnimationConstants.initialAlertScale, AnimationConstants.initialAlertScale )
         alertView.alpha = 0.0
         semiTransparentBackgroundButton.alpha = 0.0
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        showAlertViewWithAnimation()
-    }
-    
-    @IBAction func dismiss(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     private func showAlertViewWithAnimation() {
