@@ -16,7 +16,6 @@ public struct Stream: StreamItemType {
     public let title: String?
     public let postCount: Int?
     public let items: [StreamItemType]?
-    public let marqueeItems: [StreamItemType]?
     public let streamContentType: StreamContentType?
     public let trackingIdentifier: String?
     public let isUserPostAllowed: Bool?
@@ -67,15 +66,6 @@ extension Stream {
                 default:
                     return Shelf(json: $0)
                 }
-            default:
-                return Stream(json: $0)
-            }
-        }
-        
-        marqueeItems = json["marquee"].array?.flatMap {
-            switch $0["type"].stringValue {
-            case "sequence":
-                return Sequence(json: $0)
             default:
                 return Stream(json: $0)
             }

@@ -231,7 +231,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    self.streamDataSource.hasHeaderCell = self.marqueeCellController.marqueeItems.count > 0;
     
     self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     

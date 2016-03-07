@@ -18,11 +18,6 @@ extension VStream {
         return self.streamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
     
-    /// Maps marquee items (instance sof VStreamItemPointer) into an array of the VStreamItems to which they point
-    var marqueeItems: [VStreamItem] {
-        return self.marqueeItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
-    }
-    
     /// Filters the receiver's `streamItemPointers` for those whose `streamItem` is contained
     /// within the provided list of streamItemIDs.
     func streamItemPointersForStreamItemIDs(streamItemIDs: [String]) -> NSOrderedSet {
