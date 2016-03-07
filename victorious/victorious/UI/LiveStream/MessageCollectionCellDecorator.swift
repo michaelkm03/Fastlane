@@ -33,16 +33,13 @@ struct MessageCollectionCellDecorator {
         
         cell.dependencyManager = dependencyManager
         
-        
         cell.viewData = VMessageCollectionCell.ViewData(
             text: "\(message.text ?? "")",
             createdAt: message.postedAt,
             username: message.sender.name ?? "",
-            avatarImageURL: NSURL(string: message.sender.pictureUrl ?? ""),
+            avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
             mediaURL: NSURL(v_string: message.mediaUrl)
         )
-        
-        cell.mediaContainer.frame = cell.contentContainer.bounds
     }
 }
 
@@ -88,6 +85,10 @@ struct LeftAlignmentDecorator: AlignmentDecorator {
             width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
+        
+        cell.mediaContainer.frame = cell.bubbleView.bounds
+        cell.mediaAttachmentView?.frame = cell.mediaContainer.bounds
+        cell.mediaAttachmentView?.setNeedsLayout()
     }
 }
 
@@ -128,5 +129,9 @@ struct RightAlignmentDecorator: AlignmentDecorator {
             width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
+        
+        cell.mediaContainer.frame = cell.bubbleView.bounds
+        cell.mediaAttachmentView?.frame = cell.mediaContainer.bounds
+        cell.mediaAttachmentView?.setNeedsLayout()
     }
 }

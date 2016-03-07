@@ -54,8 +54,9 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
                 message.postedAt = NSDate()
                 message.displayOrder = displayOrder++
                 
-                if arc4random() % 10 > 5 {
-                    message.mediaUrl = "https://media2.giphy.com/media/Qq1o7kVIWl1lK/giphy.mp4"
+                if arc4random() % 10 > 8 {
+                    message.mediaUrl = "http://il-ducatista.com/wp-content/uploads/2012/06/mc-1100r-01.jpg"
+                    //message.mediaUrl = "https://media2.giphy.com/media/Qq1o7kVIWl1lK/giphy.mp4"
                 }
                 
                 messagesCreated.append(message)

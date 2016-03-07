@@ -20,7 +20,7 @@
                                 <rect key="frame" x="54" y="0.0" width="285" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="Hvr-ao-kbc">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" id="Hvr-ao-kbc">
                                         <rect key="frame" x="0.0" y="29" width="285" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>

@@ -8,7 +8,9 @@
 
 import UIKit
 
-class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate {
+class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate {
+    
+    let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
     private let kSectionBottomMargin: CGFloat = 60.0
     
@@ -46,6 +48,8 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
+    
+    private var selectedMessageUserID: Int?
     
     @IBOutlet private var moreContentController: MoreContentController!
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -87,9 +91,10 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         moreContentController.hide(animated: false)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
+        selectedMessageUserID = nil
         dataSource.beginLiveUpdates()
     }
     
@@ -102,8 +107,11 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let message = dataSource.visibleItems[ indexPath.row ] as! VMessage
-        let userID = message.sender.remoteId.integerValue
-        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
+        selectedMessageUserID = message.sender.remoteId.integerValue
+        let viewController = UserActionsViewController.newWithUser(message.sender, dependencyManager: dependencyManager)
+        viewController.transitioningDelegate = self.transitionDelegate
+        viewController.delegate = self
+        presentViewController(viewController, animated: true, completion: nil)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -176,6 +184,32 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
             let newContentSize = self.collectionView.contentSize
             let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
             self.collectionView.contentOffset = newOffset
+        }
+    }
+    
+    // MARK: - UserActionsViewControllerDelegate
+    
+    func userActionsViewController(viewController: UserActionsViewController, didSelectAction action: UserAction) {
+        guard let userID = selectedMessageUserID else {
+            assertionFailure()
+            return
+        }
+        
+        switch action {
+            
+        case .ViewProfile:
+            viewController.dismissViewControllerAnimated(true, completion: nil)
+            ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
+            
+        case .Block:
+            BlockUserOperation(userID: userID).queue() { results, error in
+                if let error = error {
+                    self.v_showAlert(title: "Block Error", message: error.localizedDescription)
+                }
+                viewController.dismissViewControllerAnimated(true, completion: nil)
+            }
+            
+        default:()
         }
     }
     
