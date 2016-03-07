@@ -27,6 +27,9 @@ class ChatFeedViewController: UIViewController {
     /// the current creator caption (if one exists). Defaults to false.
     var creatorIsTyping = false
     
+    /// The space from the top to the top-most comment in the chat feed.
+    var topInset: CGFloat
+    
     /// Adds a persistent, stylized caption at the top of the chat feed
     func addCreatorCaption(caption: String) {
         
