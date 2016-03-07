@@ -39,6 +39,16 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         configureUIComponents()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager?.trackViewWillAppear(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager?.trackViewWillDisappear(self)
+    }
+    
     func configureUIComponents() {
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
