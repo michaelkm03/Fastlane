@@ -63,6 +63,9 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
     
+    private var progressHUD: MBProgressHUD?
+    
+    
     //MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -107,6 +110,10 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
     }
     
+    func cancel(sender: AnyObject?) {
+        progressHUD?.hide(true)
+    }
+    
     //MARK: - API
     
     func exportSelectedItem( sender: AnyObject? ) {
@@ -115,11 +122,34 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		}
 		
 		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
-		
-		let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
-		progressHUD.mode = .Indeterminate
-		progressHUD.dimBackground = true
-		progressHUD.show(true)
+        
+        let view = UIView(frame: CGRectMake(0, 0, 100, 100))
+        
+        let spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+        spinner.startAnimating()
+        spinner.frame = CGRectMake(25, 0, 50, 50)
+        
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("Abbrechen", comment: ""), forState: UIControlState.Normal)
+        button.titleLabel?.textAlignment = NSTextAlignment.Center
+        button.titleLabel?.font = UIFont.systemFontOfSize(16, weight: UIFontWeightSemibold)
+        button.frame = CGRectMake(0, 70, 100, 30)
+        button.showsTouchWhenHighlighted = true
+        button.addTarget(self, action: "cancel:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        view.addSubview(spinner)
+        view.addSubview(button)
+        
+        
+        progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
+        progressHUD?.mode = MBProgressHUDMode.CustomView
+        progressHUD?.customView = view
+        progressHUD?.square = true;
+        progressHUD?.dimBackground = true
+		progressHUD?.show(true)
+        
+        let gestureRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: "cancel:")
+		progressHUD?.addGestureRecognizer(gestureRecognizer)
 		
 		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
 			
@@ -129,13 +159,13 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
 				
 			} else {
-				let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
-				progressHUD.mode = .Text
-				progressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
-				progressHUD.hide(true, afterDelay: 3.0)
+				let errorProgressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+				errorProgressHUD.mode = .Text
+				errorProgressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
+				errorProgressHUD.hide(true, afterDelay: 3.0)
 			}
 			
-			progressHUD.hide(true)
+			self.progressHUD?.hide(true)
 		}
     }
 	

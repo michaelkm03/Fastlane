@@ -22,12 +22,14 @@ struct MediaSearchExporter {
     /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
     typealias MediaSearchExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
+    var videoDownloadTask: NSURLSessionDownloadTask?
+    
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
+    mutating func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
         
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
@@ -39,7 +41,7 @@ struct MediaSearchExporter {
                 return
         }
         
-        let videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
+        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
             
             guard let location = location else {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -73,7 +75,11 @@ struct MediaSearchExporter {
                 )
             }
         }
-        videoDownloadTask.resume()
+        videoDownloadTask?.resume()
+    }
+    
+    func cancelDownload() {
+        videoDownloadTask?.cancel()
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
