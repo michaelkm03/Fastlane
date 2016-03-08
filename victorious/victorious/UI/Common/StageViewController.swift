@@ -8,16 +8,17 @@
 
 import UIKit
 
-class StageViewController: UIViewController {
+class StageViewController: UIViewController, StageController {
     
-    weak var delegate: StageViewControllerDelegate?
     
-    /// Replaces the currently playing media with the one provided.
+    //MARK: - StageController
+    
+    weak var delegate: StageControllerDelegate?
+    
     func startPlayingMedia(media: VAsset) {
         
     }
     
-    /// Stops displaying the currently shown media.
     func stopPlayingContent() {
         
     }
