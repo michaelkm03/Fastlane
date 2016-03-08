@@ -20,7 +20,7 @@ public struct ListShelf: StreamItemType {
     public let type: StreamContentType?
     public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
-    public let previewTextPostAsset: Asset?
+    public let previewAsset: Asset?
     public let previewImageAssets: [ImageAsset]?
     public let releasedAt: NSDate?
 }
@@ -39,7 +39,7 @@ extension ListShelf {
         self.type = shelf.type
         self.subtype = shelf.subtype
         self.previewImagesObject = shelf.previewImagesObject
-        self.previewTextPostAsset = shelf.previewTextPostAsset
+        self.previewAsset = shelf.previewAsset
         self.previewImageAssets = shelf.previewImageAssets
         self.releasedAt = shelf.releasedAt
     }

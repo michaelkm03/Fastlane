@@ -25,9 +25,6 @@
 /* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
 "a8q-j6-UKa.text" = "KHÔNG TÌM THẤY NGƯỜI DÙNG";
 
-/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "gHQ-c1-wpe"; */
-"gHQ-c1-wpe.title" = "Hòm thư đến";
-
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Nhập vào hồi đáp...";
 

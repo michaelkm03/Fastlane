@@ -22,7 +22,7 @@ struct PersistentStoreTestHelper {
             }
         }
     }
-
+    
     func createSequence(remoteId remoteId: String, category: String = kVOwnerVideoCategory) -> VSequence {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { sequence in
@@ -44,6 +44,15 @@ struct PersistentStoreTestHelper {
                 sequence.nameEmbeddedInContent = true
                 sequence.permissionsMask = 1
                 sequence.repostCount = 1
+            }
+        }
+    }
+    
+    func createNode(remoteId: Int, sequence: VSequence) -> VNode {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            return context.v_createObjectAndSave { node in
+                node.remoteId = remoteId
+                node.sequence = sequence
             }
         }
     }

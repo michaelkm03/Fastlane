@@ -40,7 +40,6 @@ class CommentRequestBodyWriter: NSObject, RequestBodyWriterType {
         }
         
         if let realtimeAttachment = parameters.realtimeAttachment {
-            try writer.appendPlaintext( String(realtimeAttachment.assetID), withFieldName: "asset_id" )
             try writer.appendPlaintext( String(realtimeAttachment.time), withFieldName: "realtime" )
         }
         

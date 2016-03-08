@@ -35,6 +35,7 @@
     [super setUp];
     self.navigationController = [[UINavigationController alloc] init];
     self.viewController = [[UIViewController alloc] init];
+    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
     self.sequence = [VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     VUser *sequenceUser = [VDummyModels objectWithEntityName:@"User" subclass:[VUser class]];
     sequenceUser.remoteId = @(USER_ID);
@@ -58,13 +59,11 @@
 {
     [super tearDown];
     [VDependencyManager v_restoreOriginalImplementation:self.origImp
-                                                 forClassMethod:@selector(userProfileViewControllerWithRemoteId:)];
+                                              forMethod:@selector(userProfileViewControllerWithRemoteId:)];
 }
 
 - (void)testNotOnProfile
 {
-    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
-    
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:self.viewController
                                                                                dependencyManager:self.dependencyManager
                                                                                           userId:USER_ID];
@@ -89,7 +88,6 @@
 - (void)testOnOtherUserProfile
 {
     VUserProfileViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
-    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
     [self.navigationController pushViewController:otherProfileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:otherProfileViewController
@@ -117,7 +115,6 @@
 - (void)testOnCurrentUserProfile
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
-    [self.navigationController setViewControllers:@[self.viewController] animated:NO];
     [self.navigationController pushViewController:profileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:profileViewController

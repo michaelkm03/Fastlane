@@ -109,7 +109,7 @@ static const NSUInteger kCharacterLimit = 1024;
                                 {
                                     [self flagConversation];
                                 }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];

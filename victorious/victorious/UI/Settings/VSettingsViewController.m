@@ -443,7 +443,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
                                                                                  message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                             style:UIAlertActionStyleCancel
                                                           handler:nil]];
         

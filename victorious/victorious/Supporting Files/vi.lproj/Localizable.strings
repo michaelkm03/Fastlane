@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "OK";
-"CancelButton"          =   "Hủy";
 "DeleteButton"          =   "Xóa";
 "ResetButton"           =   "Đặt lại";
 "Publish"               =   "Công bố";
@@ -151,7 +150,7 @@
 
 "SelectTwitter"         =   "Lựa chọn một tài khoản twitter";
 
-"BlockInappropriate"    =   "Báo cáo Không phù hợp";
+"BlockInappropriate"    =   "Chặn";
 "ReportedTitle"         =   "Đã Hiểu!";
 "ReportContentMessage"  =   "Chúng tôi sẽ xem xét lại nội dung này trong vòng 24 giờ.";
 "ReportCommentMessage"  =   "Chúng tôi sẽ xem xét nội dung này trong vòng 24 giờ.";
@@ -277,6 +276,8 @@
 "NoFriendsDetail"       =   "Chúng tôi không tìm thấy bất kỳ bạn bè nào của bạn sử dụng ứng dụng của chúng tôi. Hãy tiếp tục và mời họ!";
 
 "Report/Flag"           =   "Báo cáo/Cảnh báo";
+"BlockUser"             =   "Chặn Người dùng";
+"UnblockUser"           =   "Bỏ chặn Người dùng";
 "REPOSTERS"             =   "Những người đăng lại"; // Title for a list of users who have reposted something
 "Repost"                =   "Đăng lại";
 "Reposted"              =   "Đã đăng lại";

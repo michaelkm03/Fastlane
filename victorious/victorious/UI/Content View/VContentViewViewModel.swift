@@ -53,9 +53,8 @@ extension VContentViewViewModel {
         }
         
         let realtimeAttachment: Comment.RealtimeAttachment?
-        if let time = currentTime?.doubleValue where time > 0.0,
-            let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.integerValue {
-                realtimeAttachment = Comment.RealtimeAttachment( time: time, assetID: assetID )
+        if let time = currentTime?.doubleValue where time > 0.0 {
+            realtimeAttachment = Comment.RealtimeAttachment( time: time )
         } else {
             realtimeAttachment = nil
         }

@@ -21,6 +21,6 @@ class Shelf: VStream {
         super.populate(fromSourceModel: shelf)
         
         title = shelf.title ?? ""
-        streamUrl = shelf.streamUrl ?? ""
+        streamUrl = shelf.apiPath ?? ""
     }
 }
