@@ -21,7 +21,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         }
     }
     
-    //MARK: - Factory method
+    //MARK: - Factory Functions
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> TrophyCaseViewController {
         let trophyCaseViewController = TrophyCaseViewController.v_fromStoryboard() as TrophyCaseViewController
@@ -35,7 +35,6 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUIComponents()
     }
     
@@ -49,14 +48,8 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         dependencyManager?.trackViewWillDisappear(self)
     }
     
-    func configureUIComponents() {
-        extendedLayoutIncludesOpaqueBars = true
-        automaticallyAdjustsScrollViewInsets = false
-        
-        if let dependencyManager = dependencyManager {
-            navigationItem.title = dependencyManager.stringForKey("title")
-            dependencyManager.addBackgroundToBackgroundHost(self)
-        }
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
     }
     
     //MARK: - UICollectionViewDelegate
@@ -70,7 +63,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
                 return
         }
         
-        let detailViewController = AchievementDetailViewController.makeAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
+        let detailViewController = AchievementDetailViewController.newAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
         presentViewController(detailViewController, animated: false, completion: nil)
     }
     
@@ -78,5 +71,17 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     
     func backgroundContainerView() -> UIView {
         return self.view
+    }
+    
+    //MARK: - Private Functions
+    
+    private func configureUIComponents() {
+        extendedLayoutIncludesOpaqueBars = true
+        automaticallyAdjustsScrollViewInsets = false
+        
+        if let dependencyManager = dependencyManager {
+            navigationItem.title = dependencyManager.stringForKey("title")
+            dependencyManager.addBackgroundToBackgroundHost(self)
+        }
     }
 }

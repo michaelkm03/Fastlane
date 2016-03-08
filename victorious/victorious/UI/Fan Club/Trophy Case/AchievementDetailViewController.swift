@@ -34,7 +34,9 @@ class AchievementDetailViewController: UIViewController {
         static let backgroundButtonAlpha: CGFloat = 0.7
     }
     
-    static func makeAchievementDetailViewControllerWithDependencyManager(dependencyManager: VDependencyManager, achievement: Achievement) -> AchievementDetailViewController {
+    //MARK: - Factory Functions
+    
+    static func newAchievementDetailViewControllerWithDependencyManager(dependencyManager: VDependencyManager, achievement: Achievement) -> AchievementDetailViewController {
         let detailViewController: AchievementDetailViewController = AchievementDetailViewController.v_fromStoryboard(StringFromClass(TrophyCaseViewController), identifier: StringFromClass(AchievementDetailViewController))
         
         detailViewController.dependencyManager = dependencyManager
@@ -42,6 +44,8 @@ class AchievementDetailViewController: UIViewController {
         
         return detailViewController
     }
+    
+    //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,9 +57,17 @@ class AchievementDetailViewController: UIViewController {
         showAlertViewWithAnimation()
     }
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
+    //MARK: - User Interactions
+    
     @IBAction func dismiss(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    //MARK: - Private Functions
     
     private func initializeAlertViewBeforeAnimation() {
         if let dependencyManager = dependencyManager {
