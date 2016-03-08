@@ -32,7 +32,7 @@ class RepostersDataSourceTests: BasePersistentStoreTestCase {
 
     override func setUp() {
         super.setUp()
-        let sequence = persistentStoreHelper.createSequence(remoteId: 1)
+        let sequence = persistentStoreHelper.createSequence(remoteId: "1")
         dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
         users = [persistentStoreHelper.createUser(remoteId: 1)]
         dataSource = TestRepostersDataSource(sequence: sequence,

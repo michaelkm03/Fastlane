@@ -11,10 +11,9 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamID: String?) ) {
-        
+    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamParent: Stream?) ) {
         let sequence = sourceModel.sequence
-        let streamID = sourceModel.streamID
+        let streamParent = sourceModel.streamParent
         
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
@@ -46,9 +45,11 @@ extension VSequence: PersistenceParsable {
             return
         }
         
-        let streamItemPointer = self.parseStreamItemPointer(forStreamWithStreamID: streamID)
-        streamItemPointer.populate(fromSourceModel: sequence)
-        streamItemPointer.streamItem = self
+        if let stream = streamParent {
+            let streamItemPointer = self.parseStreamItemPointerForStream(stream)
+            streamItemPointer.populate(fromSourceModel: sequence)
+            streamItemPointer.streamItem = self
+        }
 
         if let adBreak = sequence.adBreak {
             let persistentAdBreak = context.v_createObject() as VAdBreak
@@ -66,7 +67,7 @@ extension VSequence: PersistenceParsable {
             self.parentUser = persistentParentUser
         }
         
-        if let textPostAsset = sequence.previewTextPostAsset {
+        if let textPostAsset = sequence.previewAsset where textPostAsset.type == .Text {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()
             persistentAsset.populate(fromSourceModel: textPostAsset)
             previewTextPostAsset = persistentAsset
@@ -112,11 +113,10 @@ extension VSequence: PersistenceParsable {
 
 private extension VStreamItem {
     
-    func parseStreamItemPointer(forStreamWithStreamID streamID: String?) -> VStreamItemPointer {
+    func parseStreamItemPointerForStream(stream: Stream) -> VStreamItemPointer {
         let uniqueInfo: [String : NSObject]
-        if let streamID = streamID {
-            // If we have a `streamID`, create VStreamItemPointer for that stream
-            let stream: VStream = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : streamID])
+        if let apiPath = stream.apiPath {
+            let stream: VStream = v_managedObjectContext.v_findOrCreateObject( [ "apiPath" : apiPath ] )
             uniqueInfo = ["streamItem" : self, "streamParent" : stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,

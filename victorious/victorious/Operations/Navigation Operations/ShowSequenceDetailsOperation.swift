@@ -24,6 +24,11 @@ class ShowLikersOperation: NavigationOperation {
         super.start()
         self.beganExecuting()
         
+        guard let navigationController = originViewController.navigationController else {
+            assertionFailure("\(self.dynamicType) requires a navigation controller.")
+            return
+        }
+        
         let childDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration([:])
         let usersViewController = VUsersViewController(dependencyManager: childDependencyManager)
         
@@ -31,7 +36,7 @@ class ShowLikersOperation: NavigationOperation {
         usersViewController.usersDataSource = VLikersDataSource(sequence: sequence)
         usersViewController.usersViewContext = VUsersViewContext.Likers
         
-        originViewController.navigationController?.pushViewController(usersViewController, animated: true)
+        navigationController.pushViewController(usersViewController, animated: true)
         
         self.finishedExecuting()
     }

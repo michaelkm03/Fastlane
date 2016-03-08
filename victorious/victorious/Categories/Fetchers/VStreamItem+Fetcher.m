@@ -33,6 +33,32 @@ NSString * const VStreamItemSubTypeStream = @"stream";
 
 @implementation VStreamItem (Fetcher)
 
++ (NSString *)apiPathForStreamWithUserID:(NSNumber *)userID
+{
+    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartAllowedCharacterSet];
+    NSString *escapedRemoteId = [(userID.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+    return [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+            escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
+}
+
++ (VStream *)userProfileStreamWithUserID:(NSNumber *)userID
+{
+    NSString *apiPath = [VStream apiPathForStreamWithUserID:userID];
+    if ( apiPath == nil )
+    {
+        return nil;
+    }
+    
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
+    __block VStream *stream;
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName] queryDictionary:query];
+        [persistentStore.mainContext save:nil];
+    }];
+    return stream;
+}
+
 - (BOOL)isContent
 {
     if ( self.itemType != nil )

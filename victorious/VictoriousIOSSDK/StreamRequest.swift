@@ -41,27 +41,46 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
-        let payload = payloadJSONByAddingTopLevelProperties(from: responseJSON)
+        let payload = responseJSON["payload"]
         
         let stream: Stream
         
-        if let streamFromObject = Stream(json:payload) {
+        if payload.array != nil {
+            
+            // User profile and other streams with `stream_id` in the response
+            var dictionary = [ "id" : responseJSON["stream_id"], "items" : payload ]
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            
+            if let streamFromItems = Stream(json: JSON(dictionary)) {
+                stream = streamFromItems
+            } else {
+                throw ResponseParsingError()
+            }
+            
+        } else if payload["content"].array != nil{
+            
+            // Liked posts, and other weird responses with no `stream_id` information
+            var dictionary = [ "id" : "anonymous:stream", "items" : payload["content"] ]
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            
+            if let streamFromItems = Stream(json: JSON(dictionary)) {
+                
+                stream = streamFromItems
+            } else {
+                throw ResponseParsingError()
+            }
+            
+        } else if var dictionary = payload.dictionary {
             
             // Regular Streams
-            stream = streamFromObject
+            dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
+            if let streamFromObject = Stream(json: JSON(dictionary)) {
+                stream = streamFromObject
+                
+            } else {
+                throw ResponseParsingError()
+            }
             
-        } else if payload.array != nil,
-            let streamFromItems = Stream(json: JSON([ "id" : responseJSON["stream_id"], "items" : payload ])) {
-                
-                // User profile and other streams with `stream_id` in the response
-                stream = streamFromItems
-                
-        } else if payload["content"].array != nil,
-            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : payload["content"] ])) {
-                
-                // Liked posts, and other weird responses with no `stream_id` information
-                stream = streamFromItems
-                
         } else {
             throw ResponseParsingError()
         }
@@ -69,13 +88,14 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         return stream
     }
     
-    private func payloadJSONByAddingTopLevelProperties(from responseJSON: JSON) -> JSON {
-        var payload = responseJSON["payload"]
+    private func dictionaryWithSupplementalValues(responseJSON: JSON) -> [String : JSON] {
+        var dictionary = [String : JSON]()
         
-        payload["shelf_id"]             = responseJSON["shelf_id"]
-        payload["stream_id"]            = responseJSON["stream_id"]
-        payload["ugc_post_allowed"]     = responseJSON["ugc_post_allowed"]
+        dictionary["apiPath"]              = JSON(stringLiteral: self.apiPath)
+        dictionary["shelf_id"]             = responseJSON["shelf_id"]
+        dictionary["stream_id"]            = responseJSON["stream_id"]
+        dictionary["ugc_post_allowed"]     = responseJSON["ugc_post_allowed"]
         
-        return payload
+        return dictionary
     }
 }
