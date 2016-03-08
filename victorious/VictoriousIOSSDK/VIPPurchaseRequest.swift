@@ -1,5 +1,5 @@
 //
-//  ValidateReceiptRequest.swift
+//  VIPPurchaseRequest.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/4/16.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct ValidateReceiptRequest: RequestType {
+public struct VIPPurchaseRequest: RequestType {
     
-    private let requestBodyWriter: ValidateReceiptRequestBodyWriter
-    private let requestBody: ValidateReceiptRequestBodyWriter.Output
+    private let requestBodyWriter: VIPPurchaseRequestBodyWriter
+    private let requestBody: VIPPurchaseRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/receipt/validate")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/purchase")!)
         request.HTTPMethod = "POST"
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
@@ -22,8 +22,11 @@ public struct ValidateReceiptRequest: RequestType {
     }
     
     public init?(data: NSData) {
+        guard data.length > 0 else {
+            return nil
+        }
         do {
-            requestBodyWriter = ValidateReceiptRequestBodyWriter(data: data)
+            requestBodyWriter = VIPPurchaseRequestBodyWriter(data: data)
             requestBody = try requestBodyWriter.write()
         } catch {
             return nil
@@ -36,7 +39,7 @@ public struct ValidateReceiptRequest: RequestType {
     }
 }
 
-class ValidateReceiptRequestBodyWriter: NSObject, RequestBodyWriterType {
+class VIPPurchaseRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     struct Output {
         let fileURL: NSURL
@@ -55,7 +58,7 @@ class ValidateReceiptRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     func write() throws -> Output {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
-        try writer.appendData(data, withFieldName: "receipt")
+        try writer.appendData(data.base64EncodedDataWithOptions([]), withFieldName:"apple_receipt")
         try writer.finishWriting()
         return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
     }

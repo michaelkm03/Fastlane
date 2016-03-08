@@ -19,6 +19,8 @@ extension VUser: PersistenceParsable {
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
+        isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
+        vipSubscribeDate            = user.vipStatus?.subscribeDate ?? vipSubscribeDate
         isCreator                   = user.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser

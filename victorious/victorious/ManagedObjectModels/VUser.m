@@ -57,6 +57,7 @@
 @dynamic accountIdentifier;
 @dynamic isNewUser;
 @dynamic isVIPSubscriber;
+@dynamic vipSubscribeDate;
 @dynamic avatarBadgeType;
 
 - (AvatarBadgeType)badgeType

@@ -357,7 +357,7 @@
 		5A75EAD91C51860700B08056 /* SearchDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A75EAD81C51860700B08056 /* SearchDataSourceType.swift */; };
 		5A75EADE1C57653200B08056 /* VPublishParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A75EADC1C57653200B08056 /* VPublishParameters.m */; };
 		5A75EADF1C57653200B08056 /* VPublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A75EADD1C57653200B08056 /* VPublishParameters.swift */; };
-		5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
+		5A8F46331C8AA2BA00629D82 /* VIPPurchaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* VIPPurchaseRequest.swift */; };
 		62058B671C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B661C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift */; };
 		62058B6D1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
@@ -2507,7 +2507,7 @@
 		5A75EADB1C57653200B08056 /* VPublishParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishParameters.h; sourceTree = "<group>"; };
 		5A75EADC1C57653200B08056 /* VPublishParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishParameters.m; sourceTree = "<group>"; };
 		5A75EADD1C57653200B08056 /* VPublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPublishParameters.swift; sourceTree = "<group>"; };
-		5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptRequest.swift; sourceTree = "<group>"; };
+		5A8F46321C8AA2BA00629D82 /* VIPPurchaseRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPPurchaseRequest.swift; sourceTree = "<group>"; };
 		62058B661C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAdVideoPlayerViewControllerTests.swift; sourceTree = "<group>"; };
 		62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePersistentStoreTestCase.swift; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
@@ -5353,7 +5353,7 @@
 				C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */,
 				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				795271011C348C8900BD41F1 /* UserSearchRequest.swift */,
-				5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */,
+				5A8F46321C8AA2BA00629D82 /* VIPPurchaseRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */,
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
@@ -10717,7 +10717,7 @@
 				A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */,
 				A7D69C161C0E49D300B462C3 /* PollResult.swift in Sources */,
 				03F9A8361C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift in Sources */,
-				5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */,
+				5A8F46331C8AA2BA00629D82 /* VIPPurchaseRequest.swift in Sources */,
 				C32D8BD81BF2D45500AB5085 /* FollowHashtagRequest.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				A716F3EC1C05110D003068A2 /* PollResultSummaryRequest.swift in Sources */,
@@ -12581,7 +12581,8 @@
 			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13623,7 +13624,8 @@
 			baseConfigurationReference = 55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13642,7 +13644,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.leachypeachy99;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
@@ -13918,6 +13920,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = no;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13948,7 +13951,8 @@
 			baseConfigurationReference = D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13971,7 +13975,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.leachypeachy99;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
@@ -14122,7 +14126,8 @@
 			baseConfigurationReference = 83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -14137,7 +14142,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.leachypeachy99;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};

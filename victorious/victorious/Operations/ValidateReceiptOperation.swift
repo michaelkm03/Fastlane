@@ -8,31 +8,29 @@
 
 import Foundation
 
-class VIPValidateOperation: FetcherOperation, RequestOperation {
+class VIPValidateReceiptOperation: FetcherOperation, RequestOperation {
     
-    lazy var request: ValidateReceiptRequest! = {
+    lazy var request: VIPPurchaseRequest! = {
         let receiptData = NSBundle.mainBundle().v_readReceiptData() ?? NSData()
-        return ValidateReceiptRequest(data: receiptData)
+        return VIPPurchaseRequest(data: receiptData)
     }()
     
     override func main() {
-        NSThread.sleepForTimeInterval(2.0)
-        
-        let executeSemphore = dispatch_semaphore_create(0)
-        dispatch_async(dispatch_get_main_queue()) {
-            self.onComplete(true) {
-                dispatch_semaphore_signal( executeSemphore )
-            }
-        }
-        dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
+        // Let the backend validate the receipt and they will let us know at next login
+        // whether or not the user is a VIP user
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
+}
+
+class VIPSubscriptionSuccessOperation: FetcherOperation {
     
-    func onComplete(result: ValidateReceiptRequest.ResultType, completion: () -> () ) {
-        persistentStore.createBackgroundContext().v_performBlock() { context in
-            VCurrentUser.user(inManagedObjectContext: context)?.isVIPSubscriber = NSNumber(bool: result)
+    override func main() {
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            VCurrentUser.user(inManagedObjectContext: context)?.isVIPSubscriber = true
             context.v_save()
-            completion()
         }
+        
+        VIPValidateReceiptOperation().after(self).queue()
     }
 }
 
@@ -53,7 +51,7 @@ class VIPSubscribeOperation: Operation {
         VPurchaseManager.sharedInstance().purchaseProductWithIdentifier(productIdentifier,
             success: { results in
                 self.finishedExecuting()
-                VIPValidateOperation().after(self).queue()
+                VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
             },
             failure: { error in
                 dispatch_sync(dispatch_get_main_queue()) {
@@ -76,7 +74,7 @@ class RestorePurchasesOperation: Operation {
         VPurchaseManager.sharedInstance().restorePurchasesSuccess(
             { results in
                 self.finishedExecuting()
-                VIPValidateOperation().after(self).queue()
+                VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
             },
             failure: { error in
                 dispatch_sync(dispatch_get_main_queue()) {

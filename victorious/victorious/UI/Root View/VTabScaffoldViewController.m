@@ -124,6 +124,11 @@ static NSString * const kMenuKey = @"menu";
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
 }
 
+- (void)setSelectedMenuItemAtIndex:(NSInteger)index
+{
+    self.internalTabBarController.selectedIndex = index;
+}
+
 - (void)loggedInChanged:(NSNotification *)notification
 {
     if ( [VCurrentUser user] == nil )

@@ -16,10 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SFG-D0-TY1">
-                                <rect key="frame" x="169" y="281" width="37" height="37"/>
-                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vs2-RQ-Upq">
                                 <rect key="frame" x="50" y="125" width="277" height="250"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -68,15 +64,12 @@
                             <constraint firstItem="a7h-W7-OqM" firstAttribute="leading" secondItem="mrS-g3-Djq" secondAttribute="leading" constant="20" id="6E5-O6-WqX"/>
                             <constraint firstItem="bKM-kk-4LK" firstAttribute="top" secondItem="a7h-W7-OqM" secondAttribute="bottom" constant="20" id="Cwp-Vr-6gc"/>
                             <constraint firstAttribute="trailing" secondItem="a7h-W7-OqM" secondAttribute="trailing" constant="20" id="Tde-tk-YAc"/>
-                            <constraint firstItem="SFG-D0-TY1" firstAttribute="centerY" secondItem="mrS-g3-Djq" secondAttribute="centerY" id="XPp-Ec-LnR"/>
-                            <constraint firstItem="SFG-D0-TY1" firstAttribute="centerX" secondItem="mrS-g3-Djq" secondAttribute="centerX" id="ung-AB-xPU"/>
                             <constraint firstItem="Vs2-RQ-Upq" firstAttribute="leading" secondItem="mrS-g3-Djq" secondAttribute="leading" constant="50" id="z7g-VT-XTJ"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="600"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="SFG-D0-TY1" id="u6i-1K-a74"/>
                         <outlet property="restoreButton" destination="a7h-W7-OqM" id="tEn-W8-bZq"/>
                         <outlet property="subscribeButton" destination="Agc-D1-PHE" id="IAJ-1E-ygT"/>
                         <outlet property="textView" destination="Vs2-RQ-Upq" id="do5-KN-QP2"/>

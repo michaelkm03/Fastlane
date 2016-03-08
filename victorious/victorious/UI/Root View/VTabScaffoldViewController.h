@@ -64,4 +64,6 @@
  */
 - (void)showWebBrowserWithURL:(NSURL *)URL;
 
+- (void)setSelectedMenuItemAtIndex:(NSInteger)index;
+
 @end

@@ -233,7 +233,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         
         
         NSDictionary *config = [VTemplateDecorator dictionaryFromJSONFile:@"vip.purchase"];
-        NSParameterAssert( [templateDecorator setTemplateValue:config forKeyPath:@"scaffold/menu/items/0"] );
+        NSParameterAssert( [templateDecorator setTemplateValue:config forKeyPath:@"scaffold/menu/items/4"] );
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
