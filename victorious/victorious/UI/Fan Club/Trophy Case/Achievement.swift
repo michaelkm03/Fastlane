@@ -14,19 +14,20 @@ import Foundation
     let title: String
     let detailedDescription: String
     let displayOrder: Int
-    private(set) var dependencyManager: VDependencyManager?
+    let dependencyManager: VDependencyManager
+    
     var iconImage: UIImage? {
         return isUnlocked ? unlockedIconImage : lockedIconImage
     }
-    
-    private var unlockedIconImage: UIImage?
-    private var lockedIconImage: UIImage?
-    private var isUnlocked: Bool {
+    var isUnlocked: Bool {
         guard let unlockedAchievementsIdentifiers = VCurrentUser.user()?.achievementsUnlocked as? [String] else {
             return false
         }
         return unlockedAchievementsIdentifiers.contains(identifier)
     }
+    
+    private var unlockedIconImage: UIImage?
+    private var lockedIconImage: UIImage?
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
