@@ -1732,7 +1732,6 @@
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
-		F09E8C6A1C88F03400437ACD /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C691C88F03400437ACD /* ChatItem.swift */; };
 		F09E8C6C1C88FDA900437ACD /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */; };
 		F09E8C6E1C88FDC800437ACD /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
@@ -4460,7 +4459,6 @@
 		F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextViewTests.m; sourceTree = "<group>"; };
 		F098D81B1A9E4A890003B6D4 /* VUserTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTag.h; sourceTree = "<group>"; };
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
-		F09E8C691C88F03400437ACD /* ChatItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
 		F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
 		F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForumViewController.storyboard; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
@@ -9242,7 +9240,6 @@
 			isa = PBXGroup;
 			children = (
 				F03B20411C866161005E83A0 /* ChatFeedViewController.swift */,
-				F09E8C691C88F03400437ACD /* ChatItem.swift */,
 				F03B20431C86616F005E83A0 /* ChatFeedViewControllerDelegate.swift */,
 			);
 			name = ChatFeed;
@@ -11795,7 +11792,6 @@
 				A7039CE31C2486A20023DE6F /* CreateAlertOperation.swift in Sources */,
 				F06B418D1B7C30BB008709E8 /* UserShelf.swift in Sources */,
 				C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */,
-				F09E8C6A1C88F03400437ACD /* ChatItem.swift in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				A7F843661BFD44DB004C3D55 /* Conversation+Parsable.swift in Sources */,

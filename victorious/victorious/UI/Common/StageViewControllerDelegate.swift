@@ -11,8 +11,8 @@ import Foundation
 protocol StageViewControllerDelegate: class {
     
     /// Called when the media on the stage changes.
-    func stage(stage: StageViewController, updatedToMedia media: VAsset, withSize size: CGSize)
+    func stage(stageViewController: StageViewController, updatedToMedia media: VAsset, withSize size: CGSize)
     
     /// Called when the user taps on a piece of media on the stage.
-    func stage(stage: StageViewController, selectedMedia media: VAsset)
+    func stage(stageViewController: StageViewController, selectedMedia media: VAsset)
 }

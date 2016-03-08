@@ -10,12 +10,12 @@ import Foundation
 
 protocol ChatFeedViewControllerDelegate: class {
     
-    /// Called when a chat item is selected from the ChatController.
-    func chatFeed(chatFeed: ChatFeedViewController, selectedChatItem chatItem: ChatItem)
+    /// Called when a message is selected from the ChatFeedViewController.
+    func chatFeed(chatFeedViewController: ChatFeedViewController, selectedMessage message: VMessage)
     
-    /// Called when a chat item's poster is selected from the ChatController.
-    func chatFeed(chatFeed: ChatFeedViewController, selectedUser user: VUser)
+    /// Called when a message's poster is selected from the ChatFeedViewController.
+    func chatFeed(chatFeedViewController: ChatFeedViewController, selectedUser user: VUser)
     
-    /// Called when a chat item's media is selected from the ChatController.
-    func chatFeed(chatFeed: ChatFeedViewController, selectedMedia media: VAsset)
+    /// Called when a message's media is selected from the ChatFeedViewController.
+    func chatFeed(chatFeedViewController: ChatFeedViewController, selectedMedia media: VAsset)
 }

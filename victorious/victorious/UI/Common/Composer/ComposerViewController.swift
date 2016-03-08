@@ -13,17 +13,11 @@ class ComposerViewController: UIViewController {
     /// The maximum number of characters a user can input into
     /// the composer. Defaults to 0, allowing users to input as
     /// much text as they like.
-    var maximumTextLength: Int = 0
-    
-    weak var delegate: ComposerViewControllerDelegate?
+    private let maximumTextLength: Int = 0
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    var attachmentTabs: [ComposerViewControllerAttachmentTab]? {
-        didSet {
-            //Update tabs displayed in the composer
-        }
-    }
+    private let attachmentTabs: [ComposerViewControllerAttachmentTab]? = nil
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
@@ -32,4 +26,6 @@ class ComposerViewController: UIViewController {
             //Update height if maximumHeight is now less than the current height
         }
     }
+    
+    weak var delegate: ComposerViewControllerDelegate?
 }
