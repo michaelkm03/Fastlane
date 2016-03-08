@@ -75,6 +75,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager; //< Set the dependencyManager before setting the profile
     [viewController addLoginStatusChangeObserver];
+    [viewController updateAccessoryItems];
     
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
     NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
@@ -87,13 +88,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         viewController.dependencyManager = dependencyManager;
         viewController.userRemoteId = userRemoteId;
-        viewController.representsMainUser = YES;
     }
     else
     {
         viewController.dependencyManager = dependencyManager;
         viewController.user = [VCurrentUser user];
-        viewController.representsMainUser = YES;
     }
 
     viewController.sourceScreenName = VFollowSourceScreenProfileSleekCell;
@@ -288,15 +287,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return thresholdEnd;
 }
 
-#pragma mark -
-
-- (BOOL)canShowMarquee
-{
-    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or
-    // not the profileHeader is shown, based on whether or not this stream contains a marquee
-    return NO;
-}
-
 #pragma mark - Loading data
 
 - (void)setInitialHeaderState
@@ -315,7 +305,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueOn:followCountOperation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
          [self updateProfileHeaderState];
      }];
@@ -407,7 +397,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
     FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -446,7 +436,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     _userRemoteId = userRemoteId;
     
     UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
-    [userInfoOperation queueOn:userInfoOperation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )
         {
@@ -480,41 +470,26 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
+    self.representsMainUser = [VCurrentUser user].isCurrentUser;
+    
     [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;
     [self.KVOController observe:_user
                         keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
                         options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              [welf updateProfileHeaderState];
-                          }];
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateProfileHeaderState];
+     }];
     
-    self.currentStream = [self createUserProfileStreamWithUserID:_user.remoteId.stringValue];
+    self.currentStream = [VStreamItem userProfileStreamWithUserID:_user.remoteId];
     
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
     [self reloadUserFollowingRelationship];
     [self attemptToRefreshProfileUI];
     [self setupFloatingView];
-}
-
-- (VStream *)createUserProfileStreamWithUserID:(NSString *)userID
-{
-    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartAllowedCharacterSet];
-    NSString *escapedRemoteId = [(userID ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
-                         escapedRemoteId, VSDKPaginatorMacroPageNumber, VSDKPaginatorMacroItemsPerPage];
-    NSDictionary *query = @{ @"apiPath" : apiPath };
-    
-    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
-    __block VStream *stream;
-    [persistentStore.mainContext performBlockAndWait:^void {
-        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream v_entityName]
-                                                                            queryDictionary:query];
-        [persistentStore.mainContext save:nil];
-    }];
-    return stream;
 }
 
 - (NSString *)title
@@ -795,7 +770,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
             LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueOn:operation.defaultQueue completionBlock:^(Operation *_Nonnull op)
+            [operation queueWithCompletion:^(Operation *_Nonnull op)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )
@@ -820,6 +795,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (NSInteger)badgeNumber
+{
+    NSArray *menuItems = self.dependencyManager.accessoryMenuItems;
+    NSInteger badgeNumber = 0;
+    for ( VNavigationMenuItem *accessoryItem in menuItems )
+    {
+        id destination = accessoryItem.destination;
+        if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+        {
+            badgeNumber += [(id <VProvidesNavigationMenuItemBadge>)destination badgeNumber];
+        }
+    }
+    return badgeNumber;
+}
 
 #pragma mark - VDeepLinkSupporter
 

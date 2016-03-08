@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: RequestOperation, PaginatedOperation {
+final class StreamOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: StreamRequest
     
@@ -41,6 +41,14 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     func onComplete( sourceStream: StreamRequest.ResultType, completion:()->() ) {
         
+        guard self.cancelled == false else {
+            dispatch_async( dispatch_get_main_queue() ) {
+                completion()
+            }
+            return
+        }
+
+        
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
@@ -54,6 +62,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             
             // Parse stream
             let stream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
+            
             stream.populate(fromSourceModel: sourceStream)
             
             // If there are any stream items returned from the network:

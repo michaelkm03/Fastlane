@@ -18,6 +18,7 @@ extension VUser: PersistenceParsable {
         name                        = user.name ?? name
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
+        isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
         isCreator                   = user.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
@@ -30,6 +31,7 @@ extension VUser: PersistenceParsable {
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
+        avatarBadgeType             = user.avatar?.badgeType ?? avatarBadgeType
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {

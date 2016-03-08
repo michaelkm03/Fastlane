@@ -42,7 +42,7 @@
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 #import "VSleekStreamCellFactory.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamCellFactory.h"
@@ -58,6 +58,8 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VSleekStreamCollectionCell.h"
+#import "VActionSheetViewController.h"
+#import "VActionSheetTransitioningDelegate.h"
 #import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
@@ -75,14 +77,12 @@ NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
-static NSString * const kMemeStreamKey = @"memeStream";
-static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, ContentViewPresenterDelegate>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -99,7 +99,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -185,10 +184,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)sharedInit
 {
-    self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
-    self.contentViewPresenter.delegate = self;
-    self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -204,8 +200,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super viewDidLoad];
     
     self.hasRefreshed = NO;
-    self.sequenceActionController = [[VSequenceActionController alloc] init];
-    self.sequenceActionController.dependencyManager = self.dependencyManager;
+    self.sequenceActionController = [[VSequenceActionController alloc] initWithDependencyManager:self.dependencyManager.contentViewDependencyManager originViewController:self delegate:self];
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     
@@ -260,8 +255,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     [self updateNavigationItems];
     
-    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
-
     if ( self.streamDataSource.count != 0 )
     {
         // We already have marquee content so we need to restart the timer to make sure the marquee continues
@@ -303,9 +296,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self.dependencyManager trackViewWillDisappear:self];
-    
+        
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
@@ -357,11 +348,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)marqueeController:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
-    if ( self.canShowMarquee )
-    {
-        self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    }
-    
     // Update scroll offset to account for marquee
     [self updateNavigationBarScrollOffset];
 }
@@ -456,7 +442,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:marquee.stream
+                                                                          stream:marquee.shelf ?: marquee.stream
                                                                        fromShelf:YES];
         event.indexPath = path;
         event.collectionView = collectionView;
@@ -674,14 +660,19 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
-#pragma mark - ContentViewPresenterDelegate
+#pragma mark - VSequenceActionControllerDelegate
 
-- (void)contentViewPresenterDidDeleteContent:(ContentViewPresenter *)presenter
+- (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
 
-- (void)contentViewPresenterDidFlagContent:(ContentViewPresenter *)presenter
+- (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
+{
+    [self.streamDataSource.paginatedDataSource removeDeletedItems];
+}
+
+- (void)sequenceActionControllerDidBlockUser:(VUser *)user
 {
     [self.streamDataSource.paginatedDataSource removeDeletedItems];
 }
@@ -690,32 +681,38 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
+    [self.sequenceActionController showCommentsWithSequence:sequenceObject];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
 {
-    [self.sequenceActionController showProfile:user fromViewController:self];
+    [self.sequenceActionController showProfileWithRemoteId:user.remoteId.integerValue];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    [self.sequenceActionController showRemixOnViewController:self
-                                                withSequence:sequence
-                                        andDependencyManager:self.dependencyManager
-                                              preloadedImage:nil
-                                            defaultVideoEdit:defaultEdit
-                                                  completion:nil];
+    [self.sequenceActionController showRemixWithSequence:sequence];
+}
+
+- (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
+{
+    [self.sequenceActionController showMoreWithSequence:sequence
+                                                       streamId:self.currentStream.remoteId
+                                                     completion:^
+     {
+         if (completion)
+         {
+             completion(YES);
+         }
+     }];
 }
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [self.streamLikeHelper likeSequence:sequence
+    [self.sequenceActionController likeSequence:sequence
                          triggeringView:view
-                   originViewController:self
-                      dependencyManager:self.dependencyManager
                              completion:^void(BOOL success)
      {
          if ( completion != nil )
@@ -727,11 +724,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController shareFromViewController:self
-                                                  sequence:sequence
-                                                      node:[sequence firstNode]
-                                                  streamID:self.streamDataSource.stream.remoteId
-                                                completion:nil];
+    [self.sequenceActionController shareSequence:sequence
+                                        streamID:self.streamDataSource.stream.remoteId
+                                      completion:nil];
 }
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -750,7 +745,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
 {
-    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
+    [self.sequenceActionController repostSequence:sequence completion:completion];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -765,12 +760,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)showRepostersForSequence:(VSequence *)sequence
 {
-    [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+    [self.sequenceActionController showRepostersWithSequence:sequence];
 }
 
 - (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController showLikersFromViewController:self sequence:sequence];
+    [self.sequenceActionController showLikersWithSequence:sequence];
 }
 
 #pragma mark - Actions
@@ -780,7 +775,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
     
-    // If a user is able to execercise super-human speed and tap a deleted sequence before the
+    // If a user is able to exercise super-human speed and tap a deleted sequence before the
     // this view controller's super class can remove it by calling `removeDeletedItems` from
     // `viewWillAppear:`, return early to prevent the inevitable crash later on.
     if ( event.streamItem.hasBeenDeleted )
@@ -1181,50 +1176,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (NSDictionary *__nonnull)additionalInfo
 {
     return @{};
-}
-
-@end
-
-#pragma mark -
-
-@implementation VDependencyManager (VStreamCollectionViewController)
-
-- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence
-{
-    NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *memeStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                     forKey:kMemeStreamKey
-                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
-    
-    memeStream.navigationItem.title = memeStream.currentStream.name;
-    
-    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:memeStream.view.bounds];
-    noContentView.dependencyManager = self;
-    noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
-    noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
-    noContentView.icon = [UIImage imageNamed:@"noMemeIcon"];
-    memeStream.noContentView = noContentView;
-    
-    return memeStream;
-}
-
-- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence
-{
-    NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *gifStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                    forKey:kGifStreamKey
-                                                     withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
-    
-    gifStream.navigationItem.title = gifStream.currentStream.name;
-    
-    VNoContentView *noContentView = [VNoContentView viewFromNibWithFrame:gifStream.view.bounds];
-    noContentView.dependencyManager = self;
-    noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
-    noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");
-    noContentView.icon = [UIImage imageNamed:@"noGifIcon"];
-    gifStream.noContentView = noContentView;
-    
-    return gifStream;
 }
 
 @end

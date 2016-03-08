@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "OK";
-"CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";
@@ -151,7 +150,7 @@
 
 "SelectTwitter"         =   "Select a twitter account";
 
-"ReportInappropriate"   =   "Report Inappropriate";
+"BlockInappropriate"    =   "Block";
 "ReportedTitle"         =   "Got It!";
 "ReportContentMessage"  =   "We will review this content within 24 hours.";
 "ReportCommentMessage"  =   "We will review this content within 24 hours.";
@@ -277,6 +276,8 @@
 "NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
 
 "Report/Flag"           =   "Report/Flag";
+"BlockUser"             =   "Block User";
+"UnblockUser"           =   "Unblock User";
 "REPOSTERS"             =   "Reposters"; // Title for a list of users who have reposted something
 "Repost"                =   "Repost";
 "Reposted"              =   "Reposted";

@@ -6,7 +6,6 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import SwiftyJSON
 @testable import VictoriousIOSSDK
 import XCTest
 
@@ -39,14 +38,14 @@ class CommentAddRequestBodyTests: XCTestCase {
             sequenceID: "17100",
             replyToCommentID: nil,
             mediaAttachment: nil,
-            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
+            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54)
         )
         self.requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
         
         do {
             let output = try requestBodyWriter.write()
             let data = String(data: NSData(contentsOfURL: output.fileURL )!, encoding: NSUTF8StringEncoding)!
-            XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"asset_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n999\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"realtime\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n0.54\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
+            XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"realtime\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n0.54\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
         } catch {
             XCTFail( "Failed to write request body" )
         }

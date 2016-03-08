@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VSequenceActionController.h"
+#import "VSequenceActionControllerDelegate.h"
 
 @class VSequence, VHashtag, VUser;
 
@@ -20,7 +20,7 @@
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit;
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 
@@ -31,5 +31,7 @@
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion;
 
 - (void)showRepostersForSequence:(VSequence *)sequence;
+
+- (void)willSelectMoreForSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion;
 
 @end

@@ -19,6 +19,7 @@ extension User {
         self.location = nil
         self.tagline = nil
         self.fanLoyalty = nil
+        self.isBlockedByMainUser = nil
         self.isCreator = nil
         self.isDirectMessagingDisabled = nil
         self.isFollowedByMainUser = nil
@@ -28,5 +29,6 @@ extension User {
         self.tokenUpdatedAt = nil
         self.previewImageAssets = nil
         self.maxVideoUploadDuration = nil
+        self.avatar = nil
     }
 }

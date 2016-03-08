@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Returns a list of images based on a search term
 public struct ImageSearchRequest: PaginatorPageable, ResultBasedPageable {

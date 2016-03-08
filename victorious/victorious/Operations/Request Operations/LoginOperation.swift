@@ -6,9 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class LoginOperation: RequestOperation {
+class LoginOperation: FetcherOperation, RequestOperation {
     
-    let request: LoginRequest
+    let request: LoginRequest!
     
     init(email: String, password: String) {
         request = LoginRequest(email: email, password: password)
@@ -23,8 +23,7 @@ class LoginOperation: RequestOperation {
     
     func onComplete(response: AccountCreateResponse, completion: () -> ()) {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: self.request.email)
-        let successOperation = LoginSuccessOperation(response: response, parameters: parameters)
-        successOperation.rechainAndQueueAfter(self, queue: defaultQueue)
+        LoginSuccessOperation(response: response, parameters: parameters).after(self).queue()
         completion()
     }
 }

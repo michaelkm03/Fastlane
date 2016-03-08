@@ -9,9 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingUsersOperation: RequestOperation {
+class TrendingUsersOperation: FetcherOperation, RequestOperation {
     
-    let request = TrendingUsersRequest()
+    let request: TrendingUsersRequest! = TrendingUsersRequest()
+    
     private var resultObjectIDs = [NSManagedObjectID]()
     
     override func main() {
@@ -20,6 +21,13 @@ class TrendingUsersOperation: RequestOperation {
     
     func onComplete( networkResult: TrendingUsersRequest.ResultType, completion: () -> () ) {
         self.results = []
+        
+        guard self.cancelled == false else {
+            dispatch_async( dispatch_get_main_queue() ) {
+                completion()
+            }
+            return
+        }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var persistentUsers = [VUser]()

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Represents an HTTP request to a Victorious server endpoint.
 public protocol RequestType {

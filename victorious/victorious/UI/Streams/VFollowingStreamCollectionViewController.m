@@ -49,10 +49,13 @@
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self.streamDataSource.paginatedDataSource unload];
     if ( [VCurrentUser user] != nil )
     {
         [self loadPage:VPageTypeFirst completion:nil];
+    }
+    else
+    {
+        [self.streamDataSource.paginatedDataSource unload];
     }
 }
 

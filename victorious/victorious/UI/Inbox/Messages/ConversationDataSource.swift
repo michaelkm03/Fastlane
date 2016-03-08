@@ -30,7 +30,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         return self.paginatedDataSource.isLoading()
     }
     
-    var delegate: VPaginatedDataSourceDelegate?
+    weak var delegate: VPaginatedDataSourceDelegate?
     
     var state: VDataSourceState {
         return self.paginatedDataSource.state
@@ -83,14 +83,14 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },
-            completion: { (operation, error) in
+            completion: { (results, error) in
                 self.hasLoadedOnce = true
-                completion?(operation?.results, error)
+                completion?( results, error)
             }
         )
     }
     
-    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
+    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
@@ -140,7 +140,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     // MARK: - Private helpers
     
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
-        cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
+        cell.timeLabel?.text = message.postedAt?.stringDescribingTimeIntervalSinceNow() ?? ""
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)

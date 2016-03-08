@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceUserInterationsOperation: RequestOperation {
+class SequenceUserInterationsOperation: FetcherOperation, RequestOperation {
     
-    var request: SequenceUserInteractionsRequest
+    let request: SequenceUserInteractionsRequest!
     
     private let sequenceID: String
     

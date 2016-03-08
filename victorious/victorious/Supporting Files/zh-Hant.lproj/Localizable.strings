@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "確定";
-"CancelButton"          =   "取消";
 "DeleteButton"          =   "刪除";
 "ResetButton"           =   "重設";
 "Publish"               =   "發佈";
@@ -151,7 +150,7 @@
 
 "SelectTwitter"         =   "選取 Twitter 帳號";
 
-"ReportInappropriate"   =   "舉報不當內容";
+"BlockInappropriate"    =   "封鎖";
 "ReportedTitle"         =   "收到！";
 "ReportContentMessage"  =   "我們將在 24 小時內審查此內容。";
 "ReportCommentMessage"  =   "我們將在 24 小時內審查此內容。";
@@ -277,6 +276,8 @@
 "NoFriendsDetail"       =   "我們找不到有使用我們應用程式的好友。快去邀請他們吧！";
 
 "Report/Flag"           =   "回報/檢舉";
+"BlockUser"             =   "封鎖使用者";
+"UnblockUser"           =   "解除封鎖使用者";
 "REPOSTERS"             =   "轉貼者"; // Title for a list of users who have reposted something
 "Repost"                =   "轉貼";
 "Reposted"              =   "已轉貼";

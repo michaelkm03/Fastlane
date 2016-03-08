@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Retrieves a list of users followed by a specific user
 public struct SubscribedToListRequest: PaginatorPageable, ResultBasedPageable {

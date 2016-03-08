@@ -21,6 +21,7 @@
 @implementation VUser
 
 @dynamic email;
+@dynamic isBlockedByMainUser;
 @dynamic isCreator;
 @dynamic isDirectMessagingDisabled;
 @dynamic isFollowedByMainUser;
@@ -56,5 +57,18 @@
 @dynamic accountIdentifier;
 @dynamic isNewUser;
 @dynamic achievementsUnlocked;
+@dynamic avatarBadgeType;
+
+- (AvatarBadgeType)badgeType
+{
+    if ([self.avatarBadgeType isEqualToString:@"verified"])
+    {
+        return AvatarBadgeTypeVerified;
+    }
+    else
+    {
+        return AvatarBadgeTypeNone;
+    }
+}
 
 @end

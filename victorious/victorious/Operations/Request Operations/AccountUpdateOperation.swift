@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AccountUpdateOperation: RequestOperation {
+class AccountUpdateOperation: FetcherOperation, RequestOperation {
     
     private let storedPassword = VStoredPassword()
     

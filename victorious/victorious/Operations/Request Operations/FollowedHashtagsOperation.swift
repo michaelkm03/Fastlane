@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
+final class FollowedHashtagsOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: HashtagSubscribedToListRequest
     

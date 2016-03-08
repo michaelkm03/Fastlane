@@ -14,15 +14,19 @@ class DeleteSequenceOperation: FetcherOperation {
     private let sequenceID: String
     private let flaggedContent = VFlaggedContent()
     
-    init( sequenceID: String ) {
+    /// Deletes the sequence without asking for the user to confirm the action first
+    init( sequenceID: String) {
         self.sequenceID = sequenceID
-        super.init()
-        
-        let remoteOperation = DeleteSequenceRemoteOperation(sequenceID: sequenceID)
-        remoteOperation.queueAfter( self )
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            cancel()
+            return
+        }
+        
+        DeleteSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()
+        
         self.flaggedContent.addRemoteId( sequenceID, toFlaggedItemsWithType: .StreamItem)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
@@ -46,9 +50,9 @@ class DeleteSequenceOperation: FetcherOperation {
     }
 }
 
-class DeleteSequenceRemoteOperation: RequestOperation {
+class DeleteSequenceRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: DeleteSequenceRequest
+    let request: DeleteSequenceRequest!
     
     init( sequenceID: String ) {
         self.request = DeleteSequenceRequest(sequenceID: sequenceID)

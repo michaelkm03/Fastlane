@@ -17,7 +17,7 @@ class UnlikeSequenceOperation: FetcherOperation {
         self.sequenceID = sequenceID
         super.init()
         
-        UnlikeSequenceRemoteOperation(sequenceID: sequenceID).queueAfter(self)
+        UnlikeSequenceRequestOperation(sequenceID: sequenceID).after(self).queue()
     }
     
     override func main() {
@@ -38,9 +38,9 @@ class UnlikeSequenceOperation: FetcherOperation {
     }
 }
 
-class UnlikeSequenceRemoteOperation: RequestOperation {
+class UnlikeSequenceRequestOperation: FetcherOperation, RequestOperation {
     
-    let request: UnlikeSequenceRequest
+    let request: UnlikeSequenceRequest!
     
     init( sequenceID: String ){
         self.request = UnlikeSequenceRequest(sequenceID: sequenceID)

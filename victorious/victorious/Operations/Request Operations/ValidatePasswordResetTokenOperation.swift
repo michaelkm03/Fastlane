@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ValidatePasswordResetTokenOperation: RequestOperation {
+final class ValidatePasswordResetTokenOperation: FetcherOperation, RequestOperation {
     
-    let request: PasswordResetRequest
+    let request: PasswordResetRequest!
     
     init(userToken: String, deviceToken: String) {
         self.request = PasswordResetRequest(userToken: userToken, deviceToken: deviceToken)

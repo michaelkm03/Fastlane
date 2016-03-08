@@ -132,7 +132,7 @@ static NSString * const kMenuKey = @"menu";
                                                                                         dependencyManager:self.dependencyManager
                                                                                                   context:VAuthorizationContextDefault
                                                                                                  animated:YES];
-        [showLoginOperation queueOn:showLoginOperation.defaultQueue completionBlock:nil];
+        [showLoginOperation queueWithCompletion:nil];
     }
 }
 
@@ -375,9 +375,8 @@ static NSString * const kMenuKey = @"menu";
     // Order doesn't matter in this array, dependencies ensure order
     NSArray *operationsToAdd = @[ pushNotificationOperation,
                                   ftueVideoOperation,
-                                  showLoginOperation,
                                   showQueuedDeeplinkOperation ];
-    
+    [[NSOperationQueue mainQueue] addOperation:showLoginOperation];
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 

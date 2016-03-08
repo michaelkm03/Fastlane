@@ -9,11 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindByEmailOperation: RequestOperation {
+class FriendFindByEmailOperation: FetcherOperation, RequestOperation {
     
     private var resultObjectIDs = [NSManagedObjectID]()
     
-    private var request: FriendFindByEmailRequest!
+    let request: FriendFindByEmailRequest!
     
     init?(emails: [String]) {
         self.request = FriendFindByEmailRequest(emails: emails)

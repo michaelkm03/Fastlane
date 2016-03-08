@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 /// Retrieves a list of notifications for the logged in user
 public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {

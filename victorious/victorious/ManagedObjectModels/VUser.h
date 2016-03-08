@@ -11,9 +11,15 @@
 
 @class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
 
+typedef enum : NSUInteger {
+    AvatarBadgeTypeVerified,
+    AvatarBadgeTypeNone
+} AvatarBadgeType;
+
 @interface VUser : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSNumber * isBlockedByMainUser;
 @property (nonatomic, retain) NSNumber * isCreator;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSNumber * isFollowedByMainUser;
@@ -49,5 +55,9 @@
 @property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
 @property (nonatomic, retain) NSNumber * isNewUser; //< Transient
 @property (nonatomic, retain) id achievementsUnlocked;
+@property (nonatomic, retain) NSString * avatarBadgeType;
+
+- (AvatarBadgeType)badgeType;
+>>>>>>> theirs
 
 @end

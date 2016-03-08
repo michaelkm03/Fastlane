@@ -6,8 +6,6 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-import SwiftyJSON
-
 /// The status of a user's profile information
 public enum ProfileStatus: String {
     /// We have enough information about this user
@@ -26,6 +24,7 @@ public struct User {
     public let location: String?
     public let tagline: String?
     public let fanLoyalty: FanLoyalty?
+    public let isBlockedByMainUser: Bool?
     public let isCreator: Bool?
     public let isDirectMessagingDisabled: Bool?
     public let isFollowedByMainUser: Bool?
@@ -35,6 +34,7 @@ public struct User {
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]?
     public let maxVideoUploadDuration: Int?
+    public let avatar: Avatar?
 }
 
 extension User {
@@ -49,11 +49,13 @@ extension User {
         self.userID = userID
         self.status = status
         
+        avatar                      = Avatar(json: json["avatar"])
         email                       = json["email"].string
         name                        = json["name"].string
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
+        isBlockedByMainUser         = json["is_blocked"].bool ?? false
         isCreator                   = json["isCreator"].bool
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false

@@ -21,7 +21,7 @@ import VictoriousIOSSDK
     }
 }
 
-final class UserSearchOperation: RequestOperation, PaginatedOperation {
+final class UserSearchOperation: FetcherOperation, PaginatedRequestOperation {
     internal(set) var didClearResults = false
     
     let request: UserSearchRequest

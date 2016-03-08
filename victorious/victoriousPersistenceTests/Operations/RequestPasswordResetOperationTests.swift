@@ -9,26 +9,22 @@
 import XCTest
 @testable import victorious
 
-class RequestPasswordResetOperationTests: BaseRequestOperationTestCase {
+class RequestPasswordResetOperationTests: BaseFetcherOperationTestCase {
 
     let mockDeviceToken = "MockDeviceToken"
     
-    func testMain() {
+    func test() {
         let operation = RequestPasswordResetOperation(email: "mockEmail")
+        testRequestExecutor = TestRequestExecutor(result: mockDeviceToken)
         operation.requestExecutor = testRequestExecutor
-        operation.main()
-
-        XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
-    }
-
-    func testOnComplete() {
-        var completionBlockExecuted = false
-        let operation = RequestPasswordResetOperation(email: "mockEmail")
-        operation.onComplete(mockDeviceToken) {
-            completionBlockExecuted = true
+        operation.persistentStore = testStore
+        
+        let expectation = expectationWithDescription("RequestPasswordResetOperation")
+        operation.queue() { (results, error) in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+            XCTAssertEqual(operation.deviceToken, self.mockDeviceToken)
+            expectation.fulfill()
         }
-
-        XCTAssertTrue(completionBlockExecuted)
-        XCTAssertEqual(operation.deviceToken, mockDeviceToken)
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
 }

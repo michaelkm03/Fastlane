@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 // A RequestType to grab pages of the currently logged in user's conversation
 public struct ConversationListRequest: PaginatorPageable, ResultBasedPageable {

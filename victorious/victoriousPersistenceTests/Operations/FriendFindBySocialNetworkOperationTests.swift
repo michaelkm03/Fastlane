@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class FriendFindBySocialNetworkOperationTests: BaseRequestOperationTestCase {
+class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
     let testUserID = 1
     let facebookToken = "testFacebookToken"
     

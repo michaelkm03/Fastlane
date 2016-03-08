@@ -22,9 +22,10 @@
 
 @import KVOController;
 
-static NSString * const kStreamURLKey = @"streamURL";
-static NSString * const kSequenceIDKey = @"sequenceID";
-static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
+NSString * const VStreamURLKey = @"streamURL";
+NSString * const VSequenceIDKey = @"sequenceID";
+NSString * const VSequenceIDMacro = @"%%SEQUENCE_ID%%";
+
 static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 @interface VAbstractMarqueeController ()
@@ -77,13 +78,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         return;
     }
     
-    [self.KVOController unobserve:_stream];
     _stream = stream;
     [self reset];
-    [self.KVOController observe:stream
-                        keyPath:NSStringFromSelector(@selector(marqueeItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(marqueeItemsUpdated)];
+    [self marqueeItemsUpdated];
 }
 
 - (void)setShelf:(Shelf *)shelf
@@ -93,13 +90,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         return;
     }
     
-    [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:_shelf
-                        keyPath:NSStringFromSelector(@selector(streamItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(marqueeItemsUpdated)];
+    [self marqueeItemsUpdated];
 }
 
 - (VStream *)currentStream
@@ -266,7 +259,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                 StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
                                                                                   stream:self.shelf ?: self.stream
                                                                                fromShelf:YES];
-                
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
             }
         }
@@ -329,6 +321,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];
+    
+    // Add sequence tracking data to the marquee cell
+    if ([cell.previewView isKindOfClass:[VSequencePreviewView class]])
+    {
+        ((VSequencePreviewView *)cell.previewView).trackingData = [item streamItemPointerWithStreamID:self.shelf.remoteId].tracking;
+    }
     
     return cell;
 }

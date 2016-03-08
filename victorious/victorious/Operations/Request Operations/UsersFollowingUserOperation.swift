@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
+final class UsersFollowingUserOperation: FetcherOperation, PaginatedRequestOperation {
     
     let request: FollowersListRequest
     
@@ -56,7 +56,7 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    // MARK: - PaginatedOperation
+    // MARK: - PaginatedRequestOperation
     
     
     func fetchResults() -> [AnyObject] {

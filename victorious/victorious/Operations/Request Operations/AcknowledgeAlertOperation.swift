@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AcknowledgeAlertOperation: RequestOperation {
+class AcknowledgeAlertOperation: FetcherOperation, RequestOperation {
     
-    let request: AcknowledgeAlertRequest
+    let request: AcknowledgeAlertRequest!
     
     init(alertID: Int) {
         self.request = AcknowledgeAlertRequest(alertID: alertID)

@@ -98,18 +98,18 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)showOptions
 {
-    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
+    NSString *blockTitle = NSLocalizedString(@"BlockInappropriate", @"Comment block inappropriate button");
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:reportTitle
+    [alertController addAction:[UIAlertAction actionWithTitle:blockTitle
                                                         style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction *action)
                                 {
                                     [self flagConversation];
                                 }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -130,9 +130,9 @@ static const NSUInteger kCharacterLimit = 1024;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
     FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
                                                                                  mostRecentMessageID:mostRecentMessageID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
      {
-         [self v_showFlaggedConversationAlertWithCompletion:^(BOOL success)
+         [self v_showBlockedUserAlertWithCompletion:^(BOOL success)
           {
               [self.navigationController popViewControllerAnimated:YES];
           }];

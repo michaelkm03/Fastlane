@@ -8,11 +8,12 @@
 
 import UIKit
 
-/// :param: sequence The sequence to display
-/// :param: placeHolderImage  An image, typically the sequence's thumbnail, that can be displayed
+/// - parameter sequence: The sequence to display
+/// - parameter placeHolderImage: An image, typically the sequence's thumbnail, that can be displayed
 /// in the place of content while the real thing is being loaded
-/// :param: comment A comment ID to scroll to and highlight, typically used when content view
-/// is being presented when the app is launched with a deep link URL.
+/// - parameter comment: A comment ID to scroll to and highlight, typically used when content view is
+/// being presented when the app is launched with a deep link URL.
+
 class ContentViewContext: NSObject {
     var viewController: UIViewController?
     var originDependencyManager: VDependencyManager?
@@ -24,26 +25,19 @@ class ContentViewContext: NSObject {
     var contentPreviewProvider: VContentPreviewViewProvider?
 }
 
-@objc protocol ContentViewPresenterDelegate: class {
-    
-    optional func contentViewPresenterDidDeleteContent(presenter: ContentViewPresenter)
-    optional func contentViewPresenterDidFlagContent(presenter: ContentViewPresenter)
-}
-
 /// A helper presenter class that helps VStreamCollectionViewController
 /// or VScaffoldViewController to present a VNewContentView
-class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
-    
-    weak var delegate: ContentViewPresenterDelegate?
+class ContentViewPresenter: NSObject {
     let transitionDelegate = VTransitionDelegate(transition: ContentViewStreamTransition() )
     
     /// Presents a content view for the specified VSequence object.
     ///
-    /// :param: viewController the view controller from where the presentation message was sent
-    /// :param: placeHolderImage An image, typically the sequence's thumbnail, that can be displayed
-    /// in the place of content while the real thing is being loaded
-    /// :param: comment A comment ID to scroll to and highlight, typically used when content view
-    /// is being presented when the app is launched with a deep link URL.
+    /// - parameter viewController: the view controller from where the presentation message was sent
+    /// - parameter placeHolderImage: An image, typically the sequence's thumbnail, that can be displayed in the
+    /// place of content while the real thing is being loaded
+    /// - parameter comment: A comment ID to scroll to and highlight, typically used when content view is
+    /// being presented when the app is launched with a deep link URL.
+    
     func presentContentView( context context: ContentViewContext ) {
         
         if let originDependencyManager = context.originDependencyManager,
@@ -64,22 +58,8 @@ class ContentViewPresenter: NSObject, VNewContentViewControllerDelegate {
                     if context.contentPreviewProvider != nil {
                         contentViewController.transitioningDelegate = transitionDelegate;
                     }
-                    if let contentViewNavigationController = contentViewController as? VNavigationController,
-                        let contentViewController = contentViewNavigationController.innerNavigationController.viewControllers.first as? VNewContentViewController {
-                            contentViewController.delegate = self
-                    }
                     viewController.presentViewController( contentViewController, animated: true, completion: nil )
                 }
         }
-    }
-    
-    //MARK: - VNewContentViewControllerDelegate
-    
-    func contentViewDidDeleteContent(contentViewController: VNewContentViewController) {
-        delegate?.contentViewPresenterDidDeleteContent?(self)
-    }
-    
-    func contentViewDidFlagContent(contentViewController: VNewContentViewController) {
-        delegate?.contentViewPresenterDidFlagContent?(self)
     }
 }

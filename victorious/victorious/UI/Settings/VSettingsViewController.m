@@ -328,7 +328,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         // Logout first if logged in
         LogoutOperation *operation = [[LogoutOperation alloc] init];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
         {
             [self updateLogoutButtonState];
         }];
@@ -443,7 +443,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
                                                                                  message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                             style:UIAlertActionStyleCancel
                                                           handler:nil]];
         
