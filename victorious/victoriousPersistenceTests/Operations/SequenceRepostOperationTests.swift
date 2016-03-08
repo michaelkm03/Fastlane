@@ -1,5 +1,5 @@
 //
-//  RepostSequenceOperationTests.swift
+//  SequenceRepostOperationTests.swift
 //  victorious
 //
 //  Created by Vincent Ho on 3/2/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class RepostSequenceOperationTests: BaseFetcherOperationTestCase {
+class SequenceRepostOperationTests: BaseFetcherOperationTestCase {
     var user: VUser?
     var sequence: VSequence?
     
@@ -34,7 +34,7 @@ class RepostSequenceOperationTests: BaseFetcherOperationTestCase {
     }
 
     func testRepostSequence() {
-        RepostSequenceOperation(sequenceID: sequenceRemoteId).queue() { results, error in
+        SequenceRepostOperation(sequenceID: sequenceRemoteId).queue() { results, error in
             XCTAssertNotNil(self.sequence)
             XCTAssertNotNil(self.user)
             guard let sequence: VSequence = self.sequence,

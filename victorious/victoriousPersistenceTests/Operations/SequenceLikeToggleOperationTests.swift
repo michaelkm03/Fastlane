@@ -1,5 +1,5 @@
 //
-//  ToggleLikeSequenceOperationTests.swift
+//  SequenceLikeToggleOperationTests.swift
 //  victorious
 //
 //  Created by Vincent Ho on 3/3/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class ToggleLikeSequenceOperationTests: XCTestCase {
+class SequenceLikeToggleOperationTests: XCTestCase {
     
     var sequence: VSequence?
     let sequenceRemoteId = "12345"
@@ -39,7 +39,7 @@ class ToggleLikeSequenceOperationTests: XCTestCase {
         XCTAssert(sequence?.objectID != nil)
         let objectId: NSManagedObjectID = (sequence?.objectID)!
         
-        ToggleLikeSequenceOperation(sequenceObjectId: objectId).queue() { results, error in
+        SequenceLikeToggleOperation(sequenceObjectId: objectId).queue() { results, error in
             XCTAssert(self.sequence?.isLikedByMainUser.boolValue == false);
             self.expectation?.fulfill()
         }
