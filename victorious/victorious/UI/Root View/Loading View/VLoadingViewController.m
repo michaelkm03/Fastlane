@@ -220,13 +220,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             self.templateConfigurationBlock(templateDecorator);
         }
         
-        __unused id originalValue = [templateDecorator templateValueForKeyPath:@"scaffold/menu/items/0/destination"];
-        NSDictionary *chatConfig = @{
-                                     @"title" : @"VIP Chat",
-                                     @"name" : @"livechat.screen"
-                                     };
-        NSParameterAssert( [templateDecorator setTemplateValue:chatConfig forKeyPath:@"scaffold/menu/items/0/destination"] );
-        
         // Add app_time URL to template if it is not there already.
         // This is done to ship with this tracking feature before the backend is ready to supply it in the template.
         // TODO: It should be removed once the URL is in the template.

@@ -27,17 +27,23 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
         let objectIDs: [NSManagedObjectID] = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
                 let conversation: VConversation = context.v_findObjects( ["remoteId" : self.conversationID ]).first else {
-                return []
+                    return []
             }
             
-            let user: VUser = context.v_findOrCreateObject([ "remoteId" : 3213, "name" : "Gg", "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"])
+            let user: VUser = context.v_findOrCreateObject(
+                [
+                    "remoteId" : 3213,
+                    "name" : "Gg",
+                    "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
+                ]
+            )
             user.status = "test"
             conversation.user = user
             
             var messagesCreated = [VMessage]()
             var displayOrder = conversation.messages?.count ?? 0
             
-            let messagesCount = 1 + Int(arc4random() % 6)
+            let messagesCount = 1 + Int(arc4random() % 2)
             for _ in 0..<messagesCount {
                 let sender: VUser
                 if arc4random() % 5 == 1 {
@@ -54,9 +60,12 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
                 message.postedAt = NSDate()
                 message.displayOrder = displayOrder++
                 
-                if arc4random() % 10 > 8 {
-                    message.mediaUrl = "http://il-ducatista.com/wp-content/uploads/2012/06/mc-1100r-01.jpg"
-                    //message.mediaUrl = "https://media2.giphy.com/media/Qq1o7kVIWl1lK/giphy.mp4"
+                if arc4random() % 10 > 7 {
+                    let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
+                    let media = sampleMedia[rnd]
+                    message.mediaUrl = media["url"] as? String
+                    message.mediaWidth = media["width"] as! Int
+                    message.mediaHeight = media["height"] as! Int
                 }
                 
                 messagesCreated.append(message)
@@ -75,6 +84,22 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
         }
     }
 }
+
+private let sampleMedia = [
+    [
+        "url" : "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
+        "width" : 1067,
+        "height" : 600
+    ],[
+        "url" : "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
+        "width" : 625,
+        "height" : 417
+    ],[
+        "url" : "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
+        "width" : 620,
+        "height" : 387
+    ]
+]
 
 private let testMessageText = [
     "Don't Lie!! Freaky Ass",

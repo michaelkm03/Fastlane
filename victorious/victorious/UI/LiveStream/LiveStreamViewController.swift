@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate {
+class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate, VMessageCollectionCellDelegate {
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
@@ -22,15 +22,6 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         viewController.title = dependencyManager.stringForKey("title")
         return viewController
     }
-    
-    private lazy var noContentView: VNoContentView = {
-        let noContentView: VNoContentView = VNoContentView.v_fromNib()
-        noContentView.icon = UIImage(named: "user-icon")?.imageWithRenderingMode(.AlwaysTemplate)
-        noContentView.title = NSLocalizedString("We ain't got nothing.", comment:"")
-        noContentView.message = NSLocalizedString("So leave me alone.", comment:"")
-        noContentView.resetInitialAnimationState()
-        return noContentView
-    }()
     
     private lazy var dataSource: LiveStreamDataSource = {
         return LiveStreamDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
@@ -94,6 +85,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         selectedMessageUserID = nil
         dataSource.beginLiveUpdates()
     }
@@ -105,13 +97,9 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let message = dataSource.visibleItems[ indexPath.row ] as! VMessage
-        selectedMessageUserID = message.sender.remoteId.integerValue
-        let viewController = UserActionsViewController.newWithUser(message.sender, dependencyManager: dependencyManager)
-        viewController.transitioningDelegate = self.transitionDelegate
-        viewController.delegate = self
-        presentViewController(viewController, animated: true, completion: nil)
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let messageCell = cell as! VMessageCollectionCell
+        messageCell.delegate = self
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -164,7 +152,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        collectionView.v_updateState( newState, noContentView: noContentView )
+        collectionView.v_updateState(newState, noContentView: nil)
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {}
@@ -187,29 +175,31 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    // MARK: - UserActionsViewControllerDelegate
+    // MARK: - VMessageCollectionCellDelegate
     
-    func userActionsViewController(viewController: UserActionsViewController, didSelectAction action: UserAction) {
-        guard let userID = selectedMessageUserID else {
-            assertionFailure()
+    func messageCellDidSelectAvatarImage(messageCell: VMessageCollectionCell) {
+        guard let indexPath = collectionView.indexPathForCell(messageCell) else {
+            return
+        }
+        let message = dataSource.visibleItems[ indexPath.row ] as! VMessage
+        guard let userID = message.sender.remoteId?.integerValue else {
             return
         }
         
-        switch action {
-            
-        case .ViewProfile:
-            viewController.dismissViewControllerAnimated(true, completion: nil)
-            ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
-            
-        case .Block:
-            BlockUserOperation(userID: userID).queue() { results, error in
-                if let error = error {
-                    self.v_showAlert(title: "Block Error", message: error.localizedDescription)
-                }
-                viewController.dismissViewControllerAnimated(true, completion: nil)
-            }
-            
-        default:()
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
+        
+        /*selectedMessageUserID = message.sender.remoteId.integerValue
+        let viewController = UserActionsViewController.newWithUser(message.sender, dependencyManager: dependencyManager)
+        viewController.transitioningDelegate = self.transitionDelegate
+        viewController.delegate = self
+        presentViewController(viewController, animated: true, completion: nil)*/
+    }
+    
+    func messageCellDidSelectMedia(messageCell: VMessageCollectionCell) {
+        if let preloadedImage = messageCell.preloadedImage {
+            ShowMediaLightboxOperation(originViewController: self,
+                preloadedImage: preloadedImage,
+                referenceView: messageCell.mediaView).queue()
         }
     }
     
@@ -249,5 +239,31 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
+    }
+    
+    // MARK: - UserActionsViewControllerDelegate
+    
+    func userActionsViewController(viewController: UserActionsViewController, didSelectAction action: UserAction) {
+        guard let userID = selectedMessageUserID else {
+            assertionFailure()
+            return
+        }
+        
+        switch action {
+            
+        case .ViewProfile:
+            viewController.dismissViewControllerAnimated(true, completion: nil)
+            ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
+            
+        case .Block:
+            BlockUserOperation(userID: userID).queue() { results, error in
+                if let error = error {
+                    self.v_showAlert(title: "Block Error", message: error.localizedDescription)
+                }
+                viewController.dismissViewControllerAnimated(true, completion: nil)
+            }
+            
+        default:()
+        }
     }
 }

@@ -24,11 +24,6 @@
                                         <rect key="frame" x="0.0" y="29" width="285" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" id="JoO-3U-9Hl">
-                                                <rect key="frame" x="0.0" y="0.0" width="285" height="62"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.1978726774" colorSpace="calibratedRGB"/>
-                                            </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" id="hRg-DB-ua3">
                                                 <rect key="frame" x="0.0" y="0.0" width="285" height="62"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -37,6 +32,27 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
+                                            <view contentMode="scaleToFill" id="JoO-3U-9Hl" customClass="MessageMediaView" customModule="victorious" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="285" height="62"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="uhP-mP-mo9">
+                                                        <rect key="frame" x="0.0" y="0.0" width="285" height="62"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </imageView>
+                                                    <view contentMode="scaleToFill" id="7Vg-5C-ubt" customClass="VVideoView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="285" height="62"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.1978726774" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <outlet property="imageView" destination="uhP-mP-mo9" id="MZY-zf-0NF"/>
+                                                    <outlet property="videoView" destination="7Vg-5C-ubt" id="ZaG-b6-lco"/>
+                                                </connections>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
@@ -77,11 +93,11 @@
                 <outlet property="bubbleView" destination="Hvr-ao-kbc" id="GBq-3N-x7u"/>
                 <outlet property="contentContainer" destination="T9x-v6-6nq" id="OtB-XG-PAX"/>
                 <outlet property="detailTextView" destination="kIm-bk-bYP" id="xIw-st-yxg"/>
-                <outlet property="mediaContainer" destination="JoO-3U-9Hl" id="8SH-ea-7an"/>
+                <outlet property="mediaView" destination="JoO-3U-9Hl" id="FOi-Sh-84q"/>
                 <outlet property="messageContainer" destination="ZSA-FO-t3p" id="A6c-F5-1qH"/>
                 <outlet property="textView" destination="hRg-DB-ua3" id="ZjR-Lo-X3C"/>
             </connections>
-            <point key="canvasLocation" x="-42" y="403.5"/>
+            <point key="canvasLocation" x="35" y="401.5"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -33,12 +33,21 @@ struct MessageCollectionCellDecorator {
         
         cell.dependencyManager = dependencyManager
         
+        let media: VMessageCollectionCell.Media?
+        if let url = NSURL(v_string: message.mediaUrl),
+            let width = message.mediaWidth?.floatValue,
+            let height = message.mediaHeight?.floatValue {
+                media = VMessageCollectionCell.Media(url: url, width: CGFloat(width), height: CGFloat(height))
+        } else {
+            media = nil
+        }
+        
         cell.viewData = VMessageCollectionCell.ViewData(
             text: "\(message.text ?? "")",
             createdAt: message.postedAt,
             username: message.sender.name ?? "",
             avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
-            mediaURL: NSURL(v_string: message.mediaUrl)
+            media: media
         )
     }
 }
@@ -59,8 +68,7 @@ struct LeftAlignmentDecorator: AlignmentDecorator {
             height: textSize.height
         )
         cell.textView.frame = cell.bubbleView.bounds
-        
-        cell.mediaContainer.frame = cell.bubbleView.bounds
+        cell.mediaView.frame = cell.bubbleView.bounds
         
         cell.detailTextView.frame = CGRect(x: 0, y: 0,
             width: cell.bubbleView.bounds.width,
@@ -85,10 +93,6 @@ struct LeftAlignmentDecorator: AlignmentDecorator {
             width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        
-        cell.mediaContainer.frame = cell.bubbleView.bounds
-        cell.mediaAttachmentView?.frame = cell.mediaContainer.bounds
-        cell.mediaAttachmentView?.setNeedsLayout()
     }
 }
 
@@ -104,8 +108,7 @@ struct RightAlignmentDecorator: AlignmentDecorator {
             height: textSize.height
         )
         cell.textView.frame = cell.bubbleView.bounds
-        
-        cell.mediaContainer.frame = cell.bubbleView.bounds
+        cell.mediaView.frame = cell.bubbleView.bounds
         
         cell.detailTextView.frame = CGRect(x: 0, y: 0,
             width: cell.bubbleView.bounds.width,
@@ -129,9 +132,5 @@ struct RightAlignmentDecorator: AlignmentDecorator {
             width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        
-        cell.mediaContainer.frame = cell.bubbleView.bounds
-        cell.mediaAttachmentView?.frame = cell.mediaContainer.bounds
-        cell.mediaAttachmentView?.setNeedsLayout()
     }
 }

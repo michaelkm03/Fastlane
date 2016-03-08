@@ -12,7 +12,12 @@ import UIKit
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
-class VMessageCollectionCell: UICollectionViewCell {
+protocol VMessageCollectionCellDelegate: class {
+    func messageCellDidSelectAvatarImage(messageCell: VMessageCollectionCell)
+    func messageCellDidSelectMedia(messageCell: VMessageCollectionCell)
+}
+
+class VMessageCollectionCell: UICollectionViewCell, VFocusable {
     
     static var suggestedReuseIdentifier = "VMessageCollectionCell"
     
@@ -22,7 +27,7 @@ class VMessageCollectionCell: UICollectionViewCell {
     @IBOutlet private(set) weak var contentContainer: UIView!
     @IBOutlet private(set) weak var detailTextView: UITextView!
     @IBOutlet private(set) weak var messageContainer: UIView!
-    @IBOutlet private(set) weak var mediaContainer: UIView!
+    @IBOutlet private(set) weak var mediaView: MessageMediaView!
     @IBOutlet private(set) weak var textView: UITextView!
     
     let spacing: CGFloat = 10.0
@@ -35,18 +40,31 @@ class VMessageCollectionCell: UICollectionViewCell {
         }
     }
     
+    weak var delegate: VMessageCollectionCellDelegate?
+    
+    var preloadedImage: UIImage? {
+        return mediaView.preloadedImage
+    }
+    
     var dependencyManager: VDependencyManager! {
         didSet {
             updateDependencies()
         }
     }
     
+    struct Media {
+        let url: NSURL
+        let width: CGFloat
+        let height: CGFloat
+        
+        var aspectRatio: CGFloat { return width / height }
+    }
     struct ViewData {
         let text: String
         let createdAt: NSDate
         let username: String
         let avatarImageURL: NSURL?
-        let mediaURL: NSURL?
+        let media: Media?
     }
     
     var viewData: ViewData! {
@@ -57,11 +75,19 @@ class VMessageCollectionCell: UICollectionViewCell {
         }
     }
     
-    private(set) var mediaAttachmentView: MediaAttachmentImageView?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         storyboardTextViewWidth = textView.bounds.width
+        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onAvatarTapped:") )
+        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onMediaTapped:") )
+    }
+    
+    func onAvatarTapped(sender: AnyObject?) {
+        delegate?.messageCellDidSelectAvatarImage(self)
+    }
+    
+    func onMediaTapped(sender: AnyObject?) {
+        delegate?.messageCellDidSelectMedia(self)
     }
     
     override func layoutSubviews() {
@@ -101,27 +127,18 @@ class VMessageCollectionCell: UICollectionViewCell {
         contentContainer.backgroundColor = UIColor.clearColor()
         messageContainer.backgroundColor = UIColor.clearColor()
         avatarContainer.backgroundColor = UIColor.clearColor()
-        mediaContainer.backgroundColor = UIColor.clearColor()
+        //mediaView.backgroundColor = UIColor.clearColor()
     }
     
     func updateContent() {
-        if let mediaURL = viewData?.mediaURL {
-            
-            mediaAttachmentView?.removeFromSuperview()
-            let newMediaAttachmentView = MediaAttachmentView.mediaViewForAttachment(.Image) as! MediaAttachmentImageView
-            newMediaAttachmentView.setPreviewImageURL(mediaURL)
-            mediaContainer.addSubview(newMediaAttachmentView)
-            mediaAttachmentView = newMediaAttachmentView
-            
-            mediaContainer.hidden = false
+        if let media = viewData?.media {
+            mediaView.hidden = false
             textView.hidden = true
-            mediaContainer.backgroundColor = UIColor.redColor()
+            mediaView.imageURL = media.url
         } else {
-            mediaContainer.hidden = true
+            mediaView.hidden = true
             textView.hidden = false
             textView.text = viewData.text
-            mediaAttachmentView?.removeFromSuperview()
-            mediaAttachmentView = nil
         }
         
         let timeStamp = NSDateFormatter.vsdk_defaultDateFormatter().stringFromDate(viewData.createdAt)
@@ -131,11 +148,10 @@ class VMessageCollectionCell: UICollectionViewCell {
     
     func calculateContentSize() -> CGSize {
         let maxContentWidth = bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width)
-        if let _ = viewData?.mediaURL {
-            let mediaAspectRatio: CGFloat = 1.5
+        if let media = viewData?.media {
             return CGSize(
                 width: maxContentWidth,
-                height: maxContentWidth / mediaAspectRatio
+                height: maxContentWidth / media.aspectRatio
             )
         } else {
             let availableTextViewSize = CGSize(width: maxContentWidth, height: CGFloat.max)
@@ -143,27 +159,39 @@ class VMessageCollectionCell: UICollectionViewCell {
             return textView.sizeThatFits( heightDrivenSize )
         }
     }
+    
+    // MARK: - VFocusable
+    
+    var focusType: VFocusType = .None {
+        didSet {
+            mediaView?.focusType = focusType
+        }
+    }
+    
+    func contentArea() -> CGRect {
+        return mediaView.frame
+    }
 }
 
 private extension VDependencyManager {
     
     var textColor: UIColor {
-        return self.colorForKey(VDependencyManagerMainTextColorKey)
+        return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
     var backgroundColor: UIColor {
-        return self.colorForKey(VDependencyManagerBackgroundColorKey)
+        return colorForKey(VDependencyManagerBackgroundColorKey)
     }
     
     var borderColor: UIColor {
-        return self.colorForKey(VDependencyManagerLinkColorKey)
+        return colorForKey(VDependencyManagerLinkColorKey)
     }
     
     var messageFont: UIFont {
-        return self.fontForKey(VDependencyManagerHeading3FontKey)
+        return fontForKey(VDependencyManagerHeading3FontKey)
     }
     
     var labelFont: UIFont {
-        return self.fontForKey(VDependencyManagerLabel2FontKey)
+        return fontForKey(VDependencyManagerLabel2FontKey)
     }
 }

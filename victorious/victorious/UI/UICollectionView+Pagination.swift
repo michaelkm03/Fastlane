@@ -41,14 +41,14 @@ extension UICollectionView {
         return CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
     }
     
-    func v_updateState(state: VDataSourceState, noContentView: VNoContentView ) {
+    func v_updateState(state: VDataSourceState, noContentView: VNoContentView? ) {
         
         let isAlreadyShowingNoContent = backgroundView == noContentView
         
         switch state {
             
         case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
-            if !isAlreadyShowingNoContent {
+            if let noContentView = noContentView where !isAlreadyShowingNoContent {
                 noContentView.resetInitialAnimationState()
                 noContentView.animateTransitionIn()
             }
