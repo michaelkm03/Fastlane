@@ -11,21 +11,21 @@ import Foundation
 protocol ComposerControllerDelegate: class {
     
     /// Called when an attachment tab is pressed.
-    func composer(composerViewController: ComposerController, selectedAttachmentTab: ComposerViewControllerAttachmentTab)
+    func composerController(composerController: ComposerController, didSelectAttachmentTab: ComposerControllerAttachmentTab)
 
     /// Called when send is pressed with media present in the composer.
-    func composer(composerViewController: ComposerController, pressedSendWithMedia: MediaAttachment, caption: String?)
+    func composerController(composerController: ComposerController, didPressSendWithMedia: MediaAttachment, caption: String?)
     
     /// Called when send is pressed without media present in the composer.
-    func composer(composerViewController: ComposerController, pressedSendWithCaption: String)
+    func composerController(composerController: ComposerController, didPressSendWithCaption: String)
     
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer (including the keyboard) and should be less
     /// than the composer's maximumHeight. Optional.
-    func composer(composerViewController: ComposerController, didUpdateToHeight: CGFloat)
+    func composerController(composerController: ComposerController, didUpdateToHeight: CGFloat)
 }
 
 extension ComposerControllerDelegate {
     
-    func composer(composerViewController: ComposerController, didUpdateToHeight: CGFloat) {}
+    func composerController(composerController: ComposerController, didUpdateToHeight: CGFloat) {}
 }

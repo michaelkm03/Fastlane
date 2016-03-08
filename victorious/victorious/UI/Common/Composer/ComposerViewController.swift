@@ -17,7 +17,7 @@ class ComposerViewController: UIViewController, ComposerController {
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private let attachmentTabs: [ComposerViewControllerAttachmentTab]? = nil
+    private let attachmentTabs: [ComposerControllerAttachmentTab]? = nil
     
     
     //MARK: - ComposerController

@@ -1744,7 +1744,7 @@
 		F09E8C741C8F7B0A00437ACD /* ChatFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C731C8F7B0A00437ACD /* ChatFeedController.swift */; };
 		F09E8C761C8F7C0400437ACD /* StageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C751C8F7C0400437ACD /* StageController.swift */; };
 		F09E8C7A1C8F7CCC00437ACD /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */; };
-		F09E8C7B1C8F7CCC00437ACD /* ComposerViewControllerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C781C8F7CCC00437ACD /* ComposerViewControllerAttachmentTab.swift */; };
+		F09E8C7B1C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */; };
 		F09E8C7C1C8F7CCC00437ACD /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */; };
 		F09E8C7E1C8F7CDA00437ACD /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
@@ -4484,7 +4484,7 @@
 		F09E8C731C8F7B0A00437ACD /* ChatFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedController.swift; sourceTree = "<group>"; };
 		F09E8C751C8F7C0400437ACD /* StageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageController.swift; sourceTree = "<group>"; };
 		F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewController.swift; path = Composer/ComposerViewController.swift; sourceTree = "<group>"; };
-		F09E8C781C8F7CCC00437ACD /* ComposerViewControllerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewControllerAttachmentTab.swift; path = Composer/ComposerViewControllerAttachmentTab.swift; sourceTree = "<group>"; };
+		F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerAttachmentTab.swift; path = Composer/ComposerControllerAttachmentTab.swift; sourceTree = "<group>"; };
 		F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
 		F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerController.swift; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
@@ -9298,7 +9298,7 @@
 			children = (
 				F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */,
 				F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */,
-				F09E8C781C8F7CCC00437ACD /* ComposerViewControllerAttachmentTab.swift */,
+				F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */,
 				F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */,
 			);
 			name = Composer;
@@ -12038,7 +12038,7 @@
 				6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */,
 				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,
 				D85B707F1B0EAF3F0038CA5B /* VRegistrationModel.m in Sources */,
-				F09E8C7B1C8F7CCC00437ACD /* ComposerViewControllerAttachmentTab.swift in Sources */,
+				F09E8C7B1C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift in Sources */,
 				6256A6281C51702A0033439B /* VAdBreak+Parsable.swift in Sources */,
 				0314D4AB19B46B5E00FA363C /* VConversationContainerViewController.m in Sources */,
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,

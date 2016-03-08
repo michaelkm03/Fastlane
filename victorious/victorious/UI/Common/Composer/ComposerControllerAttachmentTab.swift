@@ -1,5 +1,5 @@
 //
-//  ComposerViewControllerAttachmentTab.swift
+//  ComposerControllerAttachmentTab.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/25/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ComposerViewControllerAttachmentTab {
+enum ComposerControllerAttachmentTab {
     
     private struct Icon {
         

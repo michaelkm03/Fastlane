@@ -24,7 +24,7 @@ class ChatFeedViewController: UIViewController, ChatFeedController {
     
     //MARK: - ChatFeedController
     
-    weak var delegate: ChatFeedViewControllerDelegate?
+    weak var delegate: ChatFeedControllerDelegate?
     
     func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool = true) {
         
