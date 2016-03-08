@@ -134,6 +134,13 @@ static NSString * const kMenuKey = @"menu";
                                                                                                  animated:YES];
         [showLoginOperation queueWithCompletion:nil];
     }
+    else
+    {
+        ShowVIPForumOperation *showVIPOperation = [[ShowVIPForumOperation alloc] initWithOriginViewController:self
+                                                                                            dependencyManager:self.dependencyManager
+                                                                                                     animated:YES];
+        [showVIPOperation queueWithCompletion:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -342,6 +349,11 @@ static NSString * const kMenuKey = @"menu";
                                                                                     dependencyManager:self.dependencyManager
                                                                                               context:VAuthorizationContextDefault
                                                                                              animated:NO];
+    
+    ShowVIPForumOperation *showVIPOperation = [[ShowVIPForumOperation alloc] initWithOriginViewController:self
+                                                                                        dependencyManager:self.dependencyManager
+                                                                                                 animated:YES];
+    
     showLoginOperation.completionBlock = ^{
         dispatch_async( dispatch_get_main_queue(), ^{
             [welf configureTabBar];
@@ -371,12 +383,14 @@ static NSString * const kMenuKey = @"menu";
     [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:showLoginOperation];
+    [showVIPOperation addDependency:ftueVideoOperation];
     
     // Order doesn't matter in this array, dependencies ensure order
     NSArray *operationsToAdd = @[ pushNotificationOperation,
                                   ftueVideoOperation,
                                   showQueuedDeeplinkOperation ];
     [[NSOperationQueue mainQueue] addOperation:showLoginOperation];
+    [[NSOperationQueue mainQueue] addOperation:showVIPOperation];
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 

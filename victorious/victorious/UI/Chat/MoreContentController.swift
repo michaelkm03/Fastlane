@@ -16,6 +16,12 @@ class MoreContentController: NSObject {
     
     let largeNumberFormatter = VLargeNumberFormatter()
     
+    var depedencyManager: VDependencyManager! {
+        didSet {
+            button.backgroundColor = depedencyManager.colorForKey(VDependencyManagerAccentColorKey)
+        }
+    }
+    
     private(set) var isShowing: Bool = true
     
     var count: Int = 0 {

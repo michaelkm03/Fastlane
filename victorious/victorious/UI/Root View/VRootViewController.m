@@ -282,11 +282,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
-    
-#warning TESTING ONLY
-    UIViewController *liveStreamViewController = [ChatViewController newWithDependencyManager:scaffoldDependencyManager];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:liveStreamViewController];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion

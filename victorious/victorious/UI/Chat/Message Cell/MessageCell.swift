@@ -48,7 +48,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            updateDependencies()
+            updateStyle()
         }
     }
     
@@ -60,7 +60,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         var aspectRatio: CGFloat { return width / height }
     }
     struct ViewData {
-        let text: String
+        let text: String?
         let createdAt: NSDate
         let username: String
         let avatarImageURL: NSURL?
@@ -69,8 +69,8 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     var viewData: ViewData! {
         didSet {
-            updateContent()
-            updateDependencies()
+            populateData()
+            updateStyle()
             setNeedsLayout()
         }
     }
@@ -96,18 +96,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         alignmentDecorator.updateLayout(self)
     }
     
-    // MARK: - SelfSizingCell
-    
-    func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        alignmentDecorator.updateLayout(self)
-        
-        return CGSize(
-            width: bounds.width,
-            height: contentContainer.bounds.height + (contentMargin.top + contentMargin.bottom)
-        )
-    }
-    
-    func updateDependencies() {
+    func updateStyle() {
         textView.font = dependencyManager.messageFont
         textView.textColor = dependencyManager.textColor
         
@@ -130,34 +119,50 @@ class MessageCell: UICollectionViewCell, VFocusable {
         //mediaView.backgroundColor = UIColor.clearColor()
     }
     
-    func updateContent() {
+    func populateData() {
+        textView.text = viewData.text
         if let media = viewData?.media {
-            mediaView.hidden = false
-            textView.hidden = true
             mediaView.imageURL = media.url
-        } else {
-            mediaView.hidden = true
-            textView.hidden = false
-            textView.text = viewData.text
         }
-        
         let timeStamp = NSDateFormatter.vsdk_defaultDateFormatter().stringFromDate(viewData.createdAt)
         detailTextView.text = "\(viewData.username) (\(timeStamp))"
         avatarView.setProfileImageURL(viewData.avatarImageURL)
     }
     
-    func calculateContentSize() -> CGSize {
-        let maxContentWidth = bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width)
-        if let media = viewData?.media {
-            return CGSize(
-                width: maxContentWidth,
-                height: maxContentWidth / media.aspectRatio
-            )
-        } else {
-            let availableTextViewSize = CGSize(width: maxContentWidth, height: CGFloat.max)
-            let heightDrivenSize = textView.sizeThatFits( availableTextViewSize )
-            return textView.sizeThatFits( heightDrivenSize )
+    // MARK: - SelfSizingCell
+    
+    func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
+        alignmentDecorator.updateLayout(self)
+        
+        return CGSize(
+            width: bounds.width,
+            height: contentContainer.bounds.height + (contentMargin.top + contentMargin.bottom)
+        )
+    }
+    
+    // MARK: - Sizing
+    
+    var maxContentWidth: CGFloat {
+        return bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width)
+    }
+    
+    func calculateTextSize() -> CGSize {
+        guard let text = viewData?.text where !text.characters.isEmpty else {
+            return CGSize.zero
         }
+        let availableTextViewSize = CGSize(width: maxContentWidth, height: CGFloat.max)
+        let heightDrivenSize = textView.sizeThatFits( availableTextViewSize )
+        return textView.sizeThatFits( heightDrivenSize )
+    }
+    
+    func calculateMediaSize() -> CGSize {
+        guard let media = viewData?.media else {
+            return CGSize.zero
+        }
+        return CGSize(
+            width: maxContentWidth,
+            height: maxContentWidth / media.aspectRatio
+        )
     }
     
     // MARK: - VFocusable
@@ -180,7 +185,7 @@ private extension VDependencyManager {
     }
     
     var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerBackgroundColorKey)
+        return colorForKey(VDependencyManagerLinkColorKey).colorWithAlphaComponent(0.5)
     }
     
     var borderColor: UIColor {
@@ -188,7 +193,7 @@ private extension VDependencyManager {
     }
     
     var messageFont: UIFont {
-        return fontForKey(VDependencyManagerHeading3FontKey)
+        return fontForKey(VDependencyManagerHeading4FontKey)
     }
     
     var labelFont: UIFont {

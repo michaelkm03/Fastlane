@@ -1,56 +1,12 @@
 //
-//  MessageCellDecorator.swift
+//  MessageCellLayout.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 2/26/16.
+//  Created by Patrick Lynch on 3/8/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
-
-extension NSURL {
-    convenience init?(v_string string: String?) {
-        guard let string = string where !string.characters.isEmpty else {
-            self.init(string: "")
-            return nil
-        }
-        self.init(string: string)
-    }
-}
-
-
-struct MessageCellDecorator {
-    
-    let dependencyManager: VDependencyManager
-    
-    func decorateCell( cell: MessageCell, withMessage message: VMessage) {
-        
-        if message.sender.isCurrentUser() {
-            cell.alignmentDecorator = RightAlignmentCellLayout()
-        } else {
-            cell.alignmentDecorator = LeftAlignmentCellLayout()
-        }
-        
-        cell.dependencyManager = dependencyManager
-        
-        let media: MessageCell.Media?
-        if let url = NSURL(v_string: message.mediaUrl),
-            let width = message.mediaWidth?.floatValue,
-            let height = message.mediaHeight?.floatValue {
-                media = MessageCell.Media(url: url, width: CGFloat(width), height: CGFloat(height))
-        } else {
-            media = nil
-        }
-        
-        cell.viewData = MessageCell.ViewData(
-            text: "\(message.text ?? "")",
-            createdAt: message.postedAt,
-            username: message.sender.name ?? "",
-            avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
-            media: media
-        )
-    }
-}
 
 protocol MessageCellLayout {
     func updateLayout(cell: MessageCell)
@@ -59,16 +15,33 @@ protocol MessageCellLayout {
 struct LeftAlignmentCellLayout: MessageCellLayout {
     
     func updateLayout(cell: MessageCell) {
-        let textSize = cell.calculateContentSize()
+        let mediaSize = cell.calculateMediaSize()
+        let textSize = cell.calculateTextSize()
+        let contentSize = CGSize(
+            width: max(textSize.width, mediaSize.width),
+            height: textSize.height + mediaSize.height
+        )
         
-        cell.textView.textAlignment = .Left
         cell.bubbleView.frame = CGRect(x: 0,
             y: cell.detailTextView.frame.height,
-            width: textSize.width,
+            width: contentSize.width,
+            height: contentSize.height
+        )
+        cell.textView.frame = CGRect(
+            x: 0,
+            y: mediaSize.height,
+            width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        cell.textView.frame = cell.bubbleView.bounds
-        cell.mediaView.frame = cell.bubbleView.bounds
+        
+        cell.textView.textAlignment = .Left
+        
+        cell.mediaView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: mediaSize.height
+        )
         
         cell.detailTextView.frame = CGRect(x: 0, y: 0,
             width: cell.bubbleView.bounds.width,
@@ -99,16 +72,32 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
 struct RightAlignmentCellLayout: MessageCellLayout {
     
     func updateLayout(cell: MessageCell) {
-        let textSize = cell.calculateContentSize()
-        
-        cell.textView.textAlignment = .Right
+        let mediaSize = cell.calculateMediaSize()
+        let textSize = cell.calculateTextSize()
+        let contentSize = CGSize(
+            width: max(textSize.width, mediaSize.width),
+            height: textSize.height + mediaSize.height
+        )
         cell.bubbleView.frame = CGRect(x: 0,
             y: cell.detailTextView.frame.height,
-            width: textSize.width,
+            width: contentSize.width,
+            height: contentSize.height
+        )
+        cell.textView.frame = CGRect(
+            x: 0,
+            y: mediaSize.height,
+            width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        cell.textView.frame = cell.bubbleView.bounds
-        cell.mediaView.frame = cell.bubbleView.bounds
+        
+        cell.textView.textAlignment = .Right
+        
+        cell.mediaView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: cell.bubbleView.bounds.width,
+            height: mediaSize.height
+        )
         
         cell.detailTextView.frame = CGRect(x: 0, y: 0,
             width: cell.bubbleView.bounds.width,

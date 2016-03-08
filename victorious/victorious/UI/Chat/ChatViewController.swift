@@ -78,6 +78,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         scrollPaginator.delegate = self
         
+        moreContentController.depedencyManager = dependencyManager
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
     }
