@@ -12,18 +12,15 @@ import XCTest
 class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
 
     let sequenceID = "12345"
-    var sequence: VSequence?
+    var sequence: VSequence!
     var sequenceVoteTypes: [VVoteResult] = []
     
     override func setUp() {
         super.setUp()
         sequence = persistentStoreHelper.createSequence(remoteId: sequenceID)
-        guard let sequence = sequence else {
-            return
-        }
         // Skipping ID = 0, no results for ID = 1
-        for a in 1..<20 {
-            let voteResult = persistentStoreHelper.createVoteResult(sequence, count: a, remoteId: a)
+        for voteResultRemoteId in 1..<20 {
+            let voteResult = persistentStoreHelper.createVoteResult(sequence, count: voteResultRemoteId, remoteId: voteResultRemoteId)
             sequenceVoteTypes.append(voteResult)
         }
         sequence.voteResults = NSSet(array: sequenceVoteTypes) as Set<NSObject>
@@ -31,10 +28,6 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
     
     func testEmptyVoteTypes() {
         let voteTypes: [VVoteType] = []
-        guard let sequence = sequence else {
-            XCTFail("Sequence cannot be nil")
-            return
-        }
         let operation = ExperienceEnhancersOperation(sequence: sequence, voteTypes: voteTypes)
         let expectation = expectationWithDescription("ExperienceEnhancersOperation")
 
@@ -50,25 +43,20 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
     
     func testMultipleVoteTypes() {
         var voteTypes: [String: VVoteType] = [:]
-        for a in 0..<10 {
+        for voteTypeID in 0..<10 {
             let voteTypeDependencyManager = VDependencyManager(parentManager: nil,
                                     configuration: [
-                                        "flightDuration"    : 3*a,
-                                        "animationDuration" : 3*a+1,
-                                        "cooldownDuration"  : 3*a+2,
+                                        "flightDuration"    : 3*voteTypeID,
+                                        "animationDuration" : 3*voteTypeID+1,
+                                        "cooldownDuration"  : 3*voteTypeID+2,
                                         "icon"              : UIImage(),
-                                        "voteTypeID"        : "\(a)"
+                                        "voteTypeID"        : "\(voteTypeID)"
                                         
                 ],
                 dictionaryOfClassesByTemplateName: nil)
             
             let voteType = VVoteType(dependencyManager: voteTypeDependencyManager)
-            voteTypes[String(a)] = voteType
-        }
-        
-        guard let sequence = sequence else {
-            XCTFail("Sequence cannot be nil")
-            return
+            voteTypes[String(voteTypeID)] = voteType
         }
         
         let operation = ExperienceEnhancersOperation(sequence: sequence, voteTypes: Array(voteTypes.values))
@@ -86,7 +74,8 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
             for experienceEnhancer in experienceEnhancers {
                 let voteTypeID = experienceEnhancer.voteType.voteTypeID
                 guard let voteType = voteTypes[voteTypeID] else {
-                    continue
+                    XCTFail("Vote type \(voteTypeID) not found")
+                    return
                 }
                 
                 XCTAssertEqual(experienceEnhancer.voteType, voteType)
