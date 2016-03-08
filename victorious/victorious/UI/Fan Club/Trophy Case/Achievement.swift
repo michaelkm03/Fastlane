@@ -15,12 +15,12 @@ import Foundation
     let detailedDescription: String
     let displayOrder: Int
     private(set) var dependencyManager: VDependencyManager?
-    var iconImageURL: NSURL? {
-        return isUnlocked ? iconURL : lockedIconURL
+    var iconImage: UIImage? {
+        return isUnlocked ? unlockedIconImage : lockedIconImage
     }
     
-    private var iconURL: NSURL?
-    private var lockedIconURL: NSURL?
+    private var unlockedIconImage: UIImage?
+    private var lockedIconImage: UIImage?
     private var isUnlocked: Bool {
         guard let unlockedAchievementsIdentifiers = VCurrentUser.user()?.achievementsUnlocked as? [String] else {
             return false
@@ -34,23 +34,7 @@ import Foundation
         self.title = dependencyManager.stringForKey("title")
         self.detailedDescription = dependencyManager.stringForKey("description")
         self.displayOrder = dependencyManager.numberForKey("display_order").integerValue
-        self.iconURL = dependencyManager.iconImageURLAtDesiredScaleForKey("assets")
-        self.lockedIconURL = dependencyManager.iconImageURLAtDesiredScaleForKey("locked_icon")
-    }
-}
-
-//TODO: Get rid of this extension and use image for key
-extension VDependencyManager {
-    func iconImageURLAtDesiredScaleForKey(key: String) -> NSURL? {
-        guard let assets = self.arrayForKey(key) as? [NSDictionary] else {
-                return nil
-        }
-        let assetAtDesiredScale = assets.filter { $0["scale"] as? Int == Int(UIScreen.mainScreen().scale) }.first
-        
-        if let imageURLString = assetAtDesiredScale?["imageUrl"] as? String {
-            return NSURL(string: imageURLString)
-        } else {
-            return nil
-        }
+        self.unlockedIconImage = dependencyManager.imageForKey("assets")
+        self.lockedIconImage = dependencyManager.imageForKey("locked_icon")
     }
 }

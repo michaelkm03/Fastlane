@@ -169,8 +169,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
     VDependencyManager *trophyCaseDependencyManager = self.trophyCaseViewController.dependencyManager;
-    NSURL *buttonIconURL = [trophyCaseDependencyManager iconImageURLAtDesiredScaleForKey: @"trophy_icon"];
-    [trophyCaseButton sd_setImageWithURL:buttonIconURL forState:UIControlStateNormal];
+    UIImage *buttonIconImage = [trophyCaseDependencyManager imageForKey: @"trophy_icon"];
+    [trophyCaseButton setImage:buttonIconImage forState:UIControlStateNormal];
     [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     
     [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];

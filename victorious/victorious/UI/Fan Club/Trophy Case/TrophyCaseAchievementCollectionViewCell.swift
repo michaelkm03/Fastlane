@@ -23,8 +23,8 @@ class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     
     private func configureCellWithAchievement(achievement: Achievement) {
         titleLabel.text = achievement.title
-        if let icon = achievement.iconImageURL {
-            iconImageView.sd_setImageWithURL(icon)
+        if let iconImage = achievement.iconImage {
+            iconImageView.image = iconImage
         }
     }
 }
