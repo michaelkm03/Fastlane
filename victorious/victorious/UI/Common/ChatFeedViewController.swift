@@ -10,43 +10,47 @@ import Foundation
 
 class ChatFeedViewController: UIViewController {
     
-    private enum ChatItemDisplayState {
+    private enum MessageDisplayState {
         case Expanded, Collapsed
     }
     
-    private var chatItems = [(ChatItem, ChatItemDisplayState)]()
+    private var messages = [(VMessage, MessageDisplayState)]()
     
-    /// The maximum number of lines shown when a chat item is
-    /// in the "collapsed" state. Defaults to 0, allowing chat
-    /// items to always show all content regardless of length.
-    var maximumNumberOfChatItemLines = 0
+    /// The maximum number of lines shown when a message is
+    /// in the "collapsed" state. Defaults to 0, allowing messages
+    /// to always show all content regardless of length.
+    private let maximumMessageLines = 0
     
     weak var delegate: ChatFeedViewControllerDelegate?
     
-    /// When this is set to true, ellipses are shown underneath
-    /// the current creator caption (if one exists). Defaults to false.
-    var creatorIsTyping = false
-    
-    /// The space from the top to the top-most comment in the chat feed.
-    var topInset: CGFloat = 0
-    
-    /// Adds a persistent, stylized caption at the top of the chat feed
-    func addCreatorCaption(caption: String) {
+    /// Sets the inset around the container showing chat feed content.
+    func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool = true) {
         
     }
     
-    /// Adds items into a private array of chat items managed by the chat feed.
-    func addChatItems(chatItems: [ChatItem], animated: Bool = true) {
+    /// When typing is true, ellipses are shown underneath the
+    /// current pinned message (if one exists). Defaults to false.
+    func setHostIsTyping(typing: Bool, animated: Bool = true) {
         
     }
     
-    /// Deletes items from the private array of chat items managed by the chat feed.
-    func deleteChatItems(chatItems: [ChatItem], animated: Bool = true) {
+    /// Adds a persistent, stylized message at the top of the chat feed.
+    func addPinnedMessage(message: VMessage, animated: Bool = true) {
         
     }
     
-    /// Toggles between the expanded and collapsed display states of a chat item.
-    func toggleDetailDisplayOfChatItem(chatItem: ChatItem) {
+    /// Adds messages to the chat feed.
+    func addMessages(messages: [VMessage], animated: Bool = true) {
+        
+    }
+    
+    /// Deletes messages posted by the provided user.
+    func blockMessagesFromUser(user: VUser, animated: Bool = true) {
+        
+    }
+    
+    /// Toggles between the expanded and collapsed display states of a message.
+    func toggleDetailDisplayOfMessage(message: VMessage, animated: Bool = true) {
         
     }
 }
