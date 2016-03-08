@@ -231,7 +231,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.marqueeCellController.marqueeItems.count > 0;
     
     self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
@@ -370,7 +369,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
     }
     
-    if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
+    if (hasMarqueeShelfAtTop)
     {
         CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
         CGFloat offset = marqueeSize.height;
@@ -579,7 +578,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    if (indexPath.section == 0)
     {
         return [self.marqueeCellController desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
@@ -613,12 +612,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
-    {
-        return [self.marqueeCellController marqueeCellForCollectionView:self.collectionView
-                                                            atIndexPath:indexPath];
-    }
-    
     VSequence *sequence = (VSequence *)[self.streamDataSource.visibleItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
@@ -1006,11 +999,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [super respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)] )
     {
         insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
-    }
-    
-    if ( self.streamDataSource.hasHeaderCell && section == 0 )
-    {
-        return insetsFromSuper;
     }
     
     UIEdgeInsets insetsFromCellFactory = [self.streamCellFactory sectionInsets];
