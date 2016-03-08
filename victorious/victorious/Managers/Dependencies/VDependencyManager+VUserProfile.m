@@ -20,7 +20,6 @@ NSString * const VDependencyManagerProfileEditButtonStyleKey = @"editButtonStyle
 NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
 NSString * const VDependencyManagerTrophyCaseScreenKey = @"trophyCaseScreen";
 
-
 @implementation VDependencyManager (VUserProfile)
 
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
