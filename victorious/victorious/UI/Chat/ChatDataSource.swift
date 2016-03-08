@@ -1,5 +1,5 @@
 //
-//  LiveStreamDataSource.swift
+//  ChatDataSource.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/24/16.
@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
+class ChatDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     let itemsPerPage = 15
     
@@ -24,13 +24,13 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
-    let cellDecorator: MessageCollectionCellDecorator
-    let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
+    let cellDecorator: MessageCellDecorator
+    let sizingCell: MessageCell = MessageCell.v_fromNib()
     
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        self.cellDecorator = MessageCollectionCellDecorator(dependencyManager: dependencyManager)
+        self.cellDecorator = MessageCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
         super.maxVisibleItems = 50
@@ -42,7 +42,7 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
         
         self.refreshRemote(
             createOperation: {
-                return LiveStreamOperationUpdate(conversationID: conversationID, paginator: paginator)
+                return ChatUpdateOperation(conversationID: conversationID, paginator: paginator)
             },
             completion: nil
         )
@@ -78,16 +78,16 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
-        let identifier = VMessageCollectionCell.suggestedReuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VMessageCollectionCell
+        let identifier = MessageCell.suggestedReuseIdentifier
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! MessageCell
         let message = visibleItems[ indexPath.row ] as! VMessage
         cellDecorator.decorateCell(cell, withMessage: message)
         return cell
     }
     
     func registerCellsWithCollectionView( collectionView: UICollectionView ) {
-        let identifier = VMessageCollectionCell.suggestedReuseIdentifier
-        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VMessageCollectionCell.self) )
+        let identifier = MessageCell.suggestedReuseIdentifier
+        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: MessageCell.self) )
         collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
     }
     
@@ -99,7 +99,7 @@ class LiveStreamDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     func redocorateVisibleCells(collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! VMessageCollectionCell
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MessageCell
             let message = visibleItems[ indexPath.row ] as! VMessage
             cellDecorator.decorateCell(cell, withMessage:message)
         }

@@ -14,7 +14,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
     
-    let sizingCell: VMessageCollectionCell = VMessageCollectionCell.v_fromNib()
+    let sizingCell: MessageCell = MessageCell.v_fromNib()
     
     private lazy var paginatedDataSource: PaginatedDataSource = {
         let dataSource = PaginatedDataSource()

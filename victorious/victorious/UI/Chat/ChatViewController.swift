@@ -1,5 +1,5 @@
 //
-//  LiveStreamViewController.swift
+//  ChatViewController.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate, VMessageCollectionCellDelegate {
+class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate, MessageCellDelegate {
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
@@ -16,15 +16,15 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private var dependencyManager: VDependencyManager!
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> LiveStreamViewController {
-        let viewController: LiveStreamViewController = LiveStreamViewController.v_initialViewControllerFromStoryboard("LiveStream")
+    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ChatViewController {
+        let viewController: ChatViewController = ChatViewController.v_initialViewControllerFromStoryboard("Chat")
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
         return viewController
     }
     
-    private lazy var dataSource: LiveStreamDataSource = {
-        return LiveStreamDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
+    private lazy var dataSource: ChatDataSource = {
+        return ChatDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
     }()
     
     private lazy var conversation: VConversation = {
@@ -98,7 +98,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        let messageCell = cell as! VMessageCollectionCell
+        let messageCell = cell as! MessageCell
         messageCell.delegate = self
     }
     
@@ -175,9 +175,9 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    // MARK: - VMessageCollectionCellDelegate
+    // MARK: - MessageCellDelegate
     
-    func messageCellDidSelectAvatarImage(messageCell: VMessageCollectionCell) {
+    func messageCellDidSelectAvatarImage(messageCell: MessageCell) {
         guard let indexPath = collectionView.indexPathForCell(messageCell) else {
             return
         }
@@ -195,7 +195,7 @@ class LiveStreamViewController: UIViewController, UICollectionViewDelegateFlowLa
         presentViewController(viewController, animated: true, completion: nil)*/
     }
     
-    func messageCellDidSelectMedia(messageCell: VMessageCollectionCell) {
+    func messageCellDidSelectMedia(messageCell: MessageCell) {
         if let preloadedImage = messageCell.preloadedImage {
             ShowMediaLightboxOperation(originViewController: self,
                 preloadedImage: preloadedImage,

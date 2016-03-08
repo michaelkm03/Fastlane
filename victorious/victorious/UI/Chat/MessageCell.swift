@@ -1,5 +1,5 @@
 //
-//  VMessageCollectionCell.swift
+//  MessageCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -12,14 +12,14 @@ import UIKit
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
-protocol VMessageCollectionCellDelegate: class {
-    func messageCellDidSelectAvatarImage(messageCell: VMessageCollectionCell)
-    func messageCellDidSelectMedia(messageCell: VMessageCollectionCell)
+protocol MessageCellDelegate: class {
+    func messageCellDidSelectAvatarImage(messageCell: MessageCell)
+    func messageCellDidSelectMedia(messageCell: MessageCell)
 }
 
-class VMessageCollectionCell: UICollectionViewCell, VFocusable {
+class MessageCell: UICollectionViewCell, VFocusable {
     
-    static var suggestedReuseIdentifier = "VMessageCollectionCell"
+    static var suggestedReuseIdentifier = "MessageCell"
     
     @IBOutlet private(set) weak var avatarContainer: UIView!
     @IBOutlet private(set) weak var avatarView: VDefaultProfileImageView!
@@ -34,13 +34,13 @@ class VMessageCollectionCell: UICollectionViewCell, VFocusable {
     let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 65)
     
     private var storyboardTextViewWidth: CGFloat!
-    var alignmentDecorator: AlignmentDecorator! {
+    var alignmentDecorator: MessageCellLayout! {
         didSet {
             alignmentDecorator.updateLayout(self)
         }
     }
     
-    weak var delegate: VMessageCollectionCellDelegate?
+    weak var delegate: MessageCellDelegate?
     
     var preloadedImage: UIImage? {
         return mediaView.preloadedImage

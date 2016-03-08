@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Live Stream View Controller-->
+        <!--Chat View Controller-->
         <scene sceneID="Wpn-17-WNr">
             <objects>
-                <viewController id="paS-vU-3hQ" customClass="LiveStreamViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="paS-vU-3hQ" customClass="ChatViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vck-HZ-lce"/>
                         <viewControllerLayoutGuide type="bottom" id="Egz-7q-vg5"/>

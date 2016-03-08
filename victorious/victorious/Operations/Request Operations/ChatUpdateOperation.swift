@@ -1,5 +1,5 @@
 //
-//  LiveStreamOperation.swift
+//  ChatOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
+final class ChatUpdateOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
     let conversationID: Int
@@ -18,7 +18,7 @@ final class LiveStreamOperationUpdate: FetcherOperation, PaginatedOperation {
         self.conversationID = conversationID
     }
     
-    required convenience init(operation: LiveStreamOperationUpdate, paginator: StandardPaginator) {
+    required convenience init(operation: ChatUpdateOperation, paginator: StandardPaginator) {
         self.init(conversationID: operation.conversationID, paginator: paginator)
     }
     

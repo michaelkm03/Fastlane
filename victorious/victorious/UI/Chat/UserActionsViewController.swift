@@ -15,7 +15,7 @@ protocol UserActionsViewControllerDelegate: class {
 class UserActionsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VSimpleModalTransitionPresentedViewController {
     
     class func newWithUser(user: VUser, dependencyManager: VDependencyManager) -> UserActionsViewController {
-        let viewController: UserActionsViewController = UserActionsViewController.v_fromStoryboard("LiveStream", identifier: "UserActionsViewController")
+        let viewController: UserActionsViewController = UserActionsViewController.v_fromStoryboard("Chat", identifier: "UserActionsViewController")
         viewController.user = user
         viewController.dependencyManager = dependencyManager
         return viewController

@@ -284,7 +284,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }];
     
 #warning TESTING ONLY
-    UIViewController *liveStreamViewController = [LiveStreamViewController newWithDependencyManager:scaffoldDependencyManager];
+    UIViewController *liveStreamViewController = [ChatViewController newWithDependencyManager:scaffoldDependencyManager];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:liveStreamViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

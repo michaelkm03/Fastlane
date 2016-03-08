@@ -1,5 +1,5 @@
 //
-//  MessageCollectionCellDecorator.swift
+//  MessageCellDecorator.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/26/16.
@@ -19,30 +19,30 @@ extension NSURL {
 }
 
 
-struct MessageCollectionCellDecorator {
+struct MessageCellDecorator {
     
     let dependencyManager: VDependencyManager
     
-    func decorateCell( cell: VMessageCollectionCell, withMessage message: VMessage) {
+    func decorateCell( cell: MessageCell, withMessage message: VMessage) {
         
         if message.sender.isCurrentUser() {
-            cell.alignmentDecorator = RightAlignmentDecorator()
+            cell.alignmentDecorator = RightAlignmentCellLayout()
         } else {
-            cell.alignmentDecorator = LeftAlignmentDecorator()
+            cell.alignmentDecorator = LeftAlignmentCellLayout()
         }
         
         cell.dependencyManager = dependencyManager
         
-        let media: VMessageCollectionCell.Media?
+        let media: MessageCell.Media?
         if let url = NSURL(v_string: message.mediaUrl),
             let width = message.mediaWidth?.floatValue,
             let height = message.mediaHeight?.floatValue {
-                media = VMessageCollectionCell.Media(url: url, width: CGFloat(width), height: CGFloat(height))
+                media = MessageCell.Media(url: url, width: CGFloat(width), height: CGFloat(height))
         } else {
             media = nil
         }
         
-        cell.viewData = VMessageCollectionCell.ViewData(
+        cell.viewData = MessageCell.ViewData(
             text: "\(message.text ?? "")",
             createdAt: message.postedAt,
             username: message.sender.name ?? "",
@@ -52,13 +52,13 @@ struct MessageCollectionCellDecorator {
     }
 }
 
-protocol AlignmentDecorator {
-    func updateLayout(cell: VMessageCollectionCell)
+protocol MessageCellLayout {
+    func updateLayout(cell: MessageCell)
 }
 
-struct LeftAlignmentDecorator: AlignmentDecorator {
+struct LeftAlignmentCellLayout: MessageCellLayout {
     
-    func updateLayout(cell: VMessageCollectionCell) {
+    func updateLayout(cell: MessageCell) {
         let textSize = cell.calculateContentSize()
         
         cell.textView.textAlignment = .Left
@@ -96,9 +96,9 @@ struct LeftAlignmentDecorator: AlignmentDecorator {
     }
 }
 
-struct RightAlignmentDecorator: AlignmentDecorator {
+struct RightAlignmentCellLayout: MessageCellLayout {
     
-    func updateLayout(cell: VMessageCollectionCell) {
+    func updateLayout(cell: MessageCell) {
         let textSize = cell.calculateContentSize()
         
         cell.textView.textAlignment = .Right
