@@ -58,6 +58,5 @@ typedef enum : NSUInteger {
 @property (nonatomic, retain) NSString * avatarBadgeType;
 
 - (AvatarBadgeType)badgeType;
->>>>>>> theirs
 
 @end
