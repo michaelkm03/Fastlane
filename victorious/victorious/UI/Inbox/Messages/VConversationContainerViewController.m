@@ -107,7 +107,7 @@ static const NSUInteger kCharacterLimit = 1024;
                                                         style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction *action)
                                 {
-                                    [self flagConversation];
+                                    [self blockUser];
                                 }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                         style:UIAlertActionStyleCancel

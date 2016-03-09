@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class BlockUserRemoteOperation: RemoteFetcherOperation, RequestOperation {
     

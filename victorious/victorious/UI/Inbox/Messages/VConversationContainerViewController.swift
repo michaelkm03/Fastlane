@@ -35,7 +35,7 @@ public extension VConversationContainerViewController {
         }
     }
     
-    public func flagConversation() {
+    public func blockUser() {
         if let userID = conversation.user?.remoteId.integerValue,
             conversationID = conversation.remoteId?.integerValue {
                 BlockUserOperation(userID: userID, conversationID: conversationID).queue() { results, error in
