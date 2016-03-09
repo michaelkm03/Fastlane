@@ -31,11 +31,39 @@ import Foundation
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.identifier = dependencyManager.stringForKey("identifier")
-        self.title = dependencyManager.stringForKey("title")
-        self.detailedDescription = dependencyManager.stringForKey("description")
-        self.displayOrder = dependencyManager.numberForKey("display_order").integerValue
-        self.unlockedIconImage = dependencyManager.imageForKey("assets")
-        self.lockedIconImage = dependencyManager.imageForKey("locked_icon")
+        self.identifier = dependencyManager.achievementIdentifer
+        self.title = dependencyManager.achievementTitle
+        self.detailedDescription = dependencyManager.achievementDescription
+        self.displayOrder = dependencyManager.achievementDisplayOrder
+        self.unlockedIconImage = dependencyManager.achievementUnlockedIconImage
+        self.lockedIconImage = dependencyManager.achievementLockedIconImage
+    }
+}
+
+
+private extension VDependencyManager {
+    
+    var achievementIdentifer: String {
+        return stringForKey("identifier")
+    }
+    
+    var achievementTitle: String {
+        return stringForKey("title")
+    }
+    
+    var achievementDescription: String {
+        return stringForKey("description")
+    }
+    
+    var achievementDisplayOrder: Int {
+        return numberForKey("display_order").integerValue
+    }
+    
+    var achievementUnlockedIconImage: UIImage {
+        return imageForKey("assets")
+    }
+    
+    var achievementLockedIconImage: UIImage {
+        return imageForKey("locked_icon")
     }
 }

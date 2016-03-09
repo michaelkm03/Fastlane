@@ -12,15 +12,14 @@ class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
     private(set) var dependencyManager: VDependencyManager?
     private lazy var allPossibleAchievements: [Achievement] = {
-        let achievements: [Achievement] = self.dependencyManager?.arrayOfValuesOfType(Achievement.self, forKey: "achievements") as? [Achievement] ?? []
+        let achievements: [Achievement] = self.dependencyManager?.arrayOfValuesOfType(Achievement.self, forKey: achievementsTempalteComponentKey) as? [Achievement] ?? []
         return achievements.sort { item1, item2 in
             item1.displayOrder < item2.displayOrder
         }
     }()
     
-    private struct UIConstant {
-        static let achievementCellIdentifier = "TrophyCaseAchievementCollectionViewCell"
-    }
+    private let achievementCellIdentifier = "TrophyCaseAchievementCollectionViewCell"
+    static private let achievementsTempalteComponentKey = "achievements"
     
     convenience init(dependencyManager: VDependencyManager) {
         self.init()
@@ -32,7 +31,7 @@ class TrophyCaseCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(UIConstant.achievementCellIdentifier, forIndexPath: indexPath) as? TrophyCaseAchievementCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(achievementCellIdentifier, forIndexPath: indexPath) as? TrophyCaseAchievementCollectionViewCell else {
             assertionFailure("Failed to dequeue a correct collection view cell for trophy case")
             return UICollectionViewCell()
         }

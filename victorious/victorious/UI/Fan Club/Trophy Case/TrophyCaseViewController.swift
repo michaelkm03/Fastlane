@@ -11,7 +11,7 @@ import UIKit
 
 class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBackgroundContainer {
     
-    var dependencyManager: VDependencyManager?
+    var dependencyManager: VDependencyManager!
     private(set) var trophyCaseDataSource: TrophyCaseCollectionViewDataSource?
     
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -40,12 +40,12 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager?.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager?.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -58,8 +58,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
-            let achievement = cell.achievement,
-            let dependencyManager = dependencyManager else {
+            let achievement = cell.achievement else {
                 return
         }
         
@@ -79,9 +78,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
-        if let dependencyManager = dependencyManager {
-            navigationItem.title = dependencyManager.stringForKey("title")
-            dependencyManager.addBackgroundToBackgroundHost(self)
-        }
+        navigationItem.title = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
 }
