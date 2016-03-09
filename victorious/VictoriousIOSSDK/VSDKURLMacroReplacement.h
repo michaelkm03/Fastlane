@@ -17,6 +17,8 @@ extern NSString * const VSDKPaginatorMacroPageNumber;
 
 extern NSString * const VSDKPaginatorMacroItemsPerPage;
 
+extern NSString * const VSDKAdIDMacro;
+
 /**
  A class for replacing macros in a URL
  string with real values
