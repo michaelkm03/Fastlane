@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// Helper that handles loading preview image and streaming GIF asset
 /// to a file using asynchronous operations.
-struct MediaSearchExporter {
+class MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
     
@@ -29,7 +29,7 @@ struct MediaSearchExporter {
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    mutating func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
+    func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
         
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return

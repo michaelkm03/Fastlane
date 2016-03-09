@@ -112,6 +112,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     func cancel() {
         progressHUD?.hide(true)
+        self.mediaExporter.cancelDownload()
     }
     
     //MARK: - API
@@ -128,26 +129,28 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
         view.delegate = self
         
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
         progressHUD?.mode = MBProgressHUDMode.CustomView
         progressHUD?.customView = view
         progressHUD?.square = true;
         progressHUD?.dimBackground = true
-		progressHUD?.show(true)
+        progressHUD?.show(true)
         
-		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
+        self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
             
             self.progressHUD?.hide(true)
-			if let previewImage = previewImage, let mediaURL = mediaURL {
-				mediaSearchResultObject.exportPreviewImage = previewImage
-				mediaSearchResultObject.exportMediaURL = mediaURL
-				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
-				
-			} else {
-                self.v_showErrorWithTitle("Error rendering Media", message: "")
-			}
-			
-		}
+            if let previewImage = previewImage, let mediaURL = mediaURL {
+                mediaSearchResultObject.exportPreviewImage = previewImage
+                mediaSearchResultObject.exportMediaURL = mediaURL
+                self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                
+            } else {
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                self.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+            }
+            
+        }
     }
 	
     func selectCellAtSelectedIndexPath() {

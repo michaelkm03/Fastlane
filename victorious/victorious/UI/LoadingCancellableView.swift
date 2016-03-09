@@ -13,25 +13,32 @@ protocol LoadingCancellableViewDelegate {
 }
 
 class LoadingCancellableView: UIView {
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var text: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
-    var delegate: LoadingCancellableViewDelegate!
+    var delegate: LoadingCancellableViewDelegate?
     
-    override func awakeFromNib() {
-        cancelButton.layer.cornerRadius = 5
-        cancelButton.layer.borderColor = UIColor.whiteColor().CGColor
-        cancelButton.layer.borderWidth = 1
-        activityIndicatorView.startAnimating()
-        let rendering = NSLocalizedString("Rendering", comment: "")
-        text.text = "  \(rendering)..."
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
-        self.frame.size = CGSizeMake(120, 120)
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView! {
+        didSet {
+            activityIndicatorView.startAnimating()
+            self.frame.size = CGSizeMake(120, 120)
+        }
+    }
+    @IBOutlet weak var text: UILabel! {
+        didSet {
+            let rendering = NSLocalizedString("Rendering", comment: "")
+            text.text = "  \(rendering)..."
+        }
+    }
+    @IBOutlet weak var cancelButton: UIButton! {
+        didSet {
+            cancelButton.layer.cornerRadius = 5
+            cancelButton.layer.borderColor = UIColor.whiteColor().CGColor
+            cancelButton.layer.borderWidth = 1
+            cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
+        }
     }
     
     @IBAction func cancelButtonAction(sender: AnyObject) {
         activityIndicatorView.stopAnimating()
-        self.delegate?.cancel()
+        delegate?.cancel()
     }
 
 }
