@@ -56,13 +56,8 @@ struct MediaSearchExporter {
                 return nil
             }()
             
-            if let downloadURLPath = downloadURL.path where
-                NSFileManager.defaultManager().fileExistsAtPath(downloadURLPath) {
-                do {
-                    try NSFileManager.defaultManager().removeItemAtPath(downloadURLPath)
-                } catch (_) {
-                    
-                }
+            if let downloadURLPath = downloadURL.path {
+                let _ = try? NSFileManager.defaultManager().removeItemAtPath(downloadURLPath)
             }
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
