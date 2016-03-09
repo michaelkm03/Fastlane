@@ -40,26 +40,26 @@
     "title": "VIP",
     "icon": {
         "imageSet": [{
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected.png",
+            "imageURL": "D_vip_unselected.png",
             "scale": 1
         }, {
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected@2x.png",
+            "imageURL": "D_vip_unselected@2x.png",
             "scale": 2
         }, {
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_unselected@3x.png",
+            "imageURL": "D_vip_unselected@3x.png",
             "scale": 3
         }]
     },
     "identifier": "Menu VIP",
     "selectedIcon": {
         "imageSet": [{
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected.png",
+            "imageURL": "D_vip_selected.png",
             "scale": 1
         }, {
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected@2x.png",
+            "imageURL": "D_vip_selected@2x.png",
             "scale": 2
         }, {
-            "imageURL": "http:\/\/s3.aws.amazon.com\/victorious\/VIP_selected@3x.png",
+            "imageURL": "D_vip_selected@3x.png",
             "scale": 3
         }]
     }

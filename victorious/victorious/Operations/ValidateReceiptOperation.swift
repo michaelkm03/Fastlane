@@ -54,9 +54,7 @@ class VIPSubscribeOperation: Operation {
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
             },
             failure: { error in
-                dispatch_sync(dispatch_get_main_queue()) {
-                    self.error = error
-                }
+                self.error = error
                 self.finishedExecuting()
             }
         )
@@ -77,9 +75,7 @@ class RestorePurchasesOperation: Operation {
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
             },
             failure: { error in
-                dispatch_sync(dispatch_get_main_queue()) {
-                    self.error = error
-                }
+                self.error = error
                 self.finishedExecuting()
             }
         )

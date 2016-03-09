@@ -17,6 +17,12 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBOutlet weak private var subscribeButton: UIButton!
     @IBOutlet weak private var restoreButton: UIButton!
     
+    lazy var vipIconView: UIView = {
+        let imageView = UIImageView(image: UIImage(named:"vip")!.imageWithRenderingMode(.AlwaysTemplate))
+        imageView.tintColor = UIColor.whiteColor()
+        return imageView
+    }()
+    
     var dependencyManager: VDependencyManager! {
         didSet {
             updateViews()
@@ -44,25 +50,13 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         updateViews()
     }
     
-    func onSubcriptionValidated() {
-        if VCurrentUser.user()!.isVIPSubscriber.boolValue {
-            print( "Validation succeeded!" )
-        } else {
-            print( "Validation failed!" )
-        }
-        openGate()
-    }
-    
     var isLoading: Bool = false {
         didSet {
             if isLoading {
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                let customView = UIImageView(image: UIImage(named:"error")!.imageWithRenderingMode(.AlwaysTemplate))
-                customView.tintColor = UIColor.whiteColor()
-                
                 let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                 progressHUD.mode = .CustomView
-                progressHUD.customView = customView
+                progressHUD.customView = vipIconView
                 progressHUD.labelText = "   Purchasing subscription..."
             } else {
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
@@ -103,12 +97,22 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     // MARK: - Private
     
-    func exit() {
-        guard let rootViewController = VRootViewController.sharedRootViewController() else {
-            assertionFailure()
+    private func onSubcriptionValidated() {
+        guard VCurrentUser.user()?.isVIPSubscriber.boolValue ?? false else {
+            v_showErrorWithTitle("Validation Failed", message: "The current user has not been verifed as a VIP member.")
             return
         }
-        rootViewController.dismissViewControllerAnimated(true, completion: nil)
+        
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        progressHUD.mode = .CustomView
+        progressHUD.customView = vipIconView
+        progressHUD.labelText = "Success!"
+        
+        dispatch_after(1.0) {
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            self.openGate()
+        }
     }
     
     private func openGate() {
@@ -117,12 +121,22 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
             return
         }
         
+        // WARNING: Temporyary for testing only until a Forum view controller is avialabl
         let vc = UIViewController()
         vc.view.backgroundColor = UIColor.redColor()
         vc.view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
         rootViewController.presentViewController(vc, animated: true) {
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
         }
+    }
+    
+    // WARNING: Temporyary for testing only until a Forum view controller is avialable
+    func exit() {
+        guard let rootViewController = VRootViewController.sharedRootViewController() else {
+            assertionFailure()
+            return
+        }
+        rootViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
     private func updateViews() {
