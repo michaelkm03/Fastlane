@@ -1660,6 +1660,7 @@
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
+		F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
@@ -1675,9 +1676,6 @@
 		F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */; };
 		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
 		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
-		F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCE1C8109E2004F516A /* ComposerController.swift */; };
-		F048AFD21C8109E2004F516A /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */; };
-		F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */; };
 		F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0161C84F973004F516A /* BlockUserRequestTests.swift */; };
 		F048B0191C84FCC5004F516A /* UnblockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */; };
 		F048B01B1C84FDA7004F516A /* BlockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */; };
@@ -1735,6 +1733,7 @@
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
+		F09E8C741C8F7B0A00437ACD /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
@@ -1773,6 +1772,18 @@
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
 		F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AE11B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
+		F0F777B61C90B729002F5401 /* CloseUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777B21C90B729002F5401 /* CloseUp.swift */; };
+		F0F777B71C90B729002F5401 /* CloseUpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777B31C90B729002F5401 /* CloseUpDelegate.swift */; };
+		F0F777B81C90B729002F5401 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777B41C90B729002F5401 /* CloseUpMenuItem.swift */; };
+		F0F777B91C90B729002F5401 /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777B51C90B729002F5401 /* CloseUpViewController.swift */; };
+		F0F777BE1C90B73E002F5401 /* StageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BA1C90B73E002F5401 /* StageDelegate.swift */; };
+		F0F777BF1C90B73E002F5401 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BB1C90B73E002F5401 /* Stage.swift */; };
+		F0F777C01C90B73E002F5401 /* StageMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BC1C90B73E002F5401 /* StageMedia.swift */; };
+		F0F777C11C90B73E002F5401 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BD1C90B73E002F5401 /* StageViewController.swift */; };
+		F0F777C61C90B749002F5401 /* ComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C21C90B749002F5401 /* ComposerDelegate.swift */; };
+		F0F777C71C90B749002F5401 /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C31C90B749002F5401 /* Composer.swift */; };
+		F0F777C81C90B749002F5401 /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */; };
+		F0F777C91C90B749002F5401 /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C51C90B749002F5401 /* ComposerViewController.swift */; };
 		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
 		F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
@@ -4344,6 +4355,7 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
+		F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
 		F03C134B1B69373200287F4C /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		F03C134C1B69373200287F4C /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -4369,9 +4381,6 @@
 		F048AFC41C80DCC2004F516A /* UnblockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperation.swift; sourceTree = "<group>"; };
 		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
 		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
-		F048AFCE1C8109E2004F516A /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerController.swift; path = Composer/ComposerController.swift; sourceTree = "<group>"; };
-		F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = Composer/ComposerAttachmentTab.swift; sourceTree = "<group>"; };
-		F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
 		F048B0161C84F973004F516A /* BlockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequestTests.swift; sourceTree = "<group>"; };
 		F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequestTests.swift; sourceTree = "<group>"; };
 		F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperationTests.swift; sourceTree = "<group>"; };
@@ -4463,6 +4472,7 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F09E8C651C88CBAA00437ACD /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
+		F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
@@ -4544,6 +4554,18 @@
 		F0F04AF21B29E8FE00F6F401 /* VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShareMenuItem.h; sourceTree = "<group>"; };
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
+		F0F777B21C90B729002F5401 /* CloseUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseUp.swift; path = victorious/UI/Forum/CloseUp/CloseUp.swift; sourceTree = SOURCE_ROOT; };
+		F0F777B31C90B729002F5401 /* CloseUpDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseUpDelegate.swift; path = victorious/UI/Forum/CloseUp/CloseUpDelegate.swift; sourceTree = SOURCE_ROOT; };
+		F0F777B41C90B729002F5401 /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseUpMenuItem.swift; path = victorious/UI/Forum/CloseUp/CloseUpMenuItem.swift; sourceTree = SOURCE_ROOT; };
+		F0F777B51C90B729002F5401 /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseUpViewController.swift; path = victorious/UI/Forum/CloseUp/CloseUpViewController.swift; sourceTree = SOURCE_ROOT; };
+		F0F777BA1C90B73E002F5401 /* StageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageDelegate.swift; path = victorious/UI/Forum/Stage/StageDelegate.swift; sourceTree = SOURCE_ROOT; };
+		F0F777BB1C90B73E002F5401 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stage.swift; path = victorious/UI/Forum/Stage/Stage.swift; sourceTree = SOURCE_ROOT; };
+		F0F777BC1C90B73E002F5401 /* StageMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageMedia.swift; path = victorious/UI/Forum/Stage/StageMedia.swift; sourceTree = SOURCE_ROOT; };
+		F0F777BD1C90B73E002F5401 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageViewController.swift; path = victorious/UI/Forum/Stage/StageViewController.swift; sourceTree = SOURCE_ROOT; };
+		F0F777C21C90B749002F5401 /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerDelegate.swift; path = victorious/UI/Forum/Composer/ComposerDelegate.swift; sourceTree = SOURCE_ROOT; };
+		F0F777C31C90B749002F5401 /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Composer.swift; path = victorious/UI/Forum/Composer/Composer.swift; sourceTree = SOURCE_ROOT; };
+		F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = victorious/UI/Forum/Composer/ComposerAttachmentTab.swift; sourceTree = SOURCE_ROOT; };
+		F0F777C51C90B749002F5401 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewController.swift; path = victorious/UI/Forum/Composer/ComposerViewController.swift; sourceTree = SOURCE_ROOT; };
 		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
 		F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContents.m; sourceTree = "<group>"; };
 		F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsController.h; sourceTree = "<group>"; };
@@ -4787,6 +4809,7 @@
 				C3623E561B9A779A002B121D /* Fan Club */,
 				D85B70371B0EAF3F0038CA5B /* Find Friends */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
+				F03B20371C865C1B005E83A0 /* Forum */,
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
@@ -4861,7 +4884,6 @@
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
-				F048AFCD1C81096F004F516A /* Composer */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
@@ -9226,12 +9248,56 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		F03B20371C865C1B005E83A0 /* Forum */ = {
+			isa = PBXGroup;
+			children = (
+				F03B203A1C865C44005E83A0 /* CloseUp */,
+				F03B20391C865C3B005E83A0 /* ChatFeed */,
+				F03B20381C865C33005E83A0 /* Stage */,
+				F048AFCD1C81096F004F516A /* Composer */,
+			);
+			name = Forum;
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F03B20381C865C33005E83A0 /* Stage */ = {
+			isa = PBXGroup;
+			children = (
+				F0F777BA1C90B73E002F5401 /* StageDelegate.swift */,
+				F0F777BB1C90B73E002F5401 /* Stage.swift */,
+				F0F777BC1C90B73E002F5401 /* StageMedia.swift */,
+				F0F777BD1C90B73E002F5401 /* StageViewController.swift */,
+			);
+			name = Stage;
+			sourceTree = "<group>";
+		};
+		F03B20391C865C3B005E83A0 /* ChatFeed */ = {
+			isa = PBXGroup;
+			children = (
+				F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */,
+				F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */,
+			);
+			name = ChatFeed;
+			sourceTree = "<group>";
+		};
+		F03B203A1C865C44005E83A0 /* CloseUp */ = {
+			isa = PBXGroup;
+			children = (
+				F0F777B21C90B729002F5401 /* CloseUp.swift */,
+				F0F777B31C90B729002F5401 /* CloseUpDelegate.swift */,
+				F0F777B41C90B729002F5401 /* CloseUpMenuItem.swift */,
+				F0F777B51C90B729002F5401 /* CloseUpViewController.swift */,
+			);
+			name = CloseUp;
+			sourceTree = "<group>";
+		};
 		F048AFCD1C81096F004F516A /* Composer */ = {
 			isa = PBXGroup;
 			children = (
-				F048AFCE1C8109E2004F516A /* ComposerController.swift */,
-				F048AFCF1C8109E2004F516A /* ComposerAttachmentTab.swift */,
-				F048AFD01C8109E2004F516A /* ComposerControllerDelegate.swift */,
+				F0F777C21C90B749002F5401 /* ComposerDelegate.swift */,
+				F0F777C31C90B749002F5401 /* Composer.swift */,
+				F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */,
+				F0F777C51C90B749002F5401 /* ComposerViewController.swift */,
 			);
 			name = Composer;
 			sourceTree = "<group>";
@@ -11177,6 +11243,7 @@
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
+				F0F777B91C90B729002F5401 /* CloseUpViewController.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowSource.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -11194,7 +11261,6 @@
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				678AC1711C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
-				F048AFD21C8109E2004F516A /* ComposerAttachmentTab.swift in Sources */,
 				C3623E5F1B9A7874002B121D /* HexagonView.swift in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				A719B3DF1C64397100537B45 /* VStreamItem+Pointer.swift in Sources */,
@@ -11230,6 +11296,7 @@
 				035FA78D1AE6C4E20002EE63 /* VConversationListViewController.m in Sources */,
 				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,
+				F0F777BF1C90B73E002F5401 /* Stage.swift in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
 				670334B41C49D58500E24967 /* CreateTextPostOperation.swift in Sources */,
 				A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */,
@@ -11275,7 +11342,6 @@
 				A7EBF53E1C2B9BDD0080C7CF /* VLikersDataSource.swift in Sources */,
 				D89367501ADDE1B9001D2426 /* VActionButtonAnimationController.m in Sources */,
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
-				F048AFD11C8109E2004F516A /* ComposerController.swift in Sources */,
 				F03C135A1B698F6F00287F4C /* VAsset.m in Sources */,
 				C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */,
 				A73D16BB1C24F98D00497F83 /* StreamOperation.swift in Sources */,
@@ -11283,6 +11349,7 @@
 				F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */,
 				A7C822041C65563C00C9CE0D /* VStreamItemPointer+Parsable.swift in Sources */,
 				A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */,
+				F0F777C71C90B749002F5401 /* Composer.swift in Sources */,
 				A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
@@ -11421,6 +11488,7 @@
 				A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */,
 				D85B70781B0EAF3F0038CA5B /* VFindFriendsViewController.m in Sources */,
 				C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */,
+				F0F777C11C90B73E002F5401 /* StageViewController.swift in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
 				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
 				A70033151C5FF36D00AB4A57 /* DeleteCommentOperation.swift in Sources */,
@@ -11435,7 +11503,6 @@
 				F048AFC61C80DCC2004F516A /* UnblockUserOperation.swift in Sources */,
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
-				F048AFD31C8109E2004F516A /* ComposerControllerDelegate.swift in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
@@ -11535,6 +11602,7 @@
 				A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */,
 				A767121B1C209F37006568DF /* CommentEditOperation.swift in Sources */,
 				A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */,
+				F0F777B71C90B729002F5401 /* CloseUpDelegate.swift in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
 				A79825A21C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift in Sources */,
@@ -11589,10 +11657,12 @@
 				678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A6E104D91B56C88D0062392A /* VShareItemCollectionViewCell.m in Sources */,
+				F0F777BE1C90B73E002F5401 /* StageDelegate.swift in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				79EEC4A31C17BA6E0004E6FC /* DeviceExperimentsOperation.swift in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
+				F0F777C91C90B749002F5401 /* ComposerViewController.swift in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
@@ -11633,10 +11703,12 @@
 				A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */,
 				A7BA37DF1C8528190095CFA9 /* ActionConfirmationOperation.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
+				F0F777C81C90B749002F5401 /* ComposerAttachmentTab.swift in Sources */,
 				F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
+				F09E8C741C8F7B0A00437ACD /* ChatFeed.swift in Sources */,
 				A6EED6A91B5EE4210074052E /* VAlongsideTransitioner.m in Sources */,
 				676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
@@ -11836,6 +11908,7 @@
 				79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */,
 				A721E95C1B572454000B7901 /* UIView+Masking.m in Sources */,
 				A778CB6D1C474EF7007DF0C2 /* VConversationViewController.m in Sources */,
+				F0F777B81C90B729002F5401 /* CloseUpMenuItem.swift in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
@@ -11935,6 +12008,7 @@
 				79B719011C56E95800578012 /* VSequence+Keyable.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
+				F0F777B61C90B729002F5401 /* CloseUp.swift in Sources */,
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				A78BFC171C4858A900FBC17E /* MediaSearchResult.swift in Sources */,
@@ -11948,8 +12022,10 @@
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
+				F0F777C01C90B73E002F5401 /* StageMedia.swift in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
+				F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
 				A76363691C5036BF000887C4 /* VSequenceLiker.m in Sources */,
@@ -11975,6 +12051,7 @@
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
+				F0F777C61C90B749002F5401 /* ComposerDelegate.swift in Sources */,
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
