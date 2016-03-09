@@ -115,7 +115,7 @@
                                             <constraint firstAttribute="height" constant="55" id="SKu-x9-GZz"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="Okay!">
+                                        <state key="normal" title="Okay button placeholder">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
