@@ -1360,6 +1360,7 @@
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF8237EA1C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
+		BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */; };
 		BFD131B01C80F0A0003ADD64 /* ShowProfileOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD131AF1C80F0A0003ADD64 /* ShowProfileOperation.swift */; };
 		BFD131B21C80F2C2003ADD64 /* ShowShareSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD131B11C80F2C2003ADD64 /* ShowShareSequenceOperation.swift */; };
 		BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */; };
@@ -3835,6 +3836,7 @@
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
+		BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerOperationTests.swift; sourceTree = "<group>"; };
 		BFD131AF1C80F0A0003ADD64 /* ShowProfileOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowProfileOperation.swift; sourceTree = "<group>"; };
 		BFD131B11C80F2C2003ADD64 /* ShowShareSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareSequenceOperation.swift; sourceTree = "<group>"; };
 		BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceActionController.swift; sourceTree = "<group>"; };
@@ -7492,6 +7494,7 @@
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
 				A748BCBE1C878659003D5F5F /* DeleteSequenceOperationTests.swift */,
+				BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* FetcherOperationTestss.swift */,
 				A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */,
 				A748BCC01C878B8C003D5F5F /* FlagSequenceOperationTests.swift */,
@@ -10993,6 +10996,7 @@
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
 				A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */,
 				A70E84701C3F069A00689EFA /* FetcherOperationTestss.swift in Sources */,
+				BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
 				F04CDB9D1C85485900696ADA /* UnblockUserRemoteOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,

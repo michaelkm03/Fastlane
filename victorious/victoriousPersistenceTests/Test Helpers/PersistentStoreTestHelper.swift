@@ -78,4 +78,14 @@ struct PersistentStoreTestHelper {
             return conversation
         }
     }
+    
+    func createVoteResult(sequence: VSequence, count: Int = 0, remoteId: Int = 0) -> VVoteResult {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let voteResult: VVoteResult = context.v_createObject()
+            voteResult.sequence = sequence
+            voteResult.count = count
+            voteResult.remoteId = remoteId
+            return voteResult
+        }
+    }
 }
