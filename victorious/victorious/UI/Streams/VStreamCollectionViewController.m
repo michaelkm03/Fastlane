@@ -360,29 +360,29 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         return;
     }
     
-    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-    BOOL hasMarqueeShelfAtTop = NO;
-    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
-    if ( streamItems.count > 0 )
+    if ([self hasMarqueeShelfAtTop])
     {
-        VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
-    }
-    
-    if (hasMarqueeShelfAtTop)
-    {
+        // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
         CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
         CGFloat offset = marqueeSize.height;
-        if ( hasMarqueeShelfAtTop )
-        {
-            offset += [self.streamCellFactory minimumLineSpacing];
-        }
+        offset += [self.streamCellFactory minimumLineSpacing];
         self.navigationControllerScrollDelegate.catchOffset = offset;
     }
     else
     {
         self.navigationControllerScrollDelegate.catchOffset = 0;
     }
+}
+
+- (BOOL)hasMarqueeShelfAtTop
+{
+    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
+    if ( streamItems.count > 0 )
+    {
+        VStreamItem *streamItem = [streamItems firstObject];
+        return [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
+    }
+    return false;
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
@@ -578,7 +578,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0)
+    if (indexPath.section == 0 && [self hasMarqueeShelfAtTop])
     {
         return [self.marqueeCellController desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
@@ -999,6 +999,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [super respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)] )
     {
         insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
+    }
+    
+    if ([self hasMarqueeShelfAtTop] && section == 0)
+    {
+        return insetsFromSuper;
     }
     
     UIEdgeInsets insetsFromCellFactory = [self.streamCellFactory sectionInsets];
