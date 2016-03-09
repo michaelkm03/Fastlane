@@ -578,15 +578,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && [self hasMarqueeShelfAtTop])
-    {
-        return [self.marqueeCellController desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }
-    else
-    {
-        VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-        return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:sequence];
-    }
+    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
+    return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:streamItem];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
