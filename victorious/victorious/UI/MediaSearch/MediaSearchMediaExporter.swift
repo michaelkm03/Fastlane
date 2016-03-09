@@ -56,9 +56,10 @@ struct MediaSearchExporter {
                 return nil
             }()
             
-            if let downloadURLPath = downloadURL.path {
-                let _ = try? NSFileManager.defaultManager().removeItemAtPath(downloadURLPath)
-            }
+            // We shouldn't have to, but sometimes files are not removed from the filesystem and the 
+            // move would fail if there is a file at downloadURL's path.
+            let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
+            
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
             } catch (let error) {
@@ -68,8 +69,7 @@ struct MediaSearchExporter {
                 return
             }
             
-            if let downloadURLPath = downloadURL.path where
-                downloadURLPath.hasSuffix(".") {
+            if downloadURL.absoluteString.hasSuffix(".") {
                 // remote url did not have a valid ending, should show error
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: nil)
