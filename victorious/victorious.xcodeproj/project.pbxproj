@@ -1664,11 +1664,10 @@
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F03B203C1C865EC3005E83A0 /* StageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203B1C865EC3005E83A0 /* StageDelegate.swift */; };
 		F03B203E1C865FDA005E83A0 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203D1C865FDA005E83A0 /* StageViewController.swift */; };
-		F03B20421C866161005E83A0 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20411C866161005E83A0 /* ChatFeedViewController.swift */; };
 		F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */; };
-		F03B20461C86656B005E83A0 /* LightboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20451C86656B005E83A0 /* LightboxViewController.swift */; };
-		F03B20481C866581005E83A0 /* LightboxDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20471C866581005E83A0 /* LightboxDelegate.swift */; };
-		F03B204A1C8665CF005E83A0 /* LightboxMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */; };
+		F03B20461C86656B005E83A0 /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20451C86656B005E83A0 /* CloseUpViewController.swift */; };
+		F03B20481C866581005E83A0 /* CloseUpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20471C866581005E83A0 /* CloseUpDelegate.swift */; };
+		F03B204A1C8665CF005E83A0 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20491C8665CF005E83A0 /* CloseUpMenuItem.swift */; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
@@ -1786,7 +1785,7 @@
 		F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AE11B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
 		F0F777AB1C8FA344002F5401 /* StageMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777AA1C8FA344002F5401 /* StageMedia.swift */; };
-		F0F777AD1C8FAC9A002F5401 /* Lightbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */; };
+		F0F777AD1C8FAC9A002F5401 /* CloseUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777AC1C8FAC9A002F5401 /* CloseUp.swift */; };
 		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
 		F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
@@ -4362,11 +4361,10 @@
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
 		F03B203B1C865EC3005E83A0 /* StageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageDelegate.swift; sourceTree = "<group>"; };
 		F03B203D1C865FDA005E83A0 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
-		F03B20411C866161005E83A0 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
-		F03B20451C86656B005E83A0 /* LightboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxViewController.swift; sourceTree = "<group>"; };
-		F03B20471C866581005E83A0 /* LightboxDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxDelegate.swift; sourceTree = "<group>"; };
-		F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxMenuItem.swift; sourceTree = "<group>"; };
+		F03B20451C86656B005E83A0 /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpViewController.swift; sourceTree = "<group>"; };
+		F03B20471C866581005E83A0 /* CloseUpDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpDelegate.swift; sourceTree = "<group>"; };
+		F03B20491C8665CF005E83A0 /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpMenuItem.swift; sourceTree = "<group>"; };
 		F03C134B1B69373200287F4C /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		F03C134C1B69373200287F4C /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -4571,7 +4569,7 @@
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
 		F0F777AA1C8FA344002F5401 /* StageMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMedia.swift; sourceTree = "<group>"; };
-		F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lightbox.swift; sourceTree = "<group>"; };
+		F0F777AC1C8FAC9A002F5401 /* CloseUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUp.swift; sourceTree = "<group>"; };
 		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
 		F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContents.m; sourceTree = "<group>"; };
 		F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsController.h; sourceTree = "<group>"; };
@@ -9282,7 +9280,6 @@
 			isa = PBXGroup;
 			children = (
 				F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */,
-				F03B20411C866161005E83A0 /* ChatFeedViewController.swift */,
 				F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */,
 			);
 			name = ChatFeed;
@@ -9291,10 +9288,10 @@
 		F03B203A1C865C44005E83A0 /* Lightbox */ = {
 			isa = PBXGroup;
 			children = (
-				F03B20451C86656B005E83A0 /* LightboxViewController.swift */,
-				F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */,
-				F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */,
-				F03B20471C866581005E83A0 /* LightboxDelegate.swift */,
+				F03B20451C86656B005E83A0 /* CloseUpViewController.swift */,
+				F0F777AC1C8FAC9A002F5401 /* CloseUp.swift */,
+				F03B20491C8665CF005E83A0 /* CloseUpMenuItem.swift */,
+				F03B20471C866581005E83A0 /* CloseUpDelegate.swift */,
 			);
 			name = Lightbox;
 			sourceTree = "<group>";
@@ -11194,7 +11191,6 @@
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A75DF5231C3DBD5100A4C82A /* UserSearchResultTableViewCell.swift in Sources */,
-				F03B20421C866161005E83A0 /* ChatFeedViewController.swift in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
@@ -11215,7 +11211,7 @@
 				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
 				C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */,
-				F0F777AD1C8FAC9A002F5401 /* Lightbox.swift in Sources */,
+				F0F777AD1C8FAC9A002F5401 /* CloseUp.swift in Sources */,
 				A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
@@ -11341,7 +11337,7 @@
 				A76DD75F1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */,
-				F03B204A1C8665CF005E83A0 /* LightboxMenuItem.swift in Sources */,
+				F03B204A1C8665CF005E83A0 /* CloseUpMenuItem.swift in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				798AA5911C3B033D00D267C3 /* LogoutOperation.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
@@ -11470,7 +11466,7 @@
 				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
-				F03B20461C86656B005E83A0 /* LightboxViewController.swift in Sources */,
+				F03B20461C86656B005E83A0 /* CloseUpViewController.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */,
 				A7EBF5331C2B99A20080C7CF /* VFollowersDataSource.swift in Sources */,
@@ -12061,7 +12057,7 @@
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
-				F03B20481C866581005E83A0 /* LightboxDelegate.swift in Sources */,
+				F03B20481C866581005E83A0 /* CloseUpDelegate.swift in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,

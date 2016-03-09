@@ -12,9 +12,5 @@ protocol ChatFeed {
     
     weak var delegate: ChatFeedDelegate? { get set }
     
-    /// Sets the inset around the container showing chat feed content.
     func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool)
-    
-    /// Adds messages to the chat feed.
-    func addMessages(messages: [VMessage], animated: Bool)
 }

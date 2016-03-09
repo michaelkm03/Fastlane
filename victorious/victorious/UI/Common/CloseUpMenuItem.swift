@@ -1,5 +1,5 @@
 //
-//  LightboxMenuItem.swift
+//  CloseUpMenuItem.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum LightboxMenuItem {
+enum CloseUpMenuItem {
     
     private struct Icon {
         

@@ -8,11 +8,10 @@
 
 import Foundation
 
+/// Conformers will recieve messages related to stage media.
 protocol StageDelegate: class {
     
-    /// Called when the media on the stage changes.
-    func stage(stage: Stage, updatedToMedia media: StageMedia)
+    func stage(stage: Stage, didUpdateWithMedia media: StageMedia)
     
-    /// Called when the user taps on a piece of media on the stage.
-    func stage(stage: Stage, selectedMedia media: StageMedia)
+    func stage(stage: Stage, didSelectMedia media: StageMedia)
 }

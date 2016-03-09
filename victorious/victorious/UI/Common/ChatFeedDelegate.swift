@@ -8,14 +8,12 @@
 
 import Foundation
 
+/// Conformers will recieve messages related to interaction with chat feed content.
 protocol ChatFeedDelegate: class {
     
-    /// Called when a message is selected from the ChatFeed.
     func chatFeed(chatFeed: ChatFeed, didSelectMessage message: VMessage)
     
-    /// Called when a message's poster is selected from the ChatFeed.
     func chatFeed(chatFeed: ChatFeed, didSelectUser user: VUser)
     
-    /// Called when a message's media is selected from the ChatFeedController.
     func chatFeed(chatFeed: ChatFeed, didSelectMedia media: VAsset)
 }

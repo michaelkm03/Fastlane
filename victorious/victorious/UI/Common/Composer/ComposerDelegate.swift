@@ -8,15 +8,14 @@
 
 import Foundation
 
+/// Conformers will recieve messages when a composer's buttons are pressed and when
+/// a composer changes its height.
 protocol ComposerDelegate: class {
     
-    /// Called when an attachment tab is pressed.
     func composer(composer: Composer, didSelectAttachmentTab: ComposerAttachmentTab)
 
-    /// Called when send is pressed with media present in the composer.
     func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?)
     
-    /// Called when send is pressed without media present in the composer.
     func composer(composer: Composer, didPressSendWithCaption: String)
     
     /// Called when the composer updates to a new height. The returned value represents
