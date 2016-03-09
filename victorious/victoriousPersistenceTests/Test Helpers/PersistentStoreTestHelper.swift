@@ -61,7 +61,7 @@ struct PersistentStoreTestHelper {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_createObject()
             conversation.displayOrder = 0
-            conversation.remoteId = NSNumber(integer: remoteId)
+            conversation.remoteId = remoteId
             conversation.lastMessageText = ""
             conversation.isRead = false
             conversation.postedAt = NSDate()
