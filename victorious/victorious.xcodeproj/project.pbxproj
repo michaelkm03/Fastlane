@@ -12663,8 +12663,7 @@
 			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13705,8 +13704,7 @@
 			baseConfigurationReference = 55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13724,7 +13722,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
@@ -14030,8 +14028,7 @@
 			baseConfigurationReference = D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -14204,8 +14201,7 @@
 			baseConfigurationReference = 83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -14219,7 +14215,7 @@
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};

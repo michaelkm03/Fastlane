@@ -74,11 +74,6 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectation = expectationWithDescription("RestorePurchasesOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
-            guard let isVIPSubscriber = self.currentUser.isVIPSubscriber else {
-                XCTFail()
-                return
-            }
-            XCTAssertFalse(isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
