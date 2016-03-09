@@ -71,7 +71,6 @@ class ShowLoginOperation: NavigationOperation {
         }
         loginFlow.setAuthorizationContext?( self.context )
         
-//        self.originViewController?.presentViewController(viewController, animated: self.animated, completion: nil)
-        self.finishedExecuting()
+        self.originViewController?.presentViewController(viewController, animated: self.animated, completion: nil)
     }
 }
