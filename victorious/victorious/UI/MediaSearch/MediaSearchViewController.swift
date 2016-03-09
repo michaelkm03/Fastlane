@@ -41,6 +41,8 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         return self.dataSourceAdapter.dataSource?.options ?? MediaSearchOptions()
     }
     
+    private var hasLoadedOnce = false
+    
     var selectedIndexPath: NSIndexPath?
     var previewSection: Int?
     var isScrollViewDecelerating = false
@@ -150,8 +152,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
                 self.reloadNoContentSection()
+                self.hasLoadedOnce = true
             }
-            self.reloadNoContentSection()
+            if hasLoadedOnce {
+                reloadNoContentSection()
+            }
         }
     }
     
@@ -277,7 +282,9 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        self.updateLayout()
+        if hasLoadedOnce {
+            self.updateLayout()
+        }
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
