@@ -25,7 +25,8 @@ struct MediaSearchExporter {
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
-    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
+    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
+    /// Calling code should be responsible for deleting the file at the mediaUrl's path.
     /// - parameter completion: A completion closure called wehn all opeartions are complete
     func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
         
@@ -55,11 +56,29 @@ struct MediaSearchExporter {
                 return nil
             }()
             
+            if let downloadURLPath = downloadURL.path where
+                NSFileManager.defaultManager().fileExistsAtPath(downloadURLPath)
+            {
+                do {
+                    try NSFileManager.defaultManager().removeItemAtPath(downloadURLPath)
+                } catch (_) {
+                    
+                }
+            }
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
             } catch (let error) {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
+                }
+                return
+            }
+            
+            if let downloadURLPath = downloadURL.path where
+                downloadURLPath.hasSuffix(".") {
+                // remote url did not have a valid ending, should show error
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(previewImage: nil, mediaUrl: nil, error: nil)
                 }
                 return
             }
@@ -77,9 +96,7 @@ struct MediaSearchExporter {
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        
-        if let filename = remoteURL.lastPathComponent,
-           let uniqueID = remoteURL.URLByDeletingLastPathComponent?.lastPathComponent,
+        if let fileExtension = remoteURL.pathExtension,
            let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
             let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
@@ -89,9 +106,9 @@ struct MediaSearchExporter {
             if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
                 let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
             }
-            
+            let fileName = NSUUID().UUIDString
             // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent( "\(uniqueID)-\(filename)" )
+            return subdirectory.URLByAppendingPathComponent( "\(fileName).\(fileExtension)" )
         }
         fatalError( "Unable to find file path for temporary media download." )
     }
