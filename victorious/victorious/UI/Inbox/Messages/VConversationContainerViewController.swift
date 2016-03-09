@@ -34,4 +34,14 @@ public extension VConversationContainerViewController {
             self.delegate?.onConversationUpdated( conversation )
         }
     }
+    
+    public func flagConversation() {
+        if let userID = conversation.user?.remoteId.integerValue,
+            conversationID = conversation.remoteId?.integerValue {
+                BlockUserOperation(userID: userID, conversationID: conversationID).queue() { results, error in
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
+        }
+        
+    }
 }
