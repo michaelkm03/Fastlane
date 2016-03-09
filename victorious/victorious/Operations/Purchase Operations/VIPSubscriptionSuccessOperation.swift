@@ -11,6 +11,7 @@ import Foundation
 class VIPSubscriptionSuccessOperation: FetcherOperation {
     
     override func main() {
+        
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             VCurrentUser.user(inManagedObjectContext: context)?.isVIPSubscriber = true
             context.v_save()

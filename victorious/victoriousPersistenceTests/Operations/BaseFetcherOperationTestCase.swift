@@ -14,8 +14,6 @@ import VictoriousIOSSDK
 /// encouraged to subclass.  It provides some useful and code-saving utilities
 /// that each test case needs to thoroughly test a `FetcherOperation` subclass
 class BaseFetcherOperationTestCase: BasePersistentStoreTestCase {
-
-    let expectationThreshold: Double = 1
     
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!

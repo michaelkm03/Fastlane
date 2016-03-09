@@ -11,6 +11,8 @@ import XCTest
 
 /// Provides plumbing for testing iteractions with a persistent store.
 class BasePersistentStoreTestCase: XCTestCase {
+    
+    let expectationThreshold: Double = 1
     var persistentStoreHelper: PersistentStoreTestHelper!
     var testStore: TestPersistentStore!
 

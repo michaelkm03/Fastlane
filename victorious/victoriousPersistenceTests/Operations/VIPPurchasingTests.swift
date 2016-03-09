@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class VIPPurchasingTests: BaseFetcherOperationTestCase {
+class VIPPurchasingTests: BasePersistentStoreTestCase {
     
     var currentUser: VUser!
     var objectUser: VUser!
@@ -43,7 +43,11 @@ class VIPPurchasingTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("VIPSubscribeOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
-            XCTAssertFalse(self.currentUser.isVIPSubscriber.boolValue)
+            guard let isVIPSubscriber = self.currentUser.isVIPSubscriber else {
+                XCTFail()
+                return
+            }
+            XCTAssertFalse(isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
@@ -70,7 +74,11 @@ class VIPPurchasingTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("RestorePurchasesOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
-            XCTAssertFalse(self.currentUser.isVIPSubscriber.boolValue)
+            guard let isVIPSubscriber = self.currentUser.isVIPSubscriber else {
+                XCTFail()
+                return
+            }
+            XCTAssertFalse(isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
