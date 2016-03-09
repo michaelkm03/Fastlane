@@ -859,8 +859,6 @@
 		A748BCC91C87D9FB003D5F5F /* Dictionary+Union.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */; };
 		A748BD161C8A717D003D5F5F /* VDependencyManager+Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BD151C8A717D003D5F5F /* VDependencyManager+Subscription.swift */; };
 		A748BD181C8A7302003D5F5F /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
-		A748BD1A1C8A837B003D5F5F /* vip.purchase.json in Resources */ = {isa = PBXBuildFile; fileRef = A748BD191C8A837B003D5F5F /* vip.purchase.json */; };
-		A748BD1C1C8A8D02003D5F5F /* ValidateReceiptOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BD1B1C8A8D02003D5F5F /* ValidateReceiptOperation.swift */; };
 		A74C2C601C7410620022AC35 /* DebugErrorHanlder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */; };
 		A74C2C611C7410620022AC35 /* UnauthorizedErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */; };
 		A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */; };
@@ -1314,6 +1312,10 @@
 		A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		A7FFCE431C8FC88800B1BE49 /* VIPPurchaseRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE421C8FC88800B1BE49 /* VIPPurchaseRequestBodyWriter.swift */; };
+		A7FFCE501C8FCDD900B1BE49 /* RestorePurchaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */; };
+		A7FFCE511C8FCDD900B1BE49 /* ValidateReceiptOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE4D1C8FCDD900B1BE49 /* ValidateReceiptOperation.swift */; };
+		A7FFCE521C8FCDD900B1BE49 /* VIPSubscribeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE4E1C8FCDD900B1BE49 /* VIPSubscribeOperation.swift */; };
+		A7FFCE531C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE4F1C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift */; };
 		AE4DAF6FB0284740906C2437 /* Pods_VictoriousIOSSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
@@ -3157,8 +3159,6 @@
 		A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Union.swift"; sourceTree = "<group>"; };
 		A748BD151C8A717D003D5F5F /* VDependencyManager+Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Subscription.swift"; sourceTree = "<group>"; };
 		A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPGateViewController.storyboard; sourceTree = "<group>"; };
-		A748BD191C8A837B003D5F5F /* vip.purchase.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vip.purchase.json; sourceTree = "<group>"; };
-		A748BD1B1C8A8D02003D5F5F /* ValidateReceiptOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptOperation.swift; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugErrorHanlder.swift; sourceTree = "<group>"; };
 		A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthorizedErrorHandler.swift; sourceTree = "<group>"; };
@@ -3750,6 +3750,10 @@
 		A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertOperationTests.swift; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FFCE421C8FC88800B1BE49 /* VIPPurchaseRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPPurchaseRequestBodyWriter.swift; sourceTree = "<group>"; };
+		A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestorePurchaseOperation.swift; sourceTree = "<group>"; };
+		A7FFCE4D1C8FCDD900B1BE49 /* ValidateReceiptOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptOperation.swift; sourceTree = "<group>"; };
+		A7FFCE4E1C8FCDD900B1BE49 /* VIPSubscribeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSubscribeOperation.swift; sourceTree = "<group>"; };
+		A7FFCE4F1C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSubscriptionSuccessOperation.swift; sourceTree = "<group>"; };
 		ADF02F3C7A401A3577784A0F /* Pods-victoriousPersistenceTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.stable.xcconfig"; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B074C5B11B39D41F00EA3FFC /* VHashmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashmarkView.h; sourceTree = "<group>"; };
@@ -6584,7 +6588,6 @@
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
 			isa = PBXGroup;
 			children = (
-				A748BD191C8A837B003D5F5F /* vip.purchase.json */,
 				6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */,
 				A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */,
 			);
@@ -6722,7 +6725,7 @@
 				A78BFC161C4858A900FBC17E /* MediaSearchResult.swift */,
 				A7078CC81BFA7D2B008FB7FF /* Navigation Operations */,
 				A7BBE0541C7D166800495C8C /* Operation.swift */,
-				A748BD1B1C8A8D02003D5F5F /* ValidateReceiptOperation.swift */,
+				A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */,
 				A7DECE671C7EA13700F414D0 /* Queueable */,
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
 				670334B01C49D51A00E24967 /* Upload Operations */,
@@ -8133,6 +8136,17 @@
 				A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */,
 			);
 			path = PersistentStore;
+			sourceTree = "<group>";
+		};
+		A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */ = {
+			isa = PBXGroup;
+			children = (
+				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
+				A7FFCE4D1C8FCDD900B1BE49 /* ValidateReceiptOperation.swift */,
+				A7FFCE4E1C8FCDD900B1BE49 /* VIPSubscribeOperation.swift */,
+				A7FFCE4F1C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift */,
+			);
+			path = "Purchase Operations";
 			sourceTree = "<group>";
 		};
 		B074C5BE1B3B2CBA00EA3FFC /* Supplementary Views */ = {
@@ -10202,7 +10216,6 @@
 				A75DF5331C3E13C700A4C82A /* UserSearchResultTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VHashtagCell.xib in Resources */,
-				A748BD1A1C8A837B003D5F5F /* vip.purchase.json in Resources */,
 				A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
@@ -11155,6 +11168,7 @@
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
 				F06B418F1B7C30BC008709E8 /* HashtagShelf.swift in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
+				A7FFCE531C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
@@ -11272,6 +11286,7 @@
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */,
+				A7FFCE501C8FCDD900B1BE49 /* RestorePurchaseOperation.swift in Sources */,
 				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
@@ -11618,6 +11633,7 @@
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				79EEC4A31C17BA6E0004E6FC /* DeviceExperimentsOperation.swift in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
+				A7FFCE521C8FCDD900B1BE49 /* VIPSubscribeOperation.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
@@ -11928,7 +11944,6 @@
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
-				A748BD1C1C8A8D02003D5F5F /* ValidateReceiptOperation.swift in Sources */,
 				A7E2918B1C3B403C00B84127 /* UnfollowUserOperation.swift in Sources */,
 				034BA9311C602B7F00C23D7E /* VTFLog.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
@@ -11937,6 +11952,7 @@
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				A7B1330D1C606C2C006EC4F5 /* VStreamItemPointer.swift in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
+				A7FFCE511C8FCDD900B1BE49 /* ValidateReceiptOperation.swift in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
 				79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */,

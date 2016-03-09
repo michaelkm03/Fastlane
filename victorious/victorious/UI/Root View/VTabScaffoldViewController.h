@@ -64,6 +64,10 @@
  */
 - (void)showWebBrowserWithURL:(NSURL *)URL;
 
+/**
+ Programmatically selects a tab that corresponds to the index.  This behavior is similar
+ to if a user had tapped it him- or herself.
+ */
 - (void)setSelectedMenuItemAtIndex:(NSInteger)index;
 
 @end

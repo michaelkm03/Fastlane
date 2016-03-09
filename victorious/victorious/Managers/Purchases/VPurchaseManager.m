@@ -16,8 +16,6 @@
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
 #import "VPurchaseRecord.h"
-#import "VConstants.h"
-#import "victorious-Swift.h"
 
 NSString * const VPurchaseManagerProductsDidUpdateNotification = @"VPurchaseManagerProductsDidUpdateNotification";
 
@@ -321,10 +319,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #else
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
 #endif
-    if (self.activePurchase != nil && isValidProduct)
+    if ( self.activePurchase != nil && isValidProduct )
     {
         NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
+        
         [self.purchaseRecord addProductIdentifier:productIdentifier];
         self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
         self.activePurchase = nil;

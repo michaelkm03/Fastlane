@@ -43,31 +43,27 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 #pragma mark - Initialization
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-                       productIdentifier:(NSString *)productIdentifier
-                               largeIcon:(UIImage *)largeIcon
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Purchases" bundle:[NSBundle mainBundle]];
     VPurchaseViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     viewController.dependencyManager = dependencyManager;
-    viewController.productIdentifier = productIdentifier;
-    viewController.largeIcon = largeIcon;
     return viewController;
 }
 
 #pragma mark - View controller lifecycle
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.restoreDescriptionTextView.attributedText = [[NSAttributedString alloc]
-                                                      initWithString:NSLocalizedString(@"RestorePurchaseDescription", @"")
-                                                      attributes:[self attributesForRestoreDescription]];
+    
+    NSAssert( self.voteType != nil, @"A valid VVoteType should be populated before loading. See `voteType` property." );
+    
+    self.restoreDescriptionTextView.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"RestorePurchaseDescription", @"")
+                                                                                     attributes:[self attributesForRestoreDescription]];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     self.stringMaker = [[VPurchaseStringMaker alloc] init];
-    self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.productIdentifier];
+    self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
     
     [self resetLoadingState];
     
@@ -117,6 +113,11 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
     self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:16.0f];
     
     self.productTitleLabel.font = [UIFont fontWithName:fontNameRegular size:20.0f];
+}
+
+- (void)populateDataWithVoteType:(VVoteType *)voteType
+{
+    self.productImageView.image = voteType.iconImageLarge;
 }
 
 - (void)populateDataWithProduct:(VProduct *)product
@@ -173,7 +174,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
     self.unlockLoadingLabel.text = nil;
     
     [self populateDataWithProduct:self.product];
-    self.productImageView.image = self.largeIcon;
+    [self populateDataWithVoteType:self.voteType];
     [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
     [self applyTheme];
 }
@@ -193,7 +194,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
                                 {
                                     // If the product for which this view controller was instantiated was returned during
                                     // a purchase restore, then we should dismiss since there's no need to buy it anymore
-                                    if ( [productIdentifiers containsObject:self.productIdentifier] )
+                                    if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
                                     {
                                         [self.delegate purchaseDidFinish:YES];
                                     }
@@ -206,7 +207,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 - (IBAction)close:(id)sender
 {
-    NSDictionary *params = @{ VTrackingKeyProductIdentifier : self.productIdentifier ?: @"" };
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : self.voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase parameters:params];
     
     [self.delegate purchaseDidFinish:NO];
@@ -231,13 +232,13 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 - (IBAction)buyTapped:(id)sender
 {
-    if ( self.productIdentifier == nil )
+    if ( self.voteType == nil )
     {
         return;
     }
     
     [self showUnlockingWithMessage:NSLocalizedString( @"ActivityPurchasing", nil)];
-    NSString *productIdentifier = self.productIdentifier;
+    NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSSet *productIdentifiers)
      {
          [self resetLoadingState];

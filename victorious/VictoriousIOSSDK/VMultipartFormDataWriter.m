@@ -59,7 +59,7 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     return [NSString stringWithFormat:@"multipart/form-data; boundary=\"%@\"", self.boundary];
 }
 
-- (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
+- (BOOL)appendPlaintext:(NSString *)text withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
 {
     __block BOOL success = YES;
     dispatch_sync(self.outputQueue, ^(void)
@@ -74,12 +74,36 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
             success = NO;
             return;
         }
-        if (![self appendData:[s dataUsingEncoding:NSUTF8StringEncoding] error:error])
+        if (![self appendData:[text dataUsingEncoding:NSUTF8StringEncoding] error:error])
         {
             success = NO;
             return;
         }
     });
+    return success;
+}
+
+- (BOOL)appendData:(NSData *)data withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
+{
+    __block BOOL success = YES;
+    dispatch_sync(self.outputQueue, ^(void)
+      {
+          if (![self appendDelimiterWithError:error])
+          {
+              success = NO;
+              return;
+          }
+          if (![self appendHeadersWithFieldName:fieldName filename:nil contentType:@"application/octet-stream" error:error])
+          {
+              success = NO;
+              return;
+          }
+          if (![self appendData:data error:error])
+          {
+              success = NO;
+              return;
+          }
+      });
     return success;
 }
 

@@ -56,11 +56,21 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Writes a new field of type text/plain to the output file
  
- @param s The contents of the new field to write
+ @param text The contents of the new field to write
  @param fieldName the name of the field to put in the content-disposition header
  @param error If something goes wrong, this object will have more information
  */
-- (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
+- (BOOL)appendPlaintext:(NSString *)text withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
+
+/**
+ Writes a new field of type application/octet-stream to the output file
+ 
+ @param data The contents of the new field to write
+ @param fieldName the name of the field to put in the content-disposition header
+ @param error If something goes wrong, this object will have more information
+ */
+- (BOOL)appendData:(NSData *)data withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
+
 /**
  Writes the contents of the given input stream as a new field.
  The input stream should be open and ready for reading.

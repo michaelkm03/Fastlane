@@ -10,8 +10,6 @@
 #import "VVoteType.h"
 #import "VSimpleModalTransition.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class VDependencyManager;
 
 @protocol VPurchaseViewControllerDelegate <NSObject>
@@ -27,23 +25,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependencies>
 
-@property (nonatomic, weak) id<VPurchaseViewControllerDelegate> _Nullable delegate;
+@property (nonatomic, weak) id<VPurchaseViewControllerDelegate> delegate;
 
-@property (nonatomic, strong) UIImage * largeIcon;
-@property (nonatomic, strong) NSString *productIdentifier;
+/**
+ The vote type that a user is trying to unlock.  This is where the product identifier
+ used to make purchases in the App Store comes from.  This property should be set immediately after
+ initialization.  The convenience initializer instantiateFromStoryboard:withVoteType will handle
+ setting this using the supplied vote type parameter.
+ */
+@property (nonatomic, strong) VVoteType *voteType;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic, null_unspecified) IBOutlet UIView *backgroundScreen;
+@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
 
 /** Exposing public property so that external classes/categories can animate it */
-@property (weak, nonatomic, null_unspecified) IBOutlet UIView *modalContainer;
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-                       productIdentifier:(NSString *)productIdentifier
-                               largeIcon:(UIImage *)largeIcon;
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager * _Nonnull)dependencyManager NS_UNAVAILABLE;
+@property (weak, nonatomic) IBOutlet UIView *modalContainer;
 
 @end
-
-NS_ASSUME_NONNULL_END

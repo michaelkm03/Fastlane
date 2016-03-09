@@ -11,8 +11,6 @@ import MBProgressHUD
 
 class VIPGateViewController: UIViewController, VNavigationDestination {
     
-    let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
-    
     @IBOutlet weak private var textView: UITextView!
     @IBOutlet weak private var subscribeButton: UIButton!
     @IBOutlet weak private var restoreButton: UIButton!
@@ -50,17 +48,15 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         updateViews()
     }
     
-    var isLoading: Bool = false {
-        didSet {
-            if isLoading {
-                MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                progressHUD.mode = .CustomView
-                progressHUD.customView = vipIconView
-                progressHUD.labelText = "   Purchasing subscription..."
-            } else {
-                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-            }
+    func setIsLoading(isLoading: Bool, title: String? = nil) {
+        if isLoading {
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            progressHUD.mode = .CustomView
+            progressHUD.customView = vipIconView
+            progressHUD.labelText = title
+        } else {
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
         }
     }
     
@@ -69,9 +65,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBAction func onSubscribe(sender: UIButton? = nil) {
         let productIdentifier = dependencyManager.subscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
-        self.isLoading = true
+        setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
         subscribe.queue() { op in
-            self.isLoading = false
+            self.setIsLoading(false)
             if let error = subscribe.error {
                 let title = "VIP Subscription Failed"
                 let message = error.localizedDescription
@@ -84,9 +80,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     @IBAction func onRestore(sender: UIButton? = nil) {
         let restore = RestorePurchasesOperation()
-        self.isLoading = true
+        setIsLoading(true, title: NSLocalizedString("ActivityRestoring", comment:""))
         restore.queue() { op in
-            self.isLoading = false
+            self.setIsLoading(false)
             if let error = restore.error {
                 let title = "VIP Restore Subscription Failed"
                 let message = error.localizedDescription

@@ -283,7 +283,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)fetchProductIdentifiersIfNeeded
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary<NSString *,id> * _Nullable bindings) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary<NSString *, id> *_Nullable bindings) {
         return voteType.productIdentifier != nil;
     }];
     NSArray *voteTypeProductIdentifiers = [[self.dependencyManager.voteTypes filteredArrayUsingPredicate:predicate] v_map:^NSString *(VVoteType *voteType) {
