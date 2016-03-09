@@ -38,28 +38,3 @@ public struct VIPPurchaseRequest: RequestType {
         return true
     }
 }
-
-class VIPPurchaseRequestBodyWriter: NSObject, RequestBodyWriterType {
-    
-    struct Output {
-        let fileURL: NSURL
-        let contentType: String
-    }
-    
-    let data: NSData
-    
-    init( data: NSData ) {
-        self.data = data
-    }
-    
-    deinit {
-        removeBodyTempFile()
-    }
-    
-    func write() throws -> Output {
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
-        try writer.appendData(data.base64EncodedDataWithOptions([]), withFieldName:"apple_receipt")
-        try writer.finishWriting()
-        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
-    }
-}

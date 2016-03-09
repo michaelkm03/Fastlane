@@ -27,7 +27,7 @@ public struct User {
                 let subscribeDate = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["subscribe_date"].stringValue) else {
                     return nil
             }
-            self.isVIP = isVIP
+            self.isVIP = trueVIPP
             self.subscribeDate = subscribeDate
         }
     }

@@ -442,7 +442,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:marquee.stream
+                                                                          stream:marquee.shelf ?: marquee.stream
                                                                        fromShelf:YES];
         event.indexPath = path;
         event.collectionView = collectionView;

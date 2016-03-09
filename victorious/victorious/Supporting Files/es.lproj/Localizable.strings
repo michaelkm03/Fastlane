@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "Bien";
-"CancelButton"          =   "Cancelar";
 "DeleteButton"          =   "Eliminar";
 "ResetButton"           =   "Reiniciar";
 "Publish"               =   "Publicar";
@@ -151,7 +150,7 @@
 
 "SelectTwitter"         =   "Elije una cuenta de Twitter";
 
-"BlockInappropriate"    =   "Denunciar contenido";
+"BlockInappropriate"    =   "Bloquear";
 "ReportedTitle"         =   "¡Lo tienes!";
 "ReportContentMessage"  =   "Vamos a revisar este contenido dentro de 24 horas.";
 "ReportCommentMessage"  =   "Vamos a revisar este contenido dentro de 24 horas.";
@@ -277,6 +276,8 @@
 "NoFriendsDetail"       =   "No pudimos encontrar amigos tuyos que usen nuestra app. ¡Invítalos!";
 
 "Report/Flag"           =   "Denunciar/Señalar";
+"BlockUser"             =   "Usuario bloqueado";
+"UnblockUser"           =   "Desbloquear usuario";
 "REPOSTERS"             =   "Republicadores"; // Title for a list of users who have reposted something
 "Repost"                =   "Volver a publicar";
 "Reposted"              =   "Vuelto a publicar";

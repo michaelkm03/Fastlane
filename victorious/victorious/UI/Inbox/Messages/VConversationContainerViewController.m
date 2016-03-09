@@ -109,34 +109,10 @@ static const NSUInteger kCharacterLimit = 1024;
                                 {
                                     [self flagConversation];
                                 }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)flagConversation
-{
-    VMessage *mostRecentMessage = (VMessage *)self.conversation.messages.lastObject;
-    if ( mostRecentMessage == nil )
-    {
-        return;
-    }
-    
-    [self.delegate onConversationFlagged:self.conversation];
-    [self.innerViewController onConversationFlagged];
-    
-    NSInteger conversationID = self.conversation.remoteId.integerValue;
-    NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
-    FlagConversationOperation *operation = [[FlagConversationOperation alloc] initWithConversationID:conversationID
-                                                                                 mostRecentMessageID:mostRecentMessageID];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
-     {
-         [self v_showBlockedUserAlertWithCompletion:^(BOOL success)
-          {
-              [self.navigationController popViewControllerAnimated:YES];
-          }];
-     }];
 }
 
 - (void)setConversation:(VConversation *)conversation

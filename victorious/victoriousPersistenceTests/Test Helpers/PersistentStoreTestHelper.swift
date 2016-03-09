@@ -22,7 +22,7 @@ struct PersistentStoreTestHelper {
             }
         }
     }
-
+    
     func createSequence(remoteId remoteId: String, category: String = kVOwnerVideoCategory) -> VSequence {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { sequence in
@@ -47,6 +47,15 @@ struct PersistentStoreTestHelper {
             }
         }
     }
+    
+    func createNode(remoteId: Int, sequence: VSequence) -> VNode {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            return context.v_createObjectAndSave { node in
+                node.remoteId = remoteId
+                node.sequence = sequence
+            }
+        }
+    }
 
     func createAdBreak(adSystemID adSystemID: UInt = kMonetizationPartnerIMA, adTag: String = "http://example.com") -> VAdBreak {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -57,11 +66,11 @@ struct PersistentStoreTestHelper {
         }
     }
 
-    func createConversation() -> VConversation {
+    func createConversation(remoteId remoteId: Int) -> VConversation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_createObject()
             conversation.displayOrder = 0
-            conversation.remoteId = 0
+            conversation.remoteId = remoteId
             conversation.lastMessageText = ""
             conversation.isRead = false
             conversation.postedAt = NSDate()

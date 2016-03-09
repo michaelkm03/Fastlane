@@ -7,7 +7,6 @@
 */
 
 "OK"                    =   "확인";
-"CancelButton"          =   "취소";
 "DeleteButton"          =   "삭제";
 "ResetButton"           =   "초기화";
 "Publish"               =   "게재하기";
@@ -151,7 +150,7 @@
 
 "SelectTwitter"         =   "트위터 계정 선택하기";
 
-"BlockInappropriate"    =   "부적절한 내용 신고";
+"BlockInappropriate"    =   "차단";
 "ReportedTitle"         =   "알겠습니다!";
 "ReportContentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";
 "ReportCommentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";
@@ -277,6 +276,8 @@
 "NoFriendsDetail"       =   "저희 앱을 사용하는 친구가 없습니다. 친구를 초대하세요!";
 
 "Report/Flag"           =   "신고하기";
+"BlockUser"             =   "사용자 차단";
+"UnblockUser"           =   "사용자 차단 해제";
 "REPOSTERS"             =   "리포스터"; // Title for a list of users who have reposted something
 "Repost"                =   "리포스트";
 "Reposted"              =   "리포스트";
