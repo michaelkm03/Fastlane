@@ -209,13 +209,13 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		switch state {
 		case .Loading:
 			cell.text = ""
-            cell.loading = true
+			cell.loading = true
 		case .Error:
 			cell.text = NSLocalizedString( "Error loading results", comment:"" )
-            cell.loading = false
+			cell.loading = false
         case .NoResults:
 			cell.loading = false
-            cell.text = NSLocalizedString( "No results", comment:"" )
+			cell.text = NSLocalizedString( "No results", comment:"" )
 		default:
 			cell.text = ""
 			cell.loading = false
