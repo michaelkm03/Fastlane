@@ -239,7 +239,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     }
     
     /// Invalidates the layout through a batch update so layout changes are animated
-    private func updateLayout(animated: Bool = true) {
+    private func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
         }, completion:nil )
