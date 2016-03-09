@@ -43,30 +43,26 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
     
     override func main() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
-            let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
-            fetchRequest.predicate = self.conversationPredicate
-            guard let conversation = context.v_executeFetchRequest( fetchRequest ).first as? VConversation else {
-                VLog("Unable to load conversation.")
+            guard let messagesPredicate = self.messagesPredicate else {
+                VLog("Unable to load messages without a converationID or userID.")
                 assertionFailure()
                 return
             }
             
-            let predicate = self.paginator.paginatorPredicate
-            guard let messages = conversation.messages?.filteredOrderedSetUsingPredicate(predicate) else {
-                self.results = []
-                return
-            }
-            let sortDescriptor = NSSortDescriptor(key: "displayOrder", ascending: false)
-            self.results = messages.sortedArrayUsingDescriptors( [sortDescriptor] )
+            let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
+            fetchRequest.predicate = self.paginator.paginatorPredicate + messagesPredicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
+            self.results = results
         }
     }
     
-    private var conversationPredicate: NSPredicate? {
+    private var messagesPredicate: NSPredicate? {
         if let conversationID = self.conversationID where conversationID > 0 {
-            return NSPredicate(format: "remoteId == %i", conversationID)
+            return NSPredicate(format: "conversation.remoteId == %i", conversationID)
             
         } else if let userID = self.userID {
-            return NSPredicate(format: "user.remoteId == %i", userID)
+            return NSPredicate(format: "conversation.user.remoteId == %i", userID)
             
         } else {
             return nil

@@ -36,14 +36,14 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
             let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
                 return
         }
-        /*self.refreshRemote(
+        self.loadNewItems(
             createOperation: {
                 let op = SequenceCommentsOperation(sequenceID: sequence.remoteId)
                 op.localFetch = true
                 return op
             },
             completion:nil
-        )*/
+        )
     }
     
     func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {

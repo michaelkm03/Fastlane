@@ -32,7 +32,6 @@ final class ConversationListOperation: FetcherOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: Victorious.Keys.displayOrder.rawValue, ascending: true) ]
             let hasRemoteIdPredicate = NSPredicate(format: "remoteId != nil")
-            //let hasMessagesPredicate = NSPredicate(format: "messages.@count > 0")
             fetchRequest.predicate = self.paginator.paginatorPredicate + hasRemoteIdPredicate
             self.results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }

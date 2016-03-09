@@ -40,8 +40,8 @@ class RemoteFetcherOperation: FetcherOperation {
         }
     }
     
-    /// Allows subclasses to override to disabled unauthorized (401) error handling.
-    /// Otherwise, these errors are handled by default.
+    /// Can be set to `false` or overidden with custom logic to determine if
+    /// operations should bypass authorization error checking.
     var requiresAuthorization: Bool = true {
         didSet {
             if requiresAuthorization {

@@ -31,7 +31,7 @@ class TestRequestExecutor: RequestExecutorType {
         self.result = nil
     }
     
-    // MARKL - RequestExecutorType
+    // MARK: - RequestExecutorType
     
     let error: NSError?
     
