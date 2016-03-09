@@ -27,7 +27,6 @@
 #import "VURLSelectionResponder.h"
 #import "victorious-Swift.h"
 #import "VCrashlyticsLogTracking.h"
-#import "NSArray+VMap.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -261,7 +260,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
-    [self fetchProductIdentifiersIfNeeded];
+    [[[FetchProductIdentifiersOperation alloc] initWithDependencyManager:dependencyManager] queueWithCompletion:nil];
 
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
@@ -279,30 +278,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
-}
-
-- (void)fetchProductIdentifiersIfNeeded
-{
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary<NSString *, id> *_Nullable bindings) {
-        return voteType.productIdentifier != nil;
-    }];
-    NSArray *voteTypeProductIdentifiers = [[self.dependencyManager.voteTypes filteredArrayUsingPredicate:predicate] v_map:^NSString *(VVoteType *voteType) {
-        return voteType.productIdentifier;
-    }];
-    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] initWithArray:voteTypeProductIdentifiers];
-    [productIdentifiers addObject:self.dependencyManager.vipSubscriptionProductIdentifier];
-    NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
-    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiersSet success:nil failure:^(NSError *error)
-     {
-         if ( error != nil )
-         {
-             VLog(@"FAILED: Could not fetch products with identifiers %@", productIdentifiers);
-         }
-         else
-         {
-             VLog(@"SUCCESS: Fetched products with identifiers %@", productIdentifiers);
-         }
-     }];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion

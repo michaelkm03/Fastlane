@@ -16,6 +16,11 @@ class VIPValidateReceiptOperation: FetcherOperation, RequestOperation {
     }()
     
     override func main() {
+        guard request != nil else {
+            cancel()
+            return
+        }
+        
         // Let the backend validate the receipt and they will let us know at next login
         // whether or not the user is a VIP user
         requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
