@@ -27,7 +27,7 @@ class MediaSearchOptions: NSObject {
 }
 
 /// View controller that allows users to search for media files as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate {
+class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -110,7 +110,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
     }
     
-    func cancel(sender: AnyObject?) {
+    func cancel() {
         progressHUD?.hide(true)
     }
     
@@ -123,25 +123,10 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		
 		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
         
-        let view = UIView(frame: CGRectMake(0, 0, 80, 80))
-        
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
-        spinner.startAnimating()
-        spinner.frame = CGRectMake(15, 0, 50, 50)
-        
-        let button = UIButton(type: .System)
-        button.setTitle(NSLocalizedString("Cancel", comment: ""), forState: UIControlState.Normal)
-        button.titleLabel?.textAlignment = NSTextAlignment.Center
-        button.titleLabel?.font = UIFont.systemFontOfSize(20, weight: UIFontWeightSemibold)
-        button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        button.titleLabel?.minimumScaleFactor = 0.5
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.frame = CGRectMake(-10, 50, 100, 30)
-        button.addTarget(self, action: "cancel:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        view.addSubview(spinner)
-        view.addSubview(button)
-        
+        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
+            return
+        }
+        view.delegate = self
         
         progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
         progressHUD?.mode = MBProgressHUDMode.CustomView
@@ -150,24 +135,20 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         progressHUD?.dimBackground = true
 		progressHUD?.show(true)
         
-        let gestureRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: "cancel:")
-		progressHUD?.addGestureRecognizer(gestureRecognizer)
-        
 		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
+            
+            self.progressHUD?.hide(true)
+            self.v_showErrorWithTitle("Error rendering Media", message: "")
+
+//			if let previewImage = previewImage, let mediaURL = mediaURL {
+//				mediaSearchResultObject.exportPreviewImage = previewImage
+//				mediaSearchResultObject.exportMediaURL = mediaURL
+//				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+//				
+//			} else {
+//                self.v_showErrorWithTitle("Error rendering Media", message: "")
+//			}
 			
-			if let previewImage = previewImage, let mediaURL = mediaURL {
-				mediaSearchResultObject.exportPreviewImage = previewImage
-				mediaSearchResultObject.exportMediaURL = mediaURL
-				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
-				
-			} else {
-				let errorProgressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
-				errorProgressHUD.mode = .Text
-				errorProgressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
-				errorProgressHUD.hide(true, afterDelay: 3.0)
-			}
-			
-			self.progressHUD?.hide(true)
 		}
     }
 	
