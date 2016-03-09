@@ -12,6 +12,8 @@ class VIPSubscribeOperation: Operation {
     
     let productIdentifier: String
     
+    var purchaseManager: VPurchaseManager = VPurchaseManager.sharedInstance()
+    
     var error: NSError?
     
     init(productIdentifier: String) {
@@ -22,7 +24,7 @@ class VIPSubscribeOperation: Operation {
         super.start()
         beganExecuting()
         
-        VPurchaseManager.sharedInstance().purchaseProductWithIdentifier(productIdentifier,
+        purchaseManager.purchaseProductWithIdentifier(productIdentifier,
             success: { results in
                 self.finishedExecuting()
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()

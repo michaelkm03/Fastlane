@@ -10,13 +10,15 @@ import Foundation
 
 class RestorePurchasesOperation: Operation {
     
+    var purchaseManager: VPurchaseManager = VPurchaseManager.sharedInstance()
+    
     var error: NSError?
     
     override func start() {
         super.start()
         beganExecuting()
         
-        VPurchaseManager.sharedInstance().restorePurchasesSuccess(
+        purchaseManager.restorePurchasesSuccess(
             { results in
                 self.finishedExecuting()
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()

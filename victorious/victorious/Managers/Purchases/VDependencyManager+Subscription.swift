@@ -8,7 +8,7 @@
 
 extension VDependencyManager {
     
-    var vip_subscriptionProductIdentifier: String? {
+    var vipSubscriptionProductIdentifier: String? {
         guard let dictionary = templateValueOfType(NSDictionary.self, forKey: "subscription") as? NSDictionary else {
             return nil
         }

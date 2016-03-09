@@ -63,7 +63,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.vip_subscriptionProductIdentifier!
+        let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
         subscribe.queue() { op in

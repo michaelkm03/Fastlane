@@ -3754,6 +3754,7 @@
 		A7FFCE4D1C8FCDD900B1BE49 /* ValidateReceiptOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptOperation.swift; sourceTree = "<group>"; };
 		A7FFCE4E1C8FCDD900B1BE49 /* VIPSubscribeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSubscribeOperation.swift; sourceTree = "<group>"; };
 		A7FFCE4F1C8FCDD900B1BE49 /* VIPSubscriptionSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSubscriptionSuccessOperation.swift; sourceTree = "<group>"; };
+		A7FFCE541C8FD6B600B1BE49 /* VPurchaseManagerType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPurchaseManagerType.h; sourceTree = "<group>"; };
 		ADF02F3C7A401A3577784A0F /* Pods-victoriousPersistenceTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.stable.xcconfig"; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B074C5B11B39D41F00EA3FFC /* VHashmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashmarkView.h; sourceTree = "<group>"; };
@@ -6893,6 +6894,7 @@
 				A70FC1081A2D558200F5BBDE /* VPurchase.h */,
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
 				A7AEF9C01A83F26400A3D3A0 /* VPurchaseDebugSettings.h */,
+				A7FFCE541C8FD6B600B1BE49 /* VPurchaseManagerType.h */,
 				A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */,
 				A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */,
 				A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */,
