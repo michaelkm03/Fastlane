@@ -82,9 +82,9 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
                 XCTAssertEqual(experienceEnhancer.iconImage, voteType.iconImage)
                 XCTAssertEqual(experienceEnhancer.voteCount, Int(voteType.voteTypeID))
                 
-                XCTAssertEqual(experienceEnhancer.cooldownDuration, Double(voteType.cooldownDuration.doubleValue/1000))
-                XCTAssertEqual(experienceEnhancer.flightDuration, Double(voteType.flightDuration.floatValue/1000))
-                XCTAssertEqual(experienceEnhancer.animationDuration, Double(voteType.animationDuration.floatValue/1000))
+                XCTAssertEqualWithAccuracy(experienceEnhancer.cooldownDuration, voteType.cooldownDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
+                XCTAssertEqualWithAccuracy(experienceEnhancer.flightDuration, voteType.flightDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
+                XCTAssertEqualWithAccuracy(experienceEnhancer.animationDuration, voteType.animationDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
             }
             
             expectation.fulfill()
