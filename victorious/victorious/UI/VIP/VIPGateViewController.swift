@@ -63,7 +63,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.subscriptionProductIdentifier!
+        let productIdentifier = dependencyManager.vip_subscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
         subscribe.queue() { op in
@@ -159,5 +159,38 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         }
         
         return true
+    }
+}
+
+
+private extension VDependencyManager {
+    
+    var greetingText: String {
+        return stringForKey("greeting.text")
+    }
+    
+    var greetingFont: UIFont {
+        return fontForKey("greeting.font")
+    }
+    
+    var greetingColor: UIColor {
+        return colorForKey("greeting.color")
+    }
+    
+    var subscribeColor: UIColor {
+        return colorForKey("subscribe.color")
+    }
+    
+    var subscribeText: String {
+        return stringForKey("subscribe.text")
+    }
+    
+    var subscribeFont: UIFont {
+        return fontForKey("subscribe.font")
+    }
+    
+    var backgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background!.backgroundColor
     }
 }
