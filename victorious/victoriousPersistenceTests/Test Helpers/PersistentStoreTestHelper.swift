@@ -57,11 +57,11 @@ struct PersistentStoreTestHelper {
         }
     }
 
-    func createConversation() -> VConversation {
+    func createConversation(remoteId remoteId: Int) -> VConversation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_createObject()
             conversation.displayOrder = 0
-            conversation.remoteId = 0
+            conversation.remoteId = NSNumber(integer: remoteId)
             conversation.lastMessageText = ""
             conversation.isRead = false
             conversation.postedAt = NSDate()
