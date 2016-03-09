@@ -12,7 +12,7 @@ class VIPSubscribeOperation: Operation {
     
     let productIdentifier: String
     
-    var purchaseManager: VPurchaseManager = VPurchaseManager.sharedInstance()
+    var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     var error: NSError?
     
@@ -26,8 +26,8 @@ class VIPSubscribeOperation: Operation {
         
         purchaseManager.purchaseProductWithIdentifier(productIdentifier,
             success: { results in
-                self.finishedExecuting()
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
+                self.finishedExecuting()
             },
             failure: { error in
                 self.error = error

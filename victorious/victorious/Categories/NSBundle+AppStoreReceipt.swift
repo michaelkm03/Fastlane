@@ -6,9 +6,13 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-extension NSBundle {
+protocol ReceiptDataSource {
+    func readReceiptData() -> NSData?
+}
+
+extension NSBundle: ReceiptDataSource {
     
-    func v_readReceiptData() -> NSData? {
+    func readReceiptData() -> NSData? {
         guard let appStoreReceiptURL = appStoreReceiptURL else {
             VLog("Failed to obtain appStoreReceiptURL")
             return nil

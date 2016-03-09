@@ -9,8 +9,8 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VVoteType.h"
+#import "victorious-Swift.h"
 
-NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 static NSString * const kImageURLKey = @"imageURL";
 
 @interface VVoteType ()
@@ -191,23 +191,6 @@ static NSString * const kImageURLKey = @"imageURL";
     }
     
     return UIViewContentModeScaleAspectFill;
-}
-
-@end
-
-#pragma mark -
-
-@implementation VDependencyManager (VVoteType)
-
-- (NSArray *)voteTypes
-{
-    return [self arrayOfValuesOfType:[VVoteType class] forKey:VDependencyManagerVoteTypesKey];
-}
-
-- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"productIdentifier == %@", productIdentifier];
-    return [self.voteTypes filteredArrayUsingPredicate:predicate].firstObject;
 }
 
 @end

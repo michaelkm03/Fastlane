@@ -1,5 +1,5 @@
 //
-//  FetchProductIdentifiersOperation.swift
+//  FetchTemplateProductIdentifiersOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/8/16.
@@ -8,28 +8,26 @@
 
 import Foundation
 
-class FetchProductIdentifiersOperation: Operation {
+class FetchTemplateProductIdentifiersOperation: Operation {
     
-    var purchaseManager: VPurchaseManager = VPurchaseManager.sharedInstance()
+    var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    let dependencyManager: VDependencyManager
+    var productsDataSource: TemplateProductsDataSource
     
     var error: NSError?
     
-    init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
+    init(productsDataSource: TemplateProductsDataSource) {
+        self.productsDataSource = productsDataSource
     }
     
     override func start() {
         super.start()
         beganExecuting()
         
-        let voteTypeProductIdentifiers = (dependencyManager.voteTypes() ?? [])
-            .flatMap { $0.productIdentifier }
-            .filter { !$0.characters.isEmpty }
+        let voteTypeProductIdentifiers = productsDataSource.productIdentifiersForVoteTypes.filter { !$0.characters.isEmpty }
         
         let subscriptionProductIdentiers: [String]
-        if let vipSubscriptionProductIdentifier = dependencyManager.vipSubscriptionProductIdentifier {
+        if let vipSubscriptionProductIdentifier = productsDataSource.vipSubscriptionProductIdentifier {
             subscriptionProductIdentiers = [vipSubscriptionProductIdentifier]
         } else {
             subscriptionProductIdentiers = []

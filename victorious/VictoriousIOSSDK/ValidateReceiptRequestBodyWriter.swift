@@ -1,5 +1,5 @@
 //
-//  VIPPurchaseRequestBodyWriter.swift
+//  ValidateReceiptRequestBodyWriter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/8/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPPurchaseRequestBodyWriter: NSObject, RequestBodyWriterType {
+class ValidateReceiptRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     struct Output {
         let fileURL: NSURL

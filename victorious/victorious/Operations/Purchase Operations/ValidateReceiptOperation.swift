@@ -8,16 +8,18 @@
 
 import Foundation
 
-class VIPValidateReceiptOperation: FetcherOperation, RequestOperation {
+class ValidateReceiptOperation: FetcherOperation, RequestOperation {
     
-    lazy var request: VIPPurchaseRequest! = {
-        let receiptData = NSBundle.mainBundle().v_readReceiptData() ?? NSData()
-        return VIPPurchaseRequest(data: receiptData)
+    var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
+    
+    lazy var request: ValidateReceiptRequest! = {
+        let receiptData = self.receiptDataSource.readReceiptData() ?? NSData()
+        return ValidateReceiptRequest(data: receiptData)
     }()
     
     override func main() {
         guard request != nil else {
-            cancel()
+            self.error = NSError(domain:FetcherOperation.errorDomain, code:99, userInfo:nil)
             return
         }
         

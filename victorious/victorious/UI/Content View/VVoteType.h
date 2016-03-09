@@ -11,8 +11,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retrieving vote types from an instance of VDependencyManager
-
 @interface VVoteType : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, readonly) NSNumber *displayOrder;
@@ -44,21 +42,5 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
  `voteTypes' parameter.  Returns nil if those none of the VVoteType's supplied are purchaseable.
  */
 + (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes;
-
-@end
-
-#pragma mark -
-
-@interface VDependencyManager (VVoteType)
-
-/**
- Returns an array of VVoteType objects
- */
-- (NSArray *)voteTypes;
-
-/**
- Returns the VVoteType whose productIdentifier matches the one given.
- */
-- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier;
 
 @end

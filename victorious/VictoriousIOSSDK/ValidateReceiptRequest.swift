@@ -1,5 +1,5 @@
 //
-//  VIPPurchaseRequest.swift
+//  ValidateReceiptRequest.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/4/16.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-public struct VIPPurchaseRequest: RequestType {
+public struct ValidateReceiptRequest: RequestType {
     
-    private let requestBodyWriter: VIPPurchaseRequestBodyWriter
-    private let requestBody: VIPPurchaseRequestBodyWriter.Output
+    private let requestBodyWriter: ValidateReceiptRequestBodyWriter
+    private let requestBody: ValidateReceiptRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/purchase")!)
@@ -26,15 +26,14 @@ public struct VIPPurchaseRequest: RequestType {
             return nil
         }
         do {
-            requestBodyWriter = VIPPurchaseRequestBodyWriter(data: data)
+            requestBodyWriter = ValidateReceiptRequestBodyWriter(data: data)
             requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {
         requestBodyWriter.removeBodyTempFile()
-        return true
     }
 }

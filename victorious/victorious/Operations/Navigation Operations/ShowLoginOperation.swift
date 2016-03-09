@@ -20,10 +20,6 @@ class ShowLoginOperation: NavigationOperation {
         self.dependencyManager = dependencyManager
         self.context = context
         self.animated = animated
-        
-        super.init()
-        
-        qualityOfService = .UserInteractive
     }
     
     // MARK: - Override

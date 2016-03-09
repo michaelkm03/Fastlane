@@ -13,8 +13,10 @@
 
 #import "VPurchase.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
- Defines an object that interactins with StoreKit in order to make purchases of IAP
+ Defines an object that interacts with StoreKit in order to make purchases of IAP
  and subscriptions.
  */
 @protocol VPurchaseManagerType
@@ -96,3 +98,5 @@
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier;
 
 @end
+
+NS_ASSUME_NONNULL_END

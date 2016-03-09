@@ -10,7 +10,7 @@ import Foundation
 
 class RestorePurchasesOperation: Operation {
     
-    var purchaseManager: VPurchaseManager = VPurchaseManager.sharedInstance()
+    var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     var error: NSError?
     
@@ -20,8 +20,8 @@ class RestorePurchasesOperation: Operation {
         
         purchaseManager.restorePurchasesSuccess(
             { results in
-                self.finishedExecuting()
                 VIPSubscriptionSuccessOperation().rechainAfter(self).queue()
+                self.finishedExecuting()
             },
             failure: { error in
                 self.error = error

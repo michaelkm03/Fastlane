@@ -16,6 +16,6 @@ class VIPSubscriptionSuccessOperation: FetcherOperation {
             context.v_save()
         }
         
-        VIPValidateReceiptOperation().after(self).queue()
+        ValidateReceiptOperation().after(self).queue()
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 
 extension User {
 
-    init(userID: Int) {
+    init(userID: Int, vipStatus: VIPStatus? = nil) {
         self.userID = userID
         self.email = nil
         self.name = nil
@@ -30,5 +30,6 @@ extension User {
         self.previewImageAssets = nil
         self.maxVideoUploadDuration = nil
         self.avatar = nil
+        self.vipStatus = vipStatus
     }
 }

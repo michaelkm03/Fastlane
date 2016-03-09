@@ -260,7 +260,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
-    [[[FetchProductIdentifiersOperation alloc] initWithDependencyManager:dependencyManager] queueWithCompletion:nil];
+    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:dependencyManager] queueWithCompletion:nil];
 
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     

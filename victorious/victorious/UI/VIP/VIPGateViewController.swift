@@ -112,36 +112,19 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     private func openGate() {
-        guard let rootViewController = VRootViewController.sharedRootViewController() else {
-            assertionFailure()
-            return
-        }
-        
-        // WARNING: Temporyary for testing only until a Forum view controller is avialabl
-        let vc = UIViewController()
-        vc.view.backgroundColor = UIColor.redColor()
-        vc.view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
-        rootViewController.presentViewController(vc, animated: true) {
+        ShowForumOperation(dependencyManager: dependencyManager).queue() { _ in
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
         }
     }
-    
-    // WARNING: Temporyary for testing only until a Forum view controller is avialable
-    func exit() {
-        guard let rootViewController = VRootViewController.sharedRootViewController() else {
-            assertionFailure()
-            return
-        }
-        rootViewController.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     private func updateViews() {
         guard isViewLoaded() else {
             return
         }
         
+        restoreButton.setTitle(dependencyManager.restoreText, forState: .Normal)
+        restoreButton.titleLabel?.textColor = dependencyManager.subscribeColor
+        
         subscribeButton.setTitle(dependencyManager.subscribeText, forState: .Normal)
-        subscribeButton.titleLabel?.font = dependencyManager.subscribeFont
         subscribeButton.backgroundColor = dependencyManager.subscribeColor
         
         textView.text = dependencyManager.greetingText
@@ -161,7 +144,6 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         return true
     }
 }
-
 
 private extension VDependencyManager {
     
@@ -185,8 +167,8 @@ private extension VDependencyManager {
         return stringForKey("subscribe.text")
     }
     
-    var subscribeFont: UIFont {
-        return fontForKey("subscribe.font")
+    var restoreText: String {
+        return stringForKey("restore.text")
     }
     
     var backgroundColor: UIColor? {

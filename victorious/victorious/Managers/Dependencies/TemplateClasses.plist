@@ -182,6 +182,8 @@
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
+	<key>forum.screen</key>
+	<string>victorious.ForumViewController</string>
 	<key>achievement.interstitial</key>
 	<string>victorious.AchievementViewController</string>
 	<key>vip.screen</key>
