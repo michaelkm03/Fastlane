@@ -137,6 +137,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             self.profileHeaderViewController.delegate = self;
             [self setInitialHeaderState];
+            [self initializeTrophyCaseScreen];
         }
     }
     else
@@ -189,7 +190,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self addAccessoryItems];
-    [self initializeTrophyCaseScreen];
     
     self.navigationViewfloatingController.animationEnabled = YES;
     
