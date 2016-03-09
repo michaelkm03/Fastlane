@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, ComposerController {
+class ComposerViewController: UIViewController, Composer {
     
     /// The maximum number of characters a user can input into
     /// the composer. Defaults to 0, allowing users to input as
@@ -17,7 +17,7 @@ class ComposerViewController: UIViewController, ComposerController {
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private let attachmentTabs: [ComposerControllerAttachmentTab]? = nil
+    private let attachmentTabs: [ComposerAttachmentTab]? = nil
     
     
     //MARK: - ComposerController
@@ -28,5 +28,22 @@ class ComposerViewController: UIViewController, ComposerController {
         }
     }
     
-    weak var delegate: ComposerControllerDelegate?
+    weak var delegate: ComposerDelegate?
+    
+    
+    //MARK: Initialization
+    
+    private var dependencyManager: VDependencyManager! {
+        didSet {
+            
+        }
+    }
+    
+    class func new( dependencyManager dependencyManager: VDependencyManager ) -> ComposerViewController {
+        
+        //Load from storyboard
+        let composerVC = ComposerViewController()
+        composerVC.dependencyManager = dependencyManager
+        return composerVC
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  LightboxViewControllerOverflowMenuItem.swift
+//  LightboxMenuItem.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,15 +8,14 @@
 
 import Foundation
 
-enum LightboxViewControllerOverflowMenuItem {
+enum LightboxMenuItem {
     
     private struct Icon {
         
-        //TODO: Replace with real icon names once assets are imported
-        static let share = UIImage(named: "share")!
-        static let report = UIImage(named: "library")!
-        static let blockUser = UIImage(named: "gif")!
-        static let promote = UIImage(named: "promote")!
+        static let share: UIImage! = nil
+        static let report: UIImage! = nil
+        static let blockUser: UIImage! = nil
+        static let promote: UIImage! = nil
     }
     
     case Share, Report, BlockUser, Promote

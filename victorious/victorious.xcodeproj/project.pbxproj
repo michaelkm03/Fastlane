@@ -1662,13 +1662,13 @@
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
-		F03B203C1C865EC3005E83A0 /* StageControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */; };
+		F03B203C1C865EC3005E83A0 /* StageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203B1C865EC3005E83A0 /* StageDelegate.swift */; };
 		F03B203E1C865FDA005E83A0 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B203D1C865FDA005E83A0 /* StageViewController.swift */; };
 		F03B20421C866161005E83A0 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20411C866161005E83A0 /* ChatFeedViewController.swift */; };
-		F03B20441C86616F005E83A0 /* ChatFeedControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */; };
+		F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */; };
 		F03B20461C86656B005E83A0 /* LightboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20451C86656B005E83A0 /* LightboxViewController.swift */; };
-		F03B20481C866581005E83A0 /* LightboxViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20471C866581005E83A0 /* LightboxViewControllerDelegate.swift */; };
-		F03B204A1C8665CF005E83A0 /* LightboxViewControllerOverflowMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20491C8665CF005E83A0 /* LightboxViewControllerOverflowMenuItem.swift */; };
+		F03B20481C866581005E83A0 /* LightboxDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20471C866581005E83A0 /* LightboxDelegate.swift */; };
+		F03B204A1C8665CF005E83A0 /* LightboxMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
@@ -1741,12 +1741,12 @@
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
-		F09E8C741C8F7B0A00437ACD /* ChatFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C731C8F7B0A00437ACD /* ChatFeedController.swift */; };
-		F09E8C761C8F7C0400437ACD /* StageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C751C8F7C0400437ACD /* StageController.swift */; };
+		F09E8C741C8F7B0A00437ACD /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */; };
+		F09E8C761C8F7C0400437ACD /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C751C8F7C0400437ACD /* Stage.swift */; };
 		F09E8C7A1C8F7CCC00437ACD /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */; };
-		F09E8C7B1C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */; };
-		F09E8C7C1C8F7CCC00437ACD /* ComposerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */; };
-		F09E8C7E1C8F7CDA00437ACD /* ComposerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */; };
+		F09E8C7B1C8F7CCC00437ACD /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C781C8F7CCC00437ACD /* ComposerAttachmentTab.swift */; };
+		F09E8C7C1C8F7CCC00437ACD /* ComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C791C8F7CCC00437ACD /* ComposerDelegate.swift */; };
+		F09E8C7E1C8F7CDA00437ACD /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C7D1C8F7CDA00437ACD /* Composer.swift */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
@@ -1785,6 +1785,8 @@
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
 		F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AE11B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
+		F0F777AB1C8FA344002F5401 /* StageMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777AA1C8FA344002F5401 /* StageMedia.swift */; };
+		F0F777AD1C8FAC9A002F5401 /* Lightbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */; };
 		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
 		F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
@@ -4358,13 +4360,13 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
-		F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageControllerDelegate.swift; sourceTree = "<group>"; };
+		F03B203B1C865EC3005E83A0 /* StageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageDelegate.swift; sourceTree = "<group>"; };
 		F03B203D1C865FDA005E83A0 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
 		F03B20411C866161005E83A0 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
-		F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedControllerDelegate.swift; sourceTree = "<group>"; };
+		F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
 		F03B20451C86656B005E83A0 /* LightboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxViewController.swift; sourceTree = "<group>"; };
-		F03B20471C866581005E83A0 /* LightboxViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxViewControllerDelegate.swift; sourceTree = "<group>"; };
-		F03B20491C8665CF005E83A0 /* LightboxViewControllerOverflowMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxViewControllerOverflowMenuItem.swift; sourceTree = "<group>"; };
+		F03B20471C866581005E83A0 /* LightboxDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxDelegate.swift; sourceTree = "<group>"; };
+		F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightboxMenuItem.swift; sourceTree = "<group>"; };
 		F03C134B1B69373200287F4C /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		F03C134C1B69373200287F4C /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -4481,12 +4483,12 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F09E8C651C88CBAA00437ACD /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
-		F09E8C731C8F7B0A00437ACD /* ChatFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedController.swift; sourceTree = "<group>"; };
-		F09E8C751C8F7C0400437ACD /* StageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageController.swift; sourceTree = "<group>"; };
+		F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
+		F09E8C751C8F7C0400437ACD /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerViewController.swift; path = Composer/ComposerViewController.swift; sourceTree = "<group>"; };
-		F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerAttachmentTab.swift; path = Composer/ComposerControllerAttachmentTab.swift; sourceTree = "<group>"; };
-		F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerControllerDelegate.swift; path = Composer/ComposerControllerDelegate.swift; sourceTree = "<group>"; };
-		F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerController.swift; sourceTree = "<group>"; };
+		F09E8C781C8F7CCC00437ACD /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerAttachmentTab.swift; path = Composer/ComposerAttachmentTab.swift; sourceTree = "<group>"; };
+		F09E8C791C8F7CCC00437ACD /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerDelegate.swift; path = Composer/ComposerDelegate.swift; sourceTree = "<group>"; };
+		F09E8C7D1C8F7CDA00437ACD /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
@@ -4568,6 +4570,8 @@
 		F0F04AF21B29E8FE00F6F401 /* VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShareMenuItem.h; sourceTree = "<group>"; };
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
+		F0F777AA1C8FA344002F5401 /* StageMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMedia.swift; sourceTree = "<group>"; };
+		F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lightbox.swift; sourceTree = "<group>"; };
 		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
 		F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContents.m; sourceTree = "<group>"; };
 		F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsController.h; sourceTree = "<group>"; };
@@ -9266,9 +9270,10 @@
 		F03B20381C865C33005E83A0 /* Stage */ = {
 			isa = PBXGroup;
 			children = (
-				F03B203B1C865EC3005E83A0 /* StageControllerDelegate.swift */,
+				F03B203B1C865EC3005E83A0 /* StageDelegate.swift */,
+				F0F777AA1C8FA344002F5401 /* StageMedia.swift */,
 				F03B203D1C865FDA005E83A0 /* StageViewController.swift */,
-				F09E8C751C8F7C0400437ACD /* StageController.swift */,
+				F09E8C751C8F7C0400437ACD /* Stage.swift */,
 			);
 			name = Stage;
 			sourceTree = "<group>";
@@ -9276,9 +9281,9 @@
 		F03B20391C865C3B005E83A0 /* ChatFeed */ = {
 			isa = PBXGroup;
 			children = (
-				F09E8C731C8F7B0A00437ACD /* ChatFeedController.swift */,
+				F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */,
 				F03B20411C866161005E83A0 /* ChatFeedViewController.swift */,
-				F03B20431C86616F005E83A0 /* ChatFeedControllerDelegate.swift */,
+				F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */,
 			);
 			name = ChatFeed;
 			sourceTree = "<group>";
@@ -9287,8 +9292,9 @@
 			isa = PBXGroup;
 			children = (
 				F03B20451C86656B005E83A0 /* LightboxViewController.swift */,
-				F03B20491C8665CF005E83A0 /* LightboxViewControllerOverflowMenuItem.swift */,
-				F03B20471C866581005E83A0 /* LightboxViewControllerDelegate.swift */,
+				F0F777AC1C8FAC9A002F5401 /* Lightbox.swift */,
+				F03B20491C8665CF005E83A0 /* LightboxMenuItem.swift */,
+				F03B20471C866581005E83A0 /* LightboxDelegate.swift */,
 			);
 			name = Lightbox;
 			sourceTree = "<group>";
@@ -9296,10 +9302,10 @@
 		F048AFCD1C81096F004F516A /* Composer */ = {
 			isa = PBXGroup;
 			children = (
-				F09E8C7D1C8F7CDA00437ACD /* ComposerController.swift */,
+				F09E8C7D1C8F7CDA00437ACD /* Composer.swift */,
 				F09E8C771C8F7CCC00437ACD /* ComposerViewController.swift */,
-				F09E8C781C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift */,
-				F09E8C791C8F7CCC00437ACD /* ComposerControllerDelegate.swift */,
+				F09E8C781C8F7CCC00437ACD /* ComposerAttachmentTab.swift */,
+				F09E8C791C8F7CCC00437ACD /* ComposerDelegate.swift */,
 			);
 			name = Composer;
 			sourceTree = "<group>";
@@ -11209,6 +11215,7 @@
 				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
 				C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */,
+				F0F777AD1C8FAC9A002F5401 /* Lightbox.swift in Sources */,
 				A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
@@ -11275,7 +11282,7 @@
 				F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
-				F09E8C761C8F7C0400437ACD /* StageController.swift in Sources */,
+				F09E8C761C8F7C0400437ACD /* Stage.swift in Sources */,
 				A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */,
 				A76AEAE91C038E0000E8A26F /* SequenceCommentsOperation.swift in Sources */,
 				0317D7501B912A2F00D75E6B /* VDependencyManager+VUserProfile.m in Sources */,
@@ -11334,7 +11341,7 @@
 				A76DD75F1C7BF28600C92BB3 /* ToggleFollowUserOperation.swift in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */,
-				F03B204A1C8665CF005E83A0 /* LightboxViewControllerOverflowMenuItem.swift in Sources */,
+				F03B204A1C8665CF005E83A0 /* LightboxMenuItem.swift in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				798AA5911C3B033D00D267C3 /* LogoutOperation.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
@@ -11431,7 +11438,7 @@
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
-				F09E8C7E1C8F7CDA00437ACD /* ComposerController.swift in Sources */,
+				F09E8C7E1C8F7CDA00437ACD /* Composer.swift in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
@@ -11484,7 +11491,7 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
-				F03B203C1C865EC3005E83A0 /* StageControllerDelegate.swift in Sources */,
+				F03B203C1C865EC3005E83A0 /* StageDelegate.swift in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,
 				A7B1335C1C6178FD006EC4F5 /* ActivityIndicatorCollectionCell.swift in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
@@ -11582,7 +11589,7 @@
 				C348D2111B8C03CA0040042C /* Memoization.swift in Sources */,
 				A700330F1C5FEA1800AB4A57 /* VComment+Equitable.swift in Sources */,
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
-				F09E8C7C1C8F7CCC00437ACD /* ComposerControllerDelegate.swift in Sources */,
+				F09E8C7C1C8F7CCC00437ACD /* ComposerDelegate.swift in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
 				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
 				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
@@ -11712,7 +11719,7 @@
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
-				F09E8C741C8F7B0A00437ACD /* ChatFeedController.swift in Sources */,
+				F09E8C741C8F7B0A00437ACD /* ChatFeed.swift in Sources */,
 				A6EED6A91B5EE4210074052E /* VAlongsideTransitioner.m in Sources */,
 				676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
@@ -11779,6 +11786,7 @@
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
+				F0F777AB1C8FA344002F5401 /* StageMedia.swift in Sources */,
 				7925E7351C584E7900946D0F /* FetchFromMainContextOperation.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
@@ -12027,7 +12035,7 @@
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
-				F03B20441C86616F005E83A0 /* ChatFeedControllerDelegate.swift in Sources */,
+				F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
 				A76363691C5036BF000887C4 /* VSequenceLiker.m in Sources */,
@@ -12038,7 +12046,7 @@
 				6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */,
 				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,
 				D85B707F1B0EAF3F0038CA5B /* VRegistrationModel.m in Sources */,
-				F09E8C7B1C8F7CCC00437ACD /* ComposerControllerAttachmentTab.swift in Sources */,
+				F09E8C7B1C8F7CCC00437ACD /* ComposerAttachmentTab.swift in Sources */,
 				6256A6281C51702A0033439B /* VAdBreak+Parsable.swift in Sources */,
 				0314D4AB19B46B5E00FA363C /* VConversationContainerViewController.m in Sources */,
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,
@@ -12053,7 +12061,7 @@
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
-				F03B20481C866581005E83A0 /* LightboxViewControllerDelegate.swift in Sources */,
+				F03B20481C866581005E83A0 /* LightboxDelegate.swift in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,

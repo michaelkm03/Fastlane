@@ -1,5 +1,5 @@
 //
-//  StageController.swift
+//  Stage.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/8/16.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-protocol StageController {
+protocol Stage {
     
-    weak var delegate: StageControllerDelegate? { get set }
+    weak var delegate: StageDelegate? { get set }
     
     /// Replaces the currently playing media with the one provided.
     func startPlayingMedia(media: VAsset)

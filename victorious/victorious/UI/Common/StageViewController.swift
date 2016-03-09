@@ -8,12 +8,22 @@
 
 import UIKit
 
-class StageViewController: UIViewController, StageController {
+class StageViewController: UIViewController, Stage {
+    
+    private var dependencyManager: VDependencyManager!
+    
+    class func new( dependencyManager dependencyManager: VDependencyManager ) -> StageViewController {
+        
+        //Load from storyboard
+        let stageVC = StageViewController()
+        stageVC.dependencyManager = dependencyManager
+        return stageVC
+    }
     
     
     //MARK: - StageController
     
-    weak var delegate: StageControllerDelegate?
+    weak var delegate: StageDelegate?
     
     func startPlayingMedia(media: VAsset) {
         

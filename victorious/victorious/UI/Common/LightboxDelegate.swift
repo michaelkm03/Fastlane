@@ -1,5 +1,5 @@
 //
-//  LightboxViewControllerDelegate.swift
+//  LightboxDelegate.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/1/16.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol LightboxViewControllerDelegate: class {
+protocol LightboxDelegate: class {
     
     /// Called when the dismiss button is pressed on the lightboxController
-    func lightboxPressedDismiss(lightbox: LightboxViewController)
+    func lightboxPressedDismiss(lightbox: Lightbox)
     
     /// Called when an overflow menu item is selected from the lightbox's overflow menu
-    func lightbox(lightbox: LightboxViewController, selectedOverflowMenuItem: LightboxViewControllerOverflowMenuItem)
+    func lightbox(lightbox: Lightbox, selectedOverflowMenuItem: LightboxMenuItem)
 }

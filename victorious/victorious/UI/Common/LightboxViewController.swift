@@ -8,9 +8,11 @@
 
 import UIKit
 
-class LightboxViewController: UIViewController {
+class LightboxViewController: UIViewController, Lightbox {
     
-    func populateWithMedia(media: VAsset, andOverflowMenuItems menuItems: [LightboxViewControllerOverflowMenuItem]) {
+    weak var delegate: LightboxDelegate?
+    
+    func populateWithMedia(media: VAsset, andOverflowMenuItems menuItems: [LightboxMenuItem]) {
         
     }
 }
