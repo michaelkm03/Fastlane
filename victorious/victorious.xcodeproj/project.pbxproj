@@ -602,8 +602,6 @@
 		79CBAC131C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CBAC121C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift */; };
 		79CFD3C91BF29D25004F70D9 /* MarkConversationReadRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */; };
 		79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */; };
-		79CFD3CD1BF2A105004F70D9 /* FlagConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */; };
-		79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */; };
 		79CFD3D11BF2A722004F70D9 /* ConversationWithUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3D01BF2A722004F70D9 /* ConversationWithUserRequestTests.swift */; };
 		79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */; };
 		79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */; };
@@ -889,6 +887,9 @@
 		A748BD101C890AA3003D5F5F /* NotificaitonsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BD0F1C890AA3003D5F5F /* NotificaitonsRemoteOperation.swift */; };
 		A748BD121C8921DA003D5F5F /* ShowRepostersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BD111C8921DA003D5F5F /* ShowRepostersOperation.swift */; };
 		A748BD141C8921EF003D5F5F /* ShowMemersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BD131C8921EF003D5F5F /* ShowMemersOperation.swift */; };
+		A74C2C601C7410620022AC35 /* DebugErrorHanlder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5E1C7410620022AC35 /* DebugErrorHanlder.swift */; };
+		A74C2C611C7410620022AC35 /* UnauthorizedErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C5F1C7410620022AC35 /* UnauthorizedErrorHandler.swift */; };
+		A74C2C631C74114A0022AC35 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C2C621C74114A0022AC35 /* RequestErrorHandler.swift */; };
 		A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FADB71C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift */; };
 		A75486DA1C691B07003024D8 /* PrunePersistentStoreOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486D91C691B07003024D8 /* PrunePersistentStoreOperation.swift */; };
 		A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75486E01C695B4F003024D8 /* RepostersDataSource.swift */; };
@@ -2794,8 +2795,6 @@
 		79CBAC121C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFetcherOperationTestCase.swift; sourceTree = "<group>"; };
 		79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkConversationReadRequestTests.swift; sourceTree = "<group>"; };
 		79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkConversationReadRequest.swift; sourceTree = "<group>"; };
-		79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagConversationRequestTests.swift; sourceTree = "<group>"; };
-		79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagConversationRequest.swift; sourceTree = "<group>"; };
 		79CFD3D01BF2A722004F70D9 /* ConversationWithUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationWithUserRequestTests.swift; sourceTree = "<group>"; };
 		79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationWithUserRequest.swift; sourceTree = "<group>"; };
 		79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ConversationWithUserFoundResponse.json; sourceTree = "<group>"; };
@@ -5341,7 +5340,6 @@
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */,
-				79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */,
 				A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */,
 				67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */,
 				A7D618EA1C2A7E49007F46EA /* FollowersListRequest.swift */,
@@ -5443,7 +5441,6 @@
 				7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */,
 				0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */,
 				67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */,
-				79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */,
 				67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */,
 				67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */,
 				C32D8BD51BF2D36200AB5085 /* FollowHashtagRequestTests.swift */,
@@ -10722,7 +10719,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */,
 				A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				795271021C348C8900BD41F1 /* UserSearchRequest.swift in Sources */,
@@ -10901,7 +10897,6 @@
 				670C65991C52C49900BD7F3F /* UserShelfTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
-				79CFD3CD1BF2A105004F70D9 /* FlagConversationRequestTests.swift in Sources */,
 				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
 				67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */,
 				67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */,

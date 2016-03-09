@@ -115,30 +115,6 @@ static const NSUInteger kCharacterLimit = 1024;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)flagConversation
-{
-    VMessage *mostRecentMessage = (VMessage *)self.conversation.messages.lastObject;
-    if ( mostRecentMessage == nil )
-    {
-        return;
-    }
-    
-    [self.delegate onConversationFlagged:self.conversation];
-    [self.innerViewController onConversationFlagged];
-    
-    NSInteger conversationID = self.conversation.remoteId.integerValue;
-    NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
-    ConversationFlagOperation *operation = [[ConversationFlagOperation alloc] initWithConversationID:conversationID
-                                                                                 mostRecentMessageID:mostRecentMessageID];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
-     {
-         [self v_showBlockedUserAlertWithCompletion:^(BOOL success)
-          {
-              [self.navigationController popViewControllerAnimated:YES];
-          }];
-     }];
-}
-
 - (void)setConversation:(VConversation *)conversation
 {
     _conversation = conversation;
