@@ -8,7 +8,6 @@
 
 import UIKit
 import VictoriousIOSSDK
-import KVOController
 
 class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
     
@@ -48,32 +47,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        super.init()
-        
-        self.KVOController.observe( conversation,
-            keyPath: "messages",
-            options: [],
-            action: Selector("onConversationChanged:")
-        )
-    }
-    
-    func onConversationChanged( change: [NSObject : AnyObject]? ) {
-        guard let userID = self.conversation.user?.remoteId?.integerValue else {
-            return
-        }
-        
-        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
-                return
-        }
-        self.paginatedDataSource.loadNewItems(
-            createOperation: {
-                let op = ConversationOperation(conversationID: nil, userID: userID)
-                op.localFetch = true
-                return op
-            },
-            completion: nil
-        )
     }
     
     func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {

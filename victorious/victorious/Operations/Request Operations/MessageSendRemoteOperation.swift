@@ -31,7 +31,7 @@ class MessageSendRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     func onComplete(result: SendMessageRequest.ResultType ) {
-        persistentStore.createBackgroundContext().v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let message = context.objectWithID( self.localMessageID ) as? VMessage else {
                 return
             }

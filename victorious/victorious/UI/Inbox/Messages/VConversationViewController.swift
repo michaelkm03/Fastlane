@@ -115,7 +115,15 @@ extension VConversationViewController {
     }
     
     func onUpdate() {
-        self.dataSource.refresh() { (results, error) in
+        self.dataSource.refresh(local: false) { (results, error) in
+            if let results = results where !results.isEmpty {
+                self.scrollToBottomAnimated( true )
+            }
+        }
+    }
+    
+    func fetchNewMessage() {
+        self.dataSource.refresh(local: true) { (results, error) in
             if let results = results where !results.isEmpty {
                 self.scrollToBottomAnimated( true )
             }

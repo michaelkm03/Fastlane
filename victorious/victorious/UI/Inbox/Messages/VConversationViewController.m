@@ -94,7 +94,7 @@
     
     if ( self.hasLoadedOnce )
     {
-        [self.dataSource refreshRemote:nil];
+        [self.dataSource refreshWithLocal:NO completion:nil];
     }
     
     [self updateTableView];
