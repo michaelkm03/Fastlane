@@ -10,6 +10,12 @@
 #import "VCreationTypes.h"
 #import "VAssetCollectionGridViewController.h"
 
+typedef enum : NSUInteger {
+    MediaTypeImage,
+    MediaTypeVideo,
+    MediaTypeUnknown,
+} MediaType;
+
 @interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate, UINavigationControllerDelegate>
 
 /**
@@ -25,6 +31,8 @@
  *  The context for image creation. Defualts to contentCreation.
  */
 @property (nonatomic, assign) VCameraContext context;
+
+- (MediaType)mediaType; // <- returns MediaTypeUnknown. Subclasses should override
 
 /**
  *  To prgoress from capturing to editing call this method. Useful for subclasses to call for alternate capture options.

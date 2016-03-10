@@ -53,7 +53,7 @@
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
-    if ([self isImageFlow])
+    if (self.creationFlowController.mediaType == MediaTypeImage)
     {
         VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
@@ -63,7 +63,7 @@
         }
         self.toolController = imageToolController;
     }
-    else if ([self isVideoFlow])
+    else if (self.creationFlowController.mediaType == MediaTypeVideo)
     {
         VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
@@ -93,17 +93,6 @@
     self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
 }
-
-#pragma mark - Helper
-
-- (BOOL)isImageFlow {
-    return [self.creationFlowController class] == [VImageCreationFlowController class];
-}
-
-- (BOOL)isVideoFlow {
-    return [self.creationFlowController class] == [VVideoCreationFlowController class];
-}
-
 #pragma mark - Target/Action
 
 - (IBAction)publish:(id)sender
