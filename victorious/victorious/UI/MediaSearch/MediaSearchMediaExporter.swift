@@ -93,7 +93,7 @@ struct MediaSearchExporter {
             }
             let fileName = NSUUID().UUIDString
             // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent( "\(fileName)" )
+            return subdirectory.URLByAppendingPathComponent(fileName)
         }
         fatalError( "Unable to find file path for temporary media download." )
     }
