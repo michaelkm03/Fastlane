@@ -137,19 +137,21 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         progressHUD?.dimBackground = true
         progressHUD?.show(true)
         
-        self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
-            
-            self.progressHUD?.hide(true)
-            if let previewImage = previewImage, let mediaURL = mediaURL {
-                mediaSearchResultObject.exportPreviewImage = previewImage
-                mediaSearchResultObject.exportMediaURL = mediaURL
-                self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+        dispatch_after(0.5) {
+            self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
                 
-            } else {
-                MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                self.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+                self.progressHUD?.hide(true)
+                if let previewImage = previewImage, let mediaURL = mediaURL {
+                    mediaSearchResultObject.exportPreviewImage = previewImage
+                    mediaSearchResultObject.exportMediaURL = mediaURL
+                    self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                } else {
+                    if error?.code != NSURLErrorCancelled {
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                        self.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+                    }
+                }
             }
-            
         }
     }
 	
