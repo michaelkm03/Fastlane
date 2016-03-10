@@ -15,10 +15,12 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
+@import SDWebImage;
 @import KVOController;
+
+static const NSInteger kTrophyButtonLeftMargin = 5.0f;
 
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
@@ -88,6 +90,14 @@
 - (UIView *)floatingProfileImage
 {
     return nil;
+}
+
+- (void)addTrophyCaseButton:(UIButton *)button
+{
+    [self.view addSubview:button];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button.topAnchor constraintEqualToAnchor:self.profileImageView.topAnchor].active = YES;
+    [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
 }
 
 #pragma mark - VBackgroundContainer
