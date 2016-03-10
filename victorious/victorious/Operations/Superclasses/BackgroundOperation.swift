@@ -1,5 +1,5 @@
 //
-//  Operation.swift
+//  BackgroundOperation.swift
 //  victorious
 //
 //  Created by Michael Sena on 8/13/15.
@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// An operation designed for subclasses to perform background tasks.  The operation
+/// can execute on a non-main queue, but its completion blocks of subclasses will
+/// always execute on the main thread.
 class BackgroundOperation: NSOperation, Queueable {
     
     private var _executing = false

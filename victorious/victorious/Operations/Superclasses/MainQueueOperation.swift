@@ -8,6 +8,10 @@
 
 import Foundation
 
+/// An operation that performs view controller navigations or other UI work.
+/// Using assertions and customized implementation of `Qeueuable`, all code
+/// in the `main()` function and completion blocks are guaranteed to only
+/// ever run on the main thread.
 class MainQueueOperation: NSOperation, Queueable {
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore

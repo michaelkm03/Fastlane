@@ -9,23 +9,20 @@
 import Foundation
 
 // Creates and populates `VExperienceEnhancers` with any data already stored in Core Data.
-class ExperienceEnhancersOperation: BackgroundOperation {
+class ExperienceEnhancersOperation: FetcherOperation {
     
     let sequenceManagedObjectID: NSManagedObjectID
     let voteTypes: [VVoteType]
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     var experienceEnhancers: [VExperienceEnhancer]?
     
     init(sequence: VSequence, voteTypes: [VVoteType]) {
         self.sequenceManagedObjectID = sequence.objectID
         self.voteTypes = voteTypes
-        super.init()
     }
     
-    override func start() {
-        beganExecuting()
+    override func main() {
         
-        persistentStore.createBackgroundContext().v_performBlock { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             var experienceEnhancers = [VExperienceEnhancer]()
             
             for voteType in self.voteTypes {
@@ -51,7 +48,6 @@ class ExperienceEnhancersOperation: BackgroundOperation {
 
             }
             self.experienceEnhancers = experienceEnhancers
-            self.finishedExecuting()
         }
     }
     
@@ -60,8 +56,6 @@ class ExperienceEnhancersOperation: BackgroundOperation {
             voteResultsSet = sequence.voteResults as? Set<VVoteResult> else {
                 return nil
         }
-        
         return voteResultsSet.filter { $0.remoteId.stringValue == voteType.voteTypeID }.first
     }
-    
 }

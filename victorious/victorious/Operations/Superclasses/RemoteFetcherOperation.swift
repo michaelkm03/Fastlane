@@ -10,6 +10,9 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
+/// An operation whose primary function is to use a VictoriousiOSSDK.RequestType
+/// to execute a network request and parse and insert results into a background
+/// context of the persistent store.
 class RemoteFetcherOperation: FetcherOperation {
     
     lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()

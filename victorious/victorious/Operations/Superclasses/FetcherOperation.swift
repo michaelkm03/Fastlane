@@ -10,6 +10,9 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
+/// An operation that executes a fetch request against the persistent store.
+/// Subclasses of this operation primarily will fetch results from the persistent
+/// store's main context to be returned to main thread calling code.
 class FetcherOperation: NSOperation, Queueable, ErrorOperation, ResultsOperation {
     
     var localFetch: Bool = false
