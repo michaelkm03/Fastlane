@@ -44,7 +44,7 @@ extension User {
         guard let userID = Int(json["id"].stringValue) ?? json["id"].int,
             let statusString = json["status"].string,
             let status = ProfileStatus(rawValue: statusString) else {
-            return nil
+                return nil
         }
         self.userID = userID
         self.status = status
