@@ -23,11 +23,5 @@ class BaseFetcherOperationTestCase: BasePersistentStoreTestCase {
         
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
-        
-        NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
-        NSOperationQueue.v_globalBackgroundQueue.suspended = false
-        
-        NSOperationQueue.mainQueue().cancelAllOperations()
-        NSOperationQueue.mainQueue().suspended = false
     }
 }
