@@ -14,6 +14,12 @@ import VictoriousIOSSDK
 class MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
+    private let mediaSearchResult: MediaSearchResult
+    
+    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/
+    init(mediaSearchResult: MediaSearchResult) {
+        self.mediaSearchResult = mediaSearchResult
+    }
     
     /// Completion closure to be called when all operations are complete.
     ///
@@ -24,12 +30,19 @@ class MediaSearchExporter {
     
     var videoDownloadTask: NSURLSessionDownloadTask?
     
+    deinit {
+        cleanupTempFile()
+    }
+    
+    private(set) var cancelled: Bool = false
+    
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
-    ///
-    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
+    ///downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
+    func loadMedia( completion: MediaSearchExporterCompletion ) {
+        
+        cleanupTempFile()
         
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
@@ -59,7 +72,7 @@ class MediaSearchExporter {
             
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
-            } catch (let error) {
+            } catch {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
                 }
@@ -79,7 +92,21 @@ class MediaSearchExporter {
     }
     
     func cancelDownload() {
+        cleanupTempFile()
+        cancelled = true
         videoDownloadTask?.cancel()
+    }
+    
+    func cleanupTempFile() {
+        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
+            return
+        }
+        let downloadURL = self.downloadURLForRemoteURL(searchResultURL)
+        do {
+            try NSFileManager.defaultManager().removeItemAtURL(downloadURL)
+        } catch {
+            
+        }
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {

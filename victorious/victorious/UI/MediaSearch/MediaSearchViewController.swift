@@ -48,7 +48,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     let scrollPaginator = VScrollPaginator()
 	let dataSourceAdapter = MediaSearchDataSourceAdapter()
-    private lazy var mediaExporter = MediaSearchExporter()
+    private var mediaExporter: MediaSearchExporter?
     
 	weak var delegate: MediaSearchViewControllerDelegate?
 	
@@ -112,7 +112,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     func cancel() {
         progressHUD?.hide(true)
-        self.mediaExporter.cancelDownload()
+        self.mediaExporter?.cancelDownload()
     }
     
     //MARK: - API
@@ -137,22 +137,29 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         progressHUD?.dimBackground = true
         progressHUD?.show(true)
         
-        dispatch_after(0.5) {
-            self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
-                
-                self.progressHUD?.hide(true)
+        self.mediaExporter?.cancelDownload()
+        self.mediaExporter = nil
+        
+        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
+        mediaExporter.loadMedia() { [weak self] (previewImage, mediaURL, error) in
+            dispatch_after(0.5) {
+                guard let strongSelf = self where !mediaExporter.cancelled else {
+                    return
+                }
+                strongSelf.progressHUD?.hide(true)
                 if let previewImage = previewImage, let mediaURL = mediaURL {
                     mediaSearchResultObject.exportPreviewImage = previewImage
                     mediaSearchResultObject.exportMediaURL = mediaURL
-                    self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                    strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
                     if error?.code != NSURLErrorCancelled {
-                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                        self.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+                        MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
+                        strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
                     }
                 }
             }
         }
+        self.mediaExporter = mediaExporter
     }
 	
     func selectCellAtSelectedIndexPath() {
