@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "VBaseWorkspaceViewController.h"
-#import "VAbstractImageVideoCreationFlowController.h"
+
+@class VAbstractImageVideoCreationFlowController;
 
 @interface VWorkspaceViewController : VBaseWorkspaceViewController
 

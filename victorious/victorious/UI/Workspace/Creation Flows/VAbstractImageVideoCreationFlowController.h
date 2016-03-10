@@ -10,11 +10,14 @@
 #import "VCreationTypes.h"
 #import "VAssetCollectionGridViewController.h"
 
-typedef enum : NSUInteger {
+/*
+ *  The media type that the CreationFlowController contains.
+ */
+typedef NS_ENUM (NSUInteger, MediaType) {
     MediaTypeImage,
     MediaTypeVideo,
     MediaTypeUnknown,
-} MediaType;
+};
 
 @interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate, UINavigationControllerDelegate>
 
