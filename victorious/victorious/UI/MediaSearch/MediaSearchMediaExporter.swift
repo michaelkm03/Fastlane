@@ -31,6 +31,22 @@ class MediaSearchExporter {
     
     var videoDownloadTask: NSURLSessionDownloadTask?
     
+    lazy var downloadURL: NSURL = {
+        if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
+            
+            let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
+            let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
+            
+            var isDirectory: ObjCBool = false
+            if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
+                let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
+            }
+            // Create a unique URL for the gif
+            return subdirectory.URLByAppendingPathComponent(self.uuidString)
+        }
+        fatalError( "Unable to find file path for temporary media download." )
+    }()
+    
     deinit {
         cleanupTempFile()
     }
@@ -47,17 +63,12 @@ class MediaSearchExporter {
         
         cleanupTempFile()
         
-        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
+        guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
+            searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
         }
-        let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
         
-        guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
-            let videoURL = mediaSearchResult.sourceMediaURL else {
-                return
-        }
-        
-        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
+        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: searchResultURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
             
             guard let location = location else {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -74,7 +85,7 @@ class MediaSearchExporter {
             }()
             
             do {
-                try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
+                try NSFileManager.defaultManager().moveItemAtURL(location, toURL: self.downloadURL)
             } catch {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
@@ -86,7 +97,7 @@ class MediaSearchExporter {
             dispatch_async( dispatch_get_main_queue() ) {
                 completion(
                     previewImage: previewImage,
-                    mediaUrl: downloadURL,
+                    mediaUrl: self.downloadURL,
                     error: nil
                 )
             }
@@ -101,26 +112,6 @@ class MediaSearchExporter {
     }
     
     func cleanupTempFile() {
-        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
-            return
-        }
-        let downloadURL = downloadURLForRemoteURL(searchResultURL)
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
-    }
-    
-    private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
-            
-            let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
-            let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
-            
-            var isDirectory: ObjCBool = false
-            if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
-                let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
-            }
-            // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent(uuidString)
-        }
-        fatalError( "Unable to find file path for temporary media download." )
     }
 }
