@@ -32,21 +32,6 @@ extension VStream: PersistenceParsable {
             self.previewImageAssets = Set<VImageAsset>(persistentAssets)
         }
         
-        // Parse out the marquee items
-        var displayOrder = 0
-        let sourceMarqueeItems = sourceStream.marqueeItems ?? []
-        let marqueeItems = VStream.persistentStreamItems(
-            fromStreamItems: sourceMarqueeItems,
-            parentStream: sourceStream,
-            context: v_managedObjectContext
-        )
-        for marqueeItem in marqueeItems {
-            let uniqueInfo = [ "marqueeParent" : self, "streamItem" : marqueeItem]
-            let child: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
-            child.displayOrder = displayOrder++
-            self.v_addObject( child, to: "marqueeItemPointers" )
-        }
-        
         // Parse out the streamItems
         let sourceStreamItems = sourceStream.items ?? []
         let streamItems = VStream.persistentStreamItems(

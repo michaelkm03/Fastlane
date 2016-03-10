@@ -14,7 +14,6 @@ class VStreamItemPointer: NSManagedObject {
     @NSManaged var headline: String?
     @NSManaged var streamItem: VStreamItem
     @NSManaged var streamParent: VStream?
-    @NSManaged var marqueeParent: VStream?
     @NSManaged var displayOrder: NSNumber
     @NSManaged var tracking: VTracking?
 }

@@ -11,9 +11,15 @@ import VictoriousIOSSDK
 
 /// Helper that handles loading preview image and streaming GIF asset
 /// to a file using asynchronous operations.
-struct MediaSearchExporter {
+class MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
+    private let mediaSearchResult: MediaSearchResult
+    
+    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/
+    init(mediaSearchResult: MediaSearchResult) {
+        self.mediaSearchResult = mediaSearchResult
+    }
     
     /// Completion closure to be called when all operations are complete.
     ///
@@ -22,13 +28,23 @@ struct MediaSearchExporter {
     /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
     typealias MediaSearchExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
+    var videoDownloadTask: NSURLSessionDownloadTask?
+    
+    deinit {
+        cleanupTempFile()
+    }
+    
+    private(set) var cancelled: Bool = false
+    
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
     /// Calling code should be responsible for deleting the file at the mediaUrl's path.
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
+    func loadMedia( completion: MediaSearchExporterCompletion ) {
+        
+        cleanupTempFile()
         
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
@@ -40,7 +56,7 @@ struct MediaSearchExporter {
                 return
         }
         
-        let videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
+        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
             
             guard let location = location else {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -62,7 +78,7 @@ struct MediaSearchExporter {
             
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
-            } catch (let error) {
+            } catch {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
                 }
@@ -78,7 +94,25 @@ struct MediaSearchExporter {
                 )
             }
         }
-        videoDownloadTask.resume()
+        videoDownloadTask?.resume()
+    }
+    
+    func cancelDownload() {
+        cleanupTempFile()
+        cancelled = true
+        videoDownloadTask?.cancel()
+    }
+    
+    func cleanupTempFile() {
+        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
+            return
+        }
+        let downloadURL = self.downloadURLForRemoteURL(searchResultURL)
+        do {
+            try NSFileManager.defaultManager().removeItemAtURL(downloadURL)
+        } catch {
+            
+        }
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {

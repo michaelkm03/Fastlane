@@ -56,6 +56,7 @@
 @dynamic likedSequences;
 @dynamic accountIdentifier;
 @dynamic isNewUser;
+@dynamic achievementsUnlocked;
 @dynamic avatarBadgeType;
 
 - (AvatarBadgeType)badgeType
