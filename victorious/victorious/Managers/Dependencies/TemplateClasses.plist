@@ -188,5 +188,9 @@
 	<string>victorious.AchievementViewController</string>
 	<key>vip.screen</key>
 	<string>victorious.VIPGateViewController</string>
+	<key>trophyCase.screen</key>
+	<string>victorious.TrophyCaseViewController</string>
+	<key>trophyCase.achievement</key>
+	<string>victorious.Achievement</string>
 </dict>
 </plist>

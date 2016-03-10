@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "VBaseWorkspaceViewController.h"
 
+@class VAbstractImageVideoCreationFlowController;
+
 @interface VWorkspaceViewController : VBaseWorkspaceViewController
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 @property (nonatomic, strong) NSString *activityText;
 @property (nonatomic, strong) NSString *confirmCancelMessage;
-
+@property (nonatomic, strong) VAbstractImageVideoCreationFlowController *creationFlowController;
 
 /**
  Publishes the current content in the workspace.

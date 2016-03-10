@@ -215,8 +215,8 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 			cell.loading = false
         case .NoResults:
 			cell.loading = false
-			cell.text = NSLocalizedString( "No results", comment:"" )	
-		default:
+			cell.text = NSLocalizedString( "No results", comment:"" )
+        default:
 			cell.text = ""
 			cell.loading = false
 		}

@@ -37,7 +37,7 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     self.marqueeCaptionViews = nil;
 }
 
-- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithStreamID:(NSString *)streamID
+- (void)setupWithMarqueeItems:(NSArray *)marqueeItems
 {
     [self reset];
     self.marqueeItems = marqueeItems;
