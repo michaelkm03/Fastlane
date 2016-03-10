@@ -10,8 +10,8 @@ import Foundation
 
 class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var iconImageView: UIImageView!
     
     var achievement: Achievement? {
         didSet {

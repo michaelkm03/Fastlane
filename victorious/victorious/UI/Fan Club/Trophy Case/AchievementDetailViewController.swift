@@ -19,7 +19,7 @@ class AchievementDetailViewController: UIViewController {
             confirmationButton.setTitle(NSLocalizedString("Dismiss Alert", comment: ""), forState: .Normal)
         }
     }
-    @IBOutlet weak var alertView: UIView! {
+    @IBOutlet private weak var alertView: UIView! {
         didSet {
             alertView.layer.cornerRadius = 10.0
         }
@@ -63,7 +63,7 @@ class AchievementDetailViewController: UIViewController {
     
     //MARK: - User Interactions
     
-    @IBAction func dismiss(sender: UIButton) {
+    @IBAction private func dismiss(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     

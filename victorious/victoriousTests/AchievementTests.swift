@@ -62,10 +62,11 @@ class AchievementTests: XCTestCase {
             configuration: testConfiguration,
             dictionaryOfClassesByTemplateName: nil)
         
-        let achievement: Achievement = Achievement(dependencyManager: dependencyManager)
+        guard let achievement: Achievement = Achievement(dependencyManager: dependencyManager) else {
+            XCTFail("initialization failed")
+            return
+        }
         
-        XCTAssertEqual(achievement.dependencyManager, dependencyManager)
-        XCTAssertEqual(achievement.identifier, testIdentifier)
         XCTAssertEqual(achievement.title, testTitle)
         XCTAssertEqual(achievement.detailedDescription, testDescription)
         XCTAssertEqual(achievement.displayOrder, testDisplayOrder)

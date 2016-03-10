@@ -10,11 +10,9 @@ import Foundation
 
 @objc class Achievement: NSObject {
     
-    let identifier: String
     let title: String
     let detailedDescription: String
     let displayOrder: Int
-    let dependencyManager: VDependencyManager
     
     var iconImage: UIImage? {
         return isUnlocked ? unlockedIconImage : lockedIconImage
@@ -26,44 +24,66 @@ import Foundation
         return unlockedAchievementsIdentifiers.contains(identifier)
     }
     
-    private var unlockedIconImage: UIImage?
-    private var lockedIconImage: UIImage?
+    private let dependencyManager: VDependencyManager
+    private let identifier: String
+    private let unlockedIconImage: UIImage
+    private let lockedIconImage: UIImage
     
-    init(dependencyManager: VDependencyManager) {
+    init?(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.identifier = dependencyManager.achievementIdentifer
-        self.title = dependencyManager.achievementTitle
-        self.detailedDescription = dependencyManager.achievementDescription
-        self.displayOrder = dependencyManager.achievementDisplayOrder
-        self.unlockedIconImage = dependencyManager.achievementUnlockedIconImage
-        self.lockedIconImage = dependencyManager.achievementLockedIconImage
+        
+        guard let identifier = dependencyManager.achievementIdentifer,
+            let title = dependencyManager.achievementTitle,
+            let description = dependencyManager.achievementDescription,
+            let displayOrder = dependencyManager.achievementDisplayOrder,
+            let unlockedIconImage = dependencyManager.achievementUnlockedIconImage,
+            let lockedIconImage = dependencyManager.achievementLockedIconImage else {
+                /// Compiler limitation: Have to manually initialize these before returning nil. Remove this in Swift 2.2
+                self.identifier = ""
+                self.title = ""
+                self.detailedDescription = ""
+                self.displayOrder = -1
+                self.unlockedIconImage = UIImage()
+                self.lockedIconImage = UIImage()
+                
+                super.init()
+                return nil
+        }
+        
+        self.identifier = identifier
+        self.title = title
+        self.detailedDescription = description
+        self.displayOrder = displayOrder
+        self.unlockedIconImage = unlockedIconImage
+        self.lockedIconImage = lockedIconImage
+        
+        super.init()
     }
 }
 
-
 private extension VDependencyManager {
     
-    var achievementIdentifer: String {
+    var achievementIdentifer: String? {
         return stringForKey("identifier")
     }
     
-    var achievementTitle: String {
+    var achievementTitle: String? {
         return stringForKey("title")
     }
     
-    var achievementDescription: String {
+    var achievementDescription: String? {
         return stringForKey("description")
     }
     
-    var achievementDisplayOrder: Int {
+    var achievementDisplayOrder: Int? {
         return numberForKey("display_order").integerValue
     }
     
-    var achievementUnlockedIconImage: UIImage {
+    var achievementUnlockedIconImage: UIImage? {
         return imageForKey("assets")
     }
     
-    var achievementLockedIconImage: UIImage {
+    var achievementLockedIconImage: UIImage? {
         return imageForKey("locked_icon")
     }
 }

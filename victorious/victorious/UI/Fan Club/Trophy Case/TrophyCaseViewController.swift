@@ -14,7 +14,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     var dependencyManager: VDependencyManager!
     private(set) var trophyCaseDataSource: TrophyCaseCollectionViewDataSource?
     
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet private weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = trophyCaseDataSource
             collectionView.delegate = self
