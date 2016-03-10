@@ -31,7 +31,7 @@ class MediaSearchExporter {
     
     var videoDownloadTask: NSURLSessionDownloadTask?
     
-    lazy var downloadURL: NSURL = {
+    lazy var downloadURL: NSURL = { [unowned self] in
         if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
             let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
@@ -58,13 +58,16 @@ class MediaSearchExporter {
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
     /// Calling code should be responsible for deleting the file at the mediaUrl's path.
-    /// - parameter completion: A completion closure called wehn all opeartions are complete
+    /// - parameter completion: A completion closure called when all opeartions are complete
     func loadMedia( completion: MediaSearchExporterCompletion ) {
         
         cleanupTempFile()
         
         guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
             searchResultURL = mediaSearchResult.sourceMediaURL else {
+                completion(previewImage: nil,
+                    mediaUrl: nil,
+                    error: NSError(domain: "MediaSearchExporter", code: -1, userInfo: nil))
             return
         }
         

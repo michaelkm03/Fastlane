@@ -1364,6 +1364,7 @@
 		BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */; };
 		BF55772E1C8111C1003C02E3 /* ToggleLikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF55772D1C8111C1003C02E3 /* ToggleLikeSequenceOperation.swift */; };
 		BF5577301C811CBD003C02E3 /* ShowSequenceDetailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF55772F1C811CBD003C02E3 /* ShowSequenceDetailsOperation.swift */; };
+		BF5857EC1C920276007684FE /* MediaSearchMediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */; };
 		BF68C4F01C7CEE9900739D87 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* Avatar.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF8237EA1C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */; };
@@ -3859,6 +3860,7 @@
 		BF52E8401C6137F500FB6C8F /* VScrollingTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollingTextContainerView.m; sourceTree = "<group>"; };
 		BF55772D1C8111C1003C02E3 /* ToggleLikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleLikeSequenceOperation.swift; sourceTree = "<group>"; };
 		BF55772F1C811CBD003C02E3 /* ShowSequenceDetailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowSequenceDetailsOperation.swift; sourceTree = "<group>"; };
+		BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporterTests.swift; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* Avatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -8311,6 +8313,7 @@
 				A719CD5619F6D5030019E866 /* FileSystemTestHelpers */,
 				675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */,
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
+				BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */,
 				6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */,
 				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
@@ -12140,6 +12143,7 @@
 				A7DCA4EC1C128A78004E35B4 /* VFollowersTextFormatterTests.m in Sources */,
 				A76711F51C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift in Sources */,
 				0332E97C1C404B4000B99BE5 /* VUploadManagerURLSessionTests.m in Sources */,
+				BF5857EC1C920276007684FE /* MediaSearchMediaExporterTests.swift in Sources */,
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7D0ADBC1C0D45470018C63E /* VUserTaggingTextStorageTests.m in Sources */,
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
