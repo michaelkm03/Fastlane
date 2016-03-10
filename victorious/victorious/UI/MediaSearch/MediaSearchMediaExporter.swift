@@ -15,6 +15,7 @@ class MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
     private let mediaSearchResult: MediaSearchResult
+    private let uuidString = NSUUID().UUIDString
     
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/
     init(mediaSearchResult: MediaSearchResult) {
@@ -38,7 +39,9 @@ class MediaSearchExporter {
     
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
-    ///downloaded
+    ///
+    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
+    /// Calling code should be responsible for deleting the file at the mediaUrl's path.
     /// - parameter completion: A completion closure called wehn all opeartions are complete
     func loadMedia( completion: MediaSearchExporterCompletion ) {
         
@@ -101,19 +104,12 @@ class MediaSearchExporter {
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
         }
-        let downloadURL = self.downloadURLForRemoteURL(searchResultURL)
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL(downloadURL)
-        } catch {
-            
-        }
+        let downloadURL = downloadURLForRemoteURL(searchResultURL)
+        let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        
-        if let filename = remoteURL.lastPathComponent,
-           let uniqueID = remoteURL.URLByDeletingLastPathComponent?.lastPathComponent,
-           let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
+        if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
             let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
             let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
@@ -122,9 +118,8 @@ class MediaSearchExporter {
             if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
                 let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
             }
-            
             // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent( "\(uniqueID)-\(filename)" )
+            return subdirectory.URLByAppendingPathComponent(uuidString)
         }
         fatalError( "Unable to find file path for temporary media download." )
     }

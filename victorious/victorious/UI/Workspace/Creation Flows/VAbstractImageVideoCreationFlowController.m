@@ -108,6 +108,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self.viewControllers = @[self.workspaceViewController];
 }
 
+- (MediaType)mediaType
+{
+    return MediaTypeUnknown;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -148,6 +153,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)setupWorkspace
 {
     _workspaceViewController = [self workspaceViewControllerWithDependencyManager:self.dependencyManager];
+    _workspaceViewController.creationFlowController = self;
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self shouldShowPublishText] ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
     
