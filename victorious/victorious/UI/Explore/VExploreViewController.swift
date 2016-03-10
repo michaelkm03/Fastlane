@@ -452,65 +452,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     // MARK: - Private
     
-    private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
-        let isShelf = stream.isShelf
-        var streamCollection: VStreamCollectionViewController?
-        
-        // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
-        let baseDict = [Constants.sequenceIDKey : stream.remoteId]
-        let configDict = NSMutableDictionary(dictionary: baseDict)
-        if let name = stream.name {
-            configDict[VDependencyManagerTitleKey] = name
-        }
-        
-        // Navigating to a shelf
-        if isShelf {
-            configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
-            if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
-                // Hashtag Shelf
-                if let tagShelf = stream as? HashtagShelf {
-                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
-                }
-                    // Other shelves
-                else {
-                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
-                }
-            }
-        }
-            // Navigating to a single stream
-        else if stream == currentStream || stream.isSingleStream {
-            //Tapped on a recent post
-            streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
-            
-            streamCollection?.suppressShelves = true
-        }
-        
-        // show the stream view controller if it has been instantiated
-        if let streamViewController = streamCollection {
-            streamViewController.currentStream = stream
-            streamViewController.targetStreamItem = streamItem
-            navigationController?.pushViewController(streamViewController, animated: true)
-        }
-            // else Show the stream of streams
-        else if stream.isStreamOfStreams {
-            if let directory = dependencyManager?.templateValueOfType (
-                VDirectoryCollectionViewController.self,
-                forKey: Constants.marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
-                    directory.currentStream = stream
-                    directory.title = stream.name
-                    directory.targetStreamItem = streamItem
-                    
-                    navigationController?.pushViewController(directory, animated: true)
-            }
-            else {
-                // No directory to show, alert the user
-                let alertController = UIAlertController(title: nil, message: NSLocalizedString("GenericFailMessage", comment: ""), preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
-                presentViewController(alertController, animated: true, completion: nil)
-            }
-        }
-    }
-    
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
         let paginator = StandardPaginator()
         let perPageNumber = paginator.itemsPerPage
@@ -636,5 +577,23 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
+    }
+    
+    private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
+        var configDict = [Constants.sequenceIDKey : stream.remoteId]
+        if stream == currentStream {
+            // Tapped on recent posts
+            configDict[VDependencyManagerTitleKey] = dependencyManager?.stringForKey(VDependencyManagerTitleKey)
+        }
+        
+        guard let destinationStream = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict) as? VStreamCollectionViewController else {
+            return
+        }
+        
+        destinationStream.suppressShelves = true
+        destinationStream.currentStream = stream
+        destinationStream.targetStreamItem = streamItem
+        
+        navigationController?.pushViewController(destinationStream, animated: true)
     }
 }
