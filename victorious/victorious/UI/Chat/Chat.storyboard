@@ -18,17 +18,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxJ-Mf-CJl" userLabel="Collection Container">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
+                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="600"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Frl-fQ-fGv">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells/>
+                                    </collectionView>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Frl-fQ-fGv">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
+                                <constraints>
+                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="leading" secondItem="FxJ-Mf-CJl" secondAttribute="leading" id="ED4-Ny-c0V"/>
+                                    <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="Nef-AU-zuI"/>
+                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="FxJ-Mf-CJl" secondAttribute="top" id="ZRz-wb-DYD"/>
+                                    <constraint firstAttribute="bottom" secondItem="FkS-7s-kZf" secondAttribute="bottom" constant="-20" id="oI3-dc-tpE"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNw-uD-Ufa">
                                 <rect key="frame" x="237" y="537" width="127" height="43"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -47,15 +59,18 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="FkS-7s-kZf" secondAttribute="bottom" id="52n-6Z-zjx"/>
+                            <constraint firstItem="FxJ-Mf-CJl" firstAttribute="leading" secondItem="gRO-em-Lg6" secondAttribute="leading" id="Vys-UF-PSC"/>
                             <constraint firstItem="qNw-uD-Ufa" firstAttribute="centerX" secondItem="gRO-em-Lg6" secondAttribute="centerX" id="a6m-Ls-qCa"/>
-                            <constraint firstItem="FkS-7s-kZf" firstAttribute="leading" secondItem="gRO-em-Lg6" secondAttribute="leading" id="dPE-kQ-EW2"/>
-                            <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="eqw-cS-uww"/>
-                            <constraint firstAttribute="topMargin" secondItem="FkS-7s-kZf" secondAttribute="top" id="mOV-Z1-zGa"/>
+                            <constraint firstAttribute="trailing" secondItem="FxJ-Mf-CJl" secondAttribute="trailing" id="byu-nB-qkr"/>
+                            <constraint firstItem="Egz-7q-vg5" firstAttribute="top" secondItem="FxJ-Mf-CJl" secondAttribute="bottom" id="h5B-cF-YcK"/>
+                            <constraint firstItem="FxJ-Mf-CJl" firstAttribute="top" secondItem="vck-HZ-lce" secondAttribute="bottom" constant="-20" id="j4F-dy-Yif"/>
                             <constraint firstAttribute="bottomMargin" secondItem="qNw-uD-Ufa" secondAttribute="bottom" constant="20" id="yLU-3f-ASV"/>
                         </constraints>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="600"/>
                     <connections>
+                        <outlet property="collectionContainerView" destination="FxJ-Mf-CJl" id="FDh-H0-3Fu"/>
                         <outlet property="collectionView" destination="FkS-7s-kZf" id="YSa-cN-wF1"/>
                         <outlet property="moreContentController" destination="HjE-OH-UhY" id="vfh-q5-VyD"/>
                     </connections>

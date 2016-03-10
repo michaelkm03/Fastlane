@@ -34,6 +34,7 @@ import VictoriousIOSSDK
         didSet {
             if !shouldStashNewContent && stashedItems.count > 0 {
                 visibleItems = NSOrderedSet(array: visibleItems.array + stashedItems.array)
+                stashedItems = NSOrderedSet()
             }
         }
     }
@@ -54,33 +55,12 @@ import VictoriousIOSSDK
             guard oldValue != stashedItems else {
                 return
             }
-            if stashedItems.count == 0 {
-                shouldStashNewContent = false
-            }
             delegate?.paginatedDataSource?(self, didUpdateStashedItemsFrom: oldValue, to: stashedItems)
         }
     }
     
     private var isPurging = false
-    private(set) var visibleItems: NSOrderedSet {
-        set {
-            // Unstash only any newly added visible items that are current stashed
-            let predicate1 = NSPredicate() { newValue.containsObject( $0.0 ) }
-            let toUnstash = stashedItems.filteredOrderedSetUsingPredicate( predicate1 )
-            let predicate2 = NSPredicate() { !toUnstash.containsObject( $0.0 ) }
-            stashedItems = stashedItems.filteredOrderedSetUsingPredicate( predicate2 )
-            
-            // Set the visible items after sorting by displayOrder
-            let array = newValue.array as? [PaginatedObjectType] ?? []
-            let sortedArray = array.sort { $0.displayOrder.compare($1.displayOrder) == .OrderedAscending }
-            _visibleItems = NSOrderedSet(array: sortedArray)
-        }
-        get {
-            return _visibleItems
-        }
-    }
-    
-    private(set) var _visibleItems = NSOrderedSet() {
+    private(set) var visibleItems = NSOrderedSet() {
         didSet {
             guard oldValue != visibleItems else {
                 return

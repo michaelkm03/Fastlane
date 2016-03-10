@@ -25,7 +25,8 @@ class ShowVIPForumOperation: NavigationOperation {
         beganExecuting()
         
         let chatViewController = ChatViewController.newWithDependencyManager(dependencyManager)
-        originViewController?.presentViewController(chatViewController, animated: animated) {
+        let navigationController = UINavigationController(rootViewController: chatViewController)
+        originViewController?.presentViewController(navigationController, animated: animated) {
             self.finishedExecuting()
         }
     }

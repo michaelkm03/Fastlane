@@ -20,8 +20,16 @@ extension UIScrollView {
         return contentOffset.y >= v_bottomOffset.y
     }
     
-    func v_scrollToBottomAnimated(animated: Bool) {
+    func v_scrollToBottomAnimated(animated: Bool, completion: (()->())? = nil) {
+        if v_isScrolledToBottom {
+            completion?()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        CATransaction.setAnimationDuration(0.5)
         setContentOffset(v_bottomOffset, animated:animated)
+        CATransaction.commit()
     }
 }
 

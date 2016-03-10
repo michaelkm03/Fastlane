@@ -12,7 +12,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private let kSectionBottomMargin: CGFloat = 60.0
+    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 60.0, right: 0.0)
     
     private var dependencyManager: VDependencyManager!
     
@@ -37,6 +37,19 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }()
     
+    private lazy var gradientMask: UIView = {
+        let frame = self.collectionContainerView.bounds
+        let gradientView = VLinearGradientView(frame: frame)
+        gradientView.setColors([ UIColor.clearColor(), UIColor.blackColor() ])
+        gradientView.locations = [
+            (self.edgeInsets.top-70.0)/frame.height,
+            (self.edgeInsets.top)/frame.height
+        ]
+        gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
+        return gradientView
+    }()
+    
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
     
@@ -44,6 +57,20 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBOutlet private var moreContentController: MoreContentController!
     @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionContainerView: UIView!
+    
+    var shouldStashNewContent = false {
+        didSet {
+            if shouldStashNewContent != oldValue {
+                dataSource.shouldStashNewContent = shouldStashNewContent
+            }
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientMask.frame = collectionContainerView.bounds
+    }
     
     // MARK: - VMultipleContainerChild
     
@@ -54,14 +81,15 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     // MARK: - MoreContentControllerDelegate
     
     func onMoreContentSelected() {
-        dataSource.shouldStashNewContent = false
-        collectionView.v_scrollToBottomAnimated(true)
+        shouldStashNewContent = false
     }
     
     // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionContainerView.maskView = gradientMask
         
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
@@ -96,6 +124,10 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         dataSource.endLiveUpdates()
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
@@ -108,7 +140,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: kSectionBottomMargin, right: 0)
+        return edgeInsets
     }
     
     // MARK: - VPaginatedDataSourceDelegate
@@ -117,7 +149,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if newValue.count > 0 {
             moreContentController.count = newValue.count
             moreContentController.show()
-        } else {
+        } else if newValue.count == 0 && oldValue.count > 0 {
+            collectionView.v_scrollToBottomAnimated(true)
             moreContentController.hide()
         }
     }
@@ -130,7 +163,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return
         }
         
-        if !scrollPaginator.isUserScrolling && !dataSource.shouldStashNewContent && dataSource.currentPageType == nil {
+        if !scrollPaginator.isUserScrolling {
             // Some tricky stuff to make sure the collection view's content size is updated enough
             // so that the scroll to bottom actually works
             CATransaction.begin()
@@ -142,14 +175,19 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             CATransaction.commit()
        
-        } else if let pageType = dataSource.currentPageType {
+        } else {
+            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+        }
+        
+        
+        /* else if let pageType = dataSource.currentPageType {
             switch pageType {
             case .Previous:
                 self.reloadForPreviousPageFrom(oldValue, to: newValue)
             default:
                 collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             }
-        }
+        }*/
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -216,14 +254,10 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         scrollPaginator.scrollViewDidScroll(scrollView)
         
         if scrollPaginator.isUserScrolling {
-            
             if scrollView.contentOffset.y <= previousScrollPosition.y {
-                // When scrolling up to look at older items
-                dataSource.shouldStashNewContent = true
-                
-            } else if scrollView.v_isScrolledToBottom {
-                // When scrolling to bottom, unstash as if the user interacted with `moreContentController`
-                onMoreContentSelected()
+                shouldStashNewContent = true
+            } else if collectionView.v_isScrolledToBottom {
+                shouldStashNewContent = false
             }
         }
         
