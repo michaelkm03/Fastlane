@@ -15,6 +15,6 @@ import Foundation
 
 extension VUser {
     var badgeType: AvatarBadgeType {
-        return avatarBadgeType == "verified" ? .Verified : .None
+        return (avatarBadgeType ?? "") == "verified" ? .Verified : .None
     }
 }
