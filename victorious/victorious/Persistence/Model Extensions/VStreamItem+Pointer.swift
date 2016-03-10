@@ -58,10 +58,10 @@ extension VStreamItem {
         
         } else {
             // If no `streamID` was provided, find an "empty" VStreamItemPointer,
-            // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
+            // i.e. one that points to a VStreamItem but has no associated streamParent.
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
-            filter = { $0.streamParent == nil && $0.marqueeParent == nil }
+            filter = { $0.streamParent == nil}
         }
         
         let matchingStreamItemPointers = streamItemPointers.filter(filter)
