@@ -12,6 +12,7 @@
 
 @interface VTimerManagerTests : XCTestCase
 
+@property (nonatomic, strong) XCTestExpectation *testExpectation;
 @property (nonatomic, assign) BOOL fired;
 @property (nonatomic, assign) NSTimeInterval timerInterval;
 
@@ -23,14 +24,13 @@
 {
     [super setUp];
     
-    //Arbitrarily small value
-    self.timerInterval = 0.000002f;
+    self.timerInterval = 0.000002f; // Arbitrarily small value
     self.fired = NO;
 }
 
 - (void)tearDown
 {
-    self.fired = NO;
+    self.testExpectation = nil;
     [super tearDown];
 }
 
@@ -69,24 +69,24 @@
 
 - (void)testScheduledInitWithNoParams
 {
+    self.testExpectation = [self expectationWithDescription:@"Timer Fired"];
     [VTimerManager scheduledTimerManagerWithTimeInterval:self.timerInterval
                                                   target:self
                                                 selector:@selector(selectorWithNoParams)
                                                 userInfo:nil
                                                  repeats:NO];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testScheduledInitWithOneParam
 {
+    self.testExpectation = [self expectationWithDescription:@"Timer Fired"];
     [VTimerManager scheduledTimerManagerWithTimeInterval:self.timerInterval
                                                   target:self
                                                 selector:@selector(selectorWithOneParameter:)
                                                 userInfo:nil
                                                  repeats:NO];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testScheduledWeakReference
@@ -102,8 +102,8 @@
                                                      repeats:NO];
         wTester = tester;
     }
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
     XCTAssertNil(wTester, @"tester should have been deallocated by now, test is invalid");
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:(self.timerInterval * 4.0)]];
     XCTAssertFalse(self.fired, @"the tester should have been deallocated and released before the timer fired");
 }
 
@@ -120,7 +120,6 @@
                                                          toRunLoop:[NSRunLoop currentRunLoop]
                                                        withRunMode:NSRunLoopCommonModes], @"should throw error for nil target");
     
-    //Clang lines suppress "undeclared selector" warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     XCTAssertThrows([VTimerManager addTimerManagerWithTimeInterval:0.0f
@@ -166,7 +165,8 @@
 
 - (void)testUnscheduledInitWithNoParams
 {
-    //Testing RunLoopCommonModes
+    // Testing RunLoopCommonModes
+    self.testExpectation = [self expectationWithDescription:@"Timer fired"];
     [VTimerManager addTimerManagerWithTimeInterval:self.timerInterval
                                             target:self
                                           selector:@selector(selectorWithNoParams)
@@ -174,10 +174,10 @@
                                            repeats:NO
                                          toRunLoop:[NSRunLoop currentRunLoop]
                                        withRunMode:NSRunLoopCommonModes];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
-    //Testing DefaultRunLoopMode
+    // Testing DefaultRunLoopMode
+    self.testExpectation = [self expectationWithDescription:@"Timer fired"];
     [VTimerManager addTimerManagerWithTimeInterval:self.timerInterval
                                             target:self
                                           selector:@selector(selectorWithNoParams)
@@ -185,13 +185,13 @@
                                            repeats:NO
                                          toRunLoop:[NSRunLoop currentRunLoop]
                                        withRunMode:NSDefaultRunLoopMode];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testUnscheduledInitWithOneParam
 {
-    //Testing RunLoopCommonModes
+    // Testing RunLoopCommonModes
+    self.testExpectation = [self expectationWithDescription:@"Timer fired"];
     [VTimerManager addTimerManagerWithTimeInterval:self.timerInterval
                                             target:self
                                           selector:@selector(selectorWithOneParameter:)
@@ -199,10 +199,10 @@
                                            repeats:NO
                                          toRunLoop:[NSRunLoop currentRunLoop]
                                        withRunMode:NSRunLoopCommonModes];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
-    //Testing DefaultRunLoopMode
+    // Testing DefaultRunLoopMode
+    self.testExpectation = [self expectationWithDescription:@"Timer fired"];
     [VTimerManager addTimerManagerWithTimeInterval:self.timerInterval
                                             target:self
                                           selector:@selector(selectorWithOneParameter:)
@@ -210,8 +210,7 @@
                                            repeats:NO
                                          toRunLoop:[NSRunLoop currentRunLoop]
                                        withRunMode:NSDefaultRunLoopMode];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
-    XCTAssertTrue(self.fired, @"timer should have fired");
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testUnscheduledWeakReference
@@ -231,8 +230,8 @@
                                            withRunMode:NSRunLoopCommonModes];
         wTester = tester;
     }
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
     XCTAssertNil(wTester, @"tester should have been deallocated by now, test is invalid");
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:(self.timerInterval * 4.0)]];
     XCTAssertFalse(self.fired, @"the tester should have been deallocated and released before the timer fired");
     
     //Testing DefaultRunLoopMode
@@ -248,34 +247,11 @@
                                            withRunMode:NSDefaultRunLoopMode];
         wTester = tester;
     }
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
     XCTAssertNil(wTester, @"tester should have been deallocated by now, test is invalid");
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:(self.timerInterval * 4.0)]];
     XCTAssertFalse(self.fired, @"the tester should have been deallocated and released before the timer fired");
 }
 
-#pragma mark - timer repsonse functions
-
-- (void)selectorWithTwo:(int)two parameters:(int)parameters
-{
-    
-}
-
-- (void)selectorWithNoParams
-{
-    self.fired = YES;
-}
-
-- (void)selectorWithOneParameter:(NSTimer *)oneParameter
-{
-    XCTAssertNotNil(oneParameter, @"timer retured from firing should not be nil");
-    self.fired = YES;
-}
-
-- (void)setFireToTesterInTimer:(NSTimer *)timer
-{
-    XCTAssertNotNil(timer, @"timer retured from firing should not be nil");
-    ((VTimerManagerTests *)timer.userInfo).fired = YES;
-}
 
 - (void)testInvalidate
 {
@@ -285,7 +261,7 @@
                                                                               userInfo:nil
                                                                                repeats:NO];
     [timerManager invalidate];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:(self.timerInterval * 4.0)]];
     XCTAssertFalse(self.fired, @"timer should not have fired");
 }
 
@@ -298,12 +274,12 @@
                                                                               selector:@selector(selectorWithNoParams)
                                                                               userInfo:nil
                                                                                repeats:NO];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void)
     {
         [timerManager invalidate];
     });
     
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:extendedTimeInterval]];
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:(extendedTimeInterval * 4.0f)]];
     XCTAssertFalse(self.fired, @"timer should not have fired");
     XCTAssertFalse([timerManager isValid], @"timer should be invalidated");
 }
@@ -327,6 +303,32 @@
                                                                               userInfo:userInfoDict
                                                                                repeats:NO];
     XCTAssertEqual(userInfoDict, timerManager.userInfo, @"userInfo dictionary should be the same object passed in during timer creation");
+}
+
+#pragma mark - timer repsonse functions
+
+- (void)selectorWithTwo:(int)two parameters:(int)parameters
+{
+    
+}
+
+- (void)selectorWithNoParams
+{
+    [self.testExpectation fulfill];
+    self.fired = YES;
+}
+
+- (void)selectorWithOneParameter:(NSTimer *)oneParameter
+{
+    XCTAssertNotNil(oneParameter, @"timer retured from firing should not be nil");
+    [self.testExpectation fulfill];
+    self.fired = YES;
+}
+
+- (void)setFireToTesterInTimer:(NSTimer *)timer
+{
+    XCTAssertNotNil(timer, @"timer retured from firing should not be nil");
+    ((VTimerManagerTests *)timer.userInfo).fired = YES;
 }
 
 @end
