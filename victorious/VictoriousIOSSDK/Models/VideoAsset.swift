@@ -27,7 +27,7 @@ struct VideoAsset {
                 print("Failed to create video asset")
                return nil
         }
-        self.mimeType = VideoType(rawValue:mimeType)
+        self.mimeType = VideoType(rawValue:mimeType)!
         self.data = data
         
         height = json["height"].int

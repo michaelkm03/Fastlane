@@ -349,6 +349,8 @@
 		03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */; };
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
 		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
+		0EDFBEAD1C91FAFE00325332 /* Stageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAC1C91FAFE00325332 /* Stageable.swift */; };
+		0EDFBEAF1C91FD8600325332 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
 		24757BE6782D2DCE2572AD42 /* Pods_victoriousPersistenceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEADE095630ECF74F385112E /* Pods_victoriousPersistenceTests.framework */; };
@@ -1779,7 +1781,6 @@
 		F0F777B91C90B729002F5401 /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777B51C90B729002F5401 /* CloseUpViewController.swift */; };
 		F0F777BE1C90B73E002F5401 /* StageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BA1C90B73E002F5401 /* StageDelegate.swift */; };
 		F0F777BF1C90B73E002F5401 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BB1C90B73E002F5401 /* Stage.swift */; };
-		F0F777C01C90B73E002F5401 /* StageMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BC1C90B73E002F5401 /* StageMedia.swift */; };
 		F0F777C11C90B73E002F5401 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777BD1C90B73E002F5401 /* StageViewController.swift */; };
 		F0F777C61C90B749002F5401 /* ComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C21C90B749002F5401 /* ComposerDelegate.swift */; };
 		F0F777C71C90B749002F5401 /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F777C31C90B749002F5401 /* Composer.swift */; };
@@ -2506,6 +2507,8 @@
 		0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.qa.xcconfig"; sourceTree = "<group>"; };
 		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
+		0EDFBEAC1C91FAFE00325332 /* Stageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stageable.swift; sourceTree = "<group>"; };
+		0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StageViewController.storyboard; path = victorious/UI/Forum/Stage/StageViewController.storyboard; sourceTree = SOURCE_ROOT; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
 		1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4562,7 +4565,6 @@
 		F0F777B51C90B729002F5401 /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseUpViewController.swift; path = victorious/UI/Forum/CloseUp/CloseUpViewController.swift; sourceTree = SOURCE_ROOT; };
 		F0F777BA1C90B73E002F5401 /* StageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageDelegate.swift; path = victorious/UI/Forum/Stage/StageDelegate.swift; sourceTree = SOURCE_ROOT; };
 		F0F777BB1C90B73E002F5401 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stage.swift; path = victorious/UI/Forum/Stage/Stage.swift; sourceTree = SOURCE_ROOT; };
-		F0F777BC1C90B73E002F5401 /* StageMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageMedia.swift; path = victorious/UI/Forum/Stage/StageMedia.swift; sourceTree = SOURCE_ROOT; };
 		F0F777BD1C90B73E002F5401 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageViewController.swift; path = victorious/UI/Forum/Stage/StageViewController.swift; sourceTree = SOURCE_ROOT; };
 		F0F777C21C90B749002F5401 /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposerDelegate.swift; path = victorious/UI/Forum/Composer/ComposerDelegate.swift; sourceTree = SOURCE_ROOT; };
 		F0F777C31C90B749002F5401 /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Composer.swift; path = victorious/UI/Forum/Composer/Composer.swift; sourceTree = SOURCE_ROOT; };
@@ -5621,6 +5623,7 @@
 				670C65881C52AC0000BD7F3F /* Usershelf.swift */,
 				678053791C60838800894821 /* VoteResult.swift */,
 				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
+				0EDFBEAC1C91FAFE00325332 /* Stageable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9268,8 +9271,8 @@
 			children = (
 				F0F777BA1C90B73E002F5401 /* StageDelegate.swift */,
 				F0F777BB1C90B73E002F5401 /* Stage.swift */,
-				F0F777BC1C90B73E002F5401 /* StageMedia.swift */,
 				F0F777BD1C90B73E002F5401 /* StageViewController.swift */,
+				0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */,
 			);
 			name = Stage;
 			sourceTree = "<group>";
@@ -10267,6 +10270,7 @@
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
 				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,
 				A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */,
+				0EDFBEAF1C91FD8600325332 /* StageViewController.storyboard in Resources */,
 				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
@@ -10770,6 +10774,7 @@
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
+				0EDFBEAD1C91FAFE00325332 /* Stageable.swift in Sources */,
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
@@ -12026,7 +12031,6 @@
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
-				F0F777C01C90B73E002F5401 /* StageMedia.swift in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
 				F03B20441C86616F005E83A0 /* ChatFeedDelegate.swift in Sources */,

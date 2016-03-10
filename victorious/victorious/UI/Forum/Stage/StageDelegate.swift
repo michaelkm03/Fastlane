@@ -7,11 +7,16 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers will recieve messages related to stage media.
 protocol StageDelegate: class {
     
-    func stage(stage: Stage, didUpdateWithMedia media: StageMedia)
+    func stage(stage: Stage, didUpdateWithMedia media: Stageable)
     
-    func stage(stage: Stage, didSelectMedia media: StageMedia)
+    func stage(stage: Stage, didSelectMedia media: Stageable) // ?
+    
+    func stage(stage: Stage, willUpdateContentSize size: CGSize) // ?
+    
+    func stage(stage: Stage, didUpdateContentSize size: CGSize)
 }
