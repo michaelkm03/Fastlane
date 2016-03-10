@@ -20,6 +20,9 @@
 #import "VCanvasView.h"
 #import "VCoachmarkDisplayer.h"
 
+#import "VVideoCreationFlowController.h"
+#import "VImageCreationFlowController.h"
+
 @interface VWorkspaceViewController() <VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -50,8 +53,7 @@
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
-    
-    if ([mediaURL v_hasImageExtension])
+    if ([self isImageFlow])
     {
         VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
@@ -61,7 +63,7 @@
         }
         self.toolController = imageToolController;
     }
-    else if ([mediaURL v_hasVideoExtension])
+    else if ([self isVideoFlow])
     {
         VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
@@ -90,6 +92,16 @@
     };
     self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
+}
+
+#pragma mark - Helper
+
+- (BOOL)isImageFlow {
+    return [self.creationFlowController class] == [VImageCreationFlowController class];
+}
+
+- (BOOL)isVideoFlow {
+    return [self.creationFlowController class] == [VVideoCreationFlowController class];
 }
 
 #pragma mark - Target/Action

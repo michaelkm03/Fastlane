@@ -69,14 +69,6 @@ struct MediaSearchExporter {
                 return
             }
             
-            if downloadURL.absoluteString.hasSuffix(".") {
-                // remote url did not have a valid ending, should show error
-                dispatch_async(dispatch_get_main_queue()) {
-                    completion(previewImage: nil, mediaUrl: nil, error: nil)
-                }
-                return
-            }
-            
             // Dispatch back to main thread for completion
             dispatch_async( dispatch_get_main_queue() ) {
                 completion(
@@ -90,8 +82,7 @@ struct MediaSearchExporter {
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        if let fileExtension = remoteURL.pathExtension,
-           let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
+        if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
             let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
             let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
@@ -102,7 +93,7 @@ struct MediaSearchExporter {
             }
             let fileName = NSUUID().UUIDString
             // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent( "\(fileName).\(fileExtension)" )
+            return subdirectory.URLByAppendingPathComponent( "\(fileName)" )
         }
         fatalError( "Unable to find file path for temporary media download." )
     }
