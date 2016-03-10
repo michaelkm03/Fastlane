@@ -10,6 +10,8 @@ import GoogleInteractiveMediaAds
 import SafariServices
 import AdSupport
 
+private let VSDKAdIDMacro = "%%ADID%%"
+
 /// Provides an integration with Google IMA Ad system
 @objc class IMAAdViewController: NSObject, VAdViewControllerType, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
     let adTag: String

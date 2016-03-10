@@ -16,8 +16,6 @@ NSString * const VSDKPaginatorMacroPageNumber = @"%%PAGE_NUM%%";
 
 NSString * const VSDKPaginatorMacroItemsPerPage = @"%%ITEMS_PER_PAGE%%";
 
-NSString * const VSDKAdIDMacro = @"%%ADID%%";
-
 static NSString * const kQueryStringDelimiter = @"?";
 
 @implementation VSDKURLMacroReplacement
