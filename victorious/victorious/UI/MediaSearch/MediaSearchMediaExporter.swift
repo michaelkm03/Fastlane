@@ -15,6 +15,7 @@ class MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
     private let mediaSearchResult: MediaSearchResult
+    private let uuidString = NSUUID().UUIDString
     
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/
     init(mediaSearchResult: MediaSearchResult) {
@@ -72,10 +73,6 @@ class MediaSearchExporter {
                 return nil
             }()
             
-            // We shouldn't have to, but sometimes files are not removed from the filesystem and the 
-            // move would fail if there is a file at downloadURL's path.
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
-            
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
             } catch {
@@ -107,12 +104,8 @@ class MediaSearchExporter {
         guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
             return
         }
-        let downloadURL = self.downloadURLForRemoteURL(searchResultURL)
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL(downloadURL)
-        } catch {
-            
-        }
+        let downloadURL = downloadURLForRemoteURL(searchResultURL)
+        let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
@@ -125,9 +118,8 @@ class MediaSearchExporter {
             if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
                 let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
             }
-            let fileName = NSUUID().UUIDString
             // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent(fileName)
+            return subdirectory.URLByAppendingPathComponent(uuidString)
         }
         fatalError( "Unable to find file path for temporary media download." )
     }
