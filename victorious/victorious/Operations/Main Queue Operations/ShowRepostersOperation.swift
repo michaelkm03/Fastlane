@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowRepostersOperation: NavigationOperation {
+class ShowRepostersOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

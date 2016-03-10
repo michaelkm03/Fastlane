@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowSearchResultOperation: NavigationOperation {
+class ShowSearchResultOperation: MainQueueOperation {
     
     let searchResult: AnyObject
     let navigationController: UINavigationController

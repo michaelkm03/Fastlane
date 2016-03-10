@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowShareSequenceOperation: NavigationOperation {
+class ShowShareSequenceOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

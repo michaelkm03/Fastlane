@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowProfileOperation: NavigationOperation {
+class ShowProfileOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

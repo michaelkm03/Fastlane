@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowLikersOperation: NavigationOperation {
+class ShowLikersOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

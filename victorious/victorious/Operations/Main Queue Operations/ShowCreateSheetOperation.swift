@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class ShowCreateSheetOperation: NavigationOperation {
+@objc class ShowCreateSheetOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

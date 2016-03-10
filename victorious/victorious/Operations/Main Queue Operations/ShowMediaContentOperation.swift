@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowMediaContentOperation: NavigationOperation {
+class ShowMediaContentOperation: MainQueueOperation {
     
     private let originViewController: UIViewController
     private let mediaUrl: NSURL

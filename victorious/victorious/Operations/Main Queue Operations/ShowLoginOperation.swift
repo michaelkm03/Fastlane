@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowLoginOperation: NavigationOperation {
+class ShowLoginOperation: MainQueueOperation {
     
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager

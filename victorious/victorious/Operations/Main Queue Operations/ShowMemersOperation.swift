@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowMemersOperation: NavigationOperation {
+class ShowMemersOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

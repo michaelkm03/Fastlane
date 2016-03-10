@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConfirmDestructiveActionOperation: NavigationOperation, ActionConfirmationOperation {
+class ConfirmDestructiveActionOperation: MainQueueOperation, ActionConfirmationOperation {
     
     private let actionTitle: String
     private let dependencyManager: VDependencyManager

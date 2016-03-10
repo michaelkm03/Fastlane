@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowCommentsOperation: NavigationOperation {
+class ShowCommentsOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController

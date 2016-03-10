@@ -1,5 +1,5 @@
 //
-//  NavigationOperation.swift
+//  MainQueueOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/29/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NavigationOperation: NSOperation, Queueable {
+class MainQueueOperation: NSOperation, Queueable {
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -52,7 +52,7 @@ class NavigationOperation: NSOperation, Queueable {
     // MARK: - Queueable
     
     func executeCompletionBlock(completionBlock: ()->()) {
-        // This ensures that every subclass of `NavigationOperation` has its completion block
+        // This ensures that every subclass of `MainQueueOperation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.
         dispatch_async( dispatch_get_main_queue() ) {

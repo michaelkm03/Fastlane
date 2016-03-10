@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FTUEVideoOperation: NavigationOperation, VLightweightContentViewControllerDelegate {
+class FTUEVideoOperation: MainQueueOperation, VLightweightContentViewControllerDelegate {
     
     // Constant Keys
     let kFirstTimeContentKey = "firstTimeContent"

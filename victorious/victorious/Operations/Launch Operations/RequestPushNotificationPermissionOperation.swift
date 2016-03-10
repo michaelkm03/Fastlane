@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestPushNotificationPermissionOperation: NavigationOperation {
+class RequestPushNotificationPermissionOperation: MainQueueOperation {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
