@@ -10,11 +10,9 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Deletes all the stream items in a stream, but leaves the stream unmodified
-class UnloadStreamItemOperation: Operation {
+class UnloadStreamItemOperation: FetcherOperation {
     
     private let streamID: String
-    
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     init( streamID: String) {
         self.streamID = streamID
@@ -22,10 +20,13 @@ class UnloadStreamItemOperation: Operation {
     
     override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let stream: VStream = context.v_findObjects([ "remoteId" : self.streamID ]).first,
-                let streamItems = stream.streamItems.array as? [VStreamItem]
-                where streamItems.count > 0 else {
+            let uniqueInfo = [ "remoteId" : self.streamID ]
+            guard let stream: VStream = context.v_findObjects(uniqueInfo).first else {
                     return
+            }
+            let streamItems = stream.streamItems
+            guard !streamItems.isEmpty else {
+                return
             }
             for streamItem in streamItems {
                 context.deleteObject( streamItem )
