@@ -31,12 +31,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
     @IBOutlet private(set) weak var textView: UITextView!
     
     let spacing: CGFloat = 10.0
-    let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 65)
+    let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 75)
     
     private var storyboardTextViewWidth: CGFloat!
-    var alignmentDecorator: MessageCellLayout! {
+    var layout: MessageCellLayout! {
         didSet {
-            alignmentDecorator.updateLayout(self)
+            layout.updateLayout(self)
         }
     }
     
@@ -46,11 +46,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         return mediaView.preloadedImage
     }
     
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            updateStyle()
-        }
-    }
+    var dependencyManager: VDependencyManager!
     
     struct Media {
         let url: NSURL
@@ -71,7 +67,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         didSet {
             populateData()
             updateStyle()
-            setNeedsLayout()
+            layout.updateLayout(self)
         }
     }
     
@@ -92,20 +88,16 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        alignmentDecorator.updateLayout(self)
+        layout.updateLayout(self)
     }
     
     func updateStyle() {
-        textView.font = dependencyManager.messageFont
-        textView.textColor = dependencyManager.textColor
-        
         detailTextView.contentInset = UIEdgeInsetsZero
         detailTextView.font = dependencyManager.labelFont
-        detailTextView.textColor = dependencyManager.textColor
+        detailTextView.textColor = dependencyManager.messageTextColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.textColor.colorWithAlphaComponent(0.5).CGColor
+        bubbleView.layer.borderColor = dependencyManager.messageTextColor.colorWithAlphaComponent(0.5).CGColor
         bubbleView.layer.cornerRadius = 5.0
         bubbleView.layer.borderWidth = 1.0
         
@@ -116,11 +108,11 @@ class MessageCell: UICollectionViewCell, VFocusable {
         contentContainer.backgroundColor = UIColor.clearColor()
         messageContainer.backgroundColor = UIColor.clearColor()
         avatarContainer.backgroundColor = UIColor.clearColor()
-        //mediaView.backgroundColor = UIColor.clearColor()
+        mediaView.backgroundColor = UIColor.clearColor()
     }
     
     func populateData() {
-        textView.text = viewData.text
+        textView.attributedText = attributedText
         if let media = viewData?.media {
             mediaView.imageURL = media.url
         }
@@ -132,11 +124,16 @@ class MessageCell: UICollectionViewCell, VFocusable {
     // MARK: - SelfSizingCell
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        alignmentDecorator.updateLayout(self)
-        
+        let mediaSize = calculateMediaSize()
+        let textSize = calculateTextSize()
         return CGSize(
             width: bounds.width,
-            height: contentContainer.bounds.height + (contentMargin.top + contentMargin.bottom)
+            height: contentMargin.top
+                + detailTextView.frame.height
+                + spacing
+                + textSize.height
+                + mediaSize.height
+                + contentMargin.bottom
         )
     }
     
@@ -147,12 +144,16 @@ class MessageCell: UICollectionViewCell, VFocusable {
     }
     
     func calculateTextSize() -> CGSize {
-        guard let text = viewData?.text where !text.characters.isEmpty else {
+        guard let attributedText = attributedText else {
             return CGSize.zero
         }
-        let availableTextViewSize = CGSize(width: maxContentWidth, height: CGFloat.max)
-        let heightDrivenSize = textView.sizeThatFits( availableTextViewSize )
-        return textView.sizeThatFits( heightDrivenSize )
+        
+        let availableSizeForWidth = CGSize(width: maxContentWidth, height: CGFloat.max)
+        var size = attributedText.boundingRectWithSize(availableSizeForWidth,
+            options: [ .UsesLineFragmentOrigin ],
+            context: nil).size
+        size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
+        return size
     }
     
     func calculateMediaSize() -> CGSize {
@@ -163,6 +164,20 @@ class MessageCell: UICollectionViewCell, VFocusable {
             width: maxContentWidth,
             height: maxContentWidth / media.aspectRatio
         )
+    }
+    
+    var attributedText: NSAttributedString? {
+        guard let text = viewData?.text where text != "" else {
+            return nil
+        }
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = layout.textAlignment
+        let attributes = [
+            NSParagraphStyleAttributeName : paragraphStyle,
+            NSForegroundColorAttributeName : dependencyManager.messageTextColor,
+            NSFontAttributeName : dependencyManager.messageFont
+        ]
+        return NSAttributedString(string: text, attributes: attributes)
     }
     
     // MARK: - VFocusable
@@ -180,12 +195,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
 
 private extension VDependencyManager {
     
-    var textColor: UIColor {
+    var messageTextColor: UIColor {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
     var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerLinkColorKey).colorWithAlphaComponent(0.5)
+        return colorForKey(VDependencyManagerLinkColorKey).colorWithAlphaComponent(0.25)
     }
     
     var borderColor: UIColor {
@@ -193,7 +208,7 @@ private extension VDependencyManager {
     }
     
     var messageFont: UIFont {
-        return fontForKey(VDependencyManagerHeading4FontKey)
+        return fontForKey(VDependencyManagerLabel1FontKey)
     }
     
     var labelFont: UIFont {

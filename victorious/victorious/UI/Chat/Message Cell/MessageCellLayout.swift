@@ -9,10 +9,15 @@
 import Foundation
 
 protocol MessageCellLayout {
+    var textAlignment: NSTextAlignment { get }
     func updateLayout(cell: MessageCell)
 }
 
 struct LeftAlignmentCellLayout: MessageCellLayout {
+    
+    var textAlignment: NSTextAlignment {
+        return .Left
+    }
     
     func updateLayout(cell: MessageCell) {
         let mediaSize = cell.calculateMediaSize()
@@ -22,7 +27,8 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
             height: textSize.height + mediaSize.height
         )
         
-        cell.bubbleView.frame = CGRect(x: 0,
+        cell.bubbleView.frame = CGRect(
+            x: 0,
             y: cell.detailTextView.frame.height,
             width: contentSize.width,
             height: contentSize.height
@@ -33,8 +39,6 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        
-        cell.textView.textAlignment = .Left
         
         cell.mediaView.frame = CGRect(
             x: 0,
@@ -71,6 +75,10 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
 
 struct RightAlignmentCellLayout: MessageCellLayout {
     
+    var textAlignment: NSTextAlignment {
+        return .Right
+    }
+    
     func updateLayout(cell: MessageCell) {
         let mediaSize = cell.calculateMediaSize()
         let textSize = cell.calculateTextSize()
@@ -89,8 +97,6 @@ struct RightAlignmentCellLayout: MessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        
-        cell.textView.textAlignment = .Right
         
         cell.mediaView.frame = CGRect(
             x: 0,

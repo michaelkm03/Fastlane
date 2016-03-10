@@ -12,7 +12,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 60.0, right: 0.0)
+    private var edgeInsets = UIEdgeInsets(top: 150.0, left: 0.0, bottom: 60.0, right: 0.0)
+    private let gradientBlendLength: CGFloat = 80.0
     
     private var dependencyManager: VDependencyManager!
     
@@ -42,7 +43,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let gradientView = VLinearGradientView(frame: frame)
         gradientView.setColors([ UIColor.clearColor(), UIColor.blackColor() ])
         gradientView.locations = [
-            (self.edgeInsets.top-70.0)/frame.height,
+            (self.edgeInsets.top - self.gradientBlendLength)/frame.height,
             (self.edgeInsets.top)/frame.height
         ]
         gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
@@ -149,9 +150,10 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if newValue.count > 0 {
             moreContentController.count = newValue.count
             moreContentController.show()
+            
         } else if newValue.count == 0 && oldValue.count > 0 {
-            collectionView.v_scrollToBottomAnimated(true)
             moreContentController.hide()
+            collectionView.v_scrollToBottomAnimated(true)
         }
     }
     
@@ -178,16 +180,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         } else {
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
         }
-        
-        
-        /* else if let pageType = dataSource.currentPageType {
-            switch pageType {
-            case .Previous:
-                self.reloadForPreviousPageFrom(oldValue, to: newValue)
-            default:
-                collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
-            }
-        }*/
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -226,12 +218,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
-        
-        /*selectedMessageUserID = message.sender.remoteId.integerValue
-        let viewController = UserActionsViewController.newWithUser(message.sender, dependencyManager: dependencyManager)
-        viewController.transitioningDelegate = self.transitionDelegate
-        viewController.delegate = self
-        presentViewController(viewController, animated: true, completion: nil)*/
     }
     
     func messageCellDidSelectMedia(messageCell: MessageCell) {

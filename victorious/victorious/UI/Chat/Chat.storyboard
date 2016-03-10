@@ -21,10 +21,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxJ-Mf-CJl" userLabel="Collection Container">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
-                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="600"/>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Frl-fQ-fGv">
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Frl-fQ-fGv">
                                             <size key="itemSize" width="50" height="50"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -35,10 +35,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="leading" secondItem="FxJ-Mf-CJl" secondAttribute="leading" id="ED4-Ny-c0V"/>
-                                    <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="Nef-AU-zuI"/>
-                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="FxJ-Mf-CJl" secondAttribute="top" id="ZRz-wb-DYD"/>
-                                    <constraint firstAttribute="bottom" secondItem="FkS-7s-kZf" secondAttribute="bottom" constant="-20" id="oI3-dc-tpE"/>
+                                    <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="DdU-Sf-gic"/>
+                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="FxJ-Mf-CJl" secondAttribute="top" id="KZB-wx-RJ1"/>
+                                    <constraint firstItem="FkS-7s-kZf" firstAttribute="leading" secondItem="FxJ-Mf-CJl" secondAttribute="leading" id="Nxl-CO-uuf"/>
+                                    <constraint firstAttribute="bottom" secondItem="FkS-7s-kZf" secondAttribute="bottom" id="UtS-bE-RNC"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNw-uD-Ufa">

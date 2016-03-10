@@ -15,9 +15,9 @@ struct MessageCellDecorator {
     func decorateCell( cell: MessageCell, withMessage message: VMessage) {
         
         if message.sender.isCurrentUser() {
-            cell.alignmentDecorator = RightAlignmentCellLayout()
+            cell.layout = RightAlignmentCellLayout()
         } else {
-            cell.alignmentDecorator = LeftAlignmentCellLayout()
+            cell.layout = LeftAlignmentCellLayout()
         }
         
         cell.dependencyManager = dependencyManager
@@ -32,7 +32,7 @@ struct MessageCellDecorator {
         }
         
         cell.viewData = MessageCell.ViewData(
-            text: "\(message.displayOrder): \(message.text ?? "")",
+            text: message.text,
             createdAt: message.postedAt,
             username: message.sender.name ?? "",
             avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
