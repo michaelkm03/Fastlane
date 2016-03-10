@@ -451,3 +451,5 @@
 "TestAlertsViewControllerFooter" = "After you register an alert, go back to the stream or profile and pull to refresh. The alert should appear.";
 
 "Enter birthday before continuing" = "Please enter your birthday before continuing: ";
+
+"Dismiss Alert" = "Got It";

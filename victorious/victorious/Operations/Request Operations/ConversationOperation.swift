@@ -53,8 +53,6 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = self.paginator.paginatorPredicate + messagesPredicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
-            
-            print("Fetched \(results.count) messages.")
             self.results = results
         }
     }

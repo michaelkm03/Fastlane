@@ -295,10 +295,7 @@
         return;
     }
     
-    if ( !self.streamDataSource.hasHeaderCell )
-    {
-        [self.refreshControl beginRefreshing];
-    }
+    [self.refreshControl beginRefreshing];
     
     [self.streamDataSource loadPage:pageType completion:^(NSError *_Nullable error)
      {

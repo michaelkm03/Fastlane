@@ -228,11 +228,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
-    self.marqueeCellController.stream = self.currentStream;
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
     
     self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
@@ -362,29 +360,29 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         return;
     }
     
-    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-    BOOL hasMarqueeShelfAtTop = NO;
-    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
-    if ( streamItems.count > 0 )
+    if ([self hasMarqueeShelfAtTop])
     {
-        VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
-    }
-    
-    if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
-    {
+        // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
         CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
         CGFloat offset = marqueeSize.height;
-        if ( hasMarqueeShelfAtTop )
-        {
-            offset += [self.streamCellFactory minimumLineSpacing];
-        }
+        offset += [self.streamCellFactory minimumLineSpacing];
         self.navigationControllerScrollDelegate.catchOffset = offset;
     }
     else
     {
         self.navigationControllerScrollDelegate.catchOffset = 0;
     }
+}
+
+- (BOOL)hasMarqueeShelfAtTop
+{
+    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
+    if ( streamItems.count > 0 )
+    {
+        VStreamItem *streamItem = [streamItems firstObject];
+        return [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
+    }
+    return false;
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
@@ -442,7 +440,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:marquee.shelf ?: marquee.stream
+                                                                          stream:marquee.shelf
                                                                        fromShelf:YES];
         event.indexPath = path;
         event.collectionView = collectionView;
@@ -580,15 +578,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
-    {
-        return [self.marqueeCellController desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }
-    else
-    {
-        VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-        return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:sequence];
-    }
+    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
+    return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:streamItem];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -614,12 +605,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
-    {
-        return [self.marqueeCellController marqueeCellForCollectionView:self.collectionView
-                                                            atIndexPath:indexPath];
-    }
-    
     VSequence *sequence = (VSequence *)[self.streamDataSource.visibleItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
@@ -1009,7 +994,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
     }
     
-    if ( self.streamDataSource.hasHeaderCell && section == 0 )
+    if ([self hasMarqueeShelfAtTop] && section == 0)
     {
         return insetsFromSuper;
     }
