@@ -252,7 +252,6 @@
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shelfId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="marqueeItemPointers" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="StreamItemPointer" inverseName="marqueeParent" inverseEntity="StreamItemPointer" syncable="YES"/>
         <relationship name="streamItemPointers" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="StreamItemPointer" inverseName="streamParent" inverseEntity="StreamItemPointer" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
@@ -272,7 +271,6 @@
     <entity name="StreamItemPointer" representedClassName=".VStreamItemPointer" syncable="YES">
         <attribute name="displayOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="marqueeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItemPointers" inverseEntity="Stream" syncable="YES"/>
         <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="parentStreamItemPointers" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItemPointers" inverseEntity="Stream" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="streamItemPointer" inverseEntity="Tracking" syncable="YES"/>
@@ -370,9 +368,9 @@
         <element name="Sequence" positionX="0" positionY="0" width="128" height="570"/>
         <element name="SequenceLiker" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Shelf" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Stream" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Stream" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="StreamItemPointer" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="StreamItemPointer" positionX="160" positionY="192" width="128" height="120"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
         <element name="User" positionX="0" positionY="0" width="128" height="615"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>

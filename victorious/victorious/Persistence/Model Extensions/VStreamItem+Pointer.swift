@@ -18,11 +18,6 @@ extension VStream {
         return self.streamItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
     }
     
-    /// Maps marquee items (instance sof VStreamItemPointer) into an array of the VStreamItems to which they point
-    var marqueeItems: [VStreamItem] {
-        return self.marqueeItemPointers.flatMap { ($0 as? VStreamItemPointer)?.streamItem }
-    }
-    
     /// Filters the receiver's `streamItemPointers` for those whose `streamItem` is contained
     /// within the provided list of streamItemIDs.
     func streamItemPointersForStreamItemIDs(streamItemIDs: [String]) -> NSOrderedSet {
@@ -63,10 +58,10 @@ extension VStreamItem {
         
         } else {
             // If no `streamID` was provided, find an "empty" VStreamItemPointer,
-            // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
+            // i.e. one that points to a VStreamItem but has no associated streamParent.
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
-            filter = { $0.streamParent == nil && $0.marqueeParent == nil }
+            filter = { $0.streamParent == nil}
         }
         
         let matchingStreamItemPointers = streamItemPointers.filter(filter)

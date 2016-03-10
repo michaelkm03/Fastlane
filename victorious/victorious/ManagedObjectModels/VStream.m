@@ -19,7 +19,6 @@
 @dynamic isUserPostAllowed;
 @dynamic trackingIdentifier;
 @dynamic shelfId;
-@dynamic marqueeItemPointers;
 @dynamic streamItemPointers;
 
 @end

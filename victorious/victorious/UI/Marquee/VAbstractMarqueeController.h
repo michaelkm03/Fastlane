@@ -28,9 +28,7 @@ extern NSString * const VSequenceIDMacro;
 @property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate; ///< The object that should be notified of changes in marquee content
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
-@property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
 @property (nonatomic, strong) Shelf *shelf; ///< The Marquee Shelf
-@property (nonatomic, readonly) VStream *currentStream; ///< The current stream being represented by this marquee. Will return shelf or stream as appropriate.
 @property (nonatomic, readonly) NSArray *marqueeItems; ///< The array of items in the marquee
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 
