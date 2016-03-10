@@ -16,23 +16,17 @@ class ForumViewController: UIViewController {
     
     @IBOutlet private var stageViewControllerContainer: UIView!
     
-    @IBAction func toggleStage() {
-        stageViewControllerContainer.hidden = !stageViewControllerContainer.hidden
-    }
+    private var dependencyManager: VDependencyManager!
     
-    @IBAction func toggleChat() {
-        chatFeedViewControllerContainer.hidden = !chatFeedViewControllerContainer.hidden
-    }
+    private lazy var chatFeedViewController = UIViewController()
     
-    @IBAction func toggleComposer() {
-        composerViewControllerContainer.hidden = !composerViewControllerContainer.hidden
-    }
+    private lazy var composerViewController: ComposerViewController = {
+        return ComposerViewController.new(dependencyManager: self.dependencyManager)
+    }()
     
-    private var chatFeedViewController: ChatFeedViewController!
-    
-    private var composerViewController: ComposerViewController!
-    
-    private var stageViewController: StageViewController!
+    private lazy var stageViewController: StageViewController = {
+        return StageViewController.new(dependencyManager: self.dependencyManager)
+    }()
     
     class func new( dependencyManager dependencyManager: VDependencyManager ) -> ForumViewController {
         let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
@@ -40,6 +34,7 @@ class ForumViewController: UIViewController {
             fatalError("Failed to instantiate an ForumViewController view controller!")
         }
         
+        forumVC.dependencyManager = dependencyManager
         return forumVC
     }
     
@@ -51,18 +46,17 @@ class ForumViewController: UIViewController {
     
     private func setupChildViewControllers() {
         
-        for childViewController in childViewControllers {
-            
-            if let viewController = childViewController as? ChatFeedViewController {
-                chatFeedViewController = viewController
-            } else if let viewController = childViewController as? ComposerViewController {
-                composerViewController = viewController
-            } else if let viewController = childViewController as? StageViewController {
-                stageViewController = viewController
-            } else {
-                assertionFailure("Encountered unexpected child view controller!")
-            }
-        }
+        addChildViewController(stageViewController, toView: stageViewControllerContainer)
+        addChildViewController(chatFeedViewController, toView: chatFeedViewControllerContainer)
+        addChildViewController(composerViewController, toView: composerViewControllerContainer)
     }
     
+    private func addChildViewController(viewController: UIViewController, toView view: UIView) {
+        
+        let viewControllerView = viewController.view
+        addChildViewController(viewController)
+        view.addSubview(viewControllerView)
+        view.v_addFitToParentConstraintsToSubview(viewControllerView)
+        viewController.didMoveToParentViewController(self)
+    }
 }

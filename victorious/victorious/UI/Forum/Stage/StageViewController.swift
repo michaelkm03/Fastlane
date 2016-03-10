@@ -14,7 +14,6 @@ class StageViewController: UIViewController, Stage {
     
     class func new( dependencyManager dependencyManager: VDependencyManager ) -> StageViewController {
         
-        //Load from storyboard
         let stageVC = StageViewController()
         stageVC.dependencyManager = dependencyManager
         return stageVC

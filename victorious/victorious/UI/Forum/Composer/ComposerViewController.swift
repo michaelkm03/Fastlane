@@ -41,7 +41,6 @@ class ComposerViewController: UIViewController, Composer {
     
     class func new( dependencyManager dependencyManager: VDependencyManager ) -> ComposerViewController {
         
-        //Load from storyboard
         let composerVC = ComposerViewController()
         composerVC.dependencyManager = dependencyManager
         return composerVC

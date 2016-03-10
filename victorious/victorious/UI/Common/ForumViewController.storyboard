@@ -19,50 +19,15 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="8t5-Tn-32y" kind="embed" id="OwZ-Na-gsl"/>
-                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Y36-c8-ohO" kind="embed" id="aj1-jU-4Hs"/>
-                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Vfs-o9-4Y2" kind="embed" id="bKs-ik-V75"/>
-                                </connections>
                             </containerView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4E7-ES-0Ub">
-                                <rect key="frame" x="265" y="255" width="71" height="90"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BK4-sn-wqX" userLabel="ToggleStage">
-                                        <rect key="frame" x="0.0" y="0.0" width="71" height="30"/>
-                                        <state key="normal" title="Stage"/>
-                                        <connections>
-                                            <action selector="toggleStage" destination="K6M-ZV-Lef" eventType="touchUpInside" id="Bpu-vd-WAk"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ru2-Th-egJ">
-                                        <rect key="frame" x="0.0" y="30" width="71" height="30"/>
-                                        <state key="normal" title="Chat"/>
-                                        <connections>
-                                            <action selector="toggleChat" destination="K6M-ZV-Lef" eventType="touchUpInside" id="bbM-Pq-RZi"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KpL-LE-7Gf">
-                                        <rect key="frame" x="0.0" y="60" width="71" height="30"/>
-                                        <state key="normal" title="Composer"/>
-                                        <connections>
-                                            <action selector="toggleComposer" destination="K6M-ZV-Lef" eventType="touchUpInside" id="AnG-0k-Ovn"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="1" blue="0.70539818840000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -73,9 +38,7 @@
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="bottom" id="A9t-Ir-fSu"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="BWd-6Y-0dE" secondAttribute="top" id="Bnn-cN-B0R"/>
                             <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="ClE-8b-tG4"/>
-                            <constraint firstItem="4E7-ES-0Ub" firstAttribute="centerX" secondItem="BWd-6Y-0dE" secondAttribute="centerX" id="NFA-37-3i5"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="BWd-6Y-0dE" secondAttribute="top" id="Wf5-Hp-aBp"/>
-                            <constraint firstItem="4E7-ES-0Ub" firstAttribute="centerY" secondItem="BWd-6Y-0dE" secondAttribute="centerY" id="elf-6y-Cv5"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="jpZ-uG-gJN"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="quh-35-4jW"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="wcm-NH-YaV"/>
@@ -91,60 +54,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="837" y="419"/>
-        </scene>
-        <!--Stage View Controller-->
-        <scene sceneID="ANB-hh-ian">
-            <objects>
-                <viewController id="8t5-Tn-32y" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="iDs-BY-xVT"/>
-                        <viewControllerLayoutGuide type="bottom" id="v6G-6s-Msy"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="PR3-kk-F00" customClass="VPassthroughContainerView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bjx-1v-GMY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="160" y="1200"/>
-        </scene>
-        <!--Chat Feed View Controller-->
-        <scene sceneID="YiH-VC-9nw">
-            <objects>
-                <viewController id="Y36-c8-ohO" customClass="ChatFeedViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="d12-Ie-lvu"/>
-                        <viewControllerLayoutGuide type="bottom" id="DOi-SX-ue6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mo3-Tz-yn2" customClass="VPassthroughContainerView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hAE-ST-2H8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="837" y="1200"/>
-        </scene>
-        <!--Composer View Controller-->
-        <scene sceneID="Dm6-2F-Qgv">
-            <objects>
-                <viewController id="Vfs-o9-4Y2" customClass="ComposerViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Xrn-I2-6m3"/>
-                        <viewControllerLayoutGuide type="bottom" id="4FW-Zw-xa7"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yuW-zD-uAZ" customClass="VPassthroughContainerView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Gx-Vq-bb5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1523" y="1200"/>
         </scene>
     </scenes>
 </document>
