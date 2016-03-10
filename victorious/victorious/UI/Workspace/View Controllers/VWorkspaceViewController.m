@@ -20,8 +20,7 @@
 #import "VCanvasView.h"
 #import "VCoachmarkDisplayer.h"
 
-#import "VVideoCreationFlowController.h"
-#import "VImageCreationFlowController.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 
 @interface VWorkspaceViewController() <VCoachmarkDisplayer>
 
@@ -93,6 +92,7 @@
     self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
 }
+
 #pragma mark - Target/Action
 
 - (IBAction)publish:(id)sender
