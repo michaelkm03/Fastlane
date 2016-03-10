@@ -12,11 +12,9 @@ public struct Comment {
     
     public struct RealtimeAttachment {
         public let time: Double
-        public let assetID: Int
         
-        public init( time: Double, assetID: Int ) {
+        public init( time: Double ) {
             self.time = time
-            self.assetID = assetID
         }
     }
     

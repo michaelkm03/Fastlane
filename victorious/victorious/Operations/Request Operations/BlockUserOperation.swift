@@ -12,9 +12,11 @@ import VictoriousIOSSDK
 class BlockUserOperation: FetcherOperation {
     
     private let userID: Int
-        
-    init( userID: Int ) {
+    private var conversationID: Int?
+    
+    init( userID: Int, conversationID: Int? = nil) {
         self.userID = userID
+        self.conversationID = conversationID
     }
     
     override func main() {
@@ -24,6 +26,23 @@ class BlockUserOperation: FetcherOperation {
         }
         
         BlockUserRemoteOperation(userID: userID).after(self).queue()
+        
+        // Delete the conversation locally
+        if let conversationID = self.conversationID {
+            persistentStore.createBackgroundContext().v_performBlockAndWait { context in
+                let uniqueElements = [ "remoteId" : conversationID ]
+                if let conversation: VConversation = context.v_findObjects(uniqueElements).first {
+                    context.deleteObject(conversation)
+                    context.v_saveAndBubbleToParentContext()
+                }
+            }
+            
+            // For deletions, force a save to the main context to make sure changes are propagated
+            // to calling code (a view controller)
+            self.persistentStore.mainContext.v_performBlockAndWait() { context in
+                context.v_save()
+            }
+        }
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
@@ -50,7 +69,9 @@ class BlockUserOperation: FetcherOperation {
                 }
             }
             
-            context.v_save()
+            //This must bubble up to parent to ensure the parent context knows
+            //what sequences have been deleted as soon as this operation completes
+            context.v_saveAndBubbleToParentContext()
         }
     }
 }

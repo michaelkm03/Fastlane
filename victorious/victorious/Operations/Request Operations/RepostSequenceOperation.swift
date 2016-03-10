@@ -28,9 +28,9 @@ class RepostSequenceOperation: FetcherOperation {
             guard let node = sequence.firstNode(), let nodeID = node.remoteId?.integerValue else {
                 return false
             }
-            node.sequence.hasReposted = true
-            node.sequence.repostCount += 1
-            user.v_addObject(node.sequence, to: "repostedSequences")
+            sequence.hasReposted = true
+            sequence.repostCount += 1
+            user.v_addObject(sequence, to: "repostedSequences")
             
             context.v_save()
             

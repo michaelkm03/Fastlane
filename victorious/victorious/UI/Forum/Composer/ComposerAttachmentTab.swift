@@ -1,5 +1,5 @@
 //
-//  ComposerViewControllerAttachmentTab.swift
+//  ComposerAttachmentTab.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/25/16.
@@ -8,14 +8,13 @@
 
 import Foundation
 
-enum ComposerViewControllerAttachmentTab {
+enum ComposerAttachmentTab {
     
     private struct Icon {
         
-        //TODO: Replace with real icon names once assets are imported.
-        static let camera = UIImage(named: "camera")!
-        static let library = UIImage(named: "library")!
-        static let gif = UIImage(named: "gif")!
+        static let camera: UIImage! = nil
+        static let library: UIImage! = nil
+        static let gif: UIImage! = nil
     }
     
     case Camera, Library, Gif

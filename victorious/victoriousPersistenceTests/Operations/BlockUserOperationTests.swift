@@ -14,27 +14,64 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     var operation: BlockUserOperation!
     var currentUser: VUser!
     var objectUser: VUser!
+    var conversation: VConversation!
+    let conversationID = 12345
+    let testSequenceCount = 5
     
     override func setUp() {
         super.setUp()
-        
         objectUser = persistentStoreHelper.createUser(remoteId: 1)
         currentUser = persistentStoreHelper.createUser(remoteId: 2)
         
-        for index in 0..<5 {
-            let sequence = persistentStoreHelper.createSequence(remoteId: index)
+        for index in 0..<testSequenceCount {
+            let sequence = persistentStoreHelper.createSequence(remoteId: String(index))
             sequence.user = objectUser
         }
-        
         currentUser.setAsCurrentUser()
         
-        testStore.mainContext.v_save()
+        conversation = persistentStoreHelper.createConversation(remoteId: conversationID)
+        conversation.user = objectUser
         
+        testStore.mainContext.v_save()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        testStore.mainContext.v_performBlockAndWait { context in
+            if !self.conversation.hasBeenDeleted {
+                context.deleteObject(self.conversation)
+            }
+            context.deleteObject(self.currentUser)
+            context.deleteObject(self.objectUser)
+            context.v_save()
+        }
+    }
+    
+    func testOperationNotRunWithoutConfirmation() {
+        operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
+        operation.persistentStore = testStore
+        
+        let confirm = MockActionConfirmationOperation(shouldConfirm: false)
+        confirm.before(operation).queue()
+        
+        let expectation = expectationWithDescription("BlockUserOperation")
+        operation.queue() { (results, error) in
+            XCTFail("Should not be called")
+        }
+        dispatch_after(1.0) {
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            let dependentOperations = self.operation.v_defaultQueue.v_dependentOperationsOf(self.operation)
+            XCTAssertEqual( dependentOperations.count, 0 )
+        }
+        XCTAssertFalse(conversation.hasBeenDeleted)
+    }
+    
+    func testWithoutConversationID() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
         operation.persistentStore = testStore
-    }
-
-    func testBlockingUser() {
+        
         let context = testStore.mainContext
         var sequences = [VSequence]()
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
@@ -45,6 +82,8 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("BlockUserOperation")
         operation.queue() { (results, error) in
             XCTAssertNil(error)
+            let dependentOperations = self.operation.v_defaultQueue.v_dependentOperationsOf(self.operation).flatMap { $0 as? BlockUserRemoteOperation }
+            XCTAssertEqual( dependentOperations.count, 1 )
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
@@ -52,5 +91,32 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)
         XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+    }
+    
+    func testWithConversationID() {
+        operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
+        operation.persistentStore = testStore
+        
+        let context = testStore.mainContext
+        var sequences = [VSequence]()
+        sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
+        
+        XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertNotEqual(sequences.count, 0)
+        
+        let expectation = expectationWithDescription("BlockUserOperation")
+        operation.queue() { (results, error) in
+            XCTAssertNil(error)
+            let dependentOperations = self.operation.v_defaultQueue.v_dependentOperationsOf(self.operation).flatMap { $0 as? BlockUserRemoteOperation }
+            XCTAssertEqual( dependentOperations.count, 1 )
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        
+        sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
+        XCTAssertEqual(sequences.count, 0)
+        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+        
+        XCTAssert(conversation.hasBeenDeleted)
     }
 }

@@ -141,7 +141,7 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
         XCTAssert(previewViewProvider.getPreviewView() === result.previewView)
         XCTAssertNotNil(result.videoPlayer)
 
-        let sequence = persistentStoreHelper.createSequence(remoteId: 1)
+        let sequence = persistentStoreHelper.createSequence(remoteId: "1")
         let testDependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
         let testTargetSuperView = UIView()
         let testContentCell = TestContentCell(test: true, targetSuperView: testTargetSuperView, frame: CGRect(x: 0, y: 0, width: 100, height: 100))

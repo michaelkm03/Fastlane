@@ -10,7 +10,7 @@ import victorious
 
 class TestVAdViewController: NSObject, VAdViewControllerType {
     var startAdManagerCallCount = 0
-    var delegate: AdLifecycleDelegate?
+    weak var delegate: AdLifecycleDelegate?
     var adView: UIView
 
     init(adView: UIView = UIView()) {

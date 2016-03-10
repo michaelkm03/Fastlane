@@ -41,7 +41,7 @@ class UserShelfTests: XCTestCase {
         XCTAssertEqual(shelf.items?.filter { $0 is Stream }.count, 0)
         
         XCTAssertNil(shelf.previewImagesObject)
-        XCTAssertNil(shelf.previewTextPostAsset)
+        XCTAssertNil(shelf.previewAsset)
         XCTAssertNil(shelf.previewImageAssets)
     }
     
