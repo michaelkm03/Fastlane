@@ -42,7 +42,7 @@
 @import MBProgressHUD;
 @import SDWebImage;
 
-static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
+static NSString * const kEditProfileSegueIdentifier = @"toEditProfile";
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
@@ -58,6 +58,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
+@property (nonatomic, strong, nullable) TrophyCaseViewController *trophyCaseViewController;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
 @property (nonatomic, strong) NSNumber *userRemoteId;
@@ -136,6 +137,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             self.profileHeaderViewController.delegate = self;
             [self setInitialHeaderState];
+            [self initializeTrophyCaseScreen];
         }
     }
     else
@@ -155,6 +157,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.collectionView reloadData];
         self.collectionView.alwaysBounceVertical = YES;
     }
+}
+
+- (void)initializeTrophyCaseScreen
+{
+    self.trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
+    if (self.trophyCaseViewController == nil || !self.representsMainUser)
+    {
+        return;
+    }
+    
+    UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    VDependencyManager *trophyCaseDependencyManager = self.trophyCaseViewController.dependencyManager;
+    UIImage *buttonIconImage = [trophyCaseDependencyManager imageForKey: @"trophy_icon"];
+    [trophyCaseButton setImage:buttonIconImage forState:UIControlStateNormal];
+    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -538,6 +557,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         usersViewController.usersViewContext = VUsersViewContextFollowing;
         [self.navigationController pushViewController:usersViewController animated:YES];
     }
+}
+
+#pragma mark - User Actions
+
+- (void)trophyCaseButtonTapped
+{
+    [self.navigationController pushViewController:self.trophyCaseViewController animated:YES];
 }
 
 #pragma mark - Navigation

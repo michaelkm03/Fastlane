@@ -37,26 +37,28 @@ class ComposerViewController: UIViewController, Composer {
     
     //MARK: Initialization
     
-    private var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager! {
         didSet {
             maximumTextLength = dependencyManager.maximumTextLength()
             attachmentTabs = dependencyManager.attachmentTabs()
         }
     }
     
-    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ComposerViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        let composerVC = UIStoryboard.init(name: "ComposerViewController", bundle: NSBundle.mainBundle()).instantiateInitialViewController() as! ComposerViewController
-        composerVC.dependencyManager = dependencyManager
-        let updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
+        let updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { [weak self] startFrame, endFrame, animationDuration, animationCurve in
+            
+            guard let strongSelf = self else {
+                return
+            }
             
             //TODO: Fix options
             UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
-                composerVC.inputViewToBottomConstraint.constant = endFrame.height
-            }, completion: nil)
+                strongSelf.inputViewToBottomConstraint.constant = endFrame.height
+                }, completion: nil)
         }
-        composerVC.keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: updateHeightBlock, willChangeFrameBlock: updateHeightBlock)
-        return composerVC
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: updateHeightBlock, willChangeFrameBlock: updateHeightBlock)
     }
 }
 

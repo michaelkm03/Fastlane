@@ -90,7 +90,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
     streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     streamDirectory.marqueeController = marqueeController;
-    streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
     streamDirectory.marqueeController.dataDelegate = streamDirectory;
@@ -201,7 +200,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)updateHeaderCellVisibility
 {
-    self.streamDataSource.hasHeaderCell = self.marqueeController.stream.marqueeItems.count > 0;
+    self.streamDataSource.hasHeaderCell = self.marqueeController.marqueeItems.count > 0;
 }
 
 #pragma mark - VMarqueeControllerDataDelegate
@@ -321,7 +320,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     {
         [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
-        NSString *streamId = self.marqueeController.stream.shelfId.length && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.remoteId;
+        NSString *streamId = self.marqueeController.shelf.remoteId;
         ContentViewContext *context = [[ContentViewContext alloc] init];
         context.sequence = (VSequence *)streamItem;
         context.streamId = streamId;

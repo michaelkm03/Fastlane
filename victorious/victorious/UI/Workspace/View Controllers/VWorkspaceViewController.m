@@ -20,6 +20,8 @@
 #import "VCanvasView.h"
 #import "VCoachmarkDisplayer.h"
 
+#import "VAbstractImageVideoCreationFlowController.h"
+
 @interface VWorkspaceViewController() <VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -50,8 +52,7 @@
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
-    
-    if ([mediaURL v_hasImageExtension])
+    if (self.creationFlowController.mediaType == MediaTypeImage)
     {
         VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
@@ -61,7 +62,7 @@
         }
         self.toolController = imageToolController;
     }
-    else if ([mediaURL v_hasVideoExtension])
+    else if (self.creationFlowController.mediaType == MediaTypeVideo)
     {
         VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         NSNumber *initalEditState = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];

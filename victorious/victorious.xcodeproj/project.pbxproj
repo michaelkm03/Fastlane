@@ -285,7 +285,6 @@
 		039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */; };
 		039420481AB88A450087ADFA /* image-template.json in Resources */ = {isa = PBXBuildFile; fileRef = 039420471AB88A450087ADFA /* image-template.json */; };
 		0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394204C1AB9026C0087ADFA /* VVoteType.m */; };
-		03949CEA1C1A0C490092B366 /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		03960BBC1BB21418006815F6 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
 		0399E80E1C51D42900E090F7 /* TemplateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0399E80D1C51D42900E090F7 /* TemplateRequest.swift */; };
@@ -422,6 +421,7 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */; };
+		6701FE1D1C8E7545009B262D /* AchievementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6701FE1C1C8E7545009B262D /* AchievementTests.swift */; };
 		670334B31C49D58500E24967 /* CreatePollOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670334B11C49D58500E24967 /* CreatePollOperation.swift */; };
 		670334B41C49D58500E24967 /* CreateTextPostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670334B21C49D58500E24967 /* CreateTextPostOperation.swift */; };
 		670C65871C529FBA00BD7F3F /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C65861C529FBA00BD7F3F /* Shelf.swift */; };
@@ -461,6 +461,10 @@
 		6759555D1BF1553100D40A87 /* SuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555C1BF1553100D40A87 /* SuggestedUser.swift */; };
 		6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555E1BF157BA00D40A87 /* FanLoyalty.swift */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
+		675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */; };
+		675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */; };
+		675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */; };
+		675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */; };
 		675EAF0B1C10E52E00019087 /* AgeGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */; };
 		6761E6C51C4DC8D600B97BF1 /* TrendingUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */; };
 		6761E6C71C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */; };
@@ -506,6 +510,7 @@
 		6794E6071C0CE1A900791CA0 /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
+		679876821C84DD4C001CE56E /* AchievementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679876811C84DD4C001CE56E /* AchievementDetailViewController.swift */; };
 		679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */; };
 		679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */; };
 		67A3C9F11C4D99240068E4F5 /* TrendingHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A3C9F01C4D99240068E4F5 /* TrendingHashtagOperation.swift */; };
@@ -521,6 +526,7 @@
 		67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */; };
 		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
+		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
 		67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */; };
 		67C2101E1BFA797E0074E40E /* FollowHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */; };
 		67C210231BFA7A210074E40E /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */; };
@@ -1343,6 +1349,8 @@
 		BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
+		BF00E5571C8FBCE3009413A9 /* LoadingCancellableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */; };
+		BF00E5591C8FBDB7009413A9 /* LoadingCancellableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */; };
 		BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* RepostSequenceOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* RepostSequenceOperationTests.swift */; };
@@ -1655,6 +1663,7 @@
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
 		F00AB1A61C922CF900DE7DDC /* ComposerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F00AB1A51C922CF900DE7DDC /* ComposerViewController.storyboard */; };
+		F00AB1AA1C92511F00DE7DDC /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -2368,7 +2377,6 @@
 		039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManagerImageTests.m; sourceTree = "<group>"; };
 		0394204B1AB9026C0087ADFA /* VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteType.h; sourceTree = "<group>"; };
 		0394204C1AB9026C0087ADFA /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
-		03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		0399E80D1C51D42900E090F7 /* TemplateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateRequest.swift; sourceTree = "<group>"; };
@@ -2592,6 +2600,7 @@
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPasswordResetOperationTests.swift; sourceTree = "<group>"; };
+		6701FE1C1C8E7545009B262D /* AchievementTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementTests.swift; sourceTree = "<group>"; };
 		670334B11C49D58500E24967 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperation.swift; sourceTree = "<group>"; };
 		670334B21C49D58500E24967 /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostOperation.swift; sourceTree = "<group>"; };
 		670C65861C529FBA00BD7F3F /* Shelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
@@ -2633,6 +2642,10 @@
 		6759555E1BF157BA00D40A87 /* FanLoyalty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyalty.swift; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
 		675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManagerTests.swift; sourceTree = "<group>"; };
+		675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseAchievementCollectionViewCell.swift; path = "Trophy Case/TrophyCaseAchievementCollectionViewCell.swift"; sourceTree = "<group>"; };
+		675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseCollectionViewDataSource.swift; path = "Trophy Case/TrophyCaseCollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TrophyCaseViewController.storyboard; path = "Trophy Case/TrophyCaseViewController.storyboard"; sourceTree = "<group>"; };
+		675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseViewController.swift; path = "Trophy Case/TrophyCaseViewController.swift"; sourceTree = "<group>"; };
 		675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateViewController.swift; sourceTree = "<group>"; };
 		6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequest.swift; sourceTree = "<group>"; };
 		6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequestTests.swift; sourceTree = "<group>"; };
@@ -2672,6 +2685,7 @@
 		6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
+		679876811C84DD4C001CE56E /* AchievementDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AchievementDetailViewController.swift; path = "Trophy Case/AchievementDetailViewController.swift"; sourceTree = "<group>"; };
 		679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+AccessoryButtonResponder.swift"; sourceTree = "<group>"; };
 		67A3C9F01C4D99240068E4F5 /* TrendingHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingHashtagOperation.swift; sourceTree = "<group>"; };
 		67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingHashtagOperationTests.swift; sourceTree = "<group>"; };
@@ -2685,6 +2699,7 @@
 		67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequest.swift; sourceTree = "<group>"; };
 		67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequestTests.swift; sourceTree = "<group>"; };
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
+		67B783BD1C80F98900940D61 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Achievement.swift; path = "Trophy Case/Achievement.swift"; sourceTree = "<group>"; };
 		67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
 		67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowHashtagResponse.json; sourceTree = "<group>"; };
 		67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowingHashtagsResponse.json; sourceTree = "<group>"; };
@@ -3832,6 +3847,8 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCancellableView.xib; sourceTree = "<group>"; };
+		BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
 		BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowProfileOperationTests.m; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* RepostSequenceOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostSequenceOperationTests.swift; sourceTree = "<group>"; };
@@ -4345,6 +4362,7 @@
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
 		F00AB1A51C922CF900DE7DDC /* ComposerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ComposerViewController.storyboard; sourceTree = "<group>"; };
+		F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -4823,6 +4841,8 @@
 				03C92D121ABB96030057D30E /* Lightweight Content View */,
 				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
+				BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */,
+				BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
 				A73C3EA31C45890E00A8452C /* MediaSearch */,
 				DBAD775B19F711D900B6A939 /* Monetization */,
@@ -6718,6 +6738,19 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
+		67C7764D1C7E6C3700BE65CE /* Trophy Case */ = {
+			isa = PBXGroup;
+			children = (
+				67B783BD1C80F98900940D61 /* Achievement.swift */,
+				675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */,
+				675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */,
+				675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */,
+				675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */,
+				679876811C84DD4C001CE56E /* AchievementDetailViewController.swift */,
+			);
+			name = "Trophy Case";
+			sourceTree = "<group>";
+		};
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -8272,6 +8305,7 @@
 			isa = PBXGroup;
 			children = (
 				BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */,
+				6701FE1C1C8E7545009B262D /* AchievementTests.swift */,
 				67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */,
 				031DE6051C55E5550063492B /* AlertsRequestDecoratorTests.swift */,
 				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
@@ -8282,7 +8316,6 @@
 				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */,
-				03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */,
 				A719CD5619F6D5030019E866 /* FileSystemTestHelpers */,
 				675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */,
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
@@ -8342,10 +8375,10 @@
 				0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */,
 				A77B43CF1B2129050016F47B /* VSequencePermissionsTests.m */,
 				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
-				BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */,
-				BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */,
 				BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */,
+				BF4D7E151C8502D900D42852 /* VShowLikersOperationTests.m */,
 				BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */,
+				BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */,
 				BF4D7E191C86209000D42852 /* VShowRepostersOperationTests.m */,
 				A7D378621AF2F368007FF197 /* VStoredLoginTests.m */,
 				0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */,
@@ -8650,6 +8683,7 @@
 				C3186DF71BACE84C00F4BCFF /* Achievement */,
 				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
+				67C7764D1C7E6C3700BE65CE /* Trophy Case */,
 			);
 			path = "Fan Club";
 			sourceTree = "<group>";
@@ -9275,6 +9309,7 @@
 				F0F777BB1C90B73E002F5401 /* Stage.swift */,
 				F0F777BC1C90B73E002F5401 /* StageMedia.swift */,
 				F0F777BD1C90B73E002F5401 /* StageViewController.swift */,
+				F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */,
 			);
 			name = Stage;
 			sourceTree = "<group>";
@@ -10119,6 +10154,7 @@
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
 				A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */,
 				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
+				F00AB1AA1C92511F00DE7DDC /* StageViewController.storyboard in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
 				0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */,
@@ -10162,6 +10198,7 @@
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
+				675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,
@@ -10188,6 +10225,7 @@
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */,
+				BF00E5571C8FBCE3009413A9 /* LoadingCancellableView.xib in Resources */,
 				03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
@@ -11185,6 +11223,7 @@
 				6256A6261C516CA30033439B /* VAdBreak.swift in Sources */,
 				C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
+				679876821C84DD4C001CE56E /* AchievementDetailViewController.swift in Sources */,
 				D85E42841AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
 				674B66F21C3F0C0400938EB5 /* PasswordResetOperation.swift in Sources */,
@@ -11411,6 +11450,7 @@
 				D8B44CD11ADCB3A4006340E8 /* VSleekStreamCellFactory.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */,
+				BF00E5591C8FBDB7009413A9 /* LoadingCancellableView.swift in Sources */,
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				A75DF5271C3DE23300A4C82A /* DiscoverSearchViewController.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
@@ -11435,6 +11475,7 @@
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
+				67B783BE1C80F98900940D61 /* Achievement.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
@@ -11622,6 +11663,7 @@
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
+				675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
@@ -11736,6 +11778,7 @@
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				A7AF17B41C599331007BCAFE /* VUser+Following.swift in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
+				675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
 				A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */,
@@ -11941,6 +11984,7 @@
 				A721E9541B572454000B7901 /* UIImage+VTint.m in Sources */,
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				C3A4C5B21BCC6455000B745B /* StatusBarUtils.swift in Sources */,
+				675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */,
 				A7C565E61C442FEA00E4DF6A /* VNotification+Parsable.swift in Sources */,
 				A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */,
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
@@ -12150,7 +12194,6 @@
 				A7DCA4E51C128A78004E35B4 /* VDiscoverViewControllerTests.m in Sources */,
 				A7D0AD311C0D453D0018C63E /* NSString+UnicodeTests.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
-				03949CEA1C1A0C490092B366 /* FanLoyaltyTests.swift in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */,
@@ -12161,6 +12204,7 @@
 				6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */,
 				A7DCA4E71C128A78004E35B4 /* VEmailValidatorTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
+				6701FE1D1C8E7545009B262D /* AchievementTests.swift in Sources */,
 				A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */,
 				031DE6061C55E5550063492B /* AlertsRequestDecoratorTests.swift in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,

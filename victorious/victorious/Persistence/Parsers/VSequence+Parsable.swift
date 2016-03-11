@@ -120,7 +120,7 @@ private extension VStreamItem {
             uniqueInfo = ["streamItem" : self, "streamParent" : stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
-            // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
+            // i.e. one that points to a VStreamItem but has no associated streamParent
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
             uniqueInfo = ["streamItem" : self]

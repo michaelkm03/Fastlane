@@ -9,6 +9,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VUserProfileHeader.h"
 #import "VUserProfileViewController.h"
+#import "victorious-Swift.h"
 
 NSString * const VDependencyManagerUserProfileViewComponentKey = @"userProfileView";
 NSString * const VDependencyManagerUserProfileHeaderComponentKey = @"userProfileHeader";
@@ -17,6 +18,7 @@ NSString * const VDependencyManagerUserRemoteIdKey = @"remoteId";
 NSString * const VDependencyManagerFindFriendsIconKey = @"findFriendsIcon";
 NSString * const VDependencyManagerProfileEditButtonStyleKey = @"editButtonStyle";
 NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
+NSString * const VDependencyManagerTrophyCaseScreenKey = @"trophyCaseScreen";
 
 @implementation VDependencyManager (VUserProfile)
 
@@ -46,6 +48,12 @@ NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
                                                                                     forKey:VDependencyManagerUserProfileHeaderComponentKey
                                                                      withAddedDependencies:@{ VDependencyManagerUserKey: user }];
     return header;
+}
+
+- (TrophyCaseViewController *)trophyCaseViewController
+{
+    TrophyCaseViewController *trophyCaseViewController = [self templateValueOfType:[TrophyCaseViewController class] forKey:VDependencyManagerTrophyCaseScreenKey];
+    return trophyCaseViewController;
 }
 
 @end

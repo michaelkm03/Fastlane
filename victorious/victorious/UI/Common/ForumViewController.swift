@@ -17,19 +17,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
     @IBOutlet private var stageViewControllerContainer: UIView!
     
     private var dependencyManager: VDependencyManager!
-    
-    private lazy var chatFeedViewController = UIViewController()
-    
-    private lazy var composerViewController: ComposerViewController = {
-        let composer = ComposerViewController.newWithDependencyManager(self.dependencyManager)
-        composer.delegate = self
-        return composer
-    }()
-    
-    private lazy var stageViewController: StageViewController = {
-        return StageViewController.newWithDependencyManager(self.dependencyManager)
-    }()
-    
+
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
         guard let forumVC = storyboard.instantiateInitialViewController() as? ForumViewController else {
@@ -40,26 +28,17 @@ class ForumViewController: UIViewController, ComposerDelegate {
         return forumVC
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        setupChildViewControllers()
-    }
-    
-    private func setupChildViewControllers() {
-        
-        addChildViewController(stageViewController, toView: stageViewControllerContainer)
-        addChildViewController(chatFeedViewController, toView: chatFeedViewControllerContainer)
-        addChildViewController(composerViewController, toView: composerViewControllerContainer)
-    }
-    
-    private func addChildViewController(viewController: UIViewController, toView view: UIView) {
-        
-        let viewControllerView = viewController.view
-        addChildViewController(viewController)
-        view.addSubview(viewControllerView)
-        view.v_addFitToParentConstraintsToSubview(viewControllerView)
-        viewController.didMoveToParentViewController(self)
+        super.prepareForSegue(segue, sender: sender)
+        let destination = segue.destinationViewController
+        if let stageViewController = destination as? StageViewController {
+            stageViewController.dependencyManager = dependencyManager
+        } else if let _ = destination as? UIViewController {
+            //Setup dependency manager on chatFeedViewController
+        } else if let composerViewController = destination as? ComposerViewController {
+            composerViewController.dependencyManager = dependencyManager
+        }
     }
     
     

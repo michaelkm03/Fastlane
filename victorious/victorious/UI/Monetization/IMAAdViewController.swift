@@ -8,6 +8,9 @@
 
 import GoogleInteractiveMediaAds
 import SafariServices
+import AdSupport
+
+private let VSDKAdIDMacro = "%%ADID%%"
 
 /// Provides an integration with Google IMA Ad system
 @objc class IMAAdViewController: NSObject, VAdViewControllerType, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
@@ -27,13 +30,15 @@ import SafariServices
         adTag: String,
         adsLoader: IMAAdsLoader = IMAAdsLoader(),
         adView: UIView = UIView()) {
-            self.adTag = adTag
             self.player = player
             self.contentPlayhead = VIMAContentPlayhead(player: player)
             self.adView = adView
             self.adsLoader = adsLoader
             self.adDetailViewController = UIViewController()
             self.adDetailViewController.view = self.adView
+            
+            self.adTag = IMAAdViewController.replaceAdTagMacro(adTag)
+            
             super.init()
             self.adsLoader.delegate = self
             NSNotificationCenter.defaultCenter().addObserver(
@@ -41,6 +46,14 @@ import SafariServices
                 selector: "contentDidFinishPlaying:",
                 name: AVPlayerItemDidPlayToEndTimeNotification,
                 object: player)
+    }
+    
+    class func replaceAdTagMacro(adTag: String) -> String {
+        let idfa: String = ASIdentifierManager.sharedManager().advertisingTrackingEnabled ? ASIdentifierManager.sharedManager().advertisingIdentifier.UUIDString : ""
+        let newAdTag = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
+            VSDKAdIDMacro : idfa
+            ], inURLString: adTag)
+        return newAdTag
     }
 
     //MARK: - VAdViewControllerType method overrides

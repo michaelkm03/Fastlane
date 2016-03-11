@@ -10,14 +10,7 @@ import UIKit
 
 class StageViewController: UIViewController, Stage {
     
-    private var dependencyManager: VDependencyManager!
-    
-    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> StageViewController {
-        
-        let stageVC = StageViewController()
-        stageVC.dependencyManager = dependencyManager
-        return stageVC
-    }
+    var dependencyManager: VDependencyManager!
     
     
     //MARK: - StageController
