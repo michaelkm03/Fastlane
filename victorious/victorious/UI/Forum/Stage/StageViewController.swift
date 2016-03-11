@@ -12,7 +12,7 @@ class StageViewController: UIViewController, Stage {
     
     private var dependencyManager: VDependencyManager!
     
-    class func new( dependencyManager dependencyManager: VDependencyManager ) -> StageViewController {
+    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> StageViewController {
         
         let stageVC = StageViewController()
         stageVC.dependencyManager = dependencyManager

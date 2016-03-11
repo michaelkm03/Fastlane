@@ -27,10 +27,10 @@ class ForumViewController: UIViewController, ComposerDelegate {
     }()
     
     private lazy var stageViewController: StageViewController = {
-        return StageViewController.new(dependencyManager: self.dependencyManager)
+        return StageViewController.newWithDependencyManager(self.dependencyManager)
     }()
     
-    class func new( dependencyManager dependencyManager: VDependencyManager ) -> ForumViewController {
+    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
         guard let forumVC = storyboard.instantiateInitialViewController() as? ForumViewController else {
             fatalError("Failed to instantiate an ForumViewController view controller!")
