@@ -26,6 +26,10 @@ extension VDependencyManager: TemplateProductsDataSource {
     }
     
     var voteTypes: [VVoteType] {
-        return templateValueOfType(NSArray.self, forKey: "voteTypes") as? [VVoteType] ?? []
+        let templateValues = templateValueOfType(NSArray.self, forKey: "voteTypes") as? [[NSObject : AnyObject]] ?? []
+        let childDependencyManagers = templateValues.flatMap {
+            return VDependencyManager(parentManager: self, configuration: $0, dictionaryOfClassesByTemplateName: nil)
+        }
+        return childDependencyManagers.flatMap(VVoteType.init)
     }
 }

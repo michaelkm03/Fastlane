@@ -71,35 +71,37 @@
 
 - (void)setup
 {
-    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    NSArray *voteTypes = [self.dependencyManager voteTypes];
+    // Pre-load any purchaseable products that might not have already been cached
+    // This is also called from VSettingsManager during app initialization, so ideally
+    // most of the purchaseable products are already fetched from the App Store.
+    // If not, we'll cache them now.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(purchaseManagedDidUpdate:)
+                                                 name:VPurchaseManagerProductsDidUpdateNotification
+                                               object:nil];
     
-    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequence:self.sequence
-                                                                                                             voteTypes:voteTypes];
-    [experienceEnhancerOperation queueWithCompletion:^(Operation *_Nonnull operation)
+    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
+    
+    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequenceID:self.sequence.remoteId
+                                                                                                     productsDataSource:self.dependencyManager];
+    Operation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
+    [fetchProductsOperation addDependency:experienceEnhancerOperation];
+    [fetchProductsOperation queueWithCompletion:nil];
+    
+    __weak typeof(self) weakSelf = self;
+    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error)
      {
-         self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancerOperation.experienceEnhancers];
-         [self.enhancerBar reloadData];
-         [self.delegate experienceEnhancersDidUpdate];
-         
-         // Pre-load any purchaseable products that might not have already been cached
-         // This is also called from VSettingsManager during app initialization, so ideally
-         // most of the purchaseable products are already fetched from the App Store.
-         // If not, we'll cache them now.
-         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                  selector:@selector(purchaseManagedDidUpdate:)
-                                                      name:VPurchaseManagerProductsDidUpdateNotification
-                                                    object:nil];
-         NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-         
-         self.purchaseManager = [VPurchaseManager sharedInstance];
-         if ( !self.purchaseManager.isPurchaseRequestActive )
-         {
-             [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-         }
-         
-         self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+         [weakSelf onExperienceEnhancersLoaded:results];
      }];
+}
+
+- (void)onExperienceEnhancersLoaded:(NSArray *)experienceEnhancers
+{
+    self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
+    [self.enhancerBar reloadData];
+    [self.delegate experienceEnhancersDidUpdate];
+    
+    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
