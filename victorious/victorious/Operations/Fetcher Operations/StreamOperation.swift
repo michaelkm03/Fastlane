@@ -12,10 +12,11 @@ import VictoriousIOSSDK
 final class StreamOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StreamPaginator
-    private var preloadedStreamObjectID: NSManagedObjectID?
+    let preloadedStreamObjectID: NSManagedObjectID?
     
-    required init(paginator: StreamPaginator) {
+    required init(paginator: StreamPaginator, existingStreamID: NSManagedObjectID? = nil) {
         self.paginator = paginator
+        self.preloadedStreamObjectID = existingStreamID
         super.init()
         
         if preloadedStreamObjectID == nil && !localFetch {
@@ -33,8 +34,7 @@ final class StreamOperation: FetcherOperation, PaginatedOperation {
     }
     
     convenience init( apiPath: String, sequenceID: String? = nil, existingStreamID: NSManagedObjectID? = nil) {
-        self.init( paginator: StreamPaginator(apiPath: apiPath, sequenceID: sequenceID)! )
-        preloadedStreamObjectID = existingStreamID
+        self.init( paginator: StreamPaginator(apiPath: apiPath, sequenceID: sequenceID)!, existingStreamID: existingStreamID )
     }
     
     override func main() {
