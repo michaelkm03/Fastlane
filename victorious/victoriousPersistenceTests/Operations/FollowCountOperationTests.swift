@@ -33,7 +33,7 @@ class FollowCountOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("FollowCountOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -49,7 +49,7 @@ class FollowCountOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("FollowCountOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             // As long as this completion block is called without crashing
             // from within the operation, this "missing user" case is covered
             XCTAssertNil(error)

@@ -71,7 +71,7 @@
     self.noContentView.message = NSLocalizedString(@"Send a message to start chatting with other members of the community.", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     
-    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self.focusHelper updateFocus];
          
@@ -94,7 +94,7 @@
     
     if ( self.hasLoadedOnce )
     {
-        [self.dataSource refreshRemote:nil];
+        [self.dataSource refreshWithLocal:NO completion:nil];
     }
     
     [self updateTableView];
@@ -114,8 +114,7 @@
 {
     // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
     NSInteger userID = self.conversation.user.remoteId.integerValue;
-    Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithUserID:userID];
-    [operation queueWithCompletion:nil];
+    [[[ConversationDeleteUnusedOperation alloc] initWithUserID:userID] queueWithCompletion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -143,7 +142,7 @@
     }
     
     self.isLoadingNextPage = YES;
-    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          self.isLoadingNextPage = NO;
      }];

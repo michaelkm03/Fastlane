@@ -35,5 +35,5 @@ protocol GenericPaginatedDataSourceType: PaginatedDataSourceType {
     /// from the network.  When finished, internal state changes and changes to the backing store
     /// may occur, which will in turn call the appropriate delegate methods.
     func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T,
-        completion: ((results: [AnyObject]?, error: NSError?) -> Void)? )
+        completion: ((results: [AnyObject]?, error: NSError?, cancelled: Bool) -> Void)? )
 }

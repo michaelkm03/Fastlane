@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation, PaginatedDataSource;
+@class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamFetcherOperation, PaginatedDataSource;
 
 /**
  *  Data delegate for the VStreamCollectionViewDataSource.
