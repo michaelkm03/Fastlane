@@ -57,7 +57,7 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
         }
     }
     
-    private var messagesPredicate: NSPredicate? {
+    private lazy var messagesPredicate: NSPredicate? = {
         if let conversationID = self.conversationID where conversationID > 0 {
             return NSPredicate(format: "conversation.remoteId == %i", conversationID)
             
@@ -67,5 +67,5 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
         } else {
             return nil
         }
-    }
+    }()
 }

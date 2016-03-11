@@ -26,7 +26,7 @@ class RemoteFetcherOperation: FetcherOperation {
     override func cancel() {
         super.cancel()
         
-        dispatch_async( dispatch_get_main_queue() ) {
+        dispatch_sync( dispatch_get_main_queue() ) {
             self.requestExecutor.cancelled = true
         }
     }

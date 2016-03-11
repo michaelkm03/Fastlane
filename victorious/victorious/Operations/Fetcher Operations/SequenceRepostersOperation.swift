@@ -31,16 +31,6 @@ final class SequenceRepostersOperation: FetcherOperation, PaginatedOperation {
     }
     
     override func main() {
-        
-        // TODO:
-        /*if let objectIDs = dependencies.flatMap { $0 as? PrefetchedResultsOperation }.first {
-            // Reload objectIDs in main context
-        } else {
-            // Fetch request
-        }*/
-
-        // TODO: Make sure this works
-        
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VUser.v_entityName())
             let predicate = NSPredicate(format: "ANY repostedSequences.remoteId = %@", self.sequenceID)
