@@ -26,7 +26,7 @@ final class PollVoteOperation: RemoteFetcherOperation, RequestOperation {
             }
             
             let pollResult: VPollResult = context.v_findOrCreateObject(["sequenceId": self.request.sequenceID, "answerId" : NSNumber(integer: self.request.answerID)])
-            pollResult.count = pollResult.count.integerValue + 1
+            pollResult.count = pollResult.count?.integerValue + 1
             pollResult.user = user
             
             context.v_save()
