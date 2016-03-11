@@ -22,7 +22,7 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         let operation = LoginSuccessOperation(response: response, parameters: parameters)
         
         let expectation = expectationWithDescription("")
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             expectation.fulfill()
         }

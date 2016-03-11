@@ -62,8 +62,7 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
     NSArray<NSString *> *streamItemIDs = [self.streamItemsToRemove v_map:^NSString *(VStreamItem *streamItem) {
         return streamItem.remoteId;
     }];
-    Operation *operation = [[RemoveStreamItemOperation alloc] initWithStreamItemIDs:streamItemIDs];
-    [operation queueWithCompletion:nil];
+    [[[StreamItemRemoveOperation alloc] initWithStreamItemIDs:streamItemIDs] queueWithCompletion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated

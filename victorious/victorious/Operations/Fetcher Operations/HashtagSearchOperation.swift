@@ -1,0 +1,51 @@
+//
+//  HashtagSearchOperation.swift
+//  victorious
+//
+//  Created by Patrick Lynch on 1/6/16.
+//  Copyright © 2016 Victorious. All rights reserved.
+//
+
+import Foundation
+import VictoriousIOSSDK
+
+@objc class HashtagSearchResultObject: NSObject {
+    let sourceResult: VictoriousIOSSDK.Hashtag
+    let tag: String
+    
+    init( hashtag: VictoriousIOSSDK.Hashtag ) {
+        self.sourceResult = hashtag
+        self.tag = hashtag.tag
+    }
+}
+
+final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+    
+    let request: HashtagSearchRequest
+    
+    private let escapedQueryString: String
+    
+    required init( request: HashtagSearchRequest ) {
+        self.request = request
+        self.escapedQueryString = request.searchTerm
+    }
+    
+    convenience init?( searchTerm: String ) {
+        guard let request = HashtagSearchRequest(searchTerm: searchTerm) else {
+            return nil
+        }
+        self.init(request: request)
+    }
+    
+    override func main() {
+        requestExecutor.executeRequest(self.request, onComplete: onComplete, onError: nil)
+    }
+    
+    func onComplete( networkResult: HashtagSearchRequest.ResultType ) {
+        
+        self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
+        
+        // Queue a follow-up operation that parses to persistent store
+        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
+    }
+}

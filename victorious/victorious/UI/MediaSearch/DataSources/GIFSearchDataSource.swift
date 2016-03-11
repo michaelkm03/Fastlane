@@ -24,7 +24,7 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 			createOperation: {
 				return GIFSearchOperation(searchTerm: searchTerm)
 			},
-			completion:{ (operation, error) in
+			completion:{ (results, error, cancelled) in
 				completion?( error )
 			}
 		)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ValidateReceiptOperation: FetcherOperation, RequestOperation {
+class ValidateReceiptOperation: RemoteFetcherOperation, RequestOperation {
     
     var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
     
@@ -19,7 +19,7 @@ class ValidateReceiptOperation: FetcherOperation, RequestOperation {
     
     override func main() {
         guard request != nil else {
-            self.error = NSError(domain:FetcherOperation.errorDomain, code:99, userInfo:nil)
+            assertionFailure()
             return
         }
         

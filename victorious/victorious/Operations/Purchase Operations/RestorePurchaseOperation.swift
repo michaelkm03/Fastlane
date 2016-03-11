@@ -8,11 +8,9 @@
 
 import Foundation
 
-class RestorePurchasesOperation: Operation {
+class RestorePurchasesOperation: BackgroundOperation {
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
-    
-    var error: NSError?
     
     override func start() {
         super.start()

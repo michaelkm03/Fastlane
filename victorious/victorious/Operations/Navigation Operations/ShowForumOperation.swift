@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowForumOperation: NavigationOperation {
+class ShowForumOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool

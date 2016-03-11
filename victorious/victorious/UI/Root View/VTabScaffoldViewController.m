@@ -373,9 +373,7 @@ static NSString * const kMenuKey = @"menu";
     
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
     pushNotificationOperation.completionBlock = ^void {
-        dispatch_async( dispatch_get_main_queue(), ^{
-            self.coachmarkManager.allowCoachmarks = YES;
-        });
+        self.coachmarkManager.allowCoachmarks = YES;
     };
     
     // Determine execution order by setting dependencies
@@ -383,12 +381,11 @@ static NSString * const kMenuKey = @"menu";
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:showLoginOperation];
     
-    // Order doesn't matter in this array, dependencies ensure order
-    NSArray *operationsToAdd = @[ pushNotificationOperation,
-                                  ftueVideoOperation,
-                                  showQueuedDeeplinkOperation ];
-    [[NSOperationQueue mainQueue] addOperation:showLoginOperation];
-    [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
+    NSArray *mainQueueOperations = @[ showLoginOperation, pushNotificationOperation];
+    [[NSOperationQueue mainQueue] addOperations:mainQueueOperations waitUntilFinished:NO];
+    
+    NSArray *backgroundOperations = @[ ftueVideoOperation, showQueuedDeeplinkOperation ];
+    [self.operationQueue addOperations:backgroundOperations waitUntilFinished:NO];
 }
 
 #pragma mark - UITabBarControllerDelegate

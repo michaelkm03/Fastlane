@@ -14,20 +14,15 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
 
     var operation: TrendingUsersOperation!
 
-    override func setUp() {
-        super.setUp()
-        operation = TrendingUsersOperation()
-    }
-
     func testResults() {
         let userID = 20160118
         let user = User(userID: userID)
-        
         testRequestExecutor = TestRequestExecutor(result:[user])
+        operation = TrendingUsersOperation()
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("TrendingUsersOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             XCTAssertEqual(results?.count, 1)
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)

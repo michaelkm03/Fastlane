@@ -8,13 +8,11 @@
 
 import Foundation
 
-class VIPSubscribeOperation: NavigationOperation {
+class VIPSubscribeOperation: MainQueueOperation {
     
     let productIdentifier: String
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
-    
-    var error: NSError?
     
     init(productIdentifier: String) {
         self.productIdentifier = productIdentifier

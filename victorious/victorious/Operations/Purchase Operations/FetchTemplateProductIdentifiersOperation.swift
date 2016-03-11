@@ -8,12 +8,10 @@
 
 import Foundation
 
-class FetchTemplateProductIdentifiersOperation: Operation {
+class FetchTemplateProductIdentifiersOperation: BackgroundOperation {
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     var productsDataSource: TemplateProductsDataSource
-    
-    var error: NSError?
     
     init(productsDataSource: TemplateProductsDataSource) {
         self.productsDataSource = productsDataSource
