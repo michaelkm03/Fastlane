@@ -3844,8 +3844,8 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCancellableView.xib; sourceTree = "<group>"; };
-		BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
+		BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadingCancellableView.xib; path = ../LoadingCancellableView.xib; sourceTree = "<group>"; };
+		BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingCancellableView.swift; path = ../LoadingCancellableView.swift; sourceTree = "<group>"; };
 		BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowProfileOperationTests.m; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* RepostSequenceOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostSequenceOperationTests.swift; sourceTree = "<group>"; };
@@ -4835,8 +4835,6 @@
 				03C92D121ABB96030057D30E /* Lightweight Content View */,
 				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
-				BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */,
-				BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
 				A73C3EA31C45890E00A8452C /* MediaSearch */,
 				DBAD775B19F711D900B6A939 /* Monetization */,
@@ -7109,12 +7107,14 @@
 			children = (
 				A73C3EA41C45890E00A8452C /* Cells */,
 				A73C3EA81C45890E00A8452C /* DataSources */,
+				BF00E5581C8FBDB7009413A9 /* LoadingCancellableView.swift */,
+				BF00E5561C8FBCE3009413A9 /* LoadingCancellableView.xib */,
 				A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */,
 				A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */,
 				A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */,
+				A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */,
 				A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */,
 				A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */,
-				A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */,
 			);
 			path = MediaSearch;
 			sourceTree = "<group>";
