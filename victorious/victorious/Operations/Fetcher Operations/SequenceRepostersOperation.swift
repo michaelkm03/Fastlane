@@ -39,11 +39,11 @@ final class SequenceRepostersOperation: FetcherOperation, PaginatedOperation {
             // Fetch request
         }*/
 
-        // TOOD: Make sure this works
+        // TODO: Make sure this works
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VUser.v_entityName())
-            let predicate = NSPredicate(format: "ANY resposedSequences.remoteId = %@", self.sequenceID)
+            let predicate = NSPredicate(format: "ANY repostedSequences.remoteId = %@", self.sequenceID)
             fetchRequest.predicate = predicate + self.paginator.paginatorPredicate
             self.results = context.v_executeFetchRequest(fetchRequest)
         }

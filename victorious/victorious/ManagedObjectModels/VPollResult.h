@@ -11,12 +11,16 @@
 
 @class VSequence, VUser;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VPollResult : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * answerId;
-@property (nonatomic, retain) NSNumber * count;
-@property (nonatomic, retain) NSString * sequenceId;
-@property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain, nullable) NSNumber * answerId;
+@property (nonatomic, retain, nullable) NSNumber * count;
+@property (nonatomic, retain, nullable) NSString * sequenceId;
+@property (nonatomic, retain, nullable) VUser *user;
 @property (nonatomic, retain) NSNumber * displayOrder;
 
 @end
+
+NS_ASSUME_NONNULL_END
