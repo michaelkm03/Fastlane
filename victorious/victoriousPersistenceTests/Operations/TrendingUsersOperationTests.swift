@@ -23,7 +23,7 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
         operation.persistentStore = testStore
         
         let expectation = expectationWithDescription("TrendingUsersOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             XCTAssertEqual(results?.count, 1)
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)

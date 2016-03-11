@@ -21,7 +21,7 @@ class SequenceDeleteOperationTests: BaseFetcherOperationTestCase {
         confirm.before(operation).queue()
         
         let expectation = expectationWithDescription("SequenceDeleteOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             
             XCTAssertNil( error )
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation).flatMap { $0 as? SequenceDeleteRemoteOperation }
@@ -42,7 +42,7 @@ class SequenceDeleteOperationTests: BaseFetcherOperationTestCase {
         confirm.before(operation).queue()
         
         let expectation = expectationWithDescription("SequenceDeleteOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTFail("Should not be called")
         }
         dispatch_after(1.0) {

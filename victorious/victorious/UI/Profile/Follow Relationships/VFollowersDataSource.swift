@@ -29,7 +29,7 @@ import Foundation
             createOperation: {
                 return UsersFollowingUserOperation(userID: userID)
             },
-            completion:{ (operation, error) in
+            completion:{ (results, error, cancelled) in
                 completion?( error )
             }
         )

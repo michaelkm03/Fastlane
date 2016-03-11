@@ -20,7 +20,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             
             if let searchResults = results {
@@ -52,7 +52,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             XCTAssertNil(error)
             if let searchResults = results as? [GIFSearchResultObject] where !searchResults.isEmpty {
@@ -77,7 +77,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             XCTAssertEqual( error, expectedError )
         }

@@ -19,7 +19,7 @@ class FetcherOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("MockFetcherOperation")
         operation.cancel()
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTFail("Completion block should not be called if cancelled.")
         }
         
@@ -39,7 +39,7 @@ class FetcherOperationTests: BaseFetcherOperationTestCase {
         XCTAssert( operation.requiresAuthorization, "Default value should be true" )
         
         let expectation = expectationWithDescription("MockFetcherOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             XCTAssertEqual(results?.count, 2)
             XCTAssertEqual(self.testRequestExecutor.executeRequestCallCount, 1)
@@ -58,7 +58,7 @@ class FetcherOperationTests: BaseFetcherOperationTestCase {
         XCTAssert( operation.requiresAuthorization, "Default value should be true" )
         
         let expectation = expectationWithDescription("MockFetcherOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertEqual(expectedError, error)
             XCTAssertNil(results)
             XCTAssert( NSThread.isMainThread() )

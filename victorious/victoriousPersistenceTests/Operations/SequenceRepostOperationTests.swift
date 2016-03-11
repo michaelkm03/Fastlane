@@ -34,7 +34,7 @@ class SequenceRepostOperationTests: BaseFetcherOperationTestCase {
     }
 
     func testRepostSequence() {
-        SequenceRepostOperation(sequenceID: sequenceRemoteId).queue() { results, error in
+        SequenceRepostOperation(sequenceID: sequenceRemoteId).queue() { results, error, cancelled in
             XCTAssertNotNil(self.sequence)
             XCTAssertNotNil(self.user)
             guard let sequence: VSequence = self.sequence,

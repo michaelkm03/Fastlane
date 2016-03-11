@@ -81,7 +81,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 - (void)reload
 {
     TrendingUsersOperation *operation = [[TrendingUsersOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (error == nil)
         {

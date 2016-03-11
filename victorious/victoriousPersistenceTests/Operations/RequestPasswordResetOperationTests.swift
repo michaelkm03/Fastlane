@@ -20,7 +20,7 @@ class PasswordRequestResetOperationTests: BaseFetcherOperationTestCase {
         operation.persistentStore = testStore
         
         let expectation = expectationWithDescription("PasswordRequestResetOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
             XCTAssertEqual(operation.deviceToken, self.mockDeviceToken)
             expectation.fulfill()

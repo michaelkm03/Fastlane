@@ -71,7 +71,7 @@ import Foundation
         ShowShareSequenceOperation(originViewController: originViewController,
                                    dependencyManager: dependencyManager,
                                    sequence: sequence,
-                                   streamID: streamID).queue() {
+                                   streamID: streamID).queue() { error, cancelled in
                                        completion?()
         }
     }
@@ -96,11 +96,11 @@ import Foundation
         
         confirm.before(flag)
         confirm.queue()
-        flag.queue() { (results, error) in
+        flag.queue() { (results, error, cancelled) in
             guard !flag.cancelled else {
                 return
             }
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
@@ -128,7 +128,7 @@ import Foundation
         
         confirm.before(blockOrUnblock)
         confirm.queue()
-        blockOrUnblock.queue() { (results, error) in
+        blockOrUnblock.queue() { (results, error, cancelled) in
             guard !blockOrUnblock.cancelled else {
                 return
             }
@@ -153,17 +153,17 @@ import Foundation
         
         confirm.before(delete)
         confirm.queue()
-        delete.queue() { (results, error) in
+        delete.queue() { (results, error, cancelled) in
             guard !delete.cancelled else {
                 return
             }
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
     // MARK: - Like
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
-        SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
+        SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error, cancelled in
             
             self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                 VLikeButtonCoachmarkIdentifier,
@@ -174,7 +174,7 @@ import Foundation
                 )
             )
             
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
@@ -185,8 +185,8 @@ import Foundation
     }
     
     func repostSequence(sequence: VSequence, completion: ((Bool) -> Void)?) {
-        SequenceRepostOperation(sequenceID: sequence.remoteId).queue { results, error in
-            completion?( error == nil )
+        SequenceRepostOperation(sequenceID: sequence.remoteId).queue { results, error, cancelled in
+            completion?( error == nil && !cancelled )
         }
     }
     

@@ -213,7 +213,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)reload
 {
     TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (error == nil)
         {
@@ -374,7 +374,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 }
                 
                 FetcherOperation *operation = [[FollowHashtagToggleOperation alloc] initWithHashtag:hashtagText];
-                [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+                [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
                     [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
                 }];
             };

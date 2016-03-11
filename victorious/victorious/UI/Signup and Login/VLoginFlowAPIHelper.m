@@ -165,7 +165,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     
     PasswordRequestResetOperation *operation = [[PasswordRequestResetOperation alloc] initWithEmail:email];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          if (error == nil)
          {
@@ -219,7 +219,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     
     PasswordValidateResetTokenOperation *operation = [[PasswordValidateResetTokenOperation alloc] initWithUserToken:self.userToken deviceToken:self.deviceToken];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (error == nil)
         {
@@ -259,13 +259,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     PasswordResetOperation *operation = [[PasswordResetOperation alloc] initWithNewPassword:password
                                                                                     userToken:self.userToken
                                                                                   deviceToken:self.deviceToken];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (error == nil)
         {
             [hud hide:YES];
             
-            [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+            [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
                 
                 if ( error == nil )
                 {

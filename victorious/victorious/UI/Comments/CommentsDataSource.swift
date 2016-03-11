@@ -46,21 +46,21 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         )
     }
     
-    func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
+    func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
         self.loadPage( pageType,
             createOperation: {
                 return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
-            completion: { (results, error) in
+            completion: { results, error, cancelled in
                 self.hasLoadedOnce = true
-                completion?(results, error)
+                completion?(results, error, cancelled)
             }
         )
     }
     
-    func deleteSequence( completion: (([AnyObject]?, NSError?)->())? = nil ) {
-        SequenceDeleteOperation(sequenceID: self.sequence.remoteId).queue() { (results, error) in
-            completion?(results, error)
+    func deleteSequence( completion: (([AnyObject]?, NSError?, Bool)->())? = nil ) {
+        SequenceDeleteOperation(sequenceID: self.sequence.remoteId).queue() { results, error, cancelled in
+            completion?(results, error, cancelled)
         }
     }
     

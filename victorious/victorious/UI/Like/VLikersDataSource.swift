@@ -43,7 +43,7 @@ import Foundation
             createOperation: {
                 return SequenceLikersOperation(sequenceID: self.sequence.remoteId)
             },
-            completion:{ (operation, error) in
+            completion:{ (results, error, cancelled) in
                 completion?( error )
             }
         )

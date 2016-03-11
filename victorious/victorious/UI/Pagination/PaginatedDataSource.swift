@@ -76,7 +76,7 @@ import VictoriousIOSSDK
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?) -> Void)? = nil ) {
+    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)? = nil ) {
         
         guard self.currentPaginatedOperation != nil else {
             return
@@ -85,24 +85,24 @@ import VictoriousIOSSDK
         let operation: FetcherOperation = createOperation()
         
         self.state = .Loading
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             
             if let error = error {
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
-                completion?( [], error )
+                completion?( [], error, cancelled )
             
             } else {
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, forPageType: .Previous)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-                completion?( newResults, error )
+                completion?( newResults, error, cancelled )
             }
         }
     }
     
-    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?) -> Void)? = nil ) {
+    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((results: [AnyObject]?, error: NSError?, cancelled: Bool) -> Void)? = nil ) {
         
         guard !isLoading() else {
             return
@@ -138,7 +138,7 @@ import VictoriousIOSSDK
         pagesLoaded.insert(operation.paginator.pageNumber)
         
         self.state = .Loading
-        requestOperation.queue() { (results, error) in
+        requestOperation.queue() { results, error, cancelled in
             
             if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
@@ -155,7 +155,7 @@ import VictoriousIOSSDK
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
-            completion?( results: results, error: error )
+            completion?( results: results, error: error, cancelled: cancelled )
         }
         
         self.currentPaginatedOperation = requestOperation

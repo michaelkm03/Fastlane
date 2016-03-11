@@ -30,7 +30,7 @@ class SequenceLikeToggleOperationTests: BaseFetcherOperationTestCase {
         let objectId: NSManagedObjectID = (sequence?.objectID)!
         
         let expectation = expectationWithDescription("Finished Operation")
-        SequenceLikeToggleOperation(sequenceObjectId: objectId).queue() { results, error in
+        SequenceLikeToggleOperation(sequenceObjectId: objectId).queue() { results, error, cancelled in
             guard let isLiked = self.sequence?.isLikedByMainUser.boolValue else {
                 XCTFail()
                 return

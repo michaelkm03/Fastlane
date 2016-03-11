@@ -16,6 +16,8 @@ class BackgroundOperation: NSOperation, Queueable {
     private var _executing = false
     private var _finished = false
     
+    var error: NSError?
+    
     /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move into an excuting state.
     final func beganExecuting () {
         executing = true
@@ -48,21 +50,19 @@ class BackgroundOperation: NSOperation, Queueable {
         }
     }
     
-    // MARK: - Queueable
-    
-    func executeCompletionBlock(completionBlock: BackgroundOperation->()) {
-        // This ensures that every subclass of `Operation` has its completion block
+    func executeCompletionBlock(completionBlock: (NSError?, Bool)->()) {
+        // This ensures that every subclass of `MainQueueOperation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.
         dispatch_async( dispatch_get_main_queue() ) {
-            completionBlock(self)
+            completionBlock(self.error, self.cancelled)
         }
     }
     
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion: (BackgroundOperation->())? ) {
+    func queueWithCompletion(completion:((NSError?, Bool)->())? = nil) {
         queue(completion: completion)
     }
 }

@@ -17,7 +17,7 @@ class PasswordValidateResetTokenOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("PasswordValidateResetTokenOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             expectation.fulfill()
         }

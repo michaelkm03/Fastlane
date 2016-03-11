@@ -23,7 +23,7 @@ extension VStreamCollectionViewDataSource {
             createOperation: {
                 return StreamOperation(apiPath: apiPath)
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion(error)
             }
         )
@@ -39,7 +39,7 @@ extension VStreamCollectionViewDataSource {
                 // e.g. Explore recent feed
                 return StreamOperation(apiPath: stream.apiPath ?? "", sequenceID: nil, existingStreamID: stream.objectID)
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion?(error)
         })
     }

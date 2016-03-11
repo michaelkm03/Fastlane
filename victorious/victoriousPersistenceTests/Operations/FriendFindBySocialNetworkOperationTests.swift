@@ -24,7 +24,7 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("FriendFindBySocialNetworkFinished")
         
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             
             XCTAssertNil(error)

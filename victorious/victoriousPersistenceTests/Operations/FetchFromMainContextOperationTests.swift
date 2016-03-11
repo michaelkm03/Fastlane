@@ -47,7 +47,7 @@ class FetchFromMainContextOperationTests: XCTestCase {
 
     func queueExpectedOperation(operation operation: FetcherOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
         }
         return expectation

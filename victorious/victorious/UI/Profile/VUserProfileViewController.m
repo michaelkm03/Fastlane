@@ -305,7 +305,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self updateProfileHeaderState];
      }];
@@ -397,7 +397,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
     FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -436,7 +436,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     _userRemoteId = userRemoteId;
     
     UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
-    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )
         {
@@ -770,7 +770,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
             ConversationForUserOperation *operation = [[ConversationForUserOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )

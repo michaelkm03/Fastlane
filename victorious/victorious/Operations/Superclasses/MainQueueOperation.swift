@@ -14,7 +14,7 @@ import Foundation
 /// ever run on the main thread.
 class MainQueueOperation: NSOperation, Queueable {
     
-    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    var error: NSError?
     
     private var _executing = false
     private var _finished = false
@@ -55,12 +55,12 @@ class MainQueueOperation: NSOperation, Queueable {
     
     // MARK: - Queueable
     
-    func executeCompletionBlock(completionBlock: ()->()) {
+    func executeCompletionBlock(completionBlock: (NSError?, Bool)->()) {
         // This ensures that every subclass of `MainQueueOperation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.
         dispatch_async( dispatch_get_main_queue() ) {
-            completionBlock()
+            completionBlock(self.error, self.cancelled)
         }
     }
     
@@ -73,7 +73,7 @@ class MainQueueOperation: NSOperation, Queueable {
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion:(()->())? = nil) {
+    func queueWithCompletion(completion:((NSError?, Bool)->())? = nil) {
         queue(completion: completion)
     }
 }

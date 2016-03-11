@@ -21,7 +21,7 @@ extension VContentViewViewModel {
             }
         }
 
-        SequenceFetchOperation( sequenceID: self.sequence.remoteId, streamID: self.streamId).queue() { (results, error) in
+        SequenceFetchOperation( sequenceID: self.sequence.remoteId, streamID: self.streamId).queue() { results, error, cancelled in
             // Update the vote/EBs thrown counts
             self.experienceEnhancerController.updateData()
             self.delegate?.didUpdateSequence()
@@ -30,11 +30,11 @@ extension VContentViewViewModel {
         self.commentsDataSource.loadComments(.First)
         
         if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
-            SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { (results, error) in
+            SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { results, error, cancelled in
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
             
-            FollowCountOperation(userID: Int(currentUserID)).queue() { (results, error) in
+            FollowCountOperation(userID: Int(currentUserID)).queue() { results, error, cancelled in
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
@@ -80,7 +80,7 @@ extension VContentViewViewModel {
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
             let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.integerValue)
-            operation.queue() { (results, error) in
+            operation.queue() { results, error, cancelled in
                 completion?(error)
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)

@@ -35,7 +35,7 @@ class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("BlockUserRemoteOperation")
         
         operation.requestExecutor = TestRequestExecutor()
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(VTrackingEventUserDidBlockUser, self.testTrackingManager.trackEventCalls.first?.eventName)
@@ -51,7 +51,7 @@ class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
         let testError = NSError(domain:"", code:9809, userInfo:nil)
         
         operation.requestExecutor = TestRequestExecutor(error: testError)
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertEqual(testError, error)
             
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)

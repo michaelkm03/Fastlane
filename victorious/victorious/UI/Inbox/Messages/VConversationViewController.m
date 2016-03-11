@@ -71,7 +71,7 @@
     self.noContentView.message = NSLocalizedString(@"Send a message to start chatting with other members of the community.", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     
-    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self.focusHelper updateFocus];
          
@@ -142,7 +142,7 @@
     }
     
     self.isLoadingNextPage = YES;
-    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          self.isLoadingNextPage = NO;
      }];
