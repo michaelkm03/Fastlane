@@ -45,7 +45,7 @@ class SequenceDeleteOperationTests: BaseFetcherOperationTestCase {
         operation.queue() { results, error, cancelled in
             XCTFail("Should not be called")
         }
-        dispatch_after(1.0) {
+        dispatch_after(0.2) {
             expectation.fulfill()
         }
         operation.v_defaultQueue.suspended = true
