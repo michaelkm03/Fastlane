@@ -125,6 +125,11 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
     }
 }
 
+- (MediaType)mediaType
+{
+    return MediaTypeVideo;
+}
+
 #pragma mark - VAssetCollectionGridViewControllerDelegate
 
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController selectedAsset:(PHAsset *)asset

@@ -123,6 +123,11 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
 	return @[ cameraOption, searchOption ];
 }
 
+- (MediaType)mediaType
+{
+    return MediaTypeImage;
+}
+
 - (void)showCamera
 {
     // Camera
