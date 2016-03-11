@@ -109,7 +109,8 @@ class MediaSearchExporter {
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        if let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
+        if let fileExtension = remoteURL.pathExtension,
+            let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
             let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
             let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
@@ -118,8 +119,8 @@ class MediaSearchExporter {
             if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
                 let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
             }
-            // Create a unique URL for the gif
-            return subdirectory.URLByAppendingPathComponent(uuidString)
+            // Create a unique URL. May cause issues if GIF has a bad extension.
+            return subdirectory.URLByAppendingPathComponent("\(uuidString).\(fileExtension)")
         }
         fatalError( "Unable to find file path for temporary media download." )
     }
