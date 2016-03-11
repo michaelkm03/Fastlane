@@ -1,5 +1,5 @@
 //
-//  ChatDataSource.swift
+//  ChatFeedDataSource.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/24/16.
@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class ChatDataSource: PaginatedDataSource, UICollectionViewDataSource {
+class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     let itemsPerPage = 15
     

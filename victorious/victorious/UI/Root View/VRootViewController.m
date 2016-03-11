@@ -279,8 +279,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
-    
-    self.scaffoldViewController = scaffold;
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion

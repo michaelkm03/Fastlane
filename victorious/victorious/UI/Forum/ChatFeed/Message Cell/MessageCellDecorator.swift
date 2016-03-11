@@ -22,11 +22,11 @@ struct MessageCellDecorator {
         
         cell.dependencyManager = dependencyManager
         
-        let media: MessageCell.Media?
+        let media: ForumMedia?
         if let url = NSURL(v_string: message.mediaUrl),
             let width = message.mediaWidth?.floatValue,
             let height = message.mediaHeight?.floatValue {
-                media = MessageCell.Media(url: url, width: CGFloat(width), height: CGFloat(height))
+                media = ForumMedia(url: url, width: CGFloat(width), height: CGFloat(height))
         } else {
             media = nil
         }

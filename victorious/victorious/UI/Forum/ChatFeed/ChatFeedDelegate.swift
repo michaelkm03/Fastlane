@@ -8,12 +8,9 @@
 
 import Foundation
 
-/// Conformers will recieve messages related to interaction with chat feed content.
 protocol ChatFeedDelegate: class {
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMessage message: VMessage)
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
     
-    func chatFeed(chatFeed: ChatFeed, didSelectUser user: VUser)
-    
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: VAsset)
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView)
 }

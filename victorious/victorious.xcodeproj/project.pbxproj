@@ -808,24 +808,9 @@
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
 		A72A03011C8E5C160067ADBD /* ShowMediaLightboxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03001C8E5C160067ADBD /* ShowMediaLightboxOperation.swift */; };
-		A72A03131C8E681E0067ADBD /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72A03051C8E681E0067ADBD /* Chat.storyboard */; };
-		A72A03141C8E681E0067ADBD /* ChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03061C8E681E0067ADBD /* ChatDataSource.swift */; };
-		A72A03151C8E681E0067ADBD /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03071C8E681E0067ADBD /* ChatViewController.swift */; };
-		A72A03191C8E681E0067ADBD /* MoreContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A030B1C8E681E0067ADBD /* MoreContentController.swift */; };
 		A72A03221C8E69DC0067ADBD /* ChatUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03211C8E69DC0067ADBD /* ChatUpdateOperation.swift */; };
 		A72A03241C8E74420067ADBD /* UICollectionView+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03231C8E74420067ADBD /* UICollectionView+Pagination.swift */; };
 		A72A03281C8F55680067ADBD /* NSURL+OptionalString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */; };
-		A72A03311C8F55C10067ADBD /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A032C1C8F55C10067ADBD /* MessageCell.swift */; };
-		A72A03321C8F55C10067ADBD /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72A032D1C8F55C10067ADBD /* MessageCell.xib */; };
-		A72A03331C8F55C10067ADBD /* MessageCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A032E1C8F55C10067ADBD /* MessageCellDecorator.swift */; };
-		A72A03341C8F55C10067ADBD /* MessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A032F1C8F55C10067ADBD /* MessageCellLayout.swift */; };
-		A72A03351C8F55C10067ADBD /* MessageMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03301C8F55C10067ADBD /* MessageMediaView.swift */; };
-		A72A033D1C8F55D70067ADBD /* UserActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03371C8F55D70067ADBD /* UserActionCell.swift */; };
-		A72A033E1C8F55D70067ADBD /* UserActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72A03381C8F55D70067ADBD /* UserActionCell.xib */; };
-		A72A033F1C8F55D70067ADBD /* UserActionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03391C8F55D70067ADBD /* UserActionsDataSource.swift */; };
-		A72A03401C8F55D70067ADBD /* UserActionsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A033A1C8F55D70067ADBD /* UserActionsHeaderCell.swift */; };
-		A72A03411C8F55D70067ADBD /* UserActionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72A033B1C8F55D70067ADBD /* UserActionsHeaderCell.xib */; };
-		A72A03421C8F55D70067ADBD /* UserActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A033C1C8F55D70067ADBD /* UserActionsViewController.swift */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
 		A72EB4601C3C99FC00C0C893 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
 		A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */; };
@@ -1136,9 +1121,27 @@
 		A7C192B31C923C1800E5EB00 /* BasePersistentStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */; };
 		A7C192B41C92425800E5EB00 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		A7C192B71C92548200E5EB00 /* VDiscoverSuggestedPersonCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621BC2F91C769EF9002A28E4 /* VDiscoverSuggestedPersonCellTests.swift */; };
-		A7C192BA1C926DF400E5EB00 /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */; };
+		A7C192BA1C926DF400E5EB00 /* Forum.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C192B81C926DF400E5EB00 /* Forum.storyboard */; };
 		A7C192BB1C926DF400E5EB00 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192B91C926DF400E5EB00 /* ForumViewController.swift */; };
-		A7C192BD1C926FDC00E5EB00 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */; };
+		A7C192D31C92772600E5EB00 /* ChatFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C192BF1C92772600E5EB00 /* ChatFeed.storyboard */; };
+		A7C192D41C92772600E5EB00 /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C01C92772600E5EB00 /* ChatFeed.swift */; };
+		A7C192D51C92772600E5EB00 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C11C92772600E5EB00 /* ChatFeedDataSource.swift */; };
+		A7C192D61C92772600E5EB00 /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C21C92772600E5EB00 /* ChatFeedDelegate.swift */; };
+		A7C192D91C92772600E5EB00 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C61C92772600E5EB00 /* MessageCell.swift */; };
+		A7C192DA1C92772600E5EB00 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7C192C71C92772600E5EB00 /* MessageCell.xib */; };
+		A7C192DB1C92772600E5EB00 /* MessageCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C81C92772600E5EB00 /* MessageCellDecorator.swift */; };
+		A7C192DC1C92772600E5EB00 /* MessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192C91C92772600E5EB00 /* MessageCellLayout.swift */; };
+		A7C192DD1C92772600E5EB00 /* MessageMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192CA1C92772600E5EB00 /* MessageMediaView.swift */; };
+		A7C192DE1C92772600E5EB00 /* MoreContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192CB1C92772600E5EB00 /* MoreContentController.swift */; };
+		A7C192DF1C92772600E5EB00 /* UserActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192CD1C92772600E5EB00 /* UserActionCell.swift */; };
+		A7C192E01C92772600E5EB00 /* UserActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7C192CE1C92772600E5EB00 /* UserActionCell.xib */; };
+		A7C192E11C92772600E5EB00 /* UserActionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192CF1C92772600E5EB00 /* UserActionsDataSource.swift */; };
+		A7C192E21C92772600E5EB00 /* UserActionsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192D01C92772600E5EB00 /* UserActionsHeaderCell.swift */; };
+		A7C192E31C92772600E5EB00 /* UserActionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7C192D11C92772600E5EB00 /* UserActionsHeaderCell.xib */; };
+		A7C192E41C92772600E5EB00 /* UserActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192D21C92772600E5EB00 /* UserActionsViewController.swift */; };
+		A7C192E61C9279C900E5EB00 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192E51C9279C900E5EB00 /* ChatFeedViewController.swift */; };
+		A7C192E81C927C0300E5EB00 /* Stage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C192E71C927C0300E5EB00 /* Stage.storyboard */; };
+		A7C192EA1C927ECD00E5EB00 /* ForumMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192E91C927ECD00E5EB00 /* ForumMedia.swift */; };
 		A7C523251C6E56DA00B25B6E /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */; };
 		A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */; };
 		A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */; };
@@ -1292,8 +1295,6 @@
 		A7E8CF321C90BBFA00D126BF /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */; };
 		A7E8CF341C90BFB200D126BF /* ShowForumOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */; };
 		A7E8CF391C92083800D126BF /* VUser+AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */; };
-		A7E8CF4C1C9209B700D126BF /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */; };
-		A7E8CF4D1C9209B700D126BF /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */; };
 		A7E8CF4E1C9209B700D126BF /* CloseUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3E1C9209B700D126BF /* CloseUp.swift */; };
 		A7E8CF4F1C9209B700D126BF /* CloseUpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3F1C9209B700D126BF /* CloseUpDelegate.swift */; };
 		A7E8CF501C9209B700D126BF /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF401C9209B700D126BF /* CloseUpMenuItem.swift */; };
@@ -1304,7 +1305,6 @@
 		A7E8CF551C9209B700D126BF /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF461C9209B700D126BF /* ComposerViewController.swift */; };
 		A7E8CF561C9209B700D126BF /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF481C9209B700D126BF /* Stage.swift */; };
 		A7E8CF571C9209B700D126BF /* StageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF491C9209B700D126BF /* StageDelegate.swift */; };
-		A7E8CF581C9209B700D126BF /* StageMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF4A1C9209B700D126BF /* StageMedia.swift */; };
 		A7E8CF591C9209B700D126BF /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF4B1C9209B700D126BF /* StageViewController.swift */; };
 		A7EB32661C3B1FAC006C2783 /* MainPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */; };
 		A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB574C1AF8402A006AA1CF /* VURLDetector.m */; };
@@ -3147,24 +3147,9 @@
 		A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardSeeMoreDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardSeeMoreDirectoryCell.m; sourceTree = "<group>"; };
 		A72A03001C8E5C160067ADBD /* ShowMediaLightboxOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaLightboxOperation.swift; sourceTree = "<group>"; };
-		A72A03051C8E681E0067ADBD /* Chat.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
-		A72A03061C8E681E0067ADBD /* ChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDataSource.swift; sourceTree = "<group>"; };
-		A72A03071C8E681E0067ADBD /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
-		A72A030B1C8E681E0067ADBD /* MoreContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreContentController.swift; sourceTree = "<group>"; };
 		A72A03211C8E69DC0067ADBD /* ChatUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatUpdateOperation.swift; sourceTree = "<group>"; };
 		A72A03231C8E74420067ADBD /* UICollectionView+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Pagination.swift"; sourceTree = "<group>"; };
 		A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+OptionalString.swift"; sourceTree = "<group>"; };
-		A72A032C1C8F55C10067ADBD /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		A72A032D1C8F55C10067ADBD /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
-		A72A032E1C8F55C10067ADBD /* MessageCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellDecorator.swift; sourceTree = "<group>"; };
-		A72A032F1C8F55C10067ADBD /* MessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellLayout.swift; sourceTree = "<group>"; };
-		A72A03301C8F55C10067ADBD /* MessageMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageMediaView.swift; sourceTree = "<group>"; };
-		A72A03371C8F55D70067ADBD /* UserActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionCell.swift; sourceTree = "<group>"; };
-		A72A03381C8F55D70067ADBD /* UserActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionCell.xib; sourceTree = "<group>"; };
-		A72A03391C8F55D70067ADBD /* UserActionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsDataSource.swift; sourceTree = "<group>"; };
-		A72A033A1C8F55D70067ADBD /* UserActionsHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsHeaderCell.swift; sourceTree = "<group>"; };
-		A72A033B1C8F55D70067ADBD /* UserActionsHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionsHeaderCell.xib; sourceTree = "<group>"; };
-		A72A033C1C8F55D70067ADBD /* UserActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsViewController.swift; sourceTree = "<group>"; };
 		A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewReceiver.swift; sourceTree = "<group>"; };
 		A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUpdate.swift; sourceTree = "<group>"; };
@@ -3638,9 +3623,27 @@
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
-		A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ForumViewController.storyboard; path = Forum/ForumViewController.storyboard; sourceTree = "<group>"; };
+		A7C192B81C926DF400E5EB00 /* Forum.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Forum.storyboard; path = Forum/Forum.storyboard; sourceTree = "<group>"; };
 		A7C192B91C926DF400E5EB00 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumViewController.swift; path = Forum/ForumViewController.swift; sourceTree = "<group>"; };
-		A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
+		A7C192BF1C92772600E5EB00 /* ChatFeed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChatFeed.storyboard; sourceTree = "<group>"; };
+		A7C192C01C92772600E5EB00 /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
+		A7C192C11C92772600E5EB00 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
+		A7C192C21C92772600E5EB00 /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
+		A7C192C61C92772600E5EB00 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		A7C192C71C92772600E5EB00 /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		A7C192C81C92772600E5EB00 /* MessageCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellDecorator.swift; sourceTree = "<group>"; };
+		A7C192C91C92772600E5EB00 /* MessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellLayout.swift; sourceTree = "<group>"; };
+		A7C192CA1C92772600E5EB00 /* MessageMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageMediaView.swift; sourceTree = "<group>"; };
+		A7C192CB1C92772600E5EB00 /* MoreContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreContentController.swift; sourceTree = "<group>"; };
+		A7C192CD1C92772600E5EB00 /* UserActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionCell.swift; sourceTree = "<group>"; };
+		A7C192CE1C92772600E5EB00 /* UserActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionCell.xib; sourceTree = "<group>"; };
+		A7C192CF1C92772600E5EB00 /* UserActionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsDataSource.swift; sourceTree = "<group>"; };
+		A7C192D01C92772600E5EB00 /* UserActionsHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsHeaderCell.swift; sourceTree = "<group>"; };
+		A7C192D11C92772600E5EB00 /* UserActionsHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionsHeaderCell.xib; sourceTree = "<group>"; };
+		A7C192D21C92772600E5EB00 /* UserActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsViewController.swift; sourceTree = "<group>"; };
+		A7C192E51C9279C900E5EB00 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
+		A7C192E71C927C0300E5EB00 /* Stage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Stage.storyboard; sourceTree = "<group>"; };
+		A7C192E91C927ECD00E5EB00 /* ForumMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumMedia.swift; path = Forum/ForumMedia.swift; sourceTree = "<group>"; };
 		A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperation.swift; sourceTree = "<group>"; };
 		A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperationTests.swift; sourceTree = "<group>"; };
 		A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InterstitialManager+Debug.swift"; sourceTree = "<group>"; };
@@ -3749,8 +3752,6 @@
 		A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
 		A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowForumOperation.swift; sourceTree = "<group>"; };
 		A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AvatarBadgeType.swift"; sourceTree = "<group>"; };
-		A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
-		A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
 		A7E8CF3E1C9209B700D126BF /* CloseUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUp.swift; sourceTree = "<group>"; };
 		A7E8CF3F1C9209B700D126BF /* CloseUpDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpDelegate.swift; sourceTree = "<group>"; };
 		A7E8CF401C9209B700D126BF /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpMenuItem.swift; sourceTree = "<group>"; };
@@ -3761,7 +3762,6 @@
 		A7E8CF461C9209B700D126BF /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		A7E8CF481C9209B700D126BF /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		A7E8CF491C9209B700D126BF /* StageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageDelegate.swift; sourceTree = "<group>"; };
-		A7E8CF4A1C9209B700D126BF /* StageMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMedia.swift; sourceTree = "<group>"; };
 		A7E8CF4B1C9209B700D126BF /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
 		A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPersistentStore.swift; sourceTree = "<group>"; };
 		A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistentStore.swift; sourceTree = "<group>"; };
@@ -4881,7 +4881,6 @@
 			children = (
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
-				A72A03041C8E681E0067ADBD /* Chat */,
 				F07409801B059CAD00C44623 /* Coachmarks */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
@@ -7200,44 +7199,6 @@
 			path = DirectoryCells;
 			sourceTree = "<group>";
 		};
-		A72A03041C8E681E0067ADBD /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				A72A03051C8E681E0067ADBD /* Chat.storyboard */,
-				A72A03061C8E681E0067ADBD /* ChatDataSource.swift */,
-				A72A03071C8E681E0067ADBD /* ChatViewController.swift */,
-				A72A032B1C8F55C10067ADBD /* Message Cell */,
-				A72A030B1C8E681E0067ADBD /* MoreContentController.swift */,
-				A72A03361C8F55D70067ADBD /* User Actions */,
-			);
-			path = Chat;
-			sourceTree = "<group>";
-		};
-		A72A032B1C8F55C10067ADBD /* Message Cell */ = {
-			isa = PBXGroup;
-			children = (
-				A72A032C1C8F55C10067ADBD /* MessageCell.swift */,
-				A72A032D1C8F55C10067ADBD /* MessageCell.xib */,
-				A72A032E1C8F55C10067ADBD /* MessageCellDecorator.swift */,
-				A72A032F1C8F55C10067ADBD /* MessageCellLayout.swift */,
-				A72A03301C8F55C10067ADBD /* MessageMediaView.swift */,
-			);
-			path = "Message Cell";
-			sourceTree = "<group>";
-		};
-		A72A03361C8F55D70067ADBD /* User Actions */ = {
-			isa = PBXGroup;
-			children = (
-				A72A03371C8F55D70067ADBD /* UserActionCell.swift */,
-				A72A03381C8F55D70067ADBD /* UserActionCell.xib */,
-				A72A03391C8F55D70067ADBD /* UserActionsDataSource.swift */,
-				A72A033A1C8F55D70067ADBD /* UserActionsHeaderCell.swift */,
-				A72A033B1C8F55D70067ADBD /* UserActionsHeaderCell.xib */,
-				A72A033C1C8F55D70067ADBD /* UserActionsViewController.swift */,
-			);
-			path = "User Actions";
-			sourceTree = "<group>";
-		};
 		A73C3EA31C45890E00A8452C /* MediaSearch */ = {
 			isa = PBXGroup;
 			children = (
@@ -8092,6 +8053,47 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		A7C192BE1C92772600E5EB00 /* ChatFeed */ = {
+			isa = PBXGroup;
+			children = (
+				A7C192BF1C92772600E5EB00 /* ChatFeed.storyboard */,
+				A7C192C01C92772600E5EB00 /* ChatFeed.swift */,
+				A7C192C11C92772600E5EB00 /* ChatFeedDataSource.swift */,
+				A7C192C21C92772600E5EB00 /* ChatFeedDelegate.swift */,
+				A7C192E51C9279C900E5EB00 /* ChatFeedViewController.swift */,
+				A7C192C51C92772600E5EB00 /* Message Cell */,
+				A7C192CB1C92772600E5EB00 /* MoreContentController.swift */,
+				A7C192CC1C92772600E5EB00 /* User Actions */,
+			);
+			name = ChatFeed;
+			path = Forum/ChatFeed;
+			sourceTree = "<group>";
+		};
+		A7C192C51C92772600E5EB00 /* Message Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A7C192C61C92772600E5EB00 /* MessageCell.swift */,
+				A7C192C71C92772600E5EB00 /* MessageCell.xib */,
+				A7C192C81C92772600E5EB00 /* MessageCellDecorator.swift */,
+				A7C192C91C92772600E5EB00 /* MessageCellLayout.swift */,
+				A7C192CA1C92772600E5EB00 /* MessageMediaView.swift */,
+			);
+			path = "Message Cell";
+			sourceTree = "<group>";
+		};
+		A7C192CC1C92772600E5EB00 /* User Actions */ = {
+			isa = PBXGroup;
+			children = (
+				A7C192CD1C92772600E5EB00 /* UserActionCell.swift */,
+				A7C192CE1C92772600E5EB00 /* UserActionCell.xib */,
+				A7C192CF1C92772600E5EB00 /* UserActionsDataSource.swift */,
+				A7C192D01C92772600E5EB00 /* UserActionsHeaderCell.swift */,
+				A7C192D11C92772600E5EB00 /* UserActionsHeaderCell.xib */,
+				A7C192D21C92772600E5EB00 /* UserActionsViewController.swift */,
+			);
+			path = "User Actions";
+			sourceTree = "<group>";
+		};
 		A7CD87561B1E7487002532A9 /* ImageAssetFinder */ = {
 			isa = PBXGroup;
 			children = (
@@ -8144,25 +8146,15 @@
 		A7E8CF351C90C01C00D126BF /* Forum */ = {
 			isa = PBXGroup;
 			children = (
-				A7E8CF3A1C9209B700D126BF /* ChatFeed */,
+				A7C192BE1C92772600E5EB00 /* ChatFeed */,
 				A7E8CF3D1C9209B700D126BF /* CloseUp */,
 				A7E8CF421C9209B700D126BF /* Composer */,
-				A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */,
+				A7C192B81C926DF400E5EB00 /* Forum.storyboard */,
 				A7C192B91C926DF400E5EB00 /* ForumViewController.swift */,
 				A7E8CF471C9209B700D126BF /* Stage */,
+				A7C192E91C927ECD00E5EB00 /* ForumMedia.swift */,
 			);
 			name = Forum;
-			sourceTree = "<group>";
-		};
-		A7E8CF3A1C9209B700D126BF /* ChatFeed */ = {
-			isa = PBXGroup;
-			children = (
-				A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */,
-				A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */,
-				A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */,
-			);
-			name = ChatFeed;
-			path = Forum/ChatFeed;
 			sourceTree = "<group>";
 		};
 		A7E8CF3D1C9209B700D126BF /* CloseUp */ = {
@@ -8194,8 +8186,8 @@
 			children = (
 				A7E8CF481C9209B700D126BF /* Stage.swift */,
 				A7E8CF491C9209B700D126BF /* StageDelegate.swift */,
-				A7E8CF4A1C9209B700D126BF /* StageMedia.swift */,
 				A7E8CF4B1C9209B700D126BF /* StageViewController.swift */,
+				A7C192E71C927C0300E5EB00 /* Stage.storyboard */,
 			);
 			name = Stage;
 			path = Forum/Stage;
@@ -10319,8 +10311,8 @@
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				A75DF5311C3E126C00A4C82A /* UserSearchViewController.storyboard in Resources */,
-				A72A03131C8E681E0067ADBD /* Chat.storyboard in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
+				A7C192E81C927C0300E5EB00 /* Stage.storyboard in Resources */,
 				F06B41821B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib in Resources */,
 				A7B1335F1C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib in Resources */,
 				A6DAEB701B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard in Resources */,
@@ -10329,6 +10321,7 @@
 				B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
+				A7C192D31C92772600E5EB00 /* ChatFeed.storyboard in Resources */,
 				A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */,
 				F03C137B1B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib in Resources */,
 				036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */,
@@ -10344,10 +10337,10 @@
 				675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
-				A72A03321C8F55C10067ADBD /* MessageCell.xib in Resources */,
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,
 				F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */,
 				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
+				A7C192E01C92772600E5EB00 /* UserActionCell.xib in Resources */,
 				C32F6B131BD06E6D00779FB1 /* ModernLoadingViewController.storyboard in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
@@ -10436,6 +10429,7 @@
 				03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */,
 				F06B41831B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.xib in Resources */,
 				A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */,
+				A7C192DA1C92772600E5EB00 /* MessageCell.xib in Resources */,
 				A75DF5331C3E13C700A4C82A /* UserSearchResultTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VHashtagCell.xib in Resources */,
@@ -10454,11 +10448,10 @@
 				B0E158551B7159FE004F0A60 /* VUtilityButtonSeperator.xib in Resources */,
 				036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */,
 				036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */,
-				A72A03411C8F55D70067ADBD /* UserActionsHeaderCell.xib in Resources */,
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
 				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,
 				A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */,
-				A7C192BA1C926DF400E5EB00 /* ForumViewController.storyboard in Resources */,
+				A7C192BA1C926DF400E5EB00 /* Forum.storyboard in Resources */,
 				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
@@ -10470,7 +10463,6 @@
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
-				A72A033E1C8F55D70067ADBD /* UserActionCell.xib in Resources */,
 				F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */,
 				036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */,
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
@@ -10482,6 +10474,7 @@
 				F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */,
 				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
+				A7C192E31C92772600E5EB00 /* UserActionsHeaderCell.xib in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				F0E0F1BA1AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib in Resources */,
 				A6B9FD091B603FD300166BE8 /* VImageCameraViewController.storyboard in Resources */,
@@ -11329,6 +11322,7 @@
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
+				A7C192D91C92772600E5EB00 /* MessageCell.swift in Sources */,
 				A721E9571B572454000B7901 /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				A7B133611C6178FD006EC4F5 /* PaginatedDataSourceType.swift in Sources */,
 				A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */,
@@ -11373,9 +11367,9 @@
 				62168C511C7076DF008E34AA /* AdVideoPlayerViewController.swift in Sources */,
 				C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */,
 				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
+				A7C192DB1C92772600E5EB00 /* MessageCellDecorator.swift in Sources */,
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
 				A7F843641BFD0ED0004C3D55 /* VTracking+Parsable.swift in Sources */,
-				A72A03351C8F55C10067ADBD /* MessageMediaView.swift in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				6256A6261C516CA30033439B /* VAdBreak.swift in Sources */,
 				C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */,
@@ -11385,6 +11379,7 @@
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
 				674B66F21C3F0C0400938EB5 /* PasswordResetOperation.swift in Sources */,
 				F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */,
+				A7C192DD1C92772600E5EB00 /* MessageMediaView.swift in Sources */,
 				A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */,
 				D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */,
 				F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */,
@@ -11408,7 +11403,6 @@
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
 				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
-				A72A03191C8E681E0067ADBD /* MoreContentController.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7E8CF531C9209B700D126BF /* ComposerAttachmentTab.swift in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
@@ -11451,6 +11445,7 @@
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
+				A7C192DE1C92772600E5EB00 /* MoreContentController.swift in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowSource.m in Sources */,
@@ -11534,7 +11529,6 @@
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
 				A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */,
-				A72A03341C8F55C10067ADBD /* MessageCellLayout.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				A7E8CF561C9209B700D126BF /* Stage.swift in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
@@ -11572,6 +11566,7 @@
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
 				B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */,
 				A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */,
+				A7C192E11C92772600E5EB00 /* UserActionsDataSource.swift in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
@@ -11631,7 +11626,6 @@
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
-				A72A03311C8F55C10067ADBD /* MessageCell.swift in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
 				A685A5D31B6801CF00389DA5 /* VInputAccessoryCollectionView.swift in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
@@ -11640,7 +11634,6 @@
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
 				67B783BE1C80F98900940D61 /* Achievement.swift in Sources */,
-				A72A033D1C8F55D70067ADBD /* UserActionCell.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
@@ -11734,6 +11727,8 @@
 				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
+				A7C192EA1C927ECD00E5EB00 /* ForumMedia.swift in Sources */,
+				A7C192E41C92772600E5EB00 /* UserActionsViewController.swift in Sources */,
 				A79825A01C0FB4D400C53A07 /* CommentFindOperation.swift in Sources */,
 				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
 				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
@@ -11827,7 +11822,6 @@
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */,
-				A7E8CF581C9209B700D126BF /* StageMedia.swift in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
@@ -11880,7 +11874,6 @@
 				79EEC4A31C17BA6E0004E6FC /* DeviceExperimentsOperation.swift in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				A7FFCE521C8FCDD900B1BE49 /* VIPSubscribeOperation.swift in Sources */,
-				A7C192BD1C926FDC00E5EB00 /* ChatFeedViewController.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
@@ -11907,6 +11900,7 @@
 				A7C565EF1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift in Sources */,
 				A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */,
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
+				A7C192E21C92772600E5EB00 /* UserActionsHeaderCell.swift in Sources */,
 				F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
@@ -11915,7 +11909,6 @@
 				A76711EE1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
 				A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */,
-				A7E8CF4C1C9209B700D126BF /* ChatFeed.swift in Sources */,
 				A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */,
 				A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */,
 				F07409841B059FEA00C44623 /* VCoachmark.m in Sources */,
@@ -11951,7 +11944,6 @@
 				A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
 				C3D4E83F1BBDCF39000AD70A /* UIFont+Layout.swift in Sources */,
-				A72A03151C8E681E0067ADBD /* ChatViewController.swift in Sources */,
 				F0411E841B4AE5D300557176 /* VAbstractCrossFadingView.m in Sources */,
 				A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
@@ -12016,6 +12008,7 @@
 				A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */,
 				79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */,
 				A778CB6C1C474DA0007DF0C2 /* LoadUserConversationOperation.swift in Sources */,
+				A7C192DC1C92772600E5EB00 /* MessageCellLayout.swift in Sources */,
 				A7AF17AC1C584BF1007BCAFE /* ShowSearchResultOperation.swift in Sources */,
 				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
 				A75DF5131C3D94A500A4C82A /* HashtagSearchOperation.swift in Sources */,
@@ -12059,12 +12052,12 @@
 				A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */,
 				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitiesController.m in Sources */,
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
+				A7C192D41C92772600E5EB00 /* ChatFeed.swift in Sources */,
 				A7039CE31C2486A20023DE6F /* CreateAlertOperation.swift in Sources */,
 				F06B418D1B7C30BB008709E8 /* UserShelf.swift in Sources */,
 				C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
-				A72A033F1C8F55D70067ADBD /* UserActionsDataSource.swift in Sources */,
 				A7F843661BFD44DB004C3D55 /* Conversation+Parsable.swift in Sources */,
 				79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
@@ -12076,6 +12069,7 @@
 				03E910831B96B032009CC937 /* TrendingTopicGradientView.swift in Sources */,
 				A709A3341C32F5ED00C8B8F9 /* VHashtag+Parsable.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
+				A7C192D51C92772600E5EB00 /* ChatFeedDataSource.swift in Sources */,
 				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */,
@@ -12085,7 +12079,6 @@
 				795270F01C3488AD00BD41F1 /* VConversationListViewController.swift in Sources */,
 				79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
-				A72A03421C8F55D70067ADBD /* UserActionsViewController.swift in Sources */,
 				A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */,
@@ -12139,6 +12132,7 @@
 				A778CB6D1C474EF7007DF0C2 /* VConversationViewController.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				A7E8CF4F1C9209B700D126BF /* CloseUpDelegate.swift in Sources */,
+				A7C192DF1C92772600E5EB00 /* UserActionCell.swift in Sources */,
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
@@ -12160,9 +12154,7 @@
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				C3A4C5B21BCC6455000B745B /* StatusBarUtils.swift in Sources */,
 				675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */,
-				A72A03331C8F55C10067ADBD /* MessageCellDecorator.swift in Sources */,
 				A7C565E61C442FEA00E4DF6A /* VNotification+Parsable.swift in Sources */,
-				A72A03141C8E681E0067ADBD /* ChatDataSource.swift in Sources */,
 				A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */,
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
@@ -12183,7 +12175,6 @@
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,
 				A761CBE51C4EBA2B00E07033 /* UnreadMessageCountOperation.swift in Sources */,
 				A73D16BD1C24F99700497F83 /* SuggestedUsersOperation.swift in Sources */,
-				A7E8CF4D1C9209B700D126BF /* ChatFeedDelegate.swift in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
@@ -12248,13 +12239,13 @@
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				A78BFC171C4858A900FBC17E /* MediaSearchResult.swift in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
-				A72A03401C8F55D70067ADBD /* UserActionsHeaderCell.swift in Sources */,
 				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,
 				A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				A721E9461B572454000B7901 /* NSURL+VCustomScheme.m in Sources */,
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,
 				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
+				A7C192E61C9279C900E5EB00 /* ChatFeedViewController.swift in Sources */,
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
@@ -12262,6 +12253,7 @@
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
+				A7C192D61C92772600E5EB00 /* ChatFeedDelegate.swift in Sources */,
 				A76363691C5036BF000887C4 /* VSequenceLiker.m in Sources */,
 				F06B41841B7ADA4B008709E8 /* VShelfContentCollectionViewCell.swift in Sources */,
 				A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */,

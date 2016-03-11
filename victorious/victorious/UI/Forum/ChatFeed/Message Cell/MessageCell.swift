@@ -48,19 +48,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     var dependencyManager: VDependencyManager!
     
-    struct Media {
-        let url: NSURL
-        let width: CGFloat
-        let height: CGFloat
-        
-        var aspectRatio: CGFloat { return width / height }
-    }
     struct ViewData {
         let text: String?
         let createdAt: NSDate
         let username: String
         let avatarImageURL: NSURL?
-        let media: Media?
+        let media: ForumMedia?
     }
     
     var viewData: ViewData! {

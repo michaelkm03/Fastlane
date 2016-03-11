@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ForumViewController: UIViewController {
+class ForumViewController: UIViewController, ChatFeedDelegate {
 
     @IBOutlet private var chatFeedViewControllerContainer: UIView!
     
@@ -19,35 +19,50 @@ class ForumViewController: UIViewController {
     private var dependencyManager: VDependencyManager!
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
-        guard let forumVC = storyboard.instantiateInitialViewController() as? ForumViewController else {
-            fatalError("Failed to instantiate an ForumViewController view controller!")
-        }
-        
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
         return forumVC
     }
+    
+    // MARK: - UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
-        if let stageViewController = destination as? StageViewController {
-            stageViewController.dependencyManager = dependencyManager
+        if let stage = destination as? Stage {
+            stage.dependencyManager = dependencyManager
         
-        } else if let chatFeedViewController = destination as? ChatFeedViewController {
-            chatFeedViewController.dependencyManager = dependencyManager
+        } else if let chatFeed = destination as? ChatFeed {
+            chatFeed.dependencyManager = dependencyManager
+            chatFeed.delegate = self
         
-        } else if let composerViewController = destination as? ComposerViewController {
-            composerViewController.dependencyManager = dependencyManager
+        } else if let composer = destination as? Composer {
+            composer.dependencyManager = dependencyManager
         }
-    }
-    
-    @IBAction func onClose(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
+        ShowProfileOperation(originViewController: self,
+            dependencyManager: dependencyManager,
+            userId: userID).queue()
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView) {
+        ShowMediaLightboxOperation(originViewController: self,
+            preloadedImage: image,
+            referenceView: referenceView).queue()
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func onClose(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

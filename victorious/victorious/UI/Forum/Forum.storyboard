@@ -18,21 +18,25 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="iEa-BH-8Bq" kind="embed" id="dpm-7G-UHb"/>
+                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.1960784314" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="Uj8-dz-1kP" kind="embed" id="v0c-ZF-MC1"/>
+                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="546" width="600" height="54"/>
-                                <color key="backgroundColor" red="0.25098040700000002" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="nla-sI-DbB"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAi-vZ-h3s">
                                 <rect key="frame" x="0.0" y="0.0" width="54" height="54"/>
+                                <color key="backgroundColor" white="0.96999999999999997" alpha="0.10319890202702703" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="54" id="FKf-Dy-6ix"/>
                                     <constraint firstAttribute="width" constant="54" id="GRR-fm-h43"/>
@@ -49,6 +53,7 @@
                             <constraint firstItem="zAi-vZ-h3s" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="2Tx-T3-KFm"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="9oX-iX-eaO"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="bottom" id="CP7-Hz-1cp"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="D7m-qR-IWR"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="JGm-Y9-CJW"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="JfX-lL-Zaq"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="T3X-ye-u4D"/>
@@ -69,7 +74,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="837" y="419"/>
+            <point key="canvasLocation" x="831" y="419"/>
+        </scene>
+        <!--Stage-->
+        <scene sceneID="mcC-uY-qUX">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stage" id="iEa-BH-8Bq" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0CN-6w-gV9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1292" y="339"/>
+        </scene>
+        <!--ChatFeed-->
+        <scene sceneID="uP2-cL-hf1">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChatFeed" id="Uj8-dz-1kP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="357-PS-1VA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1303" y="419"/>
         </scene>
     </scenes>
     <resources>

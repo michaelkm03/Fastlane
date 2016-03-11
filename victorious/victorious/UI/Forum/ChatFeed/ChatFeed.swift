@@ -8,9 +8,11 @@
 
 import Foundation
 
-protocol ChatFeed {
+protocol ChatFeed: class {
     
     weak var delegate: ChatFeedDelegate? { get set }
+    
+    var dependencyManager: VDependencyManager! { get set }
     
     func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool)
 }
