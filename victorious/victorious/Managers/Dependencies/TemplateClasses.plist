@@ -112,6 +112,8 @@
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VConversationListViewController</string>
+	<key>livechat.screen</key>
+	<string>victorious.ChatViewController</string>
 	<key>message.screen</key>
 	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>

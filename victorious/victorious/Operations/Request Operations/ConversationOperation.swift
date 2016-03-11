@@ -16,7 +16,7 @@ final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
     let request: ConversationRequest
     
     var conversation: VConversation?
-
+    
     convenience init(conversationID: NSNumber?, userID: NSNumber?) {
         let request = ConversationRequest(
             conversationID: conversationID?.integerValue ?? 0,
@@ -35,7 +35,7 @@ final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
         
         // If we have a valid conversationID, reload it remotely first
         if let conversationID = self.conversationID where conversationID > 0 {
-                        
+            
             requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
             
         } else {
@@ -121,26 +121,27 @@ final class ConversationOperation: FetcherOperation, PaginatedRequestOperation {
     }
 }
 
-class FetchConverationOperation: FetcherOperation {
+final class FetchConverationOperation: FetcherOperation, PaginatedOperation {
     
     let userID: Int
-    let paginator: NumericPaginator
+    let paginator: StandardPaginator
     
-    init( userID: Int, paginator: NumericPaginator = StandardPaginator() ) {
-        self.userID = userID
+    required convenience init(operation: FetchConverationOperation, paginator: StandardPaginator) {
+        self.init(userID: operation.userID, paginator: paginator)
+    }
+    
+    init( userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
+        self.userID = userID
     }
     
     override func main() {
         self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            let predicate = NSPredicate(
-                vsdk_format: "conversation.user.remoteId == %@",
-                vsdk_argumentArray: [ self.userID ],
-                vsdk_paginator: self.paginator )
-            
+            let predicate = NSPredicate( format: "conversation.user.remoteId == %i", self.userID)
+            let padinatorPredicate = self.paginator.paginatorPredicate
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
-            fetchRequest.predicate = predicate
+            fetchRequest.predicate = predicate + padinatorPredicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results
         }

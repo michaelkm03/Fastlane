@@ -48,7 +48,7 @@
 
 - (void)testIdentifyVideoMimeTypes
 {
-    XCTAssertNotNil([self.videoNode httpLiveStreamingAsset]);
+    XCTAssertNotNil([self.videoNode httpChatingAsset]);
     XCTAssertNotNil([self.videoNode mp4Asset]);
     XCTAssertNil([self.videoNode imageAsset]);
 }
@@ -63,13 +63,13 @@
     [[self.videoNode managedObjectContext] save:nil];
     
     XCTAssertNil([self.videoNode mp4Asset]);
-    XCTAssertNil([self.videoNode httpLiveStreamingAsset]);
+    XCTAssertNil([self.videoNode httpChatingAsset]);
     
     badMimeTypeAsset.mimeType = @"blah blah blah";
     [[self.videoNode managedObjectContext] save:nil];
     
     XCTAssertNil([self.videoNode mp4Asset]);
-    XCTAssertNil([self.videoNode httpLiveStreamingAsset]);
+    XCTAssertNil([self.videoNode httpChatingAsset]);
     
     self.videoNode.assets = nil;
     [[self.videoNode managedObjectContext] save:nil];

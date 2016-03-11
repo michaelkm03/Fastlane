@@ -33,6 +33,7 @@
     {
         return YES;
     }
+    
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     

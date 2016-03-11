@@ -112,10 +112,14 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     private func openGate() {
-        ShowForumOperation(dependencyManager: dependencyManager).queue() { _ in
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffoldViewController else {
+            fatalError("Oh shit, where's the scaffold??")
+        }
+        ShowForumOperation(originViewController: scaffold, dependencyManager: dependencyManager).queue() { _ in
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
         }
     }
+    
     private func updateViews() {
         guard isViewLoaded() else {
             return

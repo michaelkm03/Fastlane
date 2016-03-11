@@ -40,6 +40,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 @property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
 /**
+ The view controller that represents that scaffold menu, such as a tab bar or hamburger menu.
+ */
+@property (nonatomic, strong, readonly) UIViewController *scaffoldViewController;
+
+/**
  A session timer that monitors start/stop events and computes duration.
  */
 @property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;

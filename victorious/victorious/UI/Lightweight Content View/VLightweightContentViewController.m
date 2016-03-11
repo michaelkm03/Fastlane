@@ -103,7 +103,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              
              VSequence *sequence = (VSequence *)operation.result;
              VNode *node = (VNode *)[sequence firstNode];
-             VAsset *asset = [node httpLiveStreamingAsset];
+             VAsset *asset = [node httpChatingAsset];
              if ( asset.dataURL == nil )
              {
                  [self didFailToLoadSequence];

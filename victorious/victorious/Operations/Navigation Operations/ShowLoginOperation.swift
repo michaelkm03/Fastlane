@@ -22,8 +22,6 @@ class ShowLoginOperation: NavigationOperation {
         self.animated = animated
     }
     
-    // MARK: - Override
-    
     override func start() {
         super.start()
         
