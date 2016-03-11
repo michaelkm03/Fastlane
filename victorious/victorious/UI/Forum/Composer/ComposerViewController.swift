@@ -33,16 +33,9 @@ class ComposerViewController: UIViewController, Composer {
     
     //MARK: Initialization
     
-    private var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager! {
         didSet {
             
         }
-    }
-    
-    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ComposerViewController {
-        
-        let composerVC = ComposerViewController()
-        composerVC.dependencyManager = dependencyManager
-        return composerVC
     }
 }
