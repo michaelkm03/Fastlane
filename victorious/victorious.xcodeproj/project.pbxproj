@@ -1715,6 +1715,7 @@
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
+		F00AB1AA1C92511F00DE7DDC /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -1793,6 +1794,9 @@
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
+		F09E8C6C1C88FDA900437ACD /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */; };
+		F09E8C6E1C88FDC800437ACD /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */; };
+		F09E8C741C8F7B0A00437ACD /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
@@ -4447,6 +4451,7 @@
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
+		F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -4577,6 +4582,9 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F09E8C651C88CBAA00437ACD /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
+		F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
+		F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForumViewController.storyboard; sourceTree = "<group>"; };
+		F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
@@ -9482,6 +9490,63 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		F03B20371C865C1B005E83A0 /* Forum */ = {
+			isa = PBXGroup;
+			children = (
+				F03B203A1C865C44005E83A0 /* CloseUp */,
+				F03B20391C865C3B005E83A0 /* ChatFeed */,
+				F03B20381C865C33005E83A0 /* Stage */,
+				F048AFCD1C81096F004F516A /* Composer */,
+				F09E8C6B1C88FDA900437ACD /* ForumViewController.swift */,
+				F09E8C6D1C88FDC800437ACD /* ForumViewController.storyboard */,
+			);
+			name = Forum;
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F03B20381C865C33005E83A0 /* Stage */ = {
+			isa = PBXGroup;
+			children = (
+				F0F777BA1C90B73E002F5401 /* StageDelegate.swift */,
+				F0F777BB1C90B73E002F5401 /* Stage.swift */,
+				F0F777BC1C90B73E002F5401 /* StageMedia.swift */,
+				F0F777BD1C90B73E002F5401 /* StageViewController.swift */,
+				F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */,
+			);
+			name = Stage;
+			sourceTree = "<group>";
+		};
+		F03B20391C865C3B005E83A0 /* ChatFeed */ = {
+			isa = PBXGroup;
+			children = (
+				F09E8C731C8F7B0A00437ACD /* ChatFeed.swift */,
+				F03B20431C86616F005E83A0 /* ChatFeedDelegate.swift */,
+			);
+			name = ChatFeed;
+			sourceTree = "<group>";
+		};
+		F03B203A1C865C44005E83A0 /* CloseUp */ = {
+			isa = PBXGroup;
+			children = (
+				F0F777B21C90B729002F5401 /* CloseUp.swift */,
+				F0F777B31C90B729002F5401 /* CloseUpDelegate.swift */,
+				F0F777B41C90B729002F5401 /* CloseUpMenuItem.swift */,
+				F0F777B51C90B729002F5401 /* CloseUpViewController.swift */,
+			);
+			name = CloseUp;
+			sourceTree = "<group>";
+		};
+		F048AFCD1C81096F004F516A /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				F0F777C21C90B749002F5401 /* ComposerDelegate.swift */,
+				F0F777C31C90B749002F5401 /* Composer.swift */,
+				F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */,
+				F0F777C51C90B749002F5401 /* ComposerViewController.swift */,
+			);
+			name = Composer;
+			sourceTree = "<group>";
+		};
 		F04C2E5E1AE17DCD00FF74B7 /* DirectoryCellFactories */ = {
 			isa = PBXGroup;
 			children = (
@@ -10290,6 +10355,7 @@
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
 				A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */,
 				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
+				F00AB1AA1C92511F00DE7DDC /* StageViewController.storyboard in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
 				0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */,
@@ -10390,6 +10456,7 @@
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				A748BD181C8A7302003D5F5F /* VIPGateViewController.storyboard in Resources */,
+				F09E8C6E1C88FDC800437ACD /* ForumViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
@@ -11639,6 +11706,7 @@
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
+				F09E8C6C1C88FDA900437ACD /* ForumViewController.swift in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				67C9ADAB1C6D660000F0038D /* FriendFindBySocialNetworkOperation.swift in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
