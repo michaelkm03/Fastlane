@@ -12,7 +12,7 @@ import XCTest
 class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCase {
     
     var operation: FetchTemplateProductIdentifiersOperation!
-    var productsDataSource = MockTemplateProductsDataSource()
+    private var productsDataSource = MockProductsDataSource()
     
     func testSubscribeSuccess() {
         let operation = FetchTemplateProductIdentifiersOperation(productsDataSource: productsDataSource)
@@ -40,7 +40,7 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
     }
 }
 
-class MockTemplateProductsDataSource: NSObject, TemplateProductsDataSource {
+class MockProductsDataSource: NSObject, TemplateProductsDataSource {
     
     var vipSubscriptionProductIdentifier: String? {
         return "test_vip_subscription"

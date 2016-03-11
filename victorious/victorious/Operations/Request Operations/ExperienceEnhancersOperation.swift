@@ -9,31 +9,40 @@
 import Foundation
 
 // Creates and populates `VExperienceEnhancers` with any data already stored in Core Data.
-class ExperienceEnhancersOperation: Operation {
+class ExperienceEnhancersOperation: FetcherOperation {
     
-    let sequenceManagedObjectID: NSManagedObjectID
-    let voteTypes: [VVoteType]
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
-    var experienceEnhancers: [VExperienceEnhancer]?
+    let sequenceID: String
+    var productsDataSource: TemplateProductsDataSource
     
-    init(sequence: VSequence, voteTypes: [VVoteType]) {
-        self.sequenceManagedObjectID = sequence.objectID
-        self.voteTypes = voteTypes
-        super.init()
+    init(sequenceID: String, productsDataSource: TemplateProductsDataSource) {
+        self.sequenceID = sequenceID
+        self.productsDataSource = productsDataSource
     }
     
-    override func start() {
-        beganExecuting()
+    override func main() {
         
-        persistentStore.createBackgroundContext().v_performBlock { context in
-            var experienceEnhancers = [VExperienceEnhancer]()
+        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let sequence: VSequence = context.v_findObjects(["remoteId" : self.sequenceID]).first else {
+                return []
+            }
             
-            for voteType in self.voteTypes {
-                let voteResult = self.resultForVoteType(voteType,
-                    withSequenceObjectID: self.sequenceManagedObjectID,
-                    fromContext: context)
-                let existingVoteCount = voteResult?.count.unsignedIntegerValue
-                let enhancer = VExperienceEnhancer(voteType: voteType, voteCount: existingVoteCount ?? 0)
+            let voteTypes = self.productsDataSource.voteTypes
+            guard !voteTypes.isEmpty else {
+                return []
+            }
+            
+            var experienceEnhancers = [VExperienceEnhancer]()
+            for voteType in voteTypes {
+                
+                let voteCount: UInt
+                if let allVoteResults = sequence.voteResults as? Set<VVoteResult>,
+                    let voteResult = allVoteResults.filter({ $0.remoteId.stringValue == voteType.voteTypeID }).first {
+                        voteCount = voteResult.count.unsignedIntegerValue
+                } else {
+                    voteCount = 0
+                }
+                
+                let enhancer = VExperienceEnhancer(voteType: voteType, voteCount: voteCount)
                 
                 // Get icon image synhronously (we need it right away)
                 let imageCache = VExperienceEnhancerController.imageMemoryCache()
@@ -46,22 +55,9 @@ class ExperienceEnhancersOperation: Operation {
                         imageCache.setObject(voteTypeIcon, forKey: key)
                     }
                 }
-                
                 experienceEnhancers.append(enhancer)
-
             }
-            self.experienceEnhancers = experienceEnhancers
-            self.finishedExecuting()
+            return experienceEnhancers
         }
     }
-    
-    private func resultForVoteType(voteType: VVoteType, withSequenceObjectID sequenceObjectID: NSManagedObjectID, fromContext: NSManagedObjectContext) -> VVoteResult? {
-        guard let sequence = fromContext.objectWithID(sequenceObjectID) as? VSequence,
-            voteResultsSet = sequence.voteResults as? Set<VVoteResult> else {
-                return nil
-        }
-        
-        return voteResultsSet.filter { $0.remoteId.stringValue == voteType.voteTypeID }.first
-    }
-    
 }

@@ -11,7 +11,6 @@ import Foundation
 class FetchTemplateProductIdentifiersOperation: Operation {
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
-    
     var productsDataSource: TemplateProductsDataSource
     
     var error: NSError?

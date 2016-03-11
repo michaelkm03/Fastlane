@@ -102,19 +102,6 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager numberForKey:@"fanloyaltyLevel"];
 }
 
-+ (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
-{
-    NSMutableSet *productIdentifiers = [[NSMutableSet alloc] init];
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-     {
-         if ( voteType.isPaid && voteType.productIdentifier != nil )
-         {
-             [productIdentifiers addObject:voteType.productIdentifier];
-         }
-     }];
-    return [NSSet setWithSet:productIdentifiers];
-}
-
 - (BOOL)containsRequiredData
 {
     BOOL hasValidImages = [self.dependencyManager hasArrayOfImagesForKey:@"images"];
