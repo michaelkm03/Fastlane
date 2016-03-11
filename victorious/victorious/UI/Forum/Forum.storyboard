@@ -67,9 +67,9 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="chatFeedViewControllerContainer" destination="dCr-Dr-Gbg" id="foK-yE-NjD"/>
-                        <outlet property="composerViewControllerContainer" destination="3Ba-Yb-hke" id="4gB-R1-6cU"/>
-                        <outlet property="stageViewControllerContainer" destination="n69-dn-iF9" id="JBB-7S-DCe"/>
+                        <outlet property="chatFeedContainer" destination="dCr-Dr-Gbg" id="sNm-dO-gtR"/>
+                        <outlet property="composerContainer" destination="3Ba-Yb-hke" id="tYN-h2-ALG"/>
+                        <outlet property="stageContainer" destination="n69-dn-iF9" id="97U-mO-lX6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>

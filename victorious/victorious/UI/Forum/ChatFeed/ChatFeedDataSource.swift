@@ -33,7 +33,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         self.cellDecorator = MessageCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
-        super.maxVisibleItems = 12
+        super.maxVisibleItems = 50
     }
     
     func refreshRemote() {
@@ -62,7 +62,6 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         )
         // To keep the timer running while scrolling:
         NSRunLoop.mainRunLoop().addTimer(timerManager.timer, forMode: NSRunLoopCommonModes)
-        
         self.timerManager = timerManager
     }
     

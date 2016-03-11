@@ -12,6 +12,8 @@ class StageViewController: UIViewController, Stage {
     
     var dependencyManager: VDependencyManager!
     
+    weak var delegate: StageDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,8 +21,6 @@ class StageViewController: UIViewController, Stage {
     }
     
     //MARK: - StageController
-    
-    weak var delegate: StageDelegate?
     
     func startPlayingMedia(media: VAsset) {
         

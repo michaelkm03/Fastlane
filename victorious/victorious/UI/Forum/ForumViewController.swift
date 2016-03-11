@@ -8,13 +8,11 @@
 
 import UIKit
 
-class ForumViewController: UIViewController, ChatFeedDelegate {
+class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate, StageDelegate {
 
-    @IBOutlet private var chatFeedViewControllerContainer: UIView!
-    
-    @IBOutlet private var composerViewControllerContainer: UIView!
-    
-    @IBOutlet private var stageViewControllerContainer: UIView!
+    @IBOutlet private weak var chatFeedContainer: UIView!
+    @IBOutlet private weak var composerContainer: UIView!
+    @IBOutlet private weak var stageContainer: UIView!
     
     private var dependencyManager: VDependencyManager!
     
@@ -32,6 +30,7 @@ class ForumViewController: UIViewController, ChatFeedDelegate {
         let destination = segue.destinationViewController
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager
+            stage.delegate = self
         
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager
@@ -39,6 +38,7 @@ class ForumViewController: UIViewController, ChatFeedDelegate {
         
         } else if let composer = destination as? Composer {
             composer.dependencyManager = dependencyManager
+            composer.delegate = self
         }
     }
     
@@ -65,4 +65,21 @@ class ForumViewController: UIViewController, ChatFeedDelegate {
     @IBAction func onClose(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    // MARK: - ComposerDelegate
+    
+    func composer(composer: Composer, didSelectAttachmentTab: ComposerAttachmentTab) {}
+    
+    func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?) {}
+    
+    func composer(composer: Composer, didPressSendWithCaption: String) {}
+    
+    func composer(composer: Composer, didUpdateToHeight: CGFloat) {}
+    
+    
+    // MARK: - StageDelegate
+    
+    func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {}
+    
+    func stage(stage: Stage, didSelectMedia media: ForumMedia) {}
 }

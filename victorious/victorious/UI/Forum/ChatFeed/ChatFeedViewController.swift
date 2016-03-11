@@ -57,9 +57,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     var shouldStashNewContent = false {
         didSet {
-            if shouldStashNewContent != oldValue {
-                dataSource.shouldStashNewContent = shouldStashNewContent
-            }
+            dataSource.shouldStashNewContent = shouldStashNewContent
         }
     }
     
@@ -111,11 +109,17 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         navigationController?.setNavigationBarHidden(true, animated: animated)
         selectedMessageUserID = nil
         dataSource.beginLiveUpdates()
+        dataSource.refreshRemote()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dataSource.endLiveUpdates()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        dataSource.shouldStashNewContent = true
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
