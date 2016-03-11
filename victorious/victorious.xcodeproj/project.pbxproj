@@ -365,7 +365,6 @@
 		62168C4E1C706982008E34AA /* TestIMAAdsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */; };
 		62168C4F1C7069A3008E34AA /* TestIMAAdEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7E11C5DC16100680B22 /* TestIMAAdEvent.swift */; };
 		62168C511C7076DF008E34AA /* AdVideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */; };
-		621BC2FB1C76A4C4002A28E4 /* VDiscoverSuggestedPersonCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621BC2F91C769EF9002A28E4 /* VDiscoverSuggestedPersonCellTests.swift */; };
 		622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622103481C65354A00A77A73 /* LoginOperationTests.swift */; };
 		6221034B1C65699100A77A73 /* LoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6221034A1C65699100A77A73 /* LoginOperation.swift */; };
 		6232D4701C86539E00B1D9B8 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
@@ -1116,6 +1115,9 @@
 		A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */; };
 		A7BC35B61C1A337600732750 /* VFlaggedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35B51C1A337600732750 /* VFlaggedContentTests.m */; };
 		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
+		A7C192B31C923C1800E5EB00 /* BasePersistentStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */; };
+		A7C192B41C92425800E5EB00 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
+		A7C192B71C92548200E5EB00 /* VDiscoverSuggestedPersonCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621BC2F91C769EF9002A28E4 /* VDiscoverSuggestedPersonCellTests.swift */; };
 		A7C523251C6E56DA00B25B6E /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */; };
 		A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */; };
 		A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */; };
@@ -11164,7 +11166,6 @@
 				62168C4E1C706982008E34AA /* TestIMAAdsLoader.swift in Sources */,
 				67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */,
 				67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */,
-				621BC2FB1C76A4C4002A28E4 /* VDiscoverSuggestedPersonCellTests.swift in Sources */,
 				6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */,
 				A7D716921C53174900F45977 /* MockPagination.swift in Sources */,
 				BF425FEF1C87DB1A00283089 /* RepostSequenceOperationTests.swift in Sources */,
@@ -12277,6 +12278,7 @@
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				6701FE1D1C8E7545009B262D /* AchievementTests.swift in Sources */,
 				A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */,
+				A7C192B41C92425800E5EB00 /* PersistentStoreTestHelper.swift in Sources */,
 				031DE6061C55E5550063492B /* AlertsRequestDecoratorTests.swift in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				A7DCA5111C128A78004E35B4 /* VUploadTaskSerializerTests.m in Sources */,
@@ -12284,7 +12286,9 @@
 				A7D0AD2F1C0D453D0018C63E /* NSData+AESTests.m in Sources */,
 				627FD7E01C5DC10000680B22 /* TestAdLifecycleDelegate.swift in Sources */,
 				A7DCA4F81C128A78004E35B4 /* VNodeFetcherTests.m in Sources */,
+				A7C192B31C923C1800E5EB00 /* BasePersistentStoreTestCase.swift in Sources */,
 				A7DCA50A1C128A78004E35B4 /* VTemplateDecoratorTests.m in Sources */,
+				A7C192B71C92548200E5EB00 /* VDiscoverSuggestedPersonCellTests.swift in Sources */,
 				A7DCA4E91C128A78004E35B4 /* VFirstInstallTests.m in Sources */,
 				A7DCA4FB1C128A78004E35B4 /* VPasswordValidationTests.m in Sources */,
 				BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */,

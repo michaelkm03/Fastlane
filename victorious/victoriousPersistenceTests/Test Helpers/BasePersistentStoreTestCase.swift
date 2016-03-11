@@ -14,26 +14,28 @@ class BasePersistentStoreTestCase: XCTestCase {
     
     let expectationThreshold: Double = 1
     var persistentStoreHelper: PersistentStoreTestHelper!
-    var testStore: TestPersistentStore!
+    
+    let testStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
 
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
-        testStore.deletePersistentStore()
+        (testStore as? TestPersistentStore)?.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
-        clearQueues()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-        clearQueues()
-    }
-    
-    func clearQueues() {
+        
         NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
         NSOperationQueue.v_globalBackgroundQueue.suspended = false
         
         NSOperationQueue.mainQueue().cancelAllOperations()
         NSOperationQueue.mainQueue().suspended = false
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
+        NSOperationQueue.v_globalBackgroundQueue.suspended = true
+        
+        NSOperationQueue.mainQueue().cancelAllOperations()
+        NSOperationQueue.mainQueue().suspended = true
     }
 }

@@ -24,7 +24,6 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
         let user = User(userID: self.testUserID)
-        operation.persistentStore = testStore
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { (results, error) in
@@ -56,7 +55,6 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
         let user = User(userID: self.testUserID)
-        operation.persistentStore = testStore
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { (results, error) in

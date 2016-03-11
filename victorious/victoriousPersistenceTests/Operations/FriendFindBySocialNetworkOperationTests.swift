@@ -16,7 +16,6 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
     
     func testResults() {
         let operation = FriendFindBySocialNetworkOperation(token: facebookToken)
-        operation.persistentStore = testStore
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("FriendFindBySocialNetworkFinished")

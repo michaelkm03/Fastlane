@@ -25,7 +25,6 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
         
         testRequestExecutor = TestRequestExecutor(result:[user])
         operation.requestExecutor = testRequestExecutor
-        operation.persistentStore = testStore
         
         let expectation = expectationWithDescription("TrendingUsersOperation")
         operation.queue() { (results, error) in

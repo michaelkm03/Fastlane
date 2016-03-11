@@ -19,7 +19,6 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
         continueAfterFailure = true
         
         operation = SuggestedUsersOperation()
-        operation.persistentStore = testStore
     }
     
     func testSuccess() {

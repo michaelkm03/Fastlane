@@ -18,7 +18,6 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         }
         
         let operation = LoginOperation(email: email, password: "password")
-        operation.persistentStore = testStore
         
         XCTAssertFalse( operation.requiresAuthorization )
         

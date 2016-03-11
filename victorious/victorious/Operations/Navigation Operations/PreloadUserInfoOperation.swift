@@ -12,6 +12,10 @@ import Foundation
 /// profile data, profile stream, etc.  Intended to be called just after login.
 class PreloadUserInfoOperation: Operation {
     
+    override init() {
+        super.init()
+    }
+    
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     override func start() {

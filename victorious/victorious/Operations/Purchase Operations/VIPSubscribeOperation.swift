@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSubscribeOperation: Operation {
+class VIPSubscribeOperation: NavigationOperation {
     
     let productIdentifier: String
     

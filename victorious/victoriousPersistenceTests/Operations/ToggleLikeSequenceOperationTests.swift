@@ -9,24 +9,14 @@
 import XCTest
 @testable import victorious
 
-class ToggleLikeSequenceOperationTests: XCTestCase {
+class ToggleLikeSequenceOperationTests: BaseFetcherOperationTestCase {
     
     var sequence: VSequence?
     let sequenceRemoteId = "12345"
     let userRemoteId = 54321
-    
-    var expectation: XCTestExpectation?
-    
-    var persistentStoreHelper: PersistentStoreTestHelper!
-    var testStore: TestPersistentStore!
 
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
-        testStore.deletePersistentStore()
-        persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
-        expectation = expectationWithDescription("Finished Operation")
-
         let user = persistentStoreHelper.createUser(remoteId: userRemoteId)
         user.setAsCurrentUser()
     }
@@ -39,11 +29,12 @@ class ToggleLikeSequenceOperationTests: XCTestCase {
         XCTAssert(sequence?.objectID != nil)
         let objectId: NSManagedObjectID = (sequence?.objectID)!
         
-        ToggleLikeSequenceOperation(sequenceObjectId: objectId).queue() { results, error in
+        let expectation = expectationWithDescription("ToggleLikeSequenceOperation")
+        let operation = ToggleLikeSequenceOperation(sequenceObjectId: objectId)
+        operation.queue() { results, error in
             XCTAssert(self.sequence?.isLikedByMainUser.boolValue == false);
-            self.expectation?.fulfill()
+            expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(5,
-            handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

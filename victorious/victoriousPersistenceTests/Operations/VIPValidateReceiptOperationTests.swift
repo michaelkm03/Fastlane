@@ -19,7 +19,6 @@ class ValidateReceiptOperationTests: BaseFetcherOperationTestCase {
     
     func testSuccess() {
         operation = ValidateReceiptOperation()
-        operation.persistentStore = testStore
         testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = testRequestExecutor
         operation.receiptDataSource = MockReceiptDataSource(data: "9asf8dh708f7adsm".data() )
@@ -35,7 +34,6 @@ class ValidateReceiptOperationTests: BaseFetcherOperationTestCase {
     
     func testInitializtionFailure() {
         operation = ValidateReceiptOperation()
-        operation.persistentStore = testStore
         testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = TestRequestExecutor()
         operation.receiptDataSource = MockReceiptDataSource(data: nil)
