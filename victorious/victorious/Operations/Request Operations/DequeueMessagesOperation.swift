@@ -1,5 +1,5 @@
 //
-//  ChatOperation.swift
+//  DequeueMessagesOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class ChatUpdateOperation: FetcherOperation, PaginatedOperation {
+final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
     let conversationID: Int
@@ -18,7 +18,7 @@ final class ChatUpdateOperation: FetcherOperation, PaginatedOperation {
         self.conversationID = conversationID
     }
     
-    required convenience init(operation: ChatUpdateOperation, paginator: StandardPaginator) {
+    required convenience init(operation: DequeueMessagesOperation, paginator: StandardPaginator) {
         self.init(conversationID: operation.conversationID, paginator: paginator)
     }
     

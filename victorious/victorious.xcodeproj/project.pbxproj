@@ -808,7 +808,7 @@
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
 		A72A03011C8E5C160067ADBD /* ShowMediaLightboxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03001C8E5C160067ADBD /* ShowMediaLightboxOperation.swift */; };
-		A72A03221C8E69DC0067ADBD /* ChatUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03211C8E69DC0067ADBD /* ChatUpdateOperation.swift */; };
+		A72A03221C8E69DC0067ADBD /* DequeueMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03211C8E69DC0067ADBD /* DequeueMessagesOperation.swift */; };
 		A72A03241C8E74420067ADBD /* UICollectionView+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03231C8E74420067ADBD /* UICollectionView+Pagination.swift */; };
 		A72A03281C8F55680067ADBD /* NSURL+OptionalString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
@@ -3147,7 +3147,7 @@
 		A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardSeeMoreDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardSeeMoreDirectoryCell.m; sourceTree = "<group>"; };
 		A72A03001C8E5C160067ADBD /* ShowMediaLightboxOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaLightboxOperation.swift; sourceTree = "<group>"; };
-		A72A03211C8E69DC0067ADBD /* ChatUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatUpdateOperation.swift; sourceTree = "<group>"; };
+		A72A03211C8E69DC0067ADBD /* DequeueMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DequeueMessagesOperation.swift; sourceTree = "<group>"; };
 		A72A03231C8E74420067ADBD /* UICollectionView+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Pagination.swift"; sourceTree = "<group>"; };
 		A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+OptionalString.swift"; sourceTree = "<group>"; };
 		A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewReceiver.swift; sourceTree = "<group>"; };
@@ -7493,7 +7493,6 @@
 				A7039CDE1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift */,
 				A7C565E11C40665600E4DF6A /* AlertReceiver.swift */,
 				F048AFC31C80DCC2004F516A /* BlockUserOperation.swift */,
-				A72A03211C8E69DC0067ADBD /* ChatUpdateOperation.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
@@ -7504,6 +7503,7 @@
 				A7AF87281C4600ED00B49478 /* DeleteConversationOperation.swift */,
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
 				A71A3FD71C6D0F0200ECA0EF /* DeleteUnusedLocalConversationOperation.swift */,
+				A72A03211C8E69DC0067ADBD /* DequeueMessagesOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				031DE6001C54BCAB0063492B /* Executor */,
@@ -11525,7 +11525,7 @@
 				A76DD7611C7BF3E400C92BB3 /* ToggleFollowHashtagOperation.swift in Sources */,
 				5A75EAD91C51860700B08056 /* SearchDataSourceType.swift in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
-				A72A03221C8E69DC0067ADBD /* ChatUpdateOperation.swift in Sources */,
+				A72A03221C8E69DC0067ADBD /* DequeueMessagesOperation.swift in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
 				A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */,

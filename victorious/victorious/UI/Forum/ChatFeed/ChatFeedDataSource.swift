@@ -42,7 +42,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         
         self.refreshRemote(
             createOperation: {
-                return ChatUpdateOperation(conversationID: conversationID, paginator: paginator)
+                return DequeueMessagesOperation(conversationID: conversationID, paginator: paginator)
             },
             completion: nil
         )
