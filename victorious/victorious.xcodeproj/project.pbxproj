@@ -1118,6 +1118,9 @@
 		A7C192B31C923C1800E5EB00 /* BasePersistentStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */; };
 		A7C192B41C92425800E5EB00 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		A7C192B71C92548200E5EB00 /* VDiscoverSuggestedPersonCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621BC2F91C769EF9002A28E4 /* VDiscoverSuggestedPersonCellTests.swift */; };
+		A7C192BA1C926DF400E5EB00 /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */; };
+		A7C192BB1C926DF400E5EB00 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192B91C926DF400E5EB00 /* ForumViewController.swift */; };
+		A7C192BD1C926FDC00E5EB00 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */; };
 		A7C523251C6E56DA00B25B6E /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */; };
 		A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */; };
 		A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */; };
@@ -1270,7 +1273,6 @@
 		A7E8CF301C90B9C900D126BF /* TemplateProductsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */; };
 		A7E8CF321C90BBFA00D126BF /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */; };
 		A7E8CF341C90BFB200D126BF /* ShowForumOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */; };
-		A7E8CF371C90C02D00D126BF /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF361C90C02D00D126BF /* ForumViewController.swift */; };
 		A7E8CF391C92083800D126BF /* VUser+AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */; };
 		A7E8CF4C1C9209B700D126BF /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */; };
 		A7E8CF4D1C9209B700D126BF /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */; };
@@ -3600,6 +3602,9 @@
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
+		A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ForumViewController.storyboard; path = Forum/ForumViewController.storyboard; sourceTree = "<group>"; };
+		A7C192B91C926DF400E5EB00 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumViewController.swift; path = Forum/ForumViewController.swift; sourceTree = "<group>"; };
+		A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A7C523241C6E56DA00B25B6E /* LoginSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperation.swift; sourceTree = "<group>"; };
 		A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperationTests.swift; sourceTree = "<group>"; };
 		A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InterstitialManager+Debug.swift"; sourceTree = "<group>"; };
@@ -3707,7 +3712,6 @@
 		A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateProductsDataSource.swift; sourceTree = "<group>"; };
 		A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
 		A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowForumOperation.swift; sourceTree = "<group>"; };
-		A7E8CF361C90C02D00D126BF /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumViewController.swift; path = Forum/ForumViewController.swift; sourceTree = "<group>"; };
 		A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AvatarBadgeType.swift"; sourceTree = "<group>"; };
 		A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
 		A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
@@ -8065,8 +8069,9 @@
 				A7E8CF3A1C9209B700D126BF /* ChatFeed */,
 				A7E8CF3D1C9209B700D126BF /* CloseUp */,
 				A7E8CF421C9209B700D126BF /* Composer */,
+				A7C192B81C926DF400E5EB00 /* ForumViewController.storyboard */,
+				A7C192B91C926DF400E5EB00 /* ForumViewController.swift */,
 				A7E8CF471C9209B700D126BF /* Stage */,
-				A7E8CF361C90C02D00D126BF /* ForumViewController.swift */,
 			);
 			name = Forum;
 			sourceTree = "<group>";
@@ -8076,6 +8081,7 @@
 			children = (
 				A7E8CF3B1C9209B700D126BF /* ChatFeed.swift */,
 				A7E8CF3C1C9209B700D126BF /* ChatFeedDelegate.swift */,
+				A7C192BC1C926FDC00E5EB00 /* ChatFeedViewController.swift */,
 			);
 			name = ChatFeed;
 			path = Forum/ChatFeed;
@@ -10371,6 +10377,7 @@
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
 				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,
 				A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */,
+				A7C192BA1C926DF400E5EB00 /* ForumViewController.storyboard in Resources */,
 				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
@@ -11786,6 +11793,7 @@
 				79EEC4A31C17BA6E0004E6FC /* DeviceExperimentsOperation.swift in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				A7FFCE521C8FCDD900B1BE49 /* VIPSubscribeOperation.swift in Sources */,
+				A7C192BD1C926FDC00E5EB00 /* ChatFeedViewController.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
@@ -11805,6 +11813,7 @@
 				A76711EC1C1B5C6C006568DF /* AppTimingStreamHelper.swift in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
 				F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */,
+				A7C192BB1C926DF400E5EB00 /* ForumViewController.swift in Sources */,
 				C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
@@ -12004,7 +12013,6 @@
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
-				A7E8CF371C90C02D00D126BF /* ForumViewController.swift in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A76363711C50511A000887C4 /* PreloadUserInfoOperation.swift in Sources */,
 				A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */,

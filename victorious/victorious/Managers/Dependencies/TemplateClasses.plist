@@ -6,6 +6,8 @@
 	<string>VSuggestedUsersViewController</string>
 	<key>addProfilePicture.screen</key>
 	<string>VEnterProfilePictureCameraViewController</string>
+	<key>forum.screen</key>
+	<string>victorious.ForumViewController</string>
 	<key>modernResetPassword.screen</key>
 	<string>VModernResetPasswordViewController</string>
 	<key>modernResetToken.screen</key>
