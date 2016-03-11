@@ -68,7 +68,7 @@
                                                                                dependencyManager:self.dependencyManager
                                                                                           userId:USER_ID];
     
-    [operation queueWithCompletion:^
+    [operation queueWithCompletion:^(NSError *error, BOOL cancelled)
      {
          UIViewController *topVC = self.navigationController.topViewController;
          XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
@@ -95,7 +95,7 @@
                                                                                           userId:USER_ID];
     
     NSArray *expectedViewControllers = @[self.viewController, otherProfileViewController];
-    [operation queueWithCompletion:^
+    [operation queueWithCompletion:^(NSError *error, BOOL cancelled)
      {
          UIViewController *topVC = self.navigationController.topViewController;
          XCTAssert([topVC isKindOfClass:[VUserProfileViewController class]]);
@@ -122,7 +122,7 @@
                                                                                           userId:USER_ID];
 
     NSArray *expectedViewControllers = @[self.viewController, profileViewController];
-    [operation queueWithCompletion:^
+    [operation queueWithCompletion:^(NSError *error, BOOL cancelled)
      {
          // Make sure that we didn't change
          XCTAssert([self.navigationController.viewControllers isEqualToArray:expectedViewControllers]);
