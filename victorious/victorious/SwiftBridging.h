@@ -134,6 +134,7 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VKeyboardBarViewController.h"
 #import "VKeyboardInputAccessoryView.h"
+#import "VKeyboardNotificationManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VLaunchScreenProvider.h"
 #import "VLightboxTransitioningDelegate.h"

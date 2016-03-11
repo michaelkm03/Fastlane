@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ForumViewController: UIViewController {
+class ForumViewController: UIViewController, ComposerDelegate {
 
     @IBOutlet private var chatFeedViewControllerContainer: UIView!
     
@@ -21,7 +21,9 @@ class ForumViewController: UIViewController {
     private lazy var chatFeedViewController = UIViewController()
     
     private lazy var composerViewController: ComposerViewController = {
-        return ComposerViewController.new(dependencyManager: self.dependencyManager)
+        let composer = ComposerViewController.newWithDependencyManager(self.dependencyManager)
+        composer.delegate = self
+        return composer
     }()
     
     private lazy var stageViewController: StageViewController = {
@@ -58,5 +60,20 @@ class ForumViewController: UIViewController {
         view.addSubview(viewControllerView)
         view.v_addFitToParentConstraintsToSubview(viewControllerView)
         viewController.didMoveToParentViewController(self)
+    }
+    
+    
+    //MARK: - ComposerDelegate
+    
+    func composer(composer: Composer, didPressSendWithCaption: String) {
+        
+    }
+    
+    func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?) {
+        
+    }
+    
+    func composer(composer: Composer, didSelectAttachmentTab: ComposerAttachmentTab) {
+        
     }
 }
