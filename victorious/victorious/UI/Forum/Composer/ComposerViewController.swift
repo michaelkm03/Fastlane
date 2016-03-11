@@ -39,7 +39,7 @@ class ComposerViewController: UIViewController, Composer {
         }
     }
     
-    class func new( dependencyManager dependencyManager: VDependencyManager ) -> ComposerViewController {
+    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ComposerViewController {
         
         let composerVC = ComposerViewController()
         composerVC.dependencyManager = dependencyManager
