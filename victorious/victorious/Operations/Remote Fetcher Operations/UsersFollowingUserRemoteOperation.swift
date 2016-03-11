@@ -48,6 +48,7 @@ final class UsersFollowingUserRemoteOperation: RemoteFetcherOperation, Paginated
                 followedUser.subjectUser = subjectUser
                 followedUser.displayOrder = displayOrder++
             }
+            context.v_save()
         }
     }
 }
