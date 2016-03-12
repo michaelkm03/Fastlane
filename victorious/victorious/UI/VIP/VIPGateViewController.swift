@@ -65,6 +65,12 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBAction func onSubscribe(sender: UIButton? = nil) {
         let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
+        
+        //#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+            let testConfirmationAlert = PurchaseTestConfirmOperation(dependencyManager: dependencyManager)
+            testConfirmationAlert.before(subscribe).queue()
+        //#endif
+        
         setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
         subscribe.queue() { op in
             self.setIsLoading(false)

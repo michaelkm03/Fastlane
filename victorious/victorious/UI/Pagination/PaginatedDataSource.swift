@@ -78,10 +78,6 @@ import VictoriousIOSSDK
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)? = nil ) {
         
-        guard self.currentPaginatedOperation != nil else {
-            return
-        }
-        
         let operation: FetcherOperation = createOperation()
         
         self.state = .Loading

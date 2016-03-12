@@ -795,6 +795,7 @@
 		A73BA2AF1C938B68008168B5 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2A01C938B68008168B5 /* StageViewController.swift */; };
 		A73BA5631C93B775008168B5 /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF291C90B0B600D126BF /* MockPurchaseManager.swift */; };
 		A73BA5661C93B8BC008168B5 /* VMockPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A73BA5651C93B8BC008168B5 /* VMockPurchaseManager.m */; };
+		A73BA5751C93CAA0008168B5 /* PurchaseTestConfirmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA5741C93CAA0008168B5 /* PurchaseTestConfirmOperation.swift */; };
 		A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */; };
 		A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */; };
 		A73C3EB61C45890E00A8452C /* MediaSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */; };
@@ -3145,6 +3146,7 @@
 		A73BA2A01C938B68008168B5 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
 		A73BA5641C93B8BC008168B5 /* VMockPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMockPurchaseManager.h; sourceTree = "<group>"; };
 		A73BA5651C93B8BC008168B5 /* VMockPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMockPurchaseManager.m; sourceTree = "<group>"; };
+		A73BA5741C93CAA0008168B5 /* PurchaseTestConfirmOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseTestConfirmOperation.swift; sourceTree = "<group>"; };
 		A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchNoContentCell.swift; sourceTree = "<group>"; };
 		A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchPreviewCell.swift; sourceTree = "<group>"; };
 		A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultCell.swift; sourceTree = "<group>"; };
@@ -3648,7 +3650,7 @@
 		A7E8CF2D1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+TemplateProducts.swift"; sourceTree = "<group>"; };
 		A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateProductsDataSource.swift; sourceTree = "<group>"; };
 		A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
-		A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowForumOperation.swift; sourceTree = "<group>"; };
+		A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShowForumOperation.swift; path = "../Navigation Operations/ShowForumOperation.swift"; sourceTree = "<group>"; };
 		A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AvatarBadgeType.swift"; sourceTree = "<group>"; };
 		A7E8CF841C92163C00D126BF /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A7E8CF851C92163C00D126BF /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
@@ -6814,16 +6816,6 @@
 			name = "Trophy Case";
 			sourceTree = "<group>";
 		};
-		794246431B7D39A200F5F879 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
-				A7078CC81BFA7D2B008FB7FF /* Navigation Operations */,
-				A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
 		A601FB461B4354750050536C /* Creation Flows */ = {
 			isa = PBXGroup;
 			children = (
@@ -6940,21 +6932,6 @@
 				A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */,
 			);
 			path = Sizing;
-			sourceTree = "<group>";
-		};
-		A7078CC21BFA7D2B008FB7FF /* Launch Operations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Launch Operations";
-			sourceTree = "<group>";
-		};
-		A7078CC81BFA7D2B008FB7FF /* Navigation Operations */ = {
-			isa = PBXGroup;
-			children = (
-				A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */,
-			);
-			path = "Navigation Operations";
 			sourceTree = "<group>";
 		};
 		A70FC0F81A2D40B400F5BBDE /* Purchases */ = {
@@ -8013,6 +7990,7 @@
 				A7E8CFDC1C92163C00D126BF /* Launch Operations */,
 				A7E8CFE11C92163C00D126BF /* Main Queue Operations */,
 				A7E8CFEF1C92163C00D126BF /* Protocols */,
+				A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */,
 				A7E8CFF11C92163C00D126BF /* Queueable */,
 				A7E8CFF91C92163C00D126BF /* Remote Fetcher Operations */,
 				A7E8D0121C92163C00D126BF /* Request Executor */,
@@ -8135,6 +8113,7 @@
 		A7E8CFE11C92163C00D126BF /* Main Queue Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */,
 				A7E8CFE21C92163C00D126BF /* ConfirmDestructiveActionOperation.swift */,
 				A7E8CFE31C92163C00D126BF /* PreloadUserInfoOperation.swift */,
 				A7E8CFE41C92163C00D126BF /* ShowCommentsOperation.swift */,
@@ -8407,6 +8386,7 @@
 			isa = PBXGroup;
 			children = (
 				A7D730BE1C8FE74200915305 /* FetchTemplateProductIdentifiersOperation.swift */,
+				A73BA5741C93CAA0008168B5 /* PurchaseTestConfirmOperation.swift */,
 				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
 				A7FFCE4D1C8FCDD900B1BE49 /* ValidateReceiptOperation.swift */,
 				A7FFCE4E1C8FCDD900B1BE49 /* VIPSubscribeOperation.swift */,
@@ -8514,7 +8494,6 @@
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
 				A7E8CF821C92163C00D126BF /* Operations */,
-				794246431B7D39A200F5F879 /* Operations */,
 				A789F7141BF11F4900F5C87B /* Persistence */,
 				03C185CD19B4308400E27D05 /* Protocols */,
 				D8B0500E19AD2A740048E2BE /* Simple Models */,
@@ -11579,6 +11558,7 @@
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				A7E8D06D1C92163D00D126BF /* UsersFollowingUserOperation.swift in Sources */,
 				A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */,
+				A73BA5751C93CAA0008168B5 /* PurchaseTestConfirmOperation.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
