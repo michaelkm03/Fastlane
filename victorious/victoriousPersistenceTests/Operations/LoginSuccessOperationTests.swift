@@ -21,8 +21,12 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: email)
         let operation = LoginSuccessOperation(response: response, parameters: parameters)
         
-        operation.persistentStore = TestPersistentStore()
-        operation.main()
+        let expectation = expectationWithDescription("")
+        operation.queue() { results, error, cancelled in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
         
         guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
             XCTFail( "Unable to load the user the operation should have parsed." )

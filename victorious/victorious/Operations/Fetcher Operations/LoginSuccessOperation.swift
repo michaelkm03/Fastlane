@@ -21,6 +21,9 @@ class LoginSuccessOperation: FetcherOperation {
     }
     
     override func main() {
+        guard !cancelled else {
+            return
+        }
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             

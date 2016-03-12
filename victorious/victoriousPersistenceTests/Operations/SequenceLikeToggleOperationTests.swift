@@ -29,8 +29,9 @@ class SequenceLikeToggleOperationTests: BaseFetcherOperationTestCase {
         XCTAssert(sequence?.objectID != nil)
         let objectId: NSManagedObjectID = (sequence?.objectID)!
         
-        let expectation = expectationWithDescription("Finished Operation")
-        SequenceLikeToggleOperation(sequenceObjectId: objectId).queue() { results, error, cancelled in
+        let expectation = expectationWithDescription("ToggleLikeSequenceOperation")
+        let operation = SequenceLikeToggleOperation(sequenceObjectId: objectId)
+        operation.queue() { results, error, cancelled in
             guard let isLiked = self.sequence?.isLikedByMainUser.boolValue else {
                 XCTFail()
                 return

@@ -19,6 +19,10 @@ class FollowUserToggleOperation: FetcherOperation {
     }
     
     override func main() {
+        guard !cancelled else {
+            return
+        }
+        
         persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return

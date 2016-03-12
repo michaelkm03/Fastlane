@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VExperienceEnhancerBar.h"
 #import "VHasManagedDependencies.h"
+#import "VPurchaseManagerType.h"
 
 @protocol VExperienceEnhancerControllerDelegate <NSObject>
 
@@ -27,7 +28,8 @@
 // Only visible for swift compatibility
 + (NSCache *)imageMemoryCache;
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+                          purchaseManager:(id<VPurchaseManagerType>)purchaseManager NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 
 - (void)updateData;

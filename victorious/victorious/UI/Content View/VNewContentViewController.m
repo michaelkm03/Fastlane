@@ -61,6 +61,7 @@
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
+#import "VPurchaseManager.h"
 
 @import KVOController;
 
@@ -288,7 +289,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
     
     self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
@@ -1531,9 +1531,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
+
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
     viewController.voteType = voteType;
+    
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];

@@ -49,7 +49,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testOperationNotRunWithoutConfirmation() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
-        operation.persistentStore = testStore
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()
@@ -70,7 +69,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testWithoutConversationID() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
-        operation.persistentStore = testStore
         
         let context = testStore.mainContext
         var sequences = [VSequence]()
@@ -95,7 +93,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testWithConversationID() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
-        operation.persistentStore = testStore
         
         let context = testStore.mainContext
         var sequences = [VSequence]()

@@ -15,7 +15,6 @@ class SequenceFlagOperationTests: BaseFetcherOperationTestCase {
         let sequence = persistentStoreHelper.createSequence(remoteId: "9432")
         
         let operation = SequenceFlagOperation(sequenceID: sequence.remoteId)
-        operation.persistentStore = testStore
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: true)
         confirm.before(operation).queue()
@@ -36,7 +35,6 @@ class SequenceFlagOperationTests: BaseFetcherOperationTestCase {
         let sequence = persistentStoreHelper.createSequence(remoteId: "9432")
         
         let operation = SequenceFlagOperation(sequenceID: sequence.remoteId)
-        operation.persistentStore = testStore
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()

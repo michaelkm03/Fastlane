@@ -18,6 +18,9 @@ class LoginOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
+        guard !cancelled else {
+            return
+        }
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     

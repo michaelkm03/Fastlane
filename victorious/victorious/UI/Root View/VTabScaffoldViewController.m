@@ -124,6 +124,17 @@ static NSString * const kMenuKey = @"menu";
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
 }
 
+- (void)setSelectedMenuItemAtIndex:(NSInteger)index
+{
+    const NSInteger tabCount = self.internalTabBarController.viewControllers.count;
+    if ( index < 0 || index >= tabCount )
+    {
+        NSAssert( NO, @"Cannot select tab at index %@: There are only %@ tabs.", @(index), @(tabCount) );
+        return; //< Do nothing in release builds
+    }
+    self.internalTabBarController.selectedIndex = index;
+}
+
 - (void)loggedInChanged:(NSNotification *)notification
 {
     if ( [VCurrentUser user] == nil )

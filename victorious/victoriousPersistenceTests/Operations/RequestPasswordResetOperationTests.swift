@@ -17,7 +17,6 @@ class PasswordRequestResetOperationTests: BaseFetcherOperationTestCase {
         let operation = PasswordRequestResetOperation(email: "mockEmail")
         testRequestExecutor = TestRequestExecutor(result: mockDeviceToken)
         operation.requestExecutor = testRequestExecutor
-        operation.persistentStore = testStore
         
         let expectation = expectationWithDescription("PasswordRequestResetOperation")
         operation.queue() { results, error, cancelled in

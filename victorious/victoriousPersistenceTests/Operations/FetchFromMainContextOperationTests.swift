@@ -9,17 +9,12 @@
 import XCTest
 @testable import victorious
 
-class FetchFromMainContextOperationTests: XCTestCase {
+class FetchFromMainContextOperationTests: BasePersistentStoreTestCase {
 
     private let testRemoteID = 666
     
-    var testStore: TestPersistentStore!
-    var persistentStoreHelper: PersistentStoreTestHelper!
-    
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
-        persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
     }
     
     func testFindsExpectedManagedObjects() {

@@ -24,6 +24,9 @@ final class UsersFollowedByUserRemoteOperation: RemoteFetcherOperation, Paginate
     }
     
     override func main() {
+        guard !cancelled else {
+            return
+        }
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     

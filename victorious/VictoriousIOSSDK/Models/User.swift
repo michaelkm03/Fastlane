@@ -17,6 +17,21 @@ public enum ProfileStatus: String {
 
 /// A struct representing a user's information
 public struct User {
+    
+    public struct VIPStatus {
+        public let isVIP: Bool
+        public let subscribeDate: NSDate
+        
+        public init?(json: JSON) {
+            guard let isVIP = json["is_vip"].bool,
+                let subscribeDate = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["subscribe_date"].stringValue) else {
+                    return nil
+            }
+            self.isVIP = isVIP
+            self.subscribeDate = subscribeDate
+        }
+    }
+    
     public let userID: Int
     public let email: String?
     public let name: String?
@@ -35,6 +50,7 @@ public struct User {
     public let previewImageAssets: [ImageAsset]?
     public let maxVideoUploadDuration: Int?
     public let avatar: Avatar?
+    public let vipStatus: VIPStatus?
 }
 
 extension User {
@@ -55,10 +71,11 @@ extension User {
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByMainUser         = json["is_blocked"].bool ?? false
+        isBlockedByMainUser         = json["is_blocked"].bool
+        vipStatus                   = VIPStatus(json: json["vip"])
         isCreator                   = json["isCreator"].bool
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
-        isFollowedByMainUser        = json["am_following"].bool ?? false
+        isFollowedByMainUser        = json["am_following"].bool
         numberOfFollowers           = Int(json["number_of_followers"].stringValue)
         numberOfFollowing           = Int(json["number_of_following"].stringValue)
         profileImageURL             = json["profile_image"].string

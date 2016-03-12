@@ -29,15 +29,15 @@ import UIKit
             return
         }
         
-        if let createSheet = self.dependencyManager.templateValueOfType( VCreateSheetViewController.self, forKey:"createSheet" ) as? VCreateSheetViewController {
-            
+        let templateValue = self.dependencyManager.templateValueOfType(VCreateSheetViewController.self, forKey:"createSheet")
+        if let createSheet = templateValue as? VCreateSheetViewController {
             createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
                 self.chosenCreationType = chosenCreationType
                 self.finishedExecuting()
             }
             self.originViewController.presentViewController(createSheet, animated: true, completion: nil)
-        }
-        else {
+      
+        } else {
             self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment:"" ))
             self.finishedExecuting()
         }
