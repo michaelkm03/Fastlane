@@ -106,9 +106,6 @@ import VictoriousIOSSDK
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)? = nil ) {
-        guard self.currentPaginatedOperation != nil else {
-            return
-        }
         
         let operation: FetcherOperation = createOperation()
         
