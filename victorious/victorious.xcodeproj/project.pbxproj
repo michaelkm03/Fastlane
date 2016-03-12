@@ -1664,6 +1664,8 @@
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
 		F00AB1A61C922CF900DE7DDC /* ComposerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F00AB1A51C922CF900DE7DDC /* ComposerViewController.storyboard */; };
 		F00AB1AA1C92511F00DE7DDC /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */; };
+		F00AB1AC1C93452E00DE7DDC /* ComposerTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00AB1AB1C93452E00DE7DDC /* ComposerTextViewManager.swift */; };
+		F00AB1AE1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00AB1AD1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -4363,6 +4365,8 @@
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
 		F00AB1A51C922CF900DE7DDC /* ComposerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ComposerViewController.storyboard; sourceTree = "<group>"; };
 		F00AB1A91C92511F00DE7DDC /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
+		F00AB1AB1C93452E00DE7DDC /* ComposerTextViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManager.swift; sourceTree = "<group>"; };
+		F00AB1AD1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManagerDelegate.swift; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -9338,6 +9342,8 @@
 			isa = PBXGroup;
 			children = (
 				F0F777C21C90B749002F5401 /* ComposerDelegate.swift */,
+				F00AB1AB1C93452E00DE7DDC /* ComposerTextViewManager.swift */,
+				F00AB1AD1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift */,
 				F0F777C31C90B749002F5401 /* Composer.swift */,
 				F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */,
 				F0F777C51C90B749002F5401 /* ComposerViewController.swift */,
@@ -11249,6 +11255,7 @@
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
+				F00AB1AC1C93452E00DE7DDC /* ComposerTextViewManager.swift in Sources */,
 				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
@@ -11671,6 +11678,7 @@
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */,
 				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
+				F00AB1AE1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift in Sources */,
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,

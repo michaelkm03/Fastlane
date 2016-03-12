@@ -34,10 +34,10 @@ class ForumViewController: UIViewController, ComposerDelegate {
         let destination = segue.destinationViewController
         if let stageViewController = destination as? StageViewController {
             stageViewController.dependencyManager = dependencyManager
-        } else if let _ = destination as? UIViewController {
-            //Setup dependency manager on chatFeedViewController
         } else if let composerViewController = destination as? ComposerViewController {
             composerViewController.dependencyManager = dependencyManager
+        } else if let _ = destination as? UIViewController {
+            //Setup dependency manager on chatFeedViewController
         }
     }
     

@@ -168,6 +168,7 @@
 #import "VPageType.h"
 #import "VPaginatedDataSourceDelegate.h"
 #import "VPhotoFilter.h"
+#import "VPlaceholderTextView.h"
 #import "VPollResult.h"
 #import "VPrivacyPoliciesViewController.h"
 #import "VProfileEditViewController.h"
