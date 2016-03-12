@@ -31,7 +31,9 @@ class FetchTemplateProductIdentifiersOperation: BackgroundOperation {
         }
         
         let allProductIdentifiers = voteTypeProductIdentifiers + subscriptionProductIdentiers
-        
+        guard allProductIdentifiers.count > 0 else {
+            return
+        }
         purchaseManager.fetchProductsWithIdentifiers(Set<NSObject>(arrayLiteral: allProductIdentifiers),
             success: { results in
                 self.finishedExecuting()
