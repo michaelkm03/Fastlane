@@ -65,7 +65,8 @@
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager
+                                                                                         purchaseManager:[VPurchaseManager sharedInstance]];
         
         _currentNode = [_sequence firstNode];
         

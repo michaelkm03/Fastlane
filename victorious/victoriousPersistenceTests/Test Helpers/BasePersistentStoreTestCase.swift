@@ -14,11 +14,11 @@ class BasePersistentStoreTestCase: XCTestCase {
     
     let expectationThreshold: Double = 1
     var persistentStoreHelper: PersistentStoreTestHelper!
-    
-    let testStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    var testStore: PersistentStoreType!
 
     override func setUp() {
         super.setUp()
+        testStore = PersistentStoreSelector.defaultPersistentStore
         (testStore as? TestPersistentStore)?.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
         

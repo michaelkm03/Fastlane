@@ -8,9 +8,9 @@
 
 @import Foundation;
 
-@class VProductsRequest;
 @class VProduct;
 
+#import "VProductsRequest.h"
 #import "VPurchase.h"
 
 NS_ASSUME_NONNULL_BEGIN
