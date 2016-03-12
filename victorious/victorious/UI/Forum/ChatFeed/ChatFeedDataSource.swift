@@ -40,7 +40,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         let conversationID = self.conversation.remoteId!.integerValue
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
         
-        self.refreshRemote(
+        self.loadNewItems(
             createOperation: {
                 return DequeueMessagesOperation(conversationID: conversationID, paginator: paginator)
             },

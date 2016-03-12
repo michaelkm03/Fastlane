@@ -53,8 +53,8 @@
         
         self.loadingUnreadMessageCount = YES;
         
-        UnreadMessageCountOperation *operation = [[UnreadMessageCountOperation alloc] init];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+        MessageUnreadCountOperation *operation = [[MessageUnreadCountOperation alloc] init];
+        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
          {
              if ( operation.unreadMessagesCount != nil )
              {
@@ -84,8 +84,8 @@
         return;
     }
     
-    MarkConversationReadOperation *operation = [[MarkConversationReadOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    ConversationMarkAsReadOperation *operation = [[ConversationMarkAsReadOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if ( operation.unreadConversationsCount != nil )
         {

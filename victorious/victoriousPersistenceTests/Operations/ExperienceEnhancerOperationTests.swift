@@ -32,7 +32,7 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
         let operation = ExperienceEnhancersOperation(sequenceID: sequence.remoteId, productsDataSource: mockProductsDataSource)
         let expectation = expectationWithDescription("ExperienceEnhancersOperation")
 
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
 
             XCTAssertNotNil(results)
             XCTAssertEqual(results?.count, 0)
@@ -64,7 +64,7 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
         let operation = ExperienceEnhancersOperation(sequenceID: sequence.remoteId, productsDataSource: mockProductsDataSource)
         let expectation = expectationWithDescription("ExperienceEnhancersOperation")
         
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             guard let experienceEnhancers = operation.results as? [VExperienceEnhancer] else {
                 XCTFail("Experience Enhancers should not be nil")
                 return

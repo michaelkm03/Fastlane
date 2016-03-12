@@ -273,7 +273,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
             
         case .Block:
-            BlockUserOperation(userID: userID).queue() { results, error in
+            BlockUserOperation(userID: userID).queue() { results, error, canelled in
                 if let error = error {
                     self.v_showAlert(title: "Block Error", message: error.localizedDescription)
                 }

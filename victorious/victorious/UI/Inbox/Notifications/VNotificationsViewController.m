@@ -192,8 +192,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)markAllItemsAsRead
 {
-    MarkAllNotificationsAsReadOperation *operation = [[MarkAllNotificationsAsReadOperation alloc] init];
-    [operation queueWithCompletion:nil];
+    [[[NotificationsMarkAllAsReadOperation alloc] init] queueWithCompletion:nil];
 }
 
 - (void)refresh
@@ -218,7 +217,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 {
     [self fetchNotificationCount];
     
-    [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
+    [self.dataSource refreshRemote:^(NSArray *array, NSError *error, BOOL cancelled)
      {
          // Don't need to redecorate visible cells here, because new notification objects are created based off of createdAt and subject properties
      }];
@@ -259,8 +258,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
         return;
     }
     
-    UnreadNotificationsCountOperation *operation = [[UnreadNotificationsCountOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    NotificationsUnreadCountOperation *operation = [[NotificationsUnreadCountOperation alloc] init];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if ( operation.unreadNotificationsCount != nil )
         {

@@ -26,7 +26,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         let user = User(userID: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             
             guard let results = operation.results,
@@ -57,7 +57,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         let user = User(userID: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             expectation.fulfill()
             
             guard let results = operation.results,

@@ -84,12 +84,12 @@
     
     ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequenceID:self.sequence.remoteId
                                                                                                      productsDataSource:self.dependencyManager];
-    Operation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
+    BackgroundOperation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
     [fetchProductsOperation addDependency:experienceEnhancerOperation];
     [fetchProductsOperation queueWithCompletion:nil];
     
     __weak typeof(self) weakSelf = self;
-    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error)
+    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error, BOOL cancelled)
      {
          [weakSelf onExperienceEnhancersLoaded:results];
      }];

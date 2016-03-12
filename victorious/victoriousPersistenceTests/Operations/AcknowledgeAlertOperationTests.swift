@@ -1,5 +1,5 @@
 //
-//  AcknowledgeAlertOperationTests.swift
+//  AlertAcknowledgeOperationTests.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/7/16.
@@ -9,14 +9,14 @@
 import XCTest
 @testable import victorious
 
-class AcknowledgeAlertOperationTests: BaseFetcherOperationTestCase {
+class AlertAcknowledgeOperationTests: BaseFetcherOperationTestCase {
 
-    var operation: AcknowledgeAlertOperation!
+    var operation: AlertAcknowledgeOperation!
     let alertID = 99
     
     override func setUp() {
         super.setUp()
-        operation = AcknowledgeAlertOperation(alertID: 5)
+        operation = AlertAcknowledgeOperation(alertID: 5)
         operation.requestExecutor = testRequestExecutor
     }
     

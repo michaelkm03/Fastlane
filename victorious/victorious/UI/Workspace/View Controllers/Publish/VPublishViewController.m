@@ -306,7 +306,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     [self trackPublishWithPublishParameters:self.publishParameters];
     
     __weak typeof(self) welf = self;
-    Operation *operation = [[CreateMediaUploadOperation alloc] initWithPublishParameters:self.publishParameters
+    BackgroundOperation *operation = [[CreateMediaUploadOperation alloc] initWithPublishParameters:self.publishParameters
                                                                            uploadManager:[VUploadManager sharedManager]
                                                                         uploadCompletion:^(NSError *_Nullable error)
     {

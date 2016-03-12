@@ -51,7 +51,7 @@
     ShowMemersOperation *operation = [[ShowMemersOperation alloc] initWithOriginViewController:self.viewController
                                                                              dependencyManager:self.dependencyManager
                                                                                       sequence:self.sequence];
-    [operation queueWithCompletion:^
+    [operation queueWithCompletion:^(NSError *error, BOOL cancelled)
      {
          UIViewController *topVC = self.navigationController.topViewController;
          XCTAssert([topVC isKindOfClass:[VStreamCollectionViewController class]]);

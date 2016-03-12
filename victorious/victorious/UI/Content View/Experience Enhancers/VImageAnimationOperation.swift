@@ -16,7 +16,7 @@ import UIKit
     func animation(animation: VImageAnimationOperation, updatedToImage image:UIImage?)
 }
 
-class VImageAnimationOperation: Operation {
+class VImageAnimationOperation: BackgroundOperation {
     
     weak var delegate: VImageAnimationOperationDelegate?
     

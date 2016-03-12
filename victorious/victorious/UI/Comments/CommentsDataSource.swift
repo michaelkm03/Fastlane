@@ -36,29 +36,31 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
             let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
                 return
         }
-        self.refreshLocal(
+        self.loadNewItems(
             createOperation: {
-                return FetchCommentsOperation(sequenceID: sequence.remoteId)
+                let op = SequenceCommentsOperation(sequenceID: sequence.remoteId)
+                op.localFetch = true
+                return op
             },
-            completion: nil
+            completion:nil
         )
     }
     
-    func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
+    func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
         self.loadPage( pageType,
             createOperation: {
                 return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
-            completion: { (results, error) in
+            completion: { results, error, cancelled in
                 self.hasLoadedOnce = true
-                completion?(results, error)
+                completion?(results, error, cancelled)
             }
         )
     }
     
-    func deleteSequence( completion: (([AnyObject]?, NSError?)->())? = nil ) {
-        DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { (results, error) in
-            completion?(results, error)
+    func deleteSequence( completion: (([AnyObject]?, NSError?, Bool)->())? = nil ) {
+        SequenceDeleteOperation(sequenceID: self.sequence.remoteId).queue() { results, error, cancelled in
+            completion?(results, error, cancelled)
         }
     }
     

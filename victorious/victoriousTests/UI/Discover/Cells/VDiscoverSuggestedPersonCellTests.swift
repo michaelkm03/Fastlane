@@ -34,16 +34,16 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
 
         cell.onFollow(followControl)
         
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is ToggleFollowUserOperation }
-        guard let toggleOperation = operationsInQueue.first as? ToggleFollowUserOperation else {
-            XCTFail("ToggleFollowUserOperation should be queued when following a user")
+        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUserToggleOperation }
+        guard let toggleOperation = operationsInQueue.first as? FollowUserToggleOperation else {
+            XCTFail("FollowUserToggleOperation should be queued when following a user")
             return
         }
         toggleOperation.main()
         
         operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUsersOperation }
         guard let followOperation = operationsInQueue.first as? FollowUsersOperation else {
-            XCTFail("FollowUsersOperation should be queued after ToggleFollowUserOperation")
+            XCTFail("FollowUsersOperation should be queued after FollowUserToggleOperation")
             return
         }
         XCTAssertEqual(VFollowSourceScreenDiscoverSuggestedUsers, followOperation.sourceScreenName)
@@ -57,16 +57,16 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
         
         cell.onFollow(followControl)
         
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is ToggleFollowUserOperation }
-        guard let toggleOperation = operationsInQueue.first as? ToggleFollowUserOperation else {
-            XCTFail("ToggleFollowUserOperation should be queued when unfollowing a user")
+        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUserToggleOperation }
+        guard let toggleOperation = operationsInQueue.first as? FollowUserToggleOperation else {
+            XCTFail("FollowUserToggleOperation should be queued when unfollowing a user")
             return
         }
         
         toggleOperation.main()
         operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is UnfollowUserOperation }
         guard let unFollowOperation = operationsInQueue.first as? UnfollowUserOperation else {
-            XCTFail("UnfollowUserOperation should be queued after ToggleFollowUserOperation")
+            XCTFail("UnfollowUserOperation should be queued after FollowUserToggleOperation")
             return
         }
         XCTAssertEqual(VFollowSourceScreenDiscoverSuggestedUsers, unFollowOperation.sourceScreenName)

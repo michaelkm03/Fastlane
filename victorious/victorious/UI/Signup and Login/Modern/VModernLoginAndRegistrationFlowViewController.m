@@ -482,7 +482,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self showLoadingScreenWithCompletion:^{
         self.currentOperation = [weakSelf.loginFlowHelper queueLoginOperationWithEmail:email
                                                                               password:password
-                                                                            completion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+                                                                            completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
             if ( error == nil )
             {
                 completion(YES, nil);
@@ -510,7 +510,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self showLoadingScreenWithCompletion:^{
         self.currentOperation = [weakSelf.loginFlowHelper queueAccountCreateOperationWithEmail:email
                                                                                       password:password
-                                                                                    completion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+                                                                                    completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
             if ( error == nil )
             {
                 BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];

@@ -183,7 +183,7 @@
      }];
 }
 
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *, BOOL))completionBlock
 {
     NSAssert(NO, @"class %@ needs to implement loadFriendsFromSocialNetworkWithCompletion:", NSStringFromClass([self class]));
 }
@@ -191,17 +191,17 @@
 - (void)_loadFriendsFromSocialNetwork
 {
     self.state = VFindFriendsTableViewStateLoading;
-    [self loadFriendsFromSocialNetworkWithCompletion:^(NSArray *users, NSError *error)
+    [self loadFriendsFromSocialNetworkWithCompletion:^(NSArray *results, NSError *error, BOOL cancelled)
     {
-        if (error || !users)
+        if (error || !results)
         {
             self.state = VFindFriendsTableViewStateError;
         }
         else
         {
-            self.users = users;
+            self.users = results;
             self.state = VFindFriendsTableViewStateLoaded;
-            [self segregateUsers:users];
+            [self segregateUsers:self.users];
         }
     }];
 }
@@ -318,7 +318,7 @@
     }];
     
     FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {

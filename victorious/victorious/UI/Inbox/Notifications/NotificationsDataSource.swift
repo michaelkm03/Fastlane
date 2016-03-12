@@ -21,15 +21,14 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
             createOperation: {
                 return NotificationsOperation()
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion?(error)
             }
         )
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
-        
-        self.refreshRemote(
+    func refreshRemote( completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
+        self.loadNewItems(
             createOperation: {
                 return NotificationsOperation()
             },

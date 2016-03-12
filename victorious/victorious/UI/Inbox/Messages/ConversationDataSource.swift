@@ -8,7 +8,6 @@
 
 import UIKit
 import VictoriousIOSSDK
-import KVOController
 
 class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
     
@@ -53,34 +52,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         self.dependencyManager = dependencyManager
         self.conversation = conversation
         self.messageCellDecorator = MessageTableCellDecorator(dependencyManager: dependencyManager)
-        super.init()
-        
-        self.KVOController.observe( conversation,
-            keyPath: "messages",
-            options: [],
-            action: Selector("onConversationChanged:")
-        )
     }
     
-    func onConversationChanged( change: [NSObject : AnyObject]? ) {
-        guard let userID = self.conversation.user?.remoteId?.integerValue else {
-            return
-        }
-        
-        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
-                return
-        }
-        self.paginatedDataSource.refreshLocal(
-            createOperation: {
-                return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
-            },
-            completion: nil
-        )
-    }
-    
-    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?)->())? = nil ) {
-        
+    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
@@ -88,20 +62,22 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },
-            completion: { (results, error) in
+            completion: { results, error, cancelled in
                 self.hasLoadedOnce = true
-                completion?( results, error)
+                completion?(results, error, cancelled)
             }
         )
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
+    func refresh( local local: Bool = false, completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
-        self.paginatedDataSource.refreshRemote(
+        self.paginatedDataSource.loadNewItems(
             createOperation: {
-                return ConversationOperation(conversationID: conversationID, userID: userID)
+                let operation = ConversationOperation(conversationID: conversationID, userID: userID)
+                operation.localFetch = local
+                return operation
             },
             completion: completion
         )
