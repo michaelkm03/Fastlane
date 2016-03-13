@@ -66,15 +66,17 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
-        //#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+        #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS || ((arch(i386) || arch(x86_64)) && os(iOS))
             let testConfirmationAlert = PurchaseTestConfirmOperation(dependencyManager: dependencyManager)
             testConfirmationAlert.before(subscribe).queue()
-        //#endif
+        #endif
         
         setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
-        subscribe.queue() { op in
+        subscribe.queue() { error, canceled in
             self.setIsLoading(false)
-            if let error = subscribe.error {
+            if canceled {
+                return
+            } else if let error = error {
                 let title = "VIP Subscription Failed"
                 let message = error.localizedDescription
                 self.v_showErrorWithTitle(title, message: message)
@@ -87,13 +89,22 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBAction func onRestore(sender: UIButton? = nil) {
         let restore = RestorePurchasesOperation()
         setIsLoading(true, title: NSLocalizedString("ActivityRestoring", comment:""))
-        restore.queue() { op in
+        restore.queue() { error, canceled in
             self.setIsLoading(false)
-            if let error = restore.error {
-                let title = "VIP Restore Subscription Failed"
-                let message = error.localizedDescription
-                self.v_showErrorWithTitle(title, message: message)
-            }
+            #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS || ((arch(i386) || arch(x86_64)) && os(iOS))
+                self.onSubcriptionValidated()
+                return
+            #else
+                if canceled {
+                    return
+                } else if let error = error {
+                    let title = "VIP Restore Subscription Failed"
+                    let message = error.localizedDescription
+                    self.v_showErrorWithTitle(title, message: message)
+                } else {
+                    self.onSubcriptionValidated()
+                }
+            #endif
         }
     }
     

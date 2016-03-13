@@ -20,6 +20,13 @@ class VIPSubscribeOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        
+        guard didConfirmActionFromDependencies else {
+            cancel()
+            finishedExecuting()
+            return
+        }
+        
         beganExecuting()
         
         purchaseManager.purchaseProductWithIdentifier(productIdentifier,
