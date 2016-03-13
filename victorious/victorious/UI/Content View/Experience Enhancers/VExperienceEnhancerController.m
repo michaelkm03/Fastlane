@@ -51,7 +51,7 @@
     self = [super init];
     if ( self != nil )
     {
-        _dependencyManager = purchaseManager;
+        _purchaseManager = purchaseManager;
         _dependencyManager = dependencyManager;
         
         [self setup];
