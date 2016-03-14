@@ -33,18 +33,7 @@ class SuggestedUsersOperation: RemoteFetcherOperation, RequestOperation {
                 return VSuggestedUser( user: user, recentSequences: recentSequences )
             }
             context.v_save()
-
-            let finishOperation = {
-                self.results = self.fetchResults( suggestedUsers )
-            }
-
-            if NSBundle.v_isTestBundle {
-                finishOperation()
-            } else {
-                dispatch_async( dispatch_get_main_queue() ) {
-                    finishOperation()
-                }
-            }
+            self.results = self.fetchResults( suggestedUsers )
         }
     }
     
