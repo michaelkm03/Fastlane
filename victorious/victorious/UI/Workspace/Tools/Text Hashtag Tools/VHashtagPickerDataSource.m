@@ -81,7 +81,7 @@
 - (void)reloadWithCompletion:(void(^)(NSArray *tools))completion
 {
     TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (error == nil)
         {

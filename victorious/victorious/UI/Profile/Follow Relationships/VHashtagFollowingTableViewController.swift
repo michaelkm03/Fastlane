@@ -16,7 +16,7 @@ extension VHashtagFollowingTableViewController: VPaginatedDataSourceDelegate {
             createOperation: {
                 return FollowedHashtagsOperation()
             },
-            completion: { (op, error) in
+            completion: { results, error, cancelled in
                 completion?(error)
             }
         )

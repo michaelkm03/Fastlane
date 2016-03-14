@@ -28,7 +28,7 @@ class ShelfTests: XCTestCase {
         XCTAssertEqual(shelf.name, "Explore Stream")
         XCTAssertEqual(shelf.title, "Marquee")
         XCTAssertEqual(shelf.postCount, 14)
-        XCTAssertEqual(shelf.streamUrl, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/16472/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
+        XCTAssertEqual(shelf.apiPath, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/16472/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
         
         XCTAssertEqual(shelf.items?.count, 12)
         XCTAssertEqual(shelf.items?.filter { $0 is Sequence }.count, 0)
@@ -50,7 +50,7 @@ class ShelfTests: XCTestCase {
         XCTAssertNil( shelf.name )
         XCTAssertNil( shelf.title )
         XCTAssertNil( shelf.postCount )
-        XCTAssertNil( shelf.streamUrl )
+        XCTAssertNil( shelf.apiPath )
         XCTAssertNil( shelf.items )
         XCTAssertNil( shelf.previewImagesObject )
         XCTAssertNil( shelf.previewAsset )

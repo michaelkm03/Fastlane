@@ -71,18 +71,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 #pragma mark - stream updating
 
-- (void)setStream:(VStream *)stream
-{
-    if ( stream == _stream )
-    {
-        return;
-    }
-    
-    _stream = stream;
-    [self reset];
-    [self marqueeItemsUpdated];
-}
-
 - (void)setShelf:(Shelf *)shelf
 {
     if ( shelf == _shelf )
@@ -97,12 +85,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (VStream *)currentStream
 {
-    return self.shelf ?: self.stream;
+    return self.shelf;
 }
 
 - (NSArray *)marqueeItems
 {
-    return self.shelf.streamItems ?: self.stream.marqueeItems;
+    return self.shelf.streamItems;
 }
 
 - (CGFloat)pageWidth
@@ -257,7 +245,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             if (sequenceToTrack != nil)
             {
                 StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
-                                                                                  stream:self.shelf ?: self.stream
+                                                                                  stream:self.shelf
                                                                                fromShelf:YES];
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
             }

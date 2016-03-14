@@ -9,8 +9,8 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VVoteType.h"
+#import "victorious-Swift.h"
 
-NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 static NSString * const kImageURLKey = @"imageURL";
 
 @interface VVoteType ()
@@ -102,19 +102,6 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager numberForKey:@"fanloyaltyLevel"];
 }
 
-+ (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
-{
-    NSMutableSet *productIdentifiers = [[NSMutableSet alloc] init];
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-     {
-         if ( voteType.isPaid && voteType.productIdentifier != nil )
-         {
-             [productIdentifiers addObject:voteType.productIdentifier];
-         }
-     }];
-    return [NSSet setWithSet:productIdentifiers];
-}
-
 - (BOOL)containsRequiredData
 {
     BOOL hasValidImages = [self.dependencyManager hasArrayOfImagesForKey:@"images"];
@@ -191,23 +178,6 @@ static NSString * const kImageURLKey = @"imageURL";
     }
     
     return UIViewContentModeScaleAspectFill;
-}
-
-@end
-
-#pragma mark -
-
-@implementation VDependencyManager (VVoteType)
-
-- (NSArray *)voteTypes
-{
-    return [self arrayOfValuesOfType:[VVoteType class] forKey:VDependencyManagerVoteTypesKey];
-}
-
-- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"productIdentifier == %@", productIdentifier];
-    return [self.voteTypes filteredArrayUsingPredicate:predicate].firstObject;
 }
 
 @end

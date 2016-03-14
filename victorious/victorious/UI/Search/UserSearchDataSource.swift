@@ -49,7 +49,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
             createOperation: {
                 return operation
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion?( error )
             }
         )
@@ -92,7 +92,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
             } else {
                 operation = FollowUsersOperation(userIDs: [userID], sourceScreenName: strongSelf.sourceScreenName)
             }
-            operation.queue() { (results, error) in
+            operation.queue() { results, error, cancelled in
                 self?.onFollowingUpdated()
             }
         }

@@ -711,7 +711,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 - (void)mockCurrentUser
 {
-    id<PersistentStoreType> persistentStore = [[TestPersistentStore alloc] init];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     VUser *user = (VUser *)[[persistentStore mainContext] v_createObjectAndSaveWithEntityName:@"User" configurations:^(NSManagedObject *_Nonnull object) {
         VUser *user = (VUser *)object;
         user.remoteId = @123;

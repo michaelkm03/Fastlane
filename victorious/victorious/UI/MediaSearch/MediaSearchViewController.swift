@@ -27,7 +27,7 @@ class MediaSearchOptions: NSObject {
 }
 
 /// View controller that allows users to search for media files as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate {
+class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -50,7 +50,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
     let scrollPaginator = VScrollPaginator()
 	let dataSourceAdapter = MediaSearchDataSourceAdapter()
-    private lazy var mediaExporter = MediaSearchExporter()
+    private var mediaExporter: MediaSearchExporter?
     
 	weak var delegate: MediaSearchViewControllerDelegate?
 	
@@ -64,6 +64,9 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
         fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
+    
+    private var progressHUD: MBProgressHUD?
+    
     
     //MARK: - UIViewController
     
@@ -109,6 +112,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
     }
     
+    func cancel() {
+        progressHUD?.hide(true)
+        self.mediaExporter?.cancelDownload()
+    }
+    
     //MARK: - API
     
     func exportSelectedItem( sender: AnyObject? ) {
@@ -117,28 +125,43 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		}
 		
 		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
-		
-		let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
-		progressHUD.mode = .Indeterminate
-		progressHUD.dimBackground = true
-		progressHUD.show(true)
-		
-		self.mediaExporter.loadMedia( mediaSearchResultObject ) { (previewImage, mediaURL, error) in
-			
-			if let previewImage = previewImage, let mediaURL = mediaURL {
-				mediaSearchResultObject.exportPreviewImage = previewImage
-				mediaSearchResultObject.exportMediaURL = mediaURL
-				self.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
-				
-			} else {
-				let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
-				progressHUD.mode = .Text
-				progressHUD.labelText = NSLocalizedString( "Error rendering Media", comment:"" )
-				progressHUD.hide(true, afterDelay: 3.0)
-			}
-			
-			progressHUD.hide(true)
-		}
+        
+        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
+            return
+        }
+        view.delegate = self
+        
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+        progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
+        progressHUD?.mode = MBProgressHUDMode.CustomView
+        progressHUD?.customView = view
+        progressHUD?.square = true;
+        progressHUD?.dimBackground = true
+        progressHUD?.show(true)
+        
+        self.mediaExporter?.cancelDownload()
+        self.mediaExporter = nil
+        
+        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
+        mediaExporter.loadMedia() { [weak self] (previewImage, mediaURL, error) in
+            dispatch_after(0.5) {
+                guard let strongSelf = self where !mediaExporter.cancelled else {
+                    return
+                }
+                strongSelf.progressHUD?.hide(true)
+                if let previewImage = previewImage, let mediaURL = mediaURL {
+                    mediaSearchResultObject.exportPreviewImage = previewImage
+                    mediaSearchResultObject.exportMediaURL = mediaURL
+                    strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                } else {
+                    if error?.code != NSURLErrorCancelled {
+                        MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
+                        strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+                    }
+                }
+            }
+        }
+        self.mediaExporter = mediaExporter
     }
 	
     func selectCellAtSelectedIndexPath() {

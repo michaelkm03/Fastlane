@@ -61,6 +61,7 @@
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
+#import "VPurchaseManager.h"
 
 @import KVOController;
 
@@ -288,7 +289,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
     
     self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
@@ -1387,8 +1387,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)deleteComment:(VComment *)comment
 {
     NSInteger commentID = comment.remoteId.integerValue;
-    DeleteCommentOperation *operation = [[DeleteCommentOperation alloc] initWithCommentID: commentID removalReason:nil];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    CommentDeleteOperation *operation = [[CommentDeleteOperation alloc] initWithCommentID: commentID removalReason:nil];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
      }];
@@ -1397,8 +1397,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)flagComment:(VComment *)comment
 {
     NSInteger commentID = comment.remoteId.integerValue;
-    FlagCommentOperation *operation = [[FlagCommentOperation alloc] initWithCommentID: commentID];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    CommentFlagOperation *operation = [[CommentFlagOperation alloc] initWithCommentID: commentID];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self.viewModel.commentsDataSource removeDeletedItems];
          [self v_showFlaggedCommentAlertWithCompletion:nil];
@@ -1531,9 +1531,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
+
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
     viewController.voteType = voteType;
+    
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];

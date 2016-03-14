@@ -1,5 +1,5 @@
 //
-//  DeleteConversationRequestTests.swift
+//  ConversationDeleteRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/13/15.
@@ -9,11 +9,11 @@
 import XCTest
 import VictoriousIOSSDK
 
-class DeleteConversationRequestTests: XCTestCase {
+class ConversationDeleteRequestTests: XCTestCase {
     
     func testDeletingConversationRequest() {
         let mockConversationID: Int = 10001
-        let deleteRequest = DeleteConversationRequest(conversationID: mockConversationID)
+        let deleteRequest = ConversationDeleteRequest(conversationID: mockConversationID)
         let urlRequest = deleteRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/message/delete_conversation")

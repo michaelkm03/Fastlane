@@ -30,7 +30,7 @@ class ListShelfTests: XCTestCase {
         XCTAssertEqual(shelf.name, "Girl")
         XCTAssertEqual(shelf.title, "FEATURED PLAYLIST")
         XCTAssertNil(shelf.postCount)
-        XCTAssertEqual(shelf.streamUrl, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/15983/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
+        XCTAssertEqual(shelf.apiPath, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/15983/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
         
         XCTAssertEqual(shelf.items?.count, 8)
         XCTAssertEqual(shelf.items?.filter { $0 is Sequence }.count, 8)

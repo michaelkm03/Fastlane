@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSNumber * isUserPostAllowed;
 @property (nonatomic, retain, nullable) NSString * trackingIdentifier;
 @property (nonatomic, retain, nullable) NSString * shelfId;
-@property (nonatomic, retain) NSOrderedSet *marqueeItemPointers; //< VStreamItemPointer
 @property (nonatomic, retain) NSOrderedSet *streamItemPointers; //< VStreamItemPointer
 
 @end

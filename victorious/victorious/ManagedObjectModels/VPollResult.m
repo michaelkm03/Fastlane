@@ -17,5 +17,6 @@
 @dynamic count;
 @dynamic sequenceId;
 @dynamic user;
+@dynamic displayOrder;
 
 @end

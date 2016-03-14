@@ -26,8 +26,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
-
-@property (weak, nonatomic) IBOutlet UIView *badgeContainerView;
+@property (nonatomic, weak) UIButton *trophyCaseButton;
+@property (nonatomic, weak) IBOutlet UIView *badgeContainerView;
 @property (nonatomic, strong) AnimatedBadgeView *badgeView;
 
 @end

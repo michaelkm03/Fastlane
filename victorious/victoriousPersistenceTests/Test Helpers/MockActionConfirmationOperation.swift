@@ -9,7 +9,7 @@
 import UIKit
 @testable import victorious
 
-class MockActionConfirmationOperation: NavigationOperation, ActionConfirmationOperation {
+class MockActionConfirmationOperation: MainQueueOperation, ActionConfirmationOperation {
     
     var didConfirmAction: Bool = false
     let shouldConfirm: Bool

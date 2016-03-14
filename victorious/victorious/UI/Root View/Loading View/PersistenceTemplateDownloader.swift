@@ -16,13 +16,14 @@ class PersistenceTemplateDownloader: NSObject, VTemplateDownloader {
     func downloadTemplateWithCompletion(completion: VTemplateDownloaderCompletion) {
         let templateRequest = TemplateRequest()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.requestExecutor.executeRequest(templateRequest, onComplete: { (templateData: NSData, end: () -> Void) in
+            self.requestExecutor.executeRequest(templateRequest,
+                onComplete: { templateData in
                     completion(templateData, nil)
-                    end()
-                }, onError: { (error: NSError, end: () -> Void) in
+                },
+                onError: { error in
                     completion(nil, error)
-                    end()
-            })
+                }
+            )
         }
     }
 }

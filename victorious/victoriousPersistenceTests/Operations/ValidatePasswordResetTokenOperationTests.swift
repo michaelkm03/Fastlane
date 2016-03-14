@@ -1,5 +1,5 @@
 //
-//  ValidatePasswordResetTokenOperationTests.swift
+//  PasswordValidateResetTokenOperationTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 1/8/16.
@@ -9,15 +9,15 @@
 import XCTest
 @testable import victorious
 
-class ValidatePasswordResetTokenOperationTests: BaseFetcherOperationTestCase {
+class PasswordValidateResetTokenOperationTests: BaseFetcherOperationTestCase {
     
     func testMain() {
-        let operation = ValidatePasswordResetTokenOperation(userToken: "usertoken", deviceToken: "devicetoken")
+        let operation = PasswordValidateResetTokenOperation(userToken: "usertoken", deviceToken: "devicetoken")
         testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("ValidatePasswordResetTokenOperation")
-        operation.queue() { (results, error) in
+        let expectation = expectationWithDescription("PasswordValidateResetTokenOperation")
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             expectation.fulfill()
         }

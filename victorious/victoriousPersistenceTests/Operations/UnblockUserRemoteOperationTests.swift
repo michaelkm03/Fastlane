@@ -34,7 +34,7 @@ class UnblockUserRemoteOperationTests: BaseFetcherOperationTestCase {
     func testRemoteOperationTracking() {
         
         let expectation = expectationWithDescription("UnblockUserRemoteOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             expectation.fulfill()
         }
