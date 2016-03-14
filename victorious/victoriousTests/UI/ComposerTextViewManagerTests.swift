@@ -34,7 +34,7 @@ class ComposerTextViewManagerTests: XCTestCase {
     func testCanUpdateTextView() {
         
         let baseText = "string"
-        let additionalText = "!" //Must be of length 1
+        let additionalText = "!" // Must be of length 1
         let baseTextLength = baseText.characters.count
         let additionalTextLength = additionalText.characters.count
         textView.text = baseText
@@ -64,7 +64,7 @@ class ComposerTextViewManagerTests: XCTestCase {
     }
     
     
-    //MARK: - Delegate stub
+    // MARK: - Delegate stub
     
     private class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
         

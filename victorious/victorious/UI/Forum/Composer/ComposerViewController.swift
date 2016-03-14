@@ -10,21 +10,23 @@ import UIKit
 
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate {
     
+    private let animationDuration = 0.3
+    
     private let minimumTextViewHeight: CGFloat = 32
     
-    @IBOutlet var inputViewToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
     
     /// Referenced so that it can be set toggled between 0 and it's default
     /// height when shouldShowAttachmentContainer is true
-    @IBOutlet var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var attachmentContainerHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet var textView: VPlaceholderTextView!
+    @IBOutlet private var textView: VPlaceholderTextView!
     
-    @IBOutlet var attachmentContainerView: UIView!
+    @IBOutlet private var attachmentContainerView: UIView!
     
-    @IBOutlet var interactiveContainerView: UIView!
+    @IBOutlet private var interactiveContainerView: UIView!
     
     private var composerTextViewManager: ComposerTextViewManager?
     
@@ -41,7 +43,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private var attachmentTabs = DefaultPropertyValues.attachmentTabs
+    private var attachmentTabs: [ComposerAttachmentTab]? = nil
     
     private var shouldShowAttachmentContainer: Bool {
         return attachmentTabs != nil || textViewHasText
@@ -108,25 +110,31 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func updateViewConstraints() {
 
-        let desiredAttachmentContainerHeight = self.shouldShowAttachmentContainer ? DefaultPropertyValues.attachmentContainerHeight : 0
-        if self.attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight {
+        let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? DefaultPropertyValues.attachmentContainerHeight : 0
+        let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
+        if attachmentContainerHeightNeedsUpdate {
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
         }
         
         let textHeight = min(self.textView.contentSize.height, self.maximumTextInputHeight)
         let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
-        let textViewHeightUpdated = self.textViewHeightConstraint.constant != desiredTextViewHeight
-        if textViewHeightUpdated {
+        let textViewHeightNeedsUpdate = self.textViewHeightConstraint.constant != desiredTextViewHeight
+        if textViewHeightNeedsUpdate {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
-            NSLog("new height \(desiredTextViewHeight)")
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: {
+        guard attachmentContainerHeightNeedsUpdate || textViewHeightNeedsUpdate else {
+            // No reason to lay out views again
+            super.updateViewConstraints()
+            return
+        }
+        
+        UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.textView.layoutIfNeeded()
             self.attachmentContainerView.layoutIfNeeded()
             self.interactiveContainerView.layoutIfNeeded()
             }, completion: { done in
-                if textViewHeightUpdated {
+                if textViewHeightNeedsUpdate {
                     self.textView.scrollRectToVisible(CGRectZero, animated: false)
                 }
         })
@@ -136,7 +144,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
-        textView.placeholderText = "Join the conversation"
+        textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
     }
 }
 
@@ -144,11 +152,10 @@ private struct DefaultPropertyValues {
     
     static let maximumTextInputHeight = CGFloat.max
     static let maximumTextLength = 0
-    static let attachmentTabs: [ComposerAttachmentTab]? = nil
     static let attachmentContainerHeight: CGFloat = 52
 }
 
-//Update this extension to parse real values once they're returned in template
+// Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
     
     func maximumTextLength() -> Int {
@@ -156,6 +163,6 @@ private extension VDependencyManager {
     }
     
     func attachmentTabs() -> [ComposerAttachmentTab]? {
-        return DefaultPropertyValues.attachmentTabs
+        return nil
     }
 }
