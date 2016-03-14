@@ -30,9 +30,8 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
             }
             context.v_save()
             self.resultObjectIDs = persistentUsers.map { $0.objectID }
+            self.results = self.fetchResults()
         }
-        
-        self.results = self.fetchResults()
     }
     
     func fetchResults() -> [AnyObject] {
