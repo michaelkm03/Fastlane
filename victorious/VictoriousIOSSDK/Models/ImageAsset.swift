@@ -7,10 +7,15 @@
 //
 
 /// A thumbnail, profile picture, or other image asset
-public struct ImageAsset {
+public struct ImageAsset: Stageable {
     public let url: NSURL
     public let size: CGSize
     public let type: String
+ 
+    // MARK: Stageable
+    public var duration: Double?
+    public var endTime: Double?
+    public var resourceLocation: String?
 }
 
 extension ImageAsset {
@@ -26,5 +31,10 @@ extension ImageAsset {
         self.url = url
         self.type = type
         self.size = CGSize(width: width, height: height)
+        
+        
+        // MARK: Stageable
+        self.resourceLocation = url.absoluteString
+        // TODO: parse out other Stageable params
     }
 }

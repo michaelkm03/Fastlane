@@ -13,8 +13,8 @@ protocol Stage {
     weak var delegate: StageDelegate? { get set }
     
     /// Replaces the currently playing media with the one provided.
-    func startPlayingMedia(media: VAsset)
+    func startPlayingMedia(media: Stageable)
     
     /// Stops displaying the currently shown media.
-    func stopPlayingContent()
+    func stopPlayingMedia()
 }

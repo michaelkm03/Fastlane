@@ -52,6 +52,7 @@
                     <connections>
                         <outlet property="imageView" destination="Kcx-0v-akP" id="fPc-yw-E2e"/>
                         <outlet property="mainContentView" destination="qIK-iz-Osm" id="MTX-nU-cpO"/>
+                        <outlet property="mainContentViewBottomConstraint" destination="666-eD-X5V" id="euT-t6-sBz"/>
                         <outlet property="videoContainerView" destination="Ch6-aY-OFp" id="bCc-v1-erK"/>
                     </connections>
                 </viewController>

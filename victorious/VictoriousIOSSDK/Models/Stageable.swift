@@ -8,16 +8,17 @@
 
 import Foundation
 
-enum StageMediaType {
-    case Image
-    case Video
-    case Gif
-    case Empty
-}
+// TODO: remove this shit, cast it to asset types instead
+//public enum StageMediaType {
+//    case Image
+//    case Video
+//    case Gif
+//    case Empty
+//}
 
-protocol Stageable {
+public protocol Stageable {
     
-    var stageMediaType: StageMediaType { get }
+//    var stageMediaType: StageMediaType { get }
     
     var duration: Double? { get }
     
