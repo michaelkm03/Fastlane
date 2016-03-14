@@ -27,5 +27,5 @@ protocol ComposerDelegate: class {
 
 extension ComposerDelegate {
     
-    func composer(composer: Composer, didUpdateToHeight: CGFloat) {}
+    func composer(composer: Composer, didUpdateToContentHeight: CGFloat) {}
 }
