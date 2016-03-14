@@ -38,9 +38,12 @@ class ForumViewController: UIViewController {
             stageViewController.dependencyManager = dependencyManager
         } else if let composerViewController = destination as? ComposerViewController {
             composerViewController.dependencyManager = dependencyManager
-        } else if let _ = destination as? UIViewController {
-            //Setup dependency manager on chatFeedViewController
         }
+        // Uncomment the following lines once the chat feed view controller is added
+        // to the project.
+//        else if let chatFeedViewController = destination as? ChatFeedViewController {
+//            chatFeedViewController.dependencyManager = dependencyManager
+//        }
     }
     
     override func viewDidLoad() {
