@@ -6,8 +6,11 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-import MobileCoreServices
 import Foundation
+
+#if os(iOS)
+    import MobileCoreServices
+#endif
 
 extension NSURL {
     /// Returns the MIME type that matches this URL's extension, or nil if no MIME type could be determined.

@@ -6,6 +6,8 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
+import CoreGraphics
+
 /// A thumbnail, profile picture, or other image asset
 public struct ImageAsset {
     public let url: NSURL
