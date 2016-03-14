@@ -12,13 +12,9 @@ import XCTest
 
 class TestRequestExecutor: RequestExecutorType {
 
-    let error: NSError?
     let result: Any?
-    
-    var errorHandlers = [RequestErrorHandler]()
 
     var executeRequestCallCount = 0
-    var hasNetworkConnection: Bool = true
     
     init(error: NSError) {
         self.error = error
@@ -35,30 +31,29 @@ class TestRequestExecutor: RequestExecutorType {
         self.result = nil
     }
     
-    func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
+    // MARK: - RequestExecutorType
+    
+    let error: NSError?
+    
+    var errorHandlers = [RequestErrorHandler]()
+    
+    var cancelled: Bool = false
+    
+    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType->())?, onError: (NSError->())?) {
         executeRequestCallCount += 1
         
-        let executeSemphore = dispatch_semaphore_create(0)
+        if cancelled {
+            return
+        }
+        
         if let error = self.error {
-            if let onError = onError {
-                onError( error ) {
-                    dispatch_semaphore_signal( executeSemphore )
-                }
-            } else {
-                dispatch_semaphore_signal( executeSemphore )
-            }
+            onError?( error )
             
         } else if let result = (Void() as? T.ResultType) ?? (self.result as? T.ResultType) {
-            if let onComplete = onComplete {
-                onComplete( result ) {
-                    dispatch_semaphore_signal( executeSemphore )
-                }
-            } else {
-                dispatch_semaphore_signal( executeSemphore )
-            }
+            onComplete?( result )
+    
         } else {
             XCTFail("Unable to provide properly typed parameter to `onComplete` closure.")
         }
-        dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
     }
 }

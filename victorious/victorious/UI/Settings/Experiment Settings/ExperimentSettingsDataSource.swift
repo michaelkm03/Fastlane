@@ -76,7 +76,7 @@ class ExperimentSettingsDataSource: NSObject {
         self.delegate?.tableView.reloadData()
         
         let experimentsOperation = DeviceExperimentsOperation()
-        experimentsOperation.queue() { (results, error) in
+        experimentsOperation.queue() { results, error, cancelled in
             guard error == nil else {
                 /// Handle Error
                 self.sections = []

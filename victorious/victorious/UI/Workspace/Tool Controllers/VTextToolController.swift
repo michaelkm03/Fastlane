@@ -48,7 +48,7 @@ extension VTextToolController {
         guard let operation = CreateTextPostOperation(parameters: parameters, previewImage: previewImage, uploadManager: uploadManager) else {
             return
         }
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             completion(finished: true, renderedMediaURL: nil, previewImage: nil, error: nil)
         }
     }

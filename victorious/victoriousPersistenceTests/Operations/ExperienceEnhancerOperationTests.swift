@@ -14,6 +14,7 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
     let sequenceID = "12345"
     var sequence: VSequence!
     var sequenceVoteTypes: [VVoteResult] = []
+    private var mockProductsDataSource = MockVoteTypesDataSource()
     
     override func setUp() {
         super.setUp()
@@ -27,14 +28,14 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testEmptyVoteTypes() {
-        let voteTypes: [VVoteType] = []
-        let operation = ExperienceEnhancersOperation(sequence: sequence, voteTypes: voteTypes)
+        mockProductsDataSource.voteTypes = []
+        let operation = ExperienceEnhancersOperation(sequenceID: sequence.remoteId, productsDataSource: mockProductsDataSource)
         let expectation = expectationWithDescription("ExperienceEnhancersOperation")
 
-        operation.queue() { results in
+        operation.queue() { results, error, cancelled in
 
-            XCTAssertNotNil(operation.experienceEnhancers)
-            XCTAssertEqual(operation.experienceEnhancers?.count, 0)
+            XCTAssertNotNil(results)
+            XCTAssertEqual(results?.count, 0)
             
             expectation.fulfill()
         }
@@ -59,17 +60,18 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
             voteTypes[String(voteTypeID)] = voteType
         }
         
-        let operation = ExperienceEnhancersOperation(sequence: sequence, voteTypes: Array(voteTypes.values))
+        mockProductsDataSource.voteTypes = Array(voteTypes.values)
+        let operation = ExperienceEnhancersOperation(sequenceID: sequence.remoteId, productsDataSource: mockProductsDataSource)
         let expectation = expectationWithDescription("ExperienceEnhancersOperation")
         
-        operation.queue() { results in
-            guard let experienceEnhancers: [VExperienceEnhancer] = operation.experienceEnhancers else {
+        operation.queue() { results, error, cancelled in
+            guard let experienceEnhancers = operation.results as? [VExperienceEnhancer] else {
                 XCTFail("Experience Enhancers should not be nil")
                 return
             }
             
             // Check number of Experience Enhancers
-            XCTAssertEqual(operation.experienceEnhancers?.count, voteTypes.count)
+            XCTAssertEqual(results?.count, self.mockProductsDataSource.voteTypes.count)
             
             for experienceEnhancer in experienceEnhancers {
                 let voteTypeID = experienceEnhancer.voteType.voteTypeID
@@ -91,5 +93,21 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
+}
+
+class MockVoteTypesDataSource: NSObject, TemplateProductsDataSource {
     
+    var vipSubscriptionProductIdentifier: String? {
+        abort()
+    }
+    
+    var productIdentifiersForVoteTypes: [String] {
+        abort()
+    }
+    
+    func voteTypeForProductIdentifier(productIdentifier: String) -> VVoteType? {
+        abort()
+    }
+    
+    var voteTypes = [VVoteType]()
 }

@@ -14,6 +14,8 @@ class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     
     var results: [AnyObject]?
     
+    static let errorDomain: String = "com.getvictorious.FetcherOperationError"
+    
     private static let sharedQueue: NSOperationQueue = NSOperationQueue()
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
@@ -46,8 +48,14 @@ class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     
     // MARK: - ErrorOperation
     
+    var _error: NSError?
     var error: NSError? {
-        return self.requestExecutor.error
+        set {
+            _error = newValue
+        }
+        get {
+            return _error ?? self.requestExecutor.error
+        }
     }
     
     // MARK: - Queueable

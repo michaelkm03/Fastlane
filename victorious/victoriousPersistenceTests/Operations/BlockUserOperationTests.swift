@@ -49,13 +49,12 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testOperationNotRunWithoutConfirmation() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
-        operation.persistentStore = testStore
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()
         
         let expectation = expectationWithDescription("BlockUserOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTFail("Should not be called")
         }
         dispatch_after(1.0) {
@@ -70,7 +69,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testWithoutConversationID() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue)
-        operation.persistentStore = testStore
         
         let context = testStore.mainContext
         var sequences = [VSequence]()
@@ -80,7 +78,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         XCTAssertNotEqual(sequences.count, 0)
         
         let expectation = expectationWithDescription("BlockUserOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             let dependentOperations = self.operation.v_defaultQueue.v_dependentOperationsOf(self.operation).flatMap { $0 as? BlockUserRemoteOperation }
             XCTAssertEqual( dependentOperations.count, 1 )
@@ -95,7 +93,6 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testWithConversationID() {
         operation = BlockUserOperation(userID: objectUser.remoteId.integerValue, conversationID: conversationID)
-        operation.persistentStore = testStore
         
         let context = testStore.mainContext
         var sequences = [VSequence]()
@@ -105,7 +102,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         XCTAssertNotEqual(sequences.count, 0)
         
         let expectation = expectationWithDescription("BlockUserOperation")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             XCTAssertNil(error)
             let dependentOperations = self.operation.v_defaultQueue.v_dependentOperationsOf(self.operation).flatMap { $0 as? BlockUserRemoteOperation }
             XCTAssertEqual( dependentOperations.count, 1 )

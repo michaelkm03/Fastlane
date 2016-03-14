@@ -107,7 +107,7 @@ static const NSUInteger kCharacterLimit = 1024;
                                                         style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction *action)
                                 {
-                                    [self flagConversation];
+                                    [self blockUser];
                                 }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                         style:UIAlertActionStyleCancel
@@ -196,7 +196,7 @@ static const NSUInteger kCharacterLimit = 1024;
     
     [self sendMessageWithText:text publishParameters:publishParameters inConversation:self.conversation completion:^
      {
-         [[self innerViewController] onUpdate];
+         [[self innerViewController] fetchNewMessage];
      }];
     
     [keyboardBar clearKeyboardBar];

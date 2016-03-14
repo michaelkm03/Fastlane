@@ -60,7 +60,7 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
             entityName: VUser.v_entityName(),
             predicate: NSPredicate(format:"remoteId == %i", result.sourceResult.userID)
         )
-        fetchUserOperation.queue() { (results, error) in
+        fetchUserOperation.queue() { results, error, cancelled in
             if let user = results?.first as? VUser {
                 self.searchResultsDelegate?.searchResultsViewControllerDidSelectResult(user)
             }

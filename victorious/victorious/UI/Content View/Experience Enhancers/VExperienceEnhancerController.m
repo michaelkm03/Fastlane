@@ -13,7 +13,6 @@
 #import "VVoteType.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
-#import "VPurchaseManager.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
@@ -22,7 +21,7 @@
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
-@property (nonatomic, strong) VPurchaseManager *purchaseManager;
+@property (nonatomic, assign) id<VPurchaseManagerType> purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) LocalNotificationScheduler *localNotificationScheduler;
 
@@ -47,10 +46,12 @@
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+                          purchaseManager:(id<VPurchaseManagerType>)purchaseManager
 {
     self = [super init];
     if ( self != nil )
     {
+        _purchaseManager = purchaseManager;
         _dependencyManager = dependencyManager;
         
         [self setup];
@@ -71,35 +72,38 @@
 
 - (void)setup
 {
-    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    NSArray *voteTypes = [self.dependencyManager voteTypes];
+    // Pre-load any purchaseable products that might not have already been cached
+    // This is also called from VSettingsManager during app initialization, so ideally
+    // most of the purchaseable products are already fetched from the App Store.
+    // If not, we'll cache them now.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(purchaseManagedDidUpdate:)
+                                                 name:VPurchaseManagerProductsDidUpdateNotification
+                                               object:nil];
     
-    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequence:self.sequence
-                                                                                                             voteTypes:voteTypes];
-    [experienceEnhancerOperation queueWithCompletion:^(Operation *_Nonnull operation)
+    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
+    
+    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequenceID:self.sequence.remoteId
+                                                                                                     productsDataSource:self.dependencyManager];
+    FetchTemplateProductIdentifiersOperation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
+    fetchProductsOperation.purchaseManager = self.purchaseManager;
+    [fetchProductsOperation addDependency:experienceEnhancerOperation];
+    [fetchProductsOperation queueWithCompletion:nil];
+    
+    __weak typeof(self) weakSelf = self;
+    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error, BOOL cancelled)
      {
-         self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancerOperation.experienceEnhancers];
-         [self.enhancerBar reloadData];
-         [self.delegate experienceEnhancersDidUpdate];
-         
-         // Pre-load any purchaseable products that might not have already been cached
-         // This is also called from VSettingsManager during app initialization, so ideally
-         // most of the purchaseable products are already fetched from the App Store.
-         // If not, we'll cache them now.
-         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                  selector:@selector(purchaseManagedDidUpdate:)
-                                                      name:VPurchaseManagerProductsDidUpdateNotification
-                                                    object:nil];
-         NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-         
-         self.purchaseManager = [VPurchaseManager sharedInstance];
-         if ( !self.purchaseManager.isPurchaseRequestActive )
-         {
-             [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-         }
-         
-         self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+         [weakSelf onExperienceEnhancersLoaded:results];
      }];
+}
+
+- (void)onExperienceEnhancersLoaded:(NSArray *)experienceEnhancers
+{
+    self.experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
+    [self.enhancerBar reloadData];
+    [self.delegate experienceEnhancersDidUpdate];
+    
+    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
@@ -142,19 +146,18 @@
 
 - (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithPurchase:(NSArray *)experienceEnhancers
 {
-    VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings)
     {
         NSString *productIdentifier = enhancer.voteType.productIdentifier;
         if ( productIdentifier != nil )
         {
-            enhancer.requiresPurchase = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
+            enhancer.requiresPurchase = ![self.purchaseManager isProductIdentifierPurchased:productIdentifier];
             
             // If there's an error of any kind that has led to the product not being present in purchase manager,
             // we should not even show the enhancer because it will be locked and will fail when the user tries to purchase it.
             // There is frequent call to fetchProducts (every time VExperienceEnhancerViewController is initialized)
             // so we don't have to worry here about re-fetching.
-            return [purchaseManager purchaseableProductForProductIdentifier:productIdentifier] != nil;
+            return [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier] != nil;
         }
         return YES;
     }];
