@@ -38,6 +38,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
             stageViewController.dependencyManager = dependencyManager
         } else if let composerViewController = destination as? ComposerViewController {
             composerViewController.dependencyManager = dependencyManager
+            composerViewController.delegate = self
         }
         // Uncomment the following lines once the chat feed view controller is added
         // to the project.
@@ -48,16 +49,20 @@ class ForumViewController: UIViewController, ComposerDelegate {
     
     //MARK: - ComposerDelegate
     
-    func composer(composer: Composer, confirmedWithCaption: String) {
+    func composer(composer: Composer, confirmedWithCaption caption: String) {
         
     }
     
-    func composer(composer: Composer, confirmedWithMedia: MediaAttachment, caption: String?) {
+    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?) {
         
     }
     
-    func composer(composer: Composer, didSelectAttachmentTab: ComposerAttachmentTab) {
+    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
         
+    }
+    
+    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+        composerViewControllerHeightConstraint.constant = height
     }
     
     

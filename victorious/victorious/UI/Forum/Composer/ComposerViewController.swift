@@ -14,8 +14,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private let minimumTextViewHeight: CGFloat = 32
     
-    private var keyboardHeight: CGFloat = 0
-    
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
@@ -33,6 +31,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var composerTextViewManager: ComposerTextViewManager?
     
     private var keyboardManager: VKeyboardNotificationManager?
+    
+    private var keyboardHeight: CGFloat = 0
+    
+    private var totalComposerHeight: CGFloat {
+        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant : 0
+    }
     
     /// The maximum number of characters a user can input into
     /// the composer. Defaults to 0, allowing users to input as
@@ -102,10 +106,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 return
             }
             
+            let keyboardHeight = endFrame.height
+            strongSelf.keyboardHeight = keyboardHeight
+            
             let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
-            let bottomConstraintHeight = strongSelf.view.bounds.height - endFrame.origin.y
-            strongSelf.inputViewToBottomConstraint.constant = bottomConstraintHeight
+            strongSelf.inputViewToBottomConstraint.constant = keyboardHeight
             strongSelf.textView.layoutIfNeeded()
+            strongSelf.delegate?.composer(strongSelf, didUpdateToContentHeight: strongSelf.totalComposerHeight)
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 strongSelf.view.layoutIfNeeded()
             }, completion: nil)
@@ -139,6 +146,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             super.updateViewConstraints()
             return
         }
+        
+        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.textView.layoutIfNeeded()
