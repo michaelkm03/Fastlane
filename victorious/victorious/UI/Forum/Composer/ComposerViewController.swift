@@ -10,6 +10,8 @@ import UIKit
 
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate {
     
+    private let minimumTextViewHeight: CGFloat = 32
+    
     @IBOutlet var inputViewToBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet var textViewHeightConstraint: NSLayoutConstraint!
@@ -84,6 +86,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        textView.contentMode = UIViewContentMode.Center
+        
         let updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { [weak self] startFrame, endFrame, animationDuration, animationCurve in
             
             guard let strongSelf = self else {
@@ -92,6 +96,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             
             let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
             strongSelf.inputViewToBottomConstraint.constant = strongSelf.view.bounds.height - endFrame.origin.y
+            strongSelf.textView.layoutIfNeeded()
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 strongSelf.view.layoutIfNeeded()
             }, completion: nil)
@@ -110,7 +115,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
         }
         
-        let desiredTextViewHeight = self.textViewHasText ? ceil(min(self.textView.contentSize.height, self.maximumTextInputHeight)) : 40
+        let textHeight = min(self.textView.contentSize.height, self.maximumTextInputHeight)
+        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
         if self.textViewHeightConstraint.constant != desiredTextViewHeight {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
         }

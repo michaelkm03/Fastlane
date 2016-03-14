@@ -9,7 +9,7 @@
 import Foundation
 
 class ComposerTextViewManager: NSObject, UITextViewDelegate {
-    
+        
     let dismissalStrings: [String]
 
     var maximumTextLength: Int
