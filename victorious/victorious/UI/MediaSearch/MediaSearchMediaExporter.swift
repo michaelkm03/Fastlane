@@ -122,7 +122,7 @@ class MediaSearchExporter {
         }
         
         // Create a unique URL. May cause issues if GIF has a bad extension.
-        let fileExtension = remoteURL.pathExtension ?? ""
+        let fileExtension = remoteURL.pathExtension == nil ? "" : ".\(remoteURL.pathExtension)"
         return subdirectory.URLByAppendingPathComponent("\(uuidString).\(fileExtension)")
     }
 }
