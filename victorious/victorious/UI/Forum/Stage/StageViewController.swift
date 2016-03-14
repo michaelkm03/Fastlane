@@ -31,10 +31,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private var dependencyManager: VDependencyManager!
     
     class func new(dependencyManager dependencyManager: VDependencyManager) -> StageViewController {
-        //TODO: Load from storyboard
-        let stageVC = StageViewController()
-        stageVC.dependencyManager = dependencyManager
-        return stageVC
+        let stageViewController = StageViewController.v_fromStoryboard() as StageViewController
+        stageViewController.dependencyManager = dependencyManager
+        return stageViewController
     }
     
     

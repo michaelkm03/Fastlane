@@ -12,6 +12,8 @@ class ForumViewController: UIViewController {
     
     private var dependencyManager: VDependencyManager!
     
+    private var stageViewController: StageViewController?
+    
     //MARK: - Initialization
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
@@ -25,9 +27,32 @@ class ForumViewController: UIViewController {
         
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
         view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
+        
+        // TODO: add the correct way...
+        addStageViewController()
     }
     
     func exit() {
+        removeStageViewController()
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - StageViewController
+    
+    func addStageViewController() {
+        let stageVC = StageViewController.new(dependencyManager: dependencyManager)
+        self.addChildViewController(stageVC)
+        view.addSubview(stageVC.view)
+        view.v_addFitToParentConstraintsToSubview(stageVC.view)
+        stageVC.didMoveToParentViewController(self)
+        stageViewController = stageVC
+    }
+    
+    func removeStageViewController() {
+        if let stageViewController = stageViewController {
+            stageViewController.willMoveToParentViewController(nil)
+            stageViewController.view.removeFromSuperview()
+            stageViewController.removeFromParentViewController()
+        }
     }
 }

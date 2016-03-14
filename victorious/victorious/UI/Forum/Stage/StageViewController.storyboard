@@ -7,7 +7,7 @@
         <!--Stage View Controller-->
         <scene sceneID="pV2-xd-h6F">
             <objects>
-                <viewController id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StageViewController" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="75x-GJ-AKe"/>
                         <viewControllerLayoutGuide type="bottom" id="jfa-JG-qoQ"/>
@@ -24,7 +24,7 @@
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ch6-aY-OFp">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.47564903850000001" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
