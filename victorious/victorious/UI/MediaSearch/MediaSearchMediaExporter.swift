@@ -109,19 +109,20 @@ class MediaSearchExporter {
     }
     
     private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        if let fileExtension = remoteURL.pathExtension,
-            let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
-            
-            let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
-            let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
-            
-            var isDirectory: ObjCBool = false
-            if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
-                let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
-            }
-            // Create a unique URL. May cause issues if GIF has a bad extension.
-            return subdirectory.URLByAppendingPathComponent("\(uuidString).\(fileExtension)")
+        guard let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first else {
+            fatalError( "Unable to find file path for temporary media download." )
         }
-        fatalError( "Unable to find file path for temporary media download." )
+        
+        let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
+        let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
+        
+        var isDirectory: ObjCBool = false
+        if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
+            let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        // Create a unique URL. May cause issues if GIF has a bad extension.
+        let fileExtension = remoteURL.pathExtension ?? ""
+        return subdirectory.URLByAppendingPathComponent("\(uuidString).\(fileExtension)")
     }
 }
