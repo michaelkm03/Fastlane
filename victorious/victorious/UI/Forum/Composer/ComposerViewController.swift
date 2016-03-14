@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
     
     private let animationDuration = 0.3
     
     private let minimumTextViewHeight: CGFloat = 32
+    
+    private var keyboardHeight: CGFloat = 0
     
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
@@ -55,14 +57,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             maximumTextLength = dependencyManager.maximumTextLength()
             attachmentTabs = dependencyManager.attachmentTabs()
+            if isViewLoaded() {
+                dependencyManager?.addBackgroundToBackgroundHost(self)
+            }
         }
     }
     
-    //MARK: - ComposerController
+    // MARK: - ComposerController
     
     var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
     
-    //MARK: - ComposerTextViewManagerDelegate
+    // MARK: - ComposerTextViewManagerDelegate
     
     var textViewHasText: Bool = false {
         didSet {
@@ -80,13 +85,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    //MARK: - View lifecycle
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return interactiveContainerView
+    }
+    
+    // MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textView.contentMode = UIViewContentMode.Center
-        
+                
         let updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { [weak self] startFrame, endFrame, animationDuration, animationCurve in
             
             guard let strongSelf = self else {
@@ -106,6 +115,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
         setupTextView()
+        
+        dependencyManager?.addBackgroundToBackgroundHost(self)
     }
     
     override func updateViewConstraints() {
@@ -145,6 +156,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private func setupTextView() {
         textView.text = nil
         textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func pressedConfirmButton() {
+        textView.resignFirstResponder()
+        textView.text = nil
+        // Call appropriate delegate methods based on caption / media in composer
     }
 }
 

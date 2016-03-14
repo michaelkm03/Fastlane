@@ -22,11 +22,8 @@ class ForumViewController: UIViewController, ComposerDelegate {
     //MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
-        guard let forumVC = storyboard.instantiateInitialViewController() as? ForumViewController else {
-            fatalError("Failed to instantiate an ForumViewController view controller!")
-        }
         
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("ForumViewController")
         forumVC.dependencyManager = dependencyManager
         return forumVC
     }
@@ -46,11 +43,11 @@ class ForumViewController: UIViewController, ComposerDelegate {
     
     //MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didPressSendWithCaption: String) {
+    func composer(composer: Composer, confirmedWithCaption: String) {
         
     }
     
-    func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?) {
+    func composer(composer: Composer, confirmedWithMedia: MediaAttachment, caption: String?) {
         
     }
     
