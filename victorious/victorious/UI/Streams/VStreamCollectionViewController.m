@@ -417,6 +417,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
+    if (isDefault)
+    {
+        [self viewWillAppear:YES];
+    }
 }
 
 - (void)createNewPost

@@ -14,6 +14,12 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     @IBOutlet private weak var composerContainer: UIView!
     @IBOutlet private weak var stageContainer: UIView!
     
+    @IBOutlet private var chatFeedViewControllerContainer: UIView!
+    
+    @IBOutlet private var composerViewControllerContainer: UIView!
+    
+    @IBOutlet private var stageViewControllerContainer: UIView!
+    
     private var dependencyManager: VDependencyManager!
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
