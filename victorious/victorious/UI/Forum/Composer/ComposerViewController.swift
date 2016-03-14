@@ -56,11 +56,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    
     //MARK: - ComposerController
     
     var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
-    
     
     //MARK: - ComposerTextViewManagerDelegate
     
@@ -80,7 +78,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    
     //MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -95,7 +92,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             }
             
             let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
-            strongSelf.inputViewToBottomConstraint.constant = strongSelf.view.bounds.height - endFrame.origin.y
+            let bottomConstraintHeight = strongSelf.view.bounds.height - endFrame.origin.y
+            strongSelf.inputViewToBottomConstraint.constant = bottomConstraintHeight
             strongSelf.textView.layoutIfNeeded()
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 strongSelf.view.layoutIfNeeded()
@@ -117,15 +115,21 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let textHeight = min(self.textView.contentSize.height, self.maximumTextInputHeight)
         let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
-        if self.textViewHeightConstraint.constant != desiredTextViewHeight {
+        let textViewHeightUpdated = self.textViewHeightConstraint.constant != desiredTextViewHeight
+        if textViewHeightUpdated {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
+            NSLog("new height \(desiredTextViewHeight)")
         }
         
         UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: {
             self.textView.layoutIfNeeded()
             self.attachmentContainerView.layoutIfNeeded()
             self.interactiveContainerView.layoutIfNeeded()
-        }, completion: nil)
+            }, completion: { done in
+                if textViewHeightUpdated {
+                    self.textView.scrollRectToVisible(CGRectZero, animated: false)
+                }
+        })
         
         super.updateViewConstraints()
     }

@@ -24,7 +24,6 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         textView.delegate = self
     }
     
-    
     //MARK: - Updating logic
     
     func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
