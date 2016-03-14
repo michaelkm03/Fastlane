@@ -14,6 +14,7 @@
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
 #import "VThemeManager.h"
+#import "victorious-Swift.h"
 
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
@@ -137,7 +138,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
             VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
             NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-            VVoteType *voteType = [self.dependencyManager voteTypeWithProductIdentifier:productIdentifier];
+            VVoteType *voteType = [self.dependencyManager voteTypeForProductIdentifier:productIdentifier];
             [cell setProductImage:voteType.iconImage withTitle:product.localizedTitle];
             return cell;
         }

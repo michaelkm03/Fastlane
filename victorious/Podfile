@@ -20,6 +20,7 @@ target :victorious do
 
     target :test do
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+        pod 'OCMock'
         link_with 'victoriousTests', 'VictoriousCommonTests'
     end
 end

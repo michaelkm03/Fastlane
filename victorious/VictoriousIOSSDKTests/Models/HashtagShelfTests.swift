@@ -33,7 +33,7 @@ class HashtagShelfTests: XCTestCase {
         XCTAssertEqual(shelf.name, "#test")
         XCTAssertEqual(shelf.title, "FEATURED HASHTAG")
         XCTAssertEqual(shelf.postCount, 1)
-        XCTAssertEqual(shelf.streamUrl, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/15139/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
+        XCTAssertEqual(shelf.apiPath, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/15139/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%")
         
         XCTAssertEqual(shelf.items?.count, 10)
         XCTAssertEqual(shelf.items?.filter { $0 is Sequence }.count, 10)

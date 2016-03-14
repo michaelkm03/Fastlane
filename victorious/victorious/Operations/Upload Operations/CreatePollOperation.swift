@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class CreatePollOperation: Operation, RequestOperation {
+final class CreatePollOperation: BackgroundOperation, RequestOperation {
     
     let request: PollCreateRequest!
     let previewImage: UIImage

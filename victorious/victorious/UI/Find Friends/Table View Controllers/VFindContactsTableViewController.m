@@ -111,7 +111,7 @@
     }
 }
 
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *, BOOL))completionBlock
 {
     if (!completionBlock)
     {
@@ -153,17 +153,17 @@
     if (allEmailAddresses.count > 0)
     {
         FriendFindByEmailOperation *operation = [[FriendFindByEmailOperation alloc] initWithEmails:allEmailAddresses];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
         {
             if ( error == nil && operation.results != nil )
             {
-                completionBlock(operation.results, error);
+                completionBlock(operation.results, error, cancelled);
             };
          }];
     }
     else
     {
-        completionBlock(@[], nil);
+        completionBlock(@[], nil, NO);
     }
 }
 

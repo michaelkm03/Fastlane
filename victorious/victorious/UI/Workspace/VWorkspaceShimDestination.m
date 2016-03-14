@@ -39,7 +39,7 @@
     UIViewController *originVC = [VRootViewController sharedRootViewController];
     ShowCreateSheetOperation *operation = [[ShowCreateSheetOperation alloc] initWithOriginViewController:originVC
                                                                                        dependencyManager:self.dependencyManager];
-    [operation queueWithCompletion:^
+    [operation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
      {
          VCreationType creationType = operation.chosenCreationType;
          [self.creationFlowPresenter presentWorkspaceOnViewController:originVC creationType:creationType];

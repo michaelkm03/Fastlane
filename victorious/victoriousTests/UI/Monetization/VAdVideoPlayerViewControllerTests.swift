@@ -10,13 +10,12 @@ import XCTest
 @testable import victorious
 
 class AdVideoPlayerViewControllerTests: XCTestCase {
-    var testStore: TestPersistentStore!
+    
     let testAdViewController = TestVAdViewController()
     var controller: AdVideoPlayerViewController!
 
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
         let player = VVideoView()
         let adTag = "http://example.com/ads"
         let adViewController = IMAAdViewController(player: player, adTag: adTag)

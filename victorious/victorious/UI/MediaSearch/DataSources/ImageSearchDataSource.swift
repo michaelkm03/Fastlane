@@ -34,7 +34,7 @@ class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 			createOperation: {
 				return ImageSearchOperation(searchTerm: actualSearchTerm)
 			},
-			completion:{ (operation, error) in
+			completion:{ (results, error, cancelled) in
 				completion?( error )
 			}
 		)

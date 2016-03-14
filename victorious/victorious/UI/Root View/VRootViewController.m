@@ -19,7 +19,6 @@
 #import "VTracking.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
-#import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
@@ -48,7 +47,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -262,9 +260,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
-    self.voteSettings = [[VVoteSettings alloc] init];
-    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
-    
+    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:dependencyManager] queueWithCompletion:nil];
+
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
     NSURL *appStoreURL = appInfo.appURL;
@@ -453,7 +450,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 #endif
     
     NewSessionPrunePersistentStoreOperation *operation = [[NewSessionPrunePersistentStoreOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self showInitialScreen];
      }];

@@ -128,10 +128,10 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    var avatarBadgeType: AvatarBadgeType = AvatarBadgeTypeNone{
+    var avatarBadgeType: AvatarBadgeType = .None {
         didSet {
             if avatarBadgeType != oldValue {
-                verified = avatarBadgeType == AvatarBadgeTypeVerified
+                verified = avatarBadgeType == .Verified
                 updateBadgeIcon()
                 updateBadgeText()
             }

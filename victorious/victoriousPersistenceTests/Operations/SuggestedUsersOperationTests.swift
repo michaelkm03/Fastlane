@@ -19,7 +19,6 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
         continueAfterFailure = true
         
         operation = SuggestedUsersOperation()
-        operation.persistentStore = testStore
     }
     
     func testSuccess() {
@@ -32,7 +31,7 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("SuggestedUsersOperation")
-        operation.queue() { results, error in
+        operation.queue() { results, error, cancelled in
             
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 1 )
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)

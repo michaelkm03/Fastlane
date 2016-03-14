@@ -30,7 +30,7 @@ class MockPaginatedObject {
     var displayOrder: NSNumber!
 }
 
-final class MockPaginatedRequestOperation: FetcherOperation, RequestOperation {
+final class MockPaginatedRemoteOperation: FetcherOperation, RequestOperation {
     
     let request: MockPaginatedRequest!
     

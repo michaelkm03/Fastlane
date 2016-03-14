@@ -11,7 +11,7 @@ import XCTest
 /// Helper for testing a FetcherOperation or it's subclass.
 struct PersistentStoreTestHelper {
 
-    let persistentStore: TestPersistentStore
+    let persistentStore: PersistentStoreType
 
     func createUser(remoteId remoteId: Int, token: String = "token") -> VUser {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
