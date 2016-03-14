@@ -90,15 +90,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 return
             }
             
-            //TODO: Fix options
+            let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
             strongSelf.inputViewToBottomConstraint.constant = strongSelf.view.bounds.height - endFrame.origin.y
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 strongSelf.view.layoutIfNeeded()
             }, completion: nil)
         }
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: updateHeightBlock, willChangeFrameBlock: updateHeightBlock)
         
-        composerTextViewManager = ComposerTextViewManager(maximumTextLength: maximumTextLength, textView: textView, delegate: self)
+        composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
         setupTextView()
     }
@@ -138,7 +138,7 @@ private struct DefaultPropertyValues {
     static let attachmentContainerHeight: CGFloat = 52
 }
 
-//TODO: Update this extension to parse real values once they're returned in template
+//Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
     
     func maximumTextLength() -> Int {

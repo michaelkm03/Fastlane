@@ -10,24 +10,24 @@ import Foundation
 
 class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
-    var maximumTextLength: Int
-    
-    var lastContentSize: CGSize
-    
     let dismissalStrings: [String]
+
+    var maximumTextLength: Int
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
-    init(maximumTextLength: Int, dismissalStrings: [String] = ["\n"], textView: UITextView, delegate: ComposerTextViewManagerDelegate?) {
+    init(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissalStrings: [String] = ["\n"]) {
         self.maximumTextLength = maximumTextLength
         self.delegate = delegate
         self.dismissalStrings = dismissalStrings
-        lastContentSize = textView.contentSize
         super.init()
         textView.delegate = self
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    
+    //MARK: - Updating logic
+    
+    func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
         
         var additionalTextLength = text.characters.count
         guard additionalTextLength > 0 else {
@@ -46,12 +46,22 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         if range.location < textView.text.characters.count {
             additionalTextLength -= range.length
         }
-
-        return additionalTextLength + textView.text.characters.count < maximumTextLength
+        
+        return additionalTextLength + textView.text.characters.count <= maximumTextLength
+    }
+    
+    func updateDelegateOfTextViewStatus(textView: UITextView) {
+        delegate?.textViewHasText = textView.text.characters.count > 0
+        delegate?.textViewContentSize = textView.contentSize
+    }
+    
+    //MARK: - UITextViewDelegate
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        return canUpdateTextView(textView, textInRange: range, replacementText: text)
     }
     
     func textViewDidChange(textView: UITextView) {
-        delegate?.textViewHasText = textView.text.characters.count > 0
-        delegate?.textViewContentSize = textView.contentSize
+        updateDelegateOfTextViewStatus(textView)
     }
 }

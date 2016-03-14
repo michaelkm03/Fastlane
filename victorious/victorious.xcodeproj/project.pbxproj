@@ -1725,6 +1725,7 @@
 		F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */; };
 		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
 		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
+		F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */; };
 		F07228261AD8846A00085653 /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F07228251AD8846A00085653 /* VNotification.m */; };
 		F07409751B05876200C44623 /* VCoachmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409741B05876200C44623 /* VCoachmarkView.m */; };
 		F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F074097E1B059CA200C44623 /* VCoachmarkManager.m */; };
@@ -4456,6 +4457,7 @@
 		F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeCollectionViewCell.m; sourceTree = "<group>"; };
 		F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeController.h; sourceTree = "<group>"; };
 		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
+		F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManagerTests.swift; sourceTree = "<group>"; };
 		F07228241AD8846A00085653 /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		F07228251AD8846A00085653 /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
 		F07409731B05876200C44623 /* VCoachmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkView.h; sourceTree = "<group>"; };
@@ -6518,7 +6520,7 @@
 				624E39931C6AF0F0004E0C8E /* Common */,
 				62A6F2BA1C6AA9F4008BB294 /* Content View */,
 				621BC2F71C769EC4002A28E4 /* Discover */,
-				62F4B01B1C7703C200422A0F /* Find Friends */,
+				F06FC1EB1C971BB300A014C7 /* Forum */,
 				62058B651C54DFD100D3C8F9 /* Monetization */,
 				621BC2FC1C76AF93002A28E4 /* Profile */,
 			);
@@ -6637,13 +6639,6 @@
 				62F4B0171C76FB0100422A0F /* RepostersDataSourceTests.swift */,
 			);
 			path = "Content Info";
-			sourceTree = "<group>";
-		};
-		62F4B01B1C7703C200422A0F /* Find Friends */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Find Friends";
 			sourceTree = "<group>";
 		};
 		669EBBDE1A30234A00DE317D /* Pickers */ = {
@@ -9341,13 +9336,13 @@
 		F048AFCD1C81096F004F516A /* Composer */ = {
 			isa = PBXGroup;
 			children = (
+				F0F777C31C90B749002F5401 /* Composer.swift */,
+				F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */,
 				F0F777C21C90B749002F5401 /* ComposerDelegate.swift */,
 				F00AB1AB1C93452E00DE7DDC /* ComposerTextViewManager.swift */,
 				F00AB1AD1C9345AC00DE7DDC /* ComposerTextViewManagerDelegate.swift */,
-				F0F777C31C90B749002F5401 /* Composer.swift */,
-				F0F777C41C90B749002F5401 /* ComposerAttachmentTab.swift */,
-				F0F777C51C90B749002F5401 /* ComposerViewController.swift */,
 				F00AB1A51C922CF900DE7DDC /* ComposerViewController.storyboard */,
+				F0F777C51C90B749002F5401 /* ComposerViewController.swift */,
 			);
 			name = Composer;
 			sourceTree = "<group>";
@@ -9454,6 +9449,14 @@
 				0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */,
 			);
 			path = Fullscreen;
+			sourceTree = "<group>";
+		};
+		F06FC1EB1C971BB300A014C7 /* Forum */ = {
+			isa = PBXGroup;
+			children = (
+				F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */,
+			);
+			name = Forum;
 			sourceTree = "<group>";
 		};
 		F07409801B059CAD00C44623 /* Coachmarks */ = {
@@ -12226,6 +12229,7 @@
 				A7DCA4FB1C128A78004E35B4 /* VPasswordValidationTests.m in Sources */,
 				BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */,
 				A7DCA4EB1C128A78004E35B4 /* VFollowControlTests.m in Sources */,
+				F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */,
 				A7DCA4FD1C128A78004E35B4 /* VPurchaseRecordTests.m in Sources */,
 				A7DCA5141C128A78004E35B4 /* VVideoTrackingTests.m in Sources */,
 				A7BC35B61C1A337600732750 /* VFlaggedContentTests.m in Sources */,
