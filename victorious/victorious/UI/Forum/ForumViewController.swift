@@ -16,6 +16,8 @@ class ForumViewController: UIViewController {
     
     @IBOutlet private var stageViewControllerContainer: UIView!
     
+    @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
+    
     private var dependencyManager: VDependencyManager!
     
     //MARK: - Initialization
