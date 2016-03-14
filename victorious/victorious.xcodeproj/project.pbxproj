@@ -445,6 +445,7 @@
 		03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */; };
 		03BF276D1C5AE50A0064A90B /* ApplicationTrackingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */; };
 		03BF276F1C5AED3E0064A90B /* ApplicationTrackingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF276E1C5AED3E0064A90B /* ApplicationTrackingRequestTests.swift */; };
+		03C116C91C851F1E00F3F873 /* TemplateCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0361B8FA1C56D6FF0038E9D6 /* TemplateCache.swift */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */; };
 		03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */; };
@@ -11380,6 +11381,7 @@
 				0352FCA91B72BB3D00DB6EAB /* NSString+VDataCacheID.m in Sources */,
 				0352FCB31B72BB3D00DB6EAB /* VJSONHelper.m in Sources */,
 				0352FCB21B72BB3D00DB6EAB /* VEnvironment.m in Sources */,
+				03C116C91C851F1E00F3F873 /* TemplateCache.swift in Sources */,
 				0352FCAB1B72BB3D00DB6EAB /* VBundleWriterDataCache.m in Sources */,
 				0352FCB51B72BB3D00DB6EAB /* VDownloadOperation.m in Sources */,
 				0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */,
