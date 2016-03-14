@@ -15,7 +15,7 @@ protocol ComposerDelegate: class {
     
     func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab)
 
-    func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?)
+    func composer(composer: Composer, didPressSendWithMedia media: MediaAttachment, caption: String?)
     
     func composer(composer: Composer, didPressSendWithCaption caption: String)
     
