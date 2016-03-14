@@ -226,8 +226,7 @@ static NSString * const kCommentBarKey = @"commentBar";
     self.attachmentsButton.layer.cornerRadius = 2.0f;
     self.attachmentsButton.layer.masksToBounds = YES;
     self.attachmentsButton.clipsToBounds = YES;
-    
-    UIImage *croppedThumbnail = [selectedThumbnail squareImageScaledToSize:MIN(selectedThumbnail.size.width, selectedThumbnail.size.height)];
+    UIImage *croppedThumbnail = [selectedThumbnail squareImageScaledToSize:kAttachmentThumbnailWidth];
     [self.attachmentsButton setBackgroundImage:croppedThumbnail forState:UIControlStateNormal];
 
     self.selectedMedia = (selectedThumbnail != nil);
