@@ -43,7 +43,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
                  if ( error == nil && sequence != nil )
                  {
                      VNode *node = (VNode *)[sequence firstNode];
-                     VAsset *asset = [node httpChatingAsset];
+                     VAsset *asset = [node httpLiveStreamingAsset];
                      if (asset.dataURL != nil)
                      {
                          VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];

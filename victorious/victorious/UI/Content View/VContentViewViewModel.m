@@ -77,7 +77,7 @@
         else if ([_sequence isVideo] && ![_sequence isGIFVideo])
         {
             _type = VContentViewTypeVideo;
-            _currentAsset = [_currentNode httpChatingAsset];
+            _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
         else if ([_sequence isGIFVideo])
         {
@@ -115,7 +115,7 @@
 
 - (VAsset *)mediaAssetFromSequence:(VSequence *)sequence
 {
-    VAsset *videoAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpChatingAsset];
+    VAsset *videoAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
     if ( videoAsset != nil )
     {
         return videoAsset;

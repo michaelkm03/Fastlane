@@ -172,7 +172,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self resetTracking];
     self.state = VVideoStateNotStarted;
     
-    self.videoAsset = [self.sequence.firstNode httpChatingAsset];
+    self.videoAsset = [self.sequence.firstNode httpLiveStreamingAsset];
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.muted = self.videoAsset.audioMuted.boolValue;

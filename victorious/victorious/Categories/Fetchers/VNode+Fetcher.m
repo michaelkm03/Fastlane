@@ -60,7 +60,7 @@ static NSString * const kTextAsset = @"text";
     return YES;
 }
 
-- (VAsset *)httpChatingAsset
+- (VAsset *)httpLiveStreamingAsset
 {
     return [self assetForMimeType:km3u8MimeType];
 }

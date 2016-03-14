@@ -27,7 +27,7 @@
 
 - (BOOL)isPoll;
 
-- (VAsset *)httpChatingAsset; //< Searches assets for a mime_type "application/x-mpegURL", returns nil if none
+- (VAsset *)httpLiveStreamingAsset; //< Searches assets for a mime_type "application/x-mpegURL", returns nil if none
 
 - (VAsset *)mp4Asset; //< Searches assets for a mime_type "video/mp4", returns nil if none
 
