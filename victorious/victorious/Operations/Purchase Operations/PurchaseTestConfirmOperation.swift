@@ -29,7 +29,7 @@ class PurchaseTestConfirmOperation: MainQueueOperation, ActionConfirmationOperat
         beganExecuting()
         
         let title = "Confirm Your Subscription"
-        let message = "Do you want to subscribe to VIP Membership for 1 month for $2.99?  This subscription will automatically renew until canceled."
+        let message = "Do you want to subscribe to VIP Membership for 1 month for $2.99?  This subscription will automatically renew until canceled.\n\n[Simulated for testing]"
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alertController.addAction(
