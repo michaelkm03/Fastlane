@@ -25,7 +25,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
     /// Downloads templates for one or more environments
     ///
     /// - parameter environmentName: The name of the environment for which to download a template, or `nil` to download templates for all environments specified in the application bundle
-    func downloadTemplate(environmentName: String? = nil) {
+    func downloadTemplate(environmentName environmentName: String? = nil) {
         
         let environmentsFileURL = bundleURL.URLByAppendingPathComponent(environmentsFilename)
         let environments = environmentsFromFile(environmentsFileURL)
@@ -37,22 +37,22 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             if let environmentName = environmentName where environment.name != environmentName {
                 continue
             }
-            println("Downloading template and images for environment: \(environment.name)")
+            print("Downloading template and images for environment: \(environment.name)")
             
             let downloader = BasicTemplateDownloader(environment: environment, deviceID: deviceID, buildNumber: bundleInfo.buildNumber, versionNumber: bundleInfo.versionNumber)
             
             let downloadOperation = VTemplateDownloadOperation(downloader: downloader, andDelegate: self)
             downloadOperation.dataCache = dataCache
-            downloadOperation.templateConfigurationCacheID = environment.templateCacheIdentifier()
+            // TODO: downloadOperation.templateConfigurationCacheID = environment.templateCacheIdentifier()
             downloadOperation.shouldRetry = false
             operationQueue.addOperations([downloadOperation], waitUntilFinished: true)
             
             if !downloadOperation.completedSuccessfully {
-                println("Unable to download template for environment: \(environment.name)\n")
+                print("Unable to download template for environment: \(environment.name)\n")
                 exit(1)
             }
         }
-        println("Done!\n")
+        print("Done!\n")
     }
     
     private func environmentsFromFile(environmentsFileURL: NSURL?) -> [VEnvironment] {
@@ -62,12 +62,12 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
                 return environments
             }
             else {
-                println("Unable to read \(environmentsFileURL.path!)\n")
+                print("Unable to read \(environmentsFileURL.path!)\n")
                 exit(1)
             }
         }
         else {
-            println("Unable to read from bundle at \(bundlePath)\n")
+            print("Unable to read from bundle at \(bundlePath)\n")
             exit(1)
         }
     }
@@ -83,19 +83,25 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
         let infoPlistURL = bundleURL.URLByAppendingPathComponent("Info.plist", isDirectory: false)
         if let fileStream = NSInputStream(URL: infoPlistURL) {
             fileStream.open()
-            if let infoPlistDictionary = NSPropertyListSerialization.propertyListWithStream(fileStream, options: 0, format:nil, error:nil) as? [String:AnyObject],
-               let buildNumber = infoPlistDictionary[String(kCFBundleVersionKey)] as? String,
-               let versionNumber = infoPlistDictionary["CFBundleShortVersionString"] as? String {
-                returnValue = BundleInfo(buildNumber: buildNumber, versionNumber: versionNumber)
+            defer {
+                fileStream.close()
             }
-            fileStream.close()
+            do {
+                if let infoPlistDictionary = try NSPropertyListSerialization.propertyListWithStream(fileStream, options: [], format:nil) as? [String:AnyObject],
+                   let buildNumber = infoPlistDictionary[String(kCFBundleVersionKey)] as? String,
+                   let versionNumber = infoPlistDictionary["CFBundleShortVersionString"] as? String {
+                    returnValue = BundleInfo(buildNumber: buildNumber, versionNumber: versionNumber)
+                }
+            }
+            catch {
+            }
         }
         
         if let returnValue = returnValue {
             return returnValue
         }
         else {
-            println("Unable to read from: \(infoPlistURL.path!)")
+            print("Unable to read from: \(infoPlistURL.path!)")
             exit(1)
         }
     }
