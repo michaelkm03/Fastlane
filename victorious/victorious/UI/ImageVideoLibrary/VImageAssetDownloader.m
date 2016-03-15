@@ -9,6 +9,8 @@
 #import "VImageAssetDownloader.h"
 
 #import "UIImage+Resize.h"
+#import "NSURL+VTemporaryFiles.h"
+#import "VConstants.h"
 
 NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAssetDownloaderErrorDomain";
 
@@ -142,17 +144,9 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
 
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset
 {
-    NSURL *baseURL = [self cacheDirectoryURL];
-    
-    NSUUID *uuid = [NSUUID UUID];
     NSString *filenameExtension = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(kUTTypeJPEG, kUTTagClassFilenameExtension);
     
-    return [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", uuid.UUIDString, filenameExtension]];
-}
-
-- (NSURL *)cacheDirectoryURL
-{
-    return [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    return [NSURL v_temporaryFileURLWithExtension:filenameExtension inDirectory:kCameraDirectory];
 }
 
 @end
