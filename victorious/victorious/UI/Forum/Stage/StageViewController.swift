@@ -49,9 +49,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             addVideoAsset(videoAsset)
         case let imageAsset as ImageAsset:
             addImageAsset(imageAsset)
-            
-        // case Gif?
-            
+        case let gifAsset as GifAsset:
+            addGifAsset(gifAsset)
         // case Empty?
 //        case let emptyAsset as EmptyAsset:
 //            print("will remove current staged media and possibly hide the stage")
@@ -84,20 +83,17 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     // TODO: get size of content for setting `mainContentViewBottomConstraint.constant`
     
-    private func addVideoAsset(videoAsset: VideoAsset) {
-        print("will add video to stage")
-        guard let resourceLocation = videoAsset.resourceLocation, let videoUrl = NSURL(string: resourceLocation) else {
-            print("No resource to load at -> \(videoAsset.resourceLocation)")
-            return
-        }
-        
+    // MARK: Video
+    
+    private func playVideoUrl(videoUrl: NSURL) {
         let videoItem = VVideoPlayerItem(URL: videoUrl)
         
         if videoPlayer == nil {
             videoPlayer = setupVideoView(videoContainerView)
         }
-        videoPlayer?.setItem(videoItem)
+        view.bringSubviewToFront(videoContainerView)
         
+        videoPlayer?.setItem(videoItem)
         videoPlayer?.playFromStart()
     }
     
@@ -113,11 +109,44 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         return videoPlayer
     }
+
+    
+    // MARK: Video Asset
+    
+    private func addVideoAsset(videoAsset: VideoAsset) {
+        print("will add video to stage")
+        guard let resourceLocation = videoAsset.resourceLocation, let videoUrl = NSURL(string: resourceLocation) else {
+            print("No resource to load at -> \(videoAsset.resourceLocation)")
+            return
+        }
+        
+        playVideoUrl(videoUrl)
+    }
+
+    
+    // MARK: Image Asset
     
     private func addImageAsset(imageAsset: ImageAsset) {
         print("will add image to stage")
         imageView.sd_setImageWithURL(imageAsset.url)
+        view.bringSubviewToFront(imageView)
     }
+    
+    
+    // MARK: Gif Asset
+    
+    private func addGifAsset(gifAsset: GifAsset) {
+        print("will add gif to stage")
+        guard let resourceLocation = gifAsset.resourceLocation, let gifVideoUrl = NSURL(string: resourceLocation) else {
+            print("No resource to load at -> \(gifAsset.resourceLocation)")
+            return
+        }
+        
+        playVideoUrl(gifVideoUrl)
+    }
+    
+    
+    // MARK: Clear Media
     
     private func clearStageMedia() {
         delegate?.stage(self, willUpdateContentSize: CGSizeZero)

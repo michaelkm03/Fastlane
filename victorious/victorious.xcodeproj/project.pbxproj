@@ -350,6 +350,7 @@
 		0EDFBEAD1C91FAFE00325332 /* Stageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAC1C91FAFE00325332 /* Stageable.swift */; };
 		0EDFBEAF1C91FD8600325332 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */; };
 		0EE5C6191C973BFC00BF7DB0 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EE5C6181C973BFC00BF7DB0 /* StageViewController.storyboard */; };
+		0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
 		24757BE6782D2DCE2572AD42 /* Pods_victoriousPersistenceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEADE095630ECF74F385112E /* Pods_victoriousPersistenceTests.framework */; };
@@ -2562,6 +2563,7 @@
 		0EDFBEAC1C91FAFE00325332 /* Stageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stageable.swift; sourceTree = "<group>"; };
 		0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StageViewController.storyboard; path = victorious/UI/Forum/Stage/StageViewController.storyboard; sourceTree = SOURCE_ROOT; };
 		0EE5C6181C973BFC00BF7DB0 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
+		0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifAsset.swift; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
 		1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5708,6 +5710,7 @@
 				678053791C60838800894821 /* VoteResult.swift */,
 				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
 				0EDFBEAC1C91FAFE00325332 /* Stageable.swift */,
+				0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -11045,6 +11048,7 @@
 				C36C7F6F1BF27B6000B3174A /* FollowUsersRequest.swift in Sources */,
 				A7039CE11C24867C0023DE6F /* CreateAlertRequest.swift in Sources */,
 				67C5C5351C0009FC00F99C8C /* SequenceDetailListByUserRequest.swift in Sources */,
+				0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
