@@ -20,6 +20,8 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     
     @IBOutlet private var stageViewControllerContainer: UIView!
     
+    @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
+    
     private var dependencyManager: VDependencyManager!
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
