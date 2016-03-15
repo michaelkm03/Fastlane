@@ -48,6 +48,7 @@ public struct VideoAsset: Stageable {
 
         bitrate = json["bitrate"].int
         
+        // MARK: Stageable
         duration = json["duration"].double
         endTime = json["endTime"].double
         resourceLocation = json["resourceLocation"].string
