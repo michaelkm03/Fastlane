@@ -21,7 +21,7 @@ extension VChangePasswordViewController {
         )
         
         if let operation = updateOperation {
-            operation.queue() { (results, error) in
+            operation.queue() { results, error, cancelled in
                 completion?( error )
             }
             return operation

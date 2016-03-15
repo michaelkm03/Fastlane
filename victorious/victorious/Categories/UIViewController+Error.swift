@@ -32,6 +32,7 @@ extension UIViewController {
         
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         progressHUD.mode = .CustomView
+        progressHUD.margin = 30.0
         progressHUD.customView = customView
         progressHUD.userInteractionEnabled = false
         progressHUD.labelText = title

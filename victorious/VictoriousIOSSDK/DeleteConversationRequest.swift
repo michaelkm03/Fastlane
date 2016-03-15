@@ -1,5 +1,5 @@
 //
-//  DeleteConversationRequest.swift
+//  ConversationDeleteRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/13/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct DeleteConversationRequest: RequestType {
+public struct ConversationDeleteRequest: RequestType {
     public let conversationID: Int
     
     public init(conversationID: Int) {

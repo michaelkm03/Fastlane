@@ -18,7 +18,6 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         }
         
         let operation = LoginOperation(email: email, password: "password")
-        operation.persistentStore = testStore
         
         XCTAssertFalse( operation.requiresAuthorization )
         
@@ -27,7 +26,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = TestRequestExecutor(result: response)
         
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             
             XCTAssertNil( error )
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)

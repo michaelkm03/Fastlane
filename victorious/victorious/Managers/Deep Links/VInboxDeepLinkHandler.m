@@ -73,7 +73,7 @@
     
     NSNumber *conversationID = @([url v_firstNonSlashPathComponent].integerValue);
     ConversationOperation *operation = [[ConversationOperation alloc] initWithConversationID:conversationID userID:nil];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [hud hide:YES];
          

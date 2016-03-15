@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AnonymousLoginOperation: Operation {
+class AnonymousLoginOperation: BackgroundOperation {
     
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -31,6 +31,7 @@ class AnonymousLoginOperation: Operation {
             let user: VUser = context.v_findOrCreateObject([ "remoteId" : anonymousID ])
             user.loginType = anonymousLoginType.rawValue
             user.token = anonymousToken
+            user.isVIPSubscriber = false
             
             if user.status == nil {
                 user.status = "anonymous"

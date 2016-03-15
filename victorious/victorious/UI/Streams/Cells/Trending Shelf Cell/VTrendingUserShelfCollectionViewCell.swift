@@ -218,7 +218,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         } else {
             operation = FollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
         }
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             self.updateFollowControlState()
         }
     }

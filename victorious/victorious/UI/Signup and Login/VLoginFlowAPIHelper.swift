@@ -23,7 +23,7 @@ extension VLoginFlowAPIHelper {
         )
         
         if let operation = updateOperation {
-            operation.queue() { (results, error) in
+            operation.queue() { results, error, cancelled in
                 completion?( error )
             }
             return operation
@@ -43,7 +43,7 @@ extension VLoginFlowAPIHelper {
                 accountIdentifier: nil
             )
         )
-        operation.queue() { (results, error) in
+        operation.queue() { results, error, cancelled in
             completion(error)
         }
         return operation
@@ -60,19 +60,19 @@ extension VLoginFlowAPIHelper {
                 accountIdentifier: nil
             )
         )
-        operation.queue()  { (results, error) in
+        operation.queue()  { results, error, cancelled in
             completion(error)
         }
         return operation
     }
     
-    func queueLoginOperationWithEmail(email: String, password: String, completion:([AnyObject]?, NSError?)->() ) -> NSOperation {
+    func queueLoginOperationWithEmail(email: String, password: String, completion:([AnyObject]?, NSError?, Bool)->() ) -> NSOperation {
         let operation = LoginOperation(email: email, password: password)
         operation.queue( completion: completion )
         return operation
     }
     
-    func queueAccountCreateOperationWithEmail(email: String, password: String, completion:([AnyObject]?, NSError?)->() ) -> NSOperation {
+    func queueAccountCreateOperationWithEmail(email: String, password: String, completion:([AnyObject]?, NSError?, Bool)->() ) -> NSOperation {
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
         let operation = AccountCreateOperation(
             request: accountCreateRequest,

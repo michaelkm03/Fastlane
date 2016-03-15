@@ -11,8 +11,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retrieving vote types from an instance of VDependencyManager
-
 @interface VVoteType : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, readonly) NSNumber *displayOrder;
@@ -36,29 +34,5 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
-
-/**
- Objects of type VVoteType may have a string value assigned to their `productIdentifier`
- property that indicates that corresponds to a product for sale as an In-App Purchase configured
- in iTunesConnect.  This method returns an NSSet of product identifiers from any objects in the
- `voteTypes' parameter.  Returns nil if those none of the VVoteType's supplied are purchaseable.
- */
-+ (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes;
-
-@end
-
-#pragma mark -
-
-@interface VDependencyManager (VVoteType)
-
-/**
- Returns an array of VVoteType objects
- */
-- (NSArray *)voteTypes;
-
-/**
- Returns the VVoteType whose productIdentifier matches the one given.
- */
-- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier;
 
 @end
