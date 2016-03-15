@@ -66,7 +66,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
-        setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
+        setIsLoading(true, title: Strings.purchaseInProgress)
         subscribe.queue() { error, canceled in
             
             #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
@@ -76,7 +76,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
                     showTestConfirmation.before(subscribeSimulated).queue()
                     subscribeSimulated.queue() { error, canceled in
                         self.setIsLoading(false)
-                        if !canceled {
+                        if canceled {
+                            self.showResultWithMessage(Strings.purchaseCanceled)
+                        } else {
                             self.onSubcriptionValidated()
                         }
                     }
@@ -86,6 +88,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
             
             self.setIsLoading(false)
             if canceled {
+                self.showResultWithMessage(Strings.purchaseCanceled)
                 return
             } else if let error = error {
                 let title = "VIP Subscription Failed"
@@ -99,8 +102,13 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     @IBAction func onRestore(sender: UIButton? = nil) {
         let restore = RestorePurchasesOperation()
-        setIsLoading(true, title: NSLocalizedString("ActivityRestoring", comment:""))
+        setIsLoading(true, title: Strings.restoreInProgress)
         restore.queue() { error, canceled in
+            if canceled {
+                self.setIsLoading(false)
+                self.showResultWithMessage(Strings.restoreCanceled)
+                return
+            }
             
             #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
                 let productIdentifier = self.dependencyManager.vipSubscriptionProductIdentifier!
@@ -112,10 +120,8 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
             #endif
             
             self.setIsLoading(false)
-            if canceled {
-                return
-            } else if let error = error {
-                let title = "VIP Restore Subscription Failed"
+            if let error = error {
+                let title = Strings.restoreFailed
                 let message = error.localizedDescription
                 self.v_showErrorWithTitle(title, message: message)
             } else {
@@ -128,19 +134,25 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     private func onSubcriptionValidated() {
         guard VCurrentUser.user()?.isVIPSubscriber.boolValue ?? false else {
-            v_showErrorWithTitle("Validation Failed", message: "The current user has not been verifed as a VIP member.")
+            v_showErrorWithTitle(Strings.validationFailedTitle, message: Strings.validationFailedMessage)
             return
         }
         
+        showResultWithMessage(Strings.purchaseSucceeded) {
+            self.openGate()
+        }
+    }
+    
+    private func showResultWithMessage(message: String, completion:(()->())? = nil) {
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         progressHUD.mode = .CustomView
         progressHUD.customView = vipIconView
-        progressHUD.labelText = "Success!"
+        progressHUD.labelText = message
         
         dispatch_after(1.0) {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-            self.openGate()
+            completion?()
         }
     }
     
@@ -168,13 +180,26 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - VNavigationDestination
     
     func shouldNavigateWithAlternateDestination(alternateViewController: AutoreleasingUnsafeMutablePointer<AnyObject?>) -> Bool {
-        
         if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber.boolValue {
             openGate()
             return false
         }
         
         return true
+    }
+    
+    // MARK: - String Constants
+    
+    struct Strings {
+        static let restoreInProgress        = NSLocalizedString("ActivityRestoring", comment:"")
+        static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment:"")
+        static let validationFailedTitle    = NSLocalizedString("Validation Failed", comment: "")
+        static let validationFailedMessage  = NSLocalizedString("The current user has not been verifed as a VIP member.", comment: "")
+        static let restoreFailed            = NSLocalizedString("VIP Restore Subscription Failed", comment:"")
+        static let restoreSucceeded         = NSLocalizedString("Restore complete! 😃", comment:"")
+        static let restoreCanceled          = NSLocalizedString("Restore canceled.😟", comment:"")
+        static let purchaseSucceeded        = NSLocalizedString("Purchase complete! 😃", comment:"")
+        static let purchaseCanceled         = NSLocalizedString("Purchase canceled. 😟", comment:"")
     }
 }
 

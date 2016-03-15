@@ -33,6 +33,7 @@ class PurchaseTestConfirmOperation: MainQueueOperation, ActionConfirmationOperat
             UIAlertAction(title: "Cancel",
                 style: .Cancel,
                 handler: { action in
+                    self.cancel()
                     self.finishedExecuting()
                 }
             )
