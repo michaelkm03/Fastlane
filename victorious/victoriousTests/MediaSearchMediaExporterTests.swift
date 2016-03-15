@@ -9,22 +9,16 @@
 import XCTest
 @testable import victorious
 
+let fileExtension: String = "jpg"
+
 class MediaSearchMediaExporterTests: XCTestCase {
+    
     
     var mediaSearchExporter: MediaSearchExporter!
     var expectation: XCTestExpectation!
-    private let sampleImageURL = NSBundle(forClass: AchievementTests.self).URLForResource("sampleImage", withExtension: "jpg")!
-    
-    override func setUp() {
-        super.setUp()
-        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
+    private let sampleImageURL = NSBundle(forClass: AchievementTests.self).URLForResource("sampleImage", withExtension: fileExtension)!
     func testInvalidImageUrl() {
+        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source: MockSource())
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         mediaSearchExporter.loadMedia() { previewImage, mediaUrl, error in
@@ -38,6 +32,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     }
     
     func testDownloadCancelled() {
+        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -46,16 +41,15 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNil(previewImage)
             XCTAssertNil(mediaUrl)
             XCTAssertNotNil(error)
+            self.expectation.fulfill()
         }
         mediaSearchExporter.cancelDownload()
-        dispatch_after(1, {
-            self.expectation.fulfill()
-        })
         waitForExpectationsWithTimeout(2) { error in
         }
     }
     
     func testDownloadFailed() {
+        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let newURL = NSURL(string: "\(sampleImageURL.absoluteString)...\(sampleImageURL.absoluteString)")!
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: newURL, thumbnailImageURL: newURL))
@@ -64,16 +58,14 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNil(previewImage)
             XCTAssertNil(mediaUrl)
             XCTAssertNotNil(error)
-        }
-        dispatch_after(1, {
             self.expectation.fulfill()
-        })
+        }
         waitForExpectationsWithTimeout(2) { error in
         }
     }
     
     func testValidSourceInformation() {
-        
+        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -97,6 +89,13 @@ class MediaSearchMediaExporterTests: XCTestCase {
         }
     }
     
+    func testDownloadURLWithValidExtension () {
+        let mockSearchResult = MockSearchResult(source:
+            MockSource(sourceMediaURL: sampleImageURL))
+        mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
+        
+        XCTAssert(mediaSearchExporter.downloadURL.absoluteString.hasSuffix(fileExtension))
+    }
 }
 
 struct MockSource {
