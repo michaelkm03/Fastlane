@@ -54,6 +54,11 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         delegate?.textViewContentSize = textView.contentSize
     }
     
+    func resetTextView(textView: UITextView) {
+        textView.text = nil
+        updateDelegateOfTextViewStatus(textView)
+    }
+    
     //MARK: - UITextViewDelegate
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

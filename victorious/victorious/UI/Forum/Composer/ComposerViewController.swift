@@ -111,7 +111,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             
             let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
             strongSelf.inputViewToBottomConstraint.constant = keyboardHeight
-            strongSelf.textView.layoutIfNeeded()
             strongSelf.delegate?.composer(strongSelf, didUpdateToContentHeight: strongSelf.totalComposerHeight)
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 strongSelf.view.layoutIfNeeded()
@@ -134,7 +133,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
         }
         
-        let textHeight = min(self.textView.contentSize.height, self.maximumTextInputHeight)
+        let textHeight = min(ceil(self.textView.contentSize.height), self.maximumTextInputHeight)
         let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
         let textViewHeightNeedsUpdate = self.textViewHeightConstraint.constant != desiredTextViewHeight
         if textViewHeightNeedsUpdate {
@@ -149,15 +148,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
         
+        let previousContentOffset = self.textView.contentOffset
         UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.textView.layoutIfNeeded()
+            if textViewHeightNeedsUpdate {
+                self.textView.setContentOffset(previousContentOffset, animated: true)
+            }
             self.attachmentContainerView.layoutIfNeeded()
             self.interactiveContainerView.layoutIfNeeded()
-            }, completion: { done in
-                if textViewHeightNeedsUpdate {
-                    self.textView.scrollRectToVisible(CGRectZero, animated: false)
-                }
-        })
+        }, completion: nil)
         
         super.updateViewConstraints()
     }
@@ -170,9 +169,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
-        textView.resignFirstResponder()
-        textView.text = nil
         // Call appropriate delegate methods based on caption / media in composer
+        textView.resignFirstResponder()
+        composerTextViewManager?.resetTextView(textView)
     }
 }
 
