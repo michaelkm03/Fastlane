@@ -28,7 +28,7 @@ class BasicTemplateDownloader: NSObject, VTemplateDownloader {
     }
     
     func downloadTemplateWithCompletion( completion: VTemplateDownloaderCompletion ) {
-        var request = NSMutableURLRequest(URL: apiURL)
+        let request = NSMutableURLRequest(URL: apiURL)
         request.v_setAuthenticationHeader(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
         request.v_setAppVersionHeaderValue(versionNumber)
         request.v_setPlatformHeader()
