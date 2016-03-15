@@ -47,7 +47,6 @@
                                 VSelectorName( canEditComments ),
                                 VSelectorName( canDeleteComments ),
                                 VSelectorName( canFlagSequence ),
-                                VSelectorName( canGIF ),
                                 VSelectorName( canMeme ),
                                 VSelectorName( canQuote ) ];
     

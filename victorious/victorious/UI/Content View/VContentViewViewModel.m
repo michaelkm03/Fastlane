@@ -301,10 +301,6 @@
     return [NSString stringWithFormat:@"%@", self.sequence.memeCount];
 }
 
-- (NSString *)gifCountText
-{
-    return [NSString stringWithFormat:@"%@", self.sequence.gifCount];
-}
 
 - (NSString *)repostCountText
 {
