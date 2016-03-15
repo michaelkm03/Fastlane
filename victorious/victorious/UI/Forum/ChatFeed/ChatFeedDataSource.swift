@@ -99,7 +99,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
     
-    func redocorateVisibleCells(collectionView: UICollectionView) {
+    func redecorateVisibleCells(collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MessageCell
             let message = visibleItems[ indexPath.row ] as! VMessage

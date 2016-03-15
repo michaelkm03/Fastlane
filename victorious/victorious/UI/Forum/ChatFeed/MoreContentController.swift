@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc protocol MoreContentControllerDelegate: class {
+@objc protocol MoreContentControllerDelegate {
     func onMoreContentSelected()
 }
 
@@ -26,8 +26,13 @@ class MoreContentController: NSObject {
     
     var count: Int = 0 {
         didSet {
-            let formattedMessageCount = largeNumberFormatter.stringForInteger(count)
-            let title = "\(formattedMessageCount) New Messages"
+            let formattedMessageCount: String = largeNumberFormatter.stringForInteger(count)
+            let title: String
+            if count == 1 {
+                title = NSString(format: NSLocalizedString("NewMessagesFormatSingular", comment:""), formattedMessageCount) as String
+            } else {
+                title = NSString(format: NSLocalizedString("NewMessagesFormatPlural", comment:""), formattedMessageCount) as String
+            }
             UIView.setAnimationsEnabled(false)
             self.button.setTitle(title, forState: .Normal)
             UIView.setAnimationsEnabled(true)
@@ -50,13 +55,13 @@ class MoreContentController: NSObject {
             button.layer.shadowOffset = CGSize(width:0, height:2)
         }
     }
+    
+    private var moreContentButtonToBottomStoryboardValue: CGFloat?
     @IBOutlet private weak var buttonToBottomConstraint: NSLayoutConstraint! {
         didSet {
-            moreContentnButtonToBottomStoryboardValue = buttonToBottomConstraint.constant
+            moreContentButtonToBottomStoryboardValue = buttonToBottomConstraint.constant
         }
     }
-    
-    private var moreContentnButtonToBottomStoryboardValue: CGFloat!
     
     func show(animated animated: Bool = true) {
         guard !isShowing else {
@@ -64,7 +69,11 @@ class MoreContentController: NSObject {
         }
         isShowing = true
         let animations = {
-            self.buttonToBottomConstraint.constant = self.moreContentnButtonToBottomStoryboardValue
+            guard let bottomConstant = self.moreContentButtonToBottomStoryboardValue else {
+                assertionFailure("moreContentButtonToBottomStoryboardValue must be set as soon as this class is instantiated from a storyboard.")
+                return
+            }
+            self.buttonToBottomConstraint.constant = bottomConstant
             self.button.layoutIfNeeded()
         }
         if animated {

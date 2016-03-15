@@ -18,7 +18,6 @@ class ShowProfileOperation: MainQueueOperation {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.userId = userId
-        super.init()
     }
     
     override func start() {

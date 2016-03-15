@@ -9,51 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VMessageMediaType {
-    
-    var attachmentType: MediaAttachmentType? {
-        switch self {
-        case .Image:
-            return .Image
-        case .GIF:
-            return .GIF
-        case .Video:
-            return .Video
-        default:
-            return nil
-        }
-    }
-}
-
-extension VCommentMediaType {
-    
-    var attachmentType: MediaAttachmentType? {
-        switch self {
-        case .Image:
-            return .Image
-        case .GIF:
-            return .GIF
-        case .Video:
-            return .Video
-        case .Ballistic:
-            return .Ballistic
-        default:
-            return nil
-        }
-    }
-}
-
-protocol MediaAttachmentViewType: NSObjectProtocol {
+// Views can implement this protocol to properly prepare
+// themselves for cell reuse
+protocol Reuse {
     func prepareForReuse()
-    func setPreviewImageURL(url: NSURL)
-    func setMediaURL(url: NSURL)
 }
-
-// TOOD: REmove any message or comment specific stuff from this class and out of this file
 
 // A class cluster used for returning a view configured to display media
 // attached to a comment or a message
-class MediaAttachmentView: UIView, VFocusable, MediaAttachmentViewType {
+class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     var comment: VComment?
     var message: VMessage?
@@ -110,17 +74,7 @@ class MediaAttachmentView: UIView, VFocusable, MediaAttachmentViewType {
         return message.messageMediaType().attachmentType?.rawValue ?? "no_media"
     }
     
-    // MARK: - MediaAttachmentView
-    
     func prepareForReuse() {
-        // Subclasses can override
-    }
-    
-    func setPreviewImageURL(url: NSURL) {
-        // Subclasses can override
-    }
-    
-    func setMediaURL(url: NSURL) {
         // Subclasses can override
     }
     
@@ -130,5 +84,39 @@ class MediaAttachmentView: UIView, VFocusable, MediaAttachmentViewType {
     
     func contentArea() -> CGRect {
         return CGRect.zero
+    }
+}
+
+extension VMessageMediaType {
+    
+    var attachmentType: MediaAttachmentType? {
+        switch self {
+        case .Image:
+            return .Image
+        case .GIF:
+            return .GIF
+        case .Video:
+            return .Video
+        default:
+            return nil
+        }
+    }
+}
+
+extension VCommentMediaType {
+    
+    var attachmentType: MediaAttachmentType? {
+        switch self {
+        case .Image:
+            return .Image
+        case .GIF:
+            return .GIF
+        case .Video:
+            return .Video
+        case .Ballistic:
+            return .Ballistic
+        default:
+            return nil
+        }
     }
 }

@@ -951,12 +951,6 @@
 		A73BA2CC1C9393ED008168B5 /* MessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* MessageCellLayout.swift */; };
 		A73BA2CD1C9393ED008168B5 /* MessageMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BB1C9393ED008168B5 /* MessageMediaView.swift */; };
 		A73BA2CE1C9393ED008168B5 /* MoreContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BC1C9393ED008168B5 /* MoreContentController.swift */; };
-		A73BA2CF1C9393ED008168B5 /* UserActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BE1C9393ED008168B5 /* UserActionCell.swift */; };
-		A73BA2D01C9393ED008168B5 /* UserActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2BF1C9393ED008168B5 /* UserActionCell.xib */; };
-		A73BA2D11C9393ED008168B5 /* UserActionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2C01C9393ED008168B5 /* UserActionsDataSource.swift */; };
-		A73BA2D21C9393ED008168B5 /* UserActionsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2C11C9393ED008168B5 /* UserActionsHeaderCell.swift */; };
-		A73BA2D31C9393ED008168B5 /* UserActionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2C21C9393ED008168B5 /* UserActionsHeaderCell.xib */; };
-		A73BA2D41C9393ED008168B5 /* UserActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2C31C9393ED008168B5 /* UserActionsViewController.swift */; };
 		A73BA2D81C9394B6008168B5 /* Forum.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2D51C9394B6008168B5 /* Forum.storyboard */; };
 		A73BA2D91C9394B6008168B5 /* ForumMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2D61C9394B6008168B5 /* ForumMedia.swift */; };
 		A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2D71C9394B6008168B5 /* ForumViewController.swift */; };
@@ -3254,7 +3248,6 @@
 		A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFlagRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D41C977FF500E97D4F /* ConversationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationOperation.swift; sourceTree = "<group>"; };
 		A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D61C977FF500E97D4F /* DequeueMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DequeueMessagesOperation.swift; sourceTree = "<group>"; };
 		A72C85D71C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
@@ -3327,12 +3320,6 @@
 		A73BA2BA1C9393ED008168B5 /* MessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellLayout.swift; sourceTree = "<group>"; };
 		A73BA2BB1C9393ED008168B5 /* MessageMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageMediaView.swift; sourceTree = "<group>"; };
 		A73BA2BC1C9393ED008168B5 /* MoreContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreContentController.swift; sourceTree = "<group>"; };
-		A73BA2BE1C9393ED008168B5 /* UserActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionCell.swift; sourceTree = "<group>"; };
-		A73BA2BF1C9393ED008168B5 /* UserActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionCell.xib; sourceTree = "<group>"; };
-		A73BA2C01C9393ED008168B5 /* UserActionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsDataSource.swift; sourceTree = "<group>"; };
-		A73BA2C11C9393ED008168B5 /* UserActionsHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsHeaderCell.swift; sourceTree = "<group>"; };
-		A73BA2C21C9393ED008168B5 /* UserActionsHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserActionsHeaderCell.xib; sourceTree = "<group>"; };
-		A73BA2C31C9393ED008168B5 /* UserActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsViewController.swift; sourceTree = "<group>"; };
 		A73BA2D51C9394B6008168B5 /* Forum.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Forum.storyboard; sourceTree = "<group>"; };
 		A73BA2D61C9394B6008168B5 /* ForumMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumMedia.swift; sourceTree = "<group>"; };
 		A73BA2D71C9394B6008168B5 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
@@ -7366,7 +7353,6 @@
 				A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */,
 				A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */,
 				A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */,
-				A72C85D41C977FF500E97D4F /* ConversationOperation.swift */,
 				A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */,
 				A72C85D61C977FF500E97D4F /* DequeueMessagesOperation.swift */,
 				A72C85D71C977FF500E97D4F /* FetcherOperation.swift */,
@@ -7484,7 +7470,6 @@
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
 				A73BA2BC1C9393ED008168B5 /* MoreContentController.swift */,
-				A73BA2BD1C9393ED008168B5 /* User Actions */,
 			);
 			path = ChatFeed;
 			sourceTree = "<group>";
@@ -7499,19 +7484,6 @@
 				A73BA2BB1C9393ED008168B5 /* MessageMediaView.swift */,
 			);
 			path = "Message Cell";
-			sourceTree = "<group>";
-		};
-		A73BA2BD1C9393ED008168B5 /* User Actions */ = {
-			isa = PBXGroup;
-			children = (
-				A73BA2BE1C9393ED008168B5 /* UserActionCell.swift */,
-				A73BA2BF1C9393ED008168B5 /* UserActionCell.xib */,
-				A73BA2C01C9393ED008168B5 /* UserActionsDataSource.swift */,
-				A73BA2C11C9393ED008168B5 /* UserActionsHeaderCell.swift */,
-				A73BA2C21C9393ED008168B5 /* UserActionsHeaderCell.xib */,
-				A73BA2C31C9393ED008168B5 /* UserActionsViewController.swift */,
-			);
-			path = "User Actions";
 			sourceTree = "<group>";
 		};
 		A73C3EA31C45890E00A8452C /* MediaSearch */ = {
@@ -10391,7 +10363,6 @@
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				A75DF5311C3E126C00A4C82A /* UserSearchViewController.storyboard in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
-				A73BA2D31C9393ED008168B5 /* UserActionsHeaderCell.xib in Resources */,
 				F06B41821B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib in Resources */,
 				A7B1335F1C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib in Resources */,
 				A73BA2D81C9394B6008168B5 /* Forum.storyboard in Resources */,
@@ -10462,7 +10433,6 @@
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */,
 				035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */,
-				A73BA2D01C9393ED008168B5 /* UserActionCell.xib in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
 				036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */,
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
@@ -11394,7 +11364,6 @@
 				A72C860D1C977FF500E97D4F /* FetchUserOperation.swift in Sources */,
 				F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */,
 				A72C85FE1C977FF500E97D4F /* CommentCreateOperation.swift in Sources */,
-				A73BA2D11C9393ED008168B5 /* UserActionsDataSource.swift in Sources */,
 				A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */,
@@ -11406,7 +11375,6 @@
 				A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */,
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
-				A73BA2D41C9393ED008168B5 /* UserActionsViewController.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
@@ -11712,7 +11680,6 @@
 				629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */,
 				A72C861D1C977FF500E97D4F /* LogoutOperation.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
-				A73BA2CF1C9393ED008168B5 /* UserActionCell.swift in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
@@ -12200,7 +12167,6 @@
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,
-				A73BA2D21C9393ED008168B5 /* UserActionsHeaderCell.swift in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,

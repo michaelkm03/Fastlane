@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, UserActionsViewControllerDelegate, MessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, MessageCellDelegate {
     
     weak var delegate: ChatFeedDelegate? //< ChatFeed protocol
     
@@ -256,32 +256,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
-    }
-    
-    // MARK: - UserActionsViewControllerDelegate
-    
-    func userActionsViewController(viewController: UserActionsViewController, didSelectAction action: UserAction) {
-        guard let userID = selectedMessageUserID else {
-            assertionFailure()
-            return
-        }
-        
-        switch action {
-            
-        case .ViewProfile:
-            viewController.dismissViewControllerAnimated(true, completion: nil)
-            ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: userID).queue()
-            
-        case .Block:
-            BlockUserOperation(userID: userID).queue() { results, error, canelled in
-                if let error = error {
-                    self.v_showAlert(title: "Block Error", message: error.localizedDescription)
-                }
-                viewController.dismissViewControllerAnimated(true, completion: nil)
-            }
-            
-        default:()
-        }
     }
     
     //MARK: - ChatFeed

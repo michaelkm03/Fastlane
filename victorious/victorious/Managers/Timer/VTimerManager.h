@@ -61,6 +61,4 @@
  */
 @property (nonatomic, readonly) id userInfo;
 
-@property (nonatomic, strong, readonly) NSTimer *timer;
-
 @end

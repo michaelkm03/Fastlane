@@ -61,7 +61,7 @@ class MediaAttachmentImageView: MediaAttachmentView {
     
     private var _previewImageURL: NSURL?
     
-    override func setPreviewImageURL(url: NSURL) {
+     func setPreviewImageURL(url: NSURL) {
         guard url != _previewImageURL else {
             return
         }

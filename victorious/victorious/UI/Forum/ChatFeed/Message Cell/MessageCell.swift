@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol SelfSizingCell: NSObjectProtocol {
+@objc protocol SelfSizingCell {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
@@ -19,7 +19,7 @@ protocol MessageCellDelegate: class {
 
 class MessageCell: UICollectionViewCell, VFocusable {
     
-    static var suggestedReuseIdentifier = "MessageCell"
+    static let suggestedReuseIdentifier = "MessageCell"
     
     @IBOutlet private(set) weak var avatarContainer: UIView!
     @IBOutlet private(set) weak var avatarView: VDefaultProfileImageView!
@@ -33,7 +33,6 @@ class MessageCell: UICollectionViewCell, VFocusable {
     let horizontalSpacing: CGFloat = 10.0
     let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 75)
     
-    private var storyboardTextViewWidth: CGFloat!
     var layout: MessageCellLayout! {
         didSet {
             layout.updateLayout(self)
@@ -66,7 +65,6 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        storyboardTextViewWidth = textView.bounds.width
         avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onAvatarTapped:") )
         mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onMediaTapped:") )
     }
@@ -75,7 +73,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onMediaTapped(sender: AnyObject?) {
+    private func onMediaTapped(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
     
@@ -84,7 +82,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         layout.updateLayout(self)
     }
     
-    func updateStyle() {
+    private func updateStyle() {
         detailTextView.contentInset = UIEdgeInsetsZero
         detailTextView.font = dependencyManager.labelFont
         detailTextView.textColor = dependencyManager.messageTextColor
@@ -104,7 +102,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         mediaView.backgroundColor = UIColor.clearColor()
     }
     
-    func populateData() {
+    private func populateData() {
         textView.attributedText = attributedText
         if let media = viewData?.media {
             mediaView.imageURL = media.url
@@ -132,7 +130,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     // MARK: - Sizing
     
-    func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
+    private func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
         return bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width) - horizontalSpacing
     }
     
@@ -161,7 +159,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         )
     }
     
-    var attributedText: NSAttributedString? {
+    private var attributedText: NSAttributedString? {
         guard let text = viewData?.text where text != "" else {
             return nil
         }

@@ -12,7 +12,7 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
 
 @interface VTimerManager ()
 
-@property (nonatomic, strong, readwrite) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, weak) id target;
 @property (nonatomic, assign) SEL selector;
 @property (nonatomic, assign) BOOL expectsTimer;
