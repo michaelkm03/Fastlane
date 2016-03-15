@@ -62,7 +62,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        composerViewControllerHeightConstraint.constant = height
+        composerViewControllerHeightConstraint.constant = height + 49
     }
     
     

@@ -14,6 +14,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private let minimumTextViewHeight: CGFloat = 32
     
+    private lazy var updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
+        
+        let keyboardHeight = endFrame.height
+        self.keyboardHeight = keyboardHeight
+        
+        let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
+        self.inputViewToBottomConstraint.constant = keyboardHeight
+        self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+        UIView.animateWithDuration(self.animationDuration, delay: 0, options: animationOptions, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
@@ -23,6 +36,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet private var attachmentContainerHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textView: VPlaceholderTextView!
+    
+    @IBOutlet private var attachmentTabBar: ComposerAttachmentTabBar!
     
     @IBOutlet private var attachmentContainerView: UIView!
     
@@ -49,7 +64,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private var attachmentTabs: [ComposerAttachmentTab]? = nil
+    private var attachmentTabs: [ComposerAttachmentTab]? = nil {
+        didSet {
+            if isViewLoaded() {
+                attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: 4)
+            }
+        }
+    }
     
     private var shouldShowAttachmentContainer: Bool {
         return attachmentTabs != nil || textViewHasText
@@ -99,26 +120,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        let updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { [weak self] startFrame, endFrame, animationDuration, animationCurve in
-            
-            guard let strongSelf = self else {
-                return
-            }
-            
-            let keyboardHeight = endFrame.height
-            strongSelf.keyboardHeight = keyboardHeight
-            
-            let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
-            strongSelf.inputViewToBottomConstraint.constant = keyboardHeight
-            strongSelf.delegate?.composer(strongSelf, didUpdateToContentHeight: strongSelf.totalComposerHeight)
-            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-                strongSelf.view.layoutIfNeeded()
-            }, completion: nil)
-        }
+        
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: updateHeightBlock, willChangeFrameBlock: updateHeightBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
+        
+        attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: 1)
         
         setupTextView()
         
@@ -190,6 +197,6 @@ private extension VDependencyManager {
     }
     
     func attachmentTabs() -> [ComposerAttachmentTab]? {
-        return nil
+        return [ComposerAttachmentTab.Camera]
     }
 }

@@ -12,7 +12,7 @@ enum ComposerAttachmentTab {
     
     private struct Icon {
         
-        static let camera: UIImage! = nil
+        static let camera = UIImage(named: "action_sheet_block")!
         static let library: UIImage! = nil
         static let gif: UIImage! = nil
     }
