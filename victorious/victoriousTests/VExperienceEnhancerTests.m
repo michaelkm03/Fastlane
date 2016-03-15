@@ -217,7 +217,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          }];
      }];
 }
-
 // FIXME: Disabled failing unit test
 //- (void)testAddResults
 //{
