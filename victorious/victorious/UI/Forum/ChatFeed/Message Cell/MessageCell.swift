@@ -30,7 +30,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     @IBOutlet private(set) weak var mediaView: MessageMediaView!
     @IBOutlet private(set) weak var textView: UITextView!
     
-    let spacing: CGFloat = 10.0
+    let horizontalSpacing: CGFloat = 10.0
     let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 75)
     
     private var storyboardTextViewWidth: CGFloat!
@@ -109,50 +109,52 @@ class MessageCell: UICollectionViewCell, VFocusable {
         if let media = viewData?.media {
             mediaView.imageURL = media.url
         }
-        let timeStamp = NSDateFormatter.vsdk_defaultDateFormatter().stringFromDate(viewData.createdAt)
-        detailTextView.text = "\(viewData.username) (\(timeStamp))"
+        let timeSince = viewData.createdAt.stringDescribingTimeIntervalSinceNow()
+        detailTextView.text = "\(viewData.username) (\(timeSince))"
         avatarView.setProfileImageURL(viewData.avatarImageURL)
     }
     
     // MARK: - SelfSizingCell
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        let mediaSize = calculateMediaSize()
-        let textSize = calculateTextSize()
+        let mediaSize = calculateMediaSizeWithinBounds(bounds)
+        let textSize = calculateTextSizeWithinBounds(bounds)
+        let totalHeight = contentMargin.top
+            + detailTextView.frame.height
+            + textSize.height
+            + mediaSize.height
+            + contentMargin.bottom
         return CGSize(
             width: bounds.width,
-            height: contentMargin.top
-                + detailTextView.frame.height
-                + spacing
-                + textSize.height
-                + mediaSize.height
-                + contentMargin.bottom
+            height: max(totalHeight, avatarView.frame.maxY + contentMargin.top)
         )
     }
     
     // MARK: - Sizing
     
-    var maxContentWidth: CGFloat {
-        return bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width)
+    func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
+        return bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width) - horizontalSpacing
     }
     
-    func calculateTextSize() -> CGSize {
+    func calculateTextSizeWithinBounds(bounds: CGRect) -> CGSize {
         guard let attributedText = attributedText else {
             return CGSize.zero
         }
-        
-        let availableSizeForWidth = CGSize(width: maxContentWidth, height: CGFloat.max)
+        let maxTextWidth = maxContentWidthWithinBounds(bounds)
+        let availableSizeForWidth = CGSize(width: maxTextWidth, height: CGFloat.max)
         var size = attributedText.boundingRectWithSize(availableSizeForWidth,
-            options: [ .UsesLineFragmentOrigin ],
+            options: [ .UsesLineFragmentOrigin /* .UsesFontLeading  */],
             context: nil).size
         size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         return size
     }
     
-    func calculateMediaSize() -> CGSize {
+    func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
+        
         guard let media = viewData?.media else {
             return CGSize.zero
         }
+        let maxContentWidth = maxContentWidthWithinBounds(bounds)
         return CGSize(
             width: maxContentWidth,
             height: maxContentWidth / media.aspectRatio

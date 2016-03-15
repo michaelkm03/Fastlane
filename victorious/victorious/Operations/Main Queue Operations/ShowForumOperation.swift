@@ -24,17 +24,18 @@ class ShowForumOperation: MainQueueOperation {
         super.start()
         
         guard !self.cancelled else {
-            self.finishedExecuting()
+            finishedExecuting()
             return
         }
         
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey:"forum")
         guard let viewController = templateValue as? ForumViewController else {
-                finishedExecuting()
-                return
+            finishedExecuting()
+            return
         }
         
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = VNavigationController(dependencyManager: dependencyManager)
+        navigationController.innerNavigationController.viewControllers = [ viewController ]
         originViewController?.presentViewController(navigationController, animated: animated) {
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
             self.finishedExecuting()

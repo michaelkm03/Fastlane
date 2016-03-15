@@ -15,13 +15,11 @@ protocol MessageCellLayout {
 
 struct LeftAlignmentCellLayout: MessageCellLayout {
     
-    var textAlignment: NSTextAlignment {
-        return .Left
-    }
+    let textAlignment: NSTextAlignment = .Left
     
     func updateLayout(cell: MessageCell) {
-        let mediaSize = cell.calculateMediaSize()
-        let textSize = cell.calculateTextSize()
+        let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
+        let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(
             width: max(textSize.width, mediaSize.width),
             height: textSize.height + mediaSize.height
@@ -59,7 +57,7 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
             height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
         )
         cell.messageContainer.frame = CGRect(
-            x: cell.avatarContainer.frame.maxX + cell.spacing,
+            x: cell.avatarContainer.frame.maxX + cell.horizontalSpacing,
             y: 0,
             width: cell.bubbleView.bounds.width,
             height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
@@ -67,7 +65,7 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
         cell.contentContainer.frame = CGRect(
             x: cell.contentMargin.left,
             y: cell.contentMargin.top,
-            width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
+            width: cell.messageContainer.bounds.width + cell.horizontalSpacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
     }
@@ -75,13 +73,11 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
 
 struct RightAlignmentCellLayout: MessageCellLayout {
     
-    var textAlignment: NSTextAlignment {
-        return .Right
-    }
+    let textAlignment: NSTextAlignment = .Right
     
     func updateLayout(cell: MessageCell) {
-        let mediaSize = cell.calculateMediaSize()
-        let textSize = cell.calculateTextSize()
+        let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
+        let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(
             width: max(textSize.width, mediaSize.width),
             height: textSize.height + mediaSize.height
@@ -116,15 +112,15 @@ struct RightAlignmentCellLayout: MessageCellLayout {
             height: cell.bubbleView.bounds.height + cell.detailTextView.bounds.height
         )
         cell.avatarContainer.frame = CGRect(
-            x: cell.messageContainer.bounds.width + cell.spacing,
+            x: cell.messageContainer.bounds.width + cell.horizontalSpacing,
             y: 0,
             width: cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
         cell.contentContainer.frame = CGRect(
-            x: cell.bounds.width - (cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width) - cell.contentMargin.left,
+            x: cell.bounds.width - (cell.messageContainer.bounds.width + cell.horizontalSpacing + cell.avatarContainer.bounds.width) - cell.contentMargin.left,
             y: cell.contentMargin.top,
-            width: cell.messageContainer.bounds.width + cell.spacing + cell.avatarContainer.bounds.width,
+            width: cell.messageContainer.bounds.width + cell.horizontalSpacing + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
     }

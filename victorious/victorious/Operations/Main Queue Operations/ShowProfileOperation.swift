@@ -25,8 +25,8 @@ class ShowProfileOperation: MainQueueOperation {
         super.start()
         self.beganExecuting()
         
-        guard let navigationViewController = originViewController.navigationController else {
-            assertionFailure("\(self.dynamicType) requires a navigation controller.")
+        guard let navigationViewController = originViewController.v_navigationController() else {
+            assertionFailure("\(self.dynamicType) requires a VNavigation controller.")
             return
         }
         
@@ -37,7 +37,7 @@ class ShowProfileOperation: MainQueueOperation {
         }
         
         if let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(userId) {
-            navigationViewController.pushViewController(profileViewController, animated: true)
+            navigationViewController.innerNavigationController.pushViewController(profileViewController, animated: true)
         }
         
         self.finishedExecuting()

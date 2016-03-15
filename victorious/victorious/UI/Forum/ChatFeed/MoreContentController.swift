@@ -46,6 +46,7 @@ class MoreContentController: NSObject {
             button.layer.shadowColor = UIColor.blackColor().CGColor
             button.layer.shadowRadius = 4.0
             button.layer.shadowOpacity = 1.0
+            button.layer.cornerRadius = 5.0
             button.layer.shadowOffset = CGSize(width:0, height:2)
         }
     }

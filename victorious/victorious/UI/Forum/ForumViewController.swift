@@ -32,6 +32,12 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     
     // MARK: - UIViewController
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.title = self.dependencyManager.stringForKey("title")
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         
@@ -48,10 +54,6 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
             composer.dependencyManager = dependencyManager
             composer.delegate = self
         }
-    }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return true
     }
     
     // MARK: - ChatFeedDelegate
