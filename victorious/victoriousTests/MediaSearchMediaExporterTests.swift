@@ -16,7 +16,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     
     var mediaSearchExporter: MediaSearchExporter!
     var expectation: XCTestExpectation!
-    private let sampleImageURL = NSBundle(forClass: AchievementTests.self).URLForResource("sampleImage", withExtension: fileExtension)!
+    private let sampleImageURL = NSBundle(forClass: MediaSearchMediaExporterTests.self).URLForResource("sampleImage", withExtension: fileExtension)!
     func testInvalidImageUrl() {
         expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source: MockSource())
