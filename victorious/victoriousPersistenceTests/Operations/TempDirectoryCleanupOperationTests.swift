@@ -45,6 +45,7 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
             XCTAssertFalse(exists)
             expectation?.fulfill()
         }
-        waitForExpectationsWithTimeout(2, handler:nil)
+        // Waiting for 100 seconds, since we may have a bunch of files to remove.
+        waitForExpectationsWithTimeout(100, handler:nil)
     }
 }
