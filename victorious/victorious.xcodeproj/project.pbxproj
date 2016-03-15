@@ -764,6 +764,7 @@
 		A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */; };
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
+		A72C86931C9797E200E97D4F /* ShowForumOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C86921C9797E200E97D4F /* ShowForumOperation.swift */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
 		A72EB4601C3C99FC00C0C893 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
 		A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */; };
@@ -1184,7 +1185,6 @@
 		A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2D1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift */; };
 		A7E8CF301C90B9C900D126BF /* TemplateProductsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */; };
 		A7E8CF321C90BBFA00D126BF /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */; };
-		A7E8CF341C90BFB200D126BF /* ShowForumOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */; };
 		A7E8CF391C92083800D126BF /* VUser+AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */; };
 		A7E8D0221C92163C00D126BF /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF841C92163C00D126BF /* AccountCreateOperation.swift */; };
 		A7E8D0231C92163C00D126BF /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF851C92163C00D126BF /* AccountUpdateOperation.swift */; };
@@ -3112,6 +3112,7 @@
 		A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardDirectoryCell.xib; sourceTree = "<group>"; };
 		A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardSeeMoreDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardSeeMoreDirectoryCell.m; sourceTree = "<group>"; };
+		A72C86921C9797E200E97D4F /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowForumOperation.swift; sourceTree = "<group>"; };
 		A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewReceiver.swift; sourceTree = "<group>"; };
 		A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUpdate.swift; sourceTree = "<group>"; };
@@ -3650,7 +3651,6 @@
 		A7E8CF2D1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+TemplateProducts.swift"; sourceTree = "<group>"; };
 		A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateProductsDataSource.swift; sourceTree = "<group>"; };
 		A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
-		A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShowForumOperation.swift; path = "../Navigation Operations/ShowForumOperation.swift"; sourceTree = "<group>"; };
 		A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AvatarBadgeType.swift"; sourceTree = "<group>"; };
 		A7E8CF841C92163C00D126BF /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A7E8CF851C92163C00D126BF /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
@@ -8113,7 +8113,7 @@
 		A7E8CFE11C92163C00D126BF /* Main Queue Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A7E8CF331C90BFB200D126BF /* ShowForumOperation.swift */,
+				A72C86921C9797E200E97D4F /* ShowForumOperation.swift */,
 				A7E8CFE21C92163C00D126BF /* ConfirmDestructiveActionOperation.swift */,
 				A7E8CFE31C92163C00D126BF /* PreloadUserInfoOperation.swift */,
 				A7E8CFE41C92163C00D126BF /* ShowCommentsOperation.swift */,
@@ -11326,6 +11326,7 @@
 				D8B44CD21ADCB3A4006340E8 /* VSleekStreamCollectionCell.m in Sources */,
 				A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */,
 				A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */,
+				A72C86931C9797E200E97D4F /* ShowForumOperation.swift in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
 				A7E8D05B1C92163C00D126BF /* SequenceLikersOperation.swift in Sources */,
 				A7E8D0A21C92163D00D126BF /* SequenceUnlikeRemoteOperation.swift in Sources */,
@@ -11999,7 +12000,6 @@
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */,
-				A7E8CF341C90BFB200D126BF /* ShowForumOperation.swift in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
