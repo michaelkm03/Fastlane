@@ -10,9 +10,14 @@ import Foundation
 
 class TempDirectoryCleanupOperation: BackgroundOperation {
     
-    override func main() {
+    override func start() {
+        super.start()
+        beganExecuting()
+        
         let URL = NSURL(fileURLWithPath: "\(NSTemporaryDirectory())")
         let fileManager = NSFileManager.defaultManager()
         let _ = try? fileManager.removeItemAtURL(URL)
+    
+        self.finishedExecuting()
     }
 }
