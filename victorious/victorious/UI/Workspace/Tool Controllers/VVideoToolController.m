@@ -65,6 +65,9 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
                                               withCompletion:^(BOOL finished, UIImage *previewImage, NSError *error)
      {
+         // Remove the original file since this may be rather large. Other files will be removed on next launch by TempDirectoryCleanupOperation
+         [[NSFileManager defaultManager] removeItemAtURL:source error:nil];
+         
          dispatch_async(dispatch_get_main_queue(), ^
          {
              completion(finished, tempFile, previewImage, error);
