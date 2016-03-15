@@ -14,19 +14,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private let minimumTextViewHeight: CGFloat = 32
     
-    private lazy var updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
-        
-        let keyboardHeight = endFrame.height
-        self.keyboardHeight = keyboardHeight
-        
-        let animationOptions = UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16))
-        self.inputViewToBottomConstraint.constant = keyboardHeight
-        self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
-        UIView.animateWithDuration(self.animationDuration, delay: 0, options: animationOptions, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
@@ -47,7 +34,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var keyboardManager: VKeyboardNotificationManager?
     
-    private var keyboardHeight: CGFloat = 0
+    private var visibleKeyboardHeight: CGFloat = 0
     
     private var totalComposerHeight: CGFloat {
         return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant : 0
@@ -88,6 +75,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private lazy var updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
+        
+        self.updateViewsForNewVisibleKeyboardHeight(endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+    }
+    
+    private lazy var hideKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
+        
+        self.updateViewsForNewVisibleKeyboardHeight(0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+    }
+    
     // MARK: - ComposerController
     
     var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
@@ -121,7 +118,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: updateHeightBlock, willChangeFrameBlock: updateHeightBlock)
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: updateHeightBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
@@ -130,6 +127,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         setupTextView()
         
         dependencyManager?.addBackgroundToBackgroundHost(self)
+    }
+    
+    private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
+        
+        self.visibleKeyboardHeight = visibleKeyboardHeight
+        inputViewToBottomConstraint.constant = visibleKeyboardHeight
+        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
+        UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     override func updateViewConstraints() {
