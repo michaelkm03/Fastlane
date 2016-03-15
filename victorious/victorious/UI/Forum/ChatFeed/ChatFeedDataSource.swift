@@ -12,20 +12,19 @@ import KVOController
 
 class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
-    let itemsPerPage = 15
+    private let itemsPerPage = 15
     
     /// If this interval is too small, the scrolling animations will become choppy
     /// as they step on each other before finishing.
-    private let kFetchMessagesInterval: NSTimeInterval = 1.5
+    private let fetchMessageInterval: NSTimeInterval = 1.5
     
-    var currentPageType: VPageType?
     private var timerManager: VTimerManager?
     
-    let dependencyManager: VDependencyManager
-    let conversation: VConversation
+    private let dependencyManager: VDependencyManager
+    private let conversation: VConversation
     
-    let cellDecorator: MessageCellDecorator
-    let sizingCell: MessageCell = MessageCell.v_fromNib()
+    private let cellDecorator: MessageCellDecorator
+    private let sizingCell: MessageCell = MessageCell.v_fromNib()
     
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
@@ -37,10 +36,13 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func refreshRemote() {
-        let conversationID = self.conversation.remoteId!.integerValue
+        guard let conversationID = conversation.remoteId?.integerValue else {
+            return
+        }
+        
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
         
-        self.loadNewItems(
+        loadNewItems(
             createOperation: {
                 return DequeueMessagesOperation(conversationID: conversationID, paginator: paginator)
             },
@@ -51,23 +53,21 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     // MARK: - Live Update
     
     func beginLiveUpdates() {
-        guard self.timerManager == nil else {
+        guard timerManager == nil else {
             return
         }
-        let timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval( kFetchMessagesInterval,
+        timerManager = VTimerManager.addTimerManagerWithTimeInterval(fetchMessageInterval,
             target: self,
             selector: Selector("refreshRemote"),
             userInfo: nil,
-            repeats: true
-        )
-        // To keep the timer running while scrolling:
-        NSRunLoop.mainRunLoop().addTimer(timerManager.timer, forMode: NSRunLoopCommonModes)
-        self.timerManager = timerManager
+            repeats: true, 
+            toRunLoop: NSRunLoop.mainRunLoop(),
+            withRunMode: NSRunLoopCommonModes)
     }
     
     func endLiveUpdates() {
-        self.timerManager?.invalidate()
-        self.timerManager = nil
+        timerManager?.invalidate()
+        timerManager = nil
     }
     
     // MARK: - UICollectionViewDataSource
