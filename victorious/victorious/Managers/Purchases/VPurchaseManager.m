@@ -29,7 +29,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 @property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
 @property (nonatomic, strong) NSMutableDictionary *fetchedProducts;
 
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
 @property (nonatomic, strong) NSMutableSet *simulatedPurchasedProductIdentifiers; ///< Product IDs that are being treated as purchased even though they may not have actually been purchased.
 #endif
 
@@ -60,7 +60,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
         
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
         _simulatedPurchasedProductIdentifiers = [[NSMutableSet alloc] init];
 #endif
     }
@@ -87,7 +87,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
     BOOL purchased = [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     purchased = purchased || [self.simulatedPurchasedProductIdentifiers containsObject:productIdentifier];
 #endif
     return purchased;
@@ -96,7 +96,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     VProduct *product = [self purchaseableProductForProductIdentifier:productIdentifier];
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     if ( product.storeKitProduct == nil )
     {
         [self.simulatedPurchasedProductIdentifiers addObject:productIdentifier];
@@ -235,7 +235,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     
     product = [self.fetchedProducts objectForKey:productIdentifier];
     
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     if ( product == nil )
     {
         product = [[VPseudoProduct alloc] initWithProductIdentifier:productIdentifier

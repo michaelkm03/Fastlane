@@ -66,7 +66,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
-        #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS || ((arch(i386) || arch(x86_64)) && os(iOS))
+        #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
             let testConfirmationAlert = PurchaseTestConfirmOperation(dependencyManager: dependencyManager)
             testConfirmationAlert.before(subscribe).queue()
         #endif
@@ -91,7 +91,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         setIsLoading(true, title: NSLocalizedString("ActivityRestoring", comment:""))
         restore.queue() { error, canceled in
             self.setIsLoading(false)
-            #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS || ((arch(i386) || arch(x86_64)) && os(iOS))
+            #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
                 self.onSubcriptionValidated()
                 return
             #else
