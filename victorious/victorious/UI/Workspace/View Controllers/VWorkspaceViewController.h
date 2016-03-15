@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 @property (nonatomic, strong) NSString *activityText;
 @property (nonatomic, strong) NSString *confirmCancelMessage;
-@property (nonatomic, strong) VAbstractImageVideoCreationFlowController *creationFlowController;
+@property (nonatomic, weak) VAbstractImageVideoCreationFlowController *creationFlowController;
 
 /**
  Publishes the current content in the workspace.

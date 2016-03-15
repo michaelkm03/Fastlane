@@ -244,5 +244,4 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 //
 //    XCTAssertEqual( matches, experienceEnhancers.count );
 //}
-
 @end
