@@ -19,7 +19,7 @@ class ValidateReceiptOperation: RemoteFetcherOperation, RequestOperation {
     
     override func main() {
         guard request != nil else {
-            assertionFailure()
+            cancel()
             return
         }
         
