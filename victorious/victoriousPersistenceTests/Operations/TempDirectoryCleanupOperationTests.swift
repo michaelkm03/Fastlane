@@ -12,7 +12,7 @@ import XCTest
 class TempDirectoryCleanupOperationTests: XCTestCase {
     
     var fileURLs: [NSURL] = []
-    private let URL = NSURL(fileURLWithPath: "\(NSTemporaryDirectory())")
+    private let URL = NSURL(fileURLWithPath: NSTemporaryDirectory())
     private let fileManager = NSFileManager.defaultManager()
     
     override func setUp() {
