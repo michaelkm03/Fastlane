@@ -507,6 +507,7 @@
 		67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */; };
 		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
+		67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
 		67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */; };
 		67C2101E1BFA797E0074E40E /* FollowHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */; };
@@ -10359,6 +10360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */,
 				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
 				D858E0D31B1FC32300437DDE /* VModernEnterNameViewController.storyboard in Resources */,
