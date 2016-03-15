@@ -20,11 +20,11 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     private var timerManager: VTimerManager?
     
-    private let dependencyManager: VDependencyManager
-    private let conversation: VConversation
+    let dependencyManager: VDependencyManager
+    let conversation: VConversation
     
-    private let cellDecorator: MessageCellDecorator
-    private let sizingCell: MessageCell = MessageCell.v_fromNib()
+    let cellDecorator: MessageCellDecorator
+    let sizingCell: MessageCell = MessageCell.v_fromNib()
     
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
