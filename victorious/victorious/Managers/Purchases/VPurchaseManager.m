@@ -29,10 +29,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 @property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
 @property (nonatomic, strong) NSMutableDictionary *fetchedProducts;
 
-#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-@property (nonatomic, strong) NSMutableSet *simulatedPurchasedProductIdentifiers; ///< Product IDs that are being treated as purchased even though they may not have actually been purchased.
-#endif
-
 @end
 
 @implementation VPurchaseManager

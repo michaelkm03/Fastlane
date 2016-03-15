@@ -22,10 +22,7 @@ class PurchaseTestConfirmOperation: MainQueueOperation, ActionConfirmationOperat
     
     override func start() {
         super.start()
-        dispatch_after(1.0, showAlert)
-    }
-    
-    func showAlert() {
+        
         beganExecuting()
         
         let title = "Confirm Your Subscription"

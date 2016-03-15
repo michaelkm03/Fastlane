@@ -40,6 +40,12 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  */
 - (void)resetPurchases;
 
+/**
+ For testing a debugging purposes, any product IDs that are being treated as purchased
+ even though they may not have actually been purchased.
+ */
+@property (nonatomic, strong) NSMutableSet *simulatedPurchasedProductIdentifiers;
+
 #endif
 
 @end

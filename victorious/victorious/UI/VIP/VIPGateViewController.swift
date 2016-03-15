@@ -66,13 +66,24 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
-        #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-            let testConfirmationAlert = PurchaseTestConfirmOperation(dependencyManager: dependencyManager)
-            testConfirmationAlert.before(subscribe).queue()
-        #endif
-        
         setIsLoading(true, title: NSLocalizedString("ActivityPurchasing", comment:""))
         subscribe.queue() { error, canceled in
+            
+            #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+                if VPurchaseManager.sharedInstance().debug_shouldSimulateStoreKitInteraction(productIdentifier) {
+                    let subscribeSimulated = VIPSubscribeOperation(productIdentifier: productIdentifier)
+                    let showTestConfirmation = PurchaseTestConfirmOperation(dependencyManager: self.dependencyManager)
+                    showTestConfirmation.before(subscribeSimulated).queue()
+                    subscribeSimulated.queue() { error, canceled in
+                        self.setIsLoading(false)
+                        if !canceled {
+                            self.onSubcriptionValidated()
+                        }
+                    }
+                    return
+                }
+            #endif
+            
             self.setIsLoading(false)
             if canceled {
                 return
@@ -90,21 +101,26 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         let restore = RestorePurchasesOperation()
         setIsLoading(true, title: NSLocalizedString("ActivityRestoring", comment:""))
         restore.queue() { error, canceled in
-            self.setIsLoading(false)
+            
             #if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-                self.onSubcriptionValidated()
-                return
-            #else
-                if canceled {
-                    return
-                } else if let error = error {
-                    let title = "VIP Restore Subscription Failed"
-                    let message = error.localizedDescription
-                    self.v_showErrorWithTitle(title, message: message)
-                } else {
+                let productIdentifier = self.dependencyManager.vipSubscriptionProductIdentifier!
+                if VPurchaseManager.sharedInstance().debug_shouldSimulateStoreKitInteraction(productIdentifier) {
+                    self.setIsLoading(false)
                     self.onSubcriptionValidated()
+                    return
                 }
             #endif
+            
+            self.setIsLoading(false)
+            if canceled {
+                return
+            } else if let error = error {
+                let title = "VIP Restore Subscription Failed"
+                let message = error.localizedDescription
+                self.v_showErrorWithTitle(title, message: message)
+            } else {
+                self.onSubcriptionValidated()
+            }
         }
     }
     
@@ -193,3 +209,15 @@ private extension VDependencyManager {
         return background!.backgroundColor
     }
 }
+
+#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+private extension VPurchaseManager {
+    
+    func debug_shouldSimulateStoreKitInteraction(productIdentifier: String) -> Bool {
+        // Even if V_NO_ENFORCE_PURCHASABLE_BALLISTICS is active, only return true if there's been
+        // some other failure in connecting to StoreKit (indicated by `simulatedPurchasedProductIdentifiers`
+        // containing our product ID)
+        return self.simulatedPurchasedProductIdentifiers.containsObject( productIdentifier as NSString )
+    }
+}
+#endif
