@@ -24,6 +24,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     @IBOutlet private weak var imageView: UIImageView!
     
     @IBOutlet private weak var videoContainerView: UIView!
+    
     private var videoPlayer: VVideoView?
     
     private var currentStagedMedia: Stageable?
@@ -51,9 +52,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             addImageAsset(imageAsset)
         case let gifAsset as GifAsset:
             addGifAsset(gifAsset)
-        // case Empty?
+        // TODO: handle youtube videos
+//        case let youtubeAsset as YouTubeAsset:
+            
+        // TODO: decide how we handle the close VIP stage command
 //        case let emptyAsset as EmptyAsset:
-//            print("will remove current staged media and possibly hide the stage")
 //            clearStageMedia()
         default:
             print("Unknown stagable type!")
@@ -74,7 +77,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        print("Video player did reach end! Clearing out stage.")
         clearStageMedia()
     }
     
@@ -114,9 +116,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Video Asset
     
     private func addVideoAsset(videoAsset: VideoAsset) {
-        print("will add video to stage")
         guard let resourceLocation = videoAsset.resourceLocation, let videoUrl = NSURL(string: resourceLocation) else {
-            print("No resource to load at -> \(videoAsset.resourceLocation)")
+            // TODO: handle error
+            assertionFailure("No resource to load at -> \(videoAsset.resourceLocation)")
             return
         }
         
@@ -127,7 +129,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Image Asset
     
     private func addImageAsset(imageAsset: ImageAsset) {
-        print("will add image to stage")
         imageView.sd_setImageWithURL(imageAsset.url)
         view.bringSubviewToFront(imageView)
     }
@@ -136,9 +137,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Gif Asset
     
     private func addGifAsset(gifAsset: GifAsset) {
-        print("will add gif to stage")
         guard let resourceLocation = gifAsset.resourceLocation, let gifVideoUrl = NSURL(string: resourceLocation) else {
-            print("No resource to load at -> \(gifAsset.resourceLocation)")
+            // TODO: handle error
+            assertionFailure("No resource to load at -> \(gifAsset.resourceLocation)")
             return
         }
         
