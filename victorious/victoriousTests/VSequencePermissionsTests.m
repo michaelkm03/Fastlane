@@ -49,12 +49,26 @@
                                 VSelectorName( canFlagSequence ),
                                 VSelectorName( canMeme ),
                                 VSelectorName( canQuote ) ];
+    NSArray<NSNumber *> *bitmasks = @[
+//                          @(0),         //VSequencePermissionNone <- Not testing
+                          @(1 << 0),    //VSequencePermissionCanDelete
+                          @(1 << 1),    //VSequencePermissionCanRemix
+                          @(1 << 2),    //VSequencePermissionCanShowVoteCount
+                          @(1 << 3),    //VSequencePermissionCanComment
+                          @(1 << 4),    //VSequencePermissionCanRepost
+                          @(1 << 5),    //VSequencePermissionCanEditComments
+                          @(1 << 6),    //VSequencePermissionCanDeleteComments
+                          @(1 << 7),    //VSequencePermissionCanFlagSequence
+                          @(1 << 9),    //VSequencePermissionCanMeme
+                          @(1 << 10),   //VSequencePermissionCanQuote
+                          @(1 << 11)    //VSequencePermissionCanAddGifComments
+                          ];
     
     // This loop sets one permission, then iterates throguh all permissions and makes sure that
     // only the one that was set in the raw bitmask value now reads YES while all others read NO
     for ( NSUInteger i = 0; i < selectorNames.count; i++ )
     {
-        NSUInteger rawValue = 1 << i;
+        NSUInteger rawValue = bitmasks[i].integerValue;
         VSequencePermissions *permissions = [[VSequencePermissions alloc] initWithNumber:@(rawValue)];
         for ( NSUInteger j = 0; j < selectorNames.count; j++ )
         {
