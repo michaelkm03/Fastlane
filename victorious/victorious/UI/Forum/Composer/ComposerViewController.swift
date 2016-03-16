@@ -175,7 +175,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBAction func pressedConfirmButton() {
         // Call appropriate delegate methods based on caption / media in composer
-        textView.resignFirstResponder()
         composerTextViewManager?.resetTextView(textView)
     }
 }
