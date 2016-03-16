@@ -10,16 +10,16 @@ import Foundation
 
 class ComposerTextViewManager: NSObject, UITextViewDelegate {
         
-    let dismissalStrings: [String]
+    let dismissOnReturn: Bool
 
     var maximumTextLength: Int
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
-    init(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissalStrings: [String] = ["\n"]) {
+    init(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissOnReturn: Bool = true) {
         self.maximumTextLength = maximumTextLength
         self.delegate = delegate
-        self.dismissalStrings = dismissalStrings
+        self.dismissOnReturn = dismissOnReturn
         super.init()
         textView.delegate = self
     }
@@ -33,7 +33,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return true
         }
         
-        if dismissalStrings.contains(text) {
+        if shouldDismissForText(text) {
             textView.resignFirstResponder()
             return false
         }
@@ -57,6 +57,10 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     func resetTextView(textView: UITextView) {
         textView.text = nil
         updateDelegateOfTextViewStatus(textView)
+    }
+    
+    func shouldDismissForText(text: String) -> Bool {
+        return dismissOnReturn && text == "\n"
     }
     
     //MARK: - UITextViewDelegate
