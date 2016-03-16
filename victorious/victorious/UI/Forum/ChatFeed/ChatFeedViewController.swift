@@ -174,7 +174,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        collectionView.v_updateState(newState, noContentView: nil)
+        
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {}
