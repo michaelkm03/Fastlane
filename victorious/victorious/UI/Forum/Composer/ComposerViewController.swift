@@ -12,7 +12,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private struct Constants {
         
-        static let animationDuration = 0.3
+        static let animationDuration = 0.2
         static let minimumTextViewHeight: CGFloat = 32
         static let maximumNumberOfTabs = 4
     }
@@ -180,6 +180,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
+        textView.textContainer.heightTracksTextView = true
         textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
     }
     
@@ -187,7 +188,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBAction func pressedConfirmButton() {
         // Call appropriate delegate methods based on caption / media in composer
-        textView.resignFirstResponder()
         composerTextViewManager?.resetTextView(textView)
     }
 }
