@@ -15,12 +15,9 @@
 #import "VVoteResult.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VLargeNumberFormatter.h"
-#import "VAsyncTestHelper.h"
 #import "OCMock.h"
 #import "VApplicationTracking.h"
 #import "VMockPurchaseManager.h"
-
-// TODO
 
 static const NSUInteger kValidExperienceEnhancerCount = 9;
 static const NSUInteger kExperienceEnhancerCount = 20;
@@ -52,7 +49,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, strong) VExperienceEnhancerController *viewController;
 @property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) VSequence *sequence;
-@property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 
 @end
 
@@ -61,8 +57,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 - (void)setUp
 {
     [super setUp];
-    
-    self.asyncHelper = [[VAsyncTestHelper alloc] init];
     
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
@@ -159,23 +153,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
          XCTAssert([exp resetCooldownTimer]);
-         
-         exp.cooldownDuration = 10;
-         
-         NSUInteger count = arc4random() % 200;
-         for ( NSUInteger i = 0; i < count; i++ )
-         {
-             [exp vote];
-         }
-         
-         // Make sure vote count is one since cool down
-         XCTAssertEqual( exp.voteCount, 1 );
-         
-     }];
-    
-    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-     {
-         XCTAssert([exp resetCooldownTimer]);
 
          NSInteger startingVotes = exp.voteCount;
          NSTimeInterval cooldown = 0.2;
@@ -208,7 +185,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              [expectation fulfill];
          });
          
-         [self waitForExpectationsWithTimeout:timeUntilVote + 1 handler:^(NSError *error)
+         [self waitForExpectationsWithTimeout:timeUntilVote * 4 handler:^(NSError *error)
          {
              if (error != nil)
              {
