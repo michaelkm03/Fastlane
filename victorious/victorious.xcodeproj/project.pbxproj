@@ -1919,8 +1919,12 @@
 		F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */; };
 		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
 		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
+		F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */; };
 		F06FC1F51C973F8800A014C7 /* ForumViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F06FC1F41C973F8800A014C7 /* ForumViewController.storyboard */; };
 		F06FC1F71C973FB300A014C7 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F06FC1F61C973FB300A014C7 /* StageViewController.storyboard */; };
+		F06FC1FB1C97437900A014C7 /* ComposerTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */; };
+		F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */; };
+		F06FC1FD1C97437900A014C7 /* ComposerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F06FC1FA1C97437900A014C7 /* ComposerViewController.storyboard */; };
 		F07228261AD8846A00085653 /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F07228251AD8846A00085653 /* VNotification.m */; };
 		F07409751B05876200C44623 /* VCoachmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409741B05876200C44623 /* VCoachmarkView.m */; };
 		F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F074097E1B059CA200C44623 /* VCoachmarkManager.m */; };
@@ -4707,8 +4711,12 @@
 		F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeCollectionViewCell.m; sourceTree = "<group>"; };
 		F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeController.h; sourceTree = "<group>"; };
 		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
+		F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManagerTests.swift; sourceTree = "<group>"; };
 		F06FC1F41C973F8800A014C7 /* ForumViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForumViewController.storyboard; sourceTree = "<group>"; };
 		F06FC1F61C973FB300A014C7 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
+		F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManager.swift; sourceTree = "<group>"; };
+		F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManagerDelegate.swift; sourceTree = "<group>"; };
+		F06FC1FA1C97437900A014C7 /* ComposerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ComposerViewController.storyboard; sourceTree = "<group>"; };
 		F07228241AD8846A00085653 /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		F07228251AD8846A00085653 /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
 		F07409731B05876200C44623 /* VCoachmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkView.h; sourceTree = "<group>"; };
@@ -6746,7 +6754,7 @@
 				624E39931C6AF0F0004E0C8E /* Common */,
 				62A6F2BA1C6AA9F4008BB294 /* Content View */,
 				621BC2F71C769EC4002A28E4 /* Discover */,
-				62F4B01B1C7703C200422A0F /* Find Friends */,
+				F06FC1EB1C971BB300A014C7 /* Forum */,
 				62058B651C54DFD100D3C8F9 /* Monetization */,
 				621BC2FC1C76AF93002A28E4 /* Profile */,
 			);
@@ -6882,13 +6890,6 @@
 				62F4B0171C76FB0100422A0F /* RepostersDataSourceTests.swift */,
 			);
 			path = "Content Info";
-			sourceTree = "<group>";
-		};
-		62F4B01B1C7703C200422A0F /* Find Friends */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Find Friends";
 			sourceTree = "<group>";
 		};
 		669EBBDE1A30234A00DE317D /* Pickers */ = {
@@ -7371,6 +7372,9 @@
 				A73BA2971C938B68008168B5 /* Composer.swift */,
 				A73BA2981C938B68008168B5 /* ComposerAttachmentTab.swift */,
 				A73BA2991C938B68008168B5 /* ComposerDelegate.swift */,
+				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
+				F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */,
+				F06FC1FA1C97437900A014C7 /* ComposerViewController.storyboard */,
 				A73BA29A1C938B68008168B5 /* ComposerViewController.swift */,
 			);
 			path = Composer;
@@ -9787,6 +9791,14 @@
 			path = Fullscreen;
 			sourceTree = "<group>";
 		};
+		F06FC1EB1C971BB300A014C7 /* Forum */ = {
+			isa = PBXGroup;
+			children = (
+				F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */,
+			);
+			name = Forum;
+			sourceTree = "<group>";
+		};
 		F07409801B059CAD00C44623 /* Coachmarks */ = {
 			isa = PBXGroup;
 			children = (
@@ -10675,6 +10687,7 @@
 				A75DF5331C3E13C700A4C82A /* UserSearchResultTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VHashtagCell.xib in Resources */,
+				F06FC1FD1C97437900A014C7 /* ComposerViewController.storyboard in Resources */,
 				A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
@@ -11806,6 +11819,7 @@
 				A7E8D0281C92163C00D126BF /* CommentDeleteOperation.swift in Sources */,
 				A763636D1C5036BF000887C4 /* VFollowedHashtag.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
+				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
@@ -12165,6 +12179,7 @@
 				A721E9151B572454000B7901 /* VComment+Fetcher.m in Sources */,
 				D85B70791B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m in Sources */,
 				D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */,
+				F06FC1FB1C97437900A014C7 /* ComposerTextViewManager.swift in Sources */,
 				D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
@@ -12785,6 +12800,7 @@
 				A7DCA4FB1C128A78004E35B4 /* VPasswordValidationTests.m in Sources */,
 				BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */,
 				A7DCA4EB1C128A78004E35B4 /* VFollowControlTests.m in Sources */,
+				F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */,
 				A7DCA4FD1C128A78004E35B4 /* VPurchaseRecordTests.m in Sources */,
 				A7DCA5141C128A78004E35B4 /* VVideoTrackingTests.m in Sources */,
 				A7BC35B61C1A337600732750 /* VFlaggedContentTests.m in Sources */,

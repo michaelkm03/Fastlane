@@ -34,6 +34,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" priority="998" constant="300" id="RLL-NE-ekn"/>
                                 </constraints>
+                                <connections>
+                                    <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
+                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -62,6 +65,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="837" y="419"/>
+        </scene>
+        <!--ComposerViewController-->
+        <scene sceneID="mYv-1q-tDP">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ComposerViewController" id="0Nu-Zq-HvW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ljG-6O-fOF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="619.5" y="885"/>
         </scene>
         <!--StageViewController-->
         <scene sceneID="O5V-9g-QF6">

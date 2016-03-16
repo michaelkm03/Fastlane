@@ -8,8 +8,8 @@
 
 import Foundation
 
-class ForumViewController: UIViewController {
-    
+class ForumViewController: UIViewController, ComposerDelegate {
+
     @IBOutlet private var chatFeedViewControllerContainer: UIView!
     
     @IBOutlet private var composerViewControllerContainer: UIView!
@@ -20,14 +20,12 @@ class ForumViewController: UIViewController {
     
     private var dependencyManager: VDependencyManager!
     
+    
     //MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        let storyboard = UIStoryboard(name: "ForumViewController", bundle: nil)
-        guard let forumVC = storyboard.instantiateInitialViewController() as? ForumViewController else {
-            fatalError("Failed to instantiate an ForumViewController view controller!")
-        }
         
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("ForumViewController")
         forumVC.dependencyManager = dependencyManager
         return forumVC
     }
@@ -40,6 +38,7 @@ class ForumViewController: UIViewController {
             stageViewController.dependencyManager = dependencyManager
         } else if let composerViewController = destination as? ComposerViewController {
             composerViewController.dependencyManager = dependencyManager
+            composerViewController.delegate = self
         }
         // Uncomment the following lines once the chat feed view controller is added
         // to the project.
@@ -48,12 +47,36 @@ class ForumViewController: UIViewController {
 //        }
     }
     
+    //MARK: - ComposerDelegate
+    
+    func composer(composer: Composer, confirmedWithCaption caption: String) {
+        
+    }
+    
+    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?) {
+        
+    }
+    
+    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
+        
+    }
+    
+    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+        composerViewControllerHeightConstraint.constant = height
+    }
+    
+    
+    //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
         view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
     }
+    
+    
+    //MARK: - Actions
     
     func exit() {
         self.dismissViewControllerAnimated(true, completion: nil)
