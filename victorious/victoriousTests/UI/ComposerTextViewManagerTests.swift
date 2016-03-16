@@ -17,7 +17,7 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         let manager = ComposerTextViewManager(textView: textView)
         XCTAssertEqual(manager.maximumTextLength, 0)
-        XCTAssertEqual(manager.dismissalStrings, ["\n"])
+        XCTAssertTrue(manager.dismissOnReturn)
         XCTAssertNil(manager.delegate)
     }
     
@@ -63,6 +63,16 @@ class ComposerTextViewManagerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    func testDismissOnReturn() {
+        
+        var manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: true)
+        XCTAssertFalse(manager.shouldDismissForText("a"))
+        XCTAssertTrue(manager.shouldDismissForText("\n"))
+        
+        manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: false)
+        XCTAssertFalse(manager.shouldDismissForText("a"))
+        XCTAssertFalse(manager.shouldDismissForText("\n"))
+    }
     
     // MARK: - Delegate stub
     
