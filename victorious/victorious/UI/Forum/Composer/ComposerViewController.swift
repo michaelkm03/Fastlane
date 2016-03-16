@@ -10,7 +10,7 @@ import UIKit
 
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
     
-    private let animationDuration = 0.3
+    private let animationDuration = 0.2
     
     private let minimumTextViewHeight: CGFloat = 32
     
@@ -167,6 +167,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
+        textView.textContainer.heightTracksTextView = true
         textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
     }
     
