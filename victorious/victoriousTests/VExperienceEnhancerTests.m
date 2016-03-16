@@ -171,7 +171,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          // Check if we're cooling down
          XCTAssertTrue(exp.isCoolingDown);
          
-         XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];
+         XCTestExpectation *expectation = [self expectationWithDescription:@"CoolDownTimer"];
          
          // Wait out the cooldown time
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -195,30 +195,28 @@ static const NSUInteger kExperienceEnhancerCount = 20;
      }];
 }
 
-// FIXME: Disabled failing unit test
-//- (void)testAddResults
-//{
-//    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
-//                                                                                      sequence:self.sequence];
-//
-//    self.viewController.experienceEnhancers = experienceEnhancers;
-//    [self.viewController updateData];
-//
-//    __block NSUInteger matches = 0;
-//    NSMutableArray *array = [NSMutableArray new];
-//    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-//     {
-//         [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
-//          {
-//              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
-//              {
-//                  [array addObject:exp];
-//                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
-//                  matches++;
-//              }
-//          }];
-//     }];
-//
-//    XCTAssertEqual( matches, experienceEnhancers.count );
-//}
+- (void)testAddResults
+{
+    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+
+    self.viewController.experienceEnhancers = experienceEnhancers;
+    [self.viewController updateData];
+
+    __block NSUInteger matches = 0;
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
+          {
+              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
+              {
+                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
+                  matches++;
+                  *stop = YES;
+              }
+          }];
+     }];
+
+    XCTAssertEqual( matches, experienceEnhancers.count );
+}
+
 @end
