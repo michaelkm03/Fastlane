@@ -10,9 +10,12 @@ import UIKit
 
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
     
-    private let animationDuration = 0.3
-    
-    private let minimumTextViewHeight: CGFloat = 32
+    private struct Constants {
+        
+        static let animationDuration = 0.3
+        static let minimumTextViewHeight: CGFloat = 32
+        static let maximumNumberOfTabs = 4
+    }
     
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     
@@ -54,7 +57,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var attachmentTabs: [ComposerAttachmentTab]? = nil {
         didSet {
             if isViewLoaded() {
-                attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: 4)
+                attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: Constants.maximumNumberOfTabs)
             }
         }
     }
@@ -122,7 +125,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
-        attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: 1)
+        attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: Constants.maximumNumberOfTabs)
         
         setupTextView()
         
@@ -148,7 +151,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         let textHeight = min(ceil(self.textView.contentSize.height), self.maximumTextInputHeight)
-        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
+        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, Constants.minimumTextViewHeight) : Constants.minimumTextViewHeight
         let textViewHeightNeedsUpdate = self.textViewHeightConstraint.constant != desiredTextViewHeight
         if textViewHeightNeedsUpdate {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
@@ -163,7 +166,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
         
         let previousContentOffset = self.textView.contentOffset
-        UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
+        UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.textView.layoutIfNeeded()
             if textViewHeightNeedsUpdate {
                 self.textView.setContentOffset(previousContentOffset, animated: true)

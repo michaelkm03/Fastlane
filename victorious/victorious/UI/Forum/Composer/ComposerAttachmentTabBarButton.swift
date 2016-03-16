@@ -12,10 +12,10 @@ class ComposerAttachmentTabBarButton: UIButton {
     
     let composerAttachmentTab: ComposerAttachmentTab
     
-    init(composerAttachmentTab: ComposerAttachmentTab, size: CGSize) {
+    init(composerAttachmentTab: ComposerAttachmentTab) {
         self.composerAttachmentTab = composerAttachmentTab
-        super.init(frame: CGRect(origin: CGPoint.zero, size: size))
-        setBackgroundImage(composerAttachmentTab.associatedIcon(), forState: .Normal)
+        super.init(frame: CGRect.zero)
+        setImage(composerAttachmentTab.associatedIcon(), forState: .Normal)
     }
 
     required init?(coder aDecoder: NSCoder) {

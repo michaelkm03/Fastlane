@@ -12,7 +12,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     func setupWithAttachmentTabs(attachmentTabs: [ComposerAttachmentTab]?, maxNumberOfTabs: Int) {
         
-        var actionItems: [UIView] = [VActionBarFlexibleSpaceItem.flexibleSpaceItem()]
+        var actionItems: [UIView] = [ActionBarFlexibleSpaceItem.flexibleSpaceItem()]
         
         guard let attachmentTabs = attachmentTabs else {
             self.actionItems = actionItems
@@ -25,13 +25,16 @@ class ComposerAttachmentTabBar: VFlexBar {
                 break
             }
             
-            actionItems.append(ComposerAttachmentTabBarButton(composerAttachmentTab: attachmentTab, size: tabBarButtonSize))
-            actionItems.append(VActionBarFlexibleSpaceItem.flexibleSpaceItem())
+            let button = ComposerAttachmentTabBarButton(composerAttachmentTab: attachmentTab)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.v_addWidthConstraint(tabBarButtonSize.width)
+            actionItems.append(button)
+            actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }
         
-        while actionItems.count < maxNumberOfTabs {
+        while actionItems.count / 2 < maxNumberOfTabs {
             actionItems.append(VActionBarFixedWidthItem(width: tabBarButtonSize.width))
-            actionItems.append(VActionBarFlexibleSpaceItem.flexibleSpaceItem())
+            actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }
         
         self.actionItems = actionItems
