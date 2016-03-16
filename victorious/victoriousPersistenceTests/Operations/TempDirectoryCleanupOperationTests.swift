@@ -14,7 +14,8 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
     var fileURLs: [NSURL] = []
     private let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
     private let fileManager = NSFileManager.defaultManager()
-    
+    private let operationQueue = NSOperationQueue()
+
     override func setUp() {
         super.setUp()
         
@@ -37,14 +38,23 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
     }
     
     func testClears() {
+        let expectation = expectationWithDescription("Cleanup Expectation")
+        
         XCTAssert(fileManager.fileExistsAtPath(URL.path!))
         for urls in fileURLs {
             XCTAssert(fileManager.fileExistsAtPath(urls.path!))
         }
-        TempDirectoryCleanupOperation().start()
-        XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
-        for urls in self.fileURLs {
-            XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
+        
+        let op = TempDirectoryCleanupOperation()
+        op.completionBlock = {
+            XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
+            for urls in self.fileURLs {
+                XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
+            }
+            expectation.fulfill()
         }
+        
+        operationQueue.addOperation(op)
+        waitForExpectationsWithTimeout(100, handler: nil)
     }
 }

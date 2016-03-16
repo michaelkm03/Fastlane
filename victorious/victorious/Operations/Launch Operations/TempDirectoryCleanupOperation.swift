@@ -11,13 +11,15 @@ import Foundation
 class TempDirectoryCleanupOperation: BackgroundOperation {
     
     override func start() {
-        super.start()
         beganExecuting()
         
-        let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
-        let fileManager = NSFileManager.defaultManager()
-        let _ = try? fileManager.removeItemAtURL(URL)
-    
-        self.finishedExecuting()
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+            let fileManager = NSFileManager.defaultManager()
+            let _ = try? fileManager.removeItemAtURL(URL)
+            
+            self.finishedExecuting()
+        }
     }
 }
