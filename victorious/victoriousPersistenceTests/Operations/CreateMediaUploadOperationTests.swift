@@ -13,23 +13,21 @@ import VictoriousIOSSDK
 class CreateMediaUploadOperationTests: XCTestCase {
     
     let uploadManager = TestUploadManager()
-
+    let operationQueue = NSOperationQueue()
+    
     func testOperationExecution() {
         let mockParameters = VPublishParameters()
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
         let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { error in
         }
         
-        operation.start()
-        XCTAssertEqual(1, uploadManager.enqueuedTasksCount)
-    }
-
-    func testInvalidParameters() {
-        let invalidParameters = VPublishParameters()
-        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager) { error in
+        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
+        operation.completionBlock = {
+            XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
+            expectation.fulfill()
         }
-
-        operation.start()
-        XCTAssertEqual(0, uploadManager.enqueuedTasksCount)
+        
+        operationQueue.addOperation(operation)
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 }

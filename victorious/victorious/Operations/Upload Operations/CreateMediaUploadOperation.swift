@@ -34,12 +34,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
         upload(uploadManager)
     }
     
-    private func completionError() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
-        }
-    }
-    
     private func upload(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
@@ -50,7 +44,10 @@ class CreateMediaUploadOperation: BackgroundOperation {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in }
         } catch {
-            completionError()
+            dispatch_async(dispatch_get_main_queue()) {
+                self.uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
+            }
+            self.finishedExecuting()
             return
         }
         
