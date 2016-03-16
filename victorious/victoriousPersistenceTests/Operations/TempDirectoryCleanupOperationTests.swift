@@ -17,10 +17,15 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        for a in 1...10 {
-            let newURL = URL.URLByAppendingPathComponent("\(a)")
+        
+        // Cleanup first
+        let _ = try? fileManager.removeItemAtURL(URL)
+        let _ = try? fileManager.createDirectoryAtPath(URL.path!, withIntermediateDirectories: true, attributes: nil)
+        
+        for _ in 1...10 {
+            let newURL = URL.URLByAppendingPathComponent(NSUUID().UUIDString)
             fileURLs.append(newURL)
-            let _ = try? "\(a)".writeToURL(newURL, atomically: true, encoding: NSUTF8StringEncoding)
+            fileManager.createFileAtPath(newURL.path!, contents: NSData(), attributes: [:])
         }
     }
     
@@ -28,21 +33,24 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
         for url in fileURLs {
             let _ = try? fileManager.removeItemAtURL(url)
         }
+        let _ = try? fileManager.removeItemAtURL(URL)
     }
     
     func testClears() {
         weak var expectation = expectationWithDescription("CleanupOperation")
         
-        do {
-            let count = try fileManager.contentsOfDirectoryAtPath(URL.path!).count
-            XCTAssertNotEqual(count, 0)
-        } catch {
-            XCTFail("Could not read contents of file at path: \(URL.path!)")
+        XCTAssert(fileManager.fileExistsAtPath(URL.path!))
+        for urls in fileURLs {
+            XCTAssert(fileManager.fileExistsAtPath(urls.path!))
         }
         
         TempDirectoryCleanupOperation().queue() { _ in
-            let exists = self.fileManager.fileExistsAtPath(self.URL.path!)
-            XCTAssertFalse(exists)
+            
+            XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
+            for urls in self.fileURLs {
+                XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
+            }
+
             expectation?.fulfill()
         }
         // Waiting for 100 seconds, since we may have a bunch of files to remove.
