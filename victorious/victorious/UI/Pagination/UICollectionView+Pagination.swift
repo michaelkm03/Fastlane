@@ -67,11 +67,11 @@ extension UICollectionView {
         }
     }
     
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
+    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
         self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false, completion:nil)
     }
     
-    public func v_reloadForPreviousPage() {
+    func v_reloadForPreviousPage() {
         
         // Because we're scrolling up in this view controller, we need to do a bit of
         // careful reloading and scroll position adjustment when loading next pages
@@ -87,7 +87,7 @@ extension UICollectionView {
     }
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion:(()->())? = nil) {
+    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion:(()->())? = nil) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {

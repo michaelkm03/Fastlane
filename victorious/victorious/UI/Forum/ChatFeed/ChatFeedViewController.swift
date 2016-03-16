@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VMultipleContainerChild, MoreContentControllerDelegate, MessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, MoreContentControllerDelegate, MessageCellDelegate {
     
     weak var delegate: ChatFeedDelegate? //< ChatFeed protocol
     
@@ -65,12 +65,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         super.viewDidLayoutSubviews()
         gradientMask.frame = collectionContainerView.bounds
     }
-    
-    // MARK: - VMultipleContainerChild
-    
-    func multipleContainerDidSetSelected(isDefault: Bool) { }
-    
-    var multipleContainerChildDelegate: VMultipleContainerChildDelegate?
     
     // MARK: - MoreContentControllerDelegate
     

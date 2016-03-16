@@ -19,8 +19,8 @@ import VictoriousIOSSDK
     //private(set) weak var currentLocalOperation: NSOperation?
     
     /// Determines how many visible items are allowed before older items are purged.
-    /// Default is 0, which indicates no limit.
-    var maxVisibleItems: Int = 0
+    /// If undefined (nil), there is no limit on visible items count
+    var maximumVisibleItemsCount: Int?
     
     private(set) var state: VDataSourceState = .Cleared {
         didSet {
@@ -128,8 +128,9 @@ import VictoriousIOSSDK
                 if !results.isEmpty {
                     if self.shouldStashNewContent {
                         self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
-                    } else if self.maxVisibleItems > 0 {
-                        let (newItems, removed) = self.visibleItems.v_orderedSetPurgedToLimit(self.maxVisibleItems)
+                        
+                    } else if let maximumVisibleItemsCount = self.maximumVisibleItemsCount {
+                        let (newItems, removed) = self.visibleItems.v_orderedSetPurgedToLimit(maximumVisibleItemsCount)
                         if removed.count > 0 {
                             self.isPurging = true
                             self.visibleItems = newItems
@@ -137,6 +138,7 @@ import VictoriousIOSSDK
                         } else {
                             self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
                         }
+                        
                     } else {
                         self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
                     }

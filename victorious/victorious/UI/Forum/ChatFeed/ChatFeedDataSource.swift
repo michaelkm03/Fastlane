@@ -32,7 +32,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         self.cellDecorator = MessageCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
-        super.maxVisibleItems = 50
+        super.maximumVisibleItemsCount = 50
     }
     
     func refreshRemote() {

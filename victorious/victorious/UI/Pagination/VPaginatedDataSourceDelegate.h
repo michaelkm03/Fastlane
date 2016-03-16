@@ -18,7 +18,6 @@ typedef NS_ENUM(NSInteger, VDataSourceState) {
     VDataSourceStateError,
 };
 
-#warning FIXME: Change this to the protocol PagiantedDataSourceType
 @class PaginatedDataSource;
 
 @protocol VPaginatedDataSourceDelegate <NSObject>
