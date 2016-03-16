@@ -16,6 +16,7 @@
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
 #import "VPurchaseRecord.h"
+#import "victorious-Swift.h"
 
 NSString * const VPurchaseManagerProductsDidUpdateNotification = @"VPurchaseManagerProductsDidUpdateNotification";
 
@@ -56,7 +57,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
         
-#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
         _simulatedPurchasedProductIdentifiers = [[NSMutableSet alloc] init];
 #endif
     }
@@ -83,7 +84,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
     BOOL purchased = [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
-#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     purchased = purchased || [self.simulatedPurchasedProductIdentifiers containsObject:productIdentifier];
 #endif
     return purchased;
@@ -92,14 +93,43 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     VProduct *product = [self purchaseableProductForProductIdentifier:productIdentifier];
-#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     if ( product.storeKitProduct == nil )
     {
-        [self.simulatedPurchasedProductIdentifiers addObject:productIdentifier];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
-        {
-            successCallback([NSSet setWithObject:productIdentifier]);
+        // Simulate a bit of network latency...
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
+            
+            // A slightly-hacky way to figure out which alert to show. Should modifiy 
+            // if more robustness is required, but dont't want to overengineer this just yet.
+            VTestPurchaseConfirmationType type;
+            NSString *title = productIdentifier.pathExtension;
+            if ( [productIdentifier containsString:@"ballistic"] )
+            {
+                type = VTestPurchaseConfirmationTypeProduct;
+            }
+            else
+            {
+                type = VTestPurchaseConfirmationTypeSubscription;
+            }
+            // Simulate the system alert to confirm purchase
+            BackgroundOperation *showTestAlert = [[ShowTestPurchaseConfirmationOperation alloc] initWithType:type title:title price:nil];
+            [showTestAlert queueWithCompletion:^(NSError *error, BOOL canceled) {
+                
+                if (!canceled)
+                {
+                    // Simulate success!
+                    [self.simulatedPurchasedProductIdentifiers addObject:productIdentifier];
+                    successCallback([NSSet setWithObject:productIdentifier]);
+                }
+                else
+                {
+                    // Nil error means canceled
+                    failureCallback(nil);
+                }
+            }];
         });
+        
+        // Abort the real purchase code path
         return;
     }
 #endif
@@ -231,7 +261,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     
     product = [self.fetchedProducts objectForKey:productIdentifier];
     
-#if V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     if ( product == nil )
     {
         product = [[VPseudoProduct alloc] initWithProductIdentifier:productIdentifier

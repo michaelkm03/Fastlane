@@ -1,5 +1,5 @@
 //
-//  ValidateReceiptOperationTests.swift
+//  VIPValidateSuscriptionOperationTests.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/9/16.
@@ -9,16 +9,16 @@
 import XCTest
 @testable import victorious
 
-class ValidateReceiptOperationTests: BaseFetcherOperationTestCase {
+class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
     
-    var operation: ValidateReceiptOperation!
+    var operation: VIPValidateSuscriptionOperation!
     
     override func setUp() {
         super.setUp()
     }
     
     func testSuccess() {
-        operation = ValidateReceiptOperation()
+        operation = VIPValidateSuscriptionOperation()
         testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = testRequestExecutor
         operation.receiptDataSource = MockReceiptDataSource(data: "9asf8dh708f7adsm".data() )
@@ -33,7 +33,7 @@ class ValidateReceiptOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testInitializtionFailure() {
-        operation = ValidateReceiptOperation()
+        operation = VIPValidateSuscriptionOperation()
         testRequestExecutor = TestRequestExecutor()
         operation.requestExecutor = TestRequestExecutor()
         operation.receiptDataSource = MockReceiptDataSource(data: nil)
