@@ -23,14 +23,14 @@
                                         <rect key="frame" x="0.0" y="27" width="600" height="0.0"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy">
-                                                <rect key="frame" x="554" y="-15" width="30" height="30"/>
-                                                <state key="normal" title="Do"/>
+                                                <rect key="frame" x="547" y="-15" width="37" height="30"/>
+                                                <state key="normal" title="Done"/>
                                                 <connections>
                                                     <action selector="pressedConfirmButton" destination="KY2-Hn-7We" eventType="touchUpInside" id="afy-lH-5mK"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joT-P4-Pfz" customClass="VFlexBar">
-                                                <rect key="frame" x="16" y="-21" width="522" height="41"/>
+                                                <rect key="frame" x="16" y="-21" width="515" height="41"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="41" id="5O2-kT-NVt"/>
