@@ -10,12 +10,12 @@ import UIKit
 
 class ComposerAttachmentTabBarButton: UIButton {
     
-    let composerAttachmentTab: ComposerAttachmentTab
+    let navigationMenuItem: VNavigationMenuItem
     
-    init(composerAttachmentTab: ComposerAttachmentTab) {
-        self.composerAttachmentTab = composerAttachmentTab
+    init(navigationMenuItem: VNavigationMenuItem) {
+        self.navigationMenuItem = navigationMenuItem
         super.init(frame: CGRect.zero)
-        setImage(composerAttachmentTab.associatedIcon(), forState: .Normal)
+        setImage(navigationMenuItem.icon, forState: .Normal)
     }
 
     required init?(coder aDecoder: NSCoder) {

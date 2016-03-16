@@ -11,10 +11,8 @@ import VictoriousIOSSDK
 
 /// Conformers will recieve messages when a composer's buttons are pressed and when
 /// a composer changes its height.
-protocol ComposerDelegate: class {
+protocol ComposerDelegate: class, ComposerAttachmentTabBarDelegate {
     
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab)
-
     func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?)
     
     func composer(composer: Composer,  confirmedWithCaption caption: String)

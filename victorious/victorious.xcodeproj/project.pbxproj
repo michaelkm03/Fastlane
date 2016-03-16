@@ -785,7 +785,6 @@
 		A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */; };
 		A73BA2A61C938B68008168B5 /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2951C938B68008168B5 /* CloseUpViewController.swift */; };
 		A73BA2A71C938B68008168B5 /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2971C938B68008168B5 /* Composer.swift */; };
-		A73BA2A81C938B68008168B5 /* ComposerAttachmentTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2981C938B68008168B5 /* ComposerAttachmentTab.swift */; };
 		A73BA2A91C938B68008168B5 /* ComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2991C938B68008168B5 /* ComposerDelegate.swift */; };
 		A73BA2AA1C938B68008168B5 /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA29A1C938B68008168B5 /* ComposerViewController.swift */; };
 		A73BA2AB1C938B68008168B5 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA29B1C938B68008168B5 /* ForumViewController.swift */; };
@@ -1826,6 +1825,8 @@
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
 		F0BD811D1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD811C1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift */; };
+		F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */; };
+		F0BD81271C9A18020062D079 /* CreationTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD81261C9A18020062D079 /* CreationTypeHelper.swift */; };
 		F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */; };
 		F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */; };
 		F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */; };
@@ -3143,7 +3144,6 @@
 		A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpMenuItem.swift; sourceTree = "<group>"; };
 		A73BA2951C938B68008168B5 /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpViewController.swift; sourceTree = "<group>"; };
 		A73BA2971C938B68008168B5 /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
-		A73BA2981C938B68008168B5 /* ComposerAttachmentTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTab.swift; sourceTree = "<group>"; };
 		A73BA2991C938B68008168B5 /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerDelegate.swift; sourceTree = "<group>"; };
 		A73BA29A1C938B68008168B5 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		A73BA29B1C938B68008168B5 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
@@ -4636,6 +4636,8 @@
 		F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatter.m; sourceTree = "<group>"; };
 		F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewOriginViewController.h; sourceTree = "<group>"; };
 		F0BD811C1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionBarFlexibleSpaceItem.swift; sourceTree = "<group>"; };
+		F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarDelegate.swift; sourceTree = "<group>"; };
+		F0BD81261C9A18020062D079 /* CreationTypeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationTypeHelper.swift; sourceTree = "<group>"; };
 		F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamContentCellFactory.swift; sourceTree = "<group>"; };
 		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
 		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
@@ -7199,7 +7201,6 @@
 			isa = PBXGroup;
 			children = (
 				A73BA2971C938B68008168B5 /* Composer.swift */,
-				A73BA2981C938B68008168B5 /* ComposerAttachmentTab.swift */,
 				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
 				A73BA2991C938B68008168B5 /* ComposerDelegate.swift */,
 				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
@@ -7207,6 +7208,7 @@
 				F06FC1FA1C97437900A014C7 /* ComposerViewController.storyboard */,
 				A73BA29A1C938B68008168B5 /* ComposerViewController.swift */,
 				F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */,
+				F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -9243,6 +9245,7 @@
 				A7ECC1C31AD617480003E00A /* Tool Controllers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
 				A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */,
+				F0BD81261C9A18020062D079 /* CreationTypeHelper.swift */,
 				D80A94D31A535DFA0035D788 /* Video */,
 				A7ECC1D01AD6178F0003E00A /* View Controllers */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
@@ -11313,6 +11316,7 @@
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */,
+				F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */,
 				A7E8D0A91C92163D00D126BF /* MainRequestExecutor.swift in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
@@ -11328,6 +11332,7 @@
 				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
 				79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
+				F0BD81271C9A18020062D079 /* CreationTypeHelper.swift in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
@@ -11774,7 +11779,6 @@
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
-				A73BA2A81C938B68008168B5 /* ComposerAttachmentTab.swift in Sources */,
 				C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */,
 				A73BA2A41C938B68008168B5 /* CloseUpDelegate.swift in Sources */,
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,

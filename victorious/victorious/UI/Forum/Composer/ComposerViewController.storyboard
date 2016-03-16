@@ -35,11 +35,8 @@
                                                 </connections>
                                             </button>
                                             <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joT-P4-Pfz" customClass="ComposerAttachmentTabBar" customModule="victorious" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="6" width="521" height="41"/>
+                                                <rect key="frame" x="16" y="0.0" width="521" height="53"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="5O2-kT-NVt"/>
-                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -49,7 +46,9 @@
                                             <constraint firstAttribute="height" constant="53" id="RlM-AL-BQg"/>
                                             <constraint firstAttribute="trailing" secondItem="ytv-wP-GFy" secondAttribute="trailing" constant="16" id="Um3-Jm-gwa"/>
                                             <constraint firstItem="ytv-wP-GFy" firstAttribute="leading" secondItem="joT-P4-Pfz" secondAttribute="trailing" constant="16" id="agP-K1-zIC"/>
+                                            <constraint firstItem="joT-P4-Pfz" firstAttribute="top" secondItem="5MN-kC-AjT" secondAttribute="top" id="fhC-Zo-I3J"/>
                                             <constraint firstItem="joT-P4-Pfz" firstAttribute="leading" secondItem="5MN-kC-AjT" secondAttribute="leading" constant="16" id="rPX-l1-VXz"/>
+                                            <constraint firstAttribute="bottom" secondItem="joT-P4-Pfz" secondAttribute="bottom" id="sxq-Me-rhH"/>
                                         </constraints>
                                     </view>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">

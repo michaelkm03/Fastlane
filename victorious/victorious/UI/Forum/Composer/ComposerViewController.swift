@@ -54,27 +54,29 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private var attachmentTabs: [ComposerAttachmentTab]? = nil {
+    private var attachmentMenuItems: [VNavigationMenuItem]? = nil {
         didSet {
-            if isViewLoaded() {
-                attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: Constants.maximumNumberOfTabs)
-            }
+            setupAttachmentTabBar()
         }
     }
     
     private var shouldShowAttachmentContainer: Bool {
-        return attachmentTabs != nil || textViewHasText
+        return attachmentMenuItems != nil || textViewHasText
     }
     
-    weak var delegate: ComposerDelegate?
+    weak var delegate: ComposerDelegate? {
+        didSet {
+            setupAttachmentTabBar()
+        }
+    }
     
     var dependencyManager: VDependencyManager! {
         didSet {
             maximumTextLength = dependencyManager.maximumTextLength()
-            attachmentTabs = dependencyManager.attachmentTabs()
-            if isViewLoaded() {
-                dependencyManager?.addBackgroundToBackgroundHost(self)
-            }
+            //TODO: Remove implicit dependency, variance in VC
+            let userIsOwner = VCurrentUser.user()?.isCreator.boolValue ?? false
+            attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
+            updateBackground()
         }
     }
     
@@ -125,11 +127,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
-        attachmentTabBar.setupWithAttachmentTabs(attachmentTabs, maxNumberOfTabs: Constants.maximumNumberOfTabs)
-        
+        setupAttachmentTabBar()
         setupTextView()
-        
-        dependencyManager?.addBackgroundToBackgroundHost(self)
+        updateBackground()
     }
     
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
@@ -178,10 +178,25 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         super.updateViewConstraints()
     }
     
+    // MARK: - Subview setup
+    
     private func setupTextView() {
         textView.text = nil
         textView.textContainer.heightTracksTextView = true
         textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
+    }
+    
+    private func setupAttachmentTabBar() {
+        if isViewLoaded() {
+            attachmentTabBar.setupWithAttachmentMenuItems(attachmentMenuItems, maxNumberOfMenuItems: Constants.maximumNumberOfTabs)
+            attachmentTabBar.delegate = delegate
+        }
+    }
+    
+    private func updateBackground() {
+        if isViewLoaded() {
+            dependencyManager?.addBackgroundToBackgroundHost(self, forKey: "composerBackground")
+        }
     }
     
     // MARK: - Actions
@@ -206,7 +221,8 @@ private extension VDependencyManager {
         return DefaultPropertyValues.maximumTextLength
     }
     
-    func attachmentTabs() -> [ComposerAttachmentTab]? {
-        return [ComposerAttachmentTab.Camera]
+    func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
+        let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
+        return menuItemsForKey(menuItemKey) as? [VNavigationMenuItem]
     }
 }

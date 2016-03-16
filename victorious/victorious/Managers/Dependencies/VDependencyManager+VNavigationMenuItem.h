@@ -33,6 +33,15 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
 - (NSArray *)menuItems;
 
 /**
+ Returns an array of menu items for the given key. There are
+ no guarantees on the number of menu items that are returned.
+ Each item is stored as an instance of VNavigationMenuItem.
+ 
+ @return NSArray of VNavigationMenuItem
+ */
+- (NSArray *)menuItemsForKey:(NSString *)key;
+
+/**
  Returns an array of accessory menu items. These should
  be used for left/right navigation items for various screens.
  

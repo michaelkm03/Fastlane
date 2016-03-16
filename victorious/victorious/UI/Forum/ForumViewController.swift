@@ -18,6 +18,12 @@ class ForumViewController: UIViewController, ComposerDelegate {
     
     @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
     
+    private var creationFlowPresenter: VCreationFlowPresenter! {
+        didSet {
+            creationFlowPresenter.shouldShowPublishScreenForFlowController = false
+        }
+    }
+    
     private var dependencyManager: VDependencyManager!
     
     
@@ -27,6 +33,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
         
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("ForumViewController")
         forumVC.dependencyManager = dependencyManager
+        forumVC.creationFlowPresenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         return forumVC
     }
     
@@ -57,15 +64,15 @@ class ForumViewController: UIViewController, ComposerDelegate {
         
     }
     
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
-        
-    }
-    
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
         composerViewControllerHeightConstraint.constant = height + 49
     }
     
-    
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+        //TODO: Encapsulate in an operation
+        creationFlowPresenter.presentWorkspaceOnViewController(self, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
+    }
+
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
