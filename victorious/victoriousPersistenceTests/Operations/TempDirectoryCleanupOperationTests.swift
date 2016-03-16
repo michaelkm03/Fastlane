@@ -37,23 +37,14 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
     }
     
     func testClears() {
-        weak var expectation = expectationWithDescription("CleanupOperation")
-        
         XCTAssert(fileManager.fileExistsAtPath(URL.path!))
         for urls in fileURLs {
             XCTAssert(fileManager.fileExistsAtPath(urls.path!))
         }
-        
-        TempDirectoryCleanupOperation().queue() { _ in
-            
-            XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
-            for urls in self.fileURLs {
-                XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
-            }
-
-            expectation?.fulfill()
+        TempDirectoryCleanupOperation().start()
+        XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
+        for urls in self.fileURLs {
+            XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
         }
-        // Waiting for 100 seconds, since we may have a bunch of files to remove.
-        waitForExpectationsWithTimeout(100, handler:nil)
     }
 }
