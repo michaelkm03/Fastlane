@@ -13,6 +13,4 @@ protocol ComposerTextViewManagerDelegate: class {
     var textViewContentSize: CGSize { get set }
     
     var textViewHasText: Bool { get set }
-    
-    test
 }
