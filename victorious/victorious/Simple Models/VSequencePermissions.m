@@ -23,6 +23,7 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     VSequencePermissionCanEditComments      = 1 << 5,
     VSequencePermissionCanDeleteComments    = 1 << 6,
     VSequencePermissionCanFlagSequence      = 1 << 7,
+    //    VSequencePermissionCanGIF               = 1 << 8, // <- Feature sunset from IOS-4145
     VSequencePermissionCanMeme              = 1 << 9,
     VSequencePermissionCanQuote             = 1 << 10,
     VSequencePermissionCanAddGifComments    = 1 << 11

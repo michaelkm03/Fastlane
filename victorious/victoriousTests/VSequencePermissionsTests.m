@@ -59,6 +59,7 @@
                           @(1 << 5),    //VSequencePermissionCanEditComments
                           @(1 << 6),    //VSequencePermissionCanDeleteComments
                           @(1 << 7),    //VSequencePermissionCanFlagSequence
+//                          @(1 << 8),    //VSequencePermissionCanGifSequence <- Feature sunset from IOS-4145
                           @(1 << 9),    //VSequencePermissionCanMeme
                           @(1 << 10),   //VSequencePermissionCanQuote
                           @(1 << 11)    //VSequencePermissionCanAddGifComments
