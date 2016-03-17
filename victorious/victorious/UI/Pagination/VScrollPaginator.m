@@ -40,12 +40,6 @@
     self.isUserScrolling = YES;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    // As soon as a scroll initializted by a user or not comes to a stop
-    // self.isUserScrolling = NO;
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     // As soon as the user lifts his/her finger
@@ -64,9 +58,9 @@
     const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;
     const CGFloat scrollPositionY = scrollView.contentOffset.y;
-    const BOOL isScrollingDown = self.previousContentOffset.y <= scrollView.contentOffset.y;
+    const BOOL isScrollingDown = (!self.activeOnlyWhenUserIsScrolling) || (self.previousContentOffset.y <= scrollView.contentOffset.y);
     
-    if ( scrollPositionY >= maxContentOffset && isScrollingDown )
+    if ( scrollPositionY >= maxContentOffset && isScrollingDown)
     {
         if ( [self.delegate respondsToSelector:@selector(shouldLoadNextPage)] )
         {

@@ -81,6 +81,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
         
+        scrollPaginator.activeOnlyWhenUserIsScrolling = true
         scrollPaginator.delegate = self
         
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
@@ -231,10 +232,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         scrollPaginator.scrollViewWillBeginDragging(scrollView)
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidEndDecelerating(scrollView)
-    }
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
@@ -242,34 +239,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        /*edgeInsets = UIEdgeInsets(
-            top:  value,
-            left: edgeInsets.left,
-            bottom: value + bottomMargin,
-            right: edgeInsets.top
-        )
-        collectionView.collectionViewLayout.invalidateLayout()
-        view.layoutIfNeeded()*/
+        
     }
     
     func setBottomInset(value: CGFloat) {
         collectionConainerCenterVertical.constant = -value
         view.layoutIfNeeded()
-        
-        /*edgeInsets = UIEdgeInsets(
-            top: edgeInsets.top,
-            left: edgeInsets.left,
-            bottom: value + bottomMargin,
-            right: edgeInsets.top
-        )
-        collectionView.collectionViewLayout.invalidateLayout()
-        view.layoutIfNeeded()
-        
-        let offset = collectionView.v_bottomOffset
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(0.5)
-        collectionView.setContentOffset(offset, animated:true)
-        CATransaction.commit()*/
     }
 }
 

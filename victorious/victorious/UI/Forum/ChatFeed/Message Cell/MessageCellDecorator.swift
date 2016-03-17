@@ -30,7 +30,7 @@ struct MessageCellDecorator {
         }
         
         cell.viewData = MessageCell.ViewData(
-            text: message.text!.characters.isEmpty ? "" : "\(message.text ?? "") :: END",
+            text: message.text,
             createdAt: message.postedAt,
             username: message.sender.name ?? "",
             avatarImageURL: NSURL(v_string: message.sender.pictureUrl),

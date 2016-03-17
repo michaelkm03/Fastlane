@@ -124,7 +124,7 @@ static NSString * const kMenuKey = @"menu";
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
     
 #warning Testing only, shows chat stream after launch:
-    //[[[ShowForumOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
+    [[[ShowForumOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
 }
 
 - (void)setSelectedMenuItemAtIndex:(NSInteger)index

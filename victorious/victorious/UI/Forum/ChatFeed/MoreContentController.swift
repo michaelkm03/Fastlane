@@ -138,7 +138,6 @@ private extension VDependencyManager {
     }
     
     var backgroundColor: UIColor {
-        return UIColor.redColor()
         return colorForKey("color.background")
     }
 }
