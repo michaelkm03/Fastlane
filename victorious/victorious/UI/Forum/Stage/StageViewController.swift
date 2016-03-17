@@ -46,9 +46,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             addImageAsset(imageAsset)
         case let gifAsset as GifAsset:
             addGifAsset(gifAsset)
-        // TODO: handle youtube videos
-//        case let youtubeAsset as YouTubeAsset:
-            
         // TODO: decide how we handle the close VIP stage command
 //        case let emptyAsset as EmptyAsset:
 //            clearStageMedia()
