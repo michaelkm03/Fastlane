@@ -49,7 +49,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     struct ViewData {
         let text: String?
-        let createdAt: NSDate
+        let timeLabel: String
         let username: String
         let avatarImageURL: NSURL?
         let media: ForumMedia?
@@ -105,8 +105,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         if let media = viewData?.media {
             mediaView.imageURL = media.url
         }
-        let timeSince = viewData.createdAt.stringDescribingTimeIntervalSinceNow()
-        detailTextView.text = "\(viewData.username) (\(timeSince))"
+        detailTextView.text = "\(viewData.username) (\(viewData.timeLabel))"
         avatarView.setProfileImageURL(viewData.avatarImageURL)
     }
     

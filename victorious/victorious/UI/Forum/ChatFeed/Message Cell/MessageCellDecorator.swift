@@ -31,7 +31,7 @@ struct MessageCellDecorator {
         
         cell.viewData = MessageCell.ViewData(
             text: message.text,
-            createdAt: message.postedAt,
+            timeLabel: message.postedAt.stringDescribingTimeIntervalSinceNow(),
             username: message.sender.name ?? "",
             avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
             media: media
