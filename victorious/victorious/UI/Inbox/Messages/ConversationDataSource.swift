@@ -13,8 +13,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
     
-    let sizingCell: MessageCell = MessageCell.v_fromNib()
-    
     private lazy var paginatedDataSource: PaginatedDataSource = {
         let dataSource = PaginatedDataSource()
         dataSource.delegate = self
@@ -46,12 +44,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
-    let messageCellDecorator: MessageTableCellDecorator
-    
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        self.messageCellDecorator = MessageTableCellDecorator(dependencyManager: dependencyManager)
     }
     
     func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
@@ -114,14 +109,11 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         let identifier = VMessageCell.suggestedReuseIdentifier()
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
         let message = visibleItems[ indexPath.row ] as! VMessage
-        messageCellDecorator.decorateCell( cell, withMessage: message )
+        decorateCell( cell, withMessage: message )
         return cell
     }
-}
-
-struct MessageTableCellDecorator {
     
-    let dependencyManager: VDependencyManager
+    // MARK: - Private helpers
     
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
         cell.timeLabel?.text = message.postedAt.stringDescribingTimeIntervalSinceNow() ?? ""

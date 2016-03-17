@@ -70,13 +70,6 @@ class ForumViewController: UIViewController, Forum {
     @IBAction func onClose(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    // MARK: - ComposerDelegate
-    
-    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        chatFeed?.setEdgeInsets(UIEdgeInsets(top: stage?.contentHeight ?? 0, left: 0, bottom: height, right: 0))
-        composerContainer.v_internalHeightConstraint()!.constant = height
-    }
 }
 
 private extension VDependencyManager {

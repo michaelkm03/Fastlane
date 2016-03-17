@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Forum View Controller-->
@@ -26,31 +25,29 @@
                             </containerView>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="0.31331820100000002" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="552" width="600" height="48"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="dYh-Rc-6aw"/>
-                                </constraints>
                                 <connections>
                                     <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="5Tu-s1-tmL"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="5oi-Eh-jhE"/>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="AR9-zF-NWz"/>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="height" secondItem="BWd-6Y-0dE" secondAttribute="height" id="PeR-Sh-81Q"/>
+                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="EBM-hb-X2t"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="Psq-0L-ceU"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="gRM-BU-1Xu"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="gxq-gW-c0x"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" constant="-20" id="paG-UL-vXl"/>
                             <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="s8K-5R-A25"/>
-                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="yQh-Vv-V6u"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" constant="-20" id="zva-ji-N25"/>
                         </constraints>
                     </view>
                     <connections>

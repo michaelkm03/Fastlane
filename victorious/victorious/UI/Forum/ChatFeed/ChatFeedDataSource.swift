@@ -12,7 +12,7 @@ import KVOController
 
 class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
-    private let itemsPerPage = 15
+    private let itemsPerPage = 10
     
     /// If this interval is too small, the scrolling animations will become choppy
     /// as they step on each other before finishing.
@@ -21,29 +21,22 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     private var timerManager: VTimerManager?
     
     let dependencyManager: VDependencyManager
-    let conversation: VConversation
     
     let cellDecorator = MessageCellDecorator()
     let sizingCell: MessageCell = MessageCell.v_fromNib()
     
-    init( conversation: VConversation, dependencyManager: VDependencyManager ) {
+    init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
-        self.conversation = conversation
         super.init()
         
         super.maximumVisibleItemsCount = 50
     }
     
     func refreshRemote() {
-        guard let conversationID = conversation.remoteId?.integerValue else {
-            return
-        }
-        
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
-        
         loadNewItems(
             createOperation: {
-                return DequeueMessagesOperation(conversationID: conversationID, paginator: paginator)
+                let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
+                return DequeueMessagesOperation(paginator: paginator)
             },
             completion: nil
         )
@@ -78,7 +71,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
         let identifier = MessageCell.suggestedReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! MessageCell
-        let message = visibleItems[ indexPath.row ] as! VMessage
+        let message = visibleItems[ indexPath.row ] as! ChatMessage
         cellDecorator.decorateCell(cell, withMessage: message, dependencyManager: dependencyManager.fanCellDependency)
         return cell
     }
@@ -90,7 +83,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let message = visibleItems[ indexPath.row ] as! VMessage
+        let message = visibleItems[ indexPath.row ] as! ChatMessage
         var bounds = sizingCell.bounds
         bounds.size.width = collectionView.bounds.width
         sizingCell.bounds = bounds
@@ -101,7 +94,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     func redecorateVisibleCells(collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MessageCell
-            let message = visibleItems[ indexPath.row ] as! VMessage
+            let message = visibleItems[ indexPath.row ] as! ChatMessage
             cellDecorator.decorateCell(cell, withMessage:message, dependencyManager: dependencyManager.fanCellDependency)
         }
     }

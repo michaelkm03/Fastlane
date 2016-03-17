@@ -8,40 +8,52 @@
 
 import Foundation
 
+class ChatMessage: NSObject, PaginatedObjectType {
+    var displayOrder: NSNumber
+    var sender: VUser!
+    var text: String?
+    var postedAt: NSDate!
+    var mediaUrl: String?
+    var mediaWidth: NSNumber?
+    var mediaHeight: NSNumber?
+    
+    init(displayOrder: NSNumber) {
+        self.displayOrder = displayOrder
+    }
+}
+
+private let totalMessages = 0 //< Hack for testing
+
 final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
-    let conversationID: Int
     
-    required init(conversationID: Int, paginator: StandardPaginator = StandardPaginator()) {
+    required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
-        self.conversationID = conversationID
     }
     
     required convenience init(operation: DequeueMessagesOperation, paginator: StandardPaginator) {
-        self.init(conversationID: operation.conversationID, paginator: paginator)
+        self.init(paginator: paginator)
     }
     
     override func main() {
         
-        let objectIDs: [NSManagedObjectID] = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
-                let conversation: VConversation = context.v_findObjects( ["remoteId" : self.conversationID ]).first else {
-                    return []
-            }
-            
-            let user: VUser = context.v_findOrCreateObject(
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            let otherUser: VUser = context.v_findOrCreateObject(
                 [
                     "remoteId" : 3213,
                     "name" : "Gg",
                     "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
                 ]
             )
-            user.status = "test"
-            conversation.user = user
+            otherUser.status = "test"
+        
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
             
-            var messagesCreated = [VMessage]()
-            var displayOrder = conversation.messages?.count ?? 0
+            var messagesCreated = [ChatMessage]()
+            var displayOrder = totalMessages
             
             let messagesCount = 1 + Int(arc4random() % 2)
             for _ in 0..<messagesCount {
@@ -49,38 +61,28 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
                 if arc4random() % 5 == 1 {
                     sender = currentUser
                 } else {
-                    sender = user
+                    sender = otherUser
                 }
                 
                 let rnd = Int(arc4random() % UInt32(testMessageText.count) )
                 let text = testMessageText[rnd]
-                let message: VMessage = context.v_createObject()
+                let message = ChatMessage(displayOrder: displayOrder++)
                 message.sender = sender
                 message.text = text
                 message.postedAt = NSDate()
-                message.displayOrder = displayOrder++
                 
                 if arc4random() % 10 > 7 || text.characters.isEmpty {
                     let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
                     let media = sampleMedia[rnd]
                     message.mediaUrl = media["url"] as? String
-                    message.mediaWidth = media["width"] as! Int
-                    message.mediaHeight = media["height"] as! Int
+                    message.mediaWidth = media["width"] as? Int
+                    message.mediaHeight = media["height"] as? Int
                 }
                 
                 messagesCreated.append(message)
             }
-            
-            conversation.v_addObjects( messagesCreated, to: "messages")
-            context.v_save()
-            
-            return messagesCreated.map { $0.objectID }
-        }
-        
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            self.results = objectIDs.flatMap {
-                return context.objectWithID($0) as? VMessage
-            }
+                    
+            self.results = messagesCreated
         }
     }
 }
@@ -111,7 +113,7 @@ private let testMessageText = [
     "I'm so awesome. 🍄🍄🍄🍄🍄🍄🍄",
     "",
     "I put a note on my mirror this morning. 🍄 It says \"objects are smaller than they appear.\"",
-    "have 🎂 you ever wanted to dress like the grim reaperV a🎎 nd go to a retirement home and tap on the windows!?comment below if you would or wouldn't 🌱",
+    "have 🎂 you ever wanted to 🎎 dress like the grim reaperV a🎎 nd go to a retirement home and tap on the windows!?comment below if you would or wouldn't 🌱",
     "BUT 🎂 my best friends think I'm completely insane! oh think if there were two of me...",
     "Wonders why I turn the radio down in my car while looking for an address, like it helps me see better lol:)",
     "OK just out of curiosity",
@@ -127,15 +129,15 @@ private let testMessageText = [
     "Banana error. 🍘🍘🍘🎷🎸🎹",
     "I randomly said this to my friends and they said I needed mental help.",
     "That would be so funny if that was true! Laugh out loud",
-    "Why would a mushroom scream Tacos? HAHA!",
+    "Why would a 🍄 mushroom 🍄 scream Tacos? HAHA!",
     "Wow random humor is so funny",
     "I am going to the shop to buy some lemons and I am going to chuck them at a guy called Tom",
-    "Laugh out loud... This is my new motto!",
-    "Lol Hilarious! I couldn't figure out how to put some random sentences in this site, so...",
+    "Laugh out 🍘 loud... This is my new motto!",
+    "Lol Hilarious! I couldn't figure 🎎 out how to put some random sentences 🍄 in this site, so...",
     "BUNNY CRANKERS!",
-    "CRUNCHY BANANAS!",
+    "CRUNCHY 🎎 BANANAS!",
     "A cranky old lady shoots pineapples with a machinegun.",
     "Chair number eleven is omni-present, much like candy.",
     "Whats more like a cucumber- cows, the number 2, or a math test eating your feet?",
-    "okay here is a joke meh friend told me (some people may not like it)",
+    "okay here is a joke meh 🍘 friend told me (some people may not like it)",
 ]

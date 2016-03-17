@@ -20,17 +20,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var dependencyManager: VDependencyManager!
     
     private lazy var dataSource: ChatFeedDataSource = {
-        return ChatFeedDataSource(conversation: self.conversation, dependencyManager: self.dependencyManager)
-    }()
-    
-    private lazy var conversation: VConversation = {
-        let persistentStore = MainPersistentStore()
-        return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let publicConversation: VConversation = context.v_createObject()
-            publicConversation.remoteId = 99999
-            publicConversation.postedAt = NSDate()
-            return publicConversation
-        }
+        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
     private lazy var gradientMask: UIView = {
@@ -199,7 +189,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         guard let indexPath = collectionView.indexPathForCell(messageCell) else {
             return
         }
-        let message = dataSource.visibleItems[ indexPath.row ] as! VMessage
+        let message = dataSource.visibleItems[ indexPath.row ] as! ChatMessage
         guard let userID = message.sender.remoteId?.integerValue else {
             return
         }
@@ -255,7 +245,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         self.collectionView.collectionViewLayout.invalidateLayout()
         self.view.layoutIfNeeded()
         
-        var offset = collectionView.v_bottomOffset
+        let offset = collectionView.v_bottomOffset
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.5)
         collectionView.setContentOffset(offset, animated:true)

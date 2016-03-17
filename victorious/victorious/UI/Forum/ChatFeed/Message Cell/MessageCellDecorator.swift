@@ -10,7 +10,7 @@ import Foundation
 
 struct MessageCellDecorator {
     
-    func decorateCell(cell: MessageCell, withMessage message: VMessage, dependencyManager: VDependencyManager) {
+    func decorateCell(cell: MessageCell, withMessage message: ChatMessage, dependencyManager: VDependencyManager) {
         
         if message.sender.isCurrentUser() {
             cell.layout = RightAlignmentCellLayout()
@@ -23,7 +23,7 @@ struct MessageCellDecorator {
         let media: ForumMedia?
         if let url = NSURL(v_string: message.mediaUrl),
             let width = message.mediaWidth?.floatValue,
-            let height = message.mediaHeight?.floatValue {
+            let height = message.mediaHeight? .floatValue {
                 media = ForumMedia(url: url, width: CGFloat(width), height: CGFloat(height))
         } else {
             media = nil

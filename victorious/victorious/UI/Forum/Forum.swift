@@ -47,6 +47,10 @@ extension Forum {
   
     }
     
+    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+        chatFeed?.setEdgeInsets(UIEdgeInsets(top: stage?.contentHeight ?? 0, left: 0, bottom: height, right: 0))
+    }
+    
     // MARK: - StageDelegate
     
     func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {
