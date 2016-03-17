@@ -20,7 +20,6 @@ extension VSequence: PersistenceParsable {
         
         isGifStyle              = sequence.isGifStyle ?? isGifStyle
         commentCount            = sequence.commentCount ?? commentCount
-        gifCount                = sequence.gifCount ?? gifCount
         hasReposted             = sequence.hasReposted ?? hasReposted
         isComplete              = sequence.isComplete ?? isComplete
         isRemix                 = sequence.isRemix ?? isRemix

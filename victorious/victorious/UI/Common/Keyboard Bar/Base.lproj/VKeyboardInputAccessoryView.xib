@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
@@ -44,18 +44,6 @@
                                 <action selector="tappedVideo:" destination="HeO-pU-V0k" eventType="touchUpInside" id="R9r-Ud-a0Z"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWU-Vd-xRZ" userLabel="GIF Button">
-                            <rect key="frame" x="160" y="0.0" width="50" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="50" id="Wxx-KJ-ZpW"/>
-                            </constraints>
-                            <state key="normal" image="commentfield_gif">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tappedGIF:" destination="HeO-pU-V0k" eventType="touchUpInside" id="rDx-Hc-ajW"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7n-St-qw3" userLabel="Remaining Character Label">
                             <rect key="frame" x="281" y="18" width="29" height="14"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -71,15 +59,12 @@
                         <constraint firstAttribute="bottom" secondItem="U0r-cL-7X4" secondAttribute="bottom" id="Elj-Zr-v8Q"/>
                         <constraint firstAttribute="trailing" secondItem="5jQ-4D-Yes" secondAttribute="trailing" id="Qw8-Ug-maN"/>
                         <constraint firstAttribute="trailing" secondItem="L7n-St-qw3" secondAttribute="trailing" constant="10" id="Zi2-1g-dmB"/>
-                        <constraint firstItem="nWU-Vd-xRZ" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="bu6-Gv-f5a"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="c8L-fq-n9P"/>
                         <constraint firstItem="5jQ-4D-Yes" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" id="dB7-Vo-PGd"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="gGp-Zu-oLE"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" constant="20" id="mWh-1Q-XJI"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="leading" secondItem="XuK-1c-4iY" secondAttribute="trailing" constant="20" id="tSm-90-0CY"/>
                         <constraint firstAttribute="centerY" secondItem="L7n-St-qw3" secondAttribute="centerY" id="tZx-SZ-1nB"/>
-                        <constraint firstAttribute="bottom" secondItem="nWU-Vd-xRZ" secondAttribute="bottom" id="tuT-QV-Vgx"/>
-                        <constraint firstItem="nWU-Vd-xRZ" firstAttribute="leading" secondItem="U0r-cL-7X4" secondAttribute="trailing" constant="20" id="v1A-J8-8JQ"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v84-Mw-D11" userLabel="Comment UI">
@@ -170,7 +155,6 @@
                 <outlet property="editingTextSuperview" destination="q7x-zi-ZRw" id="Diw-Cr-pBK"/>
                 <outlet property="editingTextViewBottomSpace" destination="hcZ-w7-KCp" id="WqV-Th-L6f"/>
                 <outlet property="editingTextViewTopSpace" destination="LYe-Wa-lSs" id="kap-lE-eos"/>
-                <outlet property="gifButton" destination="nWU-Vd-xRZ" id="d9K-Tx-ilw"/>
                 <outlet property="imageButton" destination="XuK-1c-4iY" id="4wH-Fw-RK6"/>
                 <outlet property="placeholderLabel" destination="7pn-fk-jDk" id="a8e-VS-Dtq"/>
                 <outlet property="remainingCharacterLabel" destination="L7n-St-qw3" id="lQN-Kg-Tfh"/>
@@ -182,7 +166,6 @@
         </view>
     </objects>
     <resources>
-        <image name="commentfield_gif" width="20" height="20"/>
         <image name="commentfield_image" width="20" height="20"/>
         <image name="commentfield_video" width="20" height="20"/>
     </resources>

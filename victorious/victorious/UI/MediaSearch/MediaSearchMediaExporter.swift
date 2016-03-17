@@ -42,22 +42,20 @@ class MediaSearchExporter {
     ///
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
     /// Calling code should be responsible for deleting the file at the mediaUrl's path.
-    /// - parameter completion: A completion closure called wehn all opeartions are complete
+    /// - parameter completion: A completion closure called when all opeartions are complete
     func loadMedia( completion: MediaSearchExporterCompletion ) {
         
         cleanupTempFile()
         
-        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
-            return
-        }
-        let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
-        
         guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
-            let videoURL = mediaSearchResult.sourceMediaURL else {
+            searchResultURL = mediaSearchResult.sourceMediaURL else {
+                completion(previewImage: nil,
+                    mediaUrl: nil,
+                    error: NSError(domain: "MediaSearchExporter", code: -1, userInfo: nil))
                 return
         }
         
-        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: videoURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
+        videoDownloadTask = NSURLSession.sharedSession().downloadTaskWithRequest(NSURLRequest(URL: searchResultURL)) { (location: NSURL?, response: NSURLResponse?, error: NSError?) in
             
             guard let location = location else {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -74,8 +72,11 @@ class MediaSearchExporter {
             }()
             
             do {
-                try NSFileManager.defaultManager().moveItemAtURL(location, toURL: downloadURL)
+                try NSFileManager.defaultManager().moveItemAtURL(location, toURL: self.downloadURL)
             } catch {
+                // Remove temp file
+                let _ = try? NSFileManager.defaultManager().removeItemAtURL(location)
+                
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
                 }
@@ -86,7 +87,7 @@ class MediaSearchExporter {
             dispatch_async( dispatch_get_main_queue() ) {
                 completion(
                     previewImage: previewImage,
-                    mediaUrl: downloadURL,
+                    mediaUrl: self.downloadURL,
                     error: nil
                 )
             }
@@ -101,16 +102,14 @@ class MediaSearchExporter {
     }
     
     func cleanupTempFile() {
-        guard let searchResultURL = mediaSearchResult.sourceMediaURL else {
-            return
-        }
-        let downloadURL = downloadURLForRemoteURL(searchResultURL)
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(downloadURL)
     }
     
-    private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
-        guard let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first else {
-            fatalError( "Unable to find file path for temporary media download." )
+    lazy var downloadURL: NSURL = { [weak self] in
+        
+        guard let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first,
+            let mediaSearchResult: MediaSearchResult = self!.mediaSearchResult else {
+                fatalError( "Unable to find file path for temporary media download." )
         }
         
         let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
@@ -122,7 +121,7 @@ class MediaSearchExporter {
         }
         
         // Create a unique URL. May cause issues if GIF has a bad extension.
-        let fileExtension = remoteURL.pathExtension == nil ? "" : ".\(remoteURL.pathExtension)"
-        return subdirectory.URLByAppendingPathComponent("\(uuidString)\(fileExtension)")
-    }
+        let fileExtension = mediaSearchResult.sourceMediaURL?.pathExtension == nil ? "" : ".\((mediaSearchResult.sourceMediaURL?.pathExtension)!)"
+        return subdirectory.URLByAppendingPathComponent("\(self!.uuidString)\(fileExtension)")
+        }()
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -207,7 +207,6 @@
         <attribute name="createdBy" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="gifCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hasBeenRepostedByMainUser" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hasReposted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isComplete" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -369,7 +368,7 @@
         <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Sequence" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="525"/>
         <element name="SequenceLiker" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Shelf" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Stream" positionX="0" positionY="0" width="128" height="165"/>

@@ -45,7 +45,6 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.isRepost, true)
         XCTAssertEqual( sequence.commentCount, 1)
         XCTAssertEqual( sequence.repostCount, 3)
-        XCTAssertEqual( sequence.gifCount, 4)
         XCTAssertEqual( sequence.likeCount, 5)
         XCTAssertEqual( sequence.memeCount, 6)
         XCTAssertEqual( sequence.permissionsMask, 3486)
