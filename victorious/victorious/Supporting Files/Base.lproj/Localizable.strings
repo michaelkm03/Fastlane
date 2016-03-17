@@ -453,5 +453,8 @@
 "Enter birthday before continuing" = "Please enter your birthday before continuing: ";
 
 "Dismiss Alert" = "Got It";
+
 "NewMessagesFormatPlural" = "%@ New Messages"; // i.e. "20 New Messages"
 "NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
+
+"ComposerPlaceholderText" = "What do you think...";

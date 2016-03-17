@@ -29,4 +29,8 @@ class StageViewController: UIViewController, Stage {
     func stopPlayingContent() {
         
     }
+    
+    var contentHeight: CGFloat {
+        return 50.0
+    }
 }

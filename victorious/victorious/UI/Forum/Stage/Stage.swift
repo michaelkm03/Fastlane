@@ -14,6 +14,8 @@ protocol Stage: class {
     
     var dependencyManager: VDependencyManager! { get set }
     
+    var contentHeight: CGFloat { get }
+    
     /// Replaces the currently playing media with the one provided.
     func startPlayingMedia(media: VAsset)
     

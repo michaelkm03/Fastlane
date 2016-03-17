@@ -8,15 +8,25 @@
 
 import UIKit
 
-class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate, StageDelegate {
+class ForumViewController: UIViewController, Forum {
 
     @IBOutlet private weak var chatFeedContainer: UIView!
     @IBOutlet private weak var composerContainer: UIView!
     @IBOutlet private weak var stageContainer: UIView!
     
-    @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
+    var stage: Stage?
+    var composer: Composer?
+    var chatFeed: ChatFeed?
     
-    private var dependencyManager: VDependencyManager!
+    // MARK: - Forum
+    
+    var dependencyManager: VDependencyManager!
+    
+    var originViewController: UIViewController {
+        return self
+    }
+    
+    // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
@@ -37,32 +47,22 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
+
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager
             stage.delegate = self
+            self.stage = stage
         
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager.chatFeedDependency
             chatFeed.delegate = self
+            self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
             composer.dependencyManager = dependencyManager
             composer.delegate = self
+            self.composer = composer
         }
-    }
-    
-    // MARK: - ChatFeedDelegate
-    
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
-        ShowProfileOperation(originViewController: self,
-            dependencyManager: dependencyManager,
-            userId: userID).queue()
-    }
-    
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView) {
-        ShowMediaLightboxOperation(originViewController: self,
-            preloadedImage: image,
-            referenceView: referenceView).queue()
     }
     
     // MARK: - Actions
@@ -73,20 +73,10 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectAttachmentTab: ComposerAttachmentTab) {}
-    
-    func composer(composer: Composer, didPressSendWithMedia: MediaAttachment, caption: String?) {}
-    
-    func composer(composer: Composer, didPressSendWithCaption: String) {}
-    
-    func composer(composer: Composer, didUpdateToHeight: CGFloat) {}
-    
-    
-    // MARK: - StageDelegate
-    
-    func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {}
-    
-    func stage(stage: Stage, didSelectMedia media: ForumMedia) {}
+    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+        chatFeed?.setEdgeInsets(UIEdgeInsets(top: stage?.contentHeight ?? 0, left: 0, bottom: height, right: 0))
+        composerContainer.v_internalHeightConstraint()!.constant = height
+    }
 }
 
 private extension VDependencyManager {

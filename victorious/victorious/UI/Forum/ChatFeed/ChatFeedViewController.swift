@@ -14,7 +14,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 150.0, left: 0.0, bottom: 60.0, right: 0.0)
+    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
     private let gradientBlendLength: CGFloat = 80.0
     
     var dependencyManager: VDependencyManager!
@@ -114,10 +114,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         dataSource.shouldStashNewContent = true
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -254,8 +250,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     //MARK: - ChatFeed
     
-    func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool) {
+    func setEdgeInsets(insets: UIEdgeInsets) {
+        self.edgeInsets = UIEdgeInsets(top: 0.0, left: 0, bottom: insets.bottom, right: 0.0)
+        self.collectionView.collectionViewLayout.invalidateLayout()
+        self.view.layoutIfNeeded()
         
+        var offset = collectionView.v_bottomOffset
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.5)
+        collectionView.setContentOffset(offset, animated:true)
+        CATransaction.commit()
     }
 }
 
