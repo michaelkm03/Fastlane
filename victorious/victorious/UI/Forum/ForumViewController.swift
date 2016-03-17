@@ -26,8 +26,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
     
     private var dependencyManager: VDependencyManager!
     
-    
-    //MARK: - Initialization
+    // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         
@@ -57,7 +56,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
 //        }
     }
     
-    //MARK: - ComposerDelegate
+    // MARK: - ComposerDelegate
     
     func composer(composer: Composer, confirmedWithCaption caption: String) {
         
@@ -68,6 +67,8 @@ class ForumViewController: UIViewController, ComposerDelegate {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+        // Currently sets the height of the composer to the view's height until we remove
+        // the constraint completely and leave the composer as a full screen view.
         composerViewControllerHeightConstraint.constant = self.view.bounds.height
     }
     
@@ -75,7 +76,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
         creationFlowPresenter.presentWorkspaceOnViewController(self, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
     }
 
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
