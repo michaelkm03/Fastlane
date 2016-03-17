@@ -20,6 +20,12 @@ class StageViewController: UIViewController, Stage {
         view.backgroundColor = UIColor.v_colorFromHexString("170724")
     }
     
+    // MARK: - ForumEventReceiver {
+    
+    func receiveEvent(event: ForumEvent) {
+        
+    }
+    
     //MARK: - StageController
     
     func startPlayingMedia(media: VAsset) {

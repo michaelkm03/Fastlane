@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Stage: class {
+protocol Stage: class, ForumEventReceiver {
     
     weak var delegate: StageDelegate? { get set }
     

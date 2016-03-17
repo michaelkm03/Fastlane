@@ -10,7 +10,7 @@ import Foundation
 
 /// Defines an object that requires these few properties in order to execute
 /// the highest-level, abstract Forum business logic.  Plug and play :)
-protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
+protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, ComposerDelegate, StageDelegate {
     
     // MARK: - Concrete dependencies
     
@@ -31,6 +31,12 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
 /// intended as a concise and flexible mini-architecture and defines the 
 /// most fundamental interation between parent and subcomponents.
 extension Forum {
+    
+    // MARK: - ForumEventReceiver
+    
+    var childEventReceivers: [ForumEventReceiver] {
+        return [ stage as? ForumEventReceiver, chatFeed as? ForumEventReceiver ].flatMap { $0 }
+    }
     
     // MARK: - ChatFeedDelegate
     
@@ -53,7 +59,12 @@ extension Forum {
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
-  
+        let event = ForumEvent(
+            media: media,
+            messageText: caption,
+            date: NSDate()
+        )
+        sendEvent(event)
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {

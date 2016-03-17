@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ChatFeed: class {
+protocol ChatFeed: class, ForumEventReceiver {
     
     weak var delegate: ChatFeedDelegate? { get set }
     

@@ -62,6 +62,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         shouldStashNewContent = false
     }
     
+    // MARK: - ForumEventReceiver
+    
+    var childEventReceivers: [ForumEventReceiver] {
+        return [ dataSource ]
+    }
+    
     // MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -93,7 +99,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         navigationController?.setNavigationBarHidden(true, animated: animated)
         selectedMessageUserID = nil
         dataSource.beginLiveUpdates()
-        dataSource.refreshRemote()
     }
     
     override func viewWillDisappear(animated: Bool) {

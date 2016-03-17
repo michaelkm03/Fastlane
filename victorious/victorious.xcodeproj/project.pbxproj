@@ -496,6 +496,7 @@
 		5A75EADF1C57653200B08056 /* VPublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A75EADD1C57653200B08056 /* VPublishParameters.swift */; };
 		5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
 		5AC41CDF1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC41CDE1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift */; };
+		5AC41CE11C9AC2D900603FE5 /* Forum+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC41CE01C9AC2D900603FE5 /* Forum+Networking.swift */; };
 		62058B671C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B661C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift */; };
 		62058B6D1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */; };
 		62168C4C1C706953008E34AA /* IMAAdViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DD1C5DB54100680B22 /* IMAAdViewControllerTests.swift */; };
@@ -2752,6 +2753,7 @@
 		5A75EADD1C57653200B08056 /* VPublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPublishParameters.swift; sourceTree = "<group>"; };
 		5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptRequest.swift; sourceTree = "<group>"; };
 		5AC41CDE1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Subcomponent.swift"; sourceTree = "<group>"; };
+		5AC41CE01C9AC2D900603FE5 /* Forum+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Forum+Networking.swift"; sourceTree = "<group>"; };
 		62058B661C54DFE100D3C8F9 /* VAdVideoPlayerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAdVideoPlayerViewControllerTests.swift; sourceTree = "<group>"; };
 		62058B6C1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePersistentStoreTestCase.swift; sourceTree = "<group>"; };
 		62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdVideoPlayerViewController.swift; sourceTree = "<group>"; };
@@ -7602,6 +7604,7 @@
 				A73BA2961C938B68008168B5 /* Composer */,
 				F06FC1F41C973F8800A014C7 /* Forum.storyboard */,
 				A7DE62F61C9A53D900F4838C /* Forum.swift */,
+				5AC41CE01C9AC2D900603FE5 /* Forum+Networking.swift */,
 				A73BA2D61C9394B6008168B5 /* ForumMedia.swift */,
 				A73BA2D71C9394B6008168B5 /* ForumViewController.swift */,
 				A73BA29C1C938B68008168B5 /* Stage */,
@@ -12393,6 +12396,7 @@
 				A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */,
 				A72C86001C977FF500E97D4F /* CommentEditOperation.swift in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
+				5AC41CE11C9AC2D900603FE5 /* Forum+Networking.swift in Sources */,
 				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
 				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
 				A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */,

@@ -12,6 +12,17 @@ import UIKit
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum {
     
+    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
+        forumVC.dependencyManager = dependencyManager
+        return forumVC
+    }
+    
+    // MARK: - ForumEventSender
+    
+    /// Calling code just needs to set this to get messages propagated the composer.
+    var nextSender: ForumEventSender?
+    
     // MARK: - Forum protocol requirements
     
     var stage: Stage?
@@ -22,14 +33,6 @@ class ForumViewController: UIViewController, Forum {
     
     var originViewController: UIViewController {
         return self
-    }
-    
-    // MARK: - Initialization
-    
-    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
-        forumVC.dependencyManager = dependencyManager
-        return forumVC
     }
     
     // MARK: - UIViewController overrides
