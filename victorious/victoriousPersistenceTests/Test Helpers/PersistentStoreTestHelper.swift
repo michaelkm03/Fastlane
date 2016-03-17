@@ -30,7 +30,6 @@ struct PersistentStoreTestHelper {
                 sequence.category = category
                 sequence.commentCount = 1
                 sequence.createdBy = 1
-                sequence.gifCount = 1
                 sequence.hasBeenRepostedByMainUser = true
                 sequence.hasReposted = true
                 sequence.isComplete = true
