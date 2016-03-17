@@ -16,6 +16,7 @@ Associated Spec: N/A
 - [ ] Code is readable and maintainable
 - [ ] Existing functionality is unaffected (no regressions)
 - [ ] Addresses everything mentioned in the ticket and product spec
+- [ ] CI Tests are passing with the green check mark
 
 ### Known Issues
 N/A
