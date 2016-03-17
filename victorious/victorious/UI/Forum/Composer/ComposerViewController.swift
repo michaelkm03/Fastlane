@@ -73,7 +73,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var dependencyManager: VDependencyManager! {
         didSet {
             maximumTextLength = dependencyManager.maximumTextLength()
-            //TODO: Remove implicit dependency, variance in VC
             let userIsOwner = VCurrentUser.user()?.isCreator.boolValue ?? false
             attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
             updateBackground()

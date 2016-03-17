@@ -69,7 +69,6 @@ class ForumViewController: UIViewController, ComposerDelegate {
     }
     
     func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
-        //TODO: Encapsulate in an operation
         creationFlowPresenter.presentWorkspaceOnViewController(self, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
     }
 
