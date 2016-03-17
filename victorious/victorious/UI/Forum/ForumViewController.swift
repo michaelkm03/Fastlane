@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// A a drive .screen component that sets up, houses and mediates the interaction
+/// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum {
     
