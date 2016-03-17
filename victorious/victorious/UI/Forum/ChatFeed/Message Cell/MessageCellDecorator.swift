@@ -20,14 +20,14 @@ struct MessageCellDecorator {
         
         cell.dependencyManager = dependencyManager
         
-        let media: ForumMedia?
-        if let url = NSURL(v_string: message.mediaUrl),
+        let media: ForumMedia? = nil
+        /*if let url = NSURL(v_string: message.mediaUrl),
             let width = message.mediaWidth?.floatValue,
             let height = message.mediaHeight? .floatValue {
                 media = ForumMedia(url: url, width: CGFloat(width), height: CGFloat(height))
         } else {
             media = nil
-        }
+        }*/
         
         cell.viewData = MessageCell.ViewData(
             text: message.text,

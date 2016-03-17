@@ -40,6 +40,8 @@ class ForumViewController: UIViewController, Forum {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        debug_startGeneratingMessages(interval: 1.0)
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,

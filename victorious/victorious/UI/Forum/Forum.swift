@@ -60,7 +60,7 @@ extension Forum {
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
         let event = ForumEvent(
-            media: media,
+            media: nil,
             messageText: caption,
             date: NSDate()
         )

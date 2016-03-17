@@ -37,6 +37,8 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     // MARK: - ForumEventReceiver
     
     func receiveEvent(event: ForumEvent) {
+        print("receiveEvent :: receiveEvent: \(event).")
+        
         // Stash events in the queue when received and wait to dequeue on our timer cycle
         eventQueue.append(event)
     }
@@ -67,7 +69,7 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
         
         let messages = eventQueue
         eventQueue = []
-        print("ChatFeedDataSource :: Dequeued: \(messages.count) messages.")
+//        print("ChatFeedDataSource :: Dequeued: \(messages.count) messages.")
         
         // TODO: Somehow parse into reference types and into paginated datasource
         

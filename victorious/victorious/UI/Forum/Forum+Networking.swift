@@ -8,8 +8,19 @@
 
 import Foundation
 
+struct ForumMedia {
+    let url: NSURL
+    let thumbnailUrl: NSURL
+    let width: Int
+    let height: Int
+    let loop: Bool
+    let audioEnabled: Bool
+    
+    var aspectRatio: CGFloat { return CGFloat(width) / CGFloat(height) }
+}
+
 struct ForumEvent {
-    let media: MediaAttachment?
+    let media: ForumMedia?
     let messageText: String?
     let date: NSDate
 }
