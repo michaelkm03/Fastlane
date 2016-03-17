@@ -121,12 +121,10 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
 private extension VDependencyManager {
     
     var fanCellDependency: VDependencyManager {
-        let configuration = templateValueOfType(NSDictionary.self, forKey: "cell.fan") as! [NSObject: AnyObject]
-        return self.childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyForKey("cell.fan")!
     }
     
     var creatorCellDependency: VDependencyManager {
-        let configuration = templateValueOfType(NSDictionary.self, forKey: "cell.creator") as! [NSObject: AnyObject]
-        return self.childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyForKey("cell.creator")!
     }
 }
