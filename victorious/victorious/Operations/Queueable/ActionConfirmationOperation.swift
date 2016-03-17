@@ -21,7 +21,7 @@ extension NSOperation {
     var didConfirmActionFromDependencies: Bool {
         
         // Make sure *any* previous confirmation operations did confirm this action
-        return dependencies.flatMap { $0 as? ActionConfirmationOperation }.reduce( true ) {
+        return !cancelled && dependencies.flatMap { $0 as? ActionConfirmationOperation }.reduce( true ) {
             return $0 && $1.didConfirmAction
         }
     }
