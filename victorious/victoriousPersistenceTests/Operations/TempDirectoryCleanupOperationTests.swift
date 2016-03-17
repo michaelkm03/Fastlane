@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
 @testable import victorious
 
 class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
@@ -54,6 +53,6 @@ class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(100, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
