@@ -13,10 +13,11 @@ let fileExtension: String = "jpg"
 
 class MediaSearchMediaExporterTests: XCTestCase {
     
-    
     var mediaSearchExporter: MediaSearchExporter!
     var expectation: XCTestExpectation!
+    
     private let sampleImageURL = NSBundle(forClass: MediaSearchMediaExporterTests.self).URLForResource("sampleImage", withExtension: fileExtension)!
+    
     func testInvalidImageUrl() {
         expectation = expectationWithDescription("MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source: MockSource())
@@ -27,8 +28,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNotNil(error)
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1) { error in
-        }
+        waitForExpectationsWithTimeout(1, handler: nil)
     }
     
     func testDownloadCancelled() {
@@ -44,8 +44,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             self.expectation.fulfill()
         }
         mediaSearchExporter.cancelDownload()
-        waitForExpectationsWithTimeout(2) { error in
-        }
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testDownloadFailed() {
@@ -60,8 +59,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNotNil(error)
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(2) { error in
-        }
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testValidSourceInformation() {
@@ -85,8 +83,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1) { error in
-        }
+        waitForExpectationsWithTimeout(1, handler: nil)
     }
     
     func testDownloadURLWithValidExtension () {
