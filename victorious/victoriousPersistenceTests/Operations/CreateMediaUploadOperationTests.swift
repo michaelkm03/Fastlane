@@ -10,24 +10,57 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class CreateMediaUploadOperationTests: XCTestCase {
+class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
     
     let uploadManager = TestUploadManager()
     let operationQueue = NSOperationQueue()
-    
+        
     func testOperationExecution() {
         let mockParameters = VPublishParameters()
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
+        
+        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
         let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { error in
         }
         
-        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        operation.completionBlock = {
+        operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
             expectation.fulfill()
         }
         
-        operationQueue.addOperation(operation)
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+    }
+    
+    func testParameterNoURL() {
+        let invalidParameters = VPublishParameters()
+        
+        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
+        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager) { error in
+        }
+        
+        operation.queue() { _ in
+            XCTAssertEqual(0, self.uploadManager.enqueuedTasksCount)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+
+    }
+    
+    func testRemoteIdParameters() {
+        let mockParameters = VPublishParameters()
+        mockParameters.isGIF = true
+        mockParameters.assetRemoteId = "ABCDEF"
+        mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
+        
+        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
+        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { error in
+        }
+        
+        operation.queue() { _ in
+            XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
