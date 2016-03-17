@@ -10,9 +10,7 @@ import Foundation
 
 struct MessageCellDecorator {
     
-    let dependencyManager: VDependencyManager
-    
-    func decorateCell( cell: MessageCell, withMessage message: VMessage) {
+    func decorateCell(cell: MessageCell, withMessage message: VMessage, dependencyManager: VDependencyManager) {
         
         if message.sender.isCurrentUser() {
             cell.layout = RightAlignmentCellLayout()

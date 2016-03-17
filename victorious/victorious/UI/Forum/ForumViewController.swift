@@ -14,12 +14,6 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     @IBOutlet private weak var composerContainer: UIView!
     @IBOutlet private weak var stageContainer: UIView!
     
-    @IBOutlet private var chatFeedViewControllerContainer: UIView!
-    
-    @IBOutlet private var composerViewControllerContainer: UIView!
-    
-    @IBOutlet private var stageViewControllerContainer: UIView!
-    
     @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
     
     private var dependencyManager: VDependencyManager!
@@ -35,7 +29,8 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = self.dependencyManager.stringForKey("title")
+        self.title = dependencyManager.title
+        self.view.backgroundColor = dependencyManager.backgroundColor
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -47,7 +42,7 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
             stage.delegate = self
         
         } else if let chatFeed = destination as? ChatFeed {
-            chatFeed.dependencyManager = dependencyManager
+            chatFeed.dependencyManager = dependencyManager.chatFeedDependency
             chatFeed.delegate = self
         
         } else if let composer = destination as? Composer {
@@ -92,4 +87,26 @@ class ForumViewController: UIViewController, ChatFeedDelegate, ComposerDelegate,
     func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {}
     
     func stage(stage: Stage, didSelectMedia media: ForumMedia) {}
+}
+
+private extension VDependencyManager {
+    
+    var title: String {
+        return stringForKey("title")
+    }
+    
+    var backgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
+    }
+    
+    var chatFeedDependency: VDependencyManager {
+        let configuration = templateValueOfType(NSDictionary.self, forKey: "chatFeed") as! [NSObject: AnyObject]
+        return self.childDependencyManagerWithAddedConfiguration(configuration)
+    }
+    
+    var composerDependency: VDependencyManager {
+        let configuration = templateValueOfType(NSDictionary.self, forKey: "composer") as! [NSObject: AnyObject]
+        return self.childDependencyManagerWithAddedConfiguration(configuration)
+    }
 }

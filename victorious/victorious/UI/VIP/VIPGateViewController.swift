@@ -175,6 +175,6 @@ private extension VDependencyManager {
     
     var backgroundColor: UIColor? {
         let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
-        return background!.backgroundColor
+        return background?.backgroundColor
     }
 }

@@ -18,7 +18,9 @@ class MoreContentController: NSObject {
     
     var depedencyManager: VDependencyManager! {
         didSet {
-            button.backgroundColor = depedencyManager.colorForKey(VDependencyManagerAccentColorKey)
+            button.backgroundColor = depedencyManager.backgroundColor
+            button.titleLabel?.font = depedencyManager.font
+            button.titleLabel?.textColor = depedencyManager.textColor
         }
     }
     
@@ -120,5 +122,20 @@ class MoreContentController: NSObject {
     @IBAction private func onMoreContentSelected() {
         delegate?.onMoreContentSelected()
         hide()
+    }
+}
+
+private extension VDependencyManager {
+    
+    var textColor: UIColor {
+        return colorForKey("color.text")
+    }
+    
+    var font: UIFont {
+        return fontForKey("font.text")
+    }
+    
+    var backgroundColor: UIColor {
+        return colorForKey("color.background")
     }
 }

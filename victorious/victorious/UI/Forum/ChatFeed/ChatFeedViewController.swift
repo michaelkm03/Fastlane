@@ -92,7 +92,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         scrollPaginator.delegate = self
         
-        moreContentController.depedencyManager = dependencyManager
+        moreContentController.depedencyManager = dependencyManager.newItemsDependency
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
     }
@@ -256,5 +256,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool) {
         
+    }
+}
+
+private extension VDependencyManager {
+    
+    var newItemsDependency: VDependencyManager {
+        let configuration = templateValueOfType(NSDictionary.self, forKey: "newItems") as! [NSObject: AnyObject]
+        return self.childDependencyManagerWithAddedConfiguration(configuration)
     }
 }

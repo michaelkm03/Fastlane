@@ -63,18 +63,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
         }
     }
     
+    // MARK: - UIView
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onAvatarTapped:") )
         mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onMediaTapped:") )
-    }
-    
-    func onAvatarTapped(sender: AnyObject?) {
-        delegate?.messageCellDidSelectAvatarImage(self)
-    }
-    
-    private func onMediaTapped(sender: AnyObject?) {
-        delegate?.messageCellDidSelectMedia(self)
     }
     
     override func layoutSubviews() {
@@ -82,10 +76,20 @@ class MessageCell: UICollectionViewCell, VFocusable {
         layout.updateLayout(self)
     }
     
+    // MARK: - Gesture Recognizer Actions
+    
+    func onAvatarTapped(sender: AnyObject?) {
+        delegate?.messageCellDidSelectAvatarImage(self)
+    }
+    
+    func onMediaTapped(sender: AnyObject?) {
+        delegate?.messageCellDidSelectMedia(self)
+    }
+    
     private func updateStyle() {
         detailTextView.contentInset = UIEdgeInsetsZero
-        detailTextView.font = dependencyManager.labelFont
-        detailTextView.textColor = dependencyManager.messageTextColor
+        detailTextView.font = dependencyManager.userLabelFont
+        detailTextView.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.messageTextColor.colorWithAlphaComponent(0.5).CGColor
@@ -141,7 +145,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         let maxTextWidth = maxContentWidthWithinBounds(bounds)
         let availableSizeForWidth = CGSize(width: maxTextWidth, height: CGFloat.max)
         var size = attributedText.boundingRectWithSize(availableSizeForWidth,
-            options: [ .UsesLineFragmentOrigin /* .UsesFontLeading  */],
+            options: [ .UsesLineFragmentOrigin ],
             context: nil).size
         size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         return size
@@ -189,22 +193,26 @@ class MessageCell: UICollectionViewCell, VFocusable {
 private extension VDependencyManager {
     
     var messageTextColor: UIColor {
-        return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerLinkColorKey).colorWithAlphaComponent(0.25)
-    }
-    
-    var borderColor: UIColor {
-        return colorForKey(VDependencyManagerLinkColorKey)
+        return colorForKey("color.text")
     }
     
     var messageFont: UIFont {
-        return fontForKey(VDependencyManagerLabel1FontKey)
+        return fontForKey("font.message")
     }
     
-    var labelFont: UIFont {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+    var backgroundColor: UIColor {
+        return colorForKey("color.bubble")
+    }
+    
+    var borderColor: UIColor {
+        return colorForKey("color.border")
+    }
+    
+    var userLabelFont: UIFont {
+        return fontForKey("font.userLabel")
+    }
+    
+    var userLabelColor: UIColor {
+        return colorForKey("color.userLabel")
     }
 }

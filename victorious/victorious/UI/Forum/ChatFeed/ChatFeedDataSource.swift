@@ -23,13 +23,12 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
-    let cellDecorator: MessageCellDecorator
+    let cellDecorator = MessageCellDecorator()
     let sizingCell: MessageCell = MessageCell.v_fromNib()
     
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        self.cellDecorator = MessageCellDecorator(dependencyManager: dependencyManager)
         super.init()
         
         super.maximumVisibleItemsCount = 50
@@ -80,7 +79,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         let identifier = MessageCell.suggestedReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! MessageCell
         let message = visibleItems[ indexPath.row ] as! VMessage
-        cellDecorator.decorateCell(cell, withMessage: message)
+        cellDecorator.decorateCell(cell, withMessage: message, dependencyManager: dependencyManager.fanCellDependency)
         return cell
     }
     
@@ -95,7 +94,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         var bounds = sizingCell.bounds
         bounds.size.width = collectionView.bounds.width
         sizingCell.bounds = bounds
-        cellDecorator.decorateCell(sizingCell, withMessage: message)
+        cellDecorator.decorateCell(sizingCell, withMessage: message, dependencyManager: dependencyManager.fanCellDependency)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
     
@@ -103,7 +102,20 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MessageCell
             let message = visibleItems[ indexPath.row ] as! VMessage
-            cellDecorator.decorateCell(cell, withMessage:message)
+            cellDecorator.decorateCell(cell, withMessage:message, dependencyManager: dependencyManager.fanCellDependency)
         }
+    }
+}
+
+private extension VDependencyManager {
+    
+    var fanCellDependency: VDependencyManager {
+        let configuration = templateValueOfType(NSDictionary.self, forKey: "cell.fan") as! [NSObject: AnyObject]
+        return self.childDependencyManagerWithAddedConfiguration(configuration)
+    }
+    
+    var creatorCellDependency: VDependencyManager {
+        let configuration = templateValueOfType(NSDictionary.self, forKey: "cell.creator") as! [NSObject: AnyObject]
+        return self.childDependencyManagerWithAddedConfiguration(configuration)
     }
 }
