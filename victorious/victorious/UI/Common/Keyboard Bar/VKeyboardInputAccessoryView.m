@@ -49,7 +49,6 @@ static NSString * const kCommentBarKey = @"commentBar";
 @property (nonatomic, strong) IBOutlet UILabel *placeholderLabel;
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
-@property (nonatomic, strong) IBOutlet UIButton *gifButton;
 @property (nonatomic, strong) IBOutlet UILabel *remainingCharacterLabel;
 @property (nonatomic, weak) UITextView *editingTextView;
 
@@ -123,14 +122,12 @@ static NSString * const kCommentBarKey = @"commentBar";
     // Automation Support
     self.imageButton.accessibilityIdentifier = VAutomationIdentifierCommentBarImageButton;
     self.videoButton.accessibilityIdentifier = VAutomationIdentifierCommentBarVideoButton;
-    self.gifButton.accessibilityIdentifier = VAutomationIdentifierCommentBarGIFButton;
     self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
 }
 
 - (void)setSequencePermissions:(VSequencePermissions *)sequencePermissions
 {
     _sequencePermissions = sequencePermissions;
-    self.gifButton.hidden = !sequencePermissions.canAddGifComments;
 }
 
 - (void)addTextViewToContainer

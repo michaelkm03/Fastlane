@@ -15,7 +15,6 @@ public struct Sequence: StreamItemType, JSONDeseriealizable {
     public let headline: String?
     public let name: String?
     public let commentCount: Int?
-    public let gifCount: Int?
     public let likeCount: Int?
     public let memeCount: Int?
     public let repostCount: Int?
@@ -81,7 +80,6 @@ extension Sequence {
         permissionsMask         = json["permissions"].int
         nameEmbeddedInContent   = json["name_embedded_in_content"].bool
         commentCount            = json["sequence_counts"]["comments"].int
-        gifCount                = json["sequence_counts"]["gifs"].int
         memeCount               = json["sequence_counts"]["memes"].int
         repostCount             = json["sequence_counts"]["reposts"].int
         likeCount               = json["sequence_counts"]["likes"].int

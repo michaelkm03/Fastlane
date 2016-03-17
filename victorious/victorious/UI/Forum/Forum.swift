@@ -28,7 +28,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
-/// intended as a concise and flexible mini-architecture and defines the 
+/// intended as a concise and flexible mini-architecture and defines the
 /// most fundamental interation between parent and subcomponents.
 extension Forum {
     
@@ -55,7 +55,7 @@ extension Forum {
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
-  
+        
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
@@ -68,16 +68,20 @@ extension Forum {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        chatFeed?.setEdgeInsets(UIEdgeInsets(top: stage?.contentHeight ?? 0, left: 0, bottom: height, right: 0))
+        chatFeed?.setBottomInset(height ?? 0)
     }
     
     // MARK: - StageDelegate
     
+    func stage(stage: Stage, didUpdateContentSize size: CGSize) {
+        chatFeed?.setTopInset(size.height)
+    }
+    
     func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {
-  
+        
     }
     
     func stage(stage: Stage, didSelectMedia media: ForumMedia) {
- 
+        
     }
 }

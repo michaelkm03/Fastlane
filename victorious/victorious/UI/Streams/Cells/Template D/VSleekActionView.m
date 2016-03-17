@@ -72,10 +72,6 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
         {
             [identifier appendString:@"Meme."];
         }
-        if ( sequence.permissions.canGIF )
-        {
-            [identifier appendString:@"Gif."];
-        }
     }
     else
     {

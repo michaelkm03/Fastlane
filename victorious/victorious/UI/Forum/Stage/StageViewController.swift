@@ -14,6 +14,14 @@ class StageViewController: UIViewController, Stage {
     
     weak var delegate: StageDelegate?
     
+    // MARK: - UIViewController overrides
+    
+    override func viewWillAppear(animated: Bool) {
+        let randomContentHeight = CGFloat(20 + arc4random() % 40)
+        let size = CGSize(width: view.bounds.width, height: randomContentHeight)
+        delegate?.stage(self, didUpdateContentSize: size)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,9 +42,5 @@ class StageViewController: UIViewController, Stage {
     
     func stopPlayingContent() {
         
-    }
-    
-    var contentHeight: CGFloat {
-        return 50.0
     }
 }

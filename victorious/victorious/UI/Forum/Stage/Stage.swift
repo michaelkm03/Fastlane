@@ -14,11 +14,19 @@ protocol Stage: class, ForumEventReceiver {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    var contentHeight: CGFloat { get }
-    
     /// Replaces the currently playing media with the one provided.
     func startPlayingMedia(media: VAsset)
     
     /// Stops displaying the currently shown media.
     func stopPlayingContent()
+}
+
+/// Conformers will recieve messages related to stage media.
+protocol StageDelegate: class {
+    
+    func stage(stage: Stage, didUpdateContentSize size: CGSize)
+    
+    func stage(stage: Stage, didUpdateWithMedia media: ForumMedia)
+    
+    func stage(stage: Stage, didSelectMedia media: ForumMedia)
 }

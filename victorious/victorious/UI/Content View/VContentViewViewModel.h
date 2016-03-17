@@ -89,7 +89,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, assign) BOOL isLoadingComments;
 @property (nonatomic, assign) BOOL hasReposted;
 @property (nonatomic, readonly) NSString *memeCountText;
-@property (nonatomic, readonly) NSString *gifCountText;
 @property (nonatomic, readonly) NSString *repostCountText;
 @property (nonatomic, readonly) NSString *shareCountText;
 @property (nonatomic, readonly) NSString *authorName;

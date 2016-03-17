@@ -8,13 +8,14 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, MoreContentControllerDelegate, MessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, NewItemsControllerDelegate, MessageCellDelegate {
     
     weak var delegate: ChatFeedDelegate? //< ChatFeed protocol
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
     private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
+    private var bottomMargin: CGFloat = 10.0
     private let gradientBlendLength: CGFloat = 80.0
     
     var dependencyManager: VDependencyManager!
@@ -41,9 +42,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     private var selectedMessageUserID: Int?
     
-    @IBOutlet private var moreContentController: MoreContentController!
+    @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
+    @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
     
     var shouldStashNewContent = false {
         didSet {
@@ -56,7 +58,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         gradientMask.frame = collectionContainerView.bounds
     }
     
-    // MARK: - MoreContentControllerDelegate
+    // MARK: - NewItemsControllerDelegate
     
     func onMoreContentSelected() {
         shouldStashNewContent = false
@@ -84,8 +86,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
-        collectionView.backgroundColor = UIColor.clearColor()
         
+        scrollPaginator.activeOnlyWhenUserIsScrolling = true
         scrollPaginator.delegate = self
         
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
@@ -235,26 +237,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         scrollPaginator.scrollViewWillBeginDragging(scrollView)
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidEndDecelerating(scrollView)
-    }
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
     
     //MARK: - ChatFeed
     
-    func setEdgeInsets(insets: UIEdgeInsets) {
-        self.edgeInsets = UIEdgeInsets(top: 0.0, left: 0, bottom: insets.bottom, right: 0.0)
-        self.collectionView.collectionViewLayout.invalidateLayout()
-        self.view.layoutIfNeeded()
+    func setTopInset(value: CGFloat) {
         
-        let offset = collectionView.v_bottomOffset
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(0.5)
-        collectionView.setContentOffset(offset, animated:true)
-        CATransaction.commit()
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        collectionConainerCenterVertical.constant = -value
+        view.layoutIfNeeded()
     }
 }
 
