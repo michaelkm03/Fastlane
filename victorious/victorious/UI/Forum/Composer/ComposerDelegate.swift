@@ -15,9 +15,9 @@ protocol ComposerDelegate: class {
     
     func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab)
 
-    func composer(composer: Composer, didPressSendWithMedia media: MediaAttachment, caption: String?)
+    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?)
     
-    func composer(composer: Composer, didPressSendWithCaption caption: String)
+    func composer(composer: Composer,  confirmedWithCaption caption: String)
     
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer content (including the keyboard) and can be more

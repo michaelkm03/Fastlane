@@ -184,7 +184,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
 - (void)updatePlaceholderAttributedText
 {
-    if (self.attributedText.string.length == 0)
+    if (self.attributedText.string.length == 0 || self.placeholderTextView.text.length == 0)
     {
         return;
     }

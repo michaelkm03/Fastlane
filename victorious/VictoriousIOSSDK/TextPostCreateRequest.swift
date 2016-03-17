@@ -6,7 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+#if os(iOS)
+
+import UIKit
 
 public struct TextPostParameters {
     public let content: String
@@ -54,3 +56,5 @@ public struct TextPostCreateRequest: RequestType {
         return textPostSequenceID
     }
 }
+
+#endif
