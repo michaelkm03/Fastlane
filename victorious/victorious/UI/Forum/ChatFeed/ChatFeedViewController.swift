@@ -15,6 +15,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
     private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
+    private var bottomMargin: CGFloat = 30.0
     private let gradientBlendLength: CGFloat = 80.0
     
     var dependencyManager: VDependencyManager!
@@ -240,10 +241,26 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     //MARK: - ChatFeed
     
-    func setEdgeInsets(insets: UIEdgeInsets) {
-        self.edgeInsets = UIEdgeInsets(top: 0.0, left: 0, bottom: insets.bottom, right: 0.0)
-        self.collectionView.collectionViewLayout.invalidateLayout()
-        self.view.layoutIfNeeded()
+    func setTopInset(value: CGFloat) {
+        edgeInsets = UIEdgeInsets(
+            top:edgeInsets.top,
+            left: edgeInsets.left,
+            bottom: value + bottomMargin,
+            right: edgeInsets.top
+        )
+        collectionView.collectionViewLayout.invalidateLayout()
+        view.layoutIfNeeded()
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        edgeInsets = UIEdgeInsets(
+            top:edgeInsets.top,
+            left: edgeInsets.left,
+            bottom: value + bottomMargin,
+            right: edgeInsets.top
+        )
+        collectionView.collectionViewLayout.invalidateLayout()
+        view.layoutIfNeeded()
         
         let offset = collectionView.v_bottomOffset
         CATransaction.begin()

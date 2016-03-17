@@ -14,5 +14,7 @@ protocol ChatFeed: class {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    func setEdgeInsets(insets: UIEdgeInsets)
+    func setBottomInset(value: CGFloat)
+    
+    func setTopInset(value: CGFloat)
 }
