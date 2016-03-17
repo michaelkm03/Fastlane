@@ -18,7 +18,8 @@
     UIGraphicsBeginImageContextWithOptions(size, false, 0.0);
     [squaredImage drawInRect:CGRectMake(0, 0, newSize, newSize)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
+    UIGraphicsEndImageContext();
+
     return newImage;
 }
 

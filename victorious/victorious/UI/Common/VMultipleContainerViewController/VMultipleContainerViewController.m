@@ -111,22 +111,6 @@ static NSString * const kInitialKey = @"initial";
     [super viewWillAppear:animated];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    
-    if ( !self.didShowInitial )
-    {
-        UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
-        NSUInteger index = 0;
-        if ( initialViewController != nil )
-        {
-            index = [self.viewControllers indexOfObject:initialViewController];
-            if ( index == NSNotFound )
-            {
-                index = 0;
-            }
-        }
-        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
-        [self.selector setActiveViewControllerIndex:index];
-    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -138,7 +122,6 @@ static NSString * const kInitialKey = @"initial";
     {
         self.flowLayout.itemSize = newItemSize;
         [self updateBadge];
-        [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO isDefaultSelection:YES];
     }
 }
 
@@ -153,18 +136,26 @@ static NSString * const kInitialKey = @"initial";
     
     if ( !self.didShowInitial )
     {
-        if ( !self.isInitialViewController )
+        UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
+        NSUInteger index = 0;
+        if ( initialViewController != nil )
         {
-            if ([self.viewControllers.firstObject isKindOfClass:[UITableViewController class]])
+            index = [self.viewControllers indexOfObject:initialViewController];
+            if ( index == NSNotFound )
             {
-                [self.collectionView reloadData];
+                index = 0;
             }
         }
+        if ([self.viewControllers.firstObject isKindOfClass:[UITableViewController class]])
+        {
+            [self.collectionView reloadData];
+        }
+        
+        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+        [self.selector setActiveViewControllerIndex:index];
+        
         self.didShowInitial = YES;
     }
-    
-    id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    [child multipleContainerDidSetSelected:YES];
 }
 
 #pragma mark - Rotation

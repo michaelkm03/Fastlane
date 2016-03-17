@@ -13,8 +13,6 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: TrendingUsersRequest! = TrendingUsersRequest()
     
-    private var resultObjectIDs = [NSManagedObjectID]()
-    
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
@@ -22,29 +20,22 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
     func onComplete( networkResult: TrendingUsersRequest.ResultType ) {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            var persistentUsers = [VUser]()
             for networkUser in networkResult {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])
                 persistentUser.populate(fromSourceModel: networkUser)
-                persistentUsers.append(persistentUser)
             }
             context.v_save()
-            self.resultObjectIDs = persistentUsers.map { $0.objectID }
+            let userIDs = networkResult.map { $0.userID }
+            self.results = self.fetchResults(userIDs)
         }
-        
-        self.results = self.fetchResults()
     }
     
-    func fetchResults() -> [AnyObject] {
+    private func fetchResults(networkUserIDs: [Int]) -> [VUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            var mainQueueUsers = [VUser]()
-            for foundFriendObjectID in self.resultObjectIDs {
-                let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
-                if let mainQueuePersistentUser = mainQueuePersistentUser {
-                    mainQueueUsers.append(mainQueuePersistentUser)
-                }
-            }
-            return mainQueueUsers
+            let fetchRequest = NSFetchRequest(entityName: VUser.v_entityName())
+            let predicate = NSPredicate(format: "remoteId IN %@", networkUserIDs)
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest(fetchRequest)
         }
     }
 }

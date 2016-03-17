@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import VictoriousIOSSDK
+@testable import victorious
 import XCTest
 
 class NetworkActivityIndicatorTests: XCTestCase {
