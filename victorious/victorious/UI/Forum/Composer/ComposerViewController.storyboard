@@ -72,6 +72,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Uhd-jy-MWr" firstAttribute="top" secondItem="Koq-m5-Wlb" secondAttribute="bottom" id="5dC-ih-OHN"/>
+                            <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="kPa-TQ-cMr" secondAttribute="bottom" id="MBc-aO-6dv"/>
                             <constraint firstAttribute="trailing" secondItem="Koq-m5-Wlb" secondAttribute="trailing" id="QXK-Uc-KrL"/>
                             <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="DkO-lo-gQh" secondAttribute="leading" id="SO1-z4-PRo"/>
                         </constraints>
@@ -81,6 +82,7 @@
                         <outlet property="attachmentContainerHeightConstraint" destination="RlM-AL-BQg" id="RWR-Gl-XJz"/>
                         <outlet property="attachmentContainerView" destination="5MN-kC-AjT" id="Myy-dz-PGb"/>
                         <outlet property="attachmentTabBar" destination="joT-P4-Pfz" id="LbM-S1-dyv"/>
+                        <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="inputViewToBottomConstraint" destination="5dC-ih-OHN" id="JdC-aN-wNj"/>
                         <outlet property="interactiveContainerView" destination="Koq-m5-Wlb" id="1il-EP-faW"/>
                         <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>

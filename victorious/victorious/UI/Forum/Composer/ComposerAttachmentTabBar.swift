@@ -12,6 +12,31 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     weak var delegate: ComposerAttachmentTabBarDelegate?
     
+    var tabItemTintColor: UIColor? = nil {
+        didSet {
+            
+            var buttons = [UIButton]()
+            for view in actionItems {
+                if let button = view as? UIButton {
+                    buttons.append(button)
+                }
+            }
+            
+            guard buttons.count > 0 else {
+                return
+            }
+            
+            let renderingMode: UIImageRenderingMode = tabItemTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
+            for button in buttons {
+                let updatedImage = button.imageForState(.Normal)?.imageWithRenderingMode(renderingMode)
+                button.setImage(updatedImage, forState: .Normal)
+                if let tabItemTintColor = tabItemTintColor {
+                    button.tintColor = tabItemTintColor
+                }
+            }
+        }
+    }
+    
     func setupWithAttachmentMenuItems(navigationMenuItems: [VNavigationMenuItem]?, maxNumberOfMenuItems: Int) {
         
         var actionItems = [UIView]()

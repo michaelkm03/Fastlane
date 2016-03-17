@@ -13,7 +13,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private struct Constants {
         
         static let animationDuration = 0.2
-        static let minimumTextViewHeight: CGFloat = 34
+        static let minimumTextViewHeight: CGFloat = 42
         static let maximumNumberOfTabs = 4
     }
     
@@ -32,6 +32,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet private var attachmentContainerView: UIView!
     
     @IBOutlet private var interactiveContainerView: UIView!
+    
+    @IBOutlet private var confirmButton: UIButton!
     
     private var composerTextViewManager: ComposerTextViewManager?
     
@@ -75,7 +77,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             maximumTextLength = dependencyManager.maximumTextLength()
             let userIsOwner = VCurrentUser.user()?.isCreator.boolValue ?? false
             attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
-            updateBackground()
+            updateAppearanceFromDependencyManager()
         }
     }
     
@@ -128,7 +130,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         setupAttachmentTabBar()
         setupTextView()
-        updateBackground()
+        updateAppearanceFromDependencyManager()
     }
     
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
@@ -181,7 +183,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
-        textView.textContainer.heightTracksTextView = true
         textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
     }
     
@@ -192,10 +193,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func updateBackground() {
-        if isViewLoaded() {
-            dependencyManager?.addBackgroundToBackgroundHost(self)
+    private func updateAppearanceFromDependencyManager() {
+        guard let dependencyManager = dependencyManager where isViewLoaded() else {
+            return
         }
+        
+        dependencyManager.addBackgroundToBackgroundHost(self)
+        textView.font = dependencyManager.inputTextFont()
+        textView.setPlaceholderFont(dependencyManager.inputTextFont())
+        textView.textColor = dependencyManager.inputTextColor()
+        textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor())
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor(), forState: .Normal)
+        confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont()
+        attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor()
     }
     
     // MARK: - Actions
@@ -223,5 +233,29 @@ private extension VDependencyManager {
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
         let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
         return menuItemsForKey(menuItemKey) as? [VNavigationMenuItem]
+    }
+    
+    func inputTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    func inputPlaceholderTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
+    }
+    
+    func confirmButtonTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerAccentColorKey)
+    }
+    
+    func inputTextFont() -> UIFont {
+        return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+    
+    func confirmButtonTextFont() -> UIFont {
+        return fontForKey(VDependencyManagerLabel4FontKey)
+    }
+    
+    func tabItemTintColor() -> UIColor {
+        return colorForKey(VDependencyManagerLinkColorKey)
     }
 }

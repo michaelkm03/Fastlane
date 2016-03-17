@@ -48,8 +48,8 @@
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="bottom" id="A9t-Ir-fSu"/>
                             <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="ClE-8b-tG4"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="H8J-He-Mwc"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BWd-6Y-0dE" secondAttribute="topMargin" id="OwO-Qb-We0"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="BWd-6Y-0dE" secondAttribute="top" id="Wf5-Hp-aBp"/>
-                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BWd-6Y-0dE" secondAttribute="topMargin" id="jld-vr-W3r"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="jpZ-uG-gJN"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="quh-35-4jW"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="BWd-6Y-0dE" secondAttribute="top" id="z9P-St-pRl"/>
