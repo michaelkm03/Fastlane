@@ -42,11 +42,9 @@ class CreateMediaUploadOperation: BackgroundOperation {
     }
     
     private func upload(uploadManager: VUploadManager) {
-        if !publishParameters.isGIF {
-            guard let _ = mediaURL else {
-                completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
-                return
-            }
+        if !publishParameters.isGIF && mediaURL == nil{
+            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
+            return
         }
         
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
