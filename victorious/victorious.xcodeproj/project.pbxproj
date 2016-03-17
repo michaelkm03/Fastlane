@@ -1085,7 +1085,6 @@
 		A73BA2C41C9393ED008168B5 /* ChatFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */; };
 		A73BA2C51C9393ED008168B5 /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B21C9393ED008168B5 /* ChatFeed.swift */; };
 		A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */; };
-		A73BA2C71C9393ED008168B5 /* ChatFeedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B41C9393ED008168B5 /* ChatFeedDelegate.swift */; };
 		A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */; };
 		A73BA2C91C9393ED008168B5 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B71C9393ED008168B5 /* MessageCell.swift */; };
 		A73BA2CA1C9393ED008168B5 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2B81C9393ED008168B5 /* MessageCell.xib */; };
@@ -3483,7 +3482,6 @@
 		A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChatFeed.storyboard; sourceTree = "<group>"; };
 		A73BA2B21C9393ED008168B5 /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
 		A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
-		A73BA2B41C9393ED008168B5 /* ChatFeedDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDelegate.swift; sourceTree = "<group>"; };
 		A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A73BA2B71C9393ED008168B5 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		A73BA2B81C9393ED008168B5 /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
@@ -7651,7 +7649,6 @@
 				A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */,
 				A73BA2B21C9393ED008168B5 /* ChatFeed.swift */,
 				A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */,
-				A73BA2B41C9393ED008168B5 /* ChatFeedDelegate.swift */,
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
 				A73BA2BC1C9393ED008168B5 /* MoreContentController.swift */,
@@ -11970,7 +11967,6 @@
 				B0E1584E1B715269004F0A60 /* VUtilityButtonFlowLayout.m in Sources */,
 				F0E0F1B61AE8BFE200143CBF /* VInsetMarqueeController.m in Sources */,
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
-				A7E8D0711C92163D00D126BF /* VFlaggedContent.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
@@ -12119,7 +12115,6 @@
 				A72C86811C977FF600E97D4F /* UnfollowUsersRemoteOperation.swift in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
 				D8A411C21AE5B17A000A7229 /* VCreationInfoContainer.m in Sources */,
-				A73BA2C71C9393ED008168B5 /* ChatFeedDelegate.swift in Sources */,
 				A72C867C1C977FF600E97D4F /* SequenceLikersRemoteOperation.swift in Sources */,
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */,

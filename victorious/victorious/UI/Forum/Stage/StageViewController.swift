@@ -20,6 +20,12 @@ class StageViewController: UIViewController, Stage {
         view.backgroundColor = UIColor.v_colorFromHexString("170724")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let randomContentHeight = CGFloat(20 + arc4random() % 40)
+        let size = CGSize(width: view.bounds.width, height: randomContentHeight)
+        delegate?.stage(self, didUpdateContentSize: size)
+    }
+    
     //MARK: - StageController
     
     func startPlayingMedia(media: VAsset) {
@@ -28,9 +34,5 @@ class StageViewController: UIViewController, Stage {
     
     func stopPlayingContent() {
         
-    }
-    
-    var contentHeight: CGFloat {
-        return 50.0
     }
 }

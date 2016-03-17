@@ -15,7 +15,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
     private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
-    private var bottomMargin: CGFloat = 30.0
+    private var bottomMargin: CGFloat = 10.0
     private let gradientBlendLength: CGFloat = 80.0
     
     var dependencyManager: VDependencyManager!
@@ -45,6 +45,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private var moreContentController: MoreContentController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
+    @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
     
     var shouldStashNewContent = false {
         didSet {
@@ -79,7 +80,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
-        collectionView.backgroundColor = UIColor.clearColor()
         
         scrollPaginator.delegate = self
         
@@ -242,19 +242,22 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        edgeInsets = UIEdgeInsets(
-            top:edgeInsets.top,
+        /*edgeInsets = UIEdgeInsets(
+            top:  value,
             left: edgeInsets.left,
             bottom: value + bottomMargin,
             right: edgeInsets.top
         )
         collectionView.collectionViewLayout.invalidateLayout()
-        view.layoutIfNeeded()
+        view.layoutIfNeeded()*/
     }
     
     func setBottomInset(value: CGFloat) {
-        edgeInsets = UIEdgeInsets(
-            top:edgeInsets.top,
+        collectionConainerCenterVertical.constant = -value
+        view.layoutIfNeeded()
+        
+        /*edgeInsets = UIEdgeInsets(
+            top: edgeInsets.top,
             left: edgeInsets.left,
             bottom: value + bottomMargin,
             right: edgeInsets.top
@@ -266,7 +269,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.5)
         collectionView.setContentOffset(offset, animated:true)
-        CATransaction.commit()
+        CATransaction.commit()*/
     }
 }
 

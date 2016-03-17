@@ -37,6 +37,13 @@ class ForumViewController: UIViewController, Forum {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Exit", comment: ""),
+            style: .Plain,
+            target: self,
+            action: Selector("onClose")
+        )
+        
         self.title = dependencyManager.title
         self.view.backgroundColor = dependencyManager.backgroundColor
     }
@@ -65,8 +72,8 @@ class ForumViewController: UIViewController, Forum {
     
     // MARK: - Actions
     
-    @IBAction func onClose(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func onClose() {
+        navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

@@ -29,7 +29,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant : 0
+        guard isViewLoaded() else {
+            return 0.0
+        }
+        return fabs(inputViewToBottomConstraint.constant)
+            + textViewHeightConstraint.constant
+            + attachmentContainerHeightConstraint.constant 
     }
     
     /// The maximum number of characters a user can input into
@@ -71,9 +76,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.updateViewsForNewVisibleKeyboardHeight(0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
     }
     
-    // MARK: - ComposerController
+    // MARK: - Composer
     
     var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
+    
+    func dismissKeyboard(animated: Bool) {
+        textView.resignFirstResponder()
+    }
     
     // MARK: - ComposerTextViewManagerDelegate
     

@@ -76,6 +76,7 @@ class MoreContentController: NSObject {
                 return
             }
             self.buttonToBottomConstraint.constant = bottomConstant
+            self.button.alpha = 1.0
             self.button.layoutIfNeeded()
         }
         if animated {
@@ -97,8 +98,9 @@ class MoreContentController: NSObject {
             return
         }
         let animations = {
-            self.buttonToBottomConstraint.constant = -self.button.bounds.height
+            self.buttonToBottomConstraint.constant = self.button.bounds.height
             self.button.layoutIfNeeded()
+            self.button.alpha = 0.0
         }
         let completion = { (_:Bool) in
             self.count = 0
@@ -136,6 +138,7 @@ private extension VDependencyManager {
     }
     
     var backgroundColor: UIColor {
+        return UIColor.redColor()
         return colorForKey("color.background")
     }
 }

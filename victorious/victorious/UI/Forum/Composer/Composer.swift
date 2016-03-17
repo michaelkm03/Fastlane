@@ -17,4 +17,6 @@ protocol Composer: class {
     weak var delegate: ComposerDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
+    
+    func dismissKeyboard(animated: Bool)
 }
