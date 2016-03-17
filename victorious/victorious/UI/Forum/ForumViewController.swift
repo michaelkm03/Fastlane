@@ -44,8 +44,11 @@ class ForumViewController: UIViewController, ComposerDelegate {
         if let stageViewController = destination as? StageViewController {
             stageViewController.dependencyManager = dependencyManager
         } else if let composerViewController = destination as? ComposerViewController {
-            composerViewController.dependencyManager = dependencyManager
             composerViewController.delegate = self
+            guard let composerConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: "composer", withAddedDependencies: nil) as? [NSObject : AnyObject] else {
+                return
+            }
+            composerViewController.dependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(composerConfiguration)
         }
         // Uncomment the following lines once the chat feed view controller is added
         // to the project.

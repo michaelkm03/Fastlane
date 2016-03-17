@@ -13,7 +13,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private struct Constants {
         
         static let animationDuration = 0.2
-        static let minimumTextViewHeight: CGFloat = 32
+        static let minimumTextViewHeight: CGFloat = 34
         static let maximumNumberOfTabs = 4
     }
     
@@ -194,7 +194,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func updateBackground() {
         if isViewLoaded() {
-            dependencyManager?.addBackgroundToBackgroundHost(self, forKey: "composerBackground")
+            dependencyManager?.addBackgroundToBackgroundHost(self)
         }
     }
     
