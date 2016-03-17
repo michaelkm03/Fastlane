@@ -34,13 +34,19 @@ class CreateMediaUploadOperation: BackgroundOperation {
         upload(uploadManager)
     }
     
-    private func completionError() {
+    private func completionError(error: NSError?) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
+            self.uploadCompletion(error)
+            self.finishedExecuting()
         }
     }
     
     private func upload(uploadManager: VUploadManager) {
+        guard let _ = mediaURL where !publishParameters.isGIF else {
+            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
+            return
+        }
+        
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
@@ -50,19 +56,14 @@ class CreateMediaUploadOperation: BackgroundOperation {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in }
         } catch {
-            completionError()
-            self.finishedExecuting()
+            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
         
-        if let mediaURL = formFields["media_data"] as? NSURL {
+        if let mediaURL = mediaURL {
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
         }
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion(nil)
-            self.finishedExecuting()
-        }
+        completionError(nil)
     }
     
     private var formFields: [NSObject : AnyObject] {
@@ -73,14 +74,7 @@ class CreateMediaUploadOperation: BackgroundOperation {
             "did_trim" : publishParameters.didTrim ? "true" : "false",
         ]
         if !publishParameters.isGIF {
-            if let mediaURL = mediaURL {
-                dict["media_data"] = mediaURL
-            }
-            else {
-                // If we do not have a mediaURL we fail
-                completionError()
-                finishedExecuting()
-            }
+            dict["media_data"] = mediaURL ?? NSURL(string: "")
         }
         
         if let filterName = publishParameters.filterName {
