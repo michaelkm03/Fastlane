@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
     </dependencies>
@@ -50,11 +50,6 @@
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" constant="-20" id="zva-ji-N25"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="chatFeedContainer" destination="dCr-Dr-Gbg" id="0ek-mV-9Fl"/>
-                        <outlet property="composerContainer" destination="3Ba-Yb-hke" id="iII-zN-LSz"/>
-                        <outlet property="stageContainer" destination="n69-dn-iF9" id="vzG-Ij-nTb"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -8,17 +8,15 @@
 
 import UIKit
 
+/// A a drive .screen component that sets up, houses and mediates the interaction
+/// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum {
-
-    @IBOutlet private weak var chatFeedContainer: UIView!
-    @IBOutlet private weak var composerContainer: UIView!
-    @IBOutlet private weak var stageContainer: UIView!
+    
+    // MARK: - Forum protocol requirements
     
     var stage: Stage?
     var composer: Composer?
     var chatFeed: ChatFeed?
-    
-    // MARK: - Forum
     
     var dependencyManager: VDependencyManager!
     
@@ -34,7 +32,7 @@ class ForumViewController: UIViewController, Forum {
         return forumVC
     }
     
-    // MARK: - UIViewController
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,12 +82,10 @@ private extension VDependencyManager {
     }
     
     var chatFeedDependency: VDependencyManager {
-        let configuration = templateValueOfType(NSDictionary.self, forKey: "chatFeed") as! [NSObject: AnyObject]
-        return self.childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyForKey("chatFeed")!
     }
     
     var composerDependency: VDependencyManager {
-        let configuration = templateValueOfType(NSDictionary.self, forKey: "composer") as! [NSObject: AnyObject]
-        return self.childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyForKey("composer")!
     }
 }

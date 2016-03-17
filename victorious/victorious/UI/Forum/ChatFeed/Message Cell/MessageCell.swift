@@ -35,7 +35,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     var layout: MessageCellLayout! {
         didSet {
-            layout.updateLayout(self)
+            layout.updateWithCell(self)
         }
     }
     
@@ -59,7 +59,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
         didSet {
             populateData()
             updateStyle()
-            layout.updateLayout(self)
+            layout.updateWithCell(self)
         }
     }
     
@@ -73,7 +73,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layout.updateLayout(self)
+        layout.updateWithCell(self)
     }
     
     // MARK: - Gesture Recognizer Actions
@@ -92,18 +92,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
         detailTextView.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.messageTextColor.colorWithAlphaComponent(0.5).CGColor
+        bubbleView.layer.borderColor = dependencyManager.messageTextColor.CGColor
         bubbleView.layer.cornerRadius = 5.0
         bubbleView.layer.borderWidth = 1.0
         
         avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
         avatarView.backgroundColor = dependencyManager.backgroundColor
-        
-        backgroundColor = UIColor.clearColor()
-        contentContainer.backgroundColor = UIColor.clearColor()
-        messageContainer.backgroundColor = UIColor.clearColor()
-        avatarContainer.backgroundColor = UIColor.clearColor()
-        mediaView.backgroundColor = UIColor.clearColor()
     }
     
     private func populateData() {

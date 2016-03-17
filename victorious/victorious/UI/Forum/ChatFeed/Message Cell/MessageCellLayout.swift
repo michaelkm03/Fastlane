@@ -10,14 +10,14 @@ import Foundation
 
 protocol MessageCellLayout {
     var textAlignment: NSTextAlignment { get }
-    func updateLayout(cell: MessageCell)
+    func updateWithCell(cell: MessageCell)
 }
 
 struct LeftAlignmentCellLayout: MessageCellLayout {
     
     let textAlignment: NSTextAlignment = .Left
     
-    func updateLayout(cell: MessageCell) {
+    func updateWithCell(cell: MessageCell) {
         let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
         let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(
@@ -75,7 +75,7 @@ struct RightAlignmentCellLayout: MessageCellLayout {
     
     let textAlignment: NSTextAlignment = .Right
     
-    func updateLayout(cell: MessageCell) {
+    func updateWithCell(cell: MessageCell) {
         let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
         let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(

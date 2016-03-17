@@ -8,11 +8,17 @@
 
 import Foundation
 
+/// Defines an object that requires these few properties in order to execute
+/// the highest-level, abstract Forum business logic.  Plug and play :)
 protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
-
+    
+    // MARK: - Concrete dependencies
+    
     var dependencyManager: VDependencyManager! { get }
     
     var originViewController: UIViewController { get }
+    
+    // MARK: - Abstract subcomponents/dependencies
     
     var stage: Stage? { get }
     
@@ -21,6 +27,9 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     var chatFeed: ChatFeed? { get }
 }
 
+/// The default implementation of the highest-level, abstract Forum business logic,
+/// intended as a concise and flexible mini-architecture and defines the 
+/// most fundamental interation between parent and subcomponents.
 extension Forum {
     
     // MARK: - ChatFeedDelegate

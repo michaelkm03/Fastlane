@@ -256,7 +256,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
 private extension VDependencyManager {
     
     var newItemsDependency: VDependencyManager {
-        let configuration = templateValueOfType(NSDictionary.self, forKey: "newItems") as! [NSObject: AnyObject]
-        return self.childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyForKey("newItems")!
     }
 }
