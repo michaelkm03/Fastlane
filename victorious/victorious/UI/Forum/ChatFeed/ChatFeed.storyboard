@@ -76,7 +76,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CL-ip-iM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="HjE-OH-UhY" customClass="MoreContentController" customModule="victorious" customModuleProvider="target">
+                <customObject id="HjE-OH-UhY" customClass="NewItemsController" customModule="victorious" customModuleProvider="target">
                     <connections>
                         <outlet property="button" destination="qNw-uD-Ufa" id="6bh-Dk-DF1"/>
                         <outlet property="buttonToBottomConstraint" destination="JiN-Ra-AIE" id="hr7-Y6-j0M"/>

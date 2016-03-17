@@ -1,5 +1,5 @@
 //
-//  MoreContentController.swift
+//  NewItemsController.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/24/16.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-@objc protocol MoreContentControllerDelegate {
+@objc protocol NewItemsControllerDelegate {
     func onMoreContentSelected()
 }
 
-class MoreContentController: NSObject {
+class NewItemsController: NSObject {
     
     let largeNumberFormatter = VLargeNumberFormatter()
     
@@ -44,7 +44,7 @@ class MoreContentController: NSObject {
             button.layoutIfNeeded()
         }
     }
-    @IBOutlet weak var delegate: MoreContentControllerDelegate?
+    @IBOutlet weak var delegate: NewItemsControllerDelegate?
     
     @IBOutlet weak var buttonWidthConstraint: NSLayoutConstraint!
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, MoreContentControllerDelegate, MessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, NewItemsControllerDelegate, MessageCellDelegate {
     
     weak var delegate: ChatFeedDelegate? //< ChatFeed protocol
     
@@ -42,7 +42,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     private var selectedMessageUserID: Int?
     
-    @IBOutlet private var moreContentController: MoreContentController!
+    @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
     @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
@@ -58,7 +58,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         gradientMask.frame = collectionContainerView.bounds
     }
     
-    // MARK: - MoreContentControllerDelegate
+    // MARK: - NewItemsControllerDelegate
     
     func onMoreContentSelected() {
         shouldStashNewContent = false
