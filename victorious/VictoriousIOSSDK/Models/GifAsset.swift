@@ -25,7 +25,6 @@ extension GifAsset {
             let url = NSURL(string: urlString) else {
                 return nil
         }
-        self.url = url
         
         if let width = json["width"].int, let height = json["height"].int {
             size = CGSize(width: width, height: height)
@@ -37,5 +36,6 @@ extension GifAsset {
         
         // MARK: Stageable
         self.duration = json["duration"].double
+        self.url = url
     }
 }

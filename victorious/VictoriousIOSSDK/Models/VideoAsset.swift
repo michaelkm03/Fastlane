@@ -39,7 +39,6 @@ public struct VideoAsset: Stageable {
             return nil
         }
         
-        self.url = url
         self.mimeType = VideoType(rawValue:mimeType)!
         self.data = data
         
@@ -53,5 +52,6 @@ public struct VideoAsset: Stageable {
         
         // MARK: Stageable
         self.duration = json["duration"].double
+        self.url = url
     }
 }
