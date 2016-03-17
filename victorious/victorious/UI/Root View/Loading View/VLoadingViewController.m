@@ -149,7 +149,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     }
     self.isLoading = YES;
     
-   
+    [[[TempDirectoryCleanupOperation alloc] init] queueWithCompletion:nil];
+    
     self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[StoredLoginOperation alloc] init];
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[PersistenceTemplateDownloader alloc] init]
                                                                                 andDelegate:self];

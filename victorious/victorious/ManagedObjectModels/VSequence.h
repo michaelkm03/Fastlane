@@ -21,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * createdBy;
 @property (nonatomic, retain, nullable) NSDate * expiresAt;
 @property (nonatomic, retain, nullable) NSString * gameStatus;
-@property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * hasReposted;
 @property (nonatomic, retain) NSNumber * isComplete;
 @property (nonatomic, retain) NSNumber * isLikedByMainUser;

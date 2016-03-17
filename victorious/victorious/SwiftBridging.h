@@ -20,6 +20,7 @@
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
 #import "NSURL+VDataCacheID.h"
+#import "NSURL+VTemporaryFiles.h"
 #import "UIColor+VBrightness.h"
 #import "UIColor+VHex.h"
 #import "UIImage+ImageCreation.h"
