@@ -7,14 +7,14 @@
 //
 
 import XCTest
+import VictoriousIOSSDK
 @testable import victorious
 
-class TempDirectoryCleanupOperationTests: XCTestCase {
+class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
     
     var fileURLs: [NSURL] = []
     private let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
     private let fileManager = NSFileManager.defaultManager()
-    private let operationQueue = NSOperationQueue()
 
     override func setUp() {
         super.setUp()
@@ -46,7 +46,7 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
         }
         
         let op = TempDirectoryCleanupOperation()
-        op.completionBlock = {
+        op.queue(){ _ in
             XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
             for urls in self.fileURLs {
                 XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
@@ -54,7 +54,6 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
             expectation.fulfill()
         }
         
-        operationQueue.addOperation(op)
         waitForExpectationsWithTimeout(100, handler: nil)
     }
 }
