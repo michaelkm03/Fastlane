@@ -42,7 +42,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var visibleKeyboardHeight: CGFloat = 0
     
     private var totalComposerHeight: CGFloat {
-        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant : 0
+        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant + attachmentContainerHeightConstraint.constant : 0
     }
     
     /// The maximum number of characters a user can input into
@@ -138,9 +138,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.visibleKeyboardHeight = visibleKeyboardHeight
         inputViewToBottomConstraint.constant = visibleKeyboardHeight
         delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
-        UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+        if animationDuration != 0 {
+            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        } else {
+            self.view.setNeedsLayout()
+        }
     }
     
     override func updateViewConstraints() {

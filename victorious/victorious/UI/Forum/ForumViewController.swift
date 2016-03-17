@@ -68,7 +68,7 @@ class ForumViewController: UIViewController, ComposerDelegate {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        composerViewControllerHeightConstraint.constant = height + 49
+        composerViewControllerHeightConstraint.constant = self.view.bounds.height
     }
     
     func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
