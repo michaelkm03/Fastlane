@@ -20,7 +20,8 @@ class ForumViewController: UIViewController {
     
     private var dependencyManager: VDependencyManager!
     
-    private var stageViewController: StageViewController?
+    private var stage: Stage?
+    
     
     //MARK: - Initialization
     
@@ -38,8 +39,9 @@ class ForumViewController: UIViewController {
         
         super.prepareForSegue(segue, sender: sender)
         let destination = segue.destinationViewController
-        if let stageViewController = destination as? StageViewController {
-//            stageViewController.dependencyManager = dependencyManager
+        if var stageViewController = destination as? Stage {
+            stage = stageViewController
+            stageViewController.dependencyManager = dependencyManager
         } else if let composerViewController = destination as? ComposerViewController {
             composerViewController.dependencyManager = dependencyManager
         }
@@ -55,32 +57,9 @@ class ForumViewController: UIViewController {
         
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
         view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
-        
-        // TODO: add the correct way...
-        addStageViewController()
     }
     
     func exit() {
-        removeStageViewController()
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    // MARK: - StageViewController
-    
-    func addStageViewController() {
-        let stageVC = StageViewController.new(dependencyManager: dependencyManager)
-        self.addChildViewController(stageVC)
-        view.addSubview(stageVC.view)
-        view.v_addFitToParentConstraintsToSubview(stageVC.view)
-        stageVC.didMoveToParentViewController(self)
-        stageViewController = stageVC
-    }
-    
-    func removeStageViewController() {
-        if let stageViewController = stageViewController {
-            stageViewController.willMoveToParentViewController(nil)
-            stageViewController.view.removeFromSuperview()
-            stageViewController.removeFromParentViewController()
-        }
     }
 }

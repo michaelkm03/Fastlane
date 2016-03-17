@@ -8,12 +8,12 @@
 
 import Foundation
 
-
+/**
+ *  This protocol allows conformers to be added to the Stage for a certain amount of time.
+ */
 public protocol Stageable {
     
     var duration: Double? { get }
     
-    var endTime: Double? { get }
-    
-    var resourceLocation: String? { get }
+    var url: NSURL { get }
 }

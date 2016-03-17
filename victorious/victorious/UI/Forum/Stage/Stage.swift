@@ -12,6 +12,8 @@ protocol Stage {
     
     weak var delegate: StageDelegate? { get set }
     
+    var dependencyManager: VDependencyManager! { get set }
+    
     /// Replaces the currently playing media with the one provided.
     func startPlayingMedia(media: Stageable)
     

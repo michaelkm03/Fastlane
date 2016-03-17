@@ -10,15 +10,14 @@ import Foundation
 
 public struct GifAsset: Stageable {
 
-    public let url: NSURL
     public let size: CGSize?
     public let thumbnailURL: String?
 
     // MARK: Stageable
     public let duration: Double?
-    public let endTime: Double?
-    public let resourceLocation: String?
+    public let url: NSURL
 }
+
 
 extension GifAsset {
     public init?(json: JSON) {
@@ -37,8 +36,6 @@ extension GifAsset {
         thumbnailURL = json["thumbnail_url"].string
         
         // MARK: Stageable
-        resourceLocation = url.absoluteString
-        endTime = json["end_time"].double
-        duration = json["duration"].double
+        self.duration = json["duration"].double
     }
 }

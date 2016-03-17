@@ -9,19 +9,17 @@
 /// A thumbnail, profile picture, or other image asset
 public struct ImageAsset: Stageable {
 
-    public let url: NSURL
     public let size: CGSize
     public let type: String
  
     // MARK: Stageable
-    public var duration: Double?
-    public var endTime: Double?
-    public var resourceLocation: String?
+    public let duration: Double?
+    public let url: NSURL
 }
 
 extension ImageAsset {
     public init?(json: JSON) {
-        guard let urlString = json["image_url"].string,
+        guard let urlString = json["imageURL"].string ?? json["image_url"].string,
             let url = NSURL(string: urlString),
             let type = json["type"].string,
             let width = json["width"].int,
@@ -34,8 +32,10 @@ extension ImageAsset {
         self.size = CGSize(width: width, height: height)
         
         // MARK: Stageable
-        resourceLocation = url.absoluteString
-        endTime = json["end_time"].double
-        duration = json["duration"].double
+        if let duration = json["duration"].double {
+            self.duration = duration
+        } else {
+            self.duration = nil
+        }
     }
 }

@@ -25,19 +25,13 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     @IBOutlet private weak var videoContainerView: UIView!
     
-    private var videoPlayer: VVideoView?
+    private lazy var videoPlayer: VVideoView = self.setupVideoView(self.videoContainerView)
     
     private var currentStagedMedia: Stageable?
     
-    private var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager!
     
-    class func new(dependencyManager dependencyManager: VDependencyManager) -> StageViewController {
-        let stageViewController = StageViewController.v_fromStoryboard() as StageViewController
-        stageViewController.dependencyManager = dependencyManager
-        return stageViewController
-    }
-    
-    
+
     //MARK: - Stage
     
     weak var delegate: StageDelegate?
@@ -88,15 +82,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Video
     
     private func playVideoUrl(videoUrl: NSURL) {
-        let videoItem = VVideoPlayerItem(URL: videoUrl)
-        
-        if videoPlayer == nil {
-            videoPlayer = setupVideoView(videoContainerView)
-        }
         view.bringSubviewToFront(videoContainerView)
         
-        videoPlayer?.setItem(videoItem)
-        videoPlayer?.playFromStart()
+        let videoItem = VVideoPlayerItem(URL: videoUrl)
+        videoPlayer.setItem(videoItem)
+        videoPlayer.playFromStart()
     }
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
@@ -116,13 +106,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Video Asset
     
     private func addVideoAsset(videoAsset: VideoAsset) {
-        guard let resourceLocation = videoAsset.resourceLocation, let videoUrl = NSURL(string: resourceLocation) else {
-            // TODO: handle error
-            assertionFailure("No resource to load at -> \(videoAsset.resourceLocation)")
-            return
-        }
-        
-        playVideoUrl(videoUrl)
+        playVideoUrl(videoAsset.url)
     }
 
     
@@ -137,13 +121,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Gif Asset
     
     private func addGifAsset(gifAsset: GifAsset) {
-        guard let resourceLocation = gifAsset.resourceLocation, let gifVideoUrl = NSURL(string: resourceLocation) else {
-            // TODO: handle error
-            assertionFailure("No resource to load at -> \(gifAsset.resourceLocation)")
-            return
-        }
-        
-        playVideoUrl(gifVideoUrl)
+        playVideoUrl(gifAsset.url)
     }
     
     
@@ -151,7 +129,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func clearStageMedia() {
         delegate?.stage(self, willUpdateContentSize: CGSizeZero)
-        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) { self.view.layoutIfNeeded() }
+        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
+            self.view.layoutIfNeeded()
+        }
         mainContentViewBottomConstraint.constant = 0
         delegate?.stage(self, didUpdateContentSize: CGSizeZero)
         

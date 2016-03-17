@@ -22,9 +22,7 @@ public struct VideoAsset: Stageable {
     
     // MARK: Stageable
     public let duration: Double?
-    public let endTime: Double?
-    public let resourceLocation: String?
-    
+    public let url: NSURL
     
     public init?(json: JSON) {
         guard let mimeType = json["mimeType"].string else {
@@ -37,6 +35,11 @@ public struct VideoAsset: Stageable {
                 return nil
         }
         
+        guard let urlString = json["resourceLocation"].string, let url = NSURL(string: urlString) else {
+            return nil
+        }
+        
+        self.url = url
         self.mimeType = VideoType(rawValue:mimeType)!
         self.data = data
         
@@ -49,8 +52,6 @@ public struct VideoAsset: Stageable {
         bitrate = json["bitrate"].int
         
         // MARK: Stageable
-        duration = json["duration"].double
-        endTime = json["endTime"].double
-        resourceLocation = json["resourceLocation"].string
+        self.duration = json["duration"].double
     }
 }
