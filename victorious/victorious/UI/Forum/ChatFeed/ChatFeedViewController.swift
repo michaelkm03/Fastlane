@@ -14,9 +14,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
-    private var bottomMargin: CGFloat = 10.0
-    private let gradientBlendLength: CGFloat = 80.0
+    struct Layout {
+        private static let bottomMargin: CGFloat = 20.0
+        private static let topMargin: CGFloat = 20.0
+    }
+    
+    private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     var dependencyManager: VDependencyManager!
     
@@ -35,7 +38,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        self.edgeInsets.top = value
+        self.edgeInsets.top = value + Layout.topMargin
     }
     
     // MARK: - NewItemsControllerDelegate
@@ -125,7 +128,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             CATransaction.begin()
             CATransaction.setCompletionBlock() {
                 dispatch_after(0.0) {
-                    self.collectionView.v_scrollToBottomAnimated(true)
+                    //self.collectionView.v_scrollToBottomAnimated(true)
                 }
             }
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)

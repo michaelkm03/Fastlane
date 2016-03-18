@@ -263,16 +263,20 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Clear Media
     
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
-        mainContentView.userInteractionEnabled = true
-        UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
-            newContentView.alpha = 1.0
-            oldContentView?.alpha = 0.0
-        }
+        oldContentView?.userInteractionEnabled = false
+        UIView.animateWithDuration(Constants.contentHideAnimationDuration,
+            animations: {
+                newContentView.alpha = 1.0
+                oldContentView?.alpha = 0.0
+            },
+            completion: { finished in
+                newContentView.userInteractionEnabled = true
+            }
+        )
         currentContentView = newContentView
     }
     
     private func clearStageMedia() {
-        mainContentView.userInteractionEnabled = false
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
             self.delegate?.stage(self, didUpdateContentSize: CGSize(width: self.view.bounds.width, height: 0.0))
