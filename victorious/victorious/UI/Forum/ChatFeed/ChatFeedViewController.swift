@@ -54,7 +54,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
         
-        scrollPaginator.activeOnlyWhenUserIsScrolling = true
         scrollPaginator.delegate = self
         
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
@@ -112,21 +111,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             return
         }
         
-        if !scrollPaginator.isUserScrolling {
-            // Some tricky stuff to make sure the collection view's content size is updated enough
-            // so that the scroll to bottom actually works
-            CATransaction.begin()
-            CATransaction.setCompletionBlock() {
-                dispatch_after(0.0) {
-                    self.collectionView.v_scrollToBottomAnimated(true)
-                }
+        // Some tricky stuff to make sure the collection view's content size is updated enough
+        // so that the scroll to bottom actually works
+        CATransaction.begin()
+        CATransaction.setCompletionBlock() {
+            dispatch_after(0.0) {
+                self.collectionView.v_scrollToBottomAnimated(true)
             }
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
-            CATransaction.commit()
-       
-        } else {
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
         }
+        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+        CATransaction.commit()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -195,14 +189,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewWillBeginDragging(scrollView)
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
 }
 
