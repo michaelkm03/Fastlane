@@ -15,6 +15,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let animationDuration = 0.2
         static let minimumTextViewHeight: CGFloat = 42
         static let maximumNumberOfTabs = 4
+        static let defaultMaximumTextInputHeight = CGFloat.max
+        static let defaultMaximumTextLength = 0
+        static let defaultAttachmentContainerHeight: CGFloat = 52
     }
     
     @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
@@ -42,13 +45,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var visibleKeyboardHeight: CGFloat = 0
     
     private var totalComposerHeight: CGFloat {
-        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant + attachmentContainerHeightConstraint.constant : 0
+        guard isViewLoaded() else {
+            return 0
+        }
+        return fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant + attachmentContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
     /// the composer. Defaults to 0, allowing users to input as
     /// much text as they like.
-    private var maximumTextLength = DefaultPropertyValues.maximumTextLength {
+    private var maximumTextLength = Constants.defaultMaximumTextLength {
         didSet {
             composerTextViewManager?.maximumTextLength = maximumTextLength
         }
@@ -72,10 +78,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private var userIsOwner: Bool {
+        return VCurrentUser.user()?.isCreator.boolValue ?? false
+    }
+    
     var dependencyManager: VDependencyManager! {
         didSet {
-            maximumTextLength = dependencyManager.maximumTextLength()
-            let userIsOwner = VCurrentUser.user()?.isCreator.boolValue ?? false
+            maximumTextLength = dependencyManager.maximumTextLengthForOwner(userIsOwner)
             attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
             updateAppearanceFromDependencyManager()
         }
@@ -93,7 +102,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerController
     
-    var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
+    var maximumTextInputHeight = Constants.defaultMaximumTextInputHeight
     
     // MARK: - ComposerTextViewManagerDelegate
     
@@ -149,7 +158,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func updateViewConstraints() {
 
-        let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? DefaultPropertyValues.attachmentContainerHeight : 0
+        let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? Constants.defaultAttachmentContainerHeight : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
         if attachmentContainerHeightNeedsUpdate {
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
@@ -187,7 +196,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
-        textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
+        textView.placeholderText = dependencyManager.inputPromptText
     }
     
     private func setupAttachmentTabBar() {
@@ -198,18 +207,18 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func updateAppearanceFromDependencyManager() {
-        guard let dependencyManager = dependencyManager where isViewLoaded() else {
+        guard isViewLoaded() else {
             return
         }
         
         dependencyManager.addBackgroundToBackgroundHost(self)
-        textView.font = dependencyManager.inputTextFont()
-        textView.setPlaceholderFont(dependencyManager.inputTextFont())
-        textView.textColor = dependencyManager.inputTextColor()
-        textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor())
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor(), forState: .Normal)
-        confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont()
-        attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor()
+        textView.font = dependencyManager.inputTextFont
+        textView.setPlaceholderFont(dependencyManager.inputTextFont)
+        textView.textColor = dependencyManager.inputTextColor
+        textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor, forState: .Normal)
+        confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
+        attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor
     }
     
     // MARK: - Actions
@@ -220,46 +229,43 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
 }
 
-private struct DefaultPropertyValues {
-    
-    static let maximumTextInputHeight = CGFloat.max
-    static let maximumTextLength = 0
-    static let attachmentContainerHeight: CGFloat = 52
-}
-
 // Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
     
-    func maximumTextLength() -> Int {
-        return DefaultPropertyValues.maximumTextLength
+    func maximumTextLengthForOwner(owner: Bool) -> Int {
+        return owner ? 0 : numberForKey("maximumTextLength").integerValue
+    }
+    
+    var inputPromptText: String {
+        return stringForKey("inputPromptText")
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
         let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
-        return menuItemsForKey(menuItemKey) as? [VNavigationMenuItem]
+        return menuItemsForKey(menuItemKey)
     }
     
-    func inputTextColor() -> UIColor {
+    var inputTextColor: UIColor {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
-    func inputPlaceholderTextColor() -> UIColor {
+    var inputPlaceholderTextColor: UIColor {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    func confirmButtonTextColor() -> UIColor {
+    var confirmButtonTextColor: UIColor {
         return colorForKey(VDependencyManagerAccentColorKey)
     }
     
-    func inputTextFont() -> UIFont {
+    var inputTextFont: UIFont {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
     
-    func confirmButtonTextFont() -> UIFont {
+    var confirmButtonTextFont: UIFont {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }
     
-    func tabItemTintColor() -> UIColor {
+    var tabItemTintColor: UIColor {
         return colorForKey(VDependencyManagerLinkColorKey)
     }
 }

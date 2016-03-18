@@ -11,7 +11,6 @@ import Foundation
 @objc(VActionBarFlexibleSpaceItem)
 class ActionBarFlexibleSpaceItem: UIView {
     
-    /// A flexible space item for use in layout of VActionBar's action items.
     class func flexibleSpaceItem() -> ActionBarFlexibleSpaceItem {
         let flexibleSpaceItem = ActionBarFlexibleSpaceItem.init(frame: CGRect.zero)
         flexibleSpaceItem.translatesAutoresizingMaskIntoConstraints = false

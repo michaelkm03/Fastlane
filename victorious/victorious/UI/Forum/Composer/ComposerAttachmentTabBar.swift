@@ -22,7 +22,7 @@ class ComposerAttachmentTabBar: VFlexBar {
                 }
             }
             
-            guard buttons.count > 0 else {
+            guard !buttons.isEmpty else {
                 return
             }
             
