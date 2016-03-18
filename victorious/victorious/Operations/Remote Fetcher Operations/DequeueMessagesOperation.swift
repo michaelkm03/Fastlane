@@ -60,11 +60,11 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
                     sender = otherUser
                 }
                 
-                let message = ChatMessage(displayOrder: totalMessages)
+                let message = ChatMessage(displayOrder: totalMessages++)
                 message.sender = sender
                 message.text = event.messageText
                 message.postedAt = NSDate()
-                message.media = event.media 
+                message.media = event.media
                 messages.append(message)
                 totalMessages += 1
             }
