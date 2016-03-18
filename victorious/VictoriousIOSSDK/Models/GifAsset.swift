@@ -21,7 +21,7 @@ public struct GifAsset: Stageable {
 
 extension GifAsset {
     public init?(json: JSON) {
-        guard let urlString = json["url"].string,
+        guard let urlString = json["resourceLocation"].string,
             let url = NSURL(string: urlString) else {
                 return nil
         }

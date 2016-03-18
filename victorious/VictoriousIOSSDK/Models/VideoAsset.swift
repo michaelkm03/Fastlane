@@ -20,27 +20,27 @@ public struct VideoAsset: Stageable {
     public let size: CGSize?
     public let bitrate: Int?
     
+    /// StartTime is used in order to sync viewers to the same spot in the video.
+    public let startTime: Double
+    
     // MARK: Stageable
     public let duration: Double?
     public let url: NSURL
     
     public init?(json: JSON) {
-        guard let mimeType = json["mimeType"].string else {
-                print("Failed to create video asset. Error -> \(json["mimeType"].error)")
-                return nil
-        }
-        
-        guard let data = json["data"].string else {
+        guard let mimeType = json["mimeType"].string,
+            let data = json["data"].string,
+            let urlString = json["resourceLocation"].string,
+            let url = NSURL(string: urlString),
+            let startTime = json["start_time"].double
+        else {
                 print("Failed to create video asset. Error -> \(json["data"].error)")
                 return nil
         }
         
-        guard let urlString = json["resourceLocation"].string, let url = NSURL(string: urlString) else {
-            return nil
-        }
-        
         self.mimeType = VideoType(rawValue:mimeType)!
         self.data = data
+        self.startTime = startTime
         
         if let width = json["width"].int, let height = json["height"].int {
             size = CGSize(width: width, height: height)
