@@ -39,7 +39,7 @@ class ShowProfileOperation: BackgroundOperation {
         }
         
         let navController: UINavigationController?
-        if let customNav = originViewController?.v_navigationController().innerNavigationController {
+        if let customNav = originViewController?.v_navigationController()?.innerNavigationController {
             navController = customNav
         } else if let systemNav =  originViewController?.navigationController {
             navController = systemNav
