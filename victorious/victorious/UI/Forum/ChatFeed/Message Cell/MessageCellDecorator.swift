@@ -20,21 +20,12 @@ struct MessageCellDecorator {
         
         cell.dependencyManager = dependencyManager
         
-        let media: ForumMedia? = nil
-        /*if let url = NSURL(v_string: message.mediaUrl),
-            let width = message.mediaWidth?.floatValue,
-            let height = message.mediaHeight? .floatValue {
-                media = ForumMedia(url: url, width: CGFloat(width), height: CGFloat(height))
-        } else {
-            media = nil
-        }*/
-        
         cell.viewData = MessageCell.ViewData(
             text: message.text,
             timeLabel: message.postedAt.stringDescribingTimeIntervalSinceNow(),
             username: message.sender.name ?? "",
             avatarImageURL: NSURL(v_string: message.sender.pictureUrl),
-            media: media
+            media: message.media
         )
     }
 }

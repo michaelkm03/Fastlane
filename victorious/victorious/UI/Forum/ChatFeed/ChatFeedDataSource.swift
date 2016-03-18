@@ -10,11 +10,44 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
+class ForumEventQueue {
+    
+    let maximimEventCount: Int?
+    
+    init(maximimEventCount: Int? = nil) {
+        self.maximimEventCount = maximimEventCount
+    }
+    
+    private var events = [ForumEvent]()
+    
+    func addEvent(event: ForumEvent) {
+        if let max = maximimEventCount where events.count + 1 >= max {
+            events.removeLast()
+        }
+        events.append(event)
+    }
+    
+    func dequeueEvents(count count: Int) -> [ForumEvent] {
+        guard count <= events.count else {
+            return dequeueAll()
+        }
+        let output = events[0..<count]
+        events.removeRange(count..<events.count)
+        return Array(output)
+    }
+    
+    func dequeueAll() -> [ForumEvent] {
+        let output = events
+        events = []
+        return output
+    }
+}
+
 class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionViewDataSource {
     
     private let itemsPerPage = 10
     
-    private var eventQueue = [ForumEvent]()
+    private let eventQueue = ForumEventQueue()
     
     /// If this interval is too small, the scrolling animations will become choppy
     /// as they step on each other before finishing.
@@ -37,10 +70,8 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     // MARK: - ForumEventReceiver
     
     func receiveEvent(event: ForumEvent) {
-        print("receiveEvent :: receiveEvent: \(event).")
-        
         // Stash events in the queue when received and wait to dequeue on our timer cycle
-        eventQueue.append(event)
+        eventQueue.addEvent(event)
     }
     
     // MARK: - Live Update
@@ -66,20 +97,13 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     }
     
     func dequeueMessages() {
-        
-        let messages = eventQueue
-        eventQueue = []
-//        print("ChatFeedDataSource :: Dequeued: \(messages.count) messages.")
-        
-        // TODO: Somehow parse into reference types and into paginated datasource
-        
-        /*loadNewItems(
+        loadNewItems(
             createOperation: {
                 let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
-                return DequeueMessagesOperation(paginator: paginator)
+                return DequeueMessagesOperation(events: eventQueue.dequeueAll(), paginator: paginator)
             },
             completion: nil
-        )*/
+        )
     }
     
     // MARK: - UICollectionViewDataSource
