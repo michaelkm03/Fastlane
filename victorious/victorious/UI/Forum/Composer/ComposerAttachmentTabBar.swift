@@ -73,6 +73,6 @@ class ComposerAttachmentTabBar: VFlexBar {
     }
     
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
-        delegate?.composerAttachmentTabBar(self, selectedNavigationItem: button.navigationMenuItem)
+        delegate?.composerAttachmentTabBar(self, didSelectNagiationItem: button.navigationMenuItem)
     }
 }

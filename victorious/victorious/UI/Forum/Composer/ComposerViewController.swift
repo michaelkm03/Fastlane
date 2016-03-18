@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer, ComposerAttachmentTabBarDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -195,6 +195,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         super.updateViewConstraints()
     }
     
+    // MARK: - ComposerAttachmentTabBarDelegate
+
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
+        let creationType = CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier)
+        //delegate?.composer(self, didSelectCreationType: creationType)
+    }
+    
     // MARK: - Subview setup
     
     private func setupTextView() {
@@ -207,7 +214,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             attachmentTabBar.setupWithAttachmentMenuItems(attachmentMenuItems,
                 maxNumberOfMenuItems: Constants.maximumNumberOfTabs
             )
-            //attachmentTabBar.delegate = delegate
+            attachmentTabBar.delegate = self
         }
     }
     
@@ -254,7 +261,6 @@ private extension VDependencyManager {
     }
     
     func inputTextColor() -> UIColor {
-        return UIColor.whiteColor()
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
@@ -263,7 +269,6 @@ private extension VDependencyManager {
     }
     
     func confirmButtonTextColor() -> UIColor {
-        return UIColor.whiteColor()
         return colorForKey(VDependencyManagerAccentColorKey)
     }
     

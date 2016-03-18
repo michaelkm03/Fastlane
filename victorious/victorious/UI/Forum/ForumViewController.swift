@@ -58,7 +58,7 @@ class ForumViewController: UIViewController, Forum {
         let destination = segue.destinationViewController
 
         if let stage = destination as? Stage {
-            stage.dependencyManager = dependencyManager
+            stage.dependencyManager = dependencyManager.stageDependency
             stage.delegate = self
             self.stage = stage
         
@@ -68,7 +68,7 @@ class ForumViewController: UIViewController, Forum {
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
-            composer.dependencyManager = dependencyManager
+            composer.dependencyManager = dependencyManager.composerDependency
             composer.delegate = self
             self.composer = composer
         }

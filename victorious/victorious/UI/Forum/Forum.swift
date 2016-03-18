@@ -48,11 +48,9 @@ extension Forum {
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectAttachmentTabWithIdentifier identifier: String) {
+    func composer(composer: Composer, didSelectCreationType creationType: VCreationType) {
         creationFlowPresenter.shouldShowPublishScreenForFlowController = false
-        creationFlowPresenter.presentWorkspaceOnViewController(originViewController,
-            creationType: CreationTypeHelper.creationTypeForIdentifier(identifier)
-        )
+        creationFlowPresenter.presentWorkspaceOnViewController(originViewController, creationType: creationType)
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
