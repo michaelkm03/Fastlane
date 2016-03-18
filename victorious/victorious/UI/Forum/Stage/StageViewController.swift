@@ -57,6 +57,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         senasDemoCode()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.delegate?.stage(self, didUpdateContentSize: CGSize(width: view.bounds.width, height: 0.0))
+    }
+    
     // TODO: remove this before merge into dev !!! !!! !!!
     private func senasDemoCode() {
         
@@ -275,7 +280,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func clearStageMedia() {
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
-            self.delegate?.stage(self, didUpdateContentSize: CGSizeZero)
+            self.delegate?.stage(self, didUpdateContentSize: CGSize(width: self.view.bounds.width, height: 0.0))
             self.view.layoutIfNeeded()
         }
     }

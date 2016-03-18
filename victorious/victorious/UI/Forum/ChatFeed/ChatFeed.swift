@@ -13,10 +13,6 @@ protocol ChatFeed: class {
     weak var delegate: ChatFeedDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
-    
-    func setBottomInset(value: CGFloat)
-    
-    func setTopInset(value: CGFloat)
 }
 
 protocol ChatFeedDelegate: class {

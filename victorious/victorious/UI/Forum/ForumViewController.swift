@@ -12,6 +12,10 @@ import UIKit
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum {
     
+    @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var composerContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var chatFeedContainerHeight: NSLayoutConstraint!
+    
     // MARK: - Forum protocol requirements
     
     var stage: Stage?
@@ -24,6 +28,16 @@ class ForumViewController: UIViewController, Forum {
         return self
     }
     
+    func setTopInset(value: CGFloat) {
+        stageContainerHeight.constant = value
+        view.layoutIfNeeded()
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        composerContainerHeight.constant = value
+        view.layoutIfNeeded()
+    }
+    
     // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
@@ -33,6 +47,12 @@ class ForumViewController: UIViewController, Forum {
     }
     
     // MARK: - UIViewController overrides
+    
+//    func updateChatFeed() {
+//        chatFeedContainerHeight.constant = view.bounds.height
+//            - stageContainerHeight.constant
+//            - composerContainerHeight.constant
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -23,7 +23,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ch6-aY-OFp">
+                                    <view alpha="0.0" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ch6-aY-OFp">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>

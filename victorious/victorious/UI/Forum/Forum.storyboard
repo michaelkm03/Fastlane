@@ -7,32 +7,41 @@
         <!--Forum View Controller-->
         <scene sceneID="Y1H-PE-C68">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="K6M-ZV-Lef" customClass="ForumViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="K6M-ZV-Lef" customClass="ForumViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fFi-e4-tGY"/>
                         <viewControllerLayoutGuide type="bottom" id="xTF-ZG-in5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BWd-6Y-0dE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
-                                </connections>
-                            </containerView>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" userLabel="ChatFeed Container" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="470"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="470" id="zOq-xE-egO"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="222" id="4Jd-tz-vaH"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" userLabel="Composer Container" customClass="VPassthroughContainerView">
+                                <rect key="frame" x="0.0" y="470" width="600" height="66"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" id="fm7-s9-RpI"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
                                 </connections>
@@ -40,22 +49,24 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="5OZ-jM-pe5"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="AIb-hu-8DR"/>
-                            <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="DRa-m6-5Nf"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="GS2-Cj-tAa"/>
-                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="bottom" id="HPf-0Q-lSW"/>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="UFs-BY-snG"/>
-                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="WYU-rk-svp"/>
-                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="YtN-1s-M3p"/>
-                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="bHs-CH-J7F"/>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="vV3-6o-yjI"/>
-                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="wMz-I4-fQa"/>
-                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="z4g-Fg-gQS"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="0zk-Or-l75"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="1yM-Nb-ZRH"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="I4b-9W-Q4o"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="OJb-oI-IQ0"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="TJO-dP-iac"/>
+                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="TqT-IK-9P3"/>
+                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="XRr-IJ-Ayz"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="cFe-lH-qes"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="x7U-LU-pfb"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="composerContainerHeight" destination="fm7-s9-RpI" id="rYa-72-oVx"/>
+                        <outlet property="stageContainerHeight" destination="4Jd-tz-vaH" id="WOx-zA-pZm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

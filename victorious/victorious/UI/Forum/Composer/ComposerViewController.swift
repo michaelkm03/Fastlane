@@ -199,7 +199,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
     func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
         let creationType = CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier)
-        //delegate?.composer(self, didSelectCreationType: creationType)
+        delegate?.composer(self, didSelectCreationType: creationType)
     }
     
     // MARK: - Subview setup

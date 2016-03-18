@@ -25,6 +25,12 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     var composer: Composer? { get }
     
     var chatFeed: ChatFeed? { get }
+    
+    //
+    
+    func setBottomInset(value: CGFloat)
+    
+    func setTopInset(value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -57,13 +63,13 @@ extension Forum {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        chatFeed?.setBottomInset(height ?? 0)
+        setBottomInset(height ?? 0)
     }
     
     // MARK: - StageDelegate
     
     func stage(stage: Stage, didUpdateContentSize size: CGSize) {
-        chatFeed?.setTopInset(size.height)
+        setTopInset(size.height)
     }
     
     func stage(stage: Stage, didUpdateWithMedia media: Stageable) {
