@@ -28,6 +28,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }()
     
     private let scrollPaginator = VScrollPaginator()
+    private var previousScrollPosition = CGPoint.zero
     
     private var selectedMessageUserID: Int?
     
@@ -187,17 +188,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             return
         }
         delegate?.chatFeed(self, didSelectMedia:media)
-    }
-    
-    //MARK: - ChatFeed
-    
-    func setTopInset(value: CGFloat) {
-        
-    }
-    
-    func setBottomInset(value: CGFloat) {
-        collectionConainerCenterVertical.constant = -value
-        view.layoutIfNeeded()
     }
     
     // MARK: - VScrollPaginatorDelegate
