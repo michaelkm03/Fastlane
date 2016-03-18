@@ -42,7 +42,7 @@ class CreateMediaUploadOperation: BackgroundOperation {
     }
     
     private func upload(uploadManager: VUploadManager) {
-        if !publishParameters.isGIF && mediaURL == nil{
+        if !publishParameters.isGIF && mediaURL != nil {
             completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }

@@ -13,8 +13,7 @@ import VictoriousIOSSDK
 class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
     
     let uploadManager = TestUploadManager()
-    let operationQueue = NSOperationQueue()
-        
+    
     func testOperationExecution() {
         let mockParameters = VPublishParameters()
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
@@ -46,11 +45,10 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
 
     }
     
-    func testRemoteIdParameters() {
+    func testGifIDOnly() {
         let mockParameters = VPublishParameters()
         mockParameters.isGIF = true
         mockParameters.assetRemoteId = "ABCDEF"
-        mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
         let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager) { error in
