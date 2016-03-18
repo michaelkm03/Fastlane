@@ -25,7 +25,7 @@ extension VStream: PersistenceParsable {
         
         if let previewImageAssets = sourceStream.previewImageAssets {
             let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
             }

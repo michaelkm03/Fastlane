@@ -50,13 +50,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         terminateInterrupterTimer()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        print("stageSize -> \(Constants.fixedStageSize)")
-        senasDemoCode()
-    }
-    
     // TODO: remove this before merge into dev !!! !!! !!!
     private func senasDemoCode() {
         
@@ -156,11 +149,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             addImageAsset(imageAsset)
         case let gifAsset as GifAsset:
             addGifAsset(gifAsset)
-        // TODO: decide how we handle the close VIP stage command
-//        case let emptyAsset as EmptyAsset:
-//            clearStageMedia()
         default:
-            assertionFailure("Unknown stagable type!")
+            assertionFailure("Unknown stagable type: \(media)")
         }
         
         delegate?.stage(self, didUpdateWithMedia: media)
@@ -185,14 +175,10 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     // MARK: - Private
     
-    // TODO: get size of content for setting `mainContentViewBottomConstraint.constant`
-    
     // MARK: Video
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        // TODO: remove muted when we deploy
-//        videoPlayer.muted = true
         videoPlayer.useAspectFit = true
         videoPlayer.delegate = self
         
@@ -206,9 +192,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Video Asset
     
     private func addVideoAsset(videoAsset: VideoAsset) {
-        NSLog("addVideoAsset -> \(videoAsset.url.absoluteString)")
-        
-        let videoItem = VVideoPlayerItem(URL: videoAsset.url)
+        let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
         videoPlayer.setItem(videoItem)
         
         switchToContentView(videoContentView, fromContentView: currentContentView)
@@ -218,8 +202,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Image Asset
     
     private func addImageAsset(imageAsset: ImageAsset) {
-        NSLog("addImageAsset -> \(imageAsset.url.absoluteString)")
-        imageView.sd_setImageWithURL(imageAsset.url)
+        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url)
         switchToContentView(imageView, fromContentView: currentContentView)
     }
     
@@ -227,15 +210,13 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Gif Playback
     
     private func addGifAsset(gifAsset: GifAsset) {
-        NSLog("addGifAsset -> \(gifAsset.url.absoluteString)")
-        
-        let videoItem = VVideoPlayerItem(URL: gifAsset.url)
+        let videoItem = VVideoPlayerItem(URL: gifAsset.mediaMetaData.url)
         videoItem.loop = true
         videoPlayer.setItem(videoItem)
         videoPlayer.playFromStart()
         
         // TODO: put this logics in the ScheduleStage(DataSource|Controller|Manager)
-        if let duration = gifAsset.duration {
+        if let duration = gifAsset.mediaMetaData.duration {
             let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer, InterruptMessageConstants.contentViewKey: videoContentView]
             playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "interruptPlayback:", userInfo: interruptMessage, repeats: false)
         }
@@ -247,8 +228,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Interrupt Playback Timer
     
     @objc private func interruptPlayback(timer: NSTimer) {
-        print("INTERRUPT TIMER KICKED IN!")
-        
         if let interruptMessage = timer.userInfo as? NSDictionary {
             if let videoPlayer = interruptMessage[InterruptMessageConstants.videoPlayerKey] as? VVideoPlayer {
                 videoPlayer.pause()
