@@ -53,6 +53,7 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
             
             var messages = [ChatMessage]()
             for event in self.events {
+                
                 let sender: VUser
                 if arc4random() % 5 == 1 {
                     sender = currentUser

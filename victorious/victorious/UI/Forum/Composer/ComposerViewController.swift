@@ -8,10 +8,13 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer, ComposerAttachmentTabBarDelegate {
     
-    private let animationDuration = 0.2
-    private let minimumTextViewHeight: CGFloat = 32
+    private struct Constants {
+        static let animationDuration = 0.2
+        static let minimumTextViewHeight: CGFloat = 42
+        static let maximumNumberOfTabs = 4
+    }
     
     private var visibleKeyboardHeight: CGFloat = 0
     
@@ -22,19 +25,23 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textView: VPlaceholderTextView!
+    @IBOutlet private var attachmentTabBar: ComposerAttachmentTabBar!
+
     @IBOutlet private var attachmentContainerView: UIView!
     @IBOutlet private var interactiveContainerView: UIView!
+    @IBOutlet private var confirmButton: UIButton!
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
+
         guard isViewLoaded() else {
             return 0.0
         }
         return fabs(inputViewToBottomConstraint.constant)
             + textViewHeightConstraint.constant
-            + attachmentContainerHeightConstraint.constant 
+            + attachmentContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
@@ -48,21 +55,28 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// The attachment tabs displayed by the composer. Updating this variable
     /// triggers a UI update. Defaults to nil.
-    private var attachmentTabs: [ComposerAttachmentTab]? = nil
-    
-    private var shouldShowAttachmentContainer: Bool {
-        return attachmentTabs != nil || textViewHasText
+    private var attachmentMenuItems: [VNavigationMenuItem]? = nil {
+        didSet {
+            setupAttachmentTabBar()
+        }
     }
     
-    weak var delegate: ComposerDelegate?
+    private var shouldShowAttachmentContainer: Bool {
+        return attachmentMenuItems != nil || textViewHasText
+    }
+    
+    weak var delegate: ComposerDelegate? {
+        didSet {
+            setupAttachmentTabBar()
+        }
+    }
     
     var dependencyManager: VDependencyManager! {
         didSet {
             maximumTextLength = dependencyManager.maximumTextLength()
-            attachmentTabs = dependencyManager.attachmentTabs()
-            if isViewLoaded() {
-                dependencyManager?.addBackgroundToBackgroundHost(self)
-            }
+            let userIsOwner = VCurrentUser.user()?.isCreator.boolValue ?? false
+            attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
+            updateAppearanceFromDependencyManager()
         }
     }
     
@@ -117,9 +131,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
+        setupAttachmentTabBar()
         setupTextView()
-        
-        dependencyManager?.addBackgroundToBackgroundHost(self)
+        updateAppearanceFromDependencyManager()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -133,16 +147,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         self.visibleKeyboardHeight = visibleKeyboardHeight
         
-        UIView.animateWithDuration(animationDuration,
-            delay: 0,
-            options: animationOptions,
-            animations: {
+        inputViewToBottomConstraint.constant = visibleKeyboardHeight
+        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
+        if animationDuration != 0 {
+            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
                 self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
+            }, completion: nil)
+        } else {
+            self.view.setNeedsLayout()
+        }
     }
     
     override func updateViewConstraints() {
@@ -154,7 +169,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         let textHeight = min(ceil(self.textView.contentSize.height), self.maximumTextInputHeight)
-        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, minimumTextViewHeight) : minimumTextViewHeight
+        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, Constants.minimumTextViewHeight) : Constants.minimumTextViewHeight
         let textViewHeightNeedsUpdate = self.textViewHeightConstraint.constant != desiredTextViewHeight
         if textViewHeightNeedsUpdate {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
@@ -167,7 +182,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         let previousContentOffset = self.textView.contentOffset
-        UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
+        UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
             self.textView.layoutIfNeeded()
             if textViewHeightNeedsUpdate {
@@ -180,10 +195,42 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         super.updateViewConstraints()
     }
     
+    // MARK: - ComposerAttachmentTabBarDelegate
+
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
+        let creationType = CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier)
+        delegate?.composer(self, didSelectCreationType: creationType)
+    }
+    
+    // MARK: - Subview setup
+    
     private func setupTextView() {
         textView.text = nil
-        textView.textContainer.heightTracksTextView = true
         textView.placeholderText = NSLocalizedString("ComposerPlaceholderText", comment: "")
+    }
+    
+    private func setupAttachmentTabBar() {
+        if isViewLoaded() {
+            attachmentTabBar.setupWithAttachmentMenuItems(attachmentMenuItems,
+                maxNumberOfMenuItems: Constants.maximumNumberOfTabs
+            )
+            attachmentTabBar.delegate = self
+        }
+    }
+    
+    private func updateAppearanceFromDependencyManager() {
+        guard let dependencyManager = dependencyManager where isViewLoaded() else {
+            return
+        }
+        
+        dependencyManager.addBackgroundToBackgroundHost(self)
+        textView.font = dependencyManager.inputTextFont()
+        textView.setPlaceholderFont(dependencyManager.inputTextFont())
+        textView.textColor = dependencyManager.inputTextColor()
+        textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor())
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor(), forState: .Normal)
+        confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont()
+        attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor()
     }
     
     // MARK: - Actions
@@ -208,7 +255,32 @@ private extension VDependencyManager {
         return DefaultPropertyValues.maximumTextLength
     }
     
-    func attachmentTabs() -> [ComposerAttachmentTab]? {
-        return nil
+    func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
+        let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
+        return menuItemsForKey(menuItemKey) as? [VNavigationMenuItem]
+    }
+    
+    func inputTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    func inputPlaceholderTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
+    }
+    
+    func confirmButtonTextColor() -> UIColor {
+        return colorForKey(VDependencyManagerAccentColorKey)
+    }
+    
+    func inputTextFont() -> UIFont {
+        return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+    
+    func confirmButtonTextFont() -> UIFont {
+        return fontForKey(VDependencyManagerLabel2FontKey)
+    }
+    
+    func tabItemTintColor() -> UIColor {
+        return colorForKey(VDependencyManagerLinkColorKey)
     }
 }

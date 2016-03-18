@@ -57,6 +57,8 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     
     let dependencyManager: VDependencyManager
     
+    var shouldStashNewContent: Bool = false
+    
     let cellDecorator = MessageCellDecorator()
     let sizingCell: MessageCell = MessageCell.v_fromNib()
     

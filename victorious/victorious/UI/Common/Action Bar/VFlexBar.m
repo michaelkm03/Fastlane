@@ -8,13 +8,14 @@
 
 #import "VFlexBar.h"
 #import "VActionBarFixedWidthItem.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFlexibleWidth.h"
 
 #import "NSArray+VMap.h"
 
 // Layout Helpers
 #import "UIView+Autolayout.h"
+
+#import "victorious-Swift.h"
 
 static const CGFloat kDefaultActionItemWidth = 44.0f;
 

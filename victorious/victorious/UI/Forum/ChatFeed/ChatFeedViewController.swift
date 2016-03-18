@@ -14,9 +14,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
-    private var bottomMargin: CGFloat = 10.0
-    private let gradientBlendLength: CGFloat = 80.0
+    struct Layout {
+        private static let bottomMargin: CGFloat = 20.0
+        private static let topMargin: CGFloat = 20.0
+    }
+    
+    private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     var dependencyManager: VDependencyManager!
     
@@ -31,18 +34,23 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
-    @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
     
-    // MARK: - NewItemsControllerDelegate
+    //MARK: - ChatFeed
     
-    func onMoreContentSelected() {
-        
+    func setTopInset(value: CGFloat) {
+        self.edgeInsets.top = value + Layout.topMargin
     }
     
     // MARK: - ForumEventReceiver
-    
+        
     var childEventReceivers: [ForumEventReceiver] {
         return [ dataSource ]
+    }
+        
+    // MARK: - NewItemsControllerDelegate
+        
+    func onMoreContentSelected() {
+        
     }
     
     // MARK: - UIViewController
@@ -66,6 +74,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
+        
+        setTopInset(0.0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -116,8 +126,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             return
         }
-        
-        if !scrollPaginator.isUserScrolling && collectionView.v_isScrolledToBottom {
+
+        if !scrollPaginator.isUserScrolling && !dataSource.shouldStashNewContent {
+
             // Some tricky stuff to make sure the collection view's content size is updated enough
             // so that the scroll to bottom actually works
             CATransaction.begin()
@@ -172,11 +183,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func messageCellDidSelectMedia(messageCell: MessageCell) {
-        guard let media = messageCell.viewData.media,
-            let preloadedImage = messageCell.preloadedImage else {
-                return
+        guard let media = messageCell.viewData.media else {
+            return
         }
-        delegate?.chatFeed(self, didSelectMedia:media, withPreloadedImage: preloadedImage, fromView: messageCell)
+        delegate?.chatFeed(self, didSelectMedia:media)
     }
     
     //MARK: - ChatFeed
@@ -192,14 +202,28 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     // MARK: - VScrollPaginatorDelegate
     
-    func shouldLoadNextPage() { }
+    func shouldLoadNextPage() {
     
-    func shouldLoadPreviousPage() { }
+    }
+    
+    func shouldLoadPreviousPage() {
+    
+    }
     
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
+        
+        if scrollPaginator.isUserScrolling {
+            if scrollView.contentOffset.y <= previousScrollPosition.y {
+                dataSource.shouldStashNewContent = true
+            } else if collectionView.v_isScrolledToBottom {
+                dataSource.shouldStashNewContent = false
+            }
+        }
+        
+        previousScrollPosition = scrollView.contentOffset
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

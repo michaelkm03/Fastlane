@@ -16,7 +16,6 @@
 
 // Action Bar
 #import "VFlexBar.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
 
