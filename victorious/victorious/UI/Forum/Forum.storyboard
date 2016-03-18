@@ -12,7 +12,7 @@
                         <viewControllerLayoutGuide type="top" id="fFi-e4-tGY"/>
                         <viewControllerLayoutGuide type="bottom" id="xTF-ZG-in5"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="BWd-6Y-0dE">
+                    <view key="view" contentMode="scaleToFill" id="BWd-6Y-0dE" customClass="VLinearGradientView">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="470"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="470" id="zOq-xE-egO"/>
+                                    <constraint firstAttribute="height" priority="500" constant="470" id="zOq-xE-egO"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
@@ -50,8 +50,9 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="0zk-Or-l75"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="1yM-Nb-ZRH"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="top" id="742-Zg-zOb"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="I4b-9W-Q4o"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" relation="lessThanOrEqual" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="ME2-MG-fJa"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="OJb-oI-IQ0"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="TJO-dP-iac"/>
                             <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="TqT-IK-9P3"/>
@@ -65,6 +66,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="composerContainerHeight" destination="fm7-s9-RpI" id="rYa-72-oVx"/>
+                        <outlet property="gradientView" destination="BWd-6Y-0dE" id="iLl-OG-4wd"/>
                         <outlet property="stageContainerHeight" destination="4Jd-tz-vaH" id="WOx-zA-pZm"/>
                     </connections>
                 </viewController>

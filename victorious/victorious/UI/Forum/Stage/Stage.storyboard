@@ -12,14 +12,14 @@
                         <viewControllerLayoutGuide type="top" id="75x-GJ-AKe"/>
                         <viewControllerLayoutGuide type="bottom" id="jfa-JG-qoQ"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="uNR-Mh-9DD">
+                    <view key="view" contentMode="scaleToFill" id="uNR-Mh-9DD" customClass="VPassthroughContainerView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIK-iz-Osm">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kcx-0v-akP">
+                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kcx-0v-akP">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>

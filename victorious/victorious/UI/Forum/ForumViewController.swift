@@ -12,9 +12,22 @@ import UIKit
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum {
     
-    @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
+        didSet {
+            stageContainerHeight.constant = 0.0
+        }
+    }
+    
     @IBOutlet private weak var composerContainerHeight: NSLayoutConstraint!
-    @IBOutlet private weak var chatFeedContainerHeight: NSLayoutConstraint!
+    
+    @IBOutlet private weak var gradientView: VLinearGradientView! {
+        didSet {
+            // TOOD: Read colors from template, add to spec
+            gradientView.setColors( [UIColor.v_colorFromHexString("1a324c"), UIColor.v_colorFromHexString("151e27")] )
+            gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
+            gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
+        }
+    }
     
     // MARK: - Forum protocol requirements
     
@@ -28,12 +41,12 @@ class ForumViewController: UIViewController, Forum {
         return self
     }
     
-    func setTopInset(value: CGFloat) {
+    func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
     }
     
-    func setBottomInset(value: CGFloat) {
+    func setComposerHeight(value: CGFloat) {
         composerContainerHeight.constant = value
         view.layoutIfNeeded()
     }
@@ -47,12 +60,6 @@ class ForumViewController: UIViewController, Forum {
     }
     
     // MARK: - UIViewController overrides
-    
-//    func updateChatFeed() {
-//        chatFeedContainerHeight.constant = view.bounds.height
-//            - stageContainerHeight.constant
-//            - composerContainerHeight.constant
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

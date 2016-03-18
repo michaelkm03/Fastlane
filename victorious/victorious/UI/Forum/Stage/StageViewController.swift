@@ -27,7 +27,14 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     /// The content view that is grows and shrinks depending on the content it is displaying.
     /// Is is also this size that will be broadcasted to the stage delegate.
-    @IBOutlet private weak var mainContentView: UIView!
+    @IBOutlet private weak var mainContentView: UIView! {
+        didSet {
+            mainContentView.layer.shadowColor = UIColor.blackColor().CGColor
+            mainContentView.layer.shadowRadius = 4.0
+            mainContentView.layer.shadowOpacity = 1.0
+            mainContentView.layer.shadowOffset = CGSize(width:0, height:2)
+        }
+    }
     @IBOutlet weak var mainContentViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private weak var imageView: UIImageView!
@@ -41,7 +48,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private var playbackInterrupterTimer: NSTimer?
     
     var dependencyManager: VDependencyManager!
-    
     
     // MARK: UIViewController
     
@@ -57,21 +63,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         senasDemoCode()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.delegate?.stage(self, didUpdateContentSize: CGSize(width: view.bounds.width, height: 0.0))
-    }
-    
     // TODO: remove this before merge into dev !!! !!! !!!
     private func senasDemoCode() {
-        
-        /*let gradient = VLinearGradientView()
-        gradient.setColors([UIColor.lightGrayColor(), UIColor.blueColor()])
-        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
-        self.view.addSubview(gradient)
-        gradient.frame = self.view.bounds
-        self.view.sendSubviewToBack(gradient)*/
         
         
         var gifAssetJson: JSON = JSON([
@@ -80,7 +73,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             "height": "200",
             "width": "100",
             "bitrate": "200",
-            "duration": 8,
+            "duration": 2,
             "start_time": 100,
             //            "endTime": "12345678",
             "resourceLocation": "https://media.giphy.com/media/mbgpTdJmNkLAs/giphy.mp4"
@@ -100,7 +93,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             "height": "200",
             "width": "100",
             "bitrate": "200",
-            "duration": 10,
+            "duration": 2,
             "start_time": 100,
             //            "endTime": "12345678",
             "resourceLocation": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4"
@@ -118,7 +111,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             "image_url": "http://media.mydogspace.com.s3.amazonaws.com/wp-content/uploads/2013/08/puppy-500x350.jpg",
             "height": 200,
             "width": 100,
-            "duration": 10,
+            "duration": 2,
             "type": "image",
             //            "endTime": "12345678",
             //            "resourceLocation": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4"
@@ -270,6 +263,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Clear Media
     
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
+        mainContentView.userInteractionEnabled = true
         UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
             newContentView.alpha = 1.0
             oldContentView?.alpha = 0.0
@@ -278,6 +272,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func clearStageMedia() {
+        mainContentView.userInteractionEnabled = false
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
             self.delegate?.stage(self, didUpdateContentSize: CGSize(width: self.view.bounds.width, height: 0.0))

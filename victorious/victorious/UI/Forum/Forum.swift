@@ -15,22 +15,18 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     // MARK: - Concrete dependencies
     
     var dependencyManager: VDependencyManager! { get }
-    
     var originViewController: UIViewController { get }
     
-    // MARK: - Abstract subcomponents/dependencies
+    // MARK: - Behaviors
     
     var stage: Stage? { get }
-    
     var composer: Composer? { get }
-    
     var chatFeed: ChatFeed? { get }
     
-    //
-    
-    func setBottomInset(value: CGFloat)
-    
-    func setTopInset(value: CGFloat)
+    // MARK: - Behaviors
+
+    func setStageHeight(value: CGFloat)
+    func setComposerHeight(value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -63,13 +59,14 @@ extension Forum {
     }
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        setBottomInset(height ?? 0)
+        setComposerHeight(height)
     }
     
     // MARK: - StageDelegate
     
     func stage(stage: Stage, didUpdateContentSize size: CGSize) {
-        setTopInset(size.height)
+        setStageHeight(size.height)
+        chatFeed?.setTopInset(size.height)
     }
     
     func stage(stage: Stage, didUpdateWithMedia media: Stageable) {

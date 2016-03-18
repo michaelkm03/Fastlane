@@ -14,7 +14,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 20.0, right: 0.0)
+    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
     private var bottomMargin: CGFloat = 10.0
     private let gradientBlendLength: CGFloat = 80.0
     
@@ -31,6 +31,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
+    
+    //MARK: - ChatFeed
+    
+    func setTopInset(value: CGFloat) {
+        self.edgeInsets.top = value
+    }
     
     // MARK: - NewItemsControllerDelegate
     
@@ -59,6 +65,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
+        
+        setTopInset(0.0)
     }
     
     override func viewWillAppear(animated: Bool) {
