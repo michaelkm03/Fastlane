@@ -54,11 +54,16 @@
         return;
     }
     
+    if ( !isUserScrolling && self.activeOnlyWhenUserIsScrolling )
+    {
+        return;
+    }
+    
     const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
     const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;
     const CGFloat scrollPositionY = scrollView.contentOffset.y;
-    const BOOL isScrollingDown = (!self.activeOnlyWhenUserIsScrolling) || (self.previousContentOffset.y <= scrollView.contentOffset.y);
+    const BOOL isScrollingDown = self.previousContentOffset.y <= scrollView.contentOffset.y;
     
     if ( scrollPositionY >= maxContentOffset && isScrollingDown)
     {
