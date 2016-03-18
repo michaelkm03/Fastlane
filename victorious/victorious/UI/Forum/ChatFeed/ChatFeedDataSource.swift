@@ -27,9 +27,6 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
-        super.init()
-        
-        super.maximumVisibleItemsCount = 50
     }
     
     func refreshRemote() {
