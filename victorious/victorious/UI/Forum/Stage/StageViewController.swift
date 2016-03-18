@@ -75,7 +75,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             "height": "200",
             "width": "100",
             "bitrate": "200",
-            "duration": 4,
+            "duration": 8,
             "start_time": 100,
             //            "endTime": "12345678",
             "resourceLocation": "https://media.giphy.com/media/mbgpTdJmNkLAs/giphy.mp4"
@@ -179,7 +179,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        clearStageMedia()
+        videoPlayer.pauseAtStart()
     }
     
     
@@ -210,7 +210,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         let videoItem = VVideoPlayerItem(URL: videoAsset.url)
         videoPlayer.setItem(videoItem)
-        videoPlayer.playFromStart()
         
         switchToContentView(videoContentView, fromContentView: currentContentView)
     }
@@ -250,15 +249,18 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     @objc private func interruptPlayback(timer: NSTimer) {
         print("INTERRUPT TIMER KICKED IN!")
         
-        if let interruptMessage = timer.userInfo {
+        if let interruptMessage = timer.userInfo as? NSDictionary {
             if let videoPlayer = interruptMessage[InterruptMessageConstants.videoPlayerKey] as? VVideoPlayer {
                 videoPlayer.pause()
             }
 
             if let contentView = interruptMessage[InterruptMessageConstants.contentViewKey] as? UIView {
                 contentView.alpha = 0.0
+                currentContentView = nil
             }
         }
+        
+        timer.invalidate()
     }
     
     private func terminateInterrupterTimer() {
