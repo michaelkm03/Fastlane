@@ -54,7 +54,7 @@
         return;
     }
     
-    if ( !isUserScrolling && self.activeOnlyWhenUserIsScrolling )
+    if ( !self.isUserScrolling && self.activeOnlyWhenUserIsScrolling )
     {
         return;
     }
