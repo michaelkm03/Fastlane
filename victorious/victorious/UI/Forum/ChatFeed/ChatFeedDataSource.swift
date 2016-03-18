@@ -16,7 +16,7 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     /// If this interval is too small, the scrolling animations will become choppy
     /// as they step on each other before finishing.
-    private var fetchMessageInterval: NSTimeInterval = 3.5
+    private var fetchMessageInterval: NSTimeInterval = 1.5
     
     private var timerManager: VTimerManager?
     
@@ -27,9 +27,6 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
-        super.init()
-        
-        super.maximumVisibleItemsCount = 50
     }
     
     func refreshRemote() {

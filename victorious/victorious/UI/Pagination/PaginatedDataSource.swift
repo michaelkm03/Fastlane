@@ -18,23 +18,10 @@ import VictoriousIOSSDK
     private(set) weak var currentPaginatedOperation: NSOperation?
     //private(set) weak var currentLocalOperation: NSOperation?
     
-    /// Determines how many visible items are allowed before older items are purged.
-    /// If undefined (nil), there is no limit on visible items count
-    var maximumVisibleItemsCount: Int?
-    
     private(set) var state: VDataSourceState = .Cleared {
         didSet {
             if oldValue != state {
                 self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
-            }
-        }
-    }
-    
-    var shouldStashNewContent: Bool = false {
-        didSet {
-            if !shouldStashNewContent && stashedItems.count > 0 {
-                visibleItems = NSOrderedSet(array: visibleItems.array + stashedItems.array)
-                stashedItems = NSOrderedSet()
             }
         }
     }
@@ -50,26 +37,10 @@ import VictoriousIOSSDK
         return state == .Loading
     }
     
-    private(set) var stashedItems = NSOrderedSet() {
+    private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
-            guard oldValue != stashedItems else {
-                return
-            }
-            delegate?.paginatedDataSource?(self, didUpdateStashedItemsFrom: oldValue, to: stashedItems)
-        }
-    }
-    
-    private var isPurging = false
-    private(set) var visibleItems = NSOrderedSet() {
-        didSet {
-            guard oldValue != visibleItems else {
-                return
-            }
-            
-            if isPurging {
-                delegate?.paginatedDataSource?( self, didPurgeVisibleItemsFrom: oldValue, to: visibleItems )
-            } else {
-                delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
+            if oldValue != visibleItems {
+                self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
             }
         }
     }
@@ -89,28 +60,23 @@ import VictoriousIOSSDK
     func cancelCurrentOperation() {
         currentPaginatedOperation?.cancel()
         currentPaginatedOperation = nil
-        state = visibleItems.count == 0 ? .NoResults : .Results
+        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     func removeDeletedItems() {
-        let oldCount = visibleItems.count
-        visibleItems = visibleItems.v_orderedSetFitleredForDeletedObjects()
-        if oldCount > 0 && visibleItems == 0 {
+        let oldCount = self.visibleItems.count
+        self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
+        if oldCount > 0 && self.visibleItems == 0 {
             // Setting state to `NoResults` will show a no content view, so we shouldonly
             // do that if there was content previously.  Otherwise, the view could simply
             // not be finished loading yet.
-            state = .NoResults
+            self.state = .NoResults
         }
     }
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
     func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)? = nil ) {
-
-        // Hold off on any checks for new items while a page is loading
-        guard currentPaginatedOperation == nil else {
-            return
-        }
         
         let operation: FetcherOperation = createOperation()
         
@@ -121,28 +87,14 @@ import VictoriousIOSSDK
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 completion?( [], error, cancelled )
+                
             } else {
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-                
-                if !results.isEmpty {
-                    if self.shouldStashNewContent {
-                        self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
-                        
-                    } else if let maximumVisibleItemsCount = self.maximumVisibleItemsCount {
-                        let (newItems, removed) = self.visibleItems.v_orderedSetPurgedToLimit(maximumVisibleItemsCount)
-                        if removed.count > 0 {
-                            self.isPurging = true
-                            self.visibleItems = newItems
-                            self.isPurging = false
-                        } else {
-                            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
-                        }
-                        
-                    } else {
-                        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Next)
-                    }
-                }
+                let sortedArray = (self.visibleItems.array + newResults)
+                    .flatMap { $0 as? PaginatedObjectType }
+                    .sort { $0.displayOrder.integerValue < $1.displayOrder.integerValue }
+                self.visibleItems = NSOrderedSet(array: sortedArray)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error, cancelled )
             }
@@ -184,6 +136,7 @@ import VictoriousIOSSDK
         // Add the page from `pagesLoaded` so it won't be loaded again
         pagesLoaded.insert(operation.paginator.pageNumber)
         
+        self.state = .Loading
         requestOperation.queue() { results, error, cancelled in
             
             if let error = error {
@@ -210,10 +163,6 @@ import VictoriousIOSSDK
 
 private extension NSOrderedSet {
     
-    func v_printDisplayOrder() {
-        print( flatMap { $0 as? PaginatedObjectType }.map { $0.displayOrder } )
-    }
-    
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
         let output: NSOrderedSet
         
@@ -230,17 +179,6 @@ private extension NSOrderedSet {
         }
         
         return output.v_orderedSetFitleredForDeletedObjects()
-    }
-    
-    func v_orderedSetPurgedToLimit(limit: Int) -> (result: NSOrderedSet, removed: NSOrderedSet) {
-        guard self.count > limit else {
-            return (self, NSOrderedSet())
-        }
-        var items = self.array
-        let range = 0..<(self.count - limit)
-        let removed = Array(items[range])
-        items.removeRange(range)
-        return (NSOrderedSet(array: items), NSOrderedSet(array: removed))
     }
     
     func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {

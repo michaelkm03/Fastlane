@@ -24,15 +24,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
-    private lazy var gradientMask: VLinearGradientView = {
-        let frame = self.collectionContainerView.bounds
-        let gradientView = VLinearGradientView(frame: frame)
-        gradientView.setColors([ UIColor.clearColor(), UIColor.blackColor() ])
-        return gradientView
-    }()
-    
     private let scrollPaginator = VScrollPaginator()
-    private var previousScrollPosition = CGPoint.zero
     
     private var selectedMessageUserID: Int?
     
@@ -41,29 +33,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private weak var collectionContainerView: UIView!
     @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
     
-    var shouldStashNewContent = false {
-        didSet {
-            dataSource.shouldStashNewContent = shouldStashNewContent
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        gradientMask.frame = collectionContainerView.bounds
-    }
-    
     // MARK: - NewItemsControllerDelegate
     
     func onMoreContentSelected() {
-        shouldStashNewContent = false
+        
     }
     
     // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionContainerView.maskView = gradientMask
         
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
@@ -97,11 +76,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dataSource.endLiveUpdates()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        dataSource.shouldStashNewContent = true
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -201,6 +175,17 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         delegate?.chatFeed(self, didSelectMedia:media)
     }
     
+    //MARK: - ChatFeed
+    
+    func setTopInset(value: CGFloat) {
+        
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        collectionConainerCenterVertical.constant = -value
+        view.layoutIfNeeded()
+    }
+    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() { }
@@ -211,16 +196,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
-        
-        if scrollPaginator.isUserScrolling {
-            if scrollView.contentOffset.y <= previousScrollPosition.y {
-                shouldStashNewContent = true
-            } else if collectionView.v_isScrolledToBottom {
-                shouldStashNewContent = false
-            }
-        }
-        
-        previousScrollPosition = scrollView.contentOffset
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -234,16 +209,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        var insets = self.edgeInsets
-        insets.top = value
-        self.edgeInsets = insets
-        gradientMask.locations = [
-            (self.edgeInsets.top - self.gradientBlendLength)/gradientMask.frame.height,
-            (self.edgeInsets.top)/gradientMask.frame.height
-        ]
-        gradientMask.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientMask.endPoint = CGPoint(x: 0.5, y: 1.0)
-        collectionView.collectionViewLayout.invalidateLayout()
+        print("Stage content height: \(value)")
     }
     
     func setBottomInset(value: CGFloat) {
