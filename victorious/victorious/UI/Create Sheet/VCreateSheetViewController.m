@@ -16,12 +16,6 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "victorious-Swift.h"
 
-static NSString * const kCreateImageIdentifier = @"Create Image";
-static NSString * const kCreateVideoIdentifier = @"Create Video";
-static NSString * const kCreatePollIdentifier = @"Create Poll";
-static NSString * const kCreateMemeIdentifier = @"Create Text";
-static NSString * const kCreateGIFIdentifier = @"Create GIF";
-
 static NSString * const kStoryboardName = @"CreateSheet";
 static NSString * const kDismissButtonTitle = @"title.button1";
 
@@ -192,35 +186,9 @@ static const CGFloat kLineSpacing = 40.0f;
     
     if (self.completionHandler != nil)
     {
-        self.completionHandler(self, [self itemIdentifierFromString:menuItem.identifier]);
+        self.completionHandler(self, [VCreationTypeHelper creationTypeForIdentifier:menuItem.identifier]);
     }
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (VCreationType)itemIdentifierFromString:(NSString *)identifierString
-{
-    if ([identifierString isEqualToString:kCreateImageIdentifier])
-    {
-        return VCreationTypeImage;
-    }
-    else if ([identifierString isEqualToString:kCreateVideoIdentifier])
-    {
-        return VCreationTypeVideo;
-    }
-    else if ([identifierString isEqualToString:kCreatePollIdentifier])
-    {
-        return VCreationTypePoll;
-    }
-    else if ([identifierString isEqualToString:kCreateMemeIdentifier])
-    {
-        return VCreationTypeText;
-    }
-    else if ([identifierString isEqualToString:kCreateGIFIdentifier])
-    {
-        return VCreationTypeGIF;
-    }
-    
-    return VCreationTypeUnknown;
 }
 
 #pragma mark - Flow Layout Delegate

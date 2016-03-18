@@ -24,6 +24,10 @@ class ForumViewController: UIViewController, Forum {
         return self
     }
     
+    lazy var creationFlowPresenter: VCreationFlowPresenter = {
+        return VCreationFlowPresenter(dependencymanager: self.dependencyManager)
+    }()
+    
     // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
@@ -70,8 +74,6 @@ class ForumViewController: UIViewController, Forum {
         }
     }
     
-    // MARK: - Actions
-    
     func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -94,5 +96,9 @@ private extension VDependencyManager {
     
     var composerDependency: VDependencyManager {
         return childDependencyForKey("composer")!
+    }
+    
+    var stageDependency: VDependencyManager {
+        return childDependencyForKey("stage")!
     }
 }

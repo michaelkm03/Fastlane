@@ -29,6 +29,13 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 @implementation VCreationFlowPresenter
 
+- (id)initWithDependencymanager:(VDependencyManager *)dependencyManager
+{
+    self = [super initWithDependencymanager:dependencyManager];
+    self.shouldShowPublishScreenForFlowController = YES;
+    return self;
+}
+
 - (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType
 {
     self.viewControllerPresentedOn = originViewController;

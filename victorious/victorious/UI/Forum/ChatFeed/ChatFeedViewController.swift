@@ -199,11 +199,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func messageCellDidSelectMedia(messageCell: MessageCell) {
-        guard let media = messageCell.viewData.media,
-            let preloadedImage = messageCell.preloadedImage else {
-                return
+        guard let media = messageCell.viewData.media else {
+            return
         }
-        delegate?.chatFeed(self, didSelectMedia:media, withPreloadedImage: preloadedImage, fromView: messageCell)
+        delegate?.chatFeed(self, didSelectMedia:media)
     }
     
     // MARK: - VScrollPaginatorDelegate

@@ -18,6 +18,8 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     
     var originViewController: UIViewController { get }
     
+    var creationFlowPresenter: VCreationFlowPresenter { get }
+    
     // MARK: - Abstract subcomponents/dependencies
     
     var stage: Stage? { get }
@@ -40,13 +42,17 @@ extension Forum {
             userId: userID).queue()
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView) {
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia) {
+        
     }
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
-        
+    func composer(composer: Composer, didSelectAttachmentTabWithIdentifier identifier: String) {
+        creationFlowPresenter.shouldShowPublishScreenForFlowController = false
+        creationFlowPresenter.presentWorkspaceOnViewController(originViewController,
+            creationType: CreationTypeHelper.creationTypeForIdentifier(identifier)
+        )
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {

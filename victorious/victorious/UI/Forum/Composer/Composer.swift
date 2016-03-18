@@ -25,7 +25,7 @@ protocol Composer: class {
 /// a composer changes its height.
 protocol ComposerDelegate: class {
     
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab)
+    func composer(composer: Composer, didSelectAttachmentTabWithIdentifier identifier: String)
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?)
     
