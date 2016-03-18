@@ -22,7 +22,7 @@ class ChatMessage: NSObject, PaginatedObjectType {
     }
 }
 
-private let totalMessages = 0 //< Hack for testing
+private var totalMessages = 0 //< Hack for testing
 
 final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
@@ -52,7 +52,6 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
             }
             
             var messagesCreated = [ChatMessage]()
-            var displayOrder = totalMessages
             
             let messagesCount = 1 + Int(arc4random() % 2)
             for _ in 0..<messagesCount {
@@ -65,7 +64,7 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
                 
                 let rnd = Int(arc4random() % UInt32(testMessageText.count) )
                 let text = testMessageText[rnd]
-                let message = ChatMessage(displayOrder: displayOrder++)
+                let message = ChatMessage(displayOrder: totalMessages++)
                 message.sender = sender
                 message.text = text
                 message.postedAt = NSDate()

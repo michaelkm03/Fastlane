@@ -24,21 +24,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
-    private lazy var gradientMask: UIView = {
-        let frame = self.collectionContainerView.bounds
-        let gradientView = VLinearGradientView(frame: frame)
-        gradientView.setColors([ UIColor.clearColor(), UIColor.blackColor() ])
-        gradientView.locations = [
-            (self.edgeInsets.top - self.gradientBlendLength)/frame.height,
-            (self.edgeInsets.top)/frame.height
-        ]
-        gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
-        return gradientView
-    }()
-    
     private let scrollPaginator = VScrollPaginator()
-    private var previousScrollPosition = CGPoint.zero
     
     private var selectedMessageUserID: Int?
     
@@ -46,11 +32,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
     @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        gradientMask.frame = collectionContainerView.bounds
-    }
     
     // MARK: - NewItemsControllerDelegate
     
@@ -62,8 +43,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionContainerView.maskView = gradientMask
         
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
@@ -204,6 +183,26 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     func setBottomInset(value: CGFloat) {
         collectionConainerCenterVertical.constant = -value
         view.layoutIfNeeded()
+    }
+    
+    // MARK: - VScrollPaginatorDelegate
+    
+    func shouldLoadNextPage() { }
+    
+    func shouldLoadPreviousPage() { }
+    
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewWillBeginDragging(scrollView)
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
 }
 
