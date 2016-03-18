@@ -21,6 +21,8 @@
 @import KVOController;
 
 static const CGFloat kMinimumBlurredImageSize = 50.0;
+static const CGFloat kTrophyButtonLeftMargin = 5.0f;
+
 static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 @interface VStaticUserProfileHeaderViewController ()
@@ -146,6 +148,14 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 - (CGFloat)preferredHeight
 {
     return 319.0f;
+}
+
+- (void)addTrophyCaseButton:(UIButton *)button
+{
+    [self.view addSubview:button];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button.topAnchor constraintEqualToAnchor:self.profileImageView.topAnchor].active = YES;
+    [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
 }
 
 #pragma mark - VAbstractUserProfileHeaderViewController overrides
