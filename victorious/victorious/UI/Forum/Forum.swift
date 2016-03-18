@@ -47,9 +47,6 @@ extension Forum {
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView) {
-        ShowMediaLightboxOperation(originViewController: originViewController,
-            preloadedImage: image,
-            referenceView: referenceView).queue()
     }
     
     // MARK: - ComposerDelegate

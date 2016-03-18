@@ -47,12 +47,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet private weak var collectionContainerView: UIView!
     @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
     
-    var shouldStashNewContent = false {
-        didSet {
-            dataSource.shouldStashNewContent = shouldStashNewContent
-        }
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         gradientMask.frame = collectionContainerView.bounds
@@ -61,7 +55,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     // MARK: - NewItemsControllerDelegate
     
     func onMoreContentSelected() {
-        shouldStashNewContent = false
+        
     }
     
     // MARK: - ForumEventReceiver
@@ -106,11 +100,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dataSource.endLiveUpdates()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        dataSource.shouldStashNewContent = true
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -209,36 +198,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
                 return
         }
         delegate?.chatFeed(self, didSelectMedia:media, withPreloadedImage: preloadedImage, fromView: messageCell)
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() { }
-    
-    func shouldLoadPreviousPage() { }
-    
-    // MARK: - UIScrollViewDelegate
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidScroll(scrollView)
-        
-        if scrollPaginator.isUserScrolling {
-            if scrollView.contentOffset.y <= previousScrollPosition.y {
-                shouldStashNewContent = true
-            } else if collectionView.v_isScrolledToBottom {
-                shouldStashNewContent = false
-            }
-        }
-        
-        previousScrollPosition = scrollView.contentOffset
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewWillBeginDragging(scrollView)
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
     
     //MARK: - ChatFeed

@@ -1001,7 +1001,6 @@
 		A72C86541C977FF500E97D4F /* ShowLikersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B41C977FF500E97D4F /* ShowLikersOperation.swift */; };
 		A72C86551C977FF500E97D4F /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */; };
 		A72C86561C977FF500E97D4F /* ShowMediaContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B61C977FF500E97D4F /* ShowMediaContentOperation.swift */; };
-		A72C86571C977FF500E97D4F /* ShowMediaLightboxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B71C977FF500E97D4F /* ShowMediaLightboxOperation.swift */; };
 		A72C86581C977FF500E97D4F /* ShowMemersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B81C977FF500E97D4F /* ShowMemersOperation.swift */; };
 		A72C86591C977FF500E97D4F /* ShowProfileOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */; };
 		A72C865A1C977FF500E97D4F /* ShowRepostersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BA1C977FF500E97D4F /* ShowRepostersOperation.swift */; };
@@ -3394,7 +3393,6 @@
 		A72C85B41C977FF500E97D4F /* ShowLikersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLikersOperation.swift; sourceTree = "<group>"; };
 		A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		A72C85B61C977FF500E97D4F /* ShowMediaContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaContentOperation.swift; sourceTree = "<group>"; };
-		A72C85B71C977FF500E97D4F /* ShowMediaLightboxOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaLightboxOperation.swift; sourceTree = "<group>"; };
 		A72C85B81C977FF500E97D4F /* ShowMemersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMemersOperation.swift; sourceTree = "<group>"; };
 		A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowProfileOperation.swift; sourceTree = "<group>"; };
 		A72C85BA1C977FF500E97D4F /* ShowRepostersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRepostersOperation.swift; sourceTree = "<group>"; };
@@ -7484,7 +7482,6 @@
 				A72C85B41C977FF500E97D4F /* ShowLikersOperation.swift */,
 				A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */,
 				A72C85B61C977FF500E97D4F /* ShowMediaContentOperation.swift */,
-				A72C85B71C977FF500E97D4F /* ShowMediaLightboxOperation.swift */,
 				A72C85B81C977FF500E97D4F /* ShowMemersOperation.swift */,
 				A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */,
 				A72C85BA1C977FF500E97D4F /* ShowRepostersOperation.swift */,
@@ -12033,7 +12030,6 @@
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
 				A72C861F1C977FF500E97D4F /* MessageUnreadCountOperation.swift in Sources */,
-				A72C86571C977FF500E97D4F /* ShowMediaLightboxOperation.swift in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VConversationListViewController.m in Sources */,
 				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,

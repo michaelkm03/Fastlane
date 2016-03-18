@@ -62,9 +62,6 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
-        super.init()
-        
-        super.maximumVisibleItemsCount = 50
     }
     
     // MARK: - ForumEventReceiver
