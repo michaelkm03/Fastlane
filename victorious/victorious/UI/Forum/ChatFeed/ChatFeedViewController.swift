@@ -24,16 +24,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
-    private lazy var gradientMask: UIView = {
+    private lazy var gradientMask: VLinearGradientView = {
         let frame = self.collectionContainerView.bounds
         let gradientView = VLinearGradientView(frame: frame)
         gradientView.setColors([ UIColor.clearColor(), UIColor.blackColor() ])
-        gradientView.locations = [
-            (self.edgeInsets.top - self.gradientBlendLength)/frame.height,
-            (self.edgeInsets.top)/frame.height
-        ]
-        gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
         return gradientView
     }()
     
@@ -87,6 +81,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
+        
+        setTopInset(0.0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -238,7 +234,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        
+        var insets = self.edgeInsets
+        insets.top = value
+        self.edgeInsets = insets
+        gradientMask.locations = [
+            (self.edgeInsets.top - self.gradientBlendLength)/gradientMask.frame.height,
+            (self.edgeInsets.top)/gradientMask.frame.height
+        ]
+        gradientMask.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientMask.endPoint = CGPoint(x: 0.5, y: 1.0)
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     func setBottomInset(value: CGFloat) {

@@ -24,10 +24,6 @@ class ForumViewController: UIViewController, Forum {
         return self
     }
     
-    lazy var creationFlowPresenter: VCreationFlowPresenter = {
-        return VCreationFlowPresenter(dependencymanager: self.dependencyManager)
-    }()
-    
     // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {

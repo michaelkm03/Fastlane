@@ -18,8 +18,6 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     
     var originViewController: UIViewController { get }
     
-    var creationFlowPresenter: VCreationFlowPresenter { get }
-    
     // MARK: - Abstract subcomponents/dependencies
     
     var stage: Stage? { get }
@@ -49,8 +47,9 @@ extension Forum {
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectCreationType creationType: VCreationType) {
-        creationFlowPresenter.shouldShowPublishScreenForFlowController = false
-        creationFlowPresenter.presentWorkspaceOnViewController(originViewController, creationType: creationType)
+        let presenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
+        presenter.shouldShowPublishScreenForFlowController = false
+        presenter.presentWorkspaceOnViewController(originViewController, creationType: creationType)
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
@@ -67,11 +66,11 @@ extension Forum {
         chatFeed?.setTopInset(size.height)
     }
     
-    func stage(stage: Stage, didUpdateWithMedia media: ForumMedia) {
+    func stage(stage: Stage, didUpdateWithMedia media: Stageable) {
         
     }
     
-    func stage(stage: Stage, didSelectMedia media: ForumMedia) {
+    func stage(stage: Stage, didSelectMedia media: Stageable) {
         
     }
 }
