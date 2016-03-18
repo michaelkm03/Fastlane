@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowProfileOperation: MainQueueOperation {
+class ShowProfileOperation: BackgroundOperation {
     
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
@@ -22,8 +22,14 @@ class ShowProfileOperation: MainQueueOperation {
     
     override func start() {
         super.start()
-        self.beganExecuting()
+        beganExecuting()
         
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performNavigation()
+        }
+    }
+    
+    private func performNavigation() {
         guard let navigationViewController = originViewController.v_navigationController() else {
             assertionFailure("\(self.dynamicType) requires a VNavigation controller.")
             return
@@ -31,7 +37,7 @@ class ShowProfileOperation: MainQueueOperation {
         
         if let originViewControllerProfile = originViewController as? VUserProfileViewController
             where originViewControllerProfile.user.remoteId.integerValue == userId {
-                self.finishedExecuting()
+                finishedExecuting()
                 return
         }
         
@@ -39,6 +45,6 @@ class ShowProfileOperation: MainQueueOperation {
             navigationViewController.innerNavigationController.pushViewController(profileViewController, animated: true)
         }
         
-        self.finishedExecuting()
+        finishedExecuting()
     }
 }

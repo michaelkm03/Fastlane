@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowMediaLightboxOperation: MainQueueOperation {
+class ShowMediaLightboxOperation: BackgroundOperation {
     
     let originViewController: UIViewController
     let image: UIImage?
@@ -36,6 +36,13 @@ class ShowMediaLightboxOperation: MainQueueOperation {
     override func start() {
         super.start()
         beganExecuting()
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performNavigation()
+        }
+    }
+    
+    private func performNavigation() {
         
         var lightboxController: VLightboxViewController
         if let videoURL = videoURL {

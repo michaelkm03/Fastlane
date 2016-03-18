@@ -38,14 +38,13 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
     override func main() {
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let otherUser: VUser = context.v_findOrCreateObject(
-                [
-                    "remoteId" : 3213,
-                    "name" : "Gg",
-                    "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
-                ]
-            )
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            let userData = [
+                "remoteId" : 3213,
+                "name" : "Gg",
+                "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
+            ]
+            let otherUser: VUser = context.v_findOrCreateObject(userData)
             otherUser.status = "test"
         
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
@@ -81,6 +80,7 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
                 
                 messagesCreated.append(message)
             }
+            context.v_save()
                     
             self.results = messagesCreated
         }
