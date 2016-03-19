@@ -122,15 +122,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             return
         }
         
-        if !scrollPaginator.isUserScrolling && !dataSource.shouldStashNewContent {
-
-            // Some tricky stuff to make sure the collection view's content size is updated enough
-            // so that the scroll to bottom actually works
-            CATransaction.begin()
-            CATransaction.setCompletionBlock() {
-                dispatch_after(0.0) {
-                    self.collectionView.v_scrollToBottomAnimated(true)
-                }
+        // Some tricky stuff to make sure the collection view's content size is updated enough
+        // so that the scroll to bottom actually works
+        CATransaction.begin()
+        CATransaction.setCompletionBlock() {
+            dispatch_after(0.0) {
+                self.collectionView.v_scrollToBottomAnimated(true)
             }
         }
         collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
@@ -195,16 +192,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
-        
-        if scrollPaginator.isUserScrolling {
-            if scrollView.contentOffset.y <= previousScrollPosition.y {
-                dataSource.shouldStashNewContent = true
-            } else if collectionView.v_isScrolledToBottom {
-                dataSource.shouldStashNewContent = false
-            }
-        }
-        
-        previousScrollPosition = scrollView.contentOffset
     }
 }
 
