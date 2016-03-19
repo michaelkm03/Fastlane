@@ -451,4 +451,7 @@
 
 "Dismiss Alert" = "Got It";
 
-"What do you think..." = "What do you think...";
+"NewMessagesFormatPlural" = "%@ New Messages"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
+
+"ComposerPlaceholderText" = "What do you think...";

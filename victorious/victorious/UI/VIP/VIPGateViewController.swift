@@ -137,10 +137,12 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     private func openGate() {
-        ShowForumOperation(dependencyManager: dependencyManager).queue() { _ in
+        let originVC = dependencyManager.scaffoldViewController()
+        ShowForumOperation(originViewController: originVC, dependencyManager: dependencyManager).queue() { _ in
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
         }
     }
+    
     private func updateViews() {
         guard isViewLoaded() else {
             return
@@ -195,6 +197,6 @@ private extension VDependencyManager {
     
     var backgroundColor: UIColor? {
         let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
-        return background!.backgroundColor
+        return background?.backgroundColor
     }
 }

@@ -49,7 +49,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func redocorateVisibleCells(tableView: UITableView) {
+    func redecorateVisibleCells(tableView: UITableView) {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? VConversationCell else {
                 continue

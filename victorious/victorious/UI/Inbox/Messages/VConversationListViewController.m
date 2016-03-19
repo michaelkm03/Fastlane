@@ -183,7 +183,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.dataSource redocorateVisibleCells:self.tableView];
+         [self.dataSource redecorateVisibleCells:self.tableView];
      }];
 }
 
@@ -253,7 +253,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)onConversationUpdated:(VConversation *)conversation
 {
-    [self.dataSource redocorateVisibleCells:self.tableView];
+    [self.dataSource redecorateVisibleCells:self.tableView];
 }
 
 #pragma mark - Message View Controller Cache
@@ -370,7 +370,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         [self.messageCountCoordinator markConversationRead:conversation completion:^
          {
-             [self.dataSource redocorateVisibleCells:self.tableView];
+             [self.dataSource redecorateVisibleCells:self.tableView];
          }];
         
         if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
@@ -462,7 +462,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
      {
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.dataSource redocorateVisibleCells:self.tableView];
+         [self.dataSource redecorateVisibleCells:self.tableView];
     }];
 }
 

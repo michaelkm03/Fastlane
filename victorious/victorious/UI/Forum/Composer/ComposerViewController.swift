@@ -11,31 +11,30 @@ import UIKit
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
     
     private let animationDuration = 0.2
-    
     private let minimumTextViewHeight: CGFloat = 32
     
-    @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
+    private var visibleKeyboardHeight: CGFloat = 0
     
     /// Referenced so that it can be set toggled between 0 and it's default
     /// height when shouldShowAttachmentContainer is true
     @IBOutlet private var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textView: VPlaceholderTextView!
-    
     @IBOutlet private var attachmentContainerView: UIView!
-    
     @IBOutlet private var interactiveContainerView: UIView!
     
     private var composerTextViewManager: ComposerTextViewManager?
-    
     private var keyboardManager: VKeyboardNotificationManager?
     
-    private var visibleKeyboardHeight: CGFloat = 0
-    
     private var totalComposerHeight: CGFloat {
-        return isViewLoaded() ? fabs(inputViewToBottomConstraint.constant) + textViewHeightConstraint.constant : 0
+        guard isViewLoaded() else {
+            return 0.0
+        }
+        return fabs(inputViewToBottomConstraint.constant)
+            + textViewHeightConstraint.constant
+            + attachmentContainerHeightConstraint.constant 
     }
     
     /// The maximum number of characters a user can input into
@@ -77,9 +76,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.updateViewsForNewVisibleKeyboardHeight(0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
     }
     
-    // MARK: - ComposerController
+    // MARK: - Composer
     
     var maximumTextInputHeight = DefaultPropertyValues.maximumTextInputHeight
+    
+    func dismissKeyboard(animated: Bool) {
+        textView.resignFirstResponder()
+    }
     
     // MARK: - ComposerTextViewManagerDelegate
     
@@ -119,14 +122,27 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         dependencyManager?.addBackgroundToBackgroundHost(self)
     }
     
-    private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
-        
-        self.visibleKeyboardHeight = visibleKeyboardHeight
-        inputViewToBottomConstraint.constant = visibleKeyboardHeight
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
-        UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+    }
+    
+    private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
+        guard self.visibleKeyboardHeight != visibleKeyboardHeight else {
+            return
+        }
+        self.visibleKeyboardHeight = visibleKeyboardHeight
+        
+        UIView.animateWithDuration(animationDuration,
+            delay: 0,
+            options: animationOptions,
+            animations: {
+                self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
+                self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
     
     override func updateViewConstraints() {
@@ -150,10 +166,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
-        
         let previousContentOffset = self.textView.contentOffset
         UIView.animateWithDuration(animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
+            self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
             self.textView.layoutIfNeeded()
             if textViewHeightNeedsUpdate {
                 self.textView.setContentOffset(previousContentOffset, animated: true)
@@ -168,7 +183,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private func setupTextView() {
         textView.text = nil
         textView.textContainer.heightTracksTextView = true
-        textView.placeholderText = NSLocalizedString("What do you think...", comment: "")
+        textView.placeholderText = NSLocalizedString("ComposerPlaceholderText", comment: "")
     }
     
     // MARK: - Actions

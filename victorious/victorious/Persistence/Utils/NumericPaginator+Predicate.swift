@@ -16,4 +16,3 @@ extension NumericPaginator {
         return NSPredicate(format: "displayOrder >= %@ && displayOrder < %@", argumentArray: arguments)
     }
 }
-    
