@@ -53,7 +53,7 @@ class TestPersistentStore: NSObject, PersistentStoreType {
     }
     
     func createBackgroundContext() -> NSManagedObjectContext {
-        return TestPersistentStore.coreDataManager.createBackgroundContext()
+        return TestPersistentStore.coreDataManager.mainContext
     }
     
     func deletePersistentStore() {
