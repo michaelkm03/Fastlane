@@ -87,14 +87,11 @@ import VictoriousIOSSDK
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 completion?( [], error, cancelled )
-                
+            
             } else {
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-                let sortedArray = (self.visibleItems.array + newResults)
-                    .flatMap { $0 as? PaginatedObjectType }
-                    .sort { $0.displayOrder.integerValue < $1.displayOrder.integerValue }
-                self.visibleItems = NSOrderedSet(array: sortedArray)
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, forPageType: .Previous)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error, cancelled )
             }

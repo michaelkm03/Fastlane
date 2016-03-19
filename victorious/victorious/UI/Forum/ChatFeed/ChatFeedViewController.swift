@@ -67,7 +67,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
         
-        scrollPaginator.activeOnlyWhenUserIsScrolling = true
         scrollPaginator.delegate = self
         
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
@@ -122,7 +121,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
             return
         }
-
+        
         if !scrollPaginator.isUserScrolling && !dataSource.shouldStashNewContent {
 
             // Some tricky stuff to make sure the collection view's content size is updated enough
@@ -133,12 +132,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
                     self.collectionView.v_scrollToBottomAnimated(true)
                 }
             }
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
-            CATransaction.commit()
-       
-        } else {
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
         }
+        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+        CATransaction.commit()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -209,14 +205,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
         
         previousScrollPosition = scrollView.contentOffset
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewWillBeginDragging(scrollView)
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        scrollPaginator.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
 }
 

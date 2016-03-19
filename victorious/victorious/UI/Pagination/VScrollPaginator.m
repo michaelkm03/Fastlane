@@ -8,66 +8,31 @@
 
 #import "VScrollPaginator.h"
 
-@interface VScrollPaginator()
-
-@property (nonatomic, assign) CGPoint previousContentOffset;
-@property (nonatomic, assign) BOOL hasScrolledOnce;
-@property (nonatomic, assign, readwrite) BOOL isUserScrolling;
-
-@end
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation VScrollPaginator
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( !self.isUserScrolling || self.delegate == nil)
+    if ( self.delegate == nil )
     {
         return;
     }
     
-    if ( self.hasScrolledOnce )
-    {
-        [self calculate:scrollView];
-    }
-    
-    self.previousContentOffset = scrollView.contentOffset;
-    self.hasScrolledOnce = YES;
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    // Only if the user started the scroll with a drag do we mark this YES
-    self.isUserScrolling = YES;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    // As soon as the user lifts his/her finger
-    self.isUserScrolling = NO;
-}
-
-- (void)calculate:(UIScrollView *)scrollView
-{
     const CGFloat contentHeight = scrollView.contentSize.height;
-    if (contentHeight <= scrollView.bounds.size.height)
-    {
-        return;
-    }
-    
     const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
     const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;
     const CGFloat scrollPositionY = scrollView.contentOffset.y;
-    const BOOL isScrollingDown = (!self.activeOnlyWhenUserIsScrolling) || (self.previousContentOffset.y <= scrollView.contentOffset.y);
     
-    if ( scrollPositionY >= maxContentOffset && isScrollingDown)
+    if ( scrollPositionY >= maxContentOffset )
     {
         if ( [self.delegate respondsToSelector:@selector(shouldLoadNextPage)] )
         {
             [self.delegate shouldLoadNextPage];
         }
     }
-    else if ( scrollPositionY < minContentOffset && !isScrollingDown )
+    else if ( scrollPositionY < minContentOffset )
     {
         if ( [self.delegate respondsToSelector:@selector(shouldLoadPreviousPage)] )
         {
@@ -77,3 +42,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

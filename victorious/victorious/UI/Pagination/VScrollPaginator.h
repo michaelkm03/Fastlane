@@ -32,10 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) IBOutlet id<VScrollPaginatorDelegate> delegate;
 
-@property (nonatomic, assign, readonly) BOOL isUserScrolling;
-
-@property (nonatomic, assign) BOOL activeOnlyWhenUserIsScrolling;
-
 /*
  Drives the calculations of when next and previous pages should be loaded,
  which then triggers the calling of the methods in `VScrollPaginatorDelegate`.
@@ -44,10 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
-
 @end
+
 
 NS_ASSUME_NONNULL_END
