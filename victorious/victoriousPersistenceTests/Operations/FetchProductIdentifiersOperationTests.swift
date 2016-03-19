@@ -14,7 +14,7 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
     var operation: FetchTemplateProductIdentifiersOperation!
     private var productsDataSource = MockProductsDataSource()
     
-    func testSubscribeSuccess() {
+    func testSuccess() {
         let operation = FetchTemplateProductIdentifiersOperation(productsDataSource: productsDataSource)
         operation.purchaseManager = MockPurchaseManager()
         
@@ -26,7 +26,7 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
     }
     
-    func testSubscribeError() {
+    func testError() {
         let operation = FetchTemplateProductIdentifiersOperation(productsDataSource: productsDataSource)
         let expectedError = NSError(domain:"", code: -99, userInfo:nil)
         operation.purchaseManager = MockPurchaseManager(error: expectedError)

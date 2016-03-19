@@ -8,9 +8,20 @@
 
 import Foundation
 
-protocol ChatFeed {
+protocol ChatFeed: class {
     
     weak var delegate: ChatFeedDelegate? { get set }
     
-    func setFeedEdgeInsets(insets: UIEdgeInsets, animated: Bool)
+    var dependencyManager: VDependencyManager! { get set }
+    
+    func setBottomInset(value: CGFloat)
+    
+    func setTopInset(value: CGFloat)
+}
+
+protocol ChatFeedDelegate: class {
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView)
 }

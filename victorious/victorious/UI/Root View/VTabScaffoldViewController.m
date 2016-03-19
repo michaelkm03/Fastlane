@@ -353,6 +353,7 @@ static NSString * const kMenuKey = @"menu";
                                                                                     dependencyManager:self.dependencyManager
                                                                                               context:VAuthorizationContextDefault
                                                                                              animated:NO];
+    
     showLoginOperation.completionBlock = ^{
         dispatch_async( dispatch_get_main_queue(), ^{
             [welf configureTabBar];

@@ -45,6 +45,7 @@
 #import "VAppInfo.h"
 #import "VAppTimingEventType.h"
 #import "VApplicationTracking.h"
+#import "UIColor+VHex.h"
 #import "VAsset+Fetcher.h"
 #import "VAuthorizationContext.h"
 #import "VAutomation.h"

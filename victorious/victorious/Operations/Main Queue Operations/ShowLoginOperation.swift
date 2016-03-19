@@ -22,8 +22,6 @@ class ShowLoginOperation: MainQueueOperation {
         self.animated = animated
     }
     
-    // MARK: - Override
-    
     override func start() {
         super.start()
         

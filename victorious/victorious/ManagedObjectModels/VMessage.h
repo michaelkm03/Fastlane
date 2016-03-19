@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VMessage : NSManagedObject
 
 @property (nonatomic, retain, nullable) NSString * mediaUrl;
-@property (nonatomic, retain, nullable) NSDate * postedAt;
+@property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain, nullable) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain, nullable) NSString * text;

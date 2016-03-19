@@ -2,83 +2,97 @@
 //  ForumViewController.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 3/9/16.
+//  Created by Sharif Ahmed on 3/3/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ForumViewController: UIViewController, ComposerDelegate {
-
-    @IBOutlet private var chatFeedViewControllerContainer: UIView!
+/// A template driven .screen component that sets up, houses and mediates the interaction
+/// between the Foumr's required concrete implementations and abstract dependencies.
+class ForumViewController: UIViewController, Forum {
     
-    @IBOutlet private var composerViewControllerContainer: UIView!
+    // MARK: - Forum protocol requirements
     
-    @IBOutlet private var stageViewControllerContainer: UIView!
+    var stage: Stage?
+    var composer: Composer?
+    var chatFeed: ChatFeed?
     
-    @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
+    var dependencyManager: VDependencyManager!
     
-    private var dependencyManager: VDependencyManager!
+    var originViewController: UIViewController {
+        return self
+    }
     
-    
-    //MARK: - Initialization
+    // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        
-        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("ForumViewController")
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
         return forumVC
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        super.prepareForSegue(segue, sender: sender)
-        let destination = segue.destinationViewController
-        if let stageViewController = destination as? StageViewController {
-            stageViewController.dependencyManager = dependencyManager
-        } else if let composerViewController = destination as? ComposerViewController {
-            composerViewController.dependencyManager = dependencyManager
-            composerViewController.delegate = self
-        }
-        // Uncomment the following lines once the chat feed view controller is added
-        // to the project.
-//        else if let chatFeedViewController = destination as? ChatFeedViewController {
-//            chatFeedViewController.dependencyManager = dependencyManager
-//        }
-    }
-    
-    //MARK: - ComposerDelegate
-    
-    func composer(composer: Composer, confirmedWithCaption caption: String) {
-        
-    }
-    
-    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?) {
-        
-    }
-    
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
-        
-    }
-    
-    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        composerViewControllerHeightConstraint.constant = height
-    }
-    
-    
-    //MARK: - Lifecycle
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
-        view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Exit", comment: ""),
+            style: .Plain,
+            target: self,
+            action: Selector("onClose")
+        )
+        
+        self.title = dependencyManager.title
+        self.view.backgroundColor = dependencyManager.backgroundColor
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.prepareForSegue(segue, sender: sender)
+        
+        let destination = segue.destinationViewController
+
+        if let stage = destination as? Stage {
+            stage.dependencyManager = dependencyManager
+            stage.delegate = self
+            self.stage = stage
+        
+        } else if let chatFeed = destination as? ChatFeed {
+            chatFeed.dependencyManager = dependencyManager.chatFeedDependency
+            chatFeed.delegate = self
+            self.chatFeed = chatFeed
+        
+        } else if let composer = destination as? Composer {
+            composer.dependencyManager = dependencyManager
+            composer.delegate = self
+            self.composer = composer
+        }
+    }
     
-    //MARK: - Actions
+    // MARK: - Actions
     
-    func exit() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func onClose() {
+        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+private extension VDependencyManager {
+    
+    var title: String {
+        return stringForKey("title")
+    }
+    
+    var backgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
+    }
+    
+    var chatFeedDependency: VDependencyManager {
+        return childDependencyForKey("chatFeed")!
+    }
+    
+    var composerDependency: VDependencyManager {
+        return childDependencyForKey("composer")!
     }
 }
