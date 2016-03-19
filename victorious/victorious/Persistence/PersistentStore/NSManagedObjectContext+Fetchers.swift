@@ -144,7 +144,7 @@ extension NSManagedObjectContext {
     
     func v_displayOrderForNewObjectWithEntityName( entityName: String, predicate: NSPredicate? = nil ) -> Int {
         let request = NSFetchRequest(entityName: entityName)
-        request.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
+        request.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
         if let predicate = predicate {
             request.predicate = predicate
         }
