@@ -8,9 +8,11 @@
 
 public struct TermsOfServiceRequest: RequestType {
     
-    public init(){
+    public init() {
         // Just to be public
     }
+    
+    public var publicBaseURL = NSURL(string: "http://www.victorious.com/")!
     
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/tos")!)

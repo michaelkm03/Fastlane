@@ -1,18 +1,18 @@
 //
-//  VTOSViewController.swift
+//  VPrivacyPoliciesViewController.swift
 //  victorious
 //
-//  Created by Michael Sena on 12/9/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 3/19/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 import WebKit
 
-extension VTOSViewController {
+extension VPrivacyPoliciesViewController {
     
-    func loadTermsOfService() {
-        let operation = TermsOfServiceOperation()
+    func loadPrivacyPolicy() {
+        let operation = PrivacyPolicyOperation()
         operation.queue() { results, error, cancelled in
             guard let htmlString = operation.resultHTMLString where error == nil else {
                 self.setFailureWithError(error)

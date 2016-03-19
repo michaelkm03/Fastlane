@@ -43,12 +43,6 @@
     [self loadTermsOfService];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-}
-
 - (void)pressedBack
 {
     [self dismissViewControllerAnimated:YES completion:nil];

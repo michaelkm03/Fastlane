@@ -14,6 +14,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBOutlet weak private var textView: UITextView!
     @IBOutlet weak private var subscribeButton: UIButton!
     @IBOutlet weak private var restoreButton: UIButton!
+    @IBOutlet weak private var privacyPolicyButton: UIButton!
+    @IBOutlet weak private var termsOfServiceButton: UIButton!
+    @IBOutlet weak private var legalPromptLabel: UILabel!
     
     private lazy var vipIconView: UIView = {
         let imageView = UIImageView(image: UIImage(named:"vip")!.imageWithRenderingMode(.AlwaysTemplate))
@@ -30,7 +33,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     //MARK: - Initialization
 
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
-        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
+        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard("VIPGate")
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
         return viewController
@@ -40,10 +43,6 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        edgesForExtendedLayout = .Bottom
-        extendedLayoutIncludesOpaqueBars = true
-        automaticallyAdjustsScrollViewInsets = false
         
         updateViews()
     }
@@ -103,6 +102,14 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         }
     }
     
+    @IBAction func onPrivacyPolicySelected() {
+        ShowPrivacyPolicyOperation(dependencyManager: dependencyManager).queue()
+    }
+    
+    @IBAction func onTermsOfServiceSelected() {
+        ShowTermsOfServiceOperation(dependencyManager: dependencyManager).queue()
+    }
+    
     // MARK: - Private
     
     private func setIsLoading(isLoading: Bool, title: String? = nil) {
@@ -141,13 +148,28 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
         }
     }
+    
     private func updateViews() {
         guard isViewLoaded() else {
             return
         }
         
+        legalPromptLabel.text = Strings.legalPrompt
+        
+        let privacyPolicyText = NSAttributedString(
+            string: Strings.privacyPolicy,
+            attributes: dependencyManager.legalLinkAttributes
+        )
+        privacyPolicyButton.setAttributedTitle(privacyPolicyText, forState: .Normal)
+        
+        let termsOfServiceText = NSAttributedString(
+            string: Strings.termsOfService,
+            attributes: dependencyManager.legalLinkAttributes
+        )
+        termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .Normal)
+        
         restoreButton.setTitle(Strings.restorePrompt, forState: .Normal)
-        restoreButton.titleLabel?.textColor = dependencyManager.subscribeColor
+        restoreButton.setTitleColor(dependencyManager.subscribeColor, forState: .Normal)
         
         subscribeButton.setTitle(dependencyManager.subscribeText, forState: .Normal)
         subscribeButton.backgroundColor = dependencyManager.subscribeColor
@@ -160,6 +182,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - String Constants
     
     private struct Strings {
+        static let legalPrompt              = NSLocalizedString("By subscring you are agreeing to our", comment:"")
+        static let privacyPolicy            = NSLocalizedString("privacy policy", comment:"")
+        static let termsOfService           = NSLocalizedString("terms of service", comment:"")
         static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment:"")
         static let purchaseSucceeded        = NSLocalizedString("Subscription complete!", comment:"")
         static let restoreFailed            = NSLocalizedString("Failed to restore subcription.", comment:"")
@@ -196,5 +221,13 @@ private extension VDependencyManager {
     var backgroundColor: UIColor? {
         let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
         return background!.backgroundColor
+    }
+    
+    var legalLinkAttributes: [String : AnyObject] {
+        return [
+            NSFontAttributeName : fontForKey("font.paragraph"),
+            NSForegroundColorAttributeName : colorForKey("subscribe.color"),
+            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+        ]
     }
 }

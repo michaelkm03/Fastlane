@@ -27,8 +27,6 @@
 static NSString * const kSigninOptionsKey = @"signInOptions";
 static NSString * const kLogoKey = @"logo";
 static NSString * const kStatusBarStyle = @"statusBarStyle";
-static NSString * const kTermsOfServiceLinkValue = @"termsOfService";
-static NSString * const kPrivacyPolicyLinkValue = @"privacyPolicy";
 static NSString * const kEmailKey = @"email";
 static NSString * const kFacebookKey = @"facebook";
 static NSString * const kTwitterKey = @"twitter";

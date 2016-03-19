@@ -1,14 +1,14 @@
 //
-//  ShowForumOperation.swift
+//  ShowPrivacyPolicyOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 3/9/16.
+//  Created by Patrick Lynch on 3/18/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 
-class ShowForumOperation: MainQueueOperation {
+class ShowPrivacyPolicyOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool
@@ -25,14 +25,8 @@ class ShowForumOperation: MainQueueOperation {
             return
         }
         
-        let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey:"forum")
-        guard let viewController = templateValue as? ForumViewController else {
-            assertionFailure("Unable to load `forum.screen` component form template.")
-            return
-        }
-        
+        let viewController = VPrivacyPoliciesViewController.presentableTermsOfServiceViewControllerWithDependencyManager(dependencyManager)
         VRootViewController.sharedRootViewController()!.presentViewController(viewController, animated: animated) {
-            self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
             self.finishedExecuting()
         }
     }
