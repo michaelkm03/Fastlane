@@ -75,7 +75,7 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     
     // MARK: - Live Update
     
-    func beginLiveUpdates() {
+    func startDequeueingMessages() {
         guard timerManager == nil else {
             return
         }
@@ -90,7 +90,7 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
         dequeueMessages()
     }
     
-    func endLiveUpdates() {
+    func stopDequeueingMessages() {
         timerManager?.invalidate()
         timerManager = nil
     }

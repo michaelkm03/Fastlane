@@ -30,8 +30,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     private let scrollPaginator = VScrollPaginator()
     private var previousScrollPosition = CGPoint.zero
     
-    private var selectedMessageUserID: Int?
-    
     @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionContainerView: UIView!
@@ -50,7 +48,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
     // MARK: - NewItemsControllerDelegate
         
-    func onMoreContentSelected() {
+    func onNewItemsSelected() {
         
     }
     
@@ -81,15 +79,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        selectedMessageUserID = nil
-        dataSource.beginLiveUpdates()
+        dataSource.startDequeueingMessages()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dataSource.endLiveUpdates()
+        dataSource.stopDequeueingMessages()
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Foumr's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
     @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
         didSet {
@@ -39,7 +39,7 @@ class ForumViewController: UIViewController, Forum {
     
     // MARK: - ForumEventSender
     
-    var nextSender: ForumEventSender? //< Calling code just needs to set this to get messages propagated the composer.
+    var nextSender: ForumEventSender? //< Calling code just needs to set this to get messages propagated from composer.
     
     // MARK: - Forum protocol requirements
     
@@ -47,7 +47,11 @@ class ForumViewController: UIViewController, Forum {
     var composer: Composer?
     var chatFeed: ChatFeed?
     
-    var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            updateStyle()
+        }
+    }
     
     var originViewController: UIViewController {
         return self
@@ -63,22 +67,31 @@ class ForumViewController: UIViewController, Forum {
         view.layoutIfNeeded()
     }
     
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
+    }
+    
     // MARK: - UIViewController overrides
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         debug_startGeneratingMessages(interval: 1.0)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,
             target: self,
             action: Selector("onClose")
         )
         
-        self.title = dependencyManager.title
-        self.view.backgroundColor = dependencyManager.backgroundColor
+        updateStyle()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -106,6 +119,21 @@ class ForumViewController: UIViewController, Forum {
     func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    private func updateStyle() {
+        guard isViewLoaded() else {
+            return
+        }
+        
+        title = dependencyManager.title
+        view.backgroundColor = dependencyManager.backgroundColor
+        let attributes = [ NSForegroundColorAttributeName : UIColor.whiteColor() ]
+        navigationController?.navigationBar.titleTextAttributes = attributes
+        navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
+        navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor
+        navigationController?.navigationBar.translucent = false
+        dependencyManager.addBackgroundToBackgroundHost(self)
+    }
 }
 
 private extension VDependencyManager {
@@ -114,8 +142,17 @@ private extension VDependencyManager {
         return stringForKey("title")
     }
     
+    var navigationItemColor: UIColor {
+        return colorForKey("color.navigationItem")
+    }
+    
     var backgroundColor: UIColor? {
         let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
+    }
+    
+    var navigationBarBackgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background.topBar") as? VSolidColorBackground
         return background?.backgroundColor
     }
     

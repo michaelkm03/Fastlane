@@ -23,8 +23,8 @@
                                         <rect key="frame" x="0.0" y="27" width="600" height="53"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy">
-                                                <rect key="frame" x="547" y="12" width="37" height="30"/>
-                                                <state key="normal" title="Done"/>
+                                                <rect key="frame" x="550" y="12" width="31" height="30"/>
+                                                <state key="normal" title="Post"/>
                                                 <connections>
                                                     <action selector="pressedConfirmButton" destination="KY2-Hn-7We" eventType="touchUpInside" id="afy-lH-5mK"/>
                                                 </connections>
@@ -39,8 +39,8 @@
                                             <constraint firstItem="ytv-wP-GFy" firstAttribute="centerY" secondItem="5MN-kC-AjT" secondAttribute="centerY" id="5xG-Cz-v4S"/>
                                             <constraint firstItem="joT-P4-Pfz" firstAttribute="centerY" secondItem="5MN-kC-AjT" secondAttribute="centerY" id="LMw-IY-vrR"/>
                                             <constraint firstAttribute="height" constant="53" id="RlM-AL-BQg"/>
-                                            <constraint firstAttribute="trailing" secondItem="ytv-wP-GFy" secondAttribute="trailing" constant="16" id="Um3-Jm-gwa"/>
-                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="leading" secondItem="joT-P4-Pfz" secondAttribute="trailing" constant="16" id="agP-K1-zIC"/>
+                                            <constraint firstAttribute="trailing" secondItem="ytv-wP-GFy" secondAttribute="trailing" constant="19" id="Um3-Jm-gwa"/>
+                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="leading" secondItem="joT-P4-Pfz" secondAttribute="trailing" constant="19" id="agP-K1-zIC"/>
                                             <constraint firstItem="joT-P4-Pfz" firstAttribute="top" secondItem="5MN-kC-AjT" secondAttribute="top" id="fhC-Zo-I3J"/>
                                             <constraint firstItem="joT-P4-Pfz" firstAttribute="leading" secondItem="5MN-kC-AjT" secondAttribute="leading" constant="16" id="rPX-l1-VXz"/>
                                             <constraint firstAttribute="bottom" secondItem="joT-P4-Pfz" secondAttribute="bottom" id="sxq-Me-rhH"/>
@@ -57,7 +57,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="5MN-kC-AjT" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" id="5i5-0d-j8A"/>
                                     <constraint firstItem="5MN-kC-AjT" firstAttribute="top" secondItem="FNU-QM-fIQ" secondAttribute="bottom" id="HA3-2t-eq3"/>

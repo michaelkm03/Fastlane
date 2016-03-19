@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer, ComposerAttachmentTabBarDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -116,12 +116,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    // MARK: - VBackgroundContainer
-    
-    func backgroundContainerView() -> UIView {
-        return interactiveContainerView
-    }
-    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -223,7 +217,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        interactiveContainerView.backgroundColor = dependencyManager.backgroundColor
         textView.font = dependencyManager.inputTextFont()
         textView.setPlaceholderFont(dependencyManager.inputTextFont())
         textView.textColor = dependencyManager.inputTextColor()
@@ -282,5 +276,10 @@ private extension VDependencyManager {
     
     func tabItemTintColor() -> UIColor {
         return colorForKey(VDependencyManagerLinkColorKey)
+    }
+    
+    var backgroundColor: UIColor? {
+        let background = templateValueOfType(VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
     }
 }

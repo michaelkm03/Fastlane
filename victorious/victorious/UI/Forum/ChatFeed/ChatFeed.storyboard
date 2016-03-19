@@ -40,13 +40,13 @@
                                     <color key="titleColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="onMoreContentSelected" destination="HjE-OH-UhY" eventType="touchUpInside" id="lYe-WI-gKc"/>
+                                    <action selector="onNewItemsSelected" destination="HjE-OH-UhY" eventType="touchUpInside" id="rlY-gD-g97"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="vck-HZ-lce" secondAttribute="bottom" constant="-20" id="Etf-ko-aOb"/>
+                            <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="vck-HZ-lce" secondAttribute="bottom" id="Etf-ko-aOb"/>
                             <constraint firstItem="Egz-7q-vg5" firstAttribute="top" secondItem="FkS-7s-kZf" secondAttribute="bottom" id="Jzy-30-zwU"/>
                             <constraint firstItem="Egz-7q-vg5" firstAttribute="top" secondItem="qNw-uD-Ufa" secondAttribute="bottom" constant="10" id="NTY-CZ-MMt"/>
                             <constraint firstItem="qNw-uD-Ufa" firstAttribute="centerX" secondItem="gRO-em-Lg6" secondAttribute="centerX" id="Nbv-2S-g4v"/>
@@ -54,6 +54,7 @@
                             <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="q1F-DZ-Puf"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>

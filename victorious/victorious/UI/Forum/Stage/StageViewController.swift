@@ -30,7 +30,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     @IBOutlet private weak var mainContentView: UIView! {
         didSet {
             mainContentView.layer.shadowColor = UIColor.blackColor().CGColor
-            mainContentView.layer.shadowRadius = 4.0
+            mainContentView.layer.shadowRadius = 8.0
             mainContentView.layer.shadowOpacity = 1.0
             mainContentView.layer.shadowOffset = CGSize(width:0, height:2)
         }
@@ -67,7 +67,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("stageSize -> \(Constants.fixedStageSize)")
+        //print("stageSize -> \(Constants.fixedStageSize)")
         senasDemoCode()
     }
     
@@ -137,7 +137,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         var delay: NSTimeInterval = 5
         
-        print("-------------- NEW RANDOMIZED STAGE SCHEDULE -----------------")
+        //print("-------------- NEW RANDOMIZED STAGE SCHEDULE -----------------")
         for asset in assets {
             dispatch_after(delay) { [weak self] in
                 self?.startPlayingMedia(asset)
@@ -253,7 +253,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Interrupt Playback Timer
     
     @objc private func interruptPlayback(timer: NSTimer) {
-        print("INTERRUPT TIMER KICKED IN!")
+        //print("INTERRUPT TIMER KICKED IN!")
         
         if let interruptMessage = timer.userInfo as? NSDictionary {
             if let videoPlayer = interruptMessage[InterruptMessageConstants.videoPlayerKey] as? VVideoPlayer {
