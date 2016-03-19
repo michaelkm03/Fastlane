@@ -87,7 +87,7 @@ import VictoriousIOSSDK
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 completion?( [], error, cancelled )
-                
+            
             } else {
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
