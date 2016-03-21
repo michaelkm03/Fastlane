@@ -47,7 +47,7 @@ NSString * const VDependencyManagerAccessoryScreensKey = @"accessoryScreens";
     return [self menuItemsForKey:VDependencyManagerMenuItemsKey];
 }
 
-- (NSArray *)menuItemsForKey:(NSString *)key
+- (NSArray<VNavigationMenuItem *> *)menuItemsForKey:(NSString *)key
 {
     NSArray *menuItems = [self arrayForKey:key];
     return [self menuItemsWithArrayOfDictionaryRepresentations:menuItems];

@@ -34,3 +34,4 @@ protocol ComposerDelegate: class {
     /// than the composer's maximumHeight.
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat)
 }
+

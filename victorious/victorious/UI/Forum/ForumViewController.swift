@@ -55,7 +55,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var stage: Stage?
     var composer: Composer?
     var chatFeed: ChatFeed?
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             updateStyle()
@@ -65,7 +64,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var originViewController: UIViewController {
         return self
     }
-
+    
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
@@ -124,6 +123,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             self.composer = composer
         }
     }
+    
+    // MARK: - Actions
     
     func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)

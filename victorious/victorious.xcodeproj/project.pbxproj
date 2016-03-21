@@ -7650,6 +7650,7 @@
 				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
 				F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */,
 				A73BA2991C938B68008168B5 /* ComposerDelegate.swift */,
+				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
 				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
 				F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */,
 				A73BA29A1C938B68008168B5 /* ComposerViewController.swift */,
