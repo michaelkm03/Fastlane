@@ -69,15 +69,16 @@ extension Forum {
         sendEvent(event)
     }
     
-    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
+    func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
         setComposerHeight(height)
+        chatFeed?.setBottomInset(height)
     }
     
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, didUpdateContentSize size: CGSize) {
-        setStageHeight(size.height)
-        chatFeed?.setTopInset(size.height)
+    func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
+        setStageHeight(height)
+        chatFeed?.setTopInset(height)
     }
     
     func stage(stage: Stage, didUpdateWithMedia media: Stageable) {

@@ -37,7 +37,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        self.edgeInsets.top = value + Layout.topMargin
+        edgeInsets.top = value + Layout.topMargin
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        edgeInsets.bottom = value + Layout.bottomMargin
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: - ForumEventReceiver
@@ -74,6 +80,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         moreContentController.hide(animated: false)
         
         setTopInset(0.0)
+        setBottomInset(0.0)
     }
     
     override func viewWillAppear(animated: Bool) {

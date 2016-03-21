@@ -20,7 +20,7 @@ class ChatMessage: NSObject, PaginatedObjectType {
     }
 }
 
-private var totalMessages = 0 //< Hack for testing
+private var totalMessages = Int.max //< Hack for testing
 
 final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
@@ -61,13 +61,13 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
                     sender = otherUser
                 }
                 
-                let message = ChatMessage(displayOrder: totalMessages++)
+                let message = ChatMessage(displayOrder: totalMessages)
                 message.sender = sender
                 message.text = event.messageText
                 message.postedAt = NSDate()
                 message.media = event.media
                 messages.append(message)
-                totalMessages += 1
+                totalMessages -= 1
             }
             
             self.results = messages

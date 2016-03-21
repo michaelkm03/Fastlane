@@ -32,5 +32,5 @@ protocol ComposerDelegate: class {
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer content (including the keyboard) and can be more
     /// than the composer's maximumHeight.
-    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat)
+    func composer(composer: Composer, didUpdateContentHeight height: CGFloat)
 }

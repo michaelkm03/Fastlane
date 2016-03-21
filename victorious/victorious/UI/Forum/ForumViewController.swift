@@ -12,6 +12,15 @@ import UIKit
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
+    @IBOutlet private weak var stageContainer: UIView! {
+        didSet {
+            stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
+            stageContainer.layer.shadowRadius = 8.0
+            stageContainer.layer.shadowOpacity = 0.75
+            stageContainer.layer.shadowOffset = CGSize(width:0, height:2)
+        }
+    }
+    
     @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
         didSet {
             stageContainerHeight.constant = 0.0

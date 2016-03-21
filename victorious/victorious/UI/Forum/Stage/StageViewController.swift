@@ -10,14 +10,12 @@ import UIKit
 import VictoriousIOSSDK
 import SDWebImage
 
-
-
 class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let contentHideAnimationDuration: NSTimeInterval = 0.5
-        static let fixedStageSize = CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0)
+        static let fixedStageHeight: CGFloat = 200.0
     }
     
     private struct InterruptMessageConstants {
@@ -27,14 +25,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     /// The content view that is grows and shrinks depending on the content it is displaying.
     /// Is is also this size that will be broadcasted to the stage delegate.
-    @IBOutlet private weak var mainContentView: UIView! {
-        didSet {
-            mainContentView.layer.shadowColor = UIColor.blackColor().CGColor
-            mainContentView.layer.shadowRadius = 8.0
-            mainContentView.layer.shadowOpacity = 1.0
-            mainContentView.layer.shadowOffset = CGSize(width:0, height:2)
-        }
-    }
+    @IBOutlet private weak var mainContentView: UIView!
     @IBOutlet weak var mainContentViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private weak var imageView: UIImageView!
@@ -60,8 +51,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         let randomContentHeight = CGFloat(20 + arc4random() % 40)
-        let size = CGSize(width: view.bounds.width, height: randomContentHeight)
-        delegate?.stage(self, didUpdateContentSize: size)
+        delegate?.stage(self, didUpdateContentHeight: randomContentHeight)
     }
     
     override func viewDidLoad() {
@@ -170,7 +160,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
         
         delegate?.stage(self, didUpdateWithMedia: media)
-        delegate?.stage(self, didUpdateContentSize: Constants.fixedStageSize)
+        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
     func stopPlayingMedia() {
@@ -293,7 +283,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func clearStageMedia() {
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
-            self.delegate?.stage(self, didUpdateContentSize: CGSize(width: self.view.bounds.width, height: 0.0))
+            self.delegate?.stage(self, didUpdateContentHeight:0.0)
             self.view.layoutIfNeeded()
         }
     }

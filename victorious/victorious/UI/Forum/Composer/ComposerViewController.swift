@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -132,7 +132,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
+        delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
     }
     
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
@@ -142,11 +142,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.visibleKeyboardHeight = visibleKeyboardHeight
         
         inputViewToBottomConstraint.constant = visibleKeyboardHeight
-        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
+        delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
-                self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
             }, completion: nil)
         } else {
@@ -177,7 +177,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let previousContentOffset = self.textView.contentOffset
         UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
-            self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
             self.textView.layoutIfNeeded()
             if textViewHeightNeedsUpdate {
                 self.textView.setContentOffset(previousContentOffset, animated: true)
@@ -217,7 +217,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        interactiveContainerView.backgroundColor = dependencyManager.backgroundColor
         textView.font = dependencyManager.inputTextFont()
         textView.setPlaceholderFont(dependencyManager.inputTextFont())
         textView.textColor = dependencyManager.inputTextColor()
@@ -225,6 +224,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor(), forState: .Normal)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont()
         attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor()
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     // MARK: - Actions
@@ -232,6 +232,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBAction func pressedConfirmButton() {
         // Call appropriate delegate methods based on caption / media in composer
         composerTextViewManager?.resetTextView(textView)
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return interactiveContainerView
     }
 }
 
@@ -276,6 +282,10 @@ private extension VDependencyManager {
     
     func tabItemTintColor() -> UIColor {
         return colorForKey(VDependencyManagerLinkColorKey)
+    }
+    
+    func horizontalRuleColor() -> UIColor {
+        return colorForKey("color.horizontalRule")
     }
     
     var backgroundColor: UIColor? {

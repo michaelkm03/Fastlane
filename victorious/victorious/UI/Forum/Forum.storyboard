@@ -17,20 +17,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" userLabel="ChatFeed Container" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="470"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="500" constant="470" id="zOq-xE-egO"/>
-                                </constraints>
                                 <connections>
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="222" id="4Jd-tz-vaH"/>
+                                    <constraint firstAttribute="height" constant="222" id="Tc7-jJ-F3b"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
@@ -40,7 +37,7 @@
                                 <rect key="frame" x="0.0" y="470" width="600" height="66"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="66" id="fm7-s9-RpI"/>
+                                    <constraint firstAttribute="height" constant="66" id="1o4-t8-h3a"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
@@ -49,25 +46,26 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="0zk-Or-l75"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="top" id="742-Zg-zOb"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="I4b-9W-Q4o"/>
-                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" relation="lessThanOrEqual" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="ME2-MG-fJa"/>
-                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="OJb-oI-IQ0"/>
-                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="TJO-dP-iac"/>
-                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="TqT-IK-9P3"/>
-                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="XRr-IJ-Ayz"/>
-                            <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="cFe-lH-qes"/>
-                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="x7U-LU-pfb"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="BZ2-du-KRo"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Bxu-bP-hLS"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="EEf-Ia-4f1"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="PeR-kp-NBy"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Zzy-xi-Pl3"/>
+                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="dEJ-UD-VhO"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="oJ6-PG-gRc"/>
+                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="sNe-r4-gdn"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="upL-BX-9P1"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="wuG-vm-xz6"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="composerContainerHeight" destination="fm7-s9-RpI" id="rYa-72-oVx"/>
+                        <outlet property="composerContainerHeight" destination="1o4-t8-h3a" id="h0t-Z7-mHp"/>
                         <outlet property="gradientView" destination="BWd-6Y-0dE" id="iLl-OG-4wd"/>
-                        <outlet property="stageContainerHeight" destination="4Jd-tz-vaH" id="WOx-zA-pZm"/>
+                        <outlet property="stageContainer" destination="n69-dn-iF9" id="aZJ-pm-SPX"/>
+                        <outlet property="stageContainerHeight" destination="Tc7-jJ-F3b" id="DJR-m2-imO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>

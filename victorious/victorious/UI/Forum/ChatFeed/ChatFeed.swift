@@ -15,6 +15,8 @@ protocol ChatFeed: class, ForumEventReceiver {
     var dependencyManager: VDependencyManager! { get set }
     
     func setTopInset(value: CGFloat)
+    
+    func setBottomInset(value: CGFloat)
 }
 
 protocol ChatFeedDelegate: class {
