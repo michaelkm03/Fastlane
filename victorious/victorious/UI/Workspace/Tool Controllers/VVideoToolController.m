@@ -61,7 +61,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 {
     NSParameterAssert(completion != nil);
     
-    NSURL *tempFile = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kWorkspaceDirectory];
+    NSURL *tempFile = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMOV inDirectory:kWorkspaceDirectory];
     [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
                                               withCompletion:^(BOOL finished, UIImage *previewImage, NSError *error)
      {

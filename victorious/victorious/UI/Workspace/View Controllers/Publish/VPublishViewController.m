@@ -631,11 +631,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     if ( self.publishParameters.isVideo )
     {
         // Video compatibility check is skipped here
-        UISaveVideoAtPathToSavedPhotosAlbum([sourceUrl path], self, @selector(savingToCameraRollCompletionForImage:didFinishSavingWithError:contextInfo:), nil);
+        UISaveVideoAtPathToSavedPhotosAlbum([sourceUrl relativePath], self, @selector(savingToCameraRollCompletionForVideo:didFinishSavingWithError:contextInfo:), nil);
     }
     else
     {
-        UIImageWriteToSavedPhotosAlbum(self.publishParameters.previewImage, self, @selector(savingToCameraRollCompletionForVideo:didFinishSavingWithError:contextInfo:), nil);
+        UIImageWriteToSavedPhotosAlbum(self.publishParameters.previewImage, self, @selector(savingToCameraRollCompletionForImage:didFinishSavingWithError:contextInfo:), nil);
     }
 }
 
