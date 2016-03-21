@@ -126,7 +126,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: updateHeightBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)

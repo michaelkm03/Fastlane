@@ -70,11 +70,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         view.layoutIfNeeded()
     }
     
-    func setComposerHeight(value: CGFloat) {
-        composerContainerHeight.constant = value
-        view.layoutIfNeeded()
-    }
-    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--Forum View Controller-->
@@ -34,11 +34,8 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" userLabel="Composer Container" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="470" width="600" height="66"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="66" id="1o4-t8-h3a"/>
-                                </constraints>
                                 <connections>
                                     <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
                                 </connections>
@@ -48,6 +45,7 @@
                         <constraints>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="BZ2-du-KRo"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Bxu-bP-hLS"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="C44-0J-vef"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="EEf-Ia-4f1"/>
                             <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="PeR-kp-NBy"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Zzy-xi-Pl3"/>
@@ -62,7 +60,6 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="composerContainerHeight" destination="1o4-t8-h3a" id="h0t-Z7-mHp"/>
                         <outlet property="gradientView" destination="BWd-6Y-0dE" id="iLl-OG-4wd"/>
                         <outlet property="stageContainer" destination="n69-dn-iF9" id="aZJ-pm-SPX"/>
                         <outlet property="stageContainerHeight" destination="Tc7-jJ-F3b" id="DJR-m2-imO"/>
