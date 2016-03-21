@@ -38,12 +38,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func setTopInset(value: CGFloat) {
         edgeInsets.top = value + Layout.topMargin
-        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.contentInset = edgeInsets
     }
     
     func setBottomInset(value: CGFloat) {
         edgeInsets.bottom = value + Layout.bottomMargin
-        collectionView.collectionViewLayout.invalidateLayout()
+        CATransaction.begin()
+        CATransaction.setCompletionBlock() {
+            dispatch_after(0.0) {
+                self.collectionView.v_scrollToBottomAnimated(true)
+            }
+        }
+        self.collectionView.contentInset = edgeInsets
+        CATransaction.commit()
     }
     
     // MARK: - ForumEventReceiver
@@ -78,9 +85,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         moreContentController.depedencyManager = dependencyManager.newItemsDependency
         moreContentController.delegate = self
         moreContentController.hide(animated: false)
-        
-        setTopInset(0.0)
-        setBottomInset(0.0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -102,10 +106,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource.collectionView( collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return edgeInsets
     }
     
     // MARK: - VPaginatedDataSourceDelegate
@@ -134,7 +134,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         CATransaction.begin()
         CATransaction.setCompletionBlock() {
             dispatch_after(0.0) {
-                self.collectionView.v_scrollToBottomAnimated(true)
+                //self.collectionView.v_scrollToBottomAnimated(true)
             }
         }
         collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
