@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Frl-fQ-fGv">
@@ -46,10 +46,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FkS-7s-kZf" firstAttribute="top" secondItem="vck-HZ-lce" secondAttribute="bottom" id="Etf-ko-aOb"/>
                             <constraint firstItem="Egz-7q-vg5" firstAttribute="top" secondItem="FkS-7s-kZf" secondAttribute="bottom" id="Jzy-30-zwU"/>
                             <constraint firstItem="Egz-7q-vg5" firstAttribute="top" secondItem="qNw-uD-Ufa" secondAttribute="bottom" constant="10" id="NTY-CZ-MMt"/>
                             <constraint firstItem="qNw-uD-Ufa" firstAttribute="centerX" secondItem="gRO-em-Lg6" secondAttribute="centerX" id="Nbv-2S-g4v"/>
+                            <constraint firstItem="FkS-7s-kZf" firstAttribute="height" secondItem="gRO-em-Lg6" secondAttribute="height" id="VF1-gQ-0Jr"/>
                             <constraint firstItem="FkS-7s-kZf" firstAttribute="leading" secondItem="gRO-em-Lg6" secondAttribute="leading" id="nOH-Y9-emB"/>
                             <constraint firstAttribute="trailing" secondItem="FkS-7s-kZf" secondAttribute="trailing" id="q1F-DZ-Puf"/>
                         </constraints>
@@ -59,6 +59,7 @@
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
                         <outlet property="collectionView" destination="FkS-7s-kZf" id="YSa-cN-wF1"/>
+                        <outlet property="collectionViewBottom" destination="Jzy-30-zwU" id="R8t-xZ-KkZ"/>
                         <outlet property="moreContentController" destination="HjE-OH-UhY" id="vfh-q5-VyD"/>
                     </connections>
                 </viewController>

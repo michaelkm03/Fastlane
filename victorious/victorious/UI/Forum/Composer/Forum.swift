@@ -26,7 +26,6 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     // MARK: - Behaviors
 
     func setStageHeight(value: CGFloat)
-    func setComposerHeight(value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -70,7 +69,6 @@ extension Forum {
     }
     
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
-        setComposerHeight(height)
         chatFeed?.setBottomInset(height)
     }
     

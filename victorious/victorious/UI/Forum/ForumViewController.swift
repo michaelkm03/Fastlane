@@ -27,8 +27,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
     }
     
-    @IBOutlet private weak var composerContainerHeight: NSLayoutConstraint!
-    
     @IBOutlet private weak var gradientView: VLinearGradientView! {
         didSet {
             // TOOD: Read colors from template, add to spec
@@ -67,11 +65,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
-        view.layoutIfNeeded()
-    }
-    
-    func setComposerHeight(value: CGFloat) {
-        composerContainerHeight.constant = value
         view.layoutIfNeeded()
     }
     

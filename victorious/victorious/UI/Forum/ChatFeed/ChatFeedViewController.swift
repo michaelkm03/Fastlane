@@ -32,25 +32,18 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var collectionContainerView: UIView!
+    @IBOutlet private weak var collectionViewBottom: NSLayoutConstraint!
     
     //MARK: - ChatFeed
     
     func setTopInset(value: CGFloat) {
-        edgeInsets.top = value + Layout.topMargin
-        collectionView.contentInset = edgeInsets
+        print("top = \(value)")
+        edgeInsets.top = value + Layout.topMargin + collectionViewBottom.constant
     }
     
     func setBottomInset(value: CGFloat) {
-        edgeInsets.bottom = value + Layout.bottomMargin
-        CATransaction.begin()
-        CATransaction.setCompletionBlock() {
-            dispatch_after(0.0) {
-                self.collectionView.v_scrollToBottomAnimated(true)
-            }
-        }
-        self.collectionView.contentInset = edgeInsets
-        CATransaction.commit()
+        collectionViewBottom.constant = value
+        collectionView.superview?.layoutIfNeeded()
     }
     
     // MARK: - ForumEventReceiver
@@ -108,6 +101,17 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return dataSource.collectionView( collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return edgeInsets
+    }
+    
+    var shouldAutoScroll: Bool {
+        let height = collectionView.contentSize.height - (edgeInsets.top + edgeInsets.bottom) - collectionView.bounds.height
+        let yValue = max(height, 0)
+        let bottomOffset = CGPoint(x: 0, y: yValue)
+        return collectionView.contentOffset.y >= bottomOffset.y
+    }
+    
     // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateStashedItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
@@ -129,16 +133,21 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             return
         }
         
-        // Some tricky stuff to make sure the collection view's content size is updated enough
-        // so that the scroll to bottom actually works
-        CATransaction.begin()
-        CATransaction.setCompletionBlock() {
-            dispatch_after(0.0) {
-                //self.collectionView.v_scrollToBottomAnimated(true)
+        if shouldAutoScroll {
+            // Some tricky stuff to make sure the collection view's content size is updated enough
+            // so that the scroll to bottom actually works
+            CATransaction.begin()
+            CATransaction.setCompletionBlock() {
+                dispatch_after(0.0) {
+                    self.collectionView.v_scrollToBottomAnimated(true)
+                }
             }
+            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            CATransaction.commit()
+            
+        } else {
+            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
         }
-        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
-        CATransaction.commit()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {

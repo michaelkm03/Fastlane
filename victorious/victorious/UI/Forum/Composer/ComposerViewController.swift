@@ -126,7 +126,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: updateHeightBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
@@ -258,7 +258,6 @@ private extension VDependencyManager {
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
-        return []
         let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
         return menuItemsForKey(menuItemKey)
     }
