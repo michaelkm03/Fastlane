@@ -287,9 +287,4 @@ private extension VDependencyManager {
     func horizontalRuleColor() -> UIColor {
         return colorForKey("color.horizontalRule")
     }
-    
-    var backgroundColor: UIColor? {
-        let background = templateValueOfType(VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
-        return background?.backgroundColor
-    }
 }

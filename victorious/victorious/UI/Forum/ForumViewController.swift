@@ -91,7 +91,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debug_startGeneratingMessages(interval: 1.0)
+        debug_startGeneratingMessages(interval: 3.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
