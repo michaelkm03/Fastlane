@@ -1,5 +1,5 @@
 //
-//  ForumNetworkingArchitecture.swift
+//  Forum.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/16/16.

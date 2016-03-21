@@ -14,7 +14,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    struct Layout {
+    private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
         private static let topMargin: CGFloat = 20.0
     }

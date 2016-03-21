@@ -1,5 +1,5 @@
 //
-//  Forum+TestHarness.swift
+//  ForumTestHarness.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/17/16.
