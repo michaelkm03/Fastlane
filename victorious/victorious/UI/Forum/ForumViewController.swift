@@ -2,93 +2,104 @@
 //  ForumViewController.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 3/9/16.
+//  Created by Sharif Ahmed on 3/3/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ForumViewController: UIViewController, ComposerDelegate {
-
-    @IBOutlet private var chatFeedViewControllerContainer: UIView!
+/// A template driven .screen component that sets up, houses and mediates the interaction
+/// between the Foumr's required concrete implementations and abstract dependencies.
+class ForumViewController: UIViewController, Forum {
     
-    @IBOutlet private var composerViewControllerContainer: UIView!
+    // MARK: - Forum protocol requirements
     
-    @IBOutlet private var stageViewControllerContainer: UIView!
+    var stage: Stage?
+    var composer: Composer?
+    var chatFeed: ChatFeed?
     
-    @IBOutlet private var composerViewControllerHeightConstraint: NSLayoutConstraint!
-    
-    private var creationFlowPresenter: VCreationFlowPresenter! {
+    var creationFlowPresenter: VCreationFlowPresenter? {
         didSet {
-            creationFlowPresenter.shouldShowPublishScreenForFlowController = false
+            creationFlowPresenter?.shouldShowPublishScreenForFlowController = false
         }
     }
     
-    private var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager!
+    
+    var originViewController: UIViewController {
+        return self
+    }
     
     // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
-        
-        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("ForumViewController")
+        let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
         forumVC.creationFlowPresenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         return forumVC
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        super.prepareForSegue(segue, sender: sender)
-        let destination = segue.destinationViewController
-        if let stageViewController = destination as? StageViewController {
-            stageViewController.dependencyManager = dependencyManager
-        } else if let composerViewController = destination as? ComposerViewController {
-            composerViewController.delegate = self
-            guard let composerConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: "composer", withAddedDependencies: nil) as? [NSObject : AnyObject] else {
-                return
-            }
-            composerViewController.dependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(composerConfiguration)
-        }
-        // Uncomment the following lines once the chat feed view controller is added
-        // to the project.
-//        else if let chatFeedViewController = destination as? ChatFeedViewController {
-//            chatFeedViewController.dependencyManager = dependencyManager
-//        }
-    }
-    
-    // MARK: - ComposerDelegate
-    
-    func composer(composer: Composer, confirmedWithCaption caption: String) {
-        
-    }
-    
-    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?) {
-        
-    }
-    
-    func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
-        // Currently sets the height of the composer to the view's height until we remove
-        // the constraint completely and leave the composer as a full screen view.
-        composerViewControllerHeightConstraint.constant = self.view.bounds.height
-    }
-    
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
-        creationFlowPresenter.presentWorkspaceOnViewController(self, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
-    }
-
-    // MARK: - Lifecycle
+    // MARK: - UIViewController overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
-        view.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "exit") )
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Exit", comment: ""),
+            style: .Plain,
+            target: self,
+            action: Selector("onClose")
+        )
+        
+        self.title = dependencyManager.title
+        self.view.backgroundColor = dependencyManager.backgroundColor
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.prepareForSegue(segue, sender: sender)
+        
+        let destination = segue.destinationViewController
+
+        if let stage = destination as? Stage {
+            stage.dependencyManager = dependencyManager
+            stage.delegate = self
+            self.stage = stage
+        
+        } else if let chatFeed = destination as? ChatFeed {
+            chatFeed.dependencyManager = dependencyManager.chatFeedDependency
+            chatFeed.delegate = self
+            self.chatFeed = chatFeed
+        
+        } else if let composer = destination as? Composer {
+            composer.dependencyManager = dependencyManager.composerDependency
+            composer.delegate = self
+            self.composer = composer
+        }
+    }
     
-    //MARK: - Actions
+    // MARK: - Actions
     
-    func exit() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func onClose() {
+        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+private extension VDependencyManager {
+    
+    var title: String {
+        return stringForKey("title")
+    }
+    
+    var backgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
+    }
+    
+    var chatFeedDependency: VDependencyManager {
+        return childDependencyForKey("chatFeed")!
+    }
+    
+    var composerDependency: VDependencyManager {
+        return childDependencyForKey("composer")!
     }
 }

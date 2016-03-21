@@ -8,38 +8,51 @@
 
 import UIKit
 
-class ShowProfileOperation: MainQueueOperation {
+class ShowProfileOperation: BackgroundOperation {
     
     private let dependencyManager: VDependencyManager
-    private let originViewController: UIViewController
+    private weak var originViewController: UIViewController?
     private let userId: Int
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager, userId: Int) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.userId = userId
-        super.init()
     }
     
     override func start() {
         super.start()
-        self.beganExecuting()
+        beganExecuting()
         
-        guard let navigationViewController = originViewController.navigationController else {
-            assertionFailure("\(self.dynamicType) requires a navigation controller.")
-            return
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performNavigation()
         }
+    }
+    
+    private func performNavigation() {
         
+        // Check if already showing the a user's profile
         if let originViewControllerProfile = originViewController as? VUserProfileViewController
             where originViewControllerProfile.user.remoteId.integerValue == userId {
-                self.finishedExecuting()
+                finishedExecuting()
                 return
         }
         
-        if let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(userId) {
-            navigationViewController.pushViewController(profileViewController, animated: true)
+        let navController: UINavigationController?
+        if let customNav = originViewController?.v_navigationController()?.innerNavigationController {
+            navController = customNav
+        } else if let systemNav =  originViewController?.navigationController {
+            navController = systemNav
+        } else {
+            navController = nil
         }
         
-        self.finishedExecuting()
+        guard let targetNavController = navController,
+            let viewController = dependencyManager.userProfileViewControllerWithRemoteId(userId) else {
+                return
+        }
+        
+        targetNavController.pushViewController(viewController, animated: true)
+        finishedExecuting()
     }
 }

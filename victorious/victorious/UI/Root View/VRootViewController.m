@@ -253,7 +253,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
-    self.deepLinkReceiver.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
+    VDependencyManager *scaffoldDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
+    self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager;
     
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;

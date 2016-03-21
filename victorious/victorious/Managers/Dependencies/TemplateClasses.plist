@@ -112,6 +112,8 @@
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VConversationListViewController</string>
+	<key>livechat.screen</key>
+	<string>victorious.ChatFeedViewController</string>
 	<key>message.screen</key>
 	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
@@ -184,8 +186,6 @@
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
-	<key>forum.screen</key>
-	<string>victorious.ForumViewController</string>
 	<key>achievement.interstitial</key>
 	<string>victorious.AchievementViewController</string>
 	<key>vip.screen</key>

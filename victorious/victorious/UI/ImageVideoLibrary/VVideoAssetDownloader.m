@@ -8,6 +8,8 @@
 
 #import "VVideoAssetDownloader.h"
 #import "VTimerManager.h"
+#import "NSURL+VTemporaryFiles.h"
+#import "VConstants.h"
 
 NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAssetDownlaoderErrorDomain";
 
@@ -192,17 +194,9 @@ static double kProgressSplit = 0.5f;
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset
                      withUTType:(CFStringRef)type
 {
-    NSURL *baseURL = [self cacheDirectoryURL];
-    
-    NSUUID *uuid = [NSUUID UUID];
     NSString *filenameExtension = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension);
     
-    return [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", uuid.UUIDString, filenameExtension]];
-}
-
-- (NSURL *)cacheDirectoryURL
-{
-    return [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    return [NSURL v_temporaryFileURLWithExtension:filenameExtension inDirectory:kCameraDirectory];
 }
 
 - (void)downloadPreviewImage

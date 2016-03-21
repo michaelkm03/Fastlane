@@ -34,11 +34,19 @@ class CreateMediaUploadOperation: BackgroundOperation {
         upload(uploadManager)
     }
     
+    private func completionError(error: NSError?) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.uploadCompletion(error)
+            self.finishedExecuting()
+        }
+    }
+    
     private func upload(uploadManager: VUploadManager) {
-        guard let mediaURL = formFields["media_data"] as? NSURL where !mediaURL.absoluteString.isEmpty else {
-            uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
+        if !publishParameters.isGIF && mediaURL == nil {
+            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
+        
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
@@ -48,26 +56,26 @@ class CreateMediaUploadOperation: BackgroundOperation {
             let task = try taskCreator.createUploadTask()
             uploadManager.enqueueUploadTask(task) { _ in }
         } catch {
-            uploadCompletion(NSError(domain: "UploadError", code: -1, userInfo: nil))
+            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
         }
         
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion(nil)
-            self.finishedExecuting()
+        if let mediaURL = mediaURL {
+            let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
         }
+        completionError(nil)
     }
     
     private var formFields: [NSObject : AnyObject] {
         var dict: [NSObject : AnyObject] = [
             "name" : publishParameters.caption,
-            "media_data" : mediaURL ?? NSURL(string: "")!,
             "is_gif_style" : publishParameters.isGIF ? "true" : "false",
             "did_crop" : publishParameters.didCrop ? "true" : "false",
             "did_trim" : publishParameters.didTrim ? "true" : "false",
         ]
+        if !publishParameters.isGIF {
+            dict["media_data"] = mediaURL ?? NSURL(string: "")
+        }
         
         if let filterName = publishParameters.filterName {
             dict["filter_name"] = filterName
