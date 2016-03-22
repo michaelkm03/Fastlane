@@ -204,7 +204,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     CMTimeRange assetRange = CMTimeRangeMake(kCMTimeZero, exportSession.asset.duration);
     CMTimeRange renderRange = CMTimeRangeGetIntersection(assetRange, self.trimViewController.selectedTimeRange);
     exportSession.timeRange = renderRange;
-    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    exportSession.outputFileType = AVFileTypeMPEG4;
     [exportSession exportAsynchronouslyWithCompletionHandler:^
     {
         AVAssetImageGenerator *thumbnailGenerator = [[AVAssetImageGenerator alloc] initWithAsset:exportSession.asset];
