@@ -488,6 +488,10 @@
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
 		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
 		0EDFBEAD1C91FAFE00325332 /* Stageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAC1C91FAFE00325332 /* Stageable.swift */; };
+		0E242F451C9C834A008A7286 /* Stageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E242F441C9C834A008A7286 /* Stageable.swift */; };
+		0EDFBEAD1C91FAFE00325332 /* MediaMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAC1C91FAFE00325332 /* MediaMetaData.swift */; };
+		0EDFBEAF1C91FD8600325332 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */; };
+		0EE5C6191C973BFC00BF7DB0 /* StageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EE5C6181C973BFC00BF7DB0 /* StageViewController.storyboard */; };
 		0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
@@ -2746,8 +2750,12 @@
 		04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.release.xcconfig"; sourceTree = "<group>"; };
 		0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.qa.xcconfig"; sourceTree = "<group>"; };
 		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
+		0E242F441C9C834A008A7286 /* Stageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stageable.swift; sourceTree = "<group>"; };
 		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
 		0EDFBEAC1C91FAFE00325332 /* Stageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stageable.swift; sourceTree = "<group>"; };
+		0EDFBEAC1C91FAFE00325332 /* MediaMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaMetaData.swift; sourceTree = "<group>"; };
+		0EDFBEAE1C91FD8600325332 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StageViewController.storyboard; path = victorious/UI/Forum/Stage/StageViewController.storyboard; sourceTree = SOURCE_ROOT; };
+		0EE5C6181C973BFC00BF7DB0 /* StageViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StageViewController.storyboard; sourceTree = "<group>"; };
 		0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifAsset.swift; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
@@ -5929,8 +5937,9 @@
 				670C65881C52AC0000BD7F3F /* Usershelf.swift */,
 				678053791C60838800894821 /* VoteResult.swift */,
 				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
-				0EDFBEAC1C91FAFE00325332 /* Stageable.swift */,
+				0EDFBEAC1C91FAFE00325332 /* MediaMetaData.swift */,
 				0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */,
+				0E242F441C9C834A008A7286 /* Stageable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -11339,6 +11348,7 @@
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */,
 				A7FFCE431C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift in Sources */,
+				0E242F451C9C834A008A7286 /* Stageable.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
 				F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */,
 				A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */,
@@ -11376,7 +11386,7 @@
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
-				0EDFBEAD1C91FAFE00325332 /* Stageable.swift in Sources */,
+				0EDFBEAD1C91FAFE00325332 /* MediaMetaData.swift in Sources */,
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,

@@ -6,38 +6,28 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-import CoreGraphics
+import Foundation
 
 /// A thumbnail, profile picture, or other image asset
 public struct ImageAsset: Stageable {
 
-    public let size: CGSize
     public let type: String
  
     // MARK: Stageable
-    public let duration: Double?
-    public let url: NSURL
+    public let mediaMetaData: MediaMetaData
 }
 
 extension ImageAsset {
     public init?(json: JSON) {
-        guard let urlString = json["imageURL"].string ?? json["image_url"].string,
-            let url = NSURL(string: urlString),
-            let type = json["type"].string,
-            let width = json["width"].int,
-            let height = json["height"].int else {
+        guard let type = json["type"].string else {
                 return nil
         }
-        
-        self.url = url
         self.type = type
-        self.size = CGSize(width: width, height: height)
         
         // MARK: Stageable
-        if let duration = json["duration"].double {
-            self.duration = duration
-        } else {
-            self.duration = nil
+        guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["imageUrl", "image_url"]) else {
+            return nil
         }
+        self.mediaMetaData = mediaMetaData
     }
 }
