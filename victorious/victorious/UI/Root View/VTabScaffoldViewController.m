@@ -350,36 +350,33 @@ static NSString * const kMenuKey = @"menu";
                                                                                     dependencyManager:self.dependencyManager
                                                                                               context:VAuthorizationContextDefault
                                                                                              animated:NO];
-    showLoginOperation.completionBlock = ^{
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [welf configureTabBar];
-        });
-    };
     
-    NSOperation *showQueuedDeeplinkOperation = [NSBlockOperation blockOperationWithBlock:^{
-        dispatch_async( dispatch_get_main_queue(), ^{
-            // Root view controller's `deepLinkReceiver` may have queued a deep link until the user is logged in
-            // So now that login is complete, show any queued deep links
-            [[VRootViewController sharedRootViewController].deepLinkReceiver receiveQueuedDeeplink];
-        });
-    }];
+    ShowQueuedDeeplinkOperation *deeplinkOperation = [[ShowQueuedDeeplinkOperation alloc] init];
     
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
                                                                                       sessionTimer:[VRootViewController sharedRootViewController].sessionTimer];
     
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    pushNotificationOperation.completionBlock = ^void {
-        self.coachmarkManager.allowCoachmarks = YES;
-    };
     
     // Determine execution order by setting dependencies
-    [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
+    [deeplinkOperation addDependency:pushNotificationOperation];
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:showLoginOperation];
     
-    NSArray *mainQueueOperations = @[ showLoginOperation, pushNotificationOperation, ftueVideoOperation, showQueuedDeeplinkOperation];
-    [[NSOperationQueue mainQueue] addOperations:mainQueueOperations waitUntilFinished:NO];
+    [showLoginOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
+    {
+        [welf configureTabBar];
+    }];
+    
+    [ftueVideoOperation queueWithCompletion:nil];
+    
+    [pushNotificationOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
+    {
+        welf.coachmarkManager.allowCoachmarks = YES;
+    }];
+    
+    [deeplinkOperation queueWithCompletion: nil];
 }
 
 #pragma mark - UITabBarControllerDelegate

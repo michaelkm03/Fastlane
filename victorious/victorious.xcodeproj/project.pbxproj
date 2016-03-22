@@ -653,6 +653,7 @@
 		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
 		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
+		67BB52D81CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */; };
 		67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */; };
 		67C2101E1BFA797E0074E40E /* FollowHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */; };
 		67C210231BFA7A210074E40E /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */; };
@@ -2899,6 +2900,7 @@
 		67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequestTests.swift; sourceTree = "<group>"; };
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
 		67B783BD1C80F98900940D61 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Achievement.swift; path = "Trophy Case/Achievement.swift"; sourceTree = "<group>"; };
+		67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowQueuedDeeplinkOperation.swift; sourceTree = "<group>"; };
 		67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
 		67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowHashtagResponse.json; sourceTree = "<group>"; };
 		67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowingHashtagsResponse.json; sourceTree = "<group>"; };
@@ -8295,6 +8297,7 @@
 				A7E8CFDD1C92163C00D126BF /* AnonymousLoginOperation.swift */,
 				A7E8CFDF1C92163C00D126BF /* FTUEVideoOperation.swift */,
 				A7E8CFE01C92163C00D126BF /* RequestPushNotificationPermissionOperation.swift */,
+				67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */,
 				BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */,
 			);
 			path = "Launch Operations";
@@ -12410,6 +12413,7 @@
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
 				A7E8D0921C92163D00D126BF /* CommentEditRemoteOperation.swift in Sources */,
+				67BB52D81CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
