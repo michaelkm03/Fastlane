@@ -170,7 +170,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VDependencyManager *trophyCaseDependencyManager = trophyCaseViewController.dependencyManager;
     UIImage *buttonIconImage = [trophyCaseDependencyManager imageForKey: @"trophy_icon"];
     [trophyCaseButton setImage:buttonIconImage forState:UIControlStateNormal];
-    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
@@ -560,9 +560,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - User Actions
 
-- (void)trophyCaseButtonTapped
+- (void)trophyCaseButtonTapped:(UIButton *)sender
 {
-    [[[ShowTrophyCaseOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager] queueWithCompletion:nil];
+    sender.enabled = NO;
+    [[[ShowTrophyCaseOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager] queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled) {
+        sender.enabled = YES;
+    }];
 }
 
 #pragma mark - Navigation
