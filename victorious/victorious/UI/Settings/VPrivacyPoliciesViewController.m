@@ -36,7 +36,6 @@
     [self loadPrivacyPolicy];
 }
 
-
 #pragma mark - Actions
 
 - (void)cancel
