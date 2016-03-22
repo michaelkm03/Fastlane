@@ -22,7 +22,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct InterruptMessageConstants {
         static let videoPlayerKey = "videoPlayer"
-        static let contentViewKey = "contentView"
     }
     
     /// The content view that is grows and shrinks depending on the content it is displaying.
@@ -141,6 +140,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func startPlayingMedia(media: Stageable) {
         terminateInterrupterTimer()
+        videoPlayer.pause()
         
         switch media {
         case let videoAsset as VideoAsset:
@@ -194,7 +194,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func addVideoAsset(videoAsset: VideoAsset) {
         let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
         videoPlayer.setItem(videoItem)
-        
         switchToContentView(videoContentView, fromContentView: currentContentView)
     }
 
@@ -215,9 +214,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         videoPlayer.setItem(videoItem)
         videoPlayer.playFromStart()
         
-        // TODO: put this logics in the ScheduleStage(DataSource|Controller|Manager)
         if let duration = gifAsset.mediaMetaData.duration {
-            let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer, InterruptMessageConstants.contentViewKey: videoContentView]
+            let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer]
             playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "interruptPlayback:", userInfo: interruptMessage, repeats: false)
         }
         
@@ -231,11 +229,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         if let interruptMessage = timer.userInfo as? NSDictionary {
             if let videoPlayer = interruptMessage[InterruptMessageConstants.videoPlayerKey] as? VVideoPlayer {
                 videoPlayer.pause()
-            }
-
-            if let contentView = interruptMessage[InterruptMessageConstants.contentViewKey] as? UIView {
-                contentView.alpha = 0.0
-                currentContentView = nil
             }
         }
         
@@ -259,13 +252,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func clearStageMedia() {
-        
-        
-        delegate?.stage(self, willUpdateContentSize: CGSizeZero)
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
             self.view.layoutIfNeeded()
         }
         delegate?.stage(self, didUpdateContentSize: CGSizeZero)
+        
+        videoPlayer.pause()
     }
 }

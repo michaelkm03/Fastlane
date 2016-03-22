@@ -14,7 +14,5 @@ protocol StageDelegate: class {
     
     func stage(stage: Stage, didUpdateWithMedia media: Stageable)
     
-    func stage(stage: Stage, willUpdateContentSize size: CGSize) // ?
-    
     func stage(stage: Stage, didUpdateContentSize size: CGSize)
 }
