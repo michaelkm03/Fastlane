@@ -39,7 +39,6 @@ static NSString * const kMenuKey = @"menu";
 @property (nonatomic, strong) VTabScaffoldHidingHelper *hidingHelper;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
@@ -56,8 +55,6 @@ static NSString * const kMenuKey = @"menu";
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        _operationQueue = [[NSOperationQueue alloc] init];
-        _operationQueue.maxConcurrentOperationCount = 1;
         [[DefaultTimingTracker sharedInstance] setDependencyManager:dependencyManager];
         _appTimingTracker = [DefaultTimingTracker sharedInstance];
     }
@@ -381,11 +378,8 @@ static NSString * const kMenuKey = @"menu";
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:showLoginOperation];
     
-    NSArray *mainQueueOperations = @[ showLoginOperation, pushNotificationOperation];
+    NSArray *mainQueueOperations = @[ showLoginOperation, pushNotificationOperation, ftueVideoOperation, showQueuedDeeplinkOperation];
     [[NSOperationQueue mainQueue] addOperations:mainQueueOperations waitUntilFinished:NO];
-    
-    NSArray *backgroundOperations = @[ ftueVideoOperation, showQueuedDeeplinkOperation ];
-    [self.operationQueue addOperations:backgroundOperations waitUntilFinished:NO];
 }
 
 #pragma mark - UITabBarControllerDelegate
