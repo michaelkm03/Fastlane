@@ -41,6 +41,8 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
+        checkForNewAchievementsUnlocked()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -66,6 +68,10 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         presentViewController(detailViewController, animated: false, completion: nil)
     }
     
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! TrophyCaseAchievementCollectionViewCell).updateAchievement()
+    }
+    
     //MARK: - Background Container
     
     func backgroundContainerView() -> UIView {
@@ -80,5 +86,23 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         
         navigationItem.title = dependencyManager.stringForKey(VDependencyManagerTitleKey)
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    private func checkForNewAchievementsUnlocked() {
+        guard let currentUser = VCurrentUser.user() else {
+            return
+        }
+        
+        let currentAchievements = currentUser.achievementsUnlocked as! [Achievement]
+        let userInfoOperation = UserInfoOperation(userID: currentUser.remoteId.integerValue)
+        userInfoOperation.queue { _, error, _ in
+            guard error == nil else {
+                return
+            }
+            
+            if VCurrentUser.user()?.achievementsUnlocked.count != currentAchievements.count {
+                self.collectionView.reloadData()
+            }
+        }
     }
 }

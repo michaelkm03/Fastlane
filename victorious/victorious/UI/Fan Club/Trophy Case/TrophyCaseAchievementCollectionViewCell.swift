@@ -27,4 +27,8 @@ class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
             iconImageView.image = iconImage
         }
     }
+    
+    func updateAchievement() {
+        configureCellWithAchievement(self.achievement!)
+    }
 }
