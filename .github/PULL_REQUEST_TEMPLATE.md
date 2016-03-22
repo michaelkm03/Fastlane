@@ -14,8 +14,8 @@ Associated Spec: N/A
 - [ ] Includes unit tests with a high level of coverage
 - [ ] Code conforms to our style guide, and is readable and maintainable
 - [ ] Existing functionality is unaffected (no regressions)
-- [ ] CI Tests are passing with the green check mark
 - [ ] Addresses everything mentioned in the ticket and product spec
+- [ ] CI Tests are passing with the green check mark
 - [ ] All user-facing strings are localized, and the keys used are added in Localizable.strings (base) file
 
 ### Known Issues
