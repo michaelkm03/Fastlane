@@ -42,7 +42,6 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
         checkForNewAchievementsUnlocked()
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -66,10 +65,6 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         
         let detailViewController = AchievementDetailViewController.newAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
         presentViewController(detailViewController, animated: false, completion: nil)
-    }
-    
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        (cell as! TrophyCaseAchievementCollectionViewCell).updateAchievement()
     }
     
     //MARK: - Background Container
