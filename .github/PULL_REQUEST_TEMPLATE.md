@@ -12,11 +12,9 @@ Associated Spec: N/A
 
 **General Code Review Checklist**
 - [ ] Includes unit tests with a high level of coverage
-- [ ] Conforms to our style guide
-- [ ] Code is readable and maintainable
 - [ ] Existing functionality is unaffected (no regressions)
-- [ ] Addresses everything mentioned in the ticket and product spec
 - [ ] CI Tests are passing with the green check mark
+- [ ] All user-facing strings a localized, and the keys used are added in Localizable.strings(base) file
 
 ### Known Issues
 N/A
