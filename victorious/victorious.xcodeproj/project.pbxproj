@@ -635,6 +635,7 @@
 		678D944E1BF4399D009A1F93 /* PollResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944D1BF4399D009A1F93 /* PollResultTests.swift */; };
 		678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */; };
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
+		678F00CA1CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		679876821C84DD4C001CE56E /* AchievementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679876811C84DD4C001CE56E /* AchievementDetailViewController.swift */; };
@@ -2882,6 +2883,7 @@
 		678D944D1BF4399D009A1F93 /* PollResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultTests.swift; sourceTree = "<group>"; };
 		678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultByUserResponse.json; sourceTree = "<group>"; };
 		678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultBySequenceResponse.json; sourceTree = "<group>"; };
+		678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTrophyCaseOperation.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		679876811C84DD4C001CE56E /* AchievementDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AchievementDetailViewController.swift; path = "Trophy Case/AchievementDetailViewController.swift"; sourceTree = "<group>"; };
@@ -8301,11 +8303,11 @@
 		A7E8CFE11C92163C00D126BF /* Main Queue Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A72C86921C9797E200E97D4F /* ShowForumOperation.swift */,
 				A7E8CFE21C92163C00D126BF /* ConfirmDestructiveActionOperation.swift */,
 				A7E8CFE31C92163C00D126BF /* PreloadUserInfoOperation.swift */,
 				A7E8CFE41C92163C00D126BF /* ShowCommentsOperation.swift */,
 				A7E8CFE51C92163C00D126BF /* ShowCreateSheetOperation.swift */,
+				A72C86921C9797E200E97D4F /* ShowForumOperation.swift */,
 				A7E8CFE61C92163C00D126BF /* ShowLikersOperation.swift */,
 				A7E8CFE71C92163C00D126BF /* ShowLoginOperation.swift */,
 				A7E8CFE81C92163C00D126BF /* ShowMediaContentOperation.swift */,
@@ -8314,6 +8316,7 @@
 				A7E8CFEB1C92163C00D126BF /* ShowRepostersOperation.swift */,
 				A7E8CFEC1C92163C00D126BF /* ShowSearchResultOperation.swift */,
 				A7E8CFED1C92163C00D126BF /* ShowShareSequenceOperation.swift */,
+				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
 				A7E8CFEE1C92163C00D126BF /* StoredLoginOperation.swift */,
 			);
 			path = "Main Queue Operations";
@@ -12325,6 +12328,7 @@
 				A7C565EA1C4450CD00E4DF6A /* VStreamCollectionViewController.swift in Sources */,
 				A7B133631C6178FD006EC4F5 /* UITableView+OrderedSet.swift in Sources */,
 				C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */,
+				678F00CA1CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift in Sources */,
 				A7D730BF1C8FE74200915305 /* FetchTemplateProductIdentifiersOperation.swift in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */,

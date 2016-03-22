@@ -39,11 +39,14 @@ extension VStream: PersistenceParsable {
             parentStream: sourceStream,
             context: v_managedObjectContext
         )
+        
+        var streamItemPointers: [VStreamItemPointer] = []
         for streamItem in streamItems {
             let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
             let pointer: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
-            self.v_addObject( pointer, to: "streamItemPointers" )
+            streamItemPointers.append(pointer)
         }
+        self.streamItemPointers = NSOrderedSet(array: streamItemPointers)
         
         if let textPostAsset = sourceStream.previewAsset where textPostAsset.type == .Text {
             let persistentAsset: VAsset = v_managedObjectContext.v_createObject()

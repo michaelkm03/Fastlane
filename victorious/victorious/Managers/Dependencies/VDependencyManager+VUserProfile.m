@@ -50,10 +50,4 @@ NSString * const VDependencyManagerTrophyCaseScreenKey = @"trophyCaseScreen";
     return header;
 }
 
-- (TrophyCaseViewController *)trophyCaseViewController
-{
-    TrophyCaseViewController *trophyCaseViewController = [self templateValueOfType:[TrophyCaseViewController class] forKey:VDependencyManagerTrophyCaseScreenKey];
-    return trophyCaseViewController;
-}
-
 @end
