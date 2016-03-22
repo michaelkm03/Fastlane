@@ -13,11 +13,9 @@ class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var iconImageView: UIImageView!
     
-    var achievement: Achievement? {
+    var achievement: Achievement! {
         didSet {
-            if let achievement = self.achievement {
-                configureCellWithAchievement(achievement)
-            }
+            configureCellWithAchievement(achievement)
         }
     }
     
@@ -29,6 +27,6 @@ class TrophyCaseAchievementCollectionViewCell: UICollectionViewCell {
     }
     
     func updateAchievement() {
-        configureCellWithAchievement(self.achievement!)
+        configureCellWithAchievement(self.achievement)
     }
 }
