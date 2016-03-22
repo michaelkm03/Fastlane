@@ -77,10 +77,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     {
         _dependencyManager = dependencyManager;
         
-        self.captureContainerViewController = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
-        [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
-        [self addCloseButtonToViewController:self.captureContainerViewController];
-        [self setViewControllers:@[self.captureContainerViewController]];
+        _captureContainerViewController = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
@@ -118,6 +115,10 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
+    [self addCloseButtonToViewController:self.captureContainerViewController];
+    [self setViewControllers:@[self.captureContainerViewController]];
     
     [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     

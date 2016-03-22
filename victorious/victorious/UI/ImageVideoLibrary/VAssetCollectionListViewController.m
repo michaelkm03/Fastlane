@@ -53,7 +53,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     VAssetCollectionListViewController *listViewController = [storyboardForClass instantiateInitialViewController];
     listViewController.transitioningDelegate = listViewController;
     listViewController.modalPresentationStyle = UIModalPresentationCustom;
-    if (mediaType == PHAssetMediaTypeImage || mediaType == PHAssetMediaTypeVideo)
+    if ( mediaType != PHAssetMediaTypeAudio )
     {
         listViewController.mediaType = mediaType;
     }

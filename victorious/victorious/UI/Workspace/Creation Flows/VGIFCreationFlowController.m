@@ -27,7 +27,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
-@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 
 @end
 
@@ -40,13 +39,10 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     {
         [self setContext:VCameraContextVideoContentCreation];
         _dependencyManager = dependencyManager;
-        
-        _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
-        _gridViewController.delegate = self;
 		
 		id<MediaSearchDataSource> dataSource = [[GIFSearchDataSource alloc] init];
-		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
-																					   depndencyManager:dependencyManager];
+        _mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
+                                                                                      dependencyManager:dependencyManager];
         _mediaSearchViewController.delegate = self;
     }
     return self;
@@ -92,22 +88,40 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 - (NSArray *)alternateCaptureOptions
 {
     __weak typeof(self) welf = self;
-    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
-                                                                         andSelectionBlock:^void()
-                                             {
-                                                 __strong typeof(welf) strongSelf = welf;
-                                                 [strongSelf showCamera];
-                                             }];
-    VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
-                                                                                       icon:[UIImage imageNamed:@"contententry_galleryicon"]
-                                                                          andSelectionBlock:^void()
-                                              {
-                                                  __strong typeof(welf) strongSelf = welf;
-                                                  [strongSelf pushViewController:strongSelf.gridViewController animated:YES];
-                                              }];
     
-    return @[ cameraOption, galleryOption ];
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
+                                                                                             cameraContext:self.context];
+    videoCamera.delegate = self;
+    if ( videoCamera != nil )
+    {
+        VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+                                                                                          icon:[UIImage imageNamed:@"contententry_cameraicon"]
+                                                                             andSelectionBlock:^void()
+                                                 {
+                                                     __strong typeof(welf) strongSelf = welf;
+                                                     [strongSelf showCamera];
+                                                 }];
+        [options addObject:cameraOption];
+    }
+    
+    VAssetCollectionGridViewController *gridViewController = [self gridViewControllerWithDependencyManager:self.dependencyManager];
+    gridViewController.delegate = self;
+    
+    if ( gridViewController != nil )
+    {
+        VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
+                                                                                           icon:[UIImage imageNamed:@"contententry_galleryicon"]
+                                                                              andSelectionBlock:^void()
+                                                  {
+                                                      __strong typeof(welf) strongSelf = welf;
+                                                      [strongSelf pushViewController:strongSelf.gridViewController animated:YES];
+                                                  }];
+        [options addObject:galleryOption];
+    }
+    
+    return [options copy];
 }
 
 - (void)showCamera

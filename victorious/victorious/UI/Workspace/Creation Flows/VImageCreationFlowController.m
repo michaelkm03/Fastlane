@@ -45,7 +45,7 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
 		
         id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:dependencyManagerSearchTerm ?: @""];
 		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
-																					   depndencyManager:dependencyManager];
+                                                                                      dependencyManager:dependencyManager];
 		_mediaSearchViewController.delegate = self;
     }
     return self;

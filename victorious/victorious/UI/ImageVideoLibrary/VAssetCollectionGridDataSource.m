@@ -56,7 +56,11 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     _assetCollection = assetCollection;
     
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
+    
+    if ( self.mediaType != PHAssetMediaTypeUnknown )
+    {
+        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
+    }
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     self.fetchResultForAssetsToDisplay = [PHAsset fetchAssetsInAssetCollection:_assetCollection
                                                                        options:fetchOptions];
