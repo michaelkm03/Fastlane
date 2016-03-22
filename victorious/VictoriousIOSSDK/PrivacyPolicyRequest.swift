@@ -10,7 +10,7 @@ public struct PrivacyPolicyRequest: RequestType {
     
     public init() {}
     
-    public var publicBaseURL = NSURL(string: "http://www.victorious.com/")!
+    public let publicBaseURL = NSURL(string: "http://www.victorious.com/")!
     
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/static/privacy")!)

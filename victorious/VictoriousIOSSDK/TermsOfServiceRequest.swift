@@ -12,7 +12,7 @@ public struct TermsOfServiceRequest: RequestType {
         // Just to be public
     }
     
-    public var publicBaseURL = NSURL(string: "http://www.victorious.com/")!
+    public let publicBaseURL = NSURL(string: "http://www.victorious.com/")!
     
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/tos")!)
