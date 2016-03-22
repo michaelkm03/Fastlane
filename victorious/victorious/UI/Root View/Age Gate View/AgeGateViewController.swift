@@ -130,7 +130,7 @@ class AgeGateViewController: UIViewController {
     private func setUpLegalInfoContainer() {
         let legalAttributesUnderline = [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
         
-        let legalPrompt = NSLocalizedString("By continuing you are agreeing to our", comment: "Legal prompt on age gate view")
+        let legalPrompt = NSLocalizedString("Legal Prompt on Age Gate", comment: "Legal prompt on age gate view")
         let tosText = NSAttributedString(string: NSLocalizedString("terms of service", comment: "") , attributes: legalAttributesUnderline)
         let ppText = NSAttributedString(string: NSLocalizedString("privacy policy", comment: ""), attributes: legalAttributesUnderline)
         
