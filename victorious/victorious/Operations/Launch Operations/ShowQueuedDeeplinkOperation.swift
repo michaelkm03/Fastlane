@@ -8,9 +8,15 @@
 
 class ShowQueuedDeeplinkOperation: MainQueueOperation {
     
+    let deepLinkReceiver: VDeeplinkReceiver
+    
+    init( deepLinkReceiver: VDeeplinkReceiver) {
+        self.deepLinkReceiver = deepLinkReceiver
+    }
+    
     override func start() {
         beganExecuting()
-        VRootViewController.sharedRootViewController()?.deepLinkReceiver.receiveQueuedDeeplink()
+        deepLinkReceiver.receiveQueuedDeeplink()
         finishedExecuting()
     }
 }

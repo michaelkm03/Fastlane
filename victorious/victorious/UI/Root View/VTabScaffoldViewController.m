@@ -351,7 +351,7 @@ static NSString * const kMenuKey = @"menu";
                                                                                               context:VAuthorizationContextDefault
                                                                                              animated:NO];
     
-    ShowQueuedDeeplinkOperation *deeplinkOperation = [[ShowQueuedDeeplinkOperation alloc] init];
+    ShowQueuedDeeplinkOperation *deeplinkOperation = [[ShowQueuedDeeplinkOperation alloc] initWithDeepLinkReceiver:[VRootViewController sharedRootViewController].deepLinkReceiver];
     
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self

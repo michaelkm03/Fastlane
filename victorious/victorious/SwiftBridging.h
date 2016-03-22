@@ -81,6 +81,7 @@
 #import "VCreatePollViewController.h"
 #import "VCreateSheetViewController.h"
 #import "VDataCache.h"
+#import "VDeepLinkReceiver.h"
 #import "VDefaultProfileButton.h"
 #import "VDefaultProfileImageView.h"
 #import "VDependencyManager+VAccessoryScreens.h"
