@@ -37,10 +37,12 @@ static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
+static NSString * const kMaximumImageSideLengthKey = @"maximumImageSideLength";
 static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
 static const CGFloat kVerySmallOuterRadius = 0.01f;
+static const CGFloat kDefaultImageSideLength = 640.0f;
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -259,7 +261,14 @@ static const CGFloat kVerySmallOuterRadius = 0.01f;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                        {
                            __strong typeof(welf) strongSelf = welf;
-                           UIImage *smallerImage = [image fixOrientation];
+                           if ( strongSelf == nil )
+                           {
+                               return;
+                           }
+                           
+                           NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumImageSideLengthKey];
+                           CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
+                           UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
                            UIImage *previewImage = [smallerImage squareImageByCropping];
                            NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
                            dispatch_async(dispatch_get_main_queue(), ^
