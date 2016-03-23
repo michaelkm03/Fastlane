@@ -37,6 +37,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentContentView: UIView?
     
+    private var currentStagedMedia: Stageable?
+    
     private var playbackInterrupterTimer: NSTimer?
     
     var dependencyManager: VDependencyManager!
@@ -141,6 +143,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     func startPlayingMedia(media: Stageable) {
         terminateInterrupterTimer()
         videoPlayer.pause()
+        currentStagedMedia = media
         
         switch media {
         case let videoAsset as VideoAsset:
@@ -152,9 +155,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         default:
             assertionFailure("Unknown stagable type: \(media)")
         }
-        
-        delegate?.stage(self, didUpdateWithMedia: media)
-        delegate?.stage(self, didUpdateContentSize: Constants.fixedStageSize)
     }
     
     func stopPlayingMedia() {
@@ -165,15 +165,18 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: - VVideoPlayerDelegate 
 
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        switchToContentView(videoContentView, fromContentView: currentContentView)
         videoPlayer.playFromStart()
-    }
-    
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        videoPlayer.pauseAtStart()
     }
     
     
     // MARK: - Private
+    
+    private func normalizeSize(size: CGSize) -> CGSize {
+        let normalizedHeight = min(size.height, Constants.fixedStageSize.height)
+        let normalizedSize = CGSize(width: Constants.fixedStageSize.width, height: normalizedHeight)
+        return normalizedSize
+    }
     
     // MARK: Video
     
@@ -194,15 +197,23 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func addVideoAsset(videoAsset: VideoAsset) {
         let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
         videoPlayer.setItem(videoItem)
-        switchToContentView(videoContentView, fromContentView: currentContentView)
     }
 
     
     // MARK: Image Asset
     
     private func addImageAsset(imageAsset: ImageAsset) {
-        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url)
-        switchToContentView(imageView, fromContentView: currentContentView)
+        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url) { [weak self] (image, error, cacheType, url) in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            guard let stageImageUrl = strongSelf.currentStagedMedia?.mediaMetaData.url where stageImageUrl == url else {
+                return
+            }
+            
+            strongSelf.switchToContentView(strongSelf.imageView, fromContentView: strongSelf.currentContentView)
+        }
     }
     
     
@@ -212,14 +223,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         let videoItem = VVideoPlayerItem(URL: gifAsset.mediaMetaData.url)
         videoItem.loop = true
         videoPlayer.setItem(videoItem)
-        videoPlayer.playFromStart()
         
         if let duration = gifAsset.mediaMetaData.duration {
             let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer]
             playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "interruptPlayback:", userInfo: interruptMessage, repeats: false)
         }
-        
-        switchToContentView(videoContentView, fromContentView: currentContentView)
     }
     
 
@@ -244,11 +252,17 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Clear Media
     
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
-        UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
-            newContentView.alpha = 1.0
-            oldContentView?.alpha = 0.0
+        if newContentView != oldContentView {
+            UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
+                newContentView.alpha = 1.0
+                oldContentView?.alpha = 0.0
+            }
         }
         currentContentView = newContentView
+        
+        var contentSize = currentStagedMedia?.mediaMetaData.size ?? Constants.fixedStageSize
+        contentSize = normalizeSize(contentSize)
+        delegate?.stage(self, didUpdateContentSize: contentSize)
     }
     
     private func clearStageMedia() {
