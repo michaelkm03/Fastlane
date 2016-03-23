@@ -39,7 +39,6 @@ static NSString * const kMenuKey = @"menu";
 @property (nonatomic, strong) VTabScaffoldHidingHelper *hidingHelper;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
@@ -56,8 +55,6 @@ static NSString * const kMenuKey = @"menu";
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        _operationQueue = [[NSOperationQueue alloc] init];
-        _operationQueue.maxConcurrentOperationCount = 1;
         [[DefaultTimingTracker sharedInstance] setDependencyManager:dependencyManager];
         _appTimingTracker = [DefaultTimingTracker sharedInstance];
     }
@@ -353,39 +350,33 @@ static NSString * const kMenuKey = @"menu";
                                                                                     dependencyManager:self.dependencyManager
                                                                                               context:VAuthorizationContextDefault
                                                                                              animated:NO];
-    showLoginOperation.completionBlock = ^{
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [welf configureTabBar];
-        });
-    };
     
-    NSOperation *showQueuedDeeplinkOperation = [NSBlockOperation blockOperationWithBlock:^{
-        dispatch_async( dispatch_get_main_queue(), ^{
-            // Root view controller's `deepLinkReceiver` may have queued a deep link until the user is logged in
-            // So now that login is complete, show any queued deep links
-            [[VRootViewController sharedRootViewController].deepLinkReceiver receiveQueuedDeeplink];
-        });
-    }];
+    ShowQueuedDeeplinkOperation *deeplinkOperation = [[ShowQueuedDeeplinkOperation alloc] initWithDeepLinkReceiver:[VRootViewController sharedRootViewController].deepLinkReceiver];
     
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
                                                                                       sessionTimer:[VRootViewController sharedRootViewController].sessionTimer];
     
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    pushNotificationOperation.completionBlock = ^void {
-        self.coachmarkManager.allowCoachmarks = YES;
-    };
     
     // Determine execution order by setting dependencies
-    [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
+    [deeplinkOperation addDependency:pushNotificationOperation];
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:showLoginOperation];
     
-    NSArray *mainQueueOperations = @[ showLoginOperation, pushNotificationOperation];
-    [[NSOperationQueue mainQueue] addOperations:mainQueueOperations waitUntilFinished:NO];
+    [showLoginOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
+    {
+        [welf configureTabBar];
+    }];
     
-    NSArray *backgroundOperations = @[ ftueVideoOperation, showQueuedDeeplinkOperation ];
-    [self.operationQueue addOperations:backgroundOperations waitUntilFinished:NO];
+    [ftueVideoOperation queueWithCompletion:nil];
+    
+    [pushNotificationOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
+    {
+        welf.coachmarkManager.allowCoachmarks = YES;
+    }];
+    
+    [deeplinkOperation queueWithCompletion: nil];
 }
 
 #pragma mark - UITabBarControllerDelegate
