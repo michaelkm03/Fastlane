@@ -259,25 +259,25 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
     {
         __weak typeof(self) welf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                       {
-                           __strong typeof(welf) strongSelf = welf;
-                           if ( strongSelf == nil )
+        {
+            __strong typeof(welf) strongSelf = welf;
+            if ( strongSelf == nil )
+            {
+                return;
+            }
+            
+            NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumDimensionKey];
+            CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
+            UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
+            UIImage *previewImage = [smallerImage squareImageByCropping];
+            NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
+            dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               return;
-                           }
-                           
-                           NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumDimensionKey];
-                           CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
-                           UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
-                           UIImage *previewImage = [smallerImage squareImageByCropping];
-                           NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
-                           dispatch_async(dispatch_get_main_queue(), ^
-                                          {
-                                              [strongSelf.delegate imageCameraViewController:strongSelf
-                                                                   capturedImageWithMediaURL:savedFileURL
-                                                                                previewImage:previewImage];
-                                          });
-                       });
+                               [strongSelf.delegate imageCameraViewController:strongSelf
+                                                    capturedImageWithMediaURL:savedFileURL
+                                                                 previewImage:previewImage];
+                           });
+        });
 
     }];
 }
