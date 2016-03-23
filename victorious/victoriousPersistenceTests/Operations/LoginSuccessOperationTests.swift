@@ -41,7 +41,6 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
     }
     
-    
     private func loadUser() -> User? {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
