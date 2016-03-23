@@ -214,6 +214,10 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     
     if (!self.audioInput && !isVideo)
     {
+        if ( connection.supportsVideoStabilization )
+        {
+            [connection setPreferredVideoStabilizationMode:AVCaptureVideoStabilizationModeAuto];
+        }
         NSDictionary *videoSettings = @{ AVVideoCodecKey: AVVideoCodecH264,
                                          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
                                          AVVideoWidthKey: @(self.videoSize.width),
