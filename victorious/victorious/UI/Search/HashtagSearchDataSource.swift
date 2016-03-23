@@ -26,7 +26,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
             return
         }
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? UserSearchResultTableViewCell,
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? VHashtagCell,
                 let hashtag = self.visibleItems[ indexPath.row ] as? HashtagSearchResultObject {
                     self.updateFollowControlState(cell.followControl, forHashtag: hashtag.tag, animated: true)
             }
