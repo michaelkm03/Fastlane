@@ -37,7 +37,7 @@ static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
-static NSString * const kMaximumImageSideLengthKey = @"maximumImageSideLength";
+static NSString * const kMaximumDimensionKey = @"maximumDimension";
 static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
@@ -266,7 +266,7 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
                                return;
                            }
                            
-                           NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumImageSideLengthKey];
+                           NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumDimensionKey];
                            CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
                            UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
                            UIImage *previewImage = [smallerImage squareImageByCropping];

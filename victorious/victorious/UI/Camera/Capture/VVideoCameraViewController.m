@@ -23,7 +23,7 @@
 
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kCameraScreenKey = @"videoCameraScreen";
-static NSString * const kMaximumVideoSideLengthKey = @"maximumVideoSideLength";
+static NSString * const kMaximumDimensionKey = @"maximumDimension";
 static NSString * const kNextTextKey = @"nextText";
 static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
 static const CGFloat kDefaultVideoSideLength = 640.0f;
@@ -298,7 +298,7 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     
     NSError *encoderError;
     NSURL *urlForEncoderDestination = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kCameraDirectory];
-    NSNumber *templateMaxSideLength = [self.dependencyManager numberForKey:kMaximumVideoSideLengthKey];
+    NSNumber *templateMaxSideLength = [self.dependencyManager numberForKey:kMaximumDimensionKey];
     CGFloat maximumVideoSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultVideoSideLength;
     CGFloat side = MIN(self.captureController.maxOutputSideLength, maximumVideoSideLength);
     VCameraCaptureVideoSize size = { side, side };
