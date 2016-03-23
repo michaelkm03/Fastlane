@@ -60,9 +60,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
             return
         }
         
-        if let mediaURL = mediaURL {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
-        }
         completionError(nil)
     }
     

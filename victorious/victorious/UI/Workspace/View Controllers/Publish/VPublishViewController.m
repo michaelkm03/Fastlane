@@ -641,11 +641,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)savingToCameraRollCompletionForImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+    [self removeUploadedTempFiles];
     [self logMediaSavingProcess:error];
 }
 
 - (void)savingToCameraRollCompletionForVideo:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+    [self removeUploadedTempFiles];
     [self logMediaSavingProcess:error];
 }
 
@@ -659,6 +661,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     {
         VLog(@"Failed to save media to camera roll with error information: %@", error);
     }
+}
+
+- (void)removeUploadedTempFiles
+{
+    [[NSFileManager defaultManager] removeItemAtURL:self.publishParameters.mediaToUploadURL error:nil];
 }
 
 - (void)setupBehaviors
