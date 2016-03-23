@@ -105,9 +105,6 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
-"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
-"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
-
 "NoMemersTitle"       =   "BE THE 1ST TO MEME!";
 "NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
@@ -454,4 +451,7 @@
 
 "Dismiss Alert" = "Got It";
 
-"What do you think..." = "What do you think...";
+"NewMessagesFormatPlural" = "%@ New Messages"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
+
+"ComposerPlaceholderText" = "What do you think...";

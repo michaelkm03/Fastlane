@@ -10,8 +10,6 @@ import UIKit
 import VictoriousIOSSDK
 import SDWebImage
 
-
-
 class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct Constants {
@@ -40,6 +38,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private var currentStagedMedia: Stageable?
     
     private var playbackInterrupterTimer: NSTimer?
+
+    weak var delegate: StageDelegate?
     
     var dependencyManager: VDependencyManager!
 
@@ -135,10 +135,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
     }
 
-    
+
     //MARK: - Stage
-    
-    weak var delegate: StageDelegate?
     
     func startPlayingMedia(media: Stageable) {
         terminateInterrupterTimer()

@@ -12,9 +12,11 @@ class ShowForumOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool
+    private weak var originViewController: UIViewController?
     
-    required init( dependencyManager: VDependencyManager, animated: Bool = true) {
+    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
         self.dependencyManager = dependencyManager
+        self.originViewController = originViewController
         self.animated = animated
     }
     
@@ -22,18 +24,19 @@ class ShowForumOperation: MainQueueOperation {
         super.start()
         
         guard !self.cancelled else {
-            self.finishedExecuting()
+            finishedExecuting()
             return
         }
         
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey:"forum")
-        guard let viewController = templateValue as? ForumViewController,
-            let originViewController = VRootViewController.sharedRootViewController() else {
-                finishedExecuting()
-                return
+        guard let viewController = templateValue as? ForumViewController else {
+            finishedExecuting()
+            return
         }
         
-        originViewController.presentViewController(viewController, animated: animated) {
+        let navigationController = VNavigationController(dependencyManager: dependencyManager)
+        navigationController.innerNavigationController.viewControllers = [ viewController ]
+        originViewController?.presentViewController(navigationController, animated: animated) {
             self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
             self.finishedExecuting()
         }

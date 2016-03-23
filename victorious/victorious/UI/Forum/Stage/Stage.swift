@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Stage {
+protocol Stage: class {
     
     weak var delegate: StageDelegate? { get set }
     

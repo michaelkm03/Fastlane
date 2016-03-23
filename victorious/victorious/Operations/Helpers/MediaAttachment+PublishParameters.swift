@@ -64,9 +64,10 @@ extension MediaAttachment {
             return nil
         }
         let previewImage = UIImage(CGImage: imageRef)
-        
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
+        guard let tempFile = NSURL.v_temporaryFileURLWithExtension(VConstantMediaExtensionJPG, inDirectory: kThumbnailDirectory) else {
+            assertionFailure("Could not write to temporary directory!")
+            return nil
+        }
         if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
             imgData.writeToURL(tempFile, atomically: false )
             return tempFile

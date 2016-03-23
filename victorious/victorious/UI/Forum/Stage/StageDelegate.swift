@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import VictoriousIOSSDK
 
-/// Conformers will recieve messages related to stage media.
+/// Conformers will recieve messages related to the stage resizing.
 protocol StageDelegate: class {
     func stage(stage: Stage, didUpdateContentSize size: CGSize)
 }
