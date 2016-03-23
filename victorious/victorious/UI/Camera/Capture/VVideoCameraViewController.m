@@ -296,8 +296,10 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
     
     NSError *encoderError;
     NSURL *urlForEncoderDestination = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kCameraDirectory];
+    CGFloat horizontalScreenPixels = CGRectGetWidth([[UIScreen mainScreen] bounds]) * [[UIScreen mainScreen] scale];
+    VCameraCaptureVideoSize size = { horizontalScreenPixels, horizontalScreenPixels };
     VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:urlForEncoderDestination
-                                                                      videoSize:kVideoSize
+                                                                      videoSize:size
                                                                           error:&encoderError];
     if (encoder != nil)
     {
