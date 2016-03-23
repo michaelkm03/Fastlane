@@ -272,13 +272,12 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
             UIImage *previewImage = [smallerImage squareImageByCropping];
             NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
             dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               [strongSelf.delegate imageCameraViewController:strongSelf
-                                                    capturedImageWithMediaURL:savedFileURL
-                                                                 previewImage:previewImage];
-                           });
+            {
+                [strongSelf.delegate imageCameraViewController:strongSelf
+                                     capturedImageWithMediaURL:savedFileURL
+                                                  previewImage:previewImage];
+            });
         });
-
     }];
 }
 
