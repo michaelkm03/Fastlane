@@ -57,6 +57,11 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     return self.mediaSearchViewController;
 }
 
+- (MediaType)mediaType
+{
+    return MediaTypeVideo;
+}
+
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
@@ -140,6 +145,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     // We only care if it's the top of the stack
     if ([self.viewControllers lastObject] == videoCamera)
     {
+        self.source = VCreationFlowSourceCamera;
         [self captureFinishedWithMediaURL:url
                              previewImage:previewImage];
     }
