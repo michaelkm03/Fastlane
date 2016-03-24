@@ -74,6 +74,10 @@ class AgeGateViewController: UIViewController {
         return true
     }
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
     @IBAction private func tappedOnContinue(sender: UIButton) {
         let shouldBeAnonymous = AgeGate.isUserYoungerThan(13, forBirthday: datePicker.date)
         
