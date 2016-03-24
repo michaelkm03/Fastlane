@@ -76,6 +76,8 @@
 	<string>VWorkspaceShimDestination</string>
 	<key>text.creationFlow</key>
 	<string>VTextWorkspaceFlowController</string>
+	<key>library.creationFlow</key>
+	<string>victorious.LibraryCreationFlowController</string>
 	<key>poll.creationFlow</key>
 	<string>VPollCreationFlowController</string>
 	<key>video.creationFlow</key>

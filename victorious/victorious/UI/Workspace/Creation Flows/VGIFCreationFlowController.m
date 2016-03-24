@@ -67,11 +67,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                             withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];;
 }
 
-- (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
-{
-    // do nothing for videos
-}
-
 - (void)configurePublishParameters:(VPublishParameters *)publishParameters
                      withWorkspace:(VWorkspaceViewController *)workspace
 {

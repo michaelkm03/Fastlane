@@ -20,6 +20,7 @@ static NSString * const kGIFCreationFlowKey = @"gifCreateFlow";
 static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 static NSString * const kPollCreateFlow = @"pollCreateFlow";
 static NSString * const kTextCreateFlow = @"textCreateFlow";
+static NSString * const kLibraryCreateFlow = @"libraryCreateFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
@@ -61,6 +62,16 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
         case VCreationTypePoll:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
             [self presentCreateFlowWithKey:kPollCreateFlow];
+            break;
+        case VCreationTypeLibrary:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromLibrarySelected];
+            [self presentCreateFlowWithKey:kLibraryCreateFlow];
+            break;
+        case VCreationTypeMixedMediaCamera:
+            //TODO: Fill this guy out
+            break;
+        case VCreationTypeNativeCamera:
+            //TODO: Fill this guy out
             break;
         case VCreationTypeUnknown:
             break;

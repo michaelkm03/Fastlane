@@ -19,6 +19,9 @@ typedef NS_ENUM(NSInteger, VCreationType)
     VCreationTypePoll,
     VCreationTypeText,
     VCreationTypeGIF,
+    VCreationTypeLibrary,
+    VCreationTypeMixedMediaCamera,
+    VCreationTypeNativeCamera,
     VCreationTypeUnknown
 };
 
@@ -31,6 +34,7 @@ typedef NS_ENUM(NSInteger, VCameraContext)
     VCameraContextProfileImageRegistration,
     VCameraContextImageContentCreation,
     VCameraContextVideoContentCreation,
+    VCameraContextUnknown
 };
 
 #endif

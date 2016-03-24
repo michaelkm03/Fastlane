@@ -258,7 +258,10 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
-        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+        if ( mediaType != PHAssetMediaTypeUnknown )
+        {
+            assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+        }
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
         // We're going to add appropriate collections and fetch requests to these arrays
@@ -330,7 +333,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
     self.animator.presenting = NO;
-    return self.animator;;
+    return self.animator;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source

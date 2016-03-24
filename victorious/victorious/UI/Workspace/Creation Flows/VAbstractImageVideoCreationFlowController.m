@@ -110,6 +110,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     return MediaTypeUnknown;
 }
 
+- (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
+{
+    
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad

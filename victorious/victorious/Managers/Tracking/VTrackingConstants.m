@@ -24,6 +24,9 @@ NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
 // Content Creation
 NSString * const VTrackingEventUserDidSelectCreatePost = @"UserDidSelectCreatePost";
 NSString * const VTrackingEventCreatePollSelected = @"CreatePollSelected";
+NSString * const VTrackingEventCreateFromLibrarySelected = @"CreateFromLibrarySelected";
+NSString * const VTrackingEventCreateFromUserCameraSelected = @"CreateFromUserCameraSelected";
+NSString * const VTrackingEventCreateFromCreatorCameraSelected = @"CreateFromCreatorCameraSelected";
 NSString * const VTrackingEventCreateImagePostSelected = @"CreateImagePostSelected";
 NSString * const VTrackingEventCreateTextOnlyPostSelected = @"CreateTextOnlyPostSelected";
 NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelected";

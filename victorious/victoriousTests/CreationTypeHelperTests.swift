@@ -18,6 +18,9 @@ class CreationTypeHelperTests: XCTestCase {
         XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create Poll"), VCreationType.Poll)
         XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create Text"), VCreationType.Text)
         XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create GIF"), VCreationType.GIF)
+        XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create from Library"), VCreationType.Library)
+        XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create from Mixed Media Camera"), VCreationType.MixedMediaCamera)
+        XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Create from Native Camera"), VCreationType.NativeCamera)
         XCTAssertEqual(CreationTypeHelper.creationTypeForIdentifier("Invalid Key"), VCreationType.Unknown)
     }
 }
