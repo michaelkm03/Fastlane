@@ -65,8 +65,6 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
     private func fetchConveration() -> VConversation? {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let conversationID = self.conversationID else {
-                VLog("Unable to load conversation without a conversationID")
-                assertionFailure()
                 return nil
             }
             
