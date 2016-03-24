@@ -60,8 +60,6 @@
         _videoPlayer.view.backgroundColor = [UIColor clearColor];
         
         [self addVideoPlayerView:_videoPlayer.view];
-        
-        _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
 }
@@ -130,7 +128,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.shouldAutoplay = sequence.firstNode.mp4Asset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+    self.shouldAutoplay = sequence.firstNode.mp4Asset.streamAutoplay.boolValue;
     self.videoPlayer.view.hidden = !self.shouldAutoplay;
     
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
