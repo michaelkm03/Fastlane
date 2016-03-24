@@ -22,11 +22,7 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var dimmingView: UIView!
     @IBOutlet private weak var widgetBackground: UIView!
     @IBOutlet private weak var promptLabel: UILabel!
-    @IBOutlet private weak var datePicker: UIDatePicker! {
-        didSet {
-            datePicker.maximumDate = NSDate()
-        }
-    }
+    @IBOutlet private weak var datePicker: UIDatePicker!
     @IBOutlet private weak var continueButton: UIButton! {
         didSet {
             continueButton.enabled = false
@@ -86,6 +82,10 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction private func selectedBirthday(sender: UIDatePicker) {
+        guard !AgeGate.isUserYoungerThan(2, forBirthday: sender.date) else {
+            continueButton.enabled = false
+            return
+        }
         continueButton.enabled = true
     }
     
