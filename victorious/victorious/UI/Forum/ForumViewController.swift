@@ -52,7 +52,6 @@ class ForumViewController: UIViewController, Forum {
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
-
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager
             stage.delegate = self
