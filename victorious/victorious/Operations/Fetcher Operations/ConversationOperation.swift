@@ -42,18 +42,41 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
     }
     
     override func main() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
+        self.results = fetchMessages()
+        self.conversation = fetchConveration()
+    }
+    
+    private func fetchMessages() -> [VMessage] {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let messagesPredicate = self.messagesPredicate else {
                 VLog("Unable to load messages without a converationID or userID.")
                 assertionFailure()
-                return
+                return []
             }
             
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = self.paginator.paginatorPredicate + messagesPredicate
-            let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
-            self.results = results
+            
+            return context.v_executeFetchRequest( fetchRequest ) as [VMessage]
+        }
+    }
+    
+    private func fetchConveration() -> VConversation? {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let conversationID = self.conversationID else {
+                VLog("Unable to load conversation without a conversationID")
+                assertionFailure()
+                return nil
+            }
+            
+            let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
+            fetchRequest.predicate = NSPredicate(format: "remoteId == %i", conversationID)
+            let conversations = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+            
+            assert(conversations.count == 1, "One conversation ID should only fetch one conversation")
+            
+            return conversations.first
         }
     }
     
