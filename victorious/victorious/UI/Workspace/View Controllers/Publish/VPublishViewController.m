@@ -294,10 +294,6 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     self.publishParameters.captionType = VCaptionTypeNormal;
     
     self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
-    if (self.publishParameters.shouldSaveToCameraRoll)
-    {
-        [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
-    }
     
     NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
     self.publishParameters.shareToFacebook = [shareParams containsIndex:VShareTypeFacebook];
@@ -337,7 +333,19 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
         }
     }];
     
-    [operation queueWithCompletion:nil];
+    [operation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
+    {
+        if (self.publishParameters.shouldSaveToCameraRoll)
+        {
+            // Temp files will be removed after saving to camera roll finishes
+            [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
+        }
+        else
+        {
+            // If we do not need to save to camera roll, remove temp files right away
+            [self removeUploadedTempFiles];
+        }
+    }];
 }
 
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
@@ -641,11 +649,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)savingToCameraRollCompletionForImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+    [self removeUploadedTempFiles];
     [self logMediaSavingProcess:error];
 }
 
 - (void)savingToCameraRollCompletionForVideo:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+    [self removeUploadedTempFiles];
     [self logMediaSavingProcess:error];
 }
 
@@ -659,6 +669,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     {
         VLog(@"Failed to save media to camera roll with error information: %@", error);
     }
+}
+
+- (void)removeUploadedTempFiles
+{
+    [[NSFileManager defaultManager] removeItemAtURL:self.publishParameters.mediaToUploadURL error:nil];
 }
 
 - (void)setupBehaviors
