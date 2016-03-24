@@ -146,6 +146,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     if ([self.viewControllers lastObject] == videoCamera)
     {
         self.source = VCreationFlowSourceCamera;
+        self.publishParameters.assetRemoteId = nil;
         [self captureFinishedWithMediaURL:url
                              previewImage:previewImage];
     }

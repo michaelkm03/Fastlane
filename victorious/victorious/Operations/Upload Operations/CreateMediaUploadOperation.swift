@@ -73,19 +73,12 @@ class CreateMediaUploadOperation: BackgroundOperation {
             "did_crop" : publishParameters.didCrop ? "true" : "false",
             "did_trim" : publishParameters.didTrim ? "true" : "false",
         ]
-        if !publishParameters.isGIF {
-            dict["media_data"] = mediaURL ?? NSURL(string: "")
-            if let assetRemoteID = publishParameters.assetRemoteId {
-                dict["remote_id"] = assetRemoteID
-            }
-        } else {
-            if let mediaURL = mediaURL {
-                dict["media_data"] = mediaURL ?? NSURL(string: "")
-            } else if let assetRemoteID = publishParameters.assetRemoteId {
-                dict["remote_id"] = assetRemoteID
-            }
+        if let mediaURL = mediaURL {
+            dict["media_data"] = mediaURL
         }
-        
+        if let assetRemoteID = publishParameters.assetRemoteId {
+            dict["remote_id"] = assetRemoteID
+        }
         if let filterName = publishParameters.filterName {
             dict["filter_name"] = filterName
         }
