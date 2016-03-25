@@ -308,7 +308,6 @@
         {
             internalHeightConstraint = constraint;
         }
-        internalHeightConstraint = constraint;
     }];
     return internalHeightConstraint;
 }
