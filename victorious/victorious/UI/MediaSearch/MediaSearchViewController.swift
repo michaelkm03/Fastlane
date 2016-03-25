@@ -29,8 +29,6 @@ class MediaSearchOptions: NSObject {
 /// View controller that allows users to search for media files as part of a content creation flow.
 class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
     
-    private static let minimumPreviewImageSize = CGSize(width: 320, height: 320)
-    
     /// Enum of selector strings used in this class
     private enum Action: Selector {
         case ExportSelectedItem = "exportSelectedItem:"
@@ -150,36 +148,39 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 guard let strongSelf = self where !mediaExporter.cancelled else {
                     return
                 }
-                if let previewImage = previewImage, let mediaURL = mediaURL {
-                    
-                    var exportPreviewImage = previewImage
-                    let minimumSize = MediaSearchViewController.minimumPreviewImageSize
-                    if previewImage.size.width < minimumSize.width || previewImage.size.height < minimumSize.height {
-                        //The preview image is smaller than we'd like it to be, try to load the full asset
-                        let fullImage: UIImage? = {
-                            if let fullImageData = try? NSData(contentsOfURL: mediaURL, options: []) {
-                                return UIImage(data: fullImageData)
-                            }
-                            return nil
-                        }()
-                        if let fullImage = fullImage {
-                            exportPreviewImage = fullImage
-                        }
-                    }
+                
+                guard let mediaURL = mediaURL else {
                     strongSelf.progressHUD?.hide(true)
-                    mediaSearchResultObject.exportPreviewImage = exportPreviewImage
+                    strongSelf.showHud(renderingError: error)
+                    return
+                }
+                
+                let image: UIImage? = {
+                    if let imageData = try? NSData(contentsOfURL: mediaURL, options: []) {
+                        return UIImage(data: imageData)
+                    }
+                    return nil
+                }()
+                strongSelf.progressHUD?.hide(true)
+                if let image = image {
+                    mediaSearchResultObject.exportPreviewImage = image
                     mediaSearchResultObject.exportMediaURL = mediaURL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                    return
                 } else {
                     strongSelf.progressHUD?.hide(true)
-                    if error?.code != NSURLErrorCancelled {
-                        MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
-                        strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
-                    }
+                    strongSelf.showHud(renderingError: error)
                 }
             }
         }
         self.mediaExporter = mediaExporter
+    }
+    
+    private func showHud(renderingError error: NSError?) {
+        if error?.code != NSURLErrorCancelled {
+            MBProgressHUD.hideAllHUDsForView(view, animated: false)
+            v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
+        }
     }
 	
     func selectCellAtSelectedIndexPath() {
