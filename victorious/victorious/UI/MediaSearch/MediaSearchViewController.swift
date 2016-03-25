@@ -29,6 +29,8 @@ class MediaSearchOptions: NSObject {
 /// View controller that allows users to search for media files as part of a content creation flow.
 class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
     
+    private static let minimumPreviewImageSize = CGSize(width: 320, height: 320)
+    
     /// Enum of selector strings used in this class
     private enum Action: Selector {
         case ExportSelectedItem = "exportSelectedItem:"
@@ -148,12 +150,28 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 guard let strongSelf = self where !mediaExporter.cancelled else {
                     return
                 }
-                strongSelf.progressHUD?.hide(true)
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    mediaSearchResultObject.exportPreviewImage = previewImage
+                    
+                    var exportPreviewImage = previewImage
+                    let minimumSize = MediaSearchViewController.minimumPreviewImageSize
+                    if previewImage.size.width < minimumSize.width || previewImage.size.height < minimumSize.height {
+                        //The preview image is smaller than we'd like it to be, try to load the full asset
+                        let fullImage: UIImage? = {
+                            if let fullImageData = try? NSData(contentsOfURL: mediaURL, options: []) {
+                                return UIImage(data: fullImageData)
+                            }
+                            return nil
+                        }()
+                        if let fullImage = fullImage {
+                            exportPreviewImage = fullImage
+                        }
+                    }
+                    strongSelf.progressHUD?.hide(true)
+                    mediaSearchResultObject.exportPreviewImage = exportPreviewImage
                     mediaSearchResultObject.exportMediaURL = mediaURL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
+                    strongSelf.progressHUD?.hide(true)
                     if error?.code != NSURLErrorCancelled {
                         MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
                         strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
