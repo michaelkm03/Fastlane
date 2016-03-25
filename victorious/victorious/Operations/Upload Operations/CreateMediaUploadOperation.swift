@@ -70,14 +70,14 @@ class CreateMediaUploadOperation: BackgroundOperation {
             "did_crop" : publishParameters.didCrop ? "true" : "false",
             "did_trim" : publishParameters.didTrim ? "true" : "false",
         ]
-        let assetRemoteID = publishParameters.assetRemoteId
-        let willSendGifAssetId = publishParameters.isGIF && assetRemoteID != nil
-        if let mediaURL = mediaURL where !willSendGifAssetId {
+        
+        /// Assumption here is that we don't need to send both the assetRemoteID and mediaURL
+        if let assetRemoteID = publishParameters.assetRemoteId {
+            dict["remote_id"] = assetRemoteID
+        } else if let mediaURL = mediaURL {
             dict["media_data"] = mediaURL
         }
-        if let assetRemoteID = assetRemoteID {
-            dict["remote_id"] = assetRemoteID
-        }
+        
         if let filterName = publishParameters.filterName {
             dict["filter_name"] = filterName
         }
