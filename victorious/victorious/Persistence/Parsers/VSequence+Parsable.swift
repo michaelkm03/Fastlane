@@ -43,12 +43,6 @@ extension VSequence: PersistenceParsable {
         guard let context = self.managedObjectContext else {
             return
         }
-        
-        if let stream = streamParent {
-            let streamItemPointer = self.parseStreamItemPointerForStream(stream)
-            streamItemPointer.populate(fromSourceModel: sequence)
-            streamItemPointer.streamItem = self
-        }
 
         if let adBreak = sequence.adBreak {
             let persistentAdBreak = context.v_createObject() as VAdBreak
