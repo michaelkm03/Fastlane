@@ -41,6 +41,17 @@ class ForumViewController: UIViewController, Forum {
     
     // MARK: - UIViewController overrides
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        //Remove this once the way to animate the workspace in and out from forum has been figured out
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
