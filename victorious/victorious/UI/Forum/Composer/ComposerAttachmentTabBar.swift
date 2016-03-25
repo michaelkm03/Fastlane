@@ -14,10 +14,6 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     weak var delegate: ComposerAttachmentTabBarDelegate?
     
-    private var navigationMenuItems: [VNavigationMenuItem]?
-    
-    private var maxNumberOfMenuItems: Int = 0
-    
     var tabItemTintColor: UIColor? = nil {
         didSet {
             updateTintColorOfButtons()
@@ -26,17 +22,9 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     func setupWithAttachmentMenuItems(navigationMenuItems: [VNavigationMenuItem]?, maxNumberOfMenuItems: Int) {
         
-        self.navigationMenuItems = navigationMenuItems
-        self.maxNumberOfMenuItems = maxNumberOfMenuItems
+        var actionItems = [UIView]()
         
-        updateActionItems()
-    }
-    
-    private func updateActionItems() {
-        
-        var actionItems: [UIView] = [UIView]()
-        
-        guard let navigationMenuItems = navigationMenuItems where maxNumberOfMenuItems != 0 else {
+        guard let navigationMenuItems = navigationMenuItems else {
             self.actionItems = actionItems
             return
         }
