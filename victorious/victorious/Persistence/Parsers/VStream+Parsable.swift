@@ -62,7 +62,7 @@ extension VStream: PersistenceParsable {
                 }
                 let persistentSequence = context.v_findOrCreateObject( uniqueElements ) as VSequence
                 persistentSequence.populate( fromSourceModel: sequence)
-                createStreamItemPointer(pointTo: persistentSequence, with: item)
+                createStreamItemPointer(pointingTo: persistentSequence, withSourceModel: item)
                 return persistentSequence
                 
             case .Some(.Stream):
@@ -71,7 +71,7 @@ extension VStream: PersistenceParsable {
                 }
                 let persistentStream = context.v_findOrCreateObject(uniqueElements) as VStream
                 persistentStream.populate( fromSourceModel: stream )
-                createStreamItemPointer(pointTo: persistentStream, with: item)
+                createStreamItemPointer(pointingTo: persistentStream, withSourceModel: item)
                 return persistentStream
                 
             case .Some(.Shelf):
@@ -79,7 +79,7 @@ extension VStream: PersistenceParsable {
                 guard let persistentShelf = shelf(fromStreamItem: item, withUniqueIdentifier: uniqueElements, context: context) else {
                     return nil
                 }
-                createStreamItemPointer(pointTo: persistentShelf, with: item)
+                createStreamItemPointer(pointingTo: persistentShelf, withSourceModel: item)
                 return persistentShelf
                 
             default:
@@ -126,7 +126,7 @@ extension VStream: PersistenceParsable {
         }
      }
     
-    private func createStreamItemPointer(pointTo streamItem: VStreamItem, with sourceModel: StreamItemType) {
+    private func createStreamItemPointer(pointingTo streamItem: VStreamItem, withSourceModel sourceModel: StreamItemType) {
         let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
         let pointer: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
         if let sequence = sourceModel as? Sequence {
