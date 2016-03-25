@@ -17,5 +17,6 @@
 - (void)setPlaceholderFont:(UIFont *)font;
 
 @property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
+@property (nonatomic, assign) CGFloat lineFragmentPadding;
 
 @end
