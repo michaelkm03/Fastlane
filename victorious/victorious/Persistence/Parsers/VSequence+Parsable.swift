@@ -11,9 +11,8 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamParent: Stream?) ) {
-        let sequence = sourceModel.sequence
-        let streamParent = sourceModel.streamParent
+    func populate( fromSourceModel sourceModel: Sequence ) {
+        let sequence = sourceModel
         
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
@@ -76,7 +75,7 @@ extension VSequence: PersistenceParsable {
             self.nodes = NSOrderedSet(array: persistentNodes)
         }
         
-        if let previewImageAssets = sourceModel.sequence.previewImageAssets {
+        if let previewImageAssets = sourceModel.previewImageAssets {
             let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
