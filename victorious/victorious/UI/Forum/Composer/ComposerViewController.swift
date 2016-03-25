@@ -204,6 +204,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupTextView() {
         textView.text = nil
+        textView.lineFragmentPadding = 0
         textView.placeholderText = dependencyManager.inputPromptText
     }
     

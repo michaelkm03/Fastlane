@@ -10,30 +10,13 @@ import Foundation
 
 class ComposerAttachmentTabBar: VFlexBar {
     
+    private let buttonSideLength: CGFloat = 22
+    
     weak var delegate: ComposerAttachmentTabBarDelegate?
     
     var tabItemTintColor: UIColor? = nil {
         didSet {
-            
-            var buttons = [UIButton]()
-            for view in actionItems {
-                if let button = view as? UIButton {
-                    buttons.append(button)
-                }
-            }
-            
-            guard !buttons.isEmpty else {
-                return
-            }
-            
-            let renderingMode: UIImageRenderingMode = tabItemTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
-            for button in buttons {
-                let updatedImage = button.imageForState(.Normal)?.imageWithRenderingMode(renderingMode)
-                button.setImage(updatedImage, forState: .Normal)
-                if let tabItemTintColor = tabItemTintColor {
-                    button.tintColor = tabItemTintColor
-                }
-            }
+            updateTintColorOfButtons()
         }
     }
     
@@ -46,7 +29,6 @@ class ComposerAttachmentTabBar: VFlexBar {
             return
         }
         
-        let buttonSideLength = bounds.height
         for (index, navigationMenuItem) in navigationMenuItems.enumerate() {
             if index == maxNumberOfMenuItems {
                 break
@@ -55,7 +37,7 @@ class ComposerAttachmentTabBar: VFlexBar {
             let button = ComposerAttachmentTabBarButton(navigationMenuItem: navigationMenuItem)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.v_addWidthConstraint(buttonSideLength)
-            button.v_addHeightConstraint(buttonSideLength)
+            button.v_addHeightConstraint(bounds.height)
             button.addTarget(self, action: Selector("buttonPressed:"), forControlEvents: .TouchUpInside)
             actionItems.append(button)
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
@@ -67,9 +49,32 @@ class ComposerAttachmentTabBar: VFlexBar {
             actionItems.append(VActionBarFixedWidthItem(width: buttonSideLength))
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }
-        actionItems.removeLast()
         
         self.actionItems = actionItems
+        
+        updateTintColorOfButtons()
+    }
+    
+    private func updateTintColorOfButtons() {
+        var buttons = [UIButton]()
+        for view in actionItems {
+            if let button = view as? UIButton {
+                buttons.append(button)
+            }
+        }
+        
+        guard !buttons.isEmpty else {
+            return
+        }
+        
+        let renderingMode: UIImageRenderingMode = tabItemTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
+        for button in buttons {
+            let updatedImage = button.imageForState(.Normal)?.imageWithRenderingMode(renderingMode)
+            button.setImage(updatedImage, forState: .Normal)
+            if let tabItemTintColor = tabItemTintColor {
+                button.tintColor = tabItemTintColor
+            }
+        }
     }
     
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
