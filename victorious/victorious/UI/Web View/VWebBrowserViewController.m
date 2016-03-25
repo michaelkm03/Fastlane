@@ -28,8 +28,6 @@
 #import "victorious-Swift.h"
 
 static NSString * const kURLKey = @"url";
-static NSString * const kOKButtonKey = @"OK";
-static NSString * const kCancelButtonKey = @"Cancel";
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -376,7 +374,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     // Add one single "OK" button
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action)
                                 {
@@ -392,14 +390,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     // Add a "Cancel" button
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kCancelButtonKey, "")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "")
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action)
                                 {
                                     completionHandler(NO);
                                 }]];
     // Add a "OK" button
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action)
                                 {
@@ -421,14 +419,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     }];
     
     // Add a "Cancel" button
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kCancelButtonKey, "")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "")
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action)
                                 {
                                     completionHandler(nil);
                                 }]];
     // Add a "OK" button
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action)
                                 {
