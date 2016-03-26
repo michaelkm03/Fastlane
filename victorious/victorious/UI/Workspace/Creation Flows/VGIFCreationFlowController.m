@@ -132,7 +132,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     self.publishParameters.width = result.assetSize.width;
     self.publishParameters.height = result.assetSize.height;
     self.publishParameters.assetRemoteId = result.remoteID;
-    [self captureFinishedWithMediaURL:nil
+    [self captureFinishedWithMediaURL:result.exportMediaURL
                          previewImage:result.exportPreviewImage shouldSkipTrimmer:YES];
 }
 
