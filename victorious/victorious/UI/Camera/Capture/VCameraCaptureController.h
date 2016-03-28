@@ -50,6 +50,8 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  */
 @property (nonatomic, strong) VCameraVideoEncoder *videoEncoder;
 
+@property (nonatomic, readonly) int32_t maxOutputSideLength;
+
 /**
  Sets the capture session quality level or bitrate
  

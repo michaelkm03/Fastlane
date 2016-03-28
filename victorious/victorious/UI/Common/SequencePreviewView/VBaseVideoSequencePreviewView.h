@@ -15,7 +15,6 @@
 #import "VVideoView.h"
 #import "VFocusable.h"
 #import "VRenderablePreviewView.h"
-#import "VVideoSettings.h"
 #import "VContentFittingPreviewView.h"
 #import "VVideoPreviewView.h"
 
@@ -36,8 +35,6 @@
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
 @property (nonatomic, strong, readonly) UIView *videoContainer;
-
-@property (nonatomic, strong) VVideoSettings *videoSettings;
 
 @property (nonatomic, strong) VAsset *videoAsset;
 

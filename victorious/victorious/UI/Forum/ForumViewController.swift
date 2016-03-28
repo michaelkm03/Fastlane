@@ -53,11 +53,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var stage: Stage?
     var composer: Composer?
     var chatFeed: ChatFeed?
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            updateStyle()
-        }
-    }
+    var dependencyManager: VDependencyManager!
     
     var originViewController: UIViewController {
         return self
@@ -99,7 +95,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
-
+        
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager.stageDependency
             stage.delegate = self

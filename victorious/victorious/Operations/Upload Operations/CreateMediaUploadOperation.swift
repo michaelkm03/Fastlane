@@ -60,9 +60,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
             return
         }
         
-        if let mediaURL = mediaURL {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(mediaURL)
-        }
         completionError(nil)
     }
     
@@ -73,8 +70,12 @@ class CreateMediaUploadOperation: BackgroundOperation {
             "did_crop" : publishParameters.didCrop ? "true" : "false",
             "did_trim" : publishParameters.didTrim ? "true" : "false",
         ]
-        if !publishParameters.isGIF {
-            dict["media_data"] = mediaURL ?? NSURL(string: "")
+        
+        /// Assumption here is that we don't need to send both the assetRemoteID and mediaURL
+        if let assetRemoteID = publishParameters.assetRemoteId {
+            dict["remote_id"] = assetRemoteID
+        } else if let mediaURL = mediaURL {
+            dict["media_data"] = mediaURL
         }
         
         if let filterName = publishParameters.filterName {
@@ -109,9 +110,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
         }
         if let source = publishParameters.source {
             dict["source"] = source
-        }
-        if let assetRemoteID = publishParameters.assetRemoteId {
-            dict["remote_id"] = assetRemoteID
         }
         
         return dict

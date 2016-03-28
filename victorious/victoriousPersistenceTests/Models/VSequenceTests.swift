@@ -22,7 +22,7 @@ class VSequenceTests: BasePersistentStoreTestCase {
             return
         }
         let persistentSequenceModel: VSequence = persistentStoreHelper.createSequence(remoteId: "1")
-        persistentSequenceModel.populate(fromSourceModel: (sequenceModel, nil) )
+        persistentSequenceModel.populate(fromSourceModel: sequenceModel)
         XCTAssertNotNil(persistentSequenceModel.adBreak)
         XCTAssertEqual(persistentSequenceModel.voteResults?.count, 5)
     }

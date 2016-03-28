@@ -58,7 +58,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
-@property (nonatomic, strong, nullable) TrophyCaseViewController *trophyCaseViewController;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
 @property (nonatomic, strong) NSNumber *userRemoteId;
@@ -161,17 +160,17 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)initializeTrophyCaseScreen
 {
-    self.trophyCaseViewController = [self.dependencyManager trophyCaseViewController];
-    if (self.trophyCaseViewController == nil || !self.representsMainUser)
+    if (!self.representsMainUser)
     {
         return;
     }
     
     UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    VDependencyManager *trophyCaseDependencyManager = self.trophyCaseViewController.dependencyManager;
+    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:@"trophyCaseScreen" withAddedDependencies:nil];
+    VDependencyManager *trophyCaseDependencyManager = trophyCaseViewController.dependencyManager;
     UIImage *buttonIconImage = [trophyCaseDependencyManager imageForKey: @"trophy_icon"];
     [trophyCaseButton setImage:buttonIconImage forState:UIControlStateNormal];
-    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
@@ -561,9 +560,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - User Actions
 
-- (void)trophyCaseButtonTapped
+- (void)trophyCaseButtonTapped:(UIButton *)sender
 {
-    [self.navigationController pushViewController:self.trophyCaseViewController animated:YES];
+    sender.enabled = NO;
+    [[[ShowTrophyCaseOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager] queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled) {
+        sender.enabled = YES;
+    }];
 }
 
 #pragma mark - Navigation

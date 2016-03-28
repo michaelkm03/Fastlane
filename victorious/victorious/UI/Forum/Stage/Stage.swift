@@ -21,12 +21,7 @@ protocol Stage: class, ForumEventReceiver {
     func stopPlayingMedia()
 }
 
-/// Conformers will recieve messages related to stage media.
+/// Conformers will recieve messages related to the stage resizing.
 protocol StageDelegate: class {
-    
-    func stage(stage: Stage, didUpdateContentHeight height: CGFloat)
-    
-    func stage(stage: Stage, didUpdateWithMedia media: Stageable)
-    
-    func stage(stage: Stage, didSelectMedia media: Stageable)
+    func stage(stage: Stage, didUpdateContentHeight size: CGFloat)
 }

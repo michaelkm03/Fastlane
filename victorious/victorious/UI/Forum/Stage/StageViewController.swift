@@ -25,7 +25,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     /// The content view that is grows and shrinks depending on the content it is displaying.
     /// Is is also this size that will be broadcasted to the stage delegate.
     @IBOutlet private weak var mainContentView: UIView!
-    @IBOutlet weak var mainContentViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mainContentViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private weak var imageView: UIImageView!
     
@@ -35,7 +35,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentContentView: UIView?
     
+    private var currentStagedMedia: Stageable?
+    
     private var playbackInterrupterTimer: NSTimer?
+
+    weak var delegate: StageDelegate?
     
     var dependencyManager: VDependencyManager!
     
@@ -46,100 +50,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         terminateInterrupterTimer()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        let randomContentHeight = CGFloat(20 + arc4random() % 40)
-        delegate?.stage(self, didUpdateContentHeight: randomContentHeight)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        senasDemoCode()
-    }
-    
-    // TODO: remove this before merge into dev !!! !!! !!!
-    private func senasDemoCode() {
-        
-        
-        var gifAssetJson: JSON = JSON([
-            "mimeType": "MP4",
-            //            "data": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4",
-            "height": "200",
-            "width": "100",
-            "bitrate": "200",
-            "duration": 2,
-            "start_time": 100,
-            //            "endTime": "12345678",
-            "resourceLocation": "https://media.giphy.com/media/mbgpTdJmNkLAs/giphy.mp4"
-            ])
-        
-        let gifAsset = GifAsset(json: gifAssetJson)
-        
-        gifAssetJson["resourceLocation"] = "https://media.giphy.com/media/PXXf6yHelzoXu/giphy.mp4"
-        let gifAsset2 = GifAsset(json: gifAssetJson)
-        
-        gifAssetJson["resourceLocation"] = "https://media.giphy.com/media/vfz5C2BWduo36/giphy.mp4"
-        let gifAsset3 = GifAsset(json: gifAssetJson)
-        
-        var videoAssetJson: JSON = JSON([
-            "mimeType": "MP4",
-            "data": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4",
-            "height": "200",
-            "width": "100",
-            "bitrate": "200",
-            "duration": 2,
-            "start_time": 100,
-            //            "endTime": "12345678",
-            "resourceLocation": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4"
-            ])
-        
-        let videoAsset = VideoAsset(json: videoAssetJson)
-        
-        videoAssetJson["resourceLocation"] = "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"
-        let videoAsset2 = VideoAsset(json: videoAssetJson)
-        
-        videoAssetJson["resourceLocation"] = "http://cdn-fms.rbs.com.br/vod/hls_sample1_manifest.m3u8"
-        let videoAsset3 = VideoAsset(json: videoAssetJson)
-        
-        var imageAssetJson: JSON = JSON([
-            "image_url": "http://media.mydogspace.com.s3.amazonaws.com/wp-content/uploads/2013/08/puppy-500x350.jpg",
-            "height": 200,
-            "width": 100,
-            "duration": 2,
-            "type": "image",
-            //            "endTime": "12345678",
-            //            "resourceLocation": "http://media2.giphy.com/media/FiGiRei2ICzzG/giphy.mp4"
-            ])
-        
-        let imageAsset = ImageAsset(json: imageAssetJson)
-        
-        imageAssetJson["image_url"] = "http://moto.zombdrive.com/images/motocross-1.jpg"
-        let imageAsset2 = ImageAsset(json: imageAssetJson)
-        
-        imageAssetJson["image_url"] = "http://moto.zombdrive.com/images/motocross-2.jpg"
-        let imageAsset3 = ImageAsset(json: imageAssetJson)
-        
-        let assets: [Stageable] = ([videoAsset, gifAsset, imageAsset, gifAsset2, videoAsset2, imageAsset2, gifAsset3, imageAsset3, videoAsset3] as [Stageable?]).flatMap { $0 }
-        
-        var delay: NSTimeInterval = 5
-        
-        //print("-------------- NEW RANDOMIZED STAGE SCHEDULE -----------------")
-        for asset in assets {
-            dispatch_after(delay) { [weak self] in
-                self?.startPlayingMedia(asset)
-            }
-            delay += NSTimeInterval(10)
-            //            delay += NSTimeInterval(5 + arc4random_uniform(5))
-        }
-    }
-    
-    
     //MARK: - Stage
-    
-    weak var delegate: StageDelegate?
     
     func startPlayingMedia(media: Stageable) {
         terminateInterrupterTimer()
         videoPlayer.pause()
+        currentStagedMedia = media
         
         switch media {
         case let videoAsset as VideoAsset:
@@ -151,8 +67,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         default:
             assertionFailure("Unknown stagable type: \(media)")
         }
-        
-        delegate?.stage(self, didUpdateWithMedia: media)
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
@@ -163,20 +77,15 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        switchToContentView(videoContentView, fromContentView: currentContentView)
         videoPlayer.playFromStart()
     }
-    
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        videoPlayer.pauseAtStart()
-    }
-    
-    // MARK: - Private
     
     // MARK: Video
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        videoPlayer.useAspectFit = true
+        videoPlayer.useAspectFit = false
         videoPlayer.delegate = self
         videoPlayer.backgroundColor = UIColor.clearColor()
         containerView.addSubview(videoPlayer.view)
@@ -196,14 +105,22 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func addVideoAsset(videoAsset: VideoAsset) {
         let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
         videoPlayer.setItem(videoItem)
-        switchToContentView(videoContentView, fromContentView: currentContentView)
     }
     
     // MARK: Image Asset
     
     private func addImageAsset(imageAsset: ImageAsset) {
-        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url)
-        switchToContentView(imageView, fromContentView: currentContentView)
+        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url) { [weak self] (image, error, cacheType, url) in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            guard let stageImageUrl = strongSelf.currentStagedMedia?.mediaMetaData.url where stageImageUrl == url else {
+                return
+            }
+            
+            strongSelf.switchToContentView(strongSelf.imageView, fromContentView: strongSelf.currentContentView)
+        }
     }
     
     // MARK: Gif Playback
@@ -212,14 +129,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         let videoItem = VVideoPlayerItem(URL: gifAsset.mediaMetaData.url)
         videoItem.loop = true
         videoPlayer.setItem(videoItem)
-        videoPlayer.playFromStart()
         
         if let duration = gifAsset.mediaMetaData.duration {
             let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer]
             playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "interruptPlayback:", userInfo: interruptMessage, repeats: false)
         }
-        
-        switchToContentView(videoContentView, fromContentView: currentContentView)
     }
     
     // MARK: Interrupt Playback Timer
@@ -242,17 +156,17 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: Clear Media
     
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
-        oldContentView?.userInteractionEnabled = false
-        UIView.animateWithDuration(Constants.contentHideAnimationDuration,
-            animations: {
+        if newContentView != oldContentView {
+            UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
                 newContentView.alpha = 1.0
                 oldContentView?.alpha = 0.0
-            },
-            completion: { finished in
-                newContentView.userInteractionEnabled = true
             }
-        )
+        }
         currentContentView = newContentView
+        
+        let height = currentStagedMedia?.mediaMetaData.size?.height ?? Constants.fixedStageHeight
+        let clampedHeight = min(height, Constants.fixedStageHeight)
+        delegate?.stage(self, didUpdateContentHeight: clampedHeight)
     }
     
     private func clearStageMedia() {
