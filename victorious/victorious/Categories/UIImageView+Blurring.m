@@ -48,6 +48,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 {
     if ( [self isURLDownloaded:url] )
     {
+        self.image = [self cachedBlurredImageForURL:url];
         return;
     }
     
