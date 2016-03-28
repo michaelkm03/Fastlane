@@ -148,20 +148,40 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 guard let strongSelf = self where !mediaExporter.cancelled else {
                     return
                 }
+                
+                guard let mediaURL = mediaURL else {
+                    strongSelf.progressHUD?.hide(true)
+                    strongSelf.showHud(renderingError: error)
+                    return
+                }
+                
+                let image: UIImage? = {
+                    if let imageData = try? NSData(contentsOfURL: mediaURL, options: []) {
+                        return UIImage(data: imageData)
+                    }
+                    return nil
+                }()
+                
                 strongSelf.progressHUD?.hide(true)
-                if let previewImage = previewImage, let mediaURL = mediaURL {
-                    mediaSearchResultObject.exportPreviewImage = previewImage
+                if let image = image {
+                    mediaSearchResultObject.exportPreviewImage = image
                     mediaSearchResultObject.exportMediaURL = mediaURL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
-                    if error?.code != NSURLErrorCancelled {
-                        MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
-                        strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
-                    }
+                    strongSelf.progressHUD?.hide(true)
+                    strongSelf.showHud(renderingError: error)
                 }
             }
         }
         self.mediaExporter = mediaExporter
+    }
+    
+    private func showHud(renderingError error: NSError?) {
+        if error?.code != NSURLErrorCancelled {
+            MBProgressHUD.hideAllHUDsForView(view, animated: false)
+            let errorTitle = NSLocalizedString("Error rendering Media", comment: "")
+            v_showErrorWithTitle(errorTitle, message: "")
+        }
     }
 	
     func selectCellAtSelectedIndexPath() {
