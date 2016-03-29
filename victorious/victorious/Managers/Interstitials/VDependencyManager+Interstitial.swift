@@ -31,8 +31,14 @@ extension VDependencyManager {
                 achievementVC.alert = alert
                 return achievementVC
             }
-        }
         
+        case .StatusUpdate:
+            let templateValue = templateValueOfType(ImageAlertViewController.self, forKey: "statusUpdateScreen")
+            if let imageAlertVC = templateValue as? ImageAlertViewController {
+                imageAlertVC.alert = alert
+                return imageAlertVC
+            }
+        }
         return nil
     }
 }
