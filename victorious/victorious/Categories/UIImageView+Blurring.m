@@ -39,17 +39,17 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     self.image = placeholderImage;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         weakSelf.alpha = 0.0f;
-         [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+         if ([weakSelf.image isEqual:placeholderImage] || weakSelf.image == placeholderImage)
+         {
+             [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+         }
      }];
 }
 
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor
 {
-    UIImage *cachedImage = [self cachedBlurredImageForURL:url];
-    if ( [self isURLDownloaded:url] && cachedImage != nil)
+    if ([self isURLDownloaded:url])
     {
-        self.image = cachedImage;
         return;
     }
     
