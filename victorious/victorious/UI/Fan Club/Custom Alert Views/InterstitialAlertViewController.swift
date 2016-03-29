@@ -57,7 +57,7 @@ class InterstitialAlertViewController: UIViewController, CustomAlertView, Inters
     
     weak var interstitialDelegate: InterstitialViewControllerDelegate?
     
-    private let animator = AchievementAnimator()
+    private let animator = InterstitialAlertAnimator()
     
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
         return animator
@@ -69,7 +69,7 @@ class InterstitialAlertViewController: UIViewController, CustomAlertView, Inters
     }
     
     func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
-        return AchievementPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+        return InterstitialAlertPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     
     func preferredModalPresentationStyle() -> UIModalPresentationStyle {
