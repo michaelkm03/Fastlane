@@ -48,7 +48,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor
 {
-    if ([self isURLDownloaded:url])
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
