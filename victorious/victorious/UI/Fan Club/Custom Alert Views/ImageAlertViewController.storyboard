@@ -31,25 +31,25 @@
                                 <rect key="frame" x="35" y="133" width="530" height="334"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ONU-ev-4YM" userLabel="Alert Components Stack View">
-                                        <rect key="frame" x="0.0" y="30" width="530" height="274"/>
+                                        <rect key="frame" x="20" y="30" width="490" height="274"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="level_badge_creator_large" translatesAutoresizingMaskIntoConstraints="NO" id="M3p-fZ-rix">
-                                                <rect key="frame" x="212" y="0.0" width="106" height="122"/>
+                                                <rect key="frame" x="192" y="0.0" width="106" height="122"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIF-hS-QFo">
-                                                <rect key="frame" x="225" y="142" width="80" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIF-hS-QFo">
+                                                <rect key="frame" x="205" y="142" width="80" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0M-ul-2lY">
-                                                <rect key="frame" x="220" y="183" width="90" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0M-ul-2lY">
+                                                <rect key="frame" x="200" y="183" width="90" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPI-wN-yjW">
-                                                <rect key="frame" x="20" y="224" width="490" height="50"/>
+                                                <rect key="frame" x="20" y="224" width="450" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="jAM-dg-wyd"/>
                                                 </constraints>
@@ -67,9 +67,9 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="ONU-ev-4YM" secondAttribute="trailing" id="1eV-ql-FrV"/>
+                                    <constraint firstAttribute="trailing" secondItem="ONU-ev-4YM" secondAttribute="trailing" constant="20" symbolic="YES" id="1eV-ql-FrV"/>
                                     <constraint firstItem="ONU-ev-4YM" firstAttribute="top" secondItem="FXh-g7-a0Z" secondAttribute="top" constant="30" id="7ex-Y2-GVG"/>
-                                    <constraint firstItem="ONU-ev-4YM" firstAttribute="leading" secondItem="FXh-g7-a0Z" secondAttribute="leading" id="FGo-ie-s8w"/>
+                                    <constraint firstItem="ONU-ev-4YM" firstAttribute="leading" secondItem="FXh-g7-a0Z" secondAttribute="leading" constant="20" symbolic="YES" id="FGo-ie-s8w"/>
                                     <constraint firstAttribute="bottom" secondItem="ONU-ev-4YM" secondAttribute="bottom" constant="30" id="Wto-fS-9YA"/>
                                 </constraints>
                             </view>
