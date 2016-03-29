@@ -179,7 +179,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     private func showHud(renderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
             MBProgressHUD.hideAllHUDsForView(view, animated: false)
-            let errorTitle = NSLocalizedString("Error rendering Media", comment: "")
+            let errorTitle = NSLocalizedString("Error rendering media", comment: "")
             v_showErrorWithTitle(errorTitle, message: "")
         }
     }
