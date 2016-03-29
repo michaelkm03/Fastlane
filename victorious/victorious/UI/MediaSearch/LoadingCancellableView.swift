@@ -23,7 +23,8 @@ class LoadingCancellableView: UIView {
     }
     @IBOutlet weak var text: UILabel! {
         didSet {
-            text.text = NSLocalizedString("Rendering...", comment: "")
+            let rendering = NSLocalizedString("Rendering...", comment: "")
+            text.text = "  \(rendering)"
         }
     }
     @IBOutlet weak var cancelButton: UIButton! {
