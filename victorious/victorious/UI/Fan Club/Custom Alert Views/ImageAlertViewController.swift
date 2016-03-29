@@ -39,13 +39,7 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
     
     // MARK: - Custom Alert Protocol
     
-    var alert: Alert? {
-        didSet {
-            if let alert = alert {
-                configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons.first)
-            }
-        }
-    }
+    var alert: Alert?
     
     func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
         titleLabel.text = title
@@ -75,7 +69,7 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
     }
     
     func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
-        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+        return AchievementPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     
     func preferredModalPresentationStyle() -> UIModalPresentationStyle {
@@ -93,7 +87,11 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
     override func viewDidLoad() {
         super.viewDidLoad()
         styleComponents()
+        if let alert = alert {
+            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons.first)
+        } else {
         configure(withTitle: "Zootopia Quotes From Judy Hopps", detailedDescription: "I thought this city would be a perfect place where everyone got along and anyone could be anything. Turns out, life's a little bit more complicated than a slogan on a bumper sticker. Real life is messy. We all have limitations. We all make mistakes. Which means, hey, glass half full, we all have a lot in common. And the more we try to understand one another, the more exceptional each of us will be. But we have to try. So no matter what kind of person you are, I implore you: Try. Try to make the world a better place. Look inside yourself and recognize that change starts with you.", iconImageURL: nil)
+        }
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -101,7 +99,7 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
     }
     
     @IBAction func dismiss(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
+        interstitialDelegate?.dismissInterstitial(self)
     }
     
     // MARK: - Private Methods
@@ -110,10 +108,10 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
         containerView.layer.cornerRadius = Constants.cornerRadius
         
         titleLabel.font = dependencyManager.titleFont
-//        titleLabel.textColor = dependencyManager.textColor
+        titleLabel.textColor = dependencyManager.textColor
         
         detailLabel.font = dependencyManager.detailLabelFont
-//        detailLabel.textColor = dependencyManager.textColor
+        detailLabel.textColor = dependencyManager.textColor
         
         confirmButton.layer.cornerRadius = Constants.cornerRadius
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTitleFont
