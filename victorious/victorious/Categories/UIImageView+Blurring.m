@@ -40,7 +40,8 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
          // If the placeholder image is still the current image, or if they are both nil
-         if ([weakSelf.image isEqual:placeholderImage] || weakSelf.image == placeholderImage)
+         BOOL bothImagesAreNil = (weakSelf.image == nil && placeholderImage == nil);
+         if ([weakSelf.image isEqual:placeholderImage] || bothImagesAreNil)
          {
              [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
          }
