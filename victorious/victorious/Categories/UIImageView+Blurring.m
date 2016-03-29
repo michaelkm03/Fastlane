@@ -26,12 +26,6 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 @implementation UIImageView (Blurring)
 
-- (BOOL)blurredImageIs:(UIImage *)originalImage
-{
-    UIImage *storedImage = objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey);
-    return [originalImage isEqual:storedImage];
-}
-
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
     UIImage *storedImage = objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey);

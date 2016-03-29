@@ -57,8 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)clearDownloadCache;
 
-- (BOOL)blurredImageIs:(UIImage *)originalImage;
-
 @end
 
 NS_ASSUME_NONNULL_END
