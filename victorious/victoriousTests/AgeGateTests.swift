@@ -185,9 +185,9 @@ class AgeGateTests: XCTestCase {
     
     func testIsWebViewActionItemAllowed() {
         let inputActionItemNames: [String] = [
-            "ShareFacebook",
-            "ShareTwitter",
-            "ShareSMS",
+            "Share to Facebook",
+            "Share to Twitter",
+            "Send as Text",
             "",
             "Other string",
         ]
