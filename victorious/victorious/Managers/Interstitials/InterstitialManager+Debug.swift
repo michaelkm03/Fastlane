@@ -48,7 +48,12 @@ extension InterstitialManager {
     func debug_registerTestStatusUpdateAlert() {
         #if V_SHOW_TEST_ALERT_SETTINGS
             self.disabled = true
-            let params = ["type" : "statusUpdate", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "You are golden!", "description" : "You status has been upgraded to gold!", "icons" : ["http://i.imgur.com/ietHgk6.png"], "backgroundVideo" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8"]]
+            let params = ["type" : "statusUpdate",
+                          "params" : [
+                            "user" : ["fanloyalty" : ["level" : 5, "tier" : "Gold", "name" : "Level 5", "progress" : 70]],
+                            "title" : "You are golden!",
+                            "description" : "You status has been upgraded to gold",
+                            "icons" : ["http://i.imgur.com/ietHgk6.png"]]]
             
             if let addtionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
