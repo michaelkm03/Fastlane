@@ -1111,7 +1111,7 @@
 		A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAC1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift */; };
 		A73C3EBB1C45890E00A8452C /* MediaSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */; };
 		A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */; };
-		A73C3EBE1C45890E00A8452C /* MediaSearchMediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */; };
+		A73C3EBE1C45890E00A8452C /* MediaSearchExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB01C45890E00A8452C /* MediaSearchExporter.swift */; };
 		A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */; };
 		A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */; };
 		A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */; };
@@ -3517,7 +3517,7 @@
 		A73C3EAC1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSourceAdapter.swift; sourceTree = "<group>"; };
 		A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediaSearch.storyboard; sourceTree = "<group>"; };
 		A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchActivityFooter.swift; sourceTree = "<group>"; };
-		A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporter.swift; sourceTree = "<group>"; };
+		A73C3EB01C45890E00A8452C /* MediaSearchExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchExporter.swift; sourceTree = "<group>"; };
 		A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
 		A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Layout.swift"; sourceTree = "<group>"; };
 		A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchViewController.swift; sourceTree = "<group>"; };
@@ -7698,7 +7698,7 @@
 				BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */,
 				A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */,
 				A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */,
-				A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */,
+				A73C3EB01C45890E00A8452C /* MediaSearchExporter.swift */,
 				A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */,
 				A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */,
 				A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */,
@@ -11775,7 +11775,7 @@
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				A763635B1C5031E2000887C4 /* PaginatedObjectType.swift in Sources */,
 				A72C86111C977FF500E97D4F /* FollowHashtagToggleOperation.swift in Sources */,
-				A73C3EBE1C45890E00A8452C /* MediaSearchMediaExporter.swift in Sources */,
+				A73C3EBE1C45890E00A8452C /* MediaSearchExporter.swift in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
 				79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */,

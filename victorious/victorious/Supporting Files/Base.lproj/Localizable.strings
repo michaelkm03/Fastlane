@@ -13,7 +13,6 @@
 "Next"                  =   "Next";
 "Done"                  =   "Done";
 "More"                  =   "More";
-"Meme"                  =   "Meme";
 "Share"                 =   "Share";
 "Continue"              =   "Continue";
 "Loading..."            =   "Loading...";
@@ -41,15 +40,11 @@
 "SignupFail"            =   "Account Creation Failed";
 "You're not logged in!" =   "You're not logged in!";
 "ProfileNotLoggedInMessage" = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.";
-"ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileAborted"        =   "You will be unable to use some features until your profile has been completed.";
 "ProfileRequired"       =   "Please provide the following:";
-"ProfileRequiredPhoto"  =   "Profile image";
 "ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 "ProfileRequiredName"   =   "Name";
-"Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
 "User already exists but the password is incorrect" = "User already exists but the password is incorrect";
@@ -73,11 +68,16 @@
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
+"SAY HELLO!" = "SAY HELLO!";
+"Send a message to start chatting with other members of the community." = "Send a message to start chatting with other members of the community.";
+
 "NoNotificationsTitle"       =   "NO NOTIFICATIONS RIGHT NOW";
 "NoNotificationsMessage"     =   "As you engage with the community through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
 
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
+
+"Start a new conversation" = "Start a new conversation";
 
 "NoUserSearchResultsTitle"       =   "NO USERS FOUND";
 "NoUserSearchResultsMessage"     =   "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!";
@@ -126,8 +126,6 @@
 "No Hashtags Found In Search Title" = "NO TAGS WERE FOUND!";
 "No hashtags found in search" = "Refine your search and try again.";
 
-"ImageDownloadFailed"   =   "Image download failed.";
-
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
 "TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
@@ -152,7 +150,6 @@
 "ReportContentMessage"  =   "We will review this content within 24 hours.";
 "ReportCommentMessage"  =   "We will review this content within 24 hours.";
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
-"CommentAlreadyReported" =  "Comment Already Flagged";
 
 "Ask a question..."     =   "Ask a question...";
 "Vote this"             =   "Vote this";
@@ -167,18 +164,12 @@
 "NoKeepUploading"       =   "No, keep uploading";
 "Cancelling..."         =   "Cancelling...";
 
-"RefreshError"          =   "Unable to refresh.";
-
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
 "FollowingSectionHeader"            =   "Already Following";
 "FacebookFollowingSectionHeader"    =   "Follow Your Facebook Friends";
 "AddressBookFollowingSectionHeader" =   "Follow Your Contacts";
-
-"ConversationLoadError" =   "Unable to load conversation";
-"ConversationDelError"  =   "Unable to delete conversation";
-"ConversationSendError" =   "Your message could not be sent";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
 "Retry"                 =   "Retry";
@@ -198,8 +189,6 @@
 "YearsAgo"              =   "%dy";
 
 "JustAMoment"           =   "Just a moment";
-
-"TryAgain"              =   "Please try again later.";
 
 "Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
@@ -231,10 +220,6 @@
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
 
 "Image Search"          =   "Image Search";
-"Pull up for more..."   =   "Pull up for more...";
-"search for users"      =   "search for users";
-"searching"             =   "searching";
-"no results"            =   "no results";
 "No results"            =   "No results";
 
 "InviteYourFriends"     =   "Invite your Friends!";
@@ -259,9 +244,6 @@
 
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
-
-"UserBannedTitle"       =   "Ruh Roh!";
-"UserBannedMessage"     =   "Unfortunately, your account has been deactivated. You'll still be able to view content, but will not be able to post or interact with others.";
 
 "Version"               =   "Version %@";
 
@@ -295,9 +277,6 @@
 "%@ Voters"             = "%@ Voters";
 "%@ Voter"              = "%@ Voter";
 
-"HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag. Please try again.";
-"HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag. Please try again.";
-
 "NoFollowingHashtagsTitle"      =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANY TAGS YET";
 "NoFollowingHashtagsMessage"    =   "Build a list of your favorite content by tapping items that have been tagged.";
 
@@ -308,7 +287,6 @@
 "Device:"               = "Device:";
 "OS Version:"           = "OS Version:";
 "App Version:"          = "App Version:";
-"AreYouSureYouWantToDelete" = "Are you sure you want to delete?";
 
 "ShareFacebook"         = "Share to Facebook";
 "ShareTwitter"          = "Share to Twitter";
@@ -365,7 +343,6 @@
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
 
-"Error Loading Next Video" = "Error Loading Next Video";
 "Failed to fetch products" = "Failed to fetch products";
 
 "This will discard any content from the camera" = "This will discard any content from the camera";
@@ -377,7 +354,6 @@
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Create a meme";
-"Create a GIF" = "Create a GIF";
 "Pick an attachment style" = "Pick an attachment style";
 "Image" = "Image";
 "Video" = "Video";
@@ -390,8 +366,9 @@
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
 "Error loading results" = "Error loading results";
-"Error rendering Media" = "Error rendering Media.  Please try again.";
+"Error rendering media" = "Error rendering media";
 
+"By continuing you are agreeing to our" = "By continuing you are agreeing to our";
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "terms of service"      =   "terms of service";
 "privacy policy"        =   "privacy policy";
@@ -439,10 +416,6 @@
 "Seoul" = "Seoul";
 "Montreal" = "Montreal";
 
-"Use mobile data and Wi-Fi" = "Use mobile data and Wi-Fi";
-"Use Wi-Fi only" = "Use Wi-Fi only";
-"Never play videos automatically" = "Never play videos automatically";
-
 "LevelFormat" = "LEVEL %@";
 "LEVEL" = "LEVEL";
 "TestAlertsViewControllerFooter" = "After you register an alert, go back to the stream or profile and pull to refresh. The alert should appear.";
@@ -453,3 +426,13 @@
 
 "NewMessagesFormatPlural" = "%@ New Messages"; // i.e. "20 New Messages"
 "NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
+
+"What do you think..." = "What do you think...";
+
+"Subscription complete!" = "Subscription complete!";
+"Failed to restore subcription." = "Failed to restore subcription.";
+"Checking for subscription..." = "Checking for subscription...";
+"Already subscribed?" = "Already subscribed?";
+"Subscription restored!" = "Subscription restored!";
+"Subscription failed." = "Subscription failed.";
+"Validation Failed" = "Validation Failed";
