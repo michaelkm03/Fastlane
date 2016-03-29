@@ -1,5 +1,5 @@
 //
-//  ImageAlertViewController.swift
+//  InterstitialAlertViewController.swift
 //  victorious
 //
 //  Created by Tian Lan on 3/28/16.
@@ -13,7 +13,7 @@ protocol CustomAlertView {
     func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL?)
 }
 
-class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialViewController, VBackgroundContainer {
+class InterstitialAlertViewController: UIViewController, CustomAlertView, InterstitialViewController, VBackgroundContainer {
     
     @IBOutlet private weak var iconImageView: UIImageView?
     @IBOutlet private weak var titleLabel: UILabel!
@@ -30,8 +30,8 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ImageAlertViewController {
-        let imageAlertViewController = ImageAlertViewController.v_initialViewControllerFromStoryboard() as ImageAlertViewController
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> InterstitialAlertViewController {
+        let imageAlertViewController = InterstitialAlertViewController.v_initialViewControllerFromStoryboard() as InterstitialAlertViewController
         imageAlertViewController.dependencyManager = dependencyManager
         
         return imageAlertViewController

@@ -22,8 +22,8 @@ extension VDependencyManager {
             }
         
         case .StatusUpdate, .Achievement:
-            let templateValue = templateValueOfType(ImageAlertViewController.self, forKey: "statusUpdateScreen")
-            if let imageAlertVC = templateValue as? ImageAlertViewController {
+            let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
+            if let imageAlertVC = templateValue as? InterstitialAlertViewController {
                 imageAlertVC.alert = alert
                 return imageAlertVC
             }

@@ -5,10 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Image Alert View Controller-->
+        <!--Interstitial Alert View Controller-->
         <scene sceneID="heX-0V-osa">
             <objects>
-                <viewController storyboardIdentifier="AchievementDetailViewController" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="zMb-gm-2db" customClass="ImageAlertViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AchievementDetailViewController" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="zMb-gm-2db" customClass="InterstitialAlertViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LRR-di-btD"/>
                         <viewControllerLayoutGuide type="bottom" id="UZj-QU-LSq"/>

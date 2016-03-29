@@ -195,6 +195,6 @@
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
 	<key>statusUpdate.interstitial</key>
-	<string>victorious.ImageAlertViewController</string>
+	<string>victorious.InterstitialAlertViewController</string>
 </dict>
 </plist>
