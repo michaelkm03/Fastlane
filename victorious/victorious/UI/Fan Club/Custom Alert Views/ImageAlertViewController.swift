@@ -8,7 +8,12 @@
 
 import UIKit
 
-class ImageAlertViewController: UIViewController {
+protocol CustomAlertView {
+    var alert: Alert? { get set }
+    func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL?)
+}
+
+class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialViewController, VBackgroundContainer {
     
     @IBOutlet private weak var iconImageView: UIImageView?
     @IBOutlet private weak var titleLabel: UILabel!
@@ -32,16 +37,55 @@ class ImageAlertViewController: UIViewController {
         return imageAlertViewController
     }
     
-    // MARK: - API
-    func configure(withTitle title: String, detailText detail: String, iconImage icon: UIImage? = nil) {
+    // MARK: - Custom Alert Protocol
+    
+    var alert: Alert? {
+        didSet {
+            if let alert = alert {
+                configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons.first)
+            }
+        }
+    }
+    
+    func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
         titleLabel.text = title
         detailLabel.text = detail
 
-        if let icon = icon {
-            iconImageView?.image = icon
+        if let iconURL = iconURL {
+            iconImageView?.hidden = false
+            iconImageView?.sd_setImageWithURL(iconURL)
         } else {
-            iconImageView?.removeFromSuperview()
+            iconImageView?.hidden = true
         }
+    }
+    
+    // MARK: - InterstitialViewController Protocol
+    
+    weak var interstitialDelegate: InterstitialViewControllerDelegate?
+    
+    private let animator = AchievementAnimator()
+    
+    func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
+        return animator
+    }
+    
+    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
+        animator.isDismissal = true
+        return animator
+    }
+    
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    }
+    
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle {
+        return .Custom
+    }
+    
+    // MARK: - VBackgroundContainer Protocol
+    
+    func backgroundContainerView() -> UIView {
+        return containerView
     }
     
     // MARK: - View Controller Life Cycle
@@ -49,7 +93,7 @@ class ImageAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         styleComponents()
-        configure(withTitle: "Zootopia Quotes From Judy Hopps", detailText: "I thought this city would be a perfect place where everyone got along and anyone could be anything. Turns out, life's a little bit more complicated than a slogan on a bumper sticker. Real life is messy. We all have limitations. We all make mistakes. Which means, hey, glass half full, we all have a lot in common. And the more we try to understand one another, the more exceptional each of us will be. But we have to try. So no matter what kind of person you are, I implore you: Try. Try to make the world a better place. Look inside yourself and recognize that change starts with you.", iconImage: UIImage(named: "uiactivity-facebook-color"))
+        configure(withTitle: "Zootopia Quotes From Judy Hopps", detailedDescription: "I thought this city would be a perfect place where everyone got along and anyone could be anything. Turns out, life's a little bit more complicated than a slogan on a bumper sticker. Real life is messy. We all have limitations. We all make mistakes. Which means, hey, glass half full, we all have a lot in common. And the more we try to understand one another, the more exceptional each of us will be. But we have to try. So no matter what kind of person you are, I implore you: Try. Try to make the world a better place. Look inside yourself and recognize that change starts with you.", iconImageURL: nil)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
