@@ -148,23 +148,9 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                 guard let strongSelf = self where !mediaExporter.cancelled else {
                     return
                 }
-                
-                guard let mediaURL = mediaURL else {
-                    strongSelf.progressHUD?.hide(true)
-                    strongSelf.showHud(renderingError: error)
-                    return
-                }
-                
-                let image: UIImage? = {
-                    if let imageData = try? NSData(contentsOfURL: mediaURL, options: []) {
-                        return UIImage(data: imageData)
-                    }
-                    return nil
-                }()
-                
                 strongSelf.progressHUD?.hide(true)
-                if let image = image {
-                    mediaSearchResultObject.exportPreviewImage = image
+                if let previewImage = previewImage, let mediaURL = mediaURL {
+                    mediaSearchResultObject.exportPreviewImage = previewImage
                     mediaSearchResultObject.exportMediaURL = mediaURL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
