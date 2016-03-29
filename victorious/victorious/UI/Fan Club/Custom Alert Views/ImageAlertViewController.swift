@@ -89,8 +89,6 @@ class ImageAlertViewController: UIViewController, CustomAlertView, InterstitialV
         styleComponents()
         if let alert = alert {
             configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons.first)
-        } else {
-        configure(withTitle: "Zootopia Quotes From Judy Hopps", detailedDescription: "I thought this city would be a perfect place where everyone got along and anyone could be anything. Turns out, life's a little bit more complicated than a slogan on a bumper sticker. Real life is messy. We all have limitations. We all make mistakes. Which means, hey, glass half full, we all have a lot in common. And the more we try to understand one another, the more exceptional each of us will be. But we have to try. So no matter what kind of person you are, I implore you: Try. Try to make the world a better place. Look inside yourself and recognize that change starts with you.", iconImageURL: nil)
         }
     }
     

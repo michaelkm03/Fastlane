@@ -11,14 +11,16 @@ import Foundation
 class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let overlayOpacity: CGFloat = 0.75
+    private let dismissalDuration = 0.3
+    private let presentationDuration = 0.5
     
     var isDismissal = false
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         if isDismissal {
-            return AchievementViewController.AnimationConstants.dismissalDuration
+            return dismissalDuration
         }
-        return AchievementViewController.AnimationConstants.presentationDuration
+        return presentationDuration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
