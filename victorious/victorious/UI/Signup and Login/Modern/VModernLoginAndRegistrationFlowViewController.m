@@ -263,6 +263,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeLogin];
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeSignup];
+    
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeEmail];
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeEmail];
     
     UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
@@ -511,6 +515,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.currentOperation = [weakSelf.loginFlowHelper queueAccountCreateOperationWithEmail:email
                                                                                       password:password
                                                                                     completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
+            weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
             if ( error == nil )
             {
                 BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
