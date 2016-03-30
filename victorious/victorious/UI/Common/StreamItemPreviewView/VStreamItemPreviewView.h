@@ -94,8 +94,6 @@ typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *
  A color to be shown in the background if the aspect ratio of the preview asset
  doesn't match the size in which it's being displayed. (i.e. letterboxing)
  */
-@property (nonatomic, assign) BOOL usePreferredBackgroundColor;
-@property (nonatomic, assign) BOOL hasDeterminedPreferredBackgroundColor;
 @property (nonatomic, strong) UIColor *streamBackgroundColor;
 @property (nonatomic, strong, readonly) UIColor *defaultBackgroundColor;
 @property (nonatomic, readonly) UIColor *updatedBackgroundColor;
