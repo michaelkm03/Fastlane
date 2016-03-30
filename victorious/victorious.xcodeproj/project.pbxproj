@@ -7526,7 +7526,6 @@
 				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
 				A72C85C41C977FF500E97D4F /* VIPSubscribeOperation.swift */,
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSuscriptionOperation.swift */,
-				A72C85C41C977FF500E97D4F /* VIPSubscribeOperation.swift */,
 			);
 			path = "Purchase Operations";
 			sourceTree = "<group>";
