@@ -8,12 +8,7 @@
 
 import UIKit
 
-protocol CustomAlertView {
-    var alert: Alert? { get set }
-    func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL?)
-}
-
-class InterstitialAlertViewController: UIViewController, CustomAlertView, InterstitialViewController, VBackgroundContainer {
+class InterstitialAlertViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     @IBOutlet private weak var iconImageView: UIImageView?
     @IBOutlet private weak var titleLabel: UILabel!
