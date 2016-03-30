@@ -108,7 +108,6 @@
 "NoMemersTitle"       =   "BE THE 1ST TO MEME!";
 "NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
-// strings for both UGC and creator
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
