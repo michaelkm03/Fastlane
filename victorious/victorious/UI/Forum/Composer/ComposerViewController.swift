@@ -263,6 +263,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor, forState: .Normal)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
         attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor
+        confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
     }
     
     // MARK: - ComposerAttachmentTabBarDelegate
@@ -339,5 +340,9 @@ private extension VDependencyManager {
     
     var keyboardAppearance: UIKeyboardAppearance {
         return keyboardStyleForKey("keyboardStyle")
+    }
+    
+    var confirmKeyText: String {
+        return stringForKey("confirmKeyText")
     }
 }
