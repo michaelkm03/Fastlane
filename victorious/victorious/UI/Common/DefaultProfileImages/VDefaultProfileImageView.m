@@ -58,7 +58,7 @@
 - (void)setProfileImageURL:(NSURL *)url
 {
     _imageURL = url;
-    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
+    [self sd_setImageWithURL:url placeholderImage:self.image ?: [self placeholderImage]];
 }
 
 - (UIImage *)placeholderImage

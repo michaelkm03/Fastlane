@@ -36,11 +36,15 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     __weak typeof(self) weakSelf = self;
     objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.image = placeholderImage;
+    self.image = placeholderImage ?: self.image;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         weakSelf.alpha = 0.0f;
-         [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+         // If the placeholder image is still the current image, or if they are both nil
+         BOOL bothImagesAreNil = (weakSelf.image == nil && placeholderImage == nil);
+         if ([weakSelf.image isEqual:placeholderImage] || bothImagesAreNil)
+         {
+             [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+         }
      }];
 }
 
@@ -53,11 +57,8 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     NSParameterAssert(!CGRectEqualToRect(self.bounds, CGRectZero));
     __weak UIImageView *weakSelf = self;
-    //No longer displaying an image from the "blurredImageWithClearImage:" method, clear out that association
-    objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     objc_setAssociatedObject(self, &kAssociatedURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-    self.alpha = 0;
+    
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
                                                    progress:nil
@@ -251,7 +252,14 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     }
     
     __weak UIImageView *weakSelf = self;
-    self.alpha = 0.0f;
+    if ( objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey) != nil )
+    {
+        // If we have an image set by "blurredImageWithClearImage:"
+        self.alpha = 0.0f;
+    }
+    //No longer displaying an image from the "blurredImageWithClearImage:" method, clear out that association
+    objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
     objc_setAssociatedObject(self, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
