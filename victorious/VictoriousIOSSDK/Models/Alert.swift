@@ -11,6 +11,7 @@ import Foundation
 public enum AlertType : String {
     case LevelUp = "levelUp"
     case Achievement = "achievement"
+    case StatusUpdate = "statusUpdate"
 }
 
 public func ==(lhs: Alert, rhs: Alert) -> Bool {

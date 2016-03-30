@@ -1,5 +1,5 @@
 //
-//  AchievementPresentationController.swift
+//  InterstitialAlertPresentationController.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/28/15.
@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class AchievementPresentationController: UIPresentationController {
+class InterstitialAlertPresentationController: UIPresentationController {
     
     private lazy var dimmingView = UIView()
     
