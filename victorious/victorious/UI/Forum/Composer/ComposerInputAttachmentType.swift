@@ -10,5 +10,4 @@ import Foundation
 
 enum ComposerInputAttachmentType: String {
     case Hashtag = "Add Hashtag"
-    case VIP = "Toggle VIP"
 }

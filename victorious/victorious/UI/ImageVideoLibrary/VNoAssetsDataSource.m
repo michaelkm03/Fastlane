@@ -36,7 +36,8 @@
 
 - (NSString *)textForMediaType:(PHAssetMediaType)mediaType
 {
-    switch (mediaType) {
+    switch (mediaType)
+    {
         case PHAssetMediaTypeImage:
             return NSLocalizedString(@"No Photos", nil);
             

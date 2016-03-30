@@ -276,9 +276,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             switch composerInputAttachmentType {
             case .Hashtag:
                 composerTextViewManager?.appendTextIfPossible(textView, text: "#")
-            case .VIP:
-                //Handle VIP tab (if we go this route)
-                break
             }
         }
     }

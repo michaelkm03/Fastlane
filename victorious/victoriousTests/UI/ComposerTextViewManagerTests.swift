@@ -74,6 +74,18 @@ class ComposerTextViewManagerTests: XCTestCase {
         XCTAssertFalse(manager.shouldDismissForText("\n"))
     }
     
+    func testAppendIfPossible() {
+        
+        var manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 10, dismissOnReturn: true)
+        textView.text = "0123456789" //Fill up text view with text
+        XCTAssertFalse(manager.appendTextIfPossible(textView, text: "a"))
+        
+        textView.text = "012345678" //One available spot before hitting max length
+        XCTAssertTrue(manager.appendTextIfPossible(textView, text: "9"))
+        XCTAssertEqual(textView.text, "0123456789")
+        XCTAssertFalse(manager.appendTextIfPossible(textView, text: "a"))
+    }
+    
     // MARK: - Delegate stub
     
     private class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
