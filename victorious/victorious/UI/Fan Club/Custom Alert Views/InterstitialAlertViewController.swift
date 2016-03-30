@@ -38,7 +38,7 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
     }
     
     
-    func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
+    private func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
         titleLabel.text = title
         detailLabel.text = detail
 
