@@ -55,8 +55,8 @@ extension Forum {
         chatFeed?.setBottomInset(height ?? 0)
     }
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
-        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
+    func composer(composer: Composer, selectedCreationType creationType: VCreationType) {
+        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: creationType)
     }
     
     // MARK: - StageDelegate

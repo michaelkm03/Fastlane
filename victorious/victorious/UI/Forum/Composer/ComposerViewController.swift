@@ -13,7 +13,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private struct Constants {
         
         static let animationDuration = 0.2
-        static let minimumTextViewHeight: CGFloat = 42
         static let maximumNumberOfTabs = 4
         static let defaultMaximumTextInputHeight = CGFloat.max
         static let defaultMaximumTextLength = 0
@@ -29,6 +28,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet private var textView: VPlaceholderTextView!
+    @IBOutlet private var singleLineLabel: UILabel!
     
     @IBOutlet private var attachmentTabBar: ComposerAttachmentTabBar!
     
@@ -67,6 +67,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var shouldShowAttachmentContainer: Bool {
+        guard isViewLoaded() else {
+            return false
+        }
+        
+        if dependencyManager.collapseOnKeyboardDismissal {
+            return self.visibleKeyboardHeight != 0
+        }
         return attachmentMenuItems != nil || textViewHasText
     }
     
@@ -141,6 +148,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         setupAttachmentTabBar()
         setupTextView()
+        setupSingleLineLabel()
+        updateLabelVisibility()
         updateAppearanceFromDependencyManager()
     }
     
@@ -155,6 +164,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         self.visibleKeyboardHeight = visibleKeyboardHeight
         inputViewToBottomConstraint.constant = visibleKeyboardHeight
+        updateViewConstraints()
+        updateLabelVisibility()
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
@@ -165,6 +176,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private func updateLabelVisibility() {
+        
+        let shouldCollapseToOneLine = dependencyManager.collapseOnKeyboardDismissal && visibleKeyboardHeight == 0
+        let showLabel = shouldCollapseToOneLine && textViewHasText
+        textView.hidden = showLabel
+        singleLineLabel.hidden = !showLabel
+        singleLineLabel.text = textView.text
+    }
+    
     override func updateViewConstraints() {
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? Constants.defaultAttachmentContainerHeight : 0
@@ -173,9 +193,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
         }
         
-        let textHeight = min(ceil(self.textView.contentSize.height), self.maximumTextInputHeight)
-        let desiredTextViewHeight = self.textViewHasText ? max(textHeight, Constants.minimumTextViewHeight) : Constants.minimumTextViewHeight
-        let textViewHeightNeedsUpdate = self.textViewHeightConstraint.constant != desiredTextViewHeight
+        var desiredTextViewHeight = textView.placeholderTextHeight
+        let shouldCollapseToOneLine = dependencyManager.collapseOnKeyboardDismissal && visibleKeyboardHeight == 0
+        if !shouldCollapseToOneLine && textViewHasText {
+            let textHeight = min(ceil(textView.contentSize.height), maximumTextInputHeight)
+            desiredTextViewHeight = max(textHeight, desiredTextViewHeight)
+        }
+        
+        let textViewHeightNeedsUpdate = textViewHeightConstraint.constant != desiredTextViewHeight
         if textViewHeightNeedsUpdate {
             self.textViewHeightConstraint.constant = desiredTextViewHeight
         }
@@ -186,7 +211,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        let previousContentOffset = self.textView.contentOffset
+        let previousContentOffset = textView.contentOffset
         UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
             self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
             self.textView.layoutIfNeeded()
@@ -208,10 +233,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.placeholderText = dependencyManager.inputPromptText
     }
     
+    private func setupSingleLineLabel() {
+        singleLineLabel.text = nil
+        singleLineLabel.numberOfLines = 1
+        singleLineLabel.lineBreakMode = .ByTruncatingTail
+        singleLineLabel.backgroundColor = UIColor.clearColor()
+    }
+    
     private func setupAttachmentTabBar() {
         if isViewLoaded() {
             attachmentTabBar.setupWithAttachmentMenuItems(attachmentMenuItems, maxNumberOfMenuItems: Constants.maximumNumberOfTabs)
-            attachmentTabBar.delegate = delegate
+            attachmentTabBar.delegate = self
         }
     }
     
@@ -223,11 +255,32 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         dependencyManager.addBackgroundToBackgroundHost(self)
         textView.font = dependencyManager.inputTextFont
         textView.setPlaceholderFont(dependencyManager.inputTextFont)
+        singleLineLabel.font = dependencyManager.inputTextFont
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
+        singleLineLabel.textColor = dependencyManager.inputTextColor
+        textView.keyboardAppearance = dependencyManager.keyboardAppearance
         confirmButton.setTitleColor(dependencyManager.confirmButtonTextColor, forState: .Normal)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
         attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor
+    }
+    
+    // MARK: - ComposerAttachmentTabBarDelegate
+    
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+        let identifier = navigationItem.identifier
+        let creationType = CreationTypeHelper.creationTypeForIdentifier(identifier)
+        if creationType != .Unknown {
+            delegate?.composer(self, selectedCreationType: creationType)
+        } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) {
+            switch composerInputAttachmentType {
+            case .Hashtag:
+                composerTextViewManager?.appendTextIfPossible(textView, text: "#")
+            case .VIP:
+                //Handle VIP tab (if we go this route)
+                break
+            }
+        }
     }
     
     // MARK: - Actions
@@ -235,6 +288,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBAction func pressedConfirmButton() {
         // Call appropriate delegate methods based on caption / media in composer
         composerTextViewManager?.resetTextView(textView)
+    }
+    
+    @IBAction func touchedInputArea() {
+        textView.becomeFirstResponder()
+        updateLabelVisibility()
     }
 }
 
@@ -276,5 +334,13 @@ private extension VDependencyManager {
     
     var tabItemTintColor: UIColor {
         return colorForKey(VDependencyManagerLinkColorKey)
+    }
+    
+    var collapseOnKeyboardDismissal: Bool {
+        return numberForKey("collapseOnKeyboardDismissal").boolValue
+    }
+    
+    var keyboardAppearance: UIKeyboardAppearance {
+        return keyboardStyleForKey("keyboardStyle")
     }
 }

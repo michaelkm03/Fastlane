@@ -26,9 +26,18 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     //MARK: - Updating logic
     
+    func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
+        let replacementRange = NSRange(location: textView.text.lengthWithUnicode, length: text.lengthWithUnicode)
+        let appendedText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
+        if appendedText {
+            textView.text = textView.text + text
+        }
+        return appendedText
+    }
+    
     func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
         
-        var additionalTextLength = text.characters.count
+        var additionalTextLength = text.lengthWithUnicode
         guard additionalTextLength > 0 else {
             return true
         }
@@ -42,15 +51,15 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return true
         }
         
-        if range.location < textView.text.characters.count {
+        if range.location < textView.text.lengthWithUnicode {
             additionalTextLength -= range.length
         }
         
-        return additionalTextLength + textView.text.characters.count <= maximumTextLength
+        return additionalTextLength + textView.text.lengthWithUnicode <= maximumTextLength
     }
     
     func updateDelegateOfTextViewStatus(textView: UITextView) {
-        delegate?.textViewHasText = textView.text.characters.count > 0
+        delegate?.textViewHasText = textView.text.lengthWithUnicode > 0
         delegate?.textViewContentSize = textView.contentSize
     }
     

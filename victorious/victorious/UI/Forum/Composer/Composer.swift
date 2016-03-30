@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Composer: class {
+protocol Composer: class, ComposerAttachmentTabBarDelegate {
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
@@ -23,11 +23,13 @@ protocol Composer: class {
 
 /// Conformers will recieve messages when a composer's buttons are pressed and when
 /// a composer changes its height.
-protocol ComposerDelegate: class, ComposerAttachmentTabBarDelegate {
+protocol ComposerDelegate: class {
     
     func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?)
     
     func composer(composer: Composer,  confirmedWithCaption caption: String)
+    
+    func composer(composer: Composer, selectedCreationType creationType: VCreationType)
     
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer content (including the keyboard) and can be more
