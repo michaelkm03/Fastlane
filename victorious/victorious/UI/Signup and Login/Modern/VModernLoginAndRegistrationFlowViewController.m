@@ -247,6 +247,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeLogin];
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeSignup];
+    
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeEmail];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
@@ -283,6 +286,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeLogin];
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeSignup];
     
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeTwitter];
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeTwitter];
@@ -377,6 +383,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeLogin];
+    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeSignup];
     
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeFacebook];
     [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeFacebook];
