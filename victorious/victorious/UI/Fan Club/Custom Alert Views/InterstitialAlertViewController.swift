@@ -9,6 +9,9 @@
 import UIKit
 
 class InterstitialAlertViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
+
+    var alert: Alert?
+    weak var interstitialDelegate: InterstitialViewControllerDelegate?
     
     @IBOutlet private weak var iconImageView: UIImageView?
     @IBOutlet private weak var titleLabel: UILabel!
@@ -18,6 +21,8 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
     @IBOutlet private weak var containerView: UIView!
     
     private var dependencyManager: VDependencyManager!
+
+    private let animator = InterstitialAlertAnimator()
     
     private struct Constants {
         static let cornerRadius: CGFloat = 10
@@ -32,9 +37,6 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
         return imageAlertViewController
     }
     
-    // MARK: - Custom Alert Protocol
-    
-    var alert: Alert?
     
     func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
         titleLabel.text = title
@@ -49,11 +51,7 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
     }
     
     // MARK: - InterstitialViewController Protocol
-    
-    weak var interstitialDelegate: InterstitialViewControllerDelegate?
-    
-    private let animator = InterstitialAlertAnimator()
-    
+            
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
         return animator
     }
