@@ -19,6 +19,8 @@ extension VUser: PersistenceParsable {
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
+        isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
+        vipSubscribeDate            = user.vipStatus?.subscribeDate ?? vipSubscribeDate
         isCreator                   = user.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
@@ -29,12 +31,13 @@ extension VUser: PersistenceParsable {
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
-        levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage        
+        levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
+        achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
         avatarBadgeType             = user.avatar?.badgeType ?? avatarBadgeType
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
             }

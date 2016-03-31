@@ -18,7 +18,7 @@ class Shelf: VStream {
     func populate(fromSourceShelf sourceShelf: StreamItemType) {
         guard let shelf = sourceShelf as? VictoriousIOSSDK.Shelf else { return }
         
-        super.populate(fromSourceModel: shelf)
+        populate(fromSourceModel: shelf)
         
         title = shelf.title ?? ""
         streamUrl = shelf.apiPath ?? ""

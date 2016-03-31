@@ -103,17 +103,17 @@ class AgeGateTests: XCTestCase {
     
     func testFilterMoreButtonItems() {
         let inputItems = [
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("", comment: ""), actionIcon: UIImage(), detailText: ""),
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("ha", comment: ""), actionIcon: UIImage(), detailText: ""),
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Repost", comment: ""), actionIcon: UIImage(), detailText: ""),
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report", comment: ""), actionIcon: UIImage(), detailText: ""),
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Flag", comment: ""), actionIcon: UIImage(), detailText: ""),
-            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""), actionIcon: UIImage(), detailText: "")
+            VActionItem.defaultActionItemWithTitle("", actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle("ha", actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle("Repost", actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle("Report", actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle("Flag", actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle("Report/Flag", actionIcon: UIImage(), detailText: "")
         ]
         
         let outputItems = AgeGate.filterMoreButtonItems(inputItems)
         XCTAssertEqual(outputItems.count, 1)
-        XCTAssertEqual(outputItems[0].title, NSLocalizedString("Report/Flag", comment: ""))
+        XCTAssertEqual(outputItems[0].title, "Report/Flag")
     }
     
     func testFilterCommentCellUtilities() {
@@ -185,11 +185,11 @@ class AgeGateTests: XCTestCase {
     
     func testIsWebViewActionItemAllowed() {
         let inputActionItemNames: [String] = [
-            NSLocalizedString("ShareFacebook", comment: ""),
-            NSLocalizedString("ShareTwitter", comment: ""),
-            NSLocalizedString("ShareSMS", comment: ""),
-            NSLocalizedString("", comment: ""),
-            NSLocalizedString("Other string", comment: ""),
+            "Share to Facebook",
+            "Share to Twitter",
+            "Send as Text",
+            "",
+            "Other string",
         ]
         
         let filteredActionItemNames = inputActionItemNames.filter() {
@@ -197,8 +197,8 @@ class AgeGateTests: XCTestCase {
         }
         
         XCTAssertEqual(filteredActionItemNames.count, 2)
-        XCTAssertEqual(filteredActionItemNames[0], NSLocalizedString("", comment: ""))
-        XCTAssertEqual(filteredActionItemNames[1], NSLocalizedString("Other string", comment: ""))
+        XCTAssertEqual(filteredActionItemNames[0], "")
+        XCTAssertEqual(filteredActionItemNames[1], "Other string")
     }
     
     func testIsUserYoungerThan() {

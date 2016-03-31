@@ -295,10 +295,7 @@
         return;
     }
     
-    if ( !self.streamDataSource.hasHeaderCell )
-    {
-        [self.refreshControl beginRefreshing];
-    }
+    [self.refreshControl beginRefreshing];
     
     [self.streamDataSource loadPage:pageType completion:^(NSError *_Nullable error)
      {
@@ -453,7 +450,7 @@
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     NSInteger contentSection = [self.streamDataSource sectionIndexForContent];
-    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue animated:YES];
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue animated:YES completion:nil];
 }
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didChangeStateFrom:(enum VDataSourceState)oldState to:(enum VDataSourceState)newState

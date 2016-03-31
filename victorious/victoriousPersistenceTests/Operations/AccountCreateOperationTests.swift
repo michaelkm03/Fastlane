@@ -10,9 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class AccountCreateOperationTests: XCTestCase {
-
-    let persistentStore = TestPersistentStore()
+class AccountCreateOperationTests: BaseFetcherOperationTestCase {
     
     let token = "ads98j0yd08as7hd9s8a76dghsa87das"
     let twitterToken = "dsaliuho87ao2e"
@@ -39,7 +37,6 @@ class AccountCreateOperationTests: XCTestCase {
             loginType: .Facebook,
             accountIdentifier: accountIdentifier
         )
-        operation.persistentStore = self.persistentStore
         
         let response = AccountCreateResponse(
             token: token,
@@ -79,7 +76,6 @@ class AccountCreateOperationTests: XCTestCase {
             loginType: .Email,
             accountIdentifier: accountIdentifier
         )
-        operation.persistentStore = self.persistentStore
         
         let response = AccountCreateResponse(
             token: token,
@@ -119,7 +115,6 @@ class AccountCreateOperationTests: XCTestCase {
             loginType: .Twitter,
             accountIdentifier: accountIdentifier
         )
-        operation.persistentStore = self.persistentStore
         
         let response = AccountCreateResponse(
             token: token,

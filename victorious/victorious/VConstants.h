@@ -130,8 +130,10 @@ static NSString * const   kVUGCQuoteRepostCategory     = @"ugc_secret_repost";
 static NSString * const   kVPreferedMimeType           = @"application/x-mpegURL";
 static NSString * const   kmp4MimeType                 = @"video/mp4";
 
+static NSString * const   kContentCreationDirectory    = @"contentCreation";
 static NSString * const   kCameraDirectory             = @"contentCreation/camera";
 static NSString * const   kWorkspaceDirectory          = @"contentCreation/workspace";
+static NSString * const   kThumbnailDirectory          = @"contentCreation/thumbnail";
 
 NSArray *VUGCCategories();
 NSArray *VImageCategories();

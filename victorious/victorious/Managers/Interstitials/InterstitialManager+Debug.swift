@@ -18,7 +18,7 @@ extension InterstitialManager {
             
             if let addtionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
+                    AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
                         self.disabled = false
                     }
             }
@@ -29,15 +29,38 @@ extension InterstitialManager {
     func debug_registerTestAchievementAlert() {
         #if V_SHOW_TEST_ALERT_SETTINGS
             self.disabled = true
-            let params = ["type" : "achievement", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icons" : ["http://i.imgur.com/ietHgk6.png"]]]
+            let params = ["type" : "achievement",
+                          "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Gold", "name" : "Level 5", "progress" : 70]],
+                            "title" : "Congrats",
+                            "description" : "Thanks for creating your first text post!",
+                            "icons" : ["http://i.imgur.com/ietHgk6.png"]]]
             
             if let addtionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { (results, error) in
+                    AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
                         self.disabled = false
                     }
             }
             
+        #endif
+    }
+    
+    func debug_registerTestStatusUpdateAlert() {
+        #if V_SHOW_TEST_ALERT_SETTINGS
+            self.disabled = true
+            let params = ["type" : "statusUpdate",
+                          "params" : [
+                            "user" : ["fanloyalty" : ["level" : 5, "tier" : "Gold", "name" : "Level 5", "progress" : 70]],
+                            "title" : "You are golden!",
+                            "description" : "You status has been upgraded to gold",
+                            "icons" : ["http://i.imgur.com/ietHgk6.png"]]]
+            
+            if let addtionalParameters = params["params"] as? [String : AnyObject],
+                let type = params["type"] as? String {
+                AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
+                    self.disabled = false
+                }
+            }
         #endif
     }
 }

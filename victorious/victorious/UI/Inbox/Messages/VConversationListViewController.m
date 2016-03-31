@@ -183,7 +183,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
          [self updateTableView];
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.dataSource redocorateVisibleCells:self.tableView];
+         [self.dataSource redecorateVisibleCells:self.tableView];
      }];
 }
 
@@ -253,7 +253,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)onConversationUpdated:(VConversation *)conversation
 {
-    [self.dataSource redocorateVisibleCells:self.tableView];
+    [self.dataSource redecorateVisibleCells:self.tableView];
 }
 
 #pragma mark - Message View Controller Cache
@@ -305,8 +305,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
     NSNumber *userRemoteId = conversation.user.remoteId;
-    DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    ConversationDeleteOperation *operation = [[ConversationDeleteOperation alloc] initWithUserRemoteID:userRemoteId.integerValue];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          self.shouldAnimateDataSourceChanges = YES;
          [self.dataSource removeDeletedItems];
@@ -370,7 +370,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         [self.messageCountCoordinator markConversationRead:conversation completion:^
          {
-             [self.dataSource redocorateVisibleCells:self.tableView];
+             [self.dataSource redecorateVisibleCells:self.tableView];
          }];
         
         if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
@@ -458,11 +458,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
-    [self.dataSource refreshRemote:^(NSArray *array, NSError *error)
+    [self.dataSource refreshRemote:^(NSArray *array, NSError *error, BOOL cancelled)
      {
          [self.messageCountCoordinator updateUnreadMessageCount];
          [self updateBadges];
-         [self.dataSource redocorateVisibleCells:self.tableView];
+         [self.dataSource redecorateVisibleCells:self.tableView];
     }];
 }
 

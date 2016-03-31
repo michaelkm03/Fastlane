@@ -11,7 +11,7 @@ import XCTest
 /// Helper for testing a FetcherOperation or it's subclass.
 struct PersistentStoreTestHelper {
 
-    let persistentStore: TestPersistentStore
+    let persistentStore: PersistentStoreType
 
     func createUser(remoteId remoteId: Int, token: String = "token") -> VUser {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -30,7 +30,6 @@ struct PersistentStoreTestHelper {
                 sequence.category = category
                 sequence.commentCount = 1
                 sequence.createdBy = 1
-                sequence.gifCount = 1
                 sequence.hasBeenRepostedByMainUser = true
                 sequence.hasReposted = true
                 sequence.isComplete = true
@@ -76,6 +75,16 @@ struct PersistentStoreTestHelper {
             conversation.postedAt = NSDate()
             conversation.messages = NSOrderedSet()
             return conversation
+        }
+    }
+    
+    func createVoteResult(sequence: VSequence, count: Int = 0, remoteId: Int = 0) -> VVoteResult {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let voteResult: VVoteResult = context.v_createObject()
+            voteResult.sequence = sequence
+            voteResult.count = count
+            voteResult.remoteId = remoteId
+            return voteResult
         }
     }
 }

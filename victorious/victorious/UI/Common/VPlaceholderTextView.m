@@ -114,6 +114,17 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
                                                                               attributes:typingAttributes];
 }
 
+- (void)setLineFragmentPadding:(CGFloat)padding
+{
+    self.textContainer.lineFragmentPadding = padding;
+    self.placeholderTextView.textContainer.lineFragmentPadding = padding;
+}
+
+- (CGFloat)lineFragmentPadding
+{
+    return self.textContainer.lineFragmentPadding;
+}
+
 - (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
 {
     self.placeholderTextView.textColor = placeholderTextColor;
@@ -184,7 +195,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
 - (void)updatePlaceholderAttributedText
 {
-    if (self.attributedText.string.length == 0)
+    if (self.attributedText.string.length == 0 || self.placeholderTextView.text.length == 0)
     {
         return;
     }

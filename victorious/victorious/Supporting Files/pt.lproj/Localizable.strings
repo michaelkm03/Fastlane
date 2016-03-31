@@ -13,7 +13,6 @@
 "Next"                  =   "Próxima";
 "Done"                  =   "Concluído";
 "More"                  =   "Mais";
-"Meme"                  =   "Meme";
 "Share"                 =   "Compartilhar";
 "Continue"              =   "Continuar";
 "Loading..."            =   "Carregando...";
@@ -41,15 +40,11 @@
 "SignupFail"            =   "Falha na Criação da Conta";
 "You're not logged in!" =   "Você não está conectado!";
 "ProfileNotLoggedInMessage" = "Nada para ver aqui ainda! Estamos animados em ter você como parte da nossa comunidade. Crie uma conta para mostrar a todos como você é exclusivo.";
-"ProfileSaveFail"       =   "Suas informações de perfil não podem ser salvas por causa de um erro no servidor";
 "ProfileSave"           =   "Carregando seu Perfil";
 "ProfileIncomplete"     =   "Perfil Incompleto";
-"ProfileAborted"        =   "Você não poderá usar alguns recursos até que o seu perfil seja concluído.";
 "ProfileRequired"       =   "Forneça as seguintes informações:";
-"ProfileRequiredPhoto"  =   "Imagem de perfil";
 "ProfileNameSpaces"     =   "Seu nome de perfil não pode ser apenas espaços.";
 "ProfileRequiredName"   =   "Nome";
-"Profile load failed!"  =   "Falha ao carregar o perfil!";
 
 "User already exists"   =   "O usuário já existe";
 "User already exists but the password is incorrect" = "O usuário já existe, mas a senha está incorreta";
@@ -73,11 +68,16 @@
 "NoMessagesTitle"       =   "NENHUMA MENSAGEM AINDA";
 "NoMessagesMessage"     =   "Você pode enviar mensagens para qualquer pessoa no aplicativo!  Basta ir até o perfil da pessoa e clicar no ícone Escrever, localizado no canto superior direito.";
 
+"SAY HELLO!" = "DIGA OLÁ!";
+"Send a message to start chatting with other members of the community." = "Envie uma mensagem para começar a conversar com outros membros da comunidade.";
+
 "NoNotificationsTitle"       =   "NENHUMA NOTIFICAÇÃO NO MOMENTO";
 "NoNotificationsMessage"     =   "Conforme você se envolve com a comunidade por meio de comentários, remixagens ou postagens de novos conteúdos, os membros também se envolverão cada vez mais com você.  Descubra as reações deles aqui.";
 
 "NoCommentsTitle"       =   "SEJA O PRIMEIRO A COMENTAR!";
 "NoCommentsMessage"     =   "Publique comentários de texto, foto ou vídeo e veja o que os outros vão dizer!";
+
+"Start a new conversation" = "Iniciar uma nova conversa";
 
 "NoUserSearchResultsTitle"       =   "NENHUM USUÁRIO ENCONTRADO";
 "NoUserSearchResultsMessage"     =   "Não conseguimos encontrar esse usuário. Você pode tentar novamente ou visitar o perfil do usuário e enviar uma mensagem de lá!";
@@ -105,14 +105,10 @@
 "NoRepostersTitle"      =   "SEJA O 1° A REPOSTAR!";
 "NoRepostersMessage"    =   "Compartilhe este conteúdo com todos os seus seguidores!";
 
-"NoGiffersTitle"       =   "SEJA O 1º A FAZER UM GIF!";
-"NoGiffersMessage"     =   "Faça um GIF selecionando o seu clipe favorito deste vídeo e compartilhe-o com outros fãs!";
-
 "NoMemersTitle"       =   "SEJA O 1ª A CRIAR UM MEME!";
 "NoMemersMessage"     =   "Torne este conteúdo único, transformando-o em um meme e compartilhando-o com outros fãs!";
 
-// strings for both UGC and creator
-"UGCSharePollFormat"    =   "Confira esta enquete!";       //Check out this poll! <URL>
+"UGCSharePollFormat"    =   "Confira esta enquete!";       // Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Confira este vídeo!";      // Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Confira este gif!";        // Check out this gif! <URL>
 "UGCShareImageFormat"   =   "Confira esta foto!";      // Check out this photo! <URL>
@@ -128,8 +124,6 @@
 "No people found in search" = "Restrinja sua pesquisa e tente novamente.";
 "No Hashtags Found In Search Title" = "NENHUMA TAG ENCONTRADA!";
 "No hashtags found in search" = "Restrinja sua pesquisa e tente novamente.";
-
-"ImageDownloadFailed"   =   "Falha no download da imagem.";
 
 "TwitterDeniedTitle"    =   "Não foi possível acessar sua conta do Twitter";
 "TwitterDenied"         =   "Conceda acesso à sua conta do Twitter em Configurações -Privacidade -> Twitter";
@@ -155,7 +149,6 @@
 "ReportContentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
 "ReportCommentMessage"  =   "Faremos a revisão deste conteúdo no prazo de 24 horas.";
 "ReportUserMessage"     =   "Este usuário será revisado no prazo de 24 horas";
-"CommentAlreadyReported" =  "Comentário já Sinalizado";
 
 "Ask a question..."     =   "Fazer uma pergunta...";
 "Vote this"             =   "Votar neste";
@@ -170,18 +163,12 @@
 "NoKeepUploading"       =   "Não, continuar carregando";
 "Cancelling..."         =   "Cancelando...";
 
-"RefreshError"          =   "Impossível atualizar.";
-
 "FollowError"           =   "Erro ao seguir este usuário.";
 "UnfollowError"         =   "Erro ao parar de seguir este usuário.";
 
 "FollowingSectionHeader"            =   "Já Seguindo";
 "FacebookFollowingSectionHeader"    =   "Siga seus Amigos do Facebook";
 "AddressBookFollowingSectionHeader" =   "Siga Seus Contatos";
-
-"ConversationLoadError" =   "Não é possível carregar a conversa";
-"ConversationDelError"  =   "Não é possível excluir a conversa";
-"ConversationSendError" =   "Não foi possível enviar sua mensagem";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Desculpe, nós estamos tendo alguns problemas. Tente novamente.";
 "Retry"                 =   "Tentar novamente";
@@ -201,8 +188,6 @@
 "YearsAgo"              =   "%da";
 
 "JustAMoment"           =   "Um momento";
-
-"TryAgain"              =   "Tente novamente mais tarde.";
 
 "Edit"                  =   "Editar";
 "editProfileButton"     =   "Editar Perfil";
@@ -234,10 +219,6 @@
 "IncorrectCode"         =   "O código usado para a verificação da conta está incorreto.";
 
 "Image Search"          =   "Busca de imagem";
-"Pull up for more..."   =   "Arraste para cima para obter mais...";
-"search for users"      =   "procurar usuários";
-"searching"             =   "pesquisando";
-"no results"            =   "nenhum resultado";
 "No results"            =   "Nenhum resultado";
 
 "InviteYourFriends"     =   "Convide seus Amigos!";
@@ -262,9 +243,6 @@
 
 "Logout"                =   "Fazer Logout";
 "Login"                 =   "Fazer login";
-
-"UserBannedTitle"       =   "Oh-oh!";
-"UserBannedMessage"     =   "Infelizmente, sua conta foi desativada. Você ainda poderá ver conteúdo, mas não poderá postar ou interagir com outros membros.";
 
 "Version"               =   "Versão %@";
 
@@ -298,9 +276,6 @@
 "%@ Voters"             = "%@ eleitores";
 "%@ Voter"              = "%@ eleitor";
 
-"HashtagSubscribeError"  = "Lamentamos. Ocorreu um erro ao tentar seguir esta hashtag. Tente novamente.";
-"HashtagUnsubscribeError"  = "Lamentamos. Ocorreu um erro ao tentar cancelar o acompanhamento desta hashtag. Tente novamente.";
-
 "NoFollowingHashtagsTitle"      =   "OH-OH! VOCÊ AINDA NÃO SEGUIU NENHUMA TAG";
 "NoFollowingHashtagsMessage"    =   "Crie uma lista do seu conteúdo favorito tocando em itens que foram marcados.";
 
@@ -311,7 +286,6 @@
 "Device:"               = "Dispositivo:";
 "OS Version:"           = "Versão do SO:";
 "App Version:"          = "Versão do Aplicativo:";
-"AreYouSureYouWantToDelete" = "Tem certeza de que deseja excluir?";
 
 "ShareFacebook"         = "Compartilhar no Facebook";
 "ShareTwitter"          = "Compartilhar no Twitter";
@@ -368,7 +342,6 @@
 "No Color"  = "Nenhuma Cor";    // No color selected
 "Standard"  = "Padrão";   // The default color before a selection is made
 
-"Error Loading Next Video" = "Erro ao Carregar o Próximo Vídeo";
 "Failed to fetch products" = "Falha ao buscar produtos";
 
 "This will discard any content from the camera" = "Isso descartará qualquer conteúdo da câmera";
@@ -380,7 +353,6 @@
 
 "#nofilter" = "#semfiltro";
 "Create a meme" = "Criar um meme";
-"Create a GIF" = "Criar um GIF";
 "Pick an attachment style" = "Escolha um estilo de anexo";
 "Image" = "Imagem";
 "Video" = "Vídeo";
@@ -393,8 +365,9 @@
 "Publishing..." = "Publicando...";
 "Upload failure" = "Falha ao carregar";
 "Error loading results" = "Erro ao carregar os resultados";
-"Error rendering Media" = "Erro ao renderizar. Tente novamente.";
+"Error rendering media" = "Erro ao renderizar a mídia";
 
+"By continuing you are agreeing to our" = "Ao continuar, você estará concordando com o nosso";
 "By signing up you are agreeing to our" = "Ao inscrever-se você concorda com";
 "terms of service"      =   "termos de serviço";
 "privacy policy"        =   "política de privacidade";
@@ -442,12 +415,20 @@
 "Seoul" = "Seul";
 "Montreal" = "Montreal";
 
-"Use mobile data and Wi-Fi" = "Utilizar dados e wi-fi do celular";
-"Use Wi-Fi only" = "Utilizar apenas wi-fi";
-"Never play videos automatically" = "Nunca reproduzir vídeos automaticamente";
-
 "LevelFormat" = "NÍVEL %@";
 "LEVEL" = "NÍVEL";
 "TestAlertsViewControllerFooter" = "Depois de registrar um alerta, volte ao fluxo ou perfil e arraste para atualizar. O alerta deve aparecer.";
 
 "Enter birthday before continuing" = "Insira a data do seu aniversário antes de continuar: ";
+
+"Dismiss Alert" = "Entendi";
+
+"What do you think..." = "O que você acha...";
+
+"Subscription complete!" = "Assinatura concluída!";
+"Failed to restore subcription." = "Falha ao restaurar a assinatura.";
+"Checking for subscription..." = "Verificando assinatura...";
+"Already subscribed?" = "Já tem uma assinatura?";
+"Subscription restored!" = "Assinatura restaurada!";
+"Subscription failed." = "A assinatura falhou.";
+"Validation Failed" = "A validação falhou";

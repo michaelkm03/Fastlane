@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--Forum View Controller-->
+        <scene sceneID="Y1H-PE-C68">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="K6M-ZV-Lef" customClass="ForumViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fFi-e4-tGY"/>
+                        <viewControllerLayoutGuide type="bottom" id="xTF-ZG-in5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BWd-6Y-0dE">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" userLabel="ChatFeed Container" customClass="VPassthroughContainerView">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" customClass="VPassthroughContainerView">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="5OZ-jM-pe5"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="AIb-hu-8DR"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="DRa-m6-5Nf"/>
+                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="GS2-Cj-tAa"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="bottom" id="HPf-0Q-lSW"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="UFs-BY-snG"/>
+                            <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="WYU-rk-svp"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="YtN-1s-M3p"/>
+                            <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="bHs-CH-J7F"/>
+                            <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="vV3-6o-yjI"/>
+                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="wMz-I4-fQa"/>
+                            <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="z4g-Fg-gQS"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="837" y="419"/>
+        </scene>
+        <!--Composer-->
+        <scene sceneID="mYv-1q-tDP">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Composer" id="0Nu-Zq-HvW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ljG-6O-fOF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="675" y="885"/>
+        </scene>
+        <!--Stage-->
+        <scene sceneID="O5V-9g-QF6">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stage" id="Znu-5d-S6d" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kP6-Na-HNb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="837.5" y="885"/>
+        </scene>
+        <!--ChatFeed-->
+        <scene sceneID="L8g-UJ-WjU">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChatFeed" id="prN-jb-br1" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iEh-3U-pec" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1004" y="885"/>
+        </scene>
+    </scenes>
+</document>

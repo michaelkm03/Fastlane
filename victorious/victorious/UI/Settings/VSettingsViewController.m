@@ -18,7 +18,6 @@
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
-#import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
@@ -39,7 +38,6 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
     VSettingsActionLikedContent,
     VSettingsActionChangePassword,
     VSettingsActionHelp,
-    VSettingsActionChromecast,
     VSettingsActionNotifications,
     VSettingsActionResetPurchases,
     VSettingsActionServerEnvironment,
@@ -58,11 +56,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *videoAutoplayCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
 @property (nonatomic, weak) IBOutlet UILabel *versionString;
 
-@property (nonatomic, assign) BOOL showChromeCastButton;
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
@@ -74,7 +70,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
-@property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -135,8 +130,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
-    
-    self.videoAutoplayCell.detailTextLabel.text = [self.videoSettings displayNameForCurrentSetting];
     
     [self updatePurchasesCount];
     
@@ -303,7 +296,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         }
         else if ( indexPath.row == VSettingsActionResetCoachmarks )
         {
-            //Reset coachmarks
+            // Reset coachmarks
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
         }
@@ -328,7 +321,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         // Logout first if logged in
         LogoutOperation *operation = [[LogoutOperation alloc] init];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
         {
             [self updateLogoutButtonState];
         }];
@@ -353,11 +346,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChromecast)
-    {
-        return self.showChromeCastButton ? self.tableView.rowHeight : 0.0;
-    }
-    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionServerEnvironment)
+    if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionServerEnvironment)
     {
         return self.showEnvironmentSetting ? self.tableView.rowHeight : 0.0;
     }

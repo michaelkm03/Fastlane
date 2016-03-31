@@ -22,6 +22,11 @@
  */
 @property (nonatomic, assign) BOOL showsCreationSheetFromTop;
 
+/**
+ *  Defaults to true.
+ */
+@property (nonatomic, assign) BOOL shouldShowPublishScreenForFlowController;
+
 - (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType;
 
 @end

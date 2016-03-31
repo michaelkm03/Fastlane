@@ -10,7 +10,6 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
-#import "VVideoSettings.h"
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
 #import "victorious-Swift.h"
@@ -21,8 +20,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 @property (nonatomic, readwrite) BOOL didTrackViewDidAppear;
 @property (nonatomic, readwrite) BOOL canTrackViewDidAppear;
-
-@property (nonatomic, strong) VVideoSettings *videoSettings;
 
 @end
 
@@ -140,7 +137,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
     {
-        if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
+        if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue)
         {
             VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:tracking.viewStop];
             event.context = context;
@@ -226,15 +223,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 - (void)resetCellVisibilityTracking
 {
     [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
-}
-
-- (VVideoSettings *)videoSettings
-{
-    if (_videoSettings == nil)
-    {
-        _videoSettings = [[VVideoSettings alloc] init];
-    }
-    return _videoSettings;
 }
 
 #pragma mark - Notificaiton handler

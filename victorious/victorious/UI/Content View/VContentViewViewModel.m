@@ -24,7 +24,6 @@
 #import "NSURL+MediaType.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
-#import "VVideoSettings.h"
 #import "UIColor+VHex.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
@@ -65,7 +64,8 @@
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager
+                                                                                         purchaseManager:[VPurchaseManager sharedInstance]];
         
         _currentNode = [_sequence firstNode];
         
@@ -300,10 +300,6 @@
     return [NSString stringWithFormat:@"%@", self.sequence.memeCount];
 }
 
-- (NSString *)gifCountText
-{
-    return [NSString stringWithFormat:@"%@", self.sequence.gifCount];
-}
 
 - (NSString *)repostCountText
 {

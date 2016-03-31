@@ -25,3 +25,4 @@ extension VFollowedHashtag: PaginatedObjectType {}
 extension VFollowedUser: PaginatedObjectType {}
 extension VNotification: PaginatedObjectType {}
 extension VSequenceLiker: PaginatedObjectType {}
+extension VPollResult: PaginatedObjectType {}

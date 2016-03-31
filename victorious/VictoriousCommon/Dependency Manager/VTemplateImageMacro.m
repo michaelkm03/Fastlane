@@ -9,7 +9,8 @@
 #import "VJSONHelper.h"
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
-#import "VSDKURLMacroReplacement.h"
+
+@import VictoriousIOSSDK;
 
 static NSString * const kImageCountKey = @"imageCount";
 static NSString * const kImageMacroKey = @"imageMacro";

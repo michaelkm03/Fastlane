@@ -23,28 +23,25 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
             createOperation: {
                 return ConversationListOperation()
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion?(error)
             }
         )
     }
     
     func refreshLocal( completion completion: (([AnyObject]?)->())? = nil) {
-        // Populates the view with newly added conversations upon observing the change
-        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
-            return
-        }
-        self.refreshLocal( createOperation: {
-            return FetchConverationListOperation(userID: userID)
+        self.loadNewItems( createOperation: {
+            let op = ConversationListOperation()
+            op.localFetch = true
+            return op
         },
-        completion: { (results, error) in
+        completion: { results, error, cancelled in
             completion?(results)
         })
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?)->())? = nil) {
-        
-        self.refreshRemote(
+    func refreshRemote( completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
+        self.loadNewItems(
             createOperation: {
                 return ConversationListOperation()
             },
@@ -52,7 +49,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func redocorateVisibleCells(tableView: UITableView) {
+    func redecorateVisibleCells(tableView: UITableView) {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? VConversationCell else {
                 continue

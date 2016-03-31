@@ -205,7 +205,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         guard let shelf = shelf as? HashtagShelf else {
             fatalError("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
         }
-        ToggleFollowHashtagOperation(hashtag: shelf.hashtagTitle).queue() { (results, error) in
+        FollowHashtagToggleOperation(hashtag: shelf.hashtagTitle).queue() { results, error, cancelled in
             self.updateFollowControlState()
         }
     }

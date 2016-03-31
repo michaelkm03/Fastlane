@@ -22,7 +22,6 @@
 @dynamic createdBy;
 @dynamic expiresAt;
 @dynamic gameStatus;
-@dynamic gifCount;
 @dynamic hasReposted;
 @dynamic isComplete;
 @dynamic isLikedByMainUser;

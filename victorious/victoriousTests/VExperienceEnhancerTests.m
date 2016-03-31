@@ -15,11 +15,9 @@
 #import "VVoteResult.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VLargeNumberFormatter.h"
-#import "VAsyncTestHelper.h"
 #import "OCMock.h"
 #import "VApplicationTracking.h"
-
-// TODO
+#import "VMockPurchaseManager.h"
 
 static const NSUInteger kValidExperienceEnhancerCount = 9;
 static const NSUInteger kExperienceEnhancerCount = 20;
@@ -47,10 +45,10 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 @interface VExperienceEnhancerTests : XCTestCase
 
-@property (nonatomic, retain) VExperienceEnhancerController *viewController;
-@property (nonatomic, retain) NSArray *voteTypes;
-@property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
+@property (nonatomic, strong) VMockPurchaseManager *mockPurchaseManager;
+@property (nonatomic, strong) VExperienceEnhancerController *viewController;
+@property (nonatomic, strong) NSArray *voteTypes;
+@property (nonatomic, strong) VSequence *sequence;
 
 @end
 
@@ -60,15 +58,15 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 {
     [super setUp];
     
-    self.asyncHelper = [[VAsyncTestHelper alloc] init];
-    
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
     
     NSDictionary *configuration = @{ @"sequence" : self.sequence, @"voteTypes" : self.voteTypes };
-    VDependencyManager *childDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:nil];
-    self.viewController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:nil];
+    self.mockPurchaseManager = [[VMockPurchaseManager alloc] init];
+    self.viewController = [[VExperienceEnhancerController alloc] initWithDependencyManager:dependencyManager
+                                                                           purchaseManager:self.mockPurchaseManager];
     VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
     OCMStub( [myObjectMock sendRequest:OCMOCK_ANY eventIndex:1 completion:OCMOCK_ANY] );
@@ -78,33 +76,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 {
     [super tearDown];
 }
-
-// FIXME: Disabled failing unit test
-//- (void)testAddResults
-//{
-//    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
-//                                                                                      sequence:self.sequence];
-//    
-//    self.viewController.experienceEnhancers = experienceEnhancers;
-//    [self.viewController updateData];
-//    
-//    __block NSUInteger matches = 0;
-//    NSMutableArray *array = [NSMutableArray new];
-//    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-//     {
-//         [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
-//          {
-//              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
-//              {
-//                  [array addObject:exp];
-//                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
-//                  matches++;
-//              }
-//          }];
-//     }];
-//    
-//    XCTAssertEqual( matches, experienceEnhancers.count );
-//}
 
 - (NSArray *)createExperienceEnhancers
 {
@@ -182,23 +153,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
          XCTAssert([exp resetCooldownTimer]);
-         
-         exp.cooldownDuration = 10;
-         
-         NSUInteger count = arc4random() % 200;
-         for ( NSUInteger i = 0; i < count; i++ )
-         {
-             [exp vote];
-         }
-         
-         // Make sure vote count is one since cool down
-         XCTAssertEqual( exp.voteCount, 1 );
-         
-     }];
-    
-    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-     {
-         XCTAssert([exp resetCooldownTimer]);
 
          NSInteger startingVotes = exp.voteCount;
          NSTimeInterval cooldown = 0.2;
@@ -217,7 +171,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          // Check if we're cooling down
          XCTAssertTrue(exp.isCoolingDown);
          
-         XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];
+         XCTestExpectation *expectation = [self expectationWithDescription:@"CoolDownTimer"];
          
          // Wait out the cooldown time
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -231,7 +185,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              [expectation fulfill];
          });
          
-         [self waitForExpectationsWithTimeout:timeUntilVote + 1 handler:^(NSError *error)
+         [self waitForExpectationsWithTimeout:timeUntilVote * 4 handler:^(NSError *error)
          {
              if (error != nil)
              {
@@ -239,6 +193,30 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              }
          }];
      }];
+}
+
+- (void)testAddResults
+{
+    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+
+    self.viewController.experienceEnhancers = experienceEnhancers;
+    [self.viewController updateData];
+
+    __block NSUInteger matches = 0;
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
+          {
+              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
+              {
+                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
+                  matches++;
+                  *stop = YES;
+              }
+          }];
+     }];
+
+    XCTAssertEqual( matches, experienceEnhancers.count );
 }
 
 @end

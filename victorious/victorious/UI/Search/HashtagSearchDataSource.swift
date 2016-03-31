@@ -26,7 +26,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
             return
         }
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? UserSearchResultTableViewCell,
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? VHashtagCell,
                 let hashtag = self.visibleItems[ indexPath.row ] as? HashtagSearchResultObject {
                     self.updateFollowControlState(cell.followControl, forHashtag: hashtag.tag, animated: true)
             }
@@ -55,7 +55,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
             createOperation: {
                 return operation
             },
-            completion: { (operation, error) in
+            completion: { (results, error, cancelled) in
                 completion?( error )
             }
         )
@@ -77,7 +77,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         self.updateFollowControlState(cell.followControl, forHashtag: hashtag, animated: false)
         cell.followControl?.onToggleFollow = { [weak self] in
             
-            ToggleFollowHashtagOperation(hashtag: hashtag).queue() { (results, error) in
+            FollowHashtagToggleOperation(hashtag: hashtag).queue() { results, error, cancelled in
                 self?.onFollowingUpdated()
             }
         }

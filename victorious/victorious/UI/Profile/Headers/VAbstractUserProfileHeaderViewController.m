@@ -15,9 +15,9 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
+@import SDWebImage;
 @import KVOController;
 
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
@@ -88,6 +88,11 @@
 - (UIView *)floatingProfileImage
 {
     return nil;
+}
+
+- (void)addTrophyCaseButton:(UIButton *)button
+{
+    // Implement in subclasses
 }
 
 #pragma mark - VBackgroundContainer

@@ -42,7 +42,7 @@
 @import MBProgressHUD;
 @import SDWebImage;
 
-static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
+static NSString * const kEditProfileSegueIdentifier = @"toEditProfile";
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
@@ -136,6 +136,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             self.profileHeaderViewController.delegate = self;
             [self setInitialHeaderState];
+            [self initializeTrophyCaseScreen];
         }
     }
     else
@@ -155,6 +156,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self.collectionView reloadData];
         self.collectionView.alwaysBounceVertical = YES;
     }
+}
+
+- (void)initializeTrophyCaseScreen
+{
+    if (!self.representsMainUser)
+    {
+        return;
+    }
+    
+    UIButton *trophyCaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    TrophyCaseViewController *trophyCaseViewController = [self.dependencyManager templateValueOfType:[TrophyCaseViewController class] forKey:@"trophyCaseScreen" withAddedDependencies:nil];
+    VDependencyManager *trophyCaseDependencyManager = trophyCaseViewController.dependencyManager;
+    UIImage *buttonIconImage = [trophyCaseDependencyManager imageForKey: @"trophy_icon"];
+    [trophyCaseButton setImage:buttonIconImage forState:UIControlStateNormal];
+    [trophyCaseButton addTarget:self action:@selector(trophyCaseButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.profileHeaderViewController addTrophyCaseButton:trophyCaseButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -286,7 +304,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reloadUserFollowingRelationship
 {
     FollowCountOperation *followCountOperation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [followCountOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          [self updateProfileHeaderState];
      }];
@@ -377,8 +395,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSInteger userId = self.user.remoteId.integerValue;
     NSString *sourceScreenName = VFollowSourceScreenProfile;
-    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *results, NSError *_Nullable error)
+    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
          self.profileHeaderViewController.loading = NO;
      }];
@@ -417,7 +435,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     _userRemoteId = userRemoteId;
     
     UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
-    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error) {
+    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )
         {
@@ -538,6 +556,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         usersViewController.usersViewContext = VUsersViewContextFollowing;
         [self.navigationController pushViewController:usersViewController animated:YES];
     }
+}
+
+#pragma mark - User Actions
+
+- (void)trophyCaseButtonTapped:(UIButton *)sender
+{
+    sender.enabled = NO;
+    [[[ShowTrophyCaseOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager] queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled) {
+        sender.enabled = YES;
+    }];
 }
 
 #pragma mark - Navigation
@@ -743,8 +771,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             // Fetch the conversation or create a new one
             VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
-            LoadUserConversationOperation *operation = [[LoadUserConversationOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueWithCompletion:^(Operation *_Nonnull op)
+            ConversationForUserOperation *operation = [[ConversationForUserOperation alloc] initWithUserID:self.user.remoteId.integerValue];
+            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
              {
                  VConversation *conversation = operation.loadedConversation;
                  if ( conversation != nil )

@@ -11,16 +11,14 @@ import VictoriousIOSSDK
 
 extension VSequence: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: (sequence: Sequence, streamParent: Stream?) ) {
-        let sequence = sourceModel.sequence
-        let streamParent = sourceModel.streamParent
+    func populate( fromSourceModel sourceModel: Sequence ) {
+        let sequence = sourceModel
         
         remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
         isGifStyle              = sequence.isGifStyle ?? isGifStyle
         commentCount            = sequence.commentCount ?? commentCount
-        gifCount                = sequence.gifCount ?? gifCount
         hasReposted             = sequence.hasReposted ?? hasReposted
         isComplete              = sequence.isComplete ?? isComplete
         isRemix                 = sequence.isRemix ?? isRemix
@@ -43,12 +41,6 @@ extension VSequence: PersistenceParsable {
         
         guard let context = self.managedObjectContext else {
             return
-        }
-        
-        if let stream = streamParent {
-            let streamItemPointer = self.parseStreamItemPointerForStream(stream)
-            streamItemPointer.populate(fromSourceModel: sequence)
-            streamItemPointer.streamItem = self
         }
 
         if let adBreak = sequence.adBreak {
@@ -83,9 +75,9 @@ extension VSequence: PersistenceParsable {
             self.nodes = NSOrderedSet(array: persistentNodes)
         }
         
-        if let previewImageAssets = sourceModel.sequence.previewImageAssets {
+        if let previewImageAssets = sourceModel.previewImageAssets {
             let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
             }
@@ -120,7 +112,7 @@ private extension VStreamItem {
             uniqueInfo = ["streamItem" : self, "streamParent" : stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
-            // i.e. one that points to a VStreamItem but has no associated stream- or marqueeParent.
+            // i.e. one that points to a VStreamItem but has no associated streamParent
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
             uniqueInfo = ["streamItem" : self]

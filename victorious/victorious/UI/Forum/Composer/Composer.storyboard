@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KY2-Hn-7We">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--Composer View Controller-->
+        <scene sceneID="TxN-CO-k5T">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="KY2-Hn-7We" customClass="ComposerViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kPa-TQ-cMr"/>
+                        <viewControllerLayoutGuide type="bottom" id="Uhd-jy-MWr"/>
+                    </layoutGuides>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="DkO-lo-gQh" customClass="VPassthroughContainerView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb">
+                                <rect key="frame" x="0.0" y="520" width="600" height="80"/>
+                                <subviews>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MN-kC-AjT">
+                                        <rect key="frame" x="16" y="27" width="568" height="53"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy">
+                                                <rect key="frame" x="531" y="12" width="37" height="30"/>
+                                                <state key="normal" title="Done"/>
+                                                <connections>
+                                                    <action selector="pressedConfirmButton" destination="KY2-Hn-7We" eventType="touchUpInside" id="afy-lH-5mK"/>
+                                                </connections>
+                                            </button>
+                                            <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joT-P4-Pfz" customClass="ComposerAttachmentTabBar" customModule="victorious" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="531" height="53"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="centerY" secondItem="5MN-kC-AjT" secondAttribute="centerY" id="5xG-Cz-v4S"/>
+                                            <constraint firstItem="joT-P4-Pfz" firstAttribute="centerY" secondItem="5MN-kC-AjT" secondAttribute="centerY" id="LMw-IY-vrR"/>
+                                            <constraint firstAttribute="height" constant="53" id="RlM-AL-BQg"/>
+                                            <constraint firstAttribute="trailing" secondItem="ytv-wP-GFy" secondAttribute="trailing" id="Um3-Jm-gwa"/>
+                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="leading" secondItem="joT-P4-Pfz" secondAttribute="trailing" id="agP-K1-zIC"/>
+                                            <constraint firstItem="joT-P4-Pfz" firstAttribute="top" secondItem="5MN-kC-AjT" secondAttribute="top" id="fhC-Zo-I3J"/>
+                                            <constraint firstItem="joT-P4-Pfz" firstAttribute="leading" secondItem="5MN-kC-AjT" secondAttribute="leading" id="rPX-l1-VXz"/>
+                                            <constraint firstAttribute="bottom" secondItem="joT-P4-Pfz" secondAttribute="bottom" id="sxq-Me-rhH"/>
+                                        </constraints>
+                                    </view>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
+                                        <rect key="frame" x="16" y="0.0" width="568" height="27"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="998" constant="27" id="8wg-RT-HDu"/>
+                                        </constraints>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="5MN-kC-AjT" firstAttribute="top" secondItem="FNU-QM-fIQ" secondAttribute="bottom" id="HA3-2t-eq3"/>
+                                    <constraint firstItem="5MN-kC-AjT" firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" id="KJb-qW-ogp"/>
+                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" secondItem="Koq-m5-Wlb" secondAttribute="top" id="WLr-26-Xc1"/>
+                                    <constraint firstItem="5MN-kC-AjT" firstAttribute="leading" secondItem="FNU-QM-fIQ" secondAttribute="leading" id="bBR-ux-s8l"/>
+                                    <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" constant="16" id="cOu-PB-Rwd"/>
+                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" constant="16" id="gTs-1i-B1S"/>
+                                    <constraint firstAttribute="bottom" secondItem="5MN-kC-AjT" secondAttribute="bottom" id="qYm-Ya-Kcj"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Uhd-jy-MWr" firstAttribute="top" secondItem="Koq-m5-Wlb" secondAttribute="bottom" id="5dC-ih-OHN"/>
+                            <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="kPa-TQ-cMr" secondAttribute="bottom" id="MBc-aO-6dv"/>
+                            <constraint firstAttribute="trailing" secondItem="Koq-m5-Wlb" secondAttribute="trailing" id="QXK-Uc-KrL"/>
+                            <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="DkO-lo-gQh" secondAttribute="leading" id="SO1-z4-PRo"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="attachmentContainerHeightConstraint" destination="RlM-AL-BQg" id="RWR-Gl-XJz"/>
+                        <outlet property="attachmentContainerView" destination="5MN-kC-AjT" id="Myy-dz-PGb"/>
+                        <outlet property="attachmentTabBar" destination="joT-P4-Pfz" id="LbM-S1-dyv"/>
+                        <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
+                        <outlet property="inputViewToBottomConstraint" destination="5dC-ih-OHN" id="JdC-aN-wNj"/>
+                        <outlet property="interactiveContainerView" destination="Koq-m5-Wlb" id="1il-EP-faW"/>
+                        <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>
+                        <outlet property="textViewHeightConstraint" destination="8wg-RT-HDu" id="bnU-jg-bNd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pv6-ay-D6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="503" y="379"/>
+        </scene>
+    </scenes>
+</document>

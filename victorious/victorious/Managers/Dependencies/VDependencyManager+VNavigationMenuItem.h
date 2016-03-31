@@ -8,6 +8,8 @@
 
 #import "VDependencyManager.h"
 
+@class VNavigationMenuItem;
+
 extern NSString * const VDependencyManagerMenuItemsKey; ///< An array of arrays of menu items
 extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of accessory screens on a screen
 
@@ -31,6 +33,8 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
  @return NSArray of VNavigationMenuItem
  */
 - (NSArray *)menuItems;
+
+- (NSArray<VNavigationMenuItem *> *)menuItemsForKey:(NSString *)key;
 
 /**
  Returns an array of accessory menu items. These should

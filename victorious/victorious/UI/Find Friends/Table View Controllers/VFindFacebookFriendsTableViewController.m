@@ -54,15 +54,15 @@
     }
 }
 
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *, BOOL))completionBlock
 {
     NSString *facebookToken = [[FBSDKAccessToken currentAccessToken] tokenString];
     FriendFindBySocialNetworkOperation *operation = [[FriendFindBySocialNetworkOperation alloc] initWithToken:facebookToken];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error)
+    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {
         if (completionBlock != nil)
         {
-            completionBlock(operation.results, error);
+            completionBlock(operation.results, error, cancelled);
         }
     }];
 }

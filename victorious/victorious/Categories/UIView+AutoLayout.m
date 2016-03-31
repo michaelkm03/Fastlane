@@ -281,8 +281,10 @@
          {
              return;
          }
-         internalWidthConstraint = constraint;
-         *stop = YES;
+         if ( internalWidthConstraint == nil || constraint.constant > internalWidthConstraint.constant )
+         {
+             internalWidthConstraint = constraint;
+         }
      }];
     
     return internalWidthConstraint;
@@ -302,8 +304,10 @@
         {
             return;
         }
-        internalHeightConstraint = constraint;
-        *stop = YES;
+        if ( internalHeightConstraint == nil || constraint.constant > internalHeightConstraint.constant )
+        {
+            internalHeightConstraint = constraint;
+        }
     }];
     return internalHeightConstraint;
 }

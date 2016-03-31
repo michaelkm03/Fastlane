@@ -17,12 +17,13 @@
 
 // Action Bar
 #import "VFlexBar.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
+
+#import "victorious-Swift.h"
 
 CGFloat const VActionButtonHeight = 31.0f;
 static NSUInteger const kMaxNumberOfActionButtons = 4;
@@ -71,10 +72,6 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
         if ( sequence.permissions.canMeme )
         {
             [identifier appendString:@"Meme."];
-        }
-        if ( sequence.permissions.canGIF )
-        {
-            [identifier appendString:@"Gif."];
         }
     }
     else

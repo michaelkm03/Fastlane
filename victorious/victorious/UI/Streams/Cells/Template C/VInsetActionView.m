@@ -16,7 +16,6 @@
 
 // Action Bar
 #import "VFlexBar.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
 
@@ -31,7 +30,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
 
-@property (nonatomic, strong, readwrite) VActionButton *gifButton;
 @property (nonatomic, strong, readwrite) VActionButton *memeButton;
 @property (nonatomic, strong, readwrite) VActionButton *repostButton;
 @property (nonatomic, strong, readwrite) VActionButton *commentButton;
@@ -100,10 +98,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         [identifier appendString:@"Meme."];
     }
-    if ( sequence.permissions.canGIF )
-    {
-        [identifier appendString:@"Gif."];
-    }
     if ( sequence.permissions.canComment )
     {
         [identifier appendString:@"Comment."];
@@ -134,10 +128,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if ( sequence.permissions.canRepost )
     {
         [justActionItems addObject:self.repostButton];
-    }
-    if ( sequence.permissions.canGIF )
-    {
-        [justActionItems addObject:self.gifButton];
     }
     //Only add meme for image content
     if ( sequence.permissions.canMeme && sequence.isImage )
@@ -187,13 +177,11 @@ static const CGFloat kActionButtonWidth = 44.0f;
     UIColor *unselectedTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     UIColor *selectedTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
-    self.gifButton.unselectedTintColor = unselectedTintColor;
     self.memeButton.unselectedTintColor = unselectedTintColor;
     self.repostButton.unselectedTintColor = unselectedTintColor;
     self.likeButton.unselectedTintColor = unselectedTintColor;
     self.commentButton.unselectedTintColor = unselectedTintColor;
     
-    self.gifButton.selectedTintColor = selectedTintColor;
     self.memeButton.selectedTintColor = selectedTintColor;
     self.repostButton.selectedTintColor = selectedTintColor;
     self.likeButton.selectedTintColor = selectedTintColor;

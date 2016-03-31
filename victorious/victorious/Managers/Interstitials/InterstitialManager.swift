@@ -13,7 +13,7 @@ import VictoriousIOSSDK
     func newInterstitialHasBeenRegistered()
 }
 
-/// A singleton object for managing alerts received from the Victorious API and presenting appripriate
+/// A singleton object for managing alerts received from the Victorious API and presenting appropriate
 /// intestitial view controllers to the user upon receipt.
 class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialViewControllerDelegate, AlertReceiver {
     
@@ -66,7 +66,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
         presentingViewController.presentViewController(viewController, animated: true, completion: nil)
         
-        AcknowledgeAlertOperation(alertID: alert.alertID).queue()
+        AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         shownAlerts.append( alert )
         isShowingInterstital = true
     }

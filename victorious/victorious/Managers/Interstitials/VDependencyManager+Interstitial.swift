@@ -11,10 +11,6 @@ import VictoriousIOSSDK
 
 extension VDependencyManager {
     
-    func something() {
-        
-    }
-    
     func interstitialViewController(alert alert: Alert) -> InterstitialViewController? {
         switch alert.alertType {
             
@@ -24,15 +20,14 @@ extension VDependencyManager {
                 viewController.alert = alert
                 return viewController
             }
-            
-        case .Achievement:
-            let templateValue = self.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen")
-            if let achievementVC = templateValue as? AchievementViewController {
-                achievementVC.alert = alert
-                return achievementVC
+        
+        case .StatusUpdate, .Achievement:
+            let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
+            if let imageAlertVC = templateValue as? InterstitialAlertViewController {
+                imageAlertVC.alert = alert
+                return imageAlertVC
             }
         }
-        
         return nil
     }
 }

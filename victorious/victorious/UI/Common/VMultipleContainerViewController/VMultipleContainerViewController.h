@@ -9,7 +9,6 @@
 #import "VHasManagedDependencies.h"
 #import <UIKit/UIKit.h>
 #import "VAuthorizationContextProvider.h"
-#import "VInitialViewController.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
 #import "VBadgeResponder.h"
 /**
@@ -19,9 +18,8 @@
  *  Forwards VAuthorizationContextProvider methods to the
  *  currently selected viewController.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController, VTabMenuContainedViewControllerNavigation, VBadgeResponder>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VTabMenuContainedViewControllerNavigation, VBadgeResponder>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
-@property (nonatomic, assign) BOOL isInitialViewController;
 
 @end

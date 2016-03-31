@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
@@ -241,7 +240,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 {
     NSInteger userId = self.sequence.user.remoteId.integerValue;
     NSString *sourceScreenName = self.sourceScreenName != nil ? self.sourceScreenName : VFollowSourceScreenSteamSleekCell;
-    FetcherOperation *operation = [[ToggleFollowUserOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
+    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     [operation queueWithCompletion:nil];
 }
 

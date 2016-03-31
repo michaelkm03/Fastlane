@@ -163,7 +163,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if sender == nil {
             self.refreshControl.beginRefreshing()
         }
-        dataSource?.loadComments( .First ) { [weak self] (results, error) in
+        dataSource?.loadComments( .First ) { [weak self] results, error, cancelled in
             if sender == nil {
                 // Don't animate on first load
                 UIView.performWithoutAnimation() {
@@ -263,7 +263,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.commentsUtilitiesDelegate = self
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
-                let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user)
+                guard let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user) else {
+                    return
+                }
                 strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
             }
         }
@@ -352,14 +354,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func flagComment(comment: VComment) {
-        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue() { (results, error) in
+        CommentFlagOperation(commentID: comment.remoteId.integerValue).queue() { results, error, cancelled in
             self.dataSource?.removeDeletedItems()
             self.v_showFlaggedCommentAlert()
         }
     }
     
     func deleteComment(comment: VComment) {
-        DeleteCommentOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { (results, error) in
+        CommentDeleteOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { results, error, cancelled in
             self.dataSource?.removeDeletedItems()
         }
     }
@@ -430,7 +432,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             realtimeAttachment: nil
         )
         
-        CreateCommentOperation(creationParameters: creationParameters).queue()
+        CommentCreateOperation(creationParameters: creationParameters).queue()
         self.keyboardBar?.clearTextAndResign()
         self.publishParameters?.mediaToUploadURL = nil
     }

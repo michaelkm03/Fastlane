@@ -46,7 +46,7 @@
  systems in the app's architecture, such as accessory screens.  Calling code should always
  check for `respondsToSelector:` and check against nil.
  */
-- (VDependencyManager *)dependencyManager;
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 /**
  Optionally exposes a stored alternate view controller of this navigation destination

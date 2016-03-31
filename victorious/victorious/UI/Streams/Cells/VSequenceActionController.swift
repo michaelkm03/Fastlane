@@ -71,7 +71,7 @@ import Foundation
         ShowShareSequenceOperation(originViewController: originViewController,
                                    dependencyManager: dependencyManager,
                                    sequence: sequence,
-                                   streamID: streamID).queue() {
+                                   streamID: streamID).queue() { error, cancelled in
                                        completion?()
         }
     }
@@ -87,7 +87,7 @@ import Foundation
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let flag = FlagSequenceOperation(sequenceID: sequence.remoteId)
+        let flag = SequenceFlagOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("Report/Flag", comment: ""),
             originViewController: originViewController,
@@ -96,11 +96,11 @@ import Foundation
         
         confirm.before(flag)
         confirm.queue()
-        flag.queue() { (results, error) in
+        flag.queue() { (results, error, cancelled) in
             guard !flag.cancelled else {
                 return
             }
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
@@ -128,7 +128,7 @@ import Foundation
         
         confirm.before(blockOrUnblock)
         confirm.queue()
-        blockOrUnblock.queue() { (results, error) in
+        blockOrUnblock.queue() { (results, error, cancelled) in
             guard !blockOrUnblock.cancelled else {
                 return
             }
@@ -144,7 +144,7 @@ import Foundation
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
     func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
-        let delete = DeleteSequenceOperation(sequenceID: sequence.remoteId)
+        let delete = SequenceDeleteOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("DeleteButton", comment: ""),
             originViewController: originViewController,
@@ -153,17 +153,17 @@ import Foundation
         
         confirm.before(delete)
         confirm.queue()
-        delete.queue() { (results, error) in
+        delete.queue() { (results, error, cancelled) in
             guard !delete.cancelled else {
                 return
             }
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
     // MARK: - Like
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
-        ToggleLikeSequenceOperation(sequenceObjectId: sequence.objectID).queue() { results, error in
+        SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error, cancelled in
             
             self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                 VLikeButtonCoachmarkIdentifier,
@@ -174,7 +174,7 @@ import Foundation
                 )
             )
             
-            completion?( error == nil )
+            completion?( error == nil && !cancelled )
         }
     }
     
@@ -185,8 +185,8 @@ import Foundation
     }
     
     func repostSequence(sequence: VSequence, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(sequenceID: sequence.remoteId).queue { results, error in
-            completion?( error == nil )
+        SequenceRepostOperation(sequenceID: sequence.remoteId).queue { results, error, cancelled in
+            completion?( error == nil && !cancelled )
         }
     }
     
@@ -319,7 +319,7 @@ import Foundation
     
     private func repostActionItem(forSequence sequence: VSequence, loadingBlock: (VActionItem)->() ) -> VActionItem {
         let hasReposted = sequence.hasReposted.boolValue
-        let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Resposted", comment: "") : NSLocalizedString("Repost", comment: "")
+        let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Reposted", comment: "") : NSLocalizedString("Repost", comment: "")
         
         let repostItem = VActionItem.defaultActionItemWithTitle(localizedRepostRepostedText,
             actionIcon: UIImage(named: "icon_repost"),

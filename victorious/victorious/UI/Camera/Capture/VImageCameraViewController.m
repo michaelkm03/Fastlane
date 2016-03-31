@@ -37,11 +37,12 @@ static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
+static NSString * const kMaximumDimensionKey = @"maximumDimension";
 static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
 static const CGFloat kVerySmallOuterRadius = 0.01f;
-static const CGFloat kMaxImageDimension = 640.0f;
+static const CGFloat kDefaultImageSideLength = 640.0f;
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -258,19 +259,25 @@ static const CGFloat kMaxImageDimension = 640.0f;
     {
         __weak typeof(self) welf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                       {
-                           __strong typeof(welf) strongSelf = welf;
-                           UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension:kMaxImageDimension];
-                           UIImage *previewImage = [smallerImage squareImageByCropping];
-                           NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
-                           dispatch_async(dispatch_get_main_queue(), ^
-                                          {
-                                              [strongSelf.delegate imageCameraViewController:strongSelf
-                                                                   capturedImageWithMediaURL:savedFileURL
-                                                                                previewImage:previewImage];
-                                          });
-                       });
-
+        {
+            __strong typeof(welf) strongSelf = welf;
+            if ( strongSelf == nil )
+            {
+                return;
+            }
+            
+            NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumDimensionKey];
+            CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
+            UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
+            UIImage *previewImage = [smallerImage squareImageByCropping];
+            NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [strongSelf.delegate imageCameraViewController:strongSelf
+                                     capturedImageWithMediaURL:savedFileURL
+                                                  previewImage:previewImage];
+            });
+        });
     }];
 }
 

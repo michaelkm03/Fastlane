@@ -13,7 +13,6 @@
 "Next"                  =   "다음";
 "Done"                  =   "완료";
 "More"                  =   "더 보기";
-"Meme"                  =   "짤방";
 "Share"                 =   "공유";
 "Continue"              =   "계속하기";
 "Loading..."            =   "불러오는 중...";
@@ -41,15 +40,11 @@
 "SignupFail"            =   "계정 생성 실패";
 "You're not logged in!" =   "로그인되어 있지 않습니다!";
 "ProfileNotLoggedInMessage" = "아직 볼 게 없습니다! 커뮤니티에 가입하신다니 기쁩니다. 계정을 만들어서 자신의 독특함을 뽐내보세요.";
-"ProfileSaveFail"       =   "서버 오류로 인해 프로필 정보 저장에 실패하였습니다";
 "ProfileSave"           =   "프로필 업로드 중";
 "ProfileIncomplete"     =   "미완성 프로필";
-"ProfileAborted"        =   "프로필을 완성하기 전까지 몇 기능을 사용하실수 없습니다";
 "ProfileRequired"       =   "다음 정보를 제공해주세요:";
-"ProfileRequiredPhoto"  =   "프로필 이미지";
 "ProfileNameSpaces"     =   "프로필 이름은 빈칸으로만 구성할수 없습니다";
 "ProfileRequiredName"   =   "이름";
-"Profile load failed!"  =   "프로필 불러오기 실패!";
 
 "User already exists"   =   "이미 존재하는 사용자입니다.";
 "User already exists but the password is incorrect" = "사용자가 이미 존재하지만 비밀번호가 틀렸습니다.";
@@ -73,11 +68,16 @@
 "NoMessagesTitle"       =   "아직 메시지 없음";
 "NoMessagesMessage"     =   "앱에 있는 누구에게나 메시지를 보낼 수 있습니다! 메시지를 보내려는 사람의 프로필로 가서 우측 상단의 작성하기 아이콘을 클릭하세요.";
 
+"SAY HELLO!" = "인사하세요!";
+"Send a message to start chatting with other members of the community." = "메시지를 보내서 다른 커뮤니티 회원들과 채팅을 시작하세요.";
+
 "NoNotificationsTitle"       =   "현재 알림 없음";
 "NoNotificationsMessage"     =   "댓글을 달고, 리믹스하고, 새 콘텐츠를 올리며 커뮤니티와 교류하면 다른 사람에게서 더 많은 연락을 받을 겁니다. 반응을 여기서 확인하세요:";
 
 "NoCommentsTitle"       =   "첫 번째로 댓글을 달아주세요!";
 "NoCommentsMessage"     =   "글, 사진, 영상 댓글을 달고 다른 사람의 반응을 보세요!";
+
+"Start a new conversation" = "새 대화 시작";
 
 "NoUserSearchResultsTitle"       =   "사용자를 찾을 수 없었습니다";
 "NoUserSearchResultsMessage"     =   "해당 사용자를 찾을 수 없었습니다. 다시 시도하거나 해당 사용자의 프로필로 가서 거기서 메시지를 보내세요!";
@@ -105,14 +105,10 @@
 "NoRepostersTitle"      =   "첫 번째로 리포스트(퍼가기)해보세요!";
 "NoRepostersMessage"    =   "이 콘텐츠를 내 팔로워와 공유하세요!";
 
-"NoGiffersTitle"       =   "첫 번째로 GIF를 만드세요!";
-"NoGiffersMessage"     =   "이 영상에서 마음에 드는 부분을 선택해서 GIF를 만들고 다른 팬과 공유하세요!";
-
 "NoMemersTitle"       =   "첫 번째로 짤방을 만드세요!";
 "NoMemersMessage"     =   "이 콘텐츠를 짤방으로 만들어서 다른 팬과 공유하세요!";
 
-// strings for both UGC and creator
-"UGCSharePollFormat"    =   "이 설문 조사를 확인해보세요!";       //Check out this poll! <URL>
+"UGCSharePollFormat"    =   "이 설문 조사를 확인해보세요!";       // Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "이 영상을 확인하세요!";      // Check out this video! <URL>
 "UGCShareGIFFormat"     =   "이 gif를 확인하세요!";        // Check out this gif! <URL>
 "UGCShareImageFormat"   =   "이 사진을 확인하세요!";      // Check out this photo! <URL>
@@ -128,8 +124,6 @@
 "No people found in search" = "검색어를 더 좁히거나 다시 시도하세요.";
 "No Hashtags Found In Search Title" = "태그를 찾을 수 없습니다";
 "No hashtags found in search" = "검색어를 더 좁히거나 다시 시도하세요.";
-
-"ImageDownloadFailed"   =   "이미지 다운로드 실패.";
 
 "TwitterDeniedTitle"    =   "트위터 계정에 접속할 수 없었습니다.";
 "TwitterDenied"         =   "설정 -> 개인정보 -> 트위터에서 트위터 계정 접속 권한을 허용하세요.";
@@ -155,7 +149,6 @@
 "ReportContentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";
 "ReportCommentMessage"  =   "24시간 내에 이 콘텐츠를 검토하겠습니다.";
 "ReportUserMessage"     =   "24시간 내에 이 사용자를 검토하겠습니다.";
-"CommentAlreadyReported" =  "이미 신고한 댓글입니다";
 
 "Ask a question..."     =   "질문하기";
 "Vote this"             =   "이쪽에 투표";
@@ -170,18 +163,12 @@
 "NoKeepUploading"       =   "아뇨, 계속 업로드";
 "Cancelling..."         =   "취소 중...";
 
-"RefreshError"          =   "새로고침할 수 없습니다.";
-
 "FollowError"           =   "이 사용자를 팔로우하는 데 오류가 있었습니다.";
 "UnfollowError"         =   "이 사용자를 언팔로우하는 데 오류가 있었습니다.";
 
 "FollowingSectionHeader"            =   "이미 팔로우 중";
 "FacebookFollowingSectionHeader"    =   "페이스북 친구 팔로우";
 "AddressBookFollowingSectionHeader" =   "연락처 팔로우";
-
-"ConversationLoadError" =   "대화를 불러올 수 없습니다.";
-"ConversationDelError"  =   "대화를 삭제할 수 없습니다.";
-"ConversationSendError" =   "메시지를 전송할 수 없었습니다.";
 
 "Sorry, we were having some trouble on our end. Please retry." = "죄송합니다. 저희 측에 문제가 생겼습니다. 다시 시도하세요.";
 "Retry"                 =   "재시도";
@@ -201,8 +188,6 @@
 "YearsAgo"              =   "%d년";
 
 "JustAMoment"           =   "잠시";
-
-"TryAgain"              =   "나중에 다시 시도하세요.";
 
 "Edit"                  =   "편집";
 "editProfileButton"     =   "프로필 편집";
@@ -234,10 +219,6 @@
 "IncorrectCode"         =   "계정 인증 코드가 일치하지 않습니다.";
 
 "Image Search"          =   "이미지 검색";
-"Pull up for more..."   =   "더 보려면 올리세요...";
-"search for users"      =   "사용자 검색";
-"searching"             =   "검색 중";
-"no results"            =   "결과 없음";
 "No results"            =   "결과 없음";
 
 "InviteYourFriends"     =   "친구를 초대하세요!";
@@ -262,9 +243,6 @@
 
 "Logout"                =   "로그아웃";
 "Login"                 =   "로그인";
-
-"UserBannedTitle"       =   "이런!";
-"UserBannedMessage"     =   "안타깝게도 계정이 비활성화되었습니다. 여전히 콘텐츠를 볼 수는 있지만 글을 올리거나 다른 사람과 교류할 수는 없습니다.";
 
 "Version"               =   "버전 %@";
 
@@ -298,9 +276,6 @@
 "%@ Voters"             = "투표자 %@명";
 "%@ Voter"              = "투표자 %@명";
 
-"HashtagSubscribeError"  = "죄송합니다. 이 해시태그를 팔로우하는 데 오류가 발생했습니다. 다시 시도하세요.";
-"HashtagUnsubscribeError"  = "죄송합니다. 이 해시태그를 언팔로우하는 데 오류가 발생했습니다. 다시 시도하세요.";
-
 "NoFollowingHashtagsTitle"      =   "이런! 아직 아무 태그도 팔로우하지 않았습니다.";
 "NoFollowingHashtagsMessage"    =   "태그가 달린 아이템을 눌러서 마음에 드는 콘텐츠 목록을 만드세요.";
 
@@ -311,7 +286,6 @@
 "Device:"               = "기기:";
 "OS Version:"           = "OS 버전:";
 "App Version:"          = "앱 버전:";
-"AreYouSureYouWantToDelete" = "정말로 삭제하시겠습니까?";
 
 "ShareFacebook"         = "페이스북에 공유하기";
 "ShareTwitter"          = "트위터에 공유하기";
@@ -368,7 +342,6 @@
 "No Color"  = "색상 없음";    // No color selected
 "Standard"  = "기본";   // The default color before a selection is made
 
-"Error Loading Next Video" = "다음 영상 불러오기 중 오류 발생";
 "Failed to fetch products" = "제품 불러오기 실패";
 
 "This will discard any content from the camera" = "카메라에 있는 콘텐츠가 전부 버려집니다.";
@@ -380,7 +353,6 @@
 
 "#nofilter" = "#필터없음";
 "Create a meme" = "짤방 만들기";
-"Create a GIF" = "GIF 만들기";
 "Pick an attachment style" = "첨부 양식 선택";
 "Image" = "이미지";
 "Video" = "영상";
@@ -393,8 +365,9 @@
 "Publishing..." = "게재중";
 "Upload failure" = "업로드 실패";
 "Error loading results" = "결과 불러오는 중 오류 발생";
-"Error rendering Media" = "미디어 렌더링 중 오류. 다시 시도하세요.";
+"Error rendering media" = "미디어 렌더링 오류";
 
+"By continuing you are agreeing to our" = "계속 진행하시면 다음 사항에 동의하시는 것으로 간주됩니다";
 "By signing up you are agreeing to our" = "가입하시면 다음에 동의하시는 것으로 간주됩니다.";
 "terms of service"      =   "서비스 약관";
 "privacy policy"        =   "개인정보 보호 정책";
@@ -442,12 +415,20 @@
 "Seoul" = "서울";
 "Montreal" = "몬트리올";
 
-"Use mobile data and Wi-Fi" = "모바일 데이터와 와이파이 사용";
-"Use Wi-Fi only" = "와이파이만 사용";
-"Never play videos automatically" = "절대 영상 자동 재생하지 않기";
-
 "LevelFormat" = "레벨 %@";
 "LEVEL" = "레벨";
 "TestAlertsViewControllerFooter" = "알림을 등록한 후에, 스트림이나 프로필로 돌아가서 화면을 당겨서 새로고침을 하세요. 알림이 나타납니다.";
 
 "Enter birthday before continuing" = "계속 진행하기 전에 자신의 생년월일을 입력하세요.";
+
+"Dismiss Alert" = "확인";
+
+"What do you think..." = "어떻게 생각하세요?";
+
+"Subscription complete!" = "구독 완료!";
+"Failed to restore subcription." = "구독 항목 복원 실패";
+"Checking for subscription..." = "구독 정보 확인 중...";
+"Already subscribed?" = "이미 구독하셨나요?";
+"Subscription restored!" = "구독 항목이 복원됨!";
+"Subscription failed." = "구독 실패.";
+"Validation Failed" = "확인 실패";
