@@ -7,7 +7,7 @@
 //
 
 #import "VAbstractPresenter.h"
-#import "VCreationTypes.h"
+#import "VCreationFlowTypes.h"
 
 @class VDependencyManager;
 
@@ -27,6 +27,6 @@
  */
 @property (nonatomic, assign) BOOL shouldShowPublishScreenForFlowController;
 
-- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType;
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationFlowType)creationType;
 
 @end

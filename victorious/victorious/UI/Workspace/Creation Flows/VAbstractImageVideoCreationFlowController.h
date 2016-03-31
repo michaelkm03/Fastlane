@@ -7,7 +7,7 @@
 //
 
 #import "VCreationFlowController.h"
-#import "VCreationTypes.h"
+#import "VCreationFlowTypes.h"
 #import "VAssetCollectionGridViewController.h"
 
 /*
@@ -19,13 +19,15 @@ typedef NS_ENUM (NSUInteger, MediaType) {
     MediaTypeUnknown,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate, UINavigationControllerDelegate>
 
 /**
- *  To force this image creation flow controller into remixing mode provide it with a previewImage 
+ *  To force this image creation flow controller into remixing mode provide it with a previewImage
  *  and mediaURL to use for remixing.
  */
-- (void)remixWithPreviewImage:(UIImage *)previewImage
+- (void)remixWithPreviewImage:(UIImage *_Nullable)previewImage
                      mediaURL:(NSURL *)mediaURL
                  parentNodeID:(NSNumber *)parentNodeID
              parentSequenceID:(NSString *)parentSequenceID;
@@ -60,12 +62,12 @@ typedef NS_ENUM (NSUInteger, MediaType) {
 /**
  *  Provide a gridViewController to display the currently selected asset collection with.
  */
-- (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
+- ( VAssetCollectionGridViewController *_Nullable)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  Provide a properly configured workspace to the parent class.
  */
-- (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
+- (VWorkspaceViewController *_Nullable)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  Do any work to prepare the workspace for editing (Such as selecting a default tool). Default implementation does nothing.
@@ -89,7 +91,7 @@ typedef NS_ENUM (NSUInteger, MediaType) {
 /**
  *  Provide the superclass with a downloader to grab the asset from the photos framework.
  */
-- (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset;
+- (VAssetDownloader *_Nullable)downloaderWithAsset:(PHAsset *)asset;
 
 /**
  *  Must return an array (or empty array) of VAlternateCaptureOptions.
@@ -103,11 +105,11 @@ typedef NS_ENUM (NSUInteger, MediaType) {
  */
 - (BOOL)shouldSkipTrimmerForVideoLength;
 
-@property (nonatomic, strong, readonly) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong, readonly, nullable) VAssetCollectionGridViewController *gridViewController;
 
 @property (nonatomic, assign) BOOL shouldShowPublishScreen;
 
-@property (nonatomic, strong, readonly) NSURL *capturedMediaURL;
+@property (nonatomic, strong, readonly, nullable) NSURL *capturedMediaURL;
 
 - (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
                                previewImage:(UIImage *)previewImage
@@ -116,3 +118,5 @@ typedef NS_ENUM (NSUInteger, MediaType) {
 - (void)setupPublishPresenter;
 
 @end
+
+NS_ASSUME_NONNULL_END

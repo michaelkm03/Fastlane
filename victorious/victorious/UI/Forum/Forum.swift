@@ -56,7 +56,7 @@ extension Forum {
     }
     
     func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
-        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
+        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: CreationFlowTypeHelper.creationFlowTypeForIdentifier(navigationItem.identifier))
     }
     
     // MARK: - StageDelegate

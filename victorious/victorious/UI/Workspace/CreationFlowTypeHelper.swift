@@ -1,5 +1,5 @@
 //
-//  CreationTypeHelper.swift
+//  CreationFlowTypeHelper.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/16/16.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-@objc(VCreationTypeHelper)
-class CreationTypeHelper: NSObject {
+@objc(VCreationFlowTypeHelper)
+class CreationFlowTypeHelper: NSObject {
     
-    private static let creationTypes: [String : VCreationType] = [
+    private static let creationFlowTypes: [String : VCreationFlowType] = [
         "Create Image" : .Image,
         "Create Video" : .Video,
         "Create Poll" : .Poll,
@@ -21,7 +21,7 @@ class CreationTypeHelper: NSObject {
         "Create from Mixed Media Camera" : .MixedMediaCamera,
         "Create from Native Camera" : .NativeCamera]
     
-    static func creationTypeForIdentifier(identifier: String) -> VCreationType {
-        return creationTypes[identifier] ?? .Unknown
+    static func creationFlowTypeForIdentifier(identifier: String) -> VCreationFlowType {
+        return creationFlowTypes[identifier] ?? .Unknown
     }
 }

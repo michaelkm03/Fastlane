@@ -39,45 +39,45 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
     return self;
 }
 
-- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationFlowType)creationType
 {
     self.viewControllerPresentedOn = originViewController;
     
     switch (creationType)
     {
-        case VCreationTypeImage:
+        case VCreationFlowTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
             [self presentCreateFlowWithKey:kImageCreationFlowKey];
             break;
-        case VCreationTypeVideo:
+        case VCreationFlowTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
             [self presentCreateFlowWithKey:kVideoCreateFlow];
             break;
-        case VCreationTypeText:
+        case VCreationFlowTypeText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
             [self presentCreateFlowWithKey:kTextCreateFlow];
             break;
-        case VCreationTypeGIF:
+        case VCreationFlowTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
             [self presentCreateFlowWithKey:kGIFCreationFlowKey];
             break;
-        case VCreationTypePoll:
+        case VCreationFlowTypePoll:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
             [self presentCreateFlowWithKey:kPollCreateFlow];
             break;
-        case VCreationTypeLibrary:
+        case VCreationFlowTypeLibrary:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromLibrarySelected];
             [self presentCreateFlowWithKey:kLibraryCreateFlow];
             break;
-        case VCreationTypeMixedMediaCamera:
+        case VCreationFlowTypeMixedMediaCamera:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromMixedMediaCameraSelected];
             [self presentCreateFlowWithKey:kMixedMediaCameraFlow];
             break;
-        case VCreationTypeNativeCamera:
+        case VCreationFlowTypeNativeCamera:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromNativeCameraSelected];
             [self presentCreateFlowWithKey:kNativeCameraFlow];
             break;
-        case VCreationTypeUnknown:
+        case VCreationFlowTypeUnknown:
             break;
     }
 }

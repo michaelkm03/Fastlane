@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
-#import "VCreationTypes.h"
+#import "VCreationFlowTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +28,7 @@ static NSString * const kAnimateFromTopKey = @"animateFromTop";
 /**
  Block to call when user chooses an item.
  */
-@property (nonatomic, copy) void (^completionHandler)(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier);
+@property (nonatomic, copy) void (^completionHandler)(VCreateSheetViewController *createSheetViewController, VCreationFlowType chosenItemIdentifier);
 
 /**
  Collection view that displays the menu items.
