@@ -279,7 +279,6 @@ NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyCount = @"Count";
 NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
-NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
 NSString * const VTrackingKeyPermissionName = @"PermissionName";
 NSString * const VTrackingKeyPermissionState = @"PermissionState";
@@ -291,6 +290,7 @@ NSString * const VTrackingKeyErrorDetails = @"Details";
 NSString * const VTrackingKeyType = @"EventType";
 NSString * const VTrackingKeySubtype = @"EventSubtype";
 NSString * const VTrackingKeyDuration = @"Duration";
+NSString * const VTrackingKeyUserId = @"UserID";
 
 // Tracking Event Values
 // ContentType values

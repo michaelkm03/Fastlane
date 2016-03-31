@@ -11,8 +11,6 @@ import Foundation
 extension VLoginType {
     
     func trackSuccess(newUser: Bool) {
-        VTrackingManager.sharedInstance().setValue(true, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
-        
         switch self {
         case .Email:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidSucceed)

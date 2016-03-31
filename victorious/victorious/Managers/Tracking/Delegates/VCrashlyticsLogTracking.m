@@ -10,6 +10,7 @@
 
 #import "VCrashlyticsLogTracking.h"
 #import "NSString+VParseHelp.h"
+#import "victorious-Swift.h"
 
 static NSString * const kVAnalyticsEventAppLaunch  = @"Cold Launch";
 static NSString * const kVAnalyticsEventAppSuspend = @"Suspend";
@@ -40,13 +41,7 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
     [parameters enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop)
     {
         NSString *stringForParam = nil;
-        if ([key isEqualToString:VTrackingKeyUserLoggedIn])
-        {
-            NSNumber *loggedInNumber = (NSNumber *)obj;
-            stringForParam = [NSString stringWithFormat:@"Logged in: %@", [loggedInNumber boolValue] ? @"true" : @"false"];
-
-        }
-        else if ([key isEqualToString:VTrackingKeyUrls])
+        if ([key isEqualToString:VTrackingKeyUrls])
         {
             NSArray *trackingURLS = (NSArray *)obj;
             NSMutableArray *trackingURLPaths = [[NSMutableArray alloc] init];
@@ -63,6 +58,9 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
         }
         [trackingLogComponents addObject:stringForParam];
     }];
+    
+    NSNumber *userID = [[VCurrentUser user] remoteId];
+    [trackingLogComponents addObject:[NSString stringWithFormat:@"%@: %@", VTrackingKeyUserId, userID]];
     
     /**
      This lines up tracking logs like this:

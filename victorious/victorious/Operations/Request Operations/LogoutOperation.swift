@@ -48,7 +48,6 @@ class LogoutOperation: FetcherOperation {
             FBSDKLoginManager().logOut()
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
-            VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
         }
         
         // And finally, clear the user.  Don't do this early because
