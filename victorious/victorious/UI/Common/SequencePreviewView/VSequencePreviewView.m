@@ -161,11 +161,6 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    if ( sequence != self.sequence )
-    {
-        self.hasDeterminedPreferredBackgroundColor = NO;
-    }
-    
     [super setStreamItem:sequence];
     [self layoutIfNeeded];
 }
@@ -222,10 +217,10 @@
     switch (self.focusType)
     {
         case VFocusTypeDetail:
-            return [self detailBackgroundColor];
+            return self.detailBackgroundColor;
         case VFocusTypeNone:
         case VFocusTypeStream:
-            return self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
+            return self.streamBackgroundColor;
     }
 }
 
