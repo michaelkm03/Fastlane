@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
-#import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"

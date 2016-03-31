@@ -18,6 +18,12 @@ class ForumViewController: UIViewController, Forum {
     var composer: Composer?
     var chatFeed: ChatFeed?
     
+    var creationFlowPresenter: VCreationFlowPresenter? {
+        didSet {
+            creationFlowPresenter?.shouldShowPublishScreenForFlowController = false
+        }
+    }
+    
     var dependencyManager: VDependencyManager!
     
     var originViewController: UIViewController {
@@ -29,6 +35,7 @@ class ForumViewController: UIViewController, Forum {
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
+        forumVC.creationFlowPresenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         return forumVC
     }
     
@@ -52,7 +59,6 @@ class ForumViewController: UIViewController, Forum {
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
-
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager
             stage.delegate = self
@@ -64,7 +70,7 @@ class ForumViewController: UIViewController, Forum {
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
-            composer.dependencyManager = dependencyManager
+            composer.dependencyManager = dependencyManager.composerDependency
             composer.delegate = self
             self.composer = composer
         }

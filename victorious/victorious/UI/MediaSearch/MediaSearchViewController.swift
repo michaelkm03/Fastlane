@@ -154,14 +154,20 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
                     mediaSearchResultObject.exportMediaURL = mediaURL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
-                    if error?.code != NSURLErrorCancelled {
-                        MBProgressHUD.hideAllHUDsForView(strongSelf.view, animated: false)
-                        strongSelf.v_showErrorWithTitle("Error rendering media. Please try again.", message: "")
-                    }
+                    strongSelf.progressHUD?.hide(true)
+                    strongSelf.showHud(renderingError: error)
                 }
             }
         }
         self.mediaExporter = mediaExporter
+    }
+    
+    private func showHud(renderingError error: NSError?) {
+        if error?.code != NSURLErrorCancelled {
+            MBProgressHUD.hideAllHUDsForView(view, animated: false)
+            let errorTitle = NSLocalizedString("Error rendering media", comment: "")
+            v_showErrorWithTitle(errorTitle, message: "")
+        }
     }
 	
     func selectCellAtSelectedIndexPath() {

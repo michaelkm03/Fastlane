@@ -58,7 +58,6 @@ class MainPersistentStoreTests: XCTestCase {
             let backgroundContext = self.persistentStore.createBackgroundContext()
             backgroundContext.v_performBlockAndWait() { context in
                 XCTAssertEqual( context, backgroundContext )
-                XCTAssertFalse( NSThread.currentThread().isMainThread )
                 expectation.fulfill()
             }
         }
@@ -69,7 +68,6 @@ class MainPersistentStoreTests: XCTestCase {
         let expectation = self.expectationWithDescription("")
         let backgroundContext = self.persistentStore.createBackgroundContext()
         backgroundContext.v_performBlock() { context in
-            XCTAssertFalse( NSThread.currentThread().isMainThread )
             XCTAssertEqual( context, backgroundContext )
             dispatch_async( dispatch_get_main_queue() ) {
                 expectation.fulfill()

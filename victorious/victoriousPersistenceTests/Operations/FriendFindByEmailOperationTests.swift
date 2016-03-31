@@ -27,7 +27,6 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
-            expectation.fulfill()
             
             guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
@@ -41,6 +40,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
             }
             
             XCTAssertEqual(remoteId, self.testUserID)
+            expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
@@ -58,7 +58,6 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
-            expectation.fulfill()
             
             guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
@@ -72,6 +71,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
             }
             
             XCTAssertEqual(remoteId, self.testUserID)
+            expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)

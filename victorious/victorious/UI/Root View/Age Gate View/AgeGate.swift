@@ -127,7 +127,7 @@ import Foundation
     static func isUserYoungerThan(age: Int, forBirthday birthday: NSDate) -> Bool {
         let now = NSDate()
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
-        return ageComponents.year < 13
+        return ageComponents.year < age
     }
     
     static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) {

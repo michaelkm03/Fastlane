@@ -1,5 +1,5 @@
 //
-//  AchievementAnimator.swift
+//  InterstitialAlertAnimator.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/18/15.
@@ -8,17 +8,20 @@
 
 import Foundation
 
-class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    
-    private let overlayOpacity: CGFloat = 0.75
+class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     var isDismissal = false
     
+    private struct Constants {
+        static let dismissalDuration = 0.3
+        static let presentationDuration = 0.5
+    }
+    
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         if isDismissal {
-            return AchievementViewController.AnimationConstants.dismissalDuration
+            return Constants.dismissalDuration
         }
-        return AchievementViewController.AnimationConstants.presentationDuration
+        return Constants.presentationDuration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {

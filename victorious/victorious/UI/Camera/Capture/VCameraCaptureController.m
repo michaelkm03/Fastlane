@@ -31,6 +31,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureAudioDataOutput *audioOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong, readwrite) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, readwrite) int32_t maxOutputSideLength;
 
 @end
 
@@ -430,6 +431,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         [self.captureSession addInput:input];
         self.videoInput = input;
+        self.maxOutputSideLength = CMVideoFormatDescriptionGetDimensions(device.activeFormat.formatDescription).width;
         return YES;
     }
 

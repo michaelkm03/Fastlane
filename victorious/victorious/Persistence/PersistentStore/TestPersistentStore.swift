@@ -53,10 +53,17 @@ class TestPersistentStore: NSObject, PersistentStoreType {
     }
     
     func createBackgroundContext() -> NSManagedObjectContext {
-        return TestPersistentStore.coreDataManager.createBackgroundContext()
+        return createChildContext()
     }
     
     func deletePersistentStore() {
         TestPersistentStore.sharedInstance = nil
+    }
+    
+    private func createChildContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        context.parentContext = self.mainContext
+        context.mergePolicy = NSOverwriteMergePolicy
+        return context
     }
 }

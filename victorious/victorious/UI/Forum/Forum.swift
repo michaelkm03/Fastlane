@@ -25,6 +25,8 @@ protocol Forum: ChatFeedDelegate, ComposerDelegate, StageDelegate {
     var composer: Composer? { get }
     
     var chatFeed: ChatFeed? { get }
+    
+    var creationFlowPresenter: VCreationFlowPresenter? { get }
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -42,19 +44,19 @@ extension Forum {
     
     func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView) {
     }
-    
+        
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectAttachmentTab tab: ComposerAttachmentTab) {
-        
-    }
+    func composer(composer: Composer, confirmedWithMedia media: MediaAttachment, caption: String?) {}
     
-    func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
-        
-    }
+    func composer(composer: Composer,  confirmedWithCaption caption: String) {}
     
     func composer(composer: Composer, didUpdateToContentHeight height: CGFloat) {
         chatFeed?.setBottomInset(height ?? 0)
+    }
+    
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
     }
     
     // MARK: - StageDelegate

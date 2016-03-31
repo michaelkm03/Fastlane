@@ -13,7 +13,6 @@
 "Next"                  =   "下一個";
 "Done"                  =   "完成";
 "More"                  =   "更多";
-"Meme"                  =   "MEME";
 "Share"                 =   "分享";
 "Continue"              =   "繼續";
 "Loading..."            =   "載入中...";
@@ -41,15 +40,11 @@
 "SignupFail"            =   "帳號建立失敗";
 "You're not logged in!" =   "你並未登入！";
 "ProfileNotLoggedInMessage" = "這裡目前沒有任何內容！我們很高興你加入這個社群。趕快建立帳號，向大家展示你的與衆不同。";
-"ProfileSaveFail"       =   "因為伺服器問題，你的個人資料無法成功儲存";
 "ProfileSave"           =   "你的個人資料上傳中";
 "ProfileIncomplete"     =   "個人資料不完整";
-"ProfileAborted"        =   "個人資料完成前，你無法使用部分功能。";
 "ProfileRequired"       =   "請提供下列資訊：";
-"ProfileRequiredPhoto"  =   "頭像";
 "ProfileNameSpaces"     =   "你的個人名稱不能只使用空格。";
 "ProfileRequiredName"   =   "名稱";
-"Profile load failed!"  =   "個人資料載入失敗！";
 
 "User already exists"   =   "用戶已存在";
 "User already exists but the password is incorrect" = "用戶存在，但密碼不正確";
@@ -73,11 +68,16 @@
 "NoMessagesTitle"       =   "目前無任何訊息";
 "NoMessagesMessage"     =   "你可以傳訊息給這個應用程式裡的任何人！只要前往他們的個人資料頁面，點選右上角的撰寫圖示即可。";
 
+"SAY HELLO!" = "打聲招呼！";
+"Send a message to start chatting with other members of the community." = "向社群中的其他成員傳送訊息以開始聊天。";
+
 "NoNotificationsTitle"       =   "目前無任何通知";
 "NoNotificationsMessage"     =   "當你在社群中留言、整合或是張貼新內容，將與成員有更密切的互動。這裡可以找到他們的各種回應。";
 
 "NoCommentsTitle"       =   "成為第一個留言的人！";
 "NoCommentsMessage"     =   "在貼文、照片或影片底下留言，看看別人怎麼說！";
+
+"Start a new conversation" = "開啟新的對話";
 
 "NoUserSearchResultsTitle"       =   "未找到使用者";
 "NoUserSearchResultsMessage"     =   "我們找不到該使用者。你可以再試一次，或前往該使用者的個人資料頁面，並在那裡傳送訊息給他！";
@@ -108,8 +108,7 @@
 "NoMemersTitle"       =   "成為第一個製作MEME的人！";
 "NoMemersMessage"     =   "把內容做成Meme，並與其他粉絲分享，它就是你獨創的內容！";
 
-// strings for both UGC and creator
-"UGCSharePollFormat"    =   "查看這場投票！";       //Check out this poll! <URL>
+"UGCSharePollFormat"    =   "查看這場投票！";       // Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "查看這支影片！";      // Check out this video! <URL>
 "UGCShareGIFFormat"     =   "查看這個 GIF！";        // Check out this gif! <URL>
 "UGCShareImageFormat"   =   "查看這張照片！";      // Check out this photo! <URL>
@@ -125,8 +124,6 @@
 "No people found in search" = "修改你的搜尋條件，再試一次。";
 "No Hashtags Found In Search Title" = "未找到任何標籤！";
 "No hashtags found in search" = "修改你的搜尋條件，再試一次。";
-
-"ImageDownloadFailed"   =   "影像下載失敗。";
 
 "TwitterDeniedTitle"    =   "無法存取你的 Twitter 帳號";
 "TwitterDenied"         =   "請前往 [設定] -> [隱私] -> [Twitter] 開啟你的 Twitter 帳號存取權限";
@@ -152,7 +149,6 @@
 "ReportContentMessage"  =   "我們將在 24 小時內審查此內容。";
 "ReportCommentMessage"  =   "我們將在 24 小時內審查此內容。";
 "ReportUserMessage"     =   "該使用者將在 24 小內接受審查";
-"CommentAlreadyReported" =  "留言已遭檢舉";
 
 "Ask a question..."     =   "詢問問題...";
 "Vote this"             =   "支持這個";
@@ -167,18 +163,12 @@
 "NoKeepUploading"       =   "不，繼續上傳";
 "Cancelling..."         =   "取消中...";
 
-"RefreshError"          =   "無法重新整理。";
-
 "FollowError"           =   "關注該用戶時發生錯誤。";
 "UnfollowError"         =   "取消關注該用戶時發生錯誤。";
 
 "FollowingSectionHeader"            =   "已關注";
 "FacebookFollowingSectionHeader"    =   "關注你的 Facebook 好友";
 "AddressBookFollowingSectionHeader" =   "追蹤你的聯絡人";
-
-"ConversationLoadError" =   "無法載入對話";
-"ConversationDelError"  =   "無法刪除對話";
-"ConversationSendError" =   "你的訊息無法送出";
 
 "Sorry, we were having some trouble on our end. Please retry." = "抱歉，我們這裡出了點錯誤。請再試一次。";
 "Retry"                 =   "重試";
@@ -198,8 +188,6 @@
 "YearsAgo"              =   "%d 年";
 
 "JustAMoment"           =   "請稍候";
-
-"TryAgain"              =   "請稍後再試。";
 
 "Edit"                  =   "編輯";
 "editProfileButton"     =   "編輯個人資料";
@@ -231,10 +219,6 @@
 "IncorrectCode"         =   "驗證帳號用的驗證碼不正確。";
 
 "Image Search"          =   "搜尋影像";
-"Pull up for more..."   =   "上拉以顯示更多...";
-"search for users"      =   "搜尋用戶";
-"searching"             =   "搜尋中";
-"no results"            =   "無相符結果";
 "No results"            =   "無相符結果";
 
 "InviteYourFriends"     =   "邀請你的好友！";
@@ -259,9 +243,6 @@
 
 "Logout"                =   "登出";
 "Login"                 =   "登入";
-
-"UserBannedTitle"       =   "噢哦！";
-"UserBannedMessage"     =   "很遺憾，你的帳號已停用。你仍可以瀏覽內容，但無法貼文或與他人互動。";
 
 "Version"               =   "版本 %@";
 
@@ -295,9 +276,6 @@
 "%@ Voters"             = "%@ 個投票者";
 "%@ Voter"              = "%@ 個投票者";
 
-"HashtagSubscribeError"  = "抱歉，在嘗試關注這個主題標籤時發生錯誤。請再試一次。";
-"HashtagUnsubscribeError"  = "抱歉，在嘗試取消關注這個主題標籤時發生錯誤。請再試一次。";
-
 "NoFollowingHashtagsTitle"      =   "噢哦！你還沒關注任何標籤";
 "NoFollowingHashtagsMessage"    =   "點選你已標記的項目，建立你的最愛內容清單。";
 
@@ -308,7 +286,6 @@
 "Device:"               = "裝置：";
 "OS Version:"           = "作業系統版本：";
 "App Version:"          = "應用程式版本：";
-"AreYouSureYouWantToDelete" = "確定要刪除嗎？";
 
 "ShareFacebook"         = "分享到 Facebook";
 "ShareTwitter"          = "分享到 Twitter";
@@ -365,7 +342,6 @@
 "No Color"  = "尚未選色";    // No color selected
 "Standard"  = "標準色";   // The default color before a selection is made
 
-"Error Loading Next Video" = "載入下一支影片時發生錯誤";
 "Failed to fetch products" = "無法取得產品";
 
 "This will discard any content from the camera" = "你將捨棄相機裡的所有內容";
@@ -377,7 +353,6 @@
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "创建一个MEME";
-"Create a GIF" = "建立一個 GIF";
 "Pick an attachment style" = "選擇附件樣式";
 "Image" = "影像";
 "Video" = "影片";
@@ -390,8 +365,9 @@
 "Publishing..." = "發佈中...";
 "Upload failure" = "上傳失敗";
 "Error loading results" = "載入搜尋結果時發生錯誤";
-"Error rendering Media" = "轉譯媒體時發生錯誤。請再試一次。";
+"Error rendering media" = "轉譯媒體時發生錯誤";
 
+"By continuing you are agreeing to our" = "繼續下去即表示您同意我們的";
 "By signing up you are agreeing to our" = "註冊即表示你同意我們的";
 "terms of service"      =   "服務條款";
 "privacy policy"        =   "隱私權政策";
@@ -439,12 +415,20 @@
 "Seoul" = "首爾";
 "Montreal" = "蒙特婁";
 
-"Use mobile data and Wi-Fi" = "使用行動數據與 Wi-Fi";
-"Use Wi-Fi only" = "只使用 Wi-Fi";
-"Never play videos automatically" = "永不自動播放影片";
-
 "LevelFormat" = "等級 %@";
 "LEVEL" = "等級";
 "TestAlertsViewControllerFooter" = "登錄警告後，請回到資料流或設定檔，並拖拉以重新整理。警告應該會隨即出現。";
 
 "Enter birthday before continuing" = "請先輸入您的生日再繼續使用：";
+
+"Dismiss Alert" = "我明白了";
+
+"What do you think..." = "您覺得怎麼樣…";
+
+"Subscription complete!" = "訂閱完成！";
+"Failed to restore subcription." = "無法恢復訂閱。";
+"Checking for subscription..." = "訂閱驗證中...";
+"Already subscribed?" = "已經訂閱過？";
+"Subscription restored!" = "恢復訂閱！";
+"Subscription failed." = "訂閱失敗。";
+"Validation Failed" = "驗證失敗";
