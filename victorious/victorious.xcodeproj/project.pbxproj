@@ -8500,30 +8500,6 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		A7E8CF821C92163C00D126BF /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				A7E8CFDC1C92163C00D126BF /* Launch Operations */,
-				A7E8CFE11C92163C00D126BF /* Main Queue Operations */,
-				A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		A7E8CFDC1C92163C00D126BF /* Launch Operations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Launch Operations";
-			sourceTree = "<group>";
-		};
-		A7E8CFE11C92163C00D126BF /* Main Queue Operations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Main Queue Operations";
-			sourceTree = "<group>";
-		};
 		A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -8554,8 +8530,8 @@
 				A700330C1C5FEA0600AB4A57 /* VMessage+Equitable.swift */,
 				79B719001C56E95800578012 /* VSequence+Keyable.swift */,
 				A719B3DE1C64397100537B45 /* VStreamItem+Pointer.swift */,
-				A7AF17B31C599331007BCAFE /* VUser+Following.swift */,
 				A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */,
+				A7AF17B31C599331007BCAFE /* VUser+Following.swift */,
 			);
 			path = "Model Extensions";
 			sourceTree = "<group>";
@@ -8688,13 +8664,6 @@
 			path = PersistentStore;
 			sourceTree = "<group>";
 		};
-		A7FFCE4B1C8FCDD900B1BE49 /* Purchase Operations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Purchase Operations";
-			sourceTree = "<group>";
-		};
 		B074C5BE1B3B2CBA00EA3FFC /* Supplementary Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -8795,7 +8764,6 @@
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
 				A72C85511C977FF500E97D4F /* Operations */,
-				A7E8CF821C92163C00D126BF /* Operations */,
 				A789F7141BF11F4900F5C87B /* Persistence */,
 				03C185CD19B4308400E27D05 /* Protocols */,
 				D8B0500E19AD2A740048E2BE /* Simple Models */,
