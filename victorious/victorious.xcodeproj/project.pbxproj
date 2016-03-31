@@ -7537,6 +7537,7 @@
 				A73BA5741C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift */,
 				A72C85C31C977FF500E97D4F /* ValidateReceiptOperation.swift */,
 				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
+				A72C85C41C977FF500E97D4F /* VIPSubscribeOperation.swift */,
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSuscriptionOperation.swift */,
 			);
 			path = "Purchase Operations";
