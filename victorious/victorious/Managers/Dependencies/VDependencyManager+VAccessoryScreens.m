@@ -318,7 +318,9 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     while (( responder = [responder nextResponder] ));
     
     BOOL isValidNavController = sourceViewController.navigationController != nil;
-    if ( shouldNavigate && menuItem.hasValidDestination && isValidNavController )
+    BOOL isNotOnNavigationStack = ![sourceViewController.navigationController.viewControllers containsObject:menuItem.destination];
+    
+    if ( shouldNavigate && menuItem.hasValidDestination && isValidNavController && isNotOnNavigationStack)
     {
         [sourceViewController.navigationController pushViewController:menuItem.destination animated:YES];
     }
