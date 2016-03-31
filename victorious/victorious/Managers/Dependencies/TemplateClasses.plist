@@ -186,13 +186,13 @@
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
-	<key>achievement.interstitial</key>
-	<string>victorious.AchievementViewController</string>
 	<key>vip.screen</key>
 	<string>victorious.VIPGateViewController</string>
 	<key>trophyCase.screen</key>
 	<string>victorious.TrophyCaseViewController</string>
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
+	<key>statusUpdate.interstitial</key>
+	<string>victorious.InterstitialAlertViewController</string>
 </dict>
 </plist>
