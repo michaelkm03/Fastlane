@@ -13,7 +13,7 @@ import UIKit
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     
-    var chosenCreationType: VCreationType = .Unknown
+    var chosenCreationType: VCreationFlowType = .Unknown
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager ) {
         self.originViewController = originViewController

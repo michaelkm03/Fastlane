@@ -112,7 +112,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
 {
-    
+    //Itentionally empty
 }
 
 #pragma mark - UIViewController

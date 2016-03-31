@@ -142,7 +142,7 @@ static const CGFloat kLineSpacing = 40.0f;
 {
     if (self.completionHandler != nil)
     {
-        self.completionHandler(self, VCreationTypeUnknown);
+        self.completionHandler(self, VCreationFlowTypeUnknown);
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -151,7 +151,7 @@ static const CGFloat kLineSpacing = 40.0f;
 {
     if (self.completionHandler != nil)
     {
-        self.completionHandler(self, VCreationTypeUnknown);
+        self.completionHandler(self, VCreationFlowTypeUnknown);
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -186,7 +186,7 @@ static const CGFloat kLineSpacing = 40.0f;
     
     if (self.completionHandler != nil)
     {
-        self.completionHandler(self, [VCreationTypeHelper creationTypeForIdentifier:menuItem.identifier]);
+        self.completionHandler(self, [VCreationFlowTypeHelper creationFlowTypeForIdentifier:menuItem.identifier]);
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }

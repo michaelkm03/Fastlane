@@ -43,34 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewDidLoad];
 
-    NSMutableArray *buttonsForOptions = [[NSMutableArray alloc] init];
-    
-    if ( self.alternateCaptureOptions.count == 0 )
-    {
-        self.stackViewHeightConstraint.constant = 0;
-    }
-    else
-    {
-        // Create alternateOption buttons
-        for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
-        {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-            button.tintColor = [UIColor whiteColor];
-            button.backgroundColor = [UIColor blackColor];
-            [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [button setImage:alternateOption.icon forState:UIControlStateNormal];
-            [button setTitle:alternateOption.title forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(selectedAlternateOption:) forControlEvents:UIControlEventTouchUpInside];
-            button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-            button.translatesAutoresizingMaskIntoConstraints = NO;
-            // Move the image a bit to the left
-            button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-            [self.stackView addArrangedSubview:button];
-            [buttonsForOptions addObject:button];
-        }
-        self.buttonsForCaptureOptions = [NSArray arrayWithArray:buttonsForOptions];
-        self.stackView.distribution = OAStackViewDistributionFillEqually;
-    }
+    [self setupStackView];
     
     NSAssert( self.viewControllerToContain != nil, @"The contained view controller must be set before this view is loaded using `setContainedViewController:`" );
     
@@ -116,6 +89,40 @@ NS_ASSUME_NONNULL_BEGIN
     for (UIButton *button in self.buttonsForCaptureOptions)
     {
         button.userInteractionEnabled = NO;
+    }
+}
+
+#pragma mark - View setup
+
+- (void)setupStackView
+{    
+    if ( self.alternateCaptureOptions.count == 0 )
+    {
+        self.stackViewHeightConstraint.constant = 0;
+    }
+    else
+    {
+        NSMutableArray *buttonsForOptions = [[NSMutableArray alloc] init];
+        
+        // Create alternateOption buttons
+        for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
+        {
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            button.tintColor = [UIColor whiteColor];
+            button.backgroundColor = [UIColor blackColor];
+            [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [button setImage:alternateOption.icon forState:UIControlStateNormal];
+            [button setTitle:alternateOption.title forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(selectedAlternateOption:) forControlEvents:UIControlEventTouchUpInside];
+            button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+            button.translatesAutoresizingMaskIntoConstraints = NO;
+            // Move the image a bit to the left
+            button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+            [self.stackView addArrangedSubview:button];
+            [buttonsForOptions addObject:button];
+        }
+        self.buttonsForCaptureOptions = [NSArray arrayWithArray:buttonsForOptions];
+        self.stackView.distribution = OAStackViewDistributionFillEqually;
     }
 }
 

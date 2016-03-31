@@ -55,7 +55,7 @@ extension Forum {
         chatFeed?.setBottomInset(height ?? 0)
     }
     
-    func composer(composer: Composer, selectedCreationType creationType: VCreationType) {
+    func composer(composer: Composer, selectedCreationType creationType: VCreationFlowType) {
         creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: creationType)
     }
     

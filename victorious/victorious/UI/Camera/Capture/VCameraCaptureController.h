@@ -7,7 +7,7 @@
 //
 
 #import "VCameraCaptureVideoSize.h"
-#import "VCreationTypes.h"
+#import "VCreationFlowTypes.h"
 
 @class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 

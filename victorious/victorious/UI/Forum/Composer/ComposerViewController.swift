@@ -270,9 +270,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
-        let creationType = CreationTypeHelper.creationTypeForIdentifier(identifier)
-        if creationType != .Unknown {
-            delegate?.composer(self, selectedCreationType: creationType)
+        let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
+        if creationFlowType != .Unknown {
+            delegate?.composer(self, selectedCreationType: creationFlowType)
         } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) {
             switch composerInputAttachmentType {
             case .Hashtag:

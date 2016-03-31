@@ -41,7 +41,7 @@
                                                                                        dependencyManager:self.dependencyManager];
     [operation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
      {
-         VCreationType creationType = operation.chosenCreationType;
+         VCreationFlowType creationType = operation.chosenCreationType;
          [self.creationFlowPresenter presentWorkspaceOnViewController:originVC creationType:creationType];
      }];
     return NO;

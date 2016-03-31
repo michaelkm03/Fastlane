@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VCreationTypes.h"
+#import "VCreationFlowTypes.h"
 #import "VHasManagedDependencies.h"
 
 @class VImageCameraViewController;

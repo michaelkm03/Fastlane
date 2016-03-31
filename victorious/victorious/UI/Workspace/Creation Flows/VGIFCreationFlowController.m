@@ -101,10 +101,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         [options addObject:cameraOption];
     }
     
-    VAssetCollectionGridViewController *gridViewController = [self gridViewControllerWithDependencyManager:self.dependencyManager];
-    gridViewController.delegate = self;
-    
-    if ( gridViewController != nil )
+    if ( self.gridViewController != nil )
     {
         VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
                                                                                            icon:[UIImage imageNamed:@"contententry_galleryicon"]
