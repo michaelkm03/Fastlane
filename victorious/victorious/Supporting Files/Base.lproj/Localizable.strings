@@ -419,9 +419,7 @@
 "LEVEL" = "LEVEL";
 "TestAlertsViewControllerFooter" = "After you register an alert, go back to the stream or profile and pull to refresh. The alert should appear.";
 
-// Age Gate
 "Enter birthday before continuing" = "Please enter your birthday before continuing: ";
-"Legal Prompt on Age Gate" = "By continuing you are agreeing to our";
 
 "Dismiss Alert" = "Got It";
 
