@@ -10,24 +10,30 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Foumr's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
-    // MARK: - Forum protocol requirements
-    
-    var stage: Stage?
-    var composer: Composer?
-    var chatFeed: ChatFeed?
-    
-    var creationFlowPresenter: VCreationFlowPresenter? {
+    @IBOutlet private weak var stageContainer: UIView! {
         didSet {
-            creationFlowPresenter?.shouldShowPublishScreenForFlowController = false
+            stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
+            stageContainer.layer.shadowRadius = 8.0
+            stageContainer.layer.shadowOpacity = 0.75
+            stageContainer.layer.shadowOffset = CGSize(width:0, height:2)
         }
     }
     
-    var dependencyManager: VDependencyManager!
+    @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
+        didSet {
+            stageContainerHeight.constant = 0.0
+        }
+    }
     
-    var originViewController: UIViewController {
-        return self
+    @IBOutlet private weak var gradientView: VLinearGradientView! {
+        didSet {
+            // TOOD: Read colors from template, add to spec
+            gradientView.setColors( [UIColor.v_colorFromHexString("1a324c"), UIColor.v_colorFromHexString("151e27")] )
+            gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
+            gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
+        }
     }
     
     // MARK: - Initialization
@@ -35,32 +41,63 @@ class ForumViewController: UIViewController, Forum {
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
-        forumVC.creationFlowPresenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         return forumVC
+    }
+    
+    // MARK: - ForumEventSender
+    
+    var nextSender: ForumEventSender? //< Calling code just needs to set this to get messages propagated from composer.
+    
+    // MARK: - Forum protocol requirements
+    
+    var stage: Stage?
+    var composer: Composer?
+    var chatFeed: ChatFeed?
+    var dependencyManager: VDependencyManager!
+    
+    var originViewController: UIViewController {
+        return self
+    }
+    
+    func setStageHeight(value: CGFloat) {
+        stageContainerHeight.constant = value
+        view.layoutIfNeeded()
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
     
     // MARK: - UIViewController overrides
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        debug_startGeneratingMessages(interval: 3.0)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,
             target: self,
             action: Selector("onClose")
         )
         
-        self.title = dependencyManager.title
-        self.view.backgroundColor = dependencyManager.backgroundColor
+        updateStyle()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         
         let destination = segue.destinationViewController
+        
         if let stage = destination as? Stage {
-            stage.dependencyManager = dependencyManager
+            stage.dependencyManager = dependencyManager.stageDependency
             stage.delegate = self
             self.stage = stage
         
@@ -81,6 +118,21 @@ class ForumViewController: UIViewController, Forum {
     func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    private func updateStyle() {
+        guard isViewLoaded() else {
+            return
+        }
+        
+        title = dependencyManager.title
+        view.backgroundColor = dependencyManager.backgroundColor
+        let attributes = [ NSForegroundColorAttributeName : UIColor.whiteColor() ]
+        navigationController?.navigationBar.titleTextAttributes = attributes
+        navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
+        navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor
+        navigationController?.navigationBar.translucent = false
+        dependencyManager.addBackgroundToBackgroundHost(self)
+    }
 }
 
 private extension VDependencyManager {
@@ -89,8 +141,17 @@ private extension VDependencyManager {
         return stringForKey("title")
     }
     
+    var navigationItemColor: UIColor {
+        return colorForKey("color.navigationItem")
+    }
+    
     var backgroundColor: UIColor? {
         let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        return background?.backgroundColor
+    }
+    
+    var navigationBarBackgroundColor: UIColor? {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background.topBar") as? VSolidColorBackground
         return background?.backgroundColor
     }
     
@@ -100,5 +161,9 @@ private extension VDependencyManager {
     
     var composerDependency: VDependencyManager {
         return childDependencyForKey("composer")!
+    }
+    
+    var stageDependency: VDependencyManager {
+        return childDependencyForKey("stage")!
     }
 }

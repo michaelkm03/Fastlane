@@ -1,5 +1,5 @@
 //
-//  ForumNetworkingArchitecture.swift
+//  Forum.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/16/16.
@@ -51,7 +51,7 @@ extension Forum {
     func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia) {
         
     }
-        
+    
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectCreationType creationType: VCreationType) {
@@ -72,10 +72,6 @@ extension Forum {
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
         setComposerHeight(height)
         chatFeed?.setBottomInset(height)
-    }
-    
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
-        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: CreationTypeHelper.creationTypeForIdentifier(navigationItem.identifier))
     }
     
     // MARK: - StageDelegate

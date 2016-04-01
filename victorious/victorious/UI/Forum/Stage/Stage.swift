@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Stage: class {
+protocol Stage: class, ForumEventReceiver {
     
     weak var delegate: StageDelegate? { get set }
     
@@ -19,4 +19,9 @@ protocol Stage: class {
     
     /// Stops displaying the currently shown media.
     func stopPlayingMedia()
+}
+
+/// Conformers will recieve messages related to the stage resizing.
+protocol StageDelegate: class {
+    func stage(stage: Stage, didUpdateContentHeight size: CGFloat)
 }

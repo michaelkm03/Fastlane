@@ -16,7 +16,8 @@ class CreationTypeHelper: NSObject {
         "Create Video" : .Video,
         "Create Poll" : .Poll,
         "Create Text" : .Text,
-        "Create GIF" : .GIF]
+        "Create GIF" : .GIF
+    ]
     
     static func creationTypeForIdentifier(identifier: String) -> VCreationType {
         return creationTypes[identifier] ?? .Unknown

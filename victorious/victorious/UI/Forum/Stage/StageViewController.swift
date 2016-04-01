@@ -15,7 +15,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let contentHideAnimationDuration: NSTimeInterval = 0.5
-        static let fixedStageSize = CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0)
+        static let fixedStageHeight: CGFloat = 200.0
     }
     
     private struct InterruptMessageConstants {
@@ -42,7 +42,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     weak var delegate: StageDelegate?
     
     var dependencyManager: VDependencyManager!
-
     
     // MARK: UIViewController
     
@@ -51,7 +50,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         terminateInterrupterTimer()
     }
     
-
     //MARK: - Stage
     
     func startPlayingMedia(media: Stageable) {
@@ -69,27 +67,18 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         default:
             assertionFailure("Unknown stagable type: \(media)")
         }
+        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
     func stopPlayingMedia() {
         clearStageMedia()
     }
     
+    // MARK: - VVideoPlayerDelegate
     
-    // MARK: - VVideoPlayerDelegate 
-
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         switchToContentView(videoContentView, fromContentView: currentContentView)
         videoPlayer.playFromStart()
-    }
-    
-    
-    // MARK: - Private
-    
-    private func normalizeSize(size: CGSize) -> CGSize {
-        let normalizedHeight = min(size.height, Constants.fixedStageSize.height)
-        let normalizedSize = CGSize(width: Constants.fixedStageSize.width, height: normalizedHeight)
-        return normalizedSize
     }
     
     // MARK: Video
@@ -98,13 +87,18 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
         videoPlayer.useAspectFit = false
         videoPlayer.delegate = self
-        
+        videoPlayer.backgroundColor = UIColor.clearColor()
         containerView.addSubview(videoPlayer.view)
         containerView.v_addFitToParentConstraintsToSubview(videoPlayer.view)
         
         return videoPlayer
     }
-
+    
+    // MARK: - ForumEventReceiver {
+    
+    func receiveEvent(event: ForumEvent) {
+        
+    }
     
     // MARK: Video Asset
     
@@ -112,7 +106,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
         videoPlayer.setItem(videoItem)
     }
-
     
     // MARK: Image Asset
     
@@ -130,7 +123,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
     }
     
-    
     // MARK: Gif Playback
     
     private func addGifAsset(gifAsset: GifAsset) {
@@ -144,7 +136,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
     }
     
-
     // MARK: Interrupt Playback Timer
     
     @objc private func interruptPlayback(timer: NSTimer) {
@@ -162,7 +153,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         playbackInterrupterTimer = nil
     }
     
-    
     // MARK: Clear Media
     
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
@@ -174,18 +164,16 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
         currentContentView = newContentView
         
-        var contentSize = currentStagedMedia?.mediaMetaData.size ?? Constants.fixedStageSize
-        contentSize = normalizeSize(contentSize)
-        delegate?.stage(self, didUpdateContentSize: contentSize)
+        let height = currentStagedMedia?.mediaMetaData.size?.height ?? Constants.fixedStageHeight
+        let clampedHeight = min(height, Constants.fixedStageHeight)
+        delegate?.stage(self, didUpdateContentHeight: clampedHeight)
     }
     
     private func clearStageMedia() {
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
+            self.delegate?.stage(self, didUpdateContentHeight:0.0)
             self.view.layoutIfNeeded()
         }
-        delegate?.stage(self, didUpdateContentSize: CGSizeZero)
-        
-        videoPlayer.pause()
     }
 }
