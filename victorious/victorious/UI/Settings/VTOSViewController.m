@@ -19,7 +19,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"settings"
                                                          bundle:bundleForClass];
     VTOSViewController *termsOfServiceVC = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
-    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    termsOfServiceVC.title = NSLocalizedString(@"Terms of Service", @"");
     return termsOfServiceVC;
 }
 

@@ -73,7 +73,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
             }
             
             if let error = error {
-                let title = Strings.suscribeFailed
+                let title = Strings.subscriptionFailed
                 let message = error.localizedDescription
                 self.v_showErrorWithTitle(title, message: message)
             } else {
@@ -183,17 +183,16 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - String Constants
     
     private struct Strings {
-        static let legalPrompt              = NSLocalizedString("By subscring you are agreeing to our", comment:"")
-        static let privacyPolicy            = NSLocalizedString("privacy policy", comment:"")
-        static let termsOfService           = NSLocalizedString("terms of service", comment:"")
+        static let legalPrompt              = NSLocalizedString("SubscriptionLegalPrompt", comment:"")
+        static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment:"")
+        static let termsOfService           = NSLocalizedString("Terms of Service", comment:"")
         static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment:"")
-        static let purchaseSucceeded        = NSLocalizedString("Subscription complete!", comment:"")
-        static let restoreFailed            = NSLocalizedString("Failed to restore subcription.", comment:"")
-        static let restoreInProgress        = NSLocalizedString("Checking for subscription...", comment:"")
-        static let restorePrompt            = NSLocalizedString("Already subscribed?", comment:"")
-        static let restoreSucceeded         = NSLocalizedString("Subscription restored!", comment:"")
-        static let suscribeFailed           = NSLocalizedString("Subscription failed.", comment:"")
-        static let validationFailedTitle    = NSLocalizedString("Validation Failed", comment: "")
+        static let purchaseSucceeded        = NSLocalizedString("SubscriptionSucceeded", comment:"")
+        static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment:"")
+        static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment:"")
+        static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment:"")
+        static let restoreSucceeded         = NSLocalizedString("SubscriptionRestoreSucceeded", comment:"")
+        static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment:"")
     }
 }
 

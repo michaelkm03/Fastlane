@@ -226,7 +226,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showAgeGateViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self];
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self
+                                                                                                 dependencyManager:self.dependencyManager];
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 

@@ -10,10 +10,11 @@ import Foundation
 import UIKit
 
 extension VStreamCollectionViewController {
+    
     func showLegalInfoOptions() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
-        let tosAction = UIAlertAction(title: NSLocalizedString("ToSText", comment: ""),
+        let tosAction = UIAlertAction(title: NSLocalizedString("Terms of Service", comment: ""),
             style: .Default) { alertAction in
                 self.presentViewController(VTOSViewController.presentableTermsOfServiceViewController(),
                     animated: true,
@@ -21,9 +22,7 @@ extension VStreamCollectionViewController {
         }
         let privacyAction = UIAlertAction(title: NSLocalizedString("Privacy Policy", comment: ""),
             style: .Default) { alertAction in
-                self.presentViewController(VPrivacyPoliciesViewController.presentableTermsOfServiceViewControllerWithDependencyManager(self.dependencyManager),
-                    animated: true,
-                    completion: nil)
+                ShowPrivacyPolicyOperation(dependencyManager: self.dependencyManager!).queue()
         }
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""),
             style: .Cancel,

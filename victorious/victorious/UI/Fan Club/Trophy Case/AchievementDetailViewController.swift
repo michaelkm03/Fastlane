@@ -93,6 +93,8 @@ class AchievementDetailViewController: UIViewController {
                 self.alertView.transform = CGAffineTransformIdentity
                 self.alertView.alpha = 1.0
                 self.semiTransparentBackgroundButton.alpha = AnimationConstants.backgroundButtonAlpha
-            }, completion: nil)
+            },
+            completion: nil
+        )
     }
 }

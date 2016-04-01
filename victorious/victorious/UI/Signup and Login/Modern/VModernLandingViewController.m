@@ -101,9 +101,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     
     NSAttributedString *legalIntoText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"By signing up you are agreeing to our", nil)
                                                                         attributes:legalAttributes];
-    NSAttributedString *tosText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"terms of service", nil)
+    NSAttributedString *tosText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Terms of Service", nil)
                                                                   attributes:legalAttributesWithUnderline];
-    NSAttributedString *ppText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"privacy policy", nil)
+    NSAttributedString *ppText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Privacy Policy", nil)
                                                                  attributes:legalAttributesWithUnderline];
     self.legalIntroLabel.attributedText = legalIntoText;
     [self.termsOfServiceButton setAttributedTitle:tosText forState:UIControlStateNormal];
