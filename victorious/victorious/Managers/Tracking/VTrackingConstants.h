@@ -2,8 +2,8 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 07/09/15. 
-// Copyright (c) 2015 Victorious. All rights reserved. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 04/01/16. 
+// Copyright (c) 2016 Victorious. All rights reserved. 
 // 
 
 #import <Foundation/Foundation.h>
@@ -285,6 +285,7 @@ extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name assoc
 extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity associated with an event",
 extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend remote ID associated with an item",
 extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group.",
+extern NSString * const VTrackingKeyUserId; 
 extern NSString * const VTrackingKeyLoadTime; //< The amount of time between requesting something from the backend and receiving the first byte of the response.
 extern NSString * const VTrackingKeyPermissionName; 
 extern NSString * const VTrackingKeyPermissionState;
@@ -302,7 +303,6 @@ extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additiona
 extern NSString * const VTrackingKeyType;
 extern NSString * const VTrackingKeySubtype;
 extern NSString * const VTrackingKeyDuration; //< Milliseconds
-extern NSString * const VTrackingKeyUserId;
 
 // Tracking Event Values
 // ContentType values
