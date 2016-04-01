@@ -195,7 +195,7 @@
 - (void)testNetworkRequestResponseError
 {
     XCTAssertFalse( self.viewController.hasLoadedOnce );
-    [self.viewController hashtagsDidFailToLoadWithError:[[NSError alloc] init]];
+    [self.viewController hashtagsDidFailToLoadWithError:[[NSError alloc] initWithDomain:@"ReallyBadErrorDomain" code:99 userInfo:nil]];
     XCTAssertNotNil( self.viewController.error );
     XCTAssertEqual( self.viewController.trendingTags.count, (NSUInteger)0 );
     XCTAssert( self.viewController.hasLoadedOnce );

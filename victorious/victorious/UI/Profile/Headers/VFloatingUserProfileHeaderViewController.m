@@ -21,6 +21,8 @@
 
 static const CGFloat kBlurredWhiteAlpha = 0.5f;
 static const CGFloat kFloatProfileImageSize = 57.0f;
+static const CGFloat kTrophyButtonLeftMargin = 5.0f;
+static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of user profile image view on static profile header
 
 @interface VFloatingUserProfileHeaderViewController ()
 
@@ -79,6 +81,14 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 - (CGFloat)preferredHeight
 {
     return 374.0f;
+}
+
+- (void)addTrophyCaseButton:(UIButton *)button
+{
+    [self.view addSubview:button];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:kTrophyButtonTopMargin].active = YES;
+    [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
 }
 
 - (VDefaultProfileImageView *)profileImageView

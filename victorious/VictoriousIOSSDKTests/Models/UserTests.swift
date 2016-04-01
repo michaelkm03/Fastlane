@@ -31,10 +31,10 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.numberOfFollowers, Int(15))
         
         if let previewImageAssets = user.previewImageAssets where previewImageAssets.count == 2 {
-            XCTAssertEqual(previewImageAssets[0].url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
-            XCTAssertEqual(previewImageAssets[0].size, CGSize(width: 80, height: 80))
-            XCTAssertEqual(previewImageAssets[1].url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
-            XCTAssertEqual(previewImageAssets[1].size, CGSize(width: 100, height: 100))
+            XCTAssertEqual(previewImageAssets[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
+            XCTAssertEqual(previewImageAssets[0].mediaMetaData.size, CGSize(width: 80, height: 80))
+            XCTAssertEqual(previewImageAssets[1].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
+            XCTAssertEqual(previewImageAssets[1].mediaMetaData.size, CGSize(width: 100, height: 100))
         } else {
             XCTFail("Expected 2 image assets in the avatar property")
         }

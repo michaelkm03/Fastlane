@@ -31,6 +31,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureAudioDataOutput *audioOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong, readwrite) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, readwrite) int32_t maxOutputSideLength;
 
 @end
 
@@ -410,14 +411,20 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)setVideoOrientation:(UIDeviceOrientation)orientation
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void)
-                   {
-                       AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
-                       if (videoConnection)
-                       {
-                           [videoConnection v_applyDeviceOrientation:orientation];
-                       }
-                   });
+    // videoOutput must be accessed from the session queue, but the orientation must be set on the main queue to avoid
+    // freezing the app.
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+
+        if (videoConnection)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [videoConnection v_applyDeviceOrientation:orientation];
+            });
+        }
+    });
 }
 
 #pragma mark -
@@ -430,6 +437,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         [self.captureSession addInput:input];
         self.videoInput = input;
+        self.maxOutputSideLength = CMVideoFormatDescriptionGetDimensions(device.activeFormat.formatDescription).width;
         return YES;
     }
 

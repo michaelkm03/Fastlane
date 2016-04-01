@@ -24,7 +24,6 @@
 #import "NSURL+MediaType.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
-#import "VVideoSettings.h"
 #import "UIColor+VHex.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>

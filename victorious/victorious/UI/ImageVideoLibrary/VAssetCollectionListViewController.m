@@ -11,6 +11,7 @@
 #import "VAssetGroupTableViewCell.h"
 #import "VCollectionListPresentationController.h"
 #import "VScaleAnimator.h"
+#import "victorious-swift.h"
 
 @import Photos;
 
@@ -258,10 +259,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
-        if ( mediaType != PHAssetMediaTypeUnknown )
-        {
-            assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
-        }
+        assetFetchOptions.predicate = [NSPredicate predicateWithAssetMediaType:mediaType];
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
         // We're going to add appropriate collections and fetch requests to these arrays

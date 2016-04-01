@@ -20,8 +20,6 @@
 @import SDWebImage;
 @import KVOController;
 
-static const NSInteger kTrophyButtonLeftMargin = 5.0f;
-
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -94,10 +92,7 @@ static const NSInteger kTrophyButtonLeftMargin = 5.0f;
 
 - (void)addTrophyCaseButton:(UIButton *)button
 {
-    [self.view addSubview:button];
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button.topAnchor constraintEqualToAnchor:self.profileImageView.topAnchor].active = YES;
-    [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
+    // Implement in subclasses
 }
 
 #pragma mark - VBackgroundContainer
