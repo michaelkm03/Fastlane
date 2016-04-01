@@ -60,7 +60,7 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
     }];
     
     NSNumber *userID = [[VCurrentUser user] remoteId];
-    [trackingLogComponents addObject:[NSString stringWithFormat:@"%@: %@", VTrackingKeyUserId, userID]];
+    [trackingLogComponents addObject:[NSString stringWithFormat:@"%@: %@", VTrackingKeyUserID, userID]];
     
     /**
      This lines up tracking logs like this:
