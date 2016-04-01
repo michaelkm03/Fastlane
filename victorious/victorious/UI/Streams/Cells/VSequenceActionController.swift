@@ -359,7 +359,8 @@ import Foundation
     }
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let userItem = VActionItem.userActionItemUserWithTitle(sequence.user.name, user: sequence.user, detailText: "")
+        let name = sequence.user.name ?? ""
+        let userItem = VActionItem.userActionItemUserWithTitle(name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {
                 self.showProfileWithRemoteId(sequence.user.remoteId.integerValue)
