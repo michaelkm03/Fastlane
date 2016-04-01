@@ -1908,8 +1908,8 @@
 		F04CDB9E1C85488200696ADA /* BlockUserRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04CDB9A1C85465100696ADA /* BlockUserRemoteOperationTests.swift */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
-		F050D3421CAEE8E4007A05ED /* NSPredicate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3411CAEE8E4007A05ED /* NSPredicate+Initializers.swift */; };
 		F050D3441CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3431CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift */; };
+		F050D3461CAEF69D007A05ED /* NSPredicate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+Initializers.swift */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
 		F059A0031B852D1800037BC8 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F059A0021B852D1800037BC8 /* Shelf.swift */; };
@@ -4718,8 +4718,8 @@
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
-		F050D3411CAEE8E4007A05ED /* NSPredicate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Initializers.swift"; sourceTree = "<group>"; };
 		F050D3431CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+InitializersTests.swift"; sourceTree = "<group>"; };
+		F050D3451CAEF69D007A05ED /* NSPredicate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Initializers.swift"; sourceTree = "<group>"; };
 		F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedUserRetryCell.h; sourceTree = "<group>"; };
 		F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedUserRetryCell.m; sourceTree = "<group>"; };
 		F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedUserRetryCell.xib; sourceTree = "<group>"; };
@@ -8200,6 +8200,7 @@
 		A789F7251BF11F4900F5C87B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F050D3451CAEF69D007A05ED /* NSPredicate+Initializers.swift */,
 				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
 				5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */,
 				79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */,
@@ -8530,7 +8531,6 @@
 			isa = PBXGroup;
 			children = (
 				79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */,
-				F050D3411CAEE8E4007A05ED /* NSPredicate+Initializers.swift */,
 				A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */,
 				A700330E1C5FEA1800AB4A57 /* VComment+Equitable.swift */,
 				79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */,
@@ -12022,6 +12022,7 @@
 				A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */,
 				F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */,
 				A7C822041C65563C00C9CE0D /* VStreamItemPointer+Parsable.swift in Sources */,
+				F050D3461CAEF69D007A05ED /* NSPredicate+Initializers.swift in Sources */,
 				A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */,
 				A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
@@ -12642,7 +12643,6 @@
 				A6E104D31B56C88D0062392A /* VPublishSaveCollectionViewCell.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
-				F050D3421CAEE8E4007A05ED /* NSPredicate+Initializers.swift in Sources */,
 				BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */,
 				C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */,
 				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,

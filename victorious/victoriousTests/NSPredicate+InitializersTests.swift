@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import victorious
 
 class NSPredicate_InitializersTests: XCTestCase {
 
