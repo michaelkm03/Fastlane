@@ -50,6 +50,35 @@ static NSString * const kMixedMediaTitleKey = @"mixedMediaTitle";
 
 @end
 
+// MARK: - Private dependency manager value accessors
+
+@interface VDependencyManager (localProperties)
+
+- (NSString *)titleTextForMediaType:(PHAssetMediaType)mediaType;
+
+@end
+
+@implementation VDependencyManager (localProperties)
+
+- (NSString *)titleTextForMediaType:(PHAssetMediaType)mediaType
+{
+    switch (mediaType)
+    {
+        case PHAssetMediaTypeImage:
+            return [self stringForKey:kImageTitleKey];
+        case PHAssetMediaTypeVideo:
+            return [self stringForKey:kVideoTitleKey];
+        case PHAssetMediaTypeUnknown:
+            return [self stringForKey:kMixedMediaTitleKey];
+        default:
+            return nil;
+    }
+}
+
+@end
+
+// MARK: - Class implementation
+
 @implementation VAssetCollectionGridViewController
 
 #pragma mark - Lifecycle Methods
@@ -222,25 +251,10 @@ static NSString * const kMixedMediaTitleKey = @"mixedMediaTitle";
     self.assetDataSource.delegate = self;
 }
 
-- (NSString *)titleText
-{
-    switch (self.mediaType)
-    {
-        case PHAssetMediaTypeImage:
-            return [self.dependencyManager stringForKey:kImageTitleKey];
-        case PHAssetMediaTypeVideo:
-            return [self.dependencyManager stringForKey:kVideoTitleKey];
-        case PHAssetMediaTypeUnknown:
-            return [self.dependencyManager stringForKey:kMixedMediaTitleKey];
-        default:
-            return nil;
-    }
-}
-
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {   
     self.folderButton = [VLibraryFolderControl newFolderControl];
-    NSString *titleText = [self titleText];
+    NSString *titleText = [self.dependencyManager titleTextForMediaType:self.mediaType];
     self.folderButton.attributedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:nil];
     self.folderButton.attributedSubtitle = nil;
     [self.folderButton addTarget:self action:@selector(selectedFolderPicker:) forControlEvents:UIControlEventTouchUpInside];
