@@ -61,7 +61,7 @@
         
         [self addVideoPlayerView:_videoPlayer.view];
         
-        _videoSettings = [[VVideoSettings alloc] init];
+        [self updateBackgroundColorAnimated:NO];
     }
     return self;
 }
@@ -130,7 +130,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.shouldAutoplay = sequence.firstNode.mp4Asset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+    self.shouldAutoplay = sequence.firstNode.mp4Asset.streamAutoplay.boolValue;
     self.videoPlayer.view.hidden = !self.shouldAutoplay;
     
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
@@ -159,7 +159,6 @@
         __strong typeof(self) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
-            [strongSelf determinePreferredBackgroundColorWithImage:image];
             strongSelf.readyForDisplay = YES;
         }
     };
@@ -188,35 +187,6 @@
      }];
 }
 
-- (void)determinePreferredBackgroundColorWithImage:(UIImage *)image
-{
-    CGFloat imageAspect = image == nil ? 0 : image.size.width / image.size.height;
-    [self determinePreferredBackgroundColorWithContentAspectRatio:imageAspect lockBackgroundColor:NO];
-}
-
-- (void)determinePreferredBackgroundColorWithContentAspectRatio:(CGFloat)aspectRatio lockBackgroundColor:(BOOL)lockBackgroundColor
-{
-    if ( CGRectEqualToRect(self.bounds, CGRectZero) )
-    {
-        return;
-    }
-    
-    if ( !self.hasDeterminedPreferredBackgroundColor )
-    {
-        CGFloat containerAspect = CGRectGetWidth(self.bounds) / CGRectGetHeight(self.bounds);
-        
-        //If we'll show ANY empty space around the content, use our preferred background color
-        self.usePreferredBackgroundColor = aspectRatio != containerAspect;
-        [self updateBackgroundColorAnimated:NO];
-        if ( lockBackgroundColor )
-        {
-            //We've determined the background color based on the aspect ratio of the video,
-            //we don't need to update it anymore.
-            self.hasDeterminedPreferredBackgroundColor = YES;
-        }
-    }
-}
-
 - (void)loadVideoAsset
 {
     self.videoAsset = [self.sequence.firstNode mp4Asset];
@@ -227,22 +197,10 @@
     [self.videoPlayer setItem:item];
 }
 
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    if ( self.hasDeterminedPreferredBackgroundColor )
-    {
-        //We've determined our preferred background color based on a bounds that no longer represents the bounds of the container. Update it.
-        self.hasDeterminedPreferredBackgroundColor = NO;
-        [self determinePreferredBackgroundColorWithContentAspectRatio:self.videoPlayer.aspectRatio lockBackgroundColor:YES];
-    }
-}
-
 #pragma mark - VVideoPlayerDelegate
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    [self determinePreferredBackgroundColorWithContentAspectRatio:[self.videoPlayer aspectRatio] lockBackgroundColor:YES];
     if ( self.focusType == VFocusTypeDetail )
     {
         [self.videoPlayer playFromStart];

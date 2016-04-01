@@ -5,6 +5,22 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "03314F241BE3E2DF00EE74FD"
+               BuildableName = "VictoriousIOSSDKTests.xctest"
+               BlueprintName = "VictoriousIOSSDKTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -13,16 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03314F241BE3E2DF00EE74FD"
-               BuildableName = "VictoriousIOSSDKTests.xctest"
-               BlueprintName = "VictoriousIOSSDKTests"
-               ReferencedContainer = "container:victorious.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <AdditionalOptions>
       </AdditionalOptions>

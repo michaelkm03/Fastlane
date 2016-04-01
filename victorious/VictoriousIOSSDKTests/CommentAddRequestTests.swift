@@ -42,11 +42,21 @@ class CommentAddRequestTests: XCTestCase {
     }
     
     func testMediaRequest() {
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("test_image", withExtension: "png") else {
+            XCTFail("Error reading mock image")
+            return
+        }
+        
         let params = Comment.CreationParameters(
             text: nil,
             sequenceID: "17100",
             replyToCommentID: nil,
-            mediaAttachment: nil,
+            mediaAttachment: MediaAttachment(
+                url: mockUserDataURL,
+                type:.Image,
+                thumbnailURL: mockUserDataURL,
+                size: CGSize(width: 100.0, height: 100.0)
+            ),
             realtimeAttachment: nil
         )
         let request = CommentAddRequest(creationParameters: params)!

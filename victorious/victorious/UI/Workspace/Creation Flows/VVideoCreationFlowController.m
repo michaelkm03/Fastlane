@@ -142,6 +142,7 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
     // We only care if it's the top of the stack.
     if ([self.viewControllers lastObject] == videoCamera)
     {
+        self.source = VCreationFlowSourceCamera;
         self.currentVideoLength = videoCamera.totalTimeRecorded;
         [self captureFinishedWithMediaURL:url
                              previewImage:previewImage];

@@ -214,11 +214,16 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     
     if (!self.audioInput && !isVideo)
     {
+        if ( connection.supportsVideoStabilization )
+        {
+            [connection setPreferredVideoStabilizationMode:AVCaptureVideoStabilizationModeAuto];
+        }
         NSDictionary *videoSettings = @{ AVVideoCodecKey: AVVideoCodecH264,
                                          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
                                          AVVideoWidthKey: @(self.videoSize.width),
                                          AVVideoHeightKey: @(self.videoSize.height),
                                     };
+        
         self.videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSettings];
         self.videoInput.expectsMediaDataInRealTime = YES;
         [self.writer addInput:self.videoInput];
@@ -229,7 +234,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         NSDictionary *audioSettings = @{ AVFormatIDKey: @(kAudioFormatMPEG4AAC),
                                          AVNumberOfChannelsKey: @(audioStreamDescription->mChannelsPerFrame),
                                          AVSampleRateKey: @(audioStreamDescription->mSampleRate),
-                                         AVEncoderBitRateKey: @(64000)
                                     };
         self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioSettings];
         self.audioInput.expectsMediaDataInRealTime = YES;

@@ -23,7 +23,6 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("FriendFindBySocialNetworkFinished")
         
         operation.queue() { results, error, cancelled in
-            expectation.fulfill()
             
             XCTAssertNil(error)
             guard let firstResult = results?.first as? VUser,
@@ -32,6 +31,7 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
                     return
             }
             XCTAssertEqual(remoteId, self.testUserID)
+            expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)

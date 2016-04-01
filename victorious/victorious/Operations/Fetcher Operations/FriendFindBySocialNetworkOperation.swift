@@ -30,13 +30,14 @@ class FriendFindBySocialNetworkOperation: RemoteFetcherOperation, RequestOperati
     
     func onComplete( results: [User] ) {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            self.resultObjectIDs = results.flatMap {
+            let persistentUsers: [VUser] = results.flatMap {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId" : $0.userID])
                 persistentUser.populate(fromSourceModel: $0)
-                return persistentUser.objectID
+                return persistentUser
             }
             context.v_save()
             
+            self.resultObjectIDs = persistentUsers.flatMap { $0.objectID }
             self.results = self.fetchResults()
         }
     }

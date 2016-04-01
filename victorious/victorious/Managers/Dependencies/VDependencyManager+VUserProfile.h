@@ -43,11 +43,6 @@ extern NSString * const VDependencyManagerTrophyCaseScreenKey;
  */
 - (nullable UIViewController<VUserProfileHeader> *)userProfileHeaderWithUser:(VUser *)user;
 
-/**
- Returns
- */
-- (nullable TrophyCaseViewController *)trophyCaseViewController;
-
 @end
 
 NS_ASSUME_NONNULL_END

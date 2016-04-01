@@ -12,7 +12,7 @@ import Foundation
 class TestAlertsViewController: UITableViewController {
     
     private enum Indexes: Int {
-        case LevelUp = 0, Achievement = 1
+        case LevelUp = 0, Achievement = 1, StatusUpdate = 2
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -23,11 +23,13 @@ class TestAlertsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
         if indexPath.row == Indexes.LevelUp.rawValue {
             InterstitialManager.sharedInstance.debug_registerTestLevelUpAlert()
-        }
-        else if indexPath.row == Indexes.Achievement.rawValue {
+        } else if indexPath.row == Indexes.Achievement.rawValue {
             InterstitialManager.sharedInstance.debug_registerTestAchievementAlert()
+        } else if indexPath.row == Indexes.StatusUpdate.rawValue {
+            InterstitialManager.sharedInstance.debug_registerTestStatusUpdateAlert()
         }
     }
     
