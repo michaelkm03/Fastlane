@@ -1988,7 +1988,7 @@
 		F0BD811D1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD811C1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift */; };
 		F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */; };
 		F0BD81271C9A18020062D079 /* CreationFlowTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD81261C9A18020062D079 /* CreationFlowTypeHelper.swift */; };
-		F0BD812B1C9B645F0062D079 /* CreationTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812A1C9B645F0062D079 /* CreationTypeHelperTests.swift */; };
+		F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */; };
 		F0BD812D1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */; };
 		F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */; };
 		F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */; };
@@ -4848,7 +4848,7 @@
 		F0BD811C1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionBarFlexibleSpaceItem.swift; sourceTree = "<group>"; };
 		F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarDelegate.swift; sourceTree = "<group>"; };
 		F0BD81261C9A18020062D079 /* CreationFlowTypeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationFlowTypeHelper.swift; sourceTree = "<group>"; };
-		F0BD812A1C9B645F0062D079 /* CreationTypeHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationTypeHelperTests.swift; sourceTree = "<group>"; };
+		F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationFlowTypeHelperTests.swift; sourceTree = "<group>"; };
 		F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarButtonTests.swift; sourceTree = "<group>"; };
 		F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamContentCellFactory.swift; sourceTree = "<group>"; };
 		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
@@ -8813,7 +8813,7 @@
 				79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */,
 				F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */,
 				A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */,
-				F0BD812A1C9B645F0062D079 /* CreationTypeHelperTests.swift */,
+				F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */,
 				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */,
@@ -12829,7 +12829,7 @@
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
 				F050D3441CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift in Sources */,
 				A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */,
-				F0BD812B1C9B645F0062D079 /* CreationTypeHelperTests.swift in Sources */,
+				F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */,
 				03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
 				A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */,
