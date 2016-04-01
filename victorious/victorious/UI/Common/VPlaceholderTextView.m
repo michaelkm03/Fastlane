@@ -156,7 +156,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     self.placeholderTextView.textContainerInset = textContainerInset;
 }
 
-- (CGFloat)placeholderTextHeight
+- (CGFloat)calculatePlaceholderTextHeight
 {
     CGFloat textHeight = CGRectGetHeight([self.placeholderText boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
                                                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading

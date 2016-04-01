@@ -105,6 +105,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.updateViewsForNewVisibleKeyboardHeight(0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
     }
     
+    private var shouldCollapseToOneLine: Bool {
+        return dependencyManager.collapseOnKeyboardDismissal && visibleKeyboardHeight == 0
+    }
+    
     // MARK: - Composer
     
     var maximumTextInputHeight = Constants.defaultMaximumTextInputHeight
@@ -178,7 +182,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func updateLabelVisibility() {
         
-        let shouldCollapseToOneLine = dependencyManager.collapseOnKeyboardDismissal && visibleKeyboardHeight == 0
         let showLabel = shouldCollapseToOneLine && textViewHasText
         textView.hidden = showLabel
         singleLineLabel.hidden = !showLabel
@@ -193,8 +196,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.attachmentContainerHeightConstraint.constant = desiredAttachmentContainerHeight
         }
         
-        var desiredTextViewHeight = textView.placeholderTextHeight
-        let shouldCollapseToOneLine = dependencyManager.collapseOnKeyboardDismissal && visibleKeyboardHeight == 0
+        var desiredTextViewHeight = textView.calculatePlaceholderTextHeight()
         if !shouldCollapseToOneLine && textViewHasText {
             let textHeight = min(ceil(textView.contentSize.height), maximumTextInputHeight)
             desiredTextViewHeight = max(textHeight, desiredTextViewHeight)

@@ -15,9 +15,9 @@
 
 - (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor;
 - (void)setPlaceholderFont:(UIFont *)font;
+- (CGFloat)calculatePlaceholderTextHeight;
 
 @property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
 @property (nonatomic, assign) CGFloat lineFragmentPadding;
-@property (nonatomic, readonly) CGFloat placeholderTextHeight;
 
 @end
