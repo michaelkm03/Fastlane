@@ -29,7 +29,7 @@ import Foundation
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
     func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions)
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions, parameters: [VTrackingKeySequenceId : sequence.remoteId])
         
         let actionSheetViewController = VActionSheetViewController()
         actionSheetViewController.dependencyManager = dependencyManager

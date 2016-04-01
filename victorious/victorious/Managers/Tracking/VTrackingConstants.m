@@ -2,8 +2,8 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 07/09/15. 
-// Copyright (c) 2015 Victorious. All rights reserved. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 04/01/16. 
+// Copyright (c) 2016 Victorious. All rights reserved. 
 // 
 
 #import "VTrackingConstants.h"
@@ -279,7 +279,7 @@ NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyCount = @"Count";
 NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
-NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
+NSString * const VTrackingKeyUserID = @"UserID";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
 NSString * const VTrackingKeyPermissionName = @"PermissionName";
 NSString * const VTrackingKeyPermissionState = @"PermissionState";
