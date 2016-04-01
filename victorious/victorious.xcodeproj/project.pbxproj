@@ -3468,7 +3468,6 @@
 		A72C85F61C977FF500E97D4F /* CreateMediaUploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMediaUploadOperation.swift; sourceTree = "<group>"; };
 		A72C85F71C977FF500E97D4F /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperation.swift; sourceTree = "<group>"; };
 		A72C85F81C977FF500E97D4F /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostOperation.swift; sourceTree = "<group>"; };
-		A72C86921C9797E200E97D4F /* ShowForumOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowForumOperation.swift; sourceTree = "<group>"; };
 		A72C86961C98D43F00E97D4F /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicator.swift; sourceTree = "<group>"; };
 		A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewReceiver.swift; sourceTree = "<group>"; };
 		A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
@@ -7505,7 +7504,7 @@
 				A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */,
 				A72C85B11C977FF500E97D4F /* ShowCommentsOperation.swift */,
 				A72C85B21C977FF500E97D4F /* ShowCreateSheetOperation.swift */,
-				A72C86921C9797E200E97D4F /* ShowForumOperation.swift */,
+				A72C85B31C977FF500E97D4F /* ShowForumOperation.swift */,
 				A72C85B41C977FF500E97D4F /* ShowLikersOperation.swift */,
 				A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */,
 				A72C85B61C977FF500E97D4F /* ShowMediaContentOperation.swift */,
@@ -7516,7 +7515,6 @@
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
 				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
-				A72C85B31C977FF500E97D4F /* ShowForumOperation.swift */,
 			);
 			path = "Main Queue Operations";
 			sourceTree = "<group>";
