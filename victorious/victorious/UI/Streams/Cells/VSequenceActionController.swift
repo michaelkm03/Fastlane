@@ -319,7 +319,7 @@ import Foundation
     
     private func repostActionItem(forSequence sequence: VSequence, loadingBlock: (VActionItem)->() ) -> VActionItem {
         let hasReposted = sequence.hasReposted.boolValue
-        let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Resposted", comment: "") : NSLocalizedString("Repost", comment: "")
+        let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Reposted", comment: "") : NSLocalizedString("Repost", comment: "")
         
         let repostItem = VActionItem.defaultActionItemWithTitle(localizedRepostRepostedText,
             actionIcon: UIImage(named: "icon_repost"),

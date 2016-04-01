@@ -64,13 +64,6 @@ class MediaSearchExporter {
                 return
             }
             
-            let previewImage: UIImage? = {
-                if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
-                    return UIImage(data: previewImageData)
-                }
-                return nil
-            }()
-            
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(location, toURL: self.downloadURL)
             } catch {
@@ -82,6 +75,21 @@ class MediaSearchExporter {
                 }
                 return
             }
+            
+            let previewImage: UIImage? = {
+                
+                if let response = response,
+                    let mimeType = response.MIMEType where mimeType.hasPrefix("image/") {
+                        if let data = NSData(contentsOfURL: self.downloadURL) {
+                            return UIImage(data: data)
+                        }
+                }
+                
+                if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
+                    return UIImage(data: previewImageData)
+                }
+                return nil
+            }()
             
             // Dispatch back to main thread for completion
             dispatch_async( dispatch_get_main_queue() ) {

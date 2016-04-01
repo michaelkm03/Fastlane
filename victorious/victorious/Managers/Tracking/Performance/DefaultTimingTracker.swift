@@ -55,6 +55,13 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         self.activeEvents.removeAll()
     }
     
+    func resetAllEvents(type type: String) {
+        let existing = self.activeEvents.filter({ $0.type == type })
+        for event in existing {
+            self.activeEvents.remove( event )
+        }
+    }
+    
     func resetEvent(type type: String) {
         if let existing = self.activeEvents.lazy.filter({ $0.type == type }).first {
             self.activeEvents.remove( existing )
