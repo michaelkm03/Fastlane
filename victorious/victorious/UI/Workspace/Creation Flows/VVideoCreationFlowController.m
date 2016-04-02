@@ -62,11 +62,6 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
                             withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
 }
 
-- (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
-{
-    // do nothing for videos
-}
-
 - (void)configurePublishParameters:(VPublishParameters *)publishParameters
                      withWorkspace:(VWorkspaceViewController *)workspace
 {

@@ -29,6 +29,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 
 static NSString * const kImageTitleKey = @"imageTitle";
 static NSString * const kVideoTitleKey = @"videoTitle";
+static NSString * const kMixedMediaTitleKey = @"mixedMediaTitle";
 
 @interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
@@ -39,7 +40,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, strong) VAssetCollectionGridDataSource *assetDataSource;
 @property (nonatomic, strong) VAssetCollectionUnauthorizedDataSource *unauthorizedDataSource;
-@property (nonatomic, strong) VNoAssetsDataSource *noAssetsDatSource;
+@property (nonatomic, strong) VNoAssetsDataSource *noAssetsDataSource;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
 @property (nonatomic, strong) VLibraryFolderControl *folderButton;
@@ -48,6 +49,35 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
+
+// MARK: - Private dependency manager value accessors
+
+@interface VDependencyManager (localProperties)
+
+- (NSString *)titleTextForMediaType:(PHAssetMediaType)mediaType;
+
+@end
+
+@implementation VDependencyManager (localProperties)
+
+- (NSString *)titleTextForMediaType:(PHAssetMediaType)mediaType
+{
+    switch (mediaType)
+    {
+        case PHAssetMediaTypeImage:
+            return [self stringForKey:kImageTitleKey];
+        case PHAssetMediaTypeVideo:
+            return [self stringForKey:kVideoTitleKey];
+        case PHAssetMediaTypeUnknown:
+            return [self stringForKey:kMixedMediaTitleKey];
+        default:
+            return nil;
+    }
+}
+
+@end
+
+// MARK: - Class implementation
 
 @implementation VAssetCollectionGridViewController
 
@@ -63,7 +93,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
     gridViewController.mediaType = [[dependencyManager numberForKey:VAssetCollectionGridViewControllerMediaType] integerValue];
     gridViewController.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:dependencyManager];
     gridViewController.listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:gridViewController.mediaType];
-    gridViewController.noAssetsDatSource = [[VNoAssetsDataSource alloc] initWithMediaType:gridViewController.mediaType];
+    gridViewController.noAssetsDataSource = [[VNoAssetsDataSource alloc] initWithMediaType:gridViewController.mediaType];
     return gridViewController;
 }
 
@@ -126,7 +156,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
     {
         [self.activityIndicator stopAnimating];
         self.collectionView.alpha = 1.0f;
-        [self setCollectionViewDataSourceTo:self.noAssetsDatSource];
+        [self setCollectionViewDataSourceTo:self.noAssetsDataSource];
         return;
     }
     
@@ -224,7 +254,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {   
     self.folderButton = [VLibraryFolderControl newFolderControl];
-    NSString *titleText = (self.mediaType == PHAssetMediaTypeImage) ? [self.dependencyManager stringForKey:kImageTitleKey] : [self.dependencyManager stringForKey:kVideoTitleKey];
+    NSString *titleText = [self.dependencyManager titleTextForMediaType:self.mediaType];
     self.folderButton.attributedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:nil];
     self.folderButton.attributedSubtitle = nil;
     [self.folderButton addTarget:self action:@selector(selectedFolderPicker:) forControlEvents:UIControlEventTouchUpInside];

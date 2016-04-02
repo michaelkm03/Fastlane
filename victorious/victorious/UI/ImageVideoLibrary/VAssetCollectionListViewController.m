@@ -11,6 +11,7 @@
 #import "VAssetGroupTableViewCell.h"
 #import "VCollectionListPresentationController.h"
 #import "VScaleAnimator.h"
+#import "victorious-swift.h"
 
 @import Photos;
 
@@ -53,7 +54,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     VAssetCollectionListViewController *listViewController = [storyboardForClass instantiateInitialViewController];
     listViewController.transitioningDelegate = listViewController;
     listViewController.modalPresentationStyle = UIModalPresentationCustom;
-    if (mediaType == PHAssetMediaTypeImage || mediaType == PHAssetMediaTypeVideo)
+    if ( mediaType != PHAssetMediaTypeAudio )
     {
         listViewController.mediaType = mediaType;
     }
@@ -258,7 +259,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
-        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+        assetFetchOptions.predicate = [NSPredicate predicateWithAssetMediaType:mediaType];
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
         // We're going to add appropriate collections and fetch requests to these arrays
@@ -330,7 +331,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
     self.animator.presenting = NO;
-    return self.animator;;
+    return self.animator;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source

@@ -20,6 +20,9 @@ static NSString * const kGIFCreationFlowKey = @"gifCreateFlow";
 static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 static NSString * const kPollCreateFlow = @"pollCreateFlow";
 static NSString * const kTextCreateFlow = @"textCreateFlow";
+static NSString * const kLibraryCreateFlow = @"libraryCreateFlow";
+static NSString * const kMixedMediaCameraFlow = @"mixedMediaCameraFlow";
+static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
@@ -36,33 +39,45 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     return self;
 }
 
-- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationFlowType:(VCreationFlowType)creationFlowType
 {
     self.viewControllerPresentedOn = originViewController;
     
-    switch (creationType)
+    switch (creationFlowType)
     {
-        case VCreationTypeImage:
+        case VCreationFlowTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
             [self presentCreateFlowWithKey:kImageCreationFlowKey];
             break;
-        case VCreationTypeVideo:
+        case VCreationFlowTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
             [self presentCreateFlowWithKey:kVideoCreateFlow];
             break;
-        case VCreationTypeText:
+        case VCreationFlowTypeText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
             [self presentCreateFlowWithKey:kTextCreateFlow];
             break;
-        case VCreationTypeGIF:
+        case VCreationFlowTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
             [self presentCreateFlowWithKey:kGIFCreationFlowKey];
             break;
-        case VCreationTypePoll:
+        case VCreationFlowTypePoll:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
             [self presentCreateFlowWithKey:kPollCreateFlow];
             break;
-        case VCreationTypeUnknown:
+        case VCreationFlowTypeLibrary:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromLibrarySelected];
+            [self presentCreateFlowWithKey:kLibraryCreateFlow];
+            break;
+        case VCreationFlowTypeMixedMediaCamera:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromMixedMediaCameraSelected];
+            [self presentCreateFlowWithKey:kMixedMediaCameraFlow];
+            break;
+        case VCreationFlowTypeNativeCamera:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromNativeCameraSelected];
+            [self presentCreateFlowWithKey:kNativeCameraFlow];
+            break;
+        case VCreationFlowTypeUnknown:
             break;
     }
 }

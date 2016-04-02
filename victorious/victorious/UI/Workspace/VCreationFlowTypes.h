@@ -1,5 +1,5 @@
 //
-//  VCreationTypes.h
+//  VCreationFlowTypes.h
 //  victorious
 //
 //  Created by Michael Sena on 6/24/15.
@@ -12,14 +12,17 @@
 /**
  *  The creaiton types that the app is prepared to handle.
  */
-typedef NS_ENUM(NSInteger, VCreationType)
+typedef NS_ENUM(NSInteger, VCreationFlowType)
 {
-    VCreationTypeImage,
-    VCreationTypeVideo,
-    VCreationTypePoll,
-    VCreationTypeText,
-    VCreationTypeGIF,
-    VCreationTypeUnknown
+    VCreationFlowTypeImage,
+    VCreationFlowTypeVideo,
+    VCreationFlowTypePoll,
+    VCreationFlowTypeText,
+    VCreationFlowTypeGIF,
+    VCreationFlowTypeLibrary,
+    VCreationFlowTypeMixedMediaCamera,
+    VCreationFlowTypeNativeCamera,
+    VCreationFlowTypeUnknown
 };
 
 /**
@@ -30,7 +33,7 @@ typedef NS_ENUM(NSInteger, VCameraContext)
     VCameraContextProfileImage,
     VCameraContextProfileImageRegistration,
     VCameraContextImageContentCreation,
-    VCameraContextVideoContentCreation,
+    VCameraContextVideoContentCreation
 };
 
 #endif

@@ -34,11 +34,29 @@
     return 1;
 }
 
+- (NSString *)textForMediaType:(PHAssetMediaType)mediaType
+{
+    switch (mediaType)
+    {
+        case PHAssetMediaTypeImage:
+            return NSLocalizedString(@"No Photos", nil);
+            
+        case PHAssetMediaTypeVideo:
+            return NSLocalizedString(@"No Videos", nil);
+            
+        case PHAssetMediaTypeUnknown:
+            return NSLocalizedString(@"No Media", nil);
+            
+        default:
+            return nil;
+    }
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VNoAssetsCell *noAssetCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VNoAssetsCell suggestedReuseIdentifier]
                                                                            forIndexPath:indexPath];
-    noAssetCell.titleLabel.text = (self.mediaType == PHAssetMediaTypeImage) ? NSLocalizedString(@"No Photos", nil) : NSLocalizedString(@"No Videos", nil);
+    noAssetCell.titleLabel.text = [self textForMediaType:self.mediaType];
     return noAssetCell;
 }
 

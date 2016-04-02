@@ -54,10 +54,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     
 	weak var delegate: MediaSearchViewControllerDelegate?
 	
-	class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, depndencyManager: VDependencyManager ) -> MediaSearchViewController {
+	class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
+        
         let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
-            viewController.dependencyManager = depndencyManager
+            viewController.dependencyManager = dependencyManager
 			viewController.dataSourceAdapter.dataSource = dataSource
             dataSource.delegate = viewController
             return viewController
