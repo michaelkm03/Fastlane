@@ -25,7 +25,7 @@ protocol Composer: class {
 /// a composer changes its height.
 protocol ComposerDelegate: class {
     
-    func composer(composer: Composer, didSelectCreationType creationType: VCreationType)
+    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?)
     

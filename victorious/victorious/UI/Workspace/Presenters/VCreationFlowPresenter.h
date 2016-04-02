@@ -27,6 +27,6 @@
  */
 @property (nonatomic, assign) BOOL shouldShowPublishScreenForFlowController;
 
-- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationFlowType)creationType;
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationFlowType:(VCreationFlowType)creationFlowType;
 
 @end

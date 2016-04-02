@@ -53,10 +53,10 @@ extension Forum {
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectCreationType creationType: VCreationType) {
+    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
         let presenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         presenter.shouldShowPublishScreenForFlowController = false
-        presenter.presentWorkspaceOnViewController(originViewController, creationType: creationType)
+        presenter.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
