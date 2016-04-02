@@ -119,9 +119,6 @@ static NSString * const kMenuKey = @"menu";
     }
     
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
-    
-#warning testing only:
-    [[[ShowForumOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
 }
 
 - (void)setSelectedMenuItemAtIndex:(NSInteger)index
