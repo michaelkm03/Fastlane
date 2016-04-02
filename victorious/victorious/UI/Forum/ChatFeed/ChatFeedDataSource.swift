@@ -10,9 +10,44 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
+class ForumEventQueue {
+    
+    let maximimEventCount: Int?
+    
+    init(maximimEventCount: Int? = nil) {
+        self.maximimEventCount = maximimEventCount
+    }
+    
+    private var events = [ForumEvent]()
+    
+    func addEvent(event: ForumEvent) {
+        if let max = maximimEventCount where events.count + 1 >= max {
+            events.removeLast()
+        }
+        events.append(event)
+    }
+    
+    func dequeueEvents(count count: Int) -> [ForumEvent] {
+        guard count <= events.count else {
+            return dequeueAll()
+        }
+        let output = events[0..<count]
+        events.removeRange(count..<events.count)
+        return Array(output)
+    }
+    
+    func dequeueAll() -> [ForumEvent] {
+        let output = events
+        events = []
+        return output
+    }
+}
+
+class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionViewDataSource {
     
     private let itemsPerPage = 10
+    
+    private let eventQueue = ForumEventQueue()
     
     /// If this interval is too small, the scrolling animations will become choppy
     /// as they step on each other before finishing.
@@ -22,6 +57,8 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     let dependencyManager: VDependencyManager
     
+    var shouldStashNewContent: Bool = false
+    
     let cellDecorator = MessageCellDecorator()
     let sizingCell: MessageCell = MessageCell.v_fromNib()
     
@@ -29,34 +66,43 @@ class ChatFeedDataSource: PaginatedDataSource, UICollectionViewDataSource {
         self.dependencyManager = dependencyManager
     }
     
-    func refreshRemote() {
-        loadNewItems(
-            createOperation: {
-                let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
-                return DequeueMessagesOperation(paginator: paginator)
-            },
-            completion: nil
-        )
+    // MARK: - ForumEventReceiver
+    
+    func receiveEvent(event: ForumEvent) {
+        // Stash events in the queue when received and wait to dequeue on our timer cycle
+        eventQueue.addEvent(event)
     }
     
     // MARK: - Live Update
     
-    func beginLiveUpdates() {
+    func startDequeueingMessages() {
         guard timerManager == nil else {
             return
         }
         timerManager = VTimerManager.addTimerManagerWithTimeInterval(fetchMessageInterval,
             target: self,
-            selector: Selector("refreshRemote"),
+            selector: Selector("dequeueMessages"),
             userInfo: nil,
             repeats: true, 
             toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes)
+            withRunMode: NSRunLoopCommonModes
+        )
+        dequeueMessages()
     }
     
-    func endLiveUpdates() {
+    func stopDequeueingMessages() {
         timerManager?.invalidate()
         timerManager = nil
+    }
+    
+    func dequeueMessages() {
+        loadNewItems(
+            createOperation: {
+                let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: itemsPerPage)
+                return DequeueMessagesOperation(events: eventQueue.dequeueAll(), paginator: paginator)
+            },
+            completion: nil
+        )
     }
     
     // MARK: - UICollectionViewDataSource

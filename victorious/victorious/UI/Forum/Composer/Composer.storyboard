@@ -23,8 +23,9 @@
                                         <rect key="frame" x="16" y="27" width="568" height="53"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy">
-                                                <rect key="frame" x="531" y="12" width="37" height="30"/>
-                                                <state key="normal" title="Done"/>
+
+                                                <rect key="frame" x="550" y="12" width="31" height="30"/>
+                                                <state key="normal" title="Post"/>
                                                 <connections>
                                                     <action selector="pressedConfirmButton" destination="KY2-Hn-7We" eventType="touchUpInside" id="afy-lH-5mK"/>
                                                 </connections>

@@ -16,14 +16,11 @@ public struct MediaMetaData {
 
     public let size: CGSize?
     
-    /**
-     The data container that describes the meta data related to the media on the stage.
-     
-     - parameter json:          JSON to be parsed into the component.
-     - parameter customUrlKeys: A list of keys for parsing out the url from the fragmented JSON response.
-     
-     - returns: A `MediaMetaData` struct is returned. Initialization can fail if no URL is found in the JSON.
-     */
+    /// The data container that describes the meta data related to the media on the stage.
+    /// 
+    /// - parameter json: JSON to be parsed into the component.
+    /// - parameter customUrlKeys: A list of keys for parsing out the url from the fragmented JSON response.
+    /// - returns: A `MediaMetaData` struct is returned. Initialization can fail if no URL is found in the JSON.
     public init?(json: JSON, customUrlKeys: [String] = ["data"]) {
         var foundUrl: NSURL?
         for urlKey in customUrlKeys {

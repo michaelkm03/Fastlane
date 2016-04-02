@@ -15,12 +15,17 @@
 {
     NSParameterAssert( data != nil );
     
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    if ( [json isKindOfClass:[NSDictionary class]] )
+    NSError *error;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if ( json != nil && [json isKindOfClass:[NSDictionary class]] )
     {
         return json[kVPayloadKey];
     }
-    return nil;
+    else
+    {
+        NSLog( @"Error parsing template: %@ (%@)", error.localizedDescription, error.debugDescription );
+        return nil;
+    }
 }
 
 @end

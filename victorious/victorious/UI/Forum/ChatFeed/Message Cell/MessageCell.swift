@@ -92,11 +92,13 @@ class MessageCell: UICollectionViewCell, VFocusable {
         detailTextView.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.messageTextColor.CGColor
+        bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
         bubbleView.layer.cornerRadius = 5.0
-        bubbleView.layer.borderWidth = 1.0
+        bubbleView.layer.borderWidth = 0.5
         
         avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
+        avatarView.layer.borderWidth = 1.0
+        avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
         avatarView.backgroundColor = dependencyManager.backgroundColor
     }
     

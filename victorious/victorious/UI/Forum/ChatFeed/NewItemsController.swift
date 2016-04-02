@@ -9,7 +9,7 @@
 import Foundation
 
 @objc protocol NewItemsControllerDelegate {
-    func onMoreContentSelected()
+    func onNewItemsSelected()
 }
 
 class NewItemsController: NSObject {
@@ -121,8 +121,8 @@ class NewItemsController: NSObject {
         }
     }
     
-    @IBAction private func onMoreContentSelected() {
-        delegate?.onMoreContentSelected()
+    @IBAction private func onNewItemsSelected() {
+        delegate?.onNewItemsSelected()
         hide()
     }
 }
