@@ -6,9 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ShowPrivacyPolicyOperation: MainQueueOperation {
+class ShowPrivacyPolicyOperation: BackgroundOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool
@@ -25,8 +25,18 @@ class ShowPrivacyPolicyOperation: MainQueueOperation {
             return
         }
         
+        dispatch_async( dispatch_get_main_queue() ) {
+            self.performNavigation()
+        }
+    }
+    
+    private func performNavigation() {
+        guard let targetViewController = UIViewController.v_rootPresentationTargetViewController() else {
+            assertionFailure("Failed to present view controller")
+            return
+        }
         let viewController = VPrivacyPoliciesViewController.presentableTermsOfServiceViewControllerWithDependencyManager(dependencyManager)
-        VRootViewController.sharedRootViewController()!.presentViewController(viewController, animated: animated) {
+        targetViewController.presentViewController(viewController, animated: animated) {
             self.finishedExecuting()
         }
     }

@@ -645,7 +645,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    [[[ShowPrivacyPolicyOperation alloc] initWithDependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];}
+    [[[ShowPrivacyPolicyOperation alloc] initWithDependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
+}
 
 - (void)showTermsOfService
 {

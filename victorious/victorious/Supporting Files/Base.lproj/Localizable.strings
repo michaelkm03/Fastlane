@@ -374,7 +374,7 @@
 "By continuing you are agreeing to our" = "By continuing you are agreeing to our";
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "Terms of Service" = "Terms of Service";
-"Privacy Policy" =   "Privacy Policy";
+"Privacy Policy" = "Privacy Policy";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
 "You must enter a name." = "You must enter a name.";
@@ -431,11 +431,3 @@
 "NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
 
 "What do you think..." = "What do you think...";
-
-"Subscription complete!" = "Subscription complete!";
-"Failed to restore subcription." = "Failed to restore subcription.";
-"Checking for subscription..." = "Checking for subscription...";
-"Already subscribed?" = "Already subscribed?";
-"Subscription restored!" = "Subscription restored!";
-"Subscription failed." = "Subscription failed.";
-"Validation Failed" = "Validation Failed";

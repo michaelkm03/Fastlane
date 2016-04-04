@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowTermsOfServiceOperation: MainQueueOperation {
+class ShowTermsOfServiceOperation: BackgroundOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool
@@ -25,8 +25,18 @@ class ShowTermsOfServiceOperation: MainQueueOperation {
             return
         }
         
+        dispatch_async( dispatch_get_main_queue() ) {
+            self.performNavigation()
+        }
+    }
+    
+    private func performNavigation() {
+        guard let targetViewController = UIViewController.v_rootPresentationTargetViewController() else {
+            assertionFailure("Failed to present view controller")
+            return
+        }
         let viewController = VTOSViewController.presentableTermsOfServiceViewController()
-        VRootViewController.sharedRootViewController()!.presentViewController(viewController, animated: animated) {
+        targetViewController.presentViewController(viewController, animated: animated) {
             self.finishedExecuting()
         }
     }
