@@ -29,11 +29,8 @@ protocol ComposerDelegate: class {
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?)
     
-//    func composer(composer: Composer, selectedCreationType creationType: VCreationFlowType)
-    
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer content (including the keyboard) and can be more
     /// than the composer's maximumHeight.
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat)
 }
-
