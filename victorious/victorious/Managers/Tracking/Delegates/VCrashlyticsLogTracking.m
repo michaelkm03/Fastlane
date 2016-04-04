@@ -59,7 +59,19 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
         [trackingLogComponents addObject:stringForParam];
     }];
     
-    NSNumber *userID = [[VCurrentUser user] remoteId];
+    __block NSNumber *userID;
+    if (![NSThread isMainThread])
+    {
+        // Current user can only be accessed from the main thread
+        dispatch_sync(dispatch_get_main_queue(), ^
+                      {
+                          userID = [[VCurrentUser user] remoteId];
+                      });
+    }
+    else
+    {
+        userID = [[VCurrentUser user] remoteId];
+    }
     [trackingLogComponents addObject:[NSString stringWithFormat:@"%@: %@", VTrackingKeyUserID, userID]];
     
     /**
