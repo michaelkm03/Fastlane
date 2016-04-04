@@ -1911,8 +1911,6 @@
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */; };
-		F050D3441CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3431CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift */; };
-		F050D3461CAEF69D007A05ED /* NSPredicate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+Initializers.swift */; };
 		F050D3441CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3431CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift */; };
 		F050D3461CAEF69D007A05ED /* NSPredicate+MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
@@ -4726,8 +4724,6 @@
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerInputAttachmentType.swift; sourceTree = "<group>"; };
-		F050D3431CAEEFB7007A05ED /* NSPredicate+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+InitializersTests.swift"; sourceTree = "<group>"; };
-		F050D3451CAEF69D007A05ED /* NSPredicate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Initializers.swift"; sourceTree = "<group>"; };
 		F050D3431CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+MediaTypeTests.swift"; sourceTree = "<group>"; };
 		F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+MediaType.swift"; sourceTree = "<group>"; };
 		F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedUserRetryCell.h; sourceTree = "<group>"; };
@@ -7673,15 +7669,13 @@
 				F06FC1FA1C97437900A014C7 /* Composer.storyboard */,
 				A73BA2971C938B68008168B5 /* Composer.swift */,
 				F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */,
+				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
 				F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */,
 				A73BA2991C938B68008168B5 /* ComposerDelegate.swift */,
-				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
+				F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */,
 				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
 				F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */,
 				A73BA29A1C938B68008168B5 /* ComposerViewController.swift */,
-				F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */,
-				F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */,
-				F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
