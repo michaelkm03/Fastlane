@@ -65,7 +65,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var shouldShowAttachmentContainer: Bool {
-        guard isViewLoaded() else {
+        if !isViewLoaded() {
             return false
         }
         
