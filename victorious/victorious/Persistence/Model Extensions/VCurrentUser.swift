@@ -42,7 +42,8 @@ class VCurrentUser: NSObject {
     
     static func user() -> VUser? {
         guard NSThread.currentThread().isMainThread else {
-            fatalError( "Attempt to read current user from the persistent store's main context from a thread other than the main thread.  Use method `user(inManagedObjectcontext:)` and provide the context in which you are working." )
+            assertionFailure( "Attempt to read current user from the persistent store's main context from a thread other than the main thread.  Use method `user(inManagedObjectcontext:)` and provide the context in which you are working." )
+            return nil
         }
         return VCurrentUser.user( inManagedObjectContext: persistentStore.mainContext )
     }
@@ -73,7 +74,8 @@ extension VUser {
         let persistentStore = VCurrentUser.persistentStore
         
         guard self.managedObjectContext == persistentStore.mainContext else {
-            fatalError( "Attempt to set a user from a persistent store's main context as the current user.  Make sure the receiver (a `VUser`) was loaded from the main context." )
+            assertionFailure( "Attempt to set a user as the current user from a context other than the persistent store's main context. Make sure the receiver (a `VUser`) was loaded from the main context." )
+            return
         }
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
