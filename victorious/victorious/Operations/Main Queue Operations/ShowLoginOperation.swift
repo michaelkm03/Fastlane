@@ -8,8 +8,6 @@
 
 import Foundation
 
-protocol SwiftProtocol {}
-
 class ShowLoginOperation: MainQueueOperation {
     
     private weak var originViewController: UIViewController?
@@ -40,10 +38,6 @@ class ShowLoginOperation: MainQueueOperation {
         }
         
         self.beganExecuting()
-        
-        if let obj = dependencyManager.templateValueOfType(NSObject.self, forKey: "") as? SwiftProtocol {
-            
-        }
         
         // User is not logged in, show login view
         guard let templateValue = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
