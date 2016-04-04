@@ -156,6 +156,21 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     self.placeholderTextView.textContainerInset = textContainerInset;
 }
 
+- (CGFloat)calculatePlaceholderTextHeight
+{
+    CGFloat textHeight = CGRectGetHeight([self.placeholderText boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+                                                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                         attributes:@{NSFontAttributeName : self.placeholderTextView.font}
+                                                                            context:nil]);
+    UIEdgeInsets edgeInsets = self.contentInset;
+    textHeight += edgeInsets.top + edgeInsets.bottom;
+    
+    UIEdgeInsets containerEdgeInsets = self.textContainerInset;
+    textHeight += containerEdgeInsets.top + containerEdgeInsets.bottom;
+    
+    return textHeight;
+}
+
 #pragma mark - UIView Overrides
 
 - (void)layoutSubviews
