@@ -14,9 +14,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     let transitionDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
-    private var edgeInsets = UIEdgeInsets(top: 100.0, left: 0.0, bottom: 20.0, right: 0.0)
-    private var bottomMargin: CGFloat = 10.0
-    private let gradientBlendLength: CGFloat = 80.0
+    private struct Layout {
+        private static let bottomMargin: CGFloat = 20.0
+        private static let topMargin: CGFloat = 20.0
+    }
+    
+    private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     var dependencyManager: VDependencyManager!
     
@@ -25,17 +28,33 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }()
     
     private let scrollPaginator = VScrollPaginator()
-    
-    private var selectedMessageUserID: Int?
+    private var previousScrollPosition = CGPoint.zero
     
     @IBOutlet private var moreContentController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var collectionContainerView: UIView!
-    @IBOutlet private weak var collectionConainerCenterVertical: NSLayoutConstraint!
+    @IBOutlet private weak var collectionViewBottom: NSLayoutConstraint!
     
+    //MARK: - ChatFeed
+    
+    func setTopInset(value: CGFloat) {
+        print("top = \(value)")
+        edgeInsets.top = value + Layout.topMargin + collectionViewBottom.constant
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        collectionViewBottom.constant = value
+        collectionView.superview?.layoutIfNeeded()
+    }
+    
+    // MARK: - ForumEventReceiver
+        
+    var childEventReceivers: [ForumEventReceiver] {
+        return [ dataSource ]
+    }
+        
     // MARK: - NewItemsControllerDelegate
-    
-    func onMoreContentSelected() {
+        
+    func onNewItemsSelected() {
         
     }
     
@@ -63,16 +82,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        selectedMessageUserID = nil
-        dataSource.beginLiveUpdates()
-        dataSource.refreshRemote()
+        dataSource.startDequeueingMessages()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dataSource.endLiveUpdates()
+        dataSource.stopDequeueingMessages()
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -88,6 +103,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return edgeInsets
+    }
+    
+    var shouldAutoScroll: Bool {
+        let height = collectionView.contentSize.height - (edgeInsets.top + edgeInsets.bottom) - collectionView.bounds.height
+        let yValue = max(height, 0)
+        let bottomOffset = CGPoint(x: 0, y: yValue)
+        return collectionView.contentOffset.y >= bottomOffset.y
     }
     
     // MARK: - VPaginatedDataSourceDelegate
@@ -111,16 +133,21 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             return
         }
         
-        // Some tricky stuff to make sure the collection view's content size is updated enough
-        // so that the scroll to bottom actually works
-        CATransaction.begin()
-        CATransaction.setCompletionBlock() {
-            dispatch_after(0.0) {
-                self.collectionView.v_scrollToBottomAnimated(true)
+        if shouldAutoScroll {
+            // Some tricky stuff to make sure the collection view's content size is updated enough
+            // so that the scroll to bottom actually works
+            CATransaction.begin()
+            CATransaction.setCompletionBlock() {
+                dispatch_after(0.0) {
+                    self.collectionView.v_scrollToBottomAnimated(true)
+                }
             }
+            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            CATransaction.commit()
+            
+        } else {
+            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
         }
-        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
-        CATransaction.commit()
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
@@ -161,29 +188,21 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func messageCellDidSelectMedia(messageCell: MessageCell) {
-        guard let media = messageCell.viewData.media,
-            let preloadedImage = messageCell.preloadedImage else {
-                return
+        guard let media = messageCell.viewData.media else {
+            return
         }
-        delegate?.chatFeed(self, didSelectMedia:media, withPreloadedImage: preloadedImage, fromView: messageCell)
-    }
-    
-    //MARK: - ChatFeed
-    
-    func setTopInset(value: CGFloat) {
-        
-    }
-    
-    func setBottomInset(value: CGFloat) {
-        collectionConainerCenterVertical.constant = -value
-        view.layoutIfNeeded()
+        delegate?.chatFeed(self, didSelectMedia:media)
     }
     
     // MARK: - VScrollPaginatorDelegate
     
-    func shouldLoadNextPage() { }
+    func shouldLoadNextPage() {
     
-    func shouldLoadPreviousPage() { }
+    }
+    
+    func shouldLoadPreviousPage() {
+    
+    }
     
     // MARK: - UIScrollViewDelegate
     

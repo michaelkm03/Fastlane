@@ -1,5 +1,5 @@
 //
-//  NSPredicate+Initializers.swift
+//  NSPredicate+MediaType.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/1/16.

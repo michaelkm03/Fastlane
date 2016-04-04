@@ -13,7 +13,7 @@ import UIKit
     private let dependencyManager: VDependencyManager
     private let originViewController: UIViewController
     
-    var chosenCreationType: VCreationFlowType = .Unknown
+    var chosenCreationFlowType: VCreationFlowType = .Unknown
     
     init( originViewController: UIViewController, dependencyManager: VDependencyManager ) {
         self.originViewController = originViewController
@@ -32,7 +32,7 @@ import UIKit
         let templateValue = self.dependencyManager.templateValueOfType(VCreateSheetViewController.self, forKey:"createSheet")
         if let createSheet = templateValue as? VCreateSheetViewController {
             createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
-                self.chosenCreationType = chosenCreationType
+                self.chosenCreationFlowType = chosenCreationType
                 self.finishedExecuting()
             }
             self.originViewController.presentViewController(createSheet, animated: true, completion: nil)

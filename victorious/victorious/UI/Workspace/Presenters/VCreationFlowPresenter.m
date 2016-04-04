@@ -39,11 +39,11 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
     return self;
 }
 
-- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationFlowType)creationType
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationFlowType:(VCreationFlowType)creationFlowType
 {
     self.viewControllerPresentedOn = originViewController;
     
-    switch (creationType)
+    switch (creationFlowType)
     {
         case VCreationFlowTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];

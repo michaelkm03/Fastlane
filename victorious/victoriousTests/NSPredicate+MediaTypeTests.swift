@@ -1,5 +1,5 @@
 //
-//  NSPredicate+InitializersTests.swift
+//  NSPredicate+MediaTypeTests.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/1/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class NSPredicate_InitializersTests: XCTestCase {
+class NSPredicate_MediaTypeTests: XCTestCase {
 
     func testPredicateFromAssetMediaType() {
         

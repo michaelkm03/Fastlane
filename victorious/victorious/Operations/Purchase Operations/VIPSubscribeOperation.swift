@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSubscribeOperation: MainQueueOperation {
+class VIPSubscribeOperation: BackgroundOperation {
     
     let productIdentifier: String
     
@@ -19,7 +19,6 @@ class VIPSubscribeOperation: MainQueueOperation {
     }
     
     override func start() {
-        super.start()
         
         guard didConfirmActionFromDependencies else {
             cancel()
@@ -29,6 +28,13 @@ class VIPSubscribeOperation: MainQueueOperation {
         
         beganExecuting()
         
+        dispatch_async(dispatch_get_main_queue()) {
+            self.purchaseSubscription()
+        }
+    }
+    
+    func purchaseSubscription() {
+    
         purchaseManager.purchaseProductWithIdentifier(productIdentifier,
             success: { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason

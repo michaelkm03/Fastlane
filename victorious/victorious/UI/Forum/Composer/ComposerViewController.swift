@@ -8,10 +8,9 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, VBackgroundContainer {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer {
     
     private struct Constants {
-        
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
         static let defaultMaximumTextInputHeight = CGFloat.max
@@ -34,7 +33,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet private var attachmentContainerView: UIView!
     @IBOutlet private var interactiveContainerView: UIView!
-    
     @IBOutlet private var confirmButton: UIButton!
     
     private var composerTextViewManager: ComposerTextViewManager?
@@ -46,7 +44,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         return fabs(inputViewToBottomConstraint.constant)
             + textViewHeightConstraint.constant
-            + attachmentContainerHeightConstraint.constant 
+            + attachmentContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
@@ -135,17 +133,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    // MARK: - VBackgroundContainer
-    
-    func backgroundContainerView() -> UIView {
-        return interactiveContainerView
-    }
-    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: updateHeightBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
@@ -159,7 +151,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        delegate?.composer(self, didUpdateToContentHeight: totalComposerHeight)
+        delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
     }
     
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
@@ -172,7 +164,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateLabelVisibility()
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-                self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+                self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
+                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
             }, completion: nil)
         } else {
@@ -215,7 +208,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let previousContentOffset = textView.contentOffset
         UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
-            self.delegate?.composer(self, didUpdateToContentHeight: self.totalComposerHeight)
+            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
             self.textView.layoutIfNeeded()
             if textViewHeightNeedsUpdate {
                 self.textView.setContentOffset(previousContentOffset, animated: true)
@@ -225,6 +218,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }, completion: nil)
         
         super.updateViewConstraints()
+    }
+    
+    // MARK: - ComposerAttachmentTabBarDelegate
+
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
+        let creationType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(navigationItem.identifier)
+        delegate?.composer(self, didSelectCreationFlowType: creationType)
     }
     
     // MARK: - Subview setup
@@ -254,7 +254,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
         textView.font = dependencyManager.inputTextFont
         textView.setPlaceholderFont(dependencyManager.inputTextFont)
         singleLineLabel.font = dependencyManager.inputTextFont
@@ -274,7 +273,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
-            delegate?.composer(self, selectedCreationType: creationFlowType)
+            delegate?.composer(self, didSelectCreationFlowType: creationFlowType)
         } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) where composerInputAttachmentType == .Hashtag {
             composerTextViewManager?.appendTextIfPossible(textView, text: "#")
         }
@@ -326,7 +325,7 @@ private extension VDependencyManager {
     }
     
     var confirmButtonTextFont: UIFont {
-        return fontForKey(VDependencyManagerLabel4FontKey)
+        return fontForKey(VDependencyManagerLabel2FontKey)
     }
     
     var tabItemTintColor: UIColor {

@@ -8,20 +8,20 @@
 
 import Foundation
 
-protocol ChatFeed: class {
+protocol ChatFeed: class, ForumEventReceiver {
     
     weak var delegate: ChatFeedDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
     
-    func setBottomInset(value: CGFloat)
-    
     func setTopInset(value: CGFloat)
+    
+    func setBottomInset(value: CGFloat)
 }
 
 protocol ChatFeedDelegate: class {
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia, withPreloadedImage image: UIImage, fromView referenceView: UIView)
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia)
 }

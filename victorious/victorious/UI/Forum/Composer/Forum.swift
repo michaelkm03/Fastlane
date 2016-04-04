@@ -26,7 +26,6 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     // MARK: - Behaviors
 
     func setStageHeight(value: CGFloat)
-    func setComposerHeight(value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -51,13 +50,13 @@ extension Forum {
     func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia) {
         
     }
-        
+    
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectCreationType creationType: VCreationType) {
+    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
         let presenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
         presenter.shouldShowPublishScreenForFlowController = false
-        presenter.presentWorkspaceOnViewController(originViewController, creationType: creationType)
+        presenter.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
@@ -70,12 +69,7 @@ extension Forum {
     }
     
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
-        setComposerHeight(height)
         chatFeed?.setBottomInset(height)
-    }
-    
-    func composer(composer: Composer, selectedCreationType creationType: VCreationFlowType) {
-        creationFlowPresenter?.presentWorkspaceOnViewController(originViewController, creationType: creationType)
     }
     
     // MARK: - StageDelegate
