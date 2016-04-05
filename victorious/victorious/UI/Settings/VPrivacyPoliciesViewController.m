@@ -8,8 +8,7 @@
 
 #import "VPrivacyPoliciesViewController.h"
 #import "VDependencyManager.h"
-
-static NSString * const kVPrivacyURL = @"privacyURL";
+#import "victorious-swift.h"
 
 @implementation VPrivacyPoliciesViewController
 
@@ -26,15 +25,18 @@ static NSString * const kVPrivacyURL = @"privacyURL";
     return navigationController;
 }
 
-#pragma mark - Actions
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL] ?: @"https://api.getvictorious.com/api/static/privacy";
-    self.urlToView = [NSURL URLWithString:privacyURLString];
+    self.shouldShowLoadingState = YES;
+    
+    [self loadPrivacyPolicy];
 }
+
+#pragma mark - Actions
 
 - (void)cancel
 {

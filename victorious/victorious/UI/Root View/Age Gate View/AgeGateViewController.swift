@@ -17,6 +17,7 @@ import UIKit
 /// It is presented by Root View, and Root view(as this view's delegate)
 /// will proceed to loading view after user taps `continue` button
 class AgeGateViewController: UIViewController {
+    
     @IBOutlet private weak var backgroundView: UIView!
     @IBOutlet private weak var blurView: UIVisualEffectView!
     @IBOutlet private weak var dimmingView: UIView!
@@ -34,6 +35,7 @@ class AgeGateViewController: UIViewController {
     @IBOutlet weak var privacyButton: UIButton!
     
     private weak var delegate: AgeGateViewControllerDelegate?
+    private var dependencyManager: VDependencyManager!
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
@@ -46,10 +48,10 @@ class AgeGateViewController: UIViewController {
         static let springDamping: CGFloat = 1.0
     }
     
-    static func ageGateViewController(withAgeGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
+    static func ageGateViewController(withAgeGateDelegate delegate: AgeGateViewControllerDelegate, dependencyManager: VDependencyManager) -> AgeGateViewController {
         let ageGateViewController = AgeGateViewController.v_fromStoryboard("Main") as AgeGateViewController
         ageGateViewController.delegate = delegate
-            
+        ageGateViewController.dependencyManager = dependencyManager
         return ageGateViewController
     }
     
@@ -94,11 +96,11 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction private func tappedTermsOfService(sender: UIButton) {
-        presentViewController(VTOSViewController.presentableTermsOfServiceViewController(), animated: true, completion: nil)
+        ShowTermsOfServiceOperation(dependencyManager: self.dependencyManager).queue()
     }
     
     @IBAction private func tappedPrivacyPolicy(sender: UIButton) {
-        presentViewController(VPrivacyPoliciesViewController.presentableTermsOfServiceViewControllerWithDependencyManager(nil), animated: true, completion: nil)
+        ShowPrivacyPolicyOperation(dependencyManager: self.dependencyManager).queue()
     }
     
     //MARK: - Private functions
@@ -135,8 +137,8 @@ class AgeGateViewController: UIViewController {
         let legalAttributesUnderline = [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
         
         let legalPrompt = NSLocalizedString("By continuing you are agreeing to our", comment: "Legal prompt on age gate view")
-        let tosText = NSAttributedString(string: NSLocalizedString("terms of service", comment: "") , attributes: legalAttributesUnderline)
-        let ppText = NSAttributedString(string: NSLocalizedString("privacy policy", comment: ""), attributes: legalAttributesUnderline)
+        let tosText = NSAttributedString(string: NSLocalizedString("Terms of Service", comment: "") , attributes: legalAttributesUnderline)
+        let ppText = NSAttributedString(string: NSLocalizedString("Privacy Policy", comment: ""), attributes: legalAttributesUnderline)
         
         legalPromptLabel.text = legalPrompt
         legalPromptLabel.textColor = UIColor.lightTextColor()

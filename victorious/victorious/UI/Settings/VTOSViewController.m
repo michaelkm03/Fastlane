@@ -19,7 +19,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"settings"
                                                          bundle:bundleForClass];
     VTOSViewController *termsOfServiceVC = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
-    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    termsOfServiceVC.title = NSLocalizedString(@"Terms of Service", @"");
     return termsOfServiceVC;
 }
 
@@ -41,12 +41,6 @@
     self.shouldShowLoadingState = YES;
     
     [self loadTermsOfService];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)pressedBack

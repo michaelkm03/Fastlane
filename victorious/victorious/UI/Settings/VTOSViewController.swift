@@ -12,13 +12,13 @@ import WebKit
 extension VTOSViewController {
     
     func loadTermsOfService() {
-        let termsOfServiceOperation = TermsOfServiceOperation()
-        termsOfServiceOperation.queue() { results, error, cancelled in
-            guard let htmlString = termsOfServiceOperation.resultHTMLString where error == nil else {
+        let operation = TermsOfServiceOperation()
+        operation.queue() { results, error, cancelled in
+            guard let htmlString = operation.resultHTMLString where error == nil else {
                 self.setFailureWithError(error)
                 return
             }
-            self.webView.loadHTMLString(htmlString, baseURL: NSURL(string: "http://www.victorious.com/")!)
+            self.webView.loadHTMLString(htmlString, baseURL: operation.request.publicBaseURL)
         }
     }
 }

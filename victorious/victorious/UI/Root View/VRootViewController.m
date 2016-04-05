@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
     }
-    [self showInitialScreen];
+    [self showLoadingViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -226,34 +226,19 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showAgeGateViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self];
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self
+                                                                                                 dependencyManager:self.dependencyManager];
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
-- (void)showInitialScreen
+- (void)initializeScaffold
 {
-    BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
-    BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
-    
-    if (ageGateActivated && !userHasProvidedBirthday)
-    {
-        [self showAgeGateViewController];
-    }
-    else
-    {
-        [self showLoadingViewController];
-    }
-}
-
-- (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self.dependencyManager = dependencyManager;
-    self.applicationTracking.dependencyManager = dependencyManager;
+    self.applicationTracking.dependencyManager = self.dependencyManager;
     
     VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     
-    NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
-    VDependencyManager *scaffoldDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
+    NSDictionary *scaffoldConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
+    VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
     self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager;
     
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
@@ -261,7 +246,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
-    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:dependencyManager] queueWithCompletion:nil];
+    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
 
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
@@ -453,7 +438,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NewSessionPrunePersistentStoreOperation *operation = [[NewSessionPrunePersistentStoreOperation alloc] init];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
      {
-         [self showInitialScreen];
+         [self showLoadingViewController];
      }];
 }
 
@@ -490,10 +475,22 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    self.dependencyManager = dependencyManager;
+    
     if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
     {
         self.launchState = VAppLaunchStateLaunching;
-        [self startAppWithDependencyManager:dependencyManager];
+        
+        BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
+        BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
+        if (ageGateActivated && !userHasProvidedBirthday)
+        {
+            [self showAgeGateViewController];
+        }
+        else
+        {
+            [self initializeScaffold];
+        }
     }
 }
 

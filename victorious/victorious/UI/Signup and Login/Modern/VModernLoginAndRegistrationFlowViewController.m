@@ -17,8 +17,6 @@
 #import "VLoginFlowAPIHelper.h"
 #import "VModernResetTokenViewController.h"
 #import "VModernFlowControllerAnimationController.h"
-#import "VTOSViewController.h"
-#import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "VPermissionsTrackingHelper.h"
@@ -647,10 +645,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    
-    [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager]
-                       animated:YES
-                     completion:nil];
+    [[[ShowPrivacyPolicyOperation alloc] initWithDependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
 }
 
 - (void)showTermsOfService
@@ -659,10 +654,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    
-    [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController]
-                       animated:YES
-                     completion:nil];
+    [[[ShowTermsOfServiceOperation alloc] initWithDependencyManager:self.dependencyManager animated:YES] queueWithCompletion:nil];
 }
 
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath

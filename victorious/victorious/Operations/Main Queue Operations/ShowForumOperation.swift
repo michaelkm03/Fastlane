@@ -21,7 +21,6 @@ class ShowForumOperation: MainQueueOperation {
     }
     
     override func start() {
-        super.start()
         
         guard !self.cancelled else {
             finishedExecuting()

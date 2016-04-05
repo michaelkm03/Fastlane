@@ -336,7 +336,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
-        viewController.title = NSLocalizedString(@"ToSText", @"");
+        viewController.title = NSLocalizedString(@"Terms of Service", @"");
     }
     if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
     {
