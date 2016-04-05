@@ -16,9 +16,7 @@ extension VStreamCollectionViewController {
         
         let tosAction = UIAlertAction(title: NSLocalizedString("Terms of Service", comment: ""),
             style: .Default) { alertAction in
-                self.presentViewController(VTOSViewController.presentableTermsOfServiceViewController(),
-                    animated: true,
-                    completion: nil)
+                ShowTermsOfServiceOperation(dependencyManager: self.dependencyManager!).queue()
         }
         let privacyAction = UIAlertAction(title: NSLocalizedString("Privacy Policy", comment: ""),
             style: .Default) { alertAction in
