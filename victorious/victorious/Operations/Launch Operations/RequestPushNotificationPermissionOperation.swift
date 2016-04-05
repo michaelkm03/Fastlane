@@ -24,7 +24,7 @@ class RequestPushNotificationPermissionOperation: MainQueueOperation {
             return
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userRespondedToPushNotification),
             name: VPushNotificationManagerDidReceiveResponse,
             object: VPushNotificationManager.sharedPushNotificationManager())
         VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()

@@ -140,7 +140,9 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
             self.sections = []
         }
         let prevSectionCount = self.sections.count
-        for var i = 0; i < results.count; i+=2 {
+        
+        var i = 0
+        while i < results.count {
             let resultsForSection: [MediaSearchResult] = {
                 if i + 1 < results.count {
                     return [results[i], results[i+1]]
@@ -149,6 +151,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
                     return [results[i]]
                 }
             }()
+            i += 2
             
             let section = Section( results:resultsForSection, isFullSize: false )
             self.sections.append( section )

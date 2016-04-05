@@ -40,7 +40,8 @@ final class FollowedHashtagsRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueInfo )
                 followedHashtag.user = currentUser
                 followedHashtag.hashtag = persistentHashtag
-                followedHashtag.displayOrder = displayOrder++
+                followedHashtag.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

@@ -24,7 +24,7 @@ protocol ResultsOperation {
 protocol Paginated: ResultsOperation {
     
     /// The type of Paginator used by this operation
-    typealias PaginatorType: Paginator
+    associatedtype PaginatorType: Paginator
     
     /// The current paginator used for this operation, required in order to get
     /// the next/prev paginators from which to maket the next/prev operations.
@@ -41,7 +41,7 @@ protocol Paginated: ResultsOperation {
 protocol RequestOperation {
     
     /// The type of RequestType request used by this operation
-    typealias SingleRequestType: RequestType
+    associatedtype SingleRequestType: RequestType
     
     /// The current request used for this operation
     ///
@@ -80,7 +80,7 @@ extension Paginated where Self : PaginatedOperation {
 protocol PaginatedRequestOperation: Paginated {
 
     /// The type of Pageable request used by this operation
-    typealias PaginatedRequestType: Pageable
+    associatedtype PaginatedRequestType: Pageable
     
     /// The current request used for this operation, required in order to get the next/prev requests
     /// from which to maket the next/prev operations.

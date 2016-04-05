@@ -12,7 +12,7 @@ import Foundation
 /// using a generic Paginator object.
 public protocol PaginatorPageable: Pageable {
     
-    typealias PaginatorType: Paginator
+    associatedtype PaginatorType: Paginator
     
     /// An abstract object that implements pagination logic and decorates URLs accordingly.
     var paginator: PaginatorType { get }

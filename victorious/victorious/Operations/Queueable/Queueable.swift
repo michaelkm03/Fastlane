@@ -25,7 +25,7 @@ protocol Queueable {
     /// Conformers are required to define a completion block type that is
     /// specific to the actions it performs.  This allows calling code to have
     /// meaningful completion blocks that pass back results or other data.
-    typealias CompletionBlockType
+    associatedtype CompletionBlockType
     
     /// Conformers must handle executing their own completion block in order
     /// to provide data typed to its signature.

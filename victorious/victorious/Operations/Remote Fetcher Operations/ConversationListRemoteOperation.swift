@@ -31,7 +31,8 @@ final class ConversationListRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 let uniqueElements = [ "user.remoteId" : result.otherUser.userID ]
                 let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 conversation.populate( fromSourceModel: result )
-                conversation.displayOrder = displayOrder++
+                conversation.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

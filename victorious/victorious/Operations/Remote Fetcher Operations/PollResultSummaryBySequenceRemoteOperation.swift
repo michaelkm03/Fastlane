@@ -43,7 +43,8 @@ final class PollResultSummaryBySequenceRemoteOperation: RemoteFetcherOperation, 
                 
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
-                persistentResult.displayOrder = displayOrder++
+                persistentResult.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

@@ -36,7 +36,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("refresh:"), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
         self.collectionView.addSubview( refreshControl )
         return refreshControl
     }()
@@ -528,7 +528,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let dismissButtonMarginToBorder: CGFloat = 8.0
         view.v_addPinToTopToSubview(userTaggingDismissButton, topMargin: dismissButtonMarginToBorder)
         view.v_addPinToTrailingEdgeToSubview(userTaggingDismissButton, trailingMargin: dismissButtonMarginToBorder)
-        userTaggingDismissButton.addTarget(keyboardBar, action: "stopEditing", forControlEvents: .TouchUpInside)
+        userTaggingDismissButton.addTarget(keyboardBar, action: #selector(VKeyboardInputAccessoryView.stopEditing), forControlEvents: .TouchUpInside)
     }
     
     func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToDismissViewController viewController: UIViewController) {

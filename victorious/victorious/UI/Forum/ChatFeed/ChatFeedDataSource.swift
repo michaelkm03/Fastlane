@@ -81,7 +81,7 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
         }
         timerManager = VTimerManager.addTimerManagerWithTimeInterval(fetchMessageInterval,
             target: self,
-            selector: Selector("dequeueMessages"),
+            selector: #selector(dequeueMessages),
             userInfo: nil,
             repeats: true, 
             toRunLoop: NSRunLoop.mainRunLoop(),

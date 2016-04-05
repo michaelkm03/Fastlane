@@ -48,7 +48,7 @@ class VImageAnimationOperation: BackgroundOperation {
     
     func updateFrame() {
         updateImageFrame()
-        currentFrame++
+        currentFrame += 1
     }
     
     func updateImageFrame() {
@@ -65,7 +65,7 @@ class VImageAnimationOperation: BackgroundOperation {
         
         let frameDuration: Float = animationDuration/Float(animationSequence.count)
         ballisticAnimationBlock() {
-            VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: "updateFrame", userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
+            VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: #selector(self.updateFrame), userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
         }
     }
     

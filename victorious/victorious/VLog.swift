@@ -8,7 +8,7 @@
 
 import Foundation
 
-func VLog(message: String, filename: String = __FILE__, functionName: String = __FUNCTION__, line: Int = __LINE__) {
+func VLog(message: String, filename: String = #file, functionName: String = #function, line: Int = #line) {
     let logMessage = "\(filename): \(functionName) [Line \(line)] \(message)"
 #if DEBUG
     NSLog(logMessage)

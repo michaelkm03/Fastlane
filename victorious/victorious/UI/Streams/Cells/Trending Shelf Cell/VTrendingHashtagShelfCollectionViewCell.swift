@@ -129,7 +129,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
+        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: #selector(handleUserHashtagsArrayChange(_:)))
     }
     
     override class func nibForCell() -> UINib {

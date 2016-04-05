@@ -38,7 +38,7 @@ class ComposerAttachmentTabBar: VFlexBar {
             button.translatesAutoresizingMaskIntoConstraints = false
             button.v_addWidthConstraint(buttonSideLength)
             button.v_addHeightConstraint(bounds.height)
-            button.addTarget(self, action: Selector("buttonPressed:"), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(buttonPressed(_:)), forControlEvents: .TouchUpInside)
             actionItems.append(button)
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }

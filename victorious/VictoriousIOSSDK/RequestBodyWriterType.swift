@@ -13,7 +13,7 @@ import Foundation
 protocol RequestBodyWriterType: class {
     
     /// A type representing the multipart form output
-    typealias Output
+    associatedtype Output
     
     /// URL to the temporary file storing the information of request body
     var bodyTempFileURL: NSURL { get }

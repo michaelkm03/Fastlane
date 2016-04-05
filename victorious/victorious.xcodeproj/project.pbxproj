@@ -1039,7 +1039,7 @@
 		A72C86721C977FF600E97D4F /* DequeueMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D61C977FF500E97D4F /* DequeueMessagesOperation.swift */; };
 		A72C86741C977FF600E97D4F /* FollowedHashtagsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */; };
 		A72C86751C977FF600E97D4F /* MessageSendRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */; };
-		A72C86761C977FF600E97D4F /* NotificaitonsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificaitonsRemoteOperation.swift */; };
+		A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */; };
 		A72C86771C977FF600E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */; };
 		A72C86781C977FF600E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */; };
 		A72C86791C977FF600E97D4F /* SequenceDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */; };
@@ -3452,7 +3452,7 @@
 		A72C85D71C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85DA1C977FF500E97D4F /* NotificaitonsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificaitonsRemoteOperation.swift; sourceTree = "<group>"; };
+		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryBySequenceRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceDeleteRemoteOperation.swift; sourceTree = "<group>"; };
@@ -7597,7 +7597,7 @@
 				A72C85D71C977FF500E97D4F /* FetcherOperation.swift */,
 				A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */,
 				A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */,
-				A72C85DA1C977FF500E97D4F /* NotificaitonsRemoteOperation.swift */,
+				A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */,
 				A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */,
 				A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */,
 				A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */,
@@ -10398,7 +10398,7 @@
 				CLASSPREFIX = V;
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					03314F1B1BE3E2DE00EE74FD = {
@@ -12727,7 +12727,7 @@
 				A72C863D1C977FF500E97D4F /* UnfollowHashtagOperation.swift in Sources */,
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
 				A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */,
-				A72C86761C977FF600E97D4F /* NotificaitonsRemoteOperation.swift in Sources */,
+				A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				A72C867D1C977FF600E97D4F /* SequenceRepostersRemoteOperation.swift in Sources */,
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
@@ -13447,7 +13447,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -14610,7 +14609,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -14898,7 +14896,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -14927,7 +14924,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -15091,7 +15087,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;

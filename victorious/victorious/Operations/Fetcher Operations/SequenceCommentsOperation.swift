@@ -49,7 +49,8 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                 persistentComment.populate( fromSourceModel: comment )
                 persistentComment.sequenceId = self.sequenceID
-                persistentComment.displayOrder = displayOrder++
+                persistentComment.displayOrder = displayOrder
+                displayOrder += 1
                 newComments.append( persistentComment )
             }
             sequence.v_addObjects( newComments, to: "comments" )

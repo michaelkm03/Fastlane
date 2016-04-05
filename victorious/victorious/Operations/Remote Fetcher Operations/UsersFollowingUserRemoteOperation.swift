@@ -46,7 +46,8 @@ final class UsersFollowingUserRemoteOperation: RemoteFetcherOperation, Paginated
                 let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
                 followedUser.objectUser = objectUser
                 followedUser.subjectUser = subjectUser
-                followedUser.displayOrder = displayOrder++
+                followedUser.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

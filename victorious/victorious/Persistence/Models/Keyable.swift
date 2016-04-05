@@ -15,5 +15,5 @@ struct Victorious: Keyable {
 }
 
 protocol Keyable {
-    typealias Keys
+    associatedtype Keys
 }

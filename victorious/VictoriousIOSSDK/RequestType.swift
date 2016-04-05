@@ -11,7 +11,7 @@ import Foundation
 /// Represents an HTTP request to a Victorious server endpoint.
 public protocol RequestType {
     /// The raw server response from this request will be parsed into an instance of this generic type.
-    typealias ResultType
+    associatedtype ResultType
     
     /// An instance of NSURLRequest that will be used to send this request to the server
     var urlRequest: NSURLRequest { get }

@@ -166,12 +166,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
                         add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                         recentSectionLength = 0
-                        rangeIndex++
+                        rangeIndex += 1
                     }
                     let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                     let sectionRange = SectionRange(range: NSMakeRange(rangeStart, 1), isShelf: true)
                     add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
-                    rangeIndex++
+                    rangeIndex += 1
                 }
                 else {
                     //Add to existing recent section

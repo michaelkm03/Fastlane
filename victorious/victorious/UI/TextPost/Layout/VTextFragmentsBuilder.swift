@@ -137,7 +137,7 @@ class VTextFragmentsBuilder: NSObject
     */
     func applySpacingToFragments( fragments: [VTextFragment], spacing: CGFloat, horizontalOffset: CGFloat )
     {
-        for var i = 0; i < fragments.count; i++
+        for i in 0 ..< fragments.count
         {
             let fragment = fragments[i]
             

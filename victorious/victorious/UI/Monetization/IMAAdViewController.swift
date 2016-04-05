@@ -43,7 +43,7 @@ private let VSDKAdIDMacro = "%%ADID%%"
             self.adsLoader.delegate = self
             NSNotificationCenter.defaultCenter().addObserver(
                 self,
-                selector: "contentDidFinishPlaying:",
+                selector: #selector(contentDidFinishPlaying(_:)),
                 name: AVPlayerItemDidPlayToEndTimeNotification,
                 object: player)
     }

@@ -28,11 +28,6 @@ class MediaSearchOptions: NSObject {
 
 /// View controller that allows users to search for media files as part of a content creation flow.
 class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
-    
-    /// Enum of selector strings used in this class
-    private enum Action: Selector {
-        case ExportSelectedItem = "exportSelectedItem:"
-    }
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -97,7 +92,8 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
-            action: Action.ExportSelectedItem.rawValue )
+            action: #selector(exportSelectedItem(_:))
+        )
 		
 		// Load with no search term for default results (determined by data sources)
 		self.performSearch(searchTerm: nil)

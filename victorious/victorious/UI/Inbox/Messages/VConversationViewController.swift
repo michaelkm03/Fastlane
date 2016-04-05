@@ -104,7 +104,7 @@ extension VConversationViewController {
     func beginLiveUpdates() {
         self.timer = VTimerManager.scheduledTimerManagerWithTimeInterval( ConversationDataSource.liveUpdateFrequency,
             target: self,
-            selector: Selector("onUpdate"),
+            selector: #selector(onUpdate),
             userInfo: nil,
             repeats: true
         )

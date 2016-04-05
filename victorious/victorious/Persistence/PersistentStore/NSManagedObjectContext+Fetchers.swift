@@ -117,7 +117,8 @@ extension NSManagedObjectContext {
             var format = String()
             var i = 0
             for (attribute, value) in queryDictionary {
-                let connector = i++ < queryDictionary.count-1 ? " && " : ""
+                let connector = i < queryDictionary.count-1 ? " && " : ""
+                i += 1
                 if let dict = value as? [String : AnyObject] {
                     let subAttribute = Array(dict.keys)[0]
                     if let subValue = dict[subAttribute] {

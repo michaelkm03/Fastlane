@@ -44,7 +44,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .Plain, target: self, action: "pressedCancel")
+                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .Plain, target: self, action: #selector(pressedCancel))
                 navigationItem.leftBarButtonItem = cancelButton
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
@@ -72,7 +72,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         timerManager?.invalidate()
-        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: "animate", userInfo: nil, repeats: true)
+        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: #selector(animate), userInfo: nil, repeats: true)
         if let loadingScreenDelegate = loadingScreenDelegate {
             loadingScreenDelegate.loadingScreenDidAppear()
         }

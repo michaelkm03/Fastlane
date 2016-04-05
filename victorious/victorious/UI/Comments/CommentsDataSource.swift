@@ -27,7 +27,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         self.KVOController.observe( self.sequence,
             keyPath: "comments",
             options: [],
-            action: Selector("onCommentsChanged:")
+            action: #selector(onCommentsChanged(_:))
         )
     }
     

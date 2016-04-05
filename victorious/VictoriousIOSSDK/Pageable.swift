@@ -24,7 +24,7 @@ public protocol Pageable: RequestType {
     /// - parameter request: A request to copy and configure for the next page relative to it
     init?( nextRequestFromRequest request: Self )
     
-    typealias PaginatorType: Paginator
+    associatedtype PaginatorType: Paginator
     
     var paginator: PaginatorType { get }
 }

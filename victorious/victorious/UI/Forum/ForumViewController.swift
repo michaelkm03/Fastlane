@@ -96,7 +96,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,
             target: self,
-            action: Selector("onClose")
+            action: #selector(onClose)
         )
         
         updateStyle()

@@ -51,7 +51,8 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
                 if conversation.postedAt == nil {
                     conversation.postedAt = newMessage.postedAt
                 }
-                newMessage.displayOrder = displayOrder++
+                newMessage.displayOrder = displayOrder
+                displayOrder += 1
                 messagesLoaded.append( newMessage )
             }
             conversation.v_addObjects( messagesLoaded, to: "messages" )

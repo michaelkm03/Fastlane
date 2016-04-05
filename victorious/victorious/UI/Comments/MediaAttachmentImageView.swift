@@ -31,7 +31,7 @@ class MediaAttachmentImageView : MediaAttachmentView {
         
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
-        self.mediaButton.addTarget(self, action: "mediaButtonPressed", forControlEvents: .TouchUpInside)
+        self.mediaButton.addTarget(self, action: #selector(mediaButtonPressed), forControlEvents: .TouchUpInside)
         
         self.addSubview(imageView)
         self.addSubview(mediaButton)

@@ -67,8 +67,8 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onAvatarTapped:") )
-        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: "onMediaTapped:") )
+        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped(_:))) )
+        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onMediaTapped(_:))) )
     }
     
     override func layoutSubviews() {

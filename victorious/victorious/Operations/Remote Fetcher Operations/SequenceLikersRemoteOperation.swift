@@ -41,7 +41,8 @@ final class SequenceLikersRemoteOperation: RemoteFetcherOperation, PaginatedRequ
                 let userSequenceContext: VSequenceLiker = context.v_findOrCreateObject( uniqueElements )
                 userSequenceContext.sequence = sequence
                 userSequenceContext.user = persistentUser
-                userSequenceContext.displayOrder = displayOrder++
+                userSequenceContext.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

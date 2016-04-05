@@ -15,7 +15,7 @@ extension ForumViewController {
     func debug_startGeneratingMessages(interval interval: NSTimeInterval) {
         VTimerManager.addTimerManagerWithTimeInterval(interval,
             target: self,
-            selector: Selector("debug_createMessages"),
+            selector: #selector(debug_createMessages),
             userInfo: nil,
             repeats: true,
             toRunLoop: NSRunLoop.mainRunLoop(),

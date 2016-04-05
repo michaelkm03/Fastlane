@@ -231,7 +231,7 @@ class VideoToolbarView: UIView {
         refreshVisibilityDate()
         autoVisbilityTimer = VTimerManager.scheduledTimerManagerWithTimeInterval( 0.5,
             target: self,
-            selector: "onTimer",
+            selector: #selector(onTimer),
             userInfo: nil,
             repeats: true )
     }

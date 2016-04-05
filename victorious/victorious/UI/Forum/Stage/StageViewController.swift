@@ -132,7 +132,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         if let duration = gifAsset.mediaMetaData.duration {
             let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer]
-            playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "interruptPlayback:", userInfo: interruptMessage, repeats: false)
+            playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: #selector(interruptPlayback(_:)), userInfo: interruptMessage, repeats: false)
         }
     }
     

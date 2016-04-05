@@ -11,7 +11,7 @@ import Foundation
 protocol PersistenceParsable {
     
     /// The generic type which is the source of data from which to populate the receiver
-    typealias SourceModelType
+    associatedtype SourceModelType
     
     /// Populates data on the receiver
     ///

@@ -1,5 +1,5 @@
 //
-//  NotificaitonsRemoteOperation.swift
+//  NotificationsRemoteOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/3/16.
@@ -37,7 +37,8 @@ final class NotificationsRemoteOperation: RemoteFetcherOperation, PaginatedReque
                 
                 let notification: VNotification = context.v_findOrCreateObject(uniqueElements)
                 notification.populate(fromSourceModel: result)
-                notification.displayOrder = displayOrder++
+                notification.displayOrder = displayOrder
+                displayOrder += 1
             }
             context.v_save()
         }

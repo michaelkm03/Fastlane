@@ -48,7 +48,8 @@ final class MockPaginatedRemoteOperation: FetcherOperation, RequestOperation {
         if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
             for _ in 0..<self.request.paginator.itemsPerPage {
                 let object = MockPaginatedObject()
-                object.displayOrder = displayOrder++
+                object.displayOrder = displayOrder
+                displayOrder += 1
                 results.append( object )
             }
         }

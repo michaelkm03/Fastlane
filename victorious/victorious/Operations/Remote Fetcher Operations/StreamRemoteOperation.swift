@@ -55,7 +55,8 @@ final class StreamRemoteOperation: RemoteFetcherOperation, PaginatedRequestOpera
                 // Assign display order to stream item pointers that were parsed in `populate` method above
                 var displayOrder = self.request.paginator.displayOrderCounterStart
                 for pointer in persistentStreamItemPointers.flatMap({ $0 as? VStreamItemPointer }) {
-                    pointer.displayOrder = displayOrder++
+                    pointer.displayOrder = displayOrder
+                    displayOrder += 1
                 }
                 
             } else {
