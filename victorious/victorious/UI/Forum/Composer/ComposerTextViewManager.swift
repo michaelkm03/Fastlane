@@ -26,6 +26,15 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     //MARK: - Updating logic
     
+    func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
+        let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
+        let appendedText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
+        if appendedText {
+            textView.text = textView.text + text
+        }
+        return appendedText
+    }
+    
     func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
         
         var additionalTextLength = text.characters.count

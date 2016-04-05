@@ -93,6 +93,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"

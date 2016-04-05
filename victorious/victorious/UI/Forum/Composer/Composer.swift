@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Composer: class {
+protocol Composer: class, ComposerAttachmentTabBarDelegate {
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
@@ -34,4 +34,3 @@ protocol ComposerDelegate: class {
     /// than the composer's maximumHeight.
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat)
 }
-
