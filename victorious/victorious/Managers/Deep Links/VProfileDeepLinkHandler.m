@@ -62,7 +62,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     }
     
     NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
-    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteId:@(userID)];
+    UIViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteId:@(userID)];
     completion( YES, profileVC );
 }
 

@@ -529,7 +529,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

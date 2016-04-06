@@ -162,7 +162,7 @@
         return;
     }
 
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     if ( self.navigationController != nil )
     {
         [self.navigationController pushViewController:profileViewController animated:YES];

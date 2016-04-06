@@ -573,6 +573,21 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
                             withAddedDependencies:dependencies];
 }
 
+- (id)templateValueMatchingAnyType:(NSArray<Class> *)expectedTypes forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    for (Class expectedType in expectedTypes)
+    {
+        id value = [self templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
+        
+        if (value)
+        {
+            return value;
+        }
+    }
+    
+    return nil;
+}
+
 - (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
 {
     return [self templateValueConformingToProtocol:protocol forKey:key withAddedDependencies:nil];

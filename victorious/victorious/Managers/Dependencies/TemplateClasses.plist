@@ -132,6 +132,8 @@
 	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
+	<key>newUserProfile.screen</key>
+	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>

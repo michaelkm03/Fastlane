@@ -87,7 +87,7 @@
 
 - (void)testOnOtherUserProfile
 {
-    VUserProfileViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
+    UIViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
     [self.navigationController pushViewController:otherProfileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:otherProfileViewController
@@ -114,7 +114,7 @@
 
 - (void)testOnCurrentUserProfile
 {
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
     [self.navigationController pushViewController:profileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:profileViewController

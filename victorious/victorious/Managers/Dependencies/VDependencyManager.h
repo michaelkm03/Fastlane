@@ -206,6 +206,18 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
+ @param expectedTypes if the value found at key is not any of these
+ classes, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+ a new instance of VDependencyManager will be provided to it, and these
+ extra dependencies will be added to it.
+ */
+- (id)templateValueMatchingAnyType:(NSArray<Class> *)expectedTypes forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
  @param expectedType if the value found at key does not conform 
                      to this protocol, of class, we return nil.
  */

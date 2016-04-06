@@ -22,23 +22,26 @@ NSString * const VDependencyManagerTrophyCaseScreenKey = @"trophyCaseScreen";
 
 @implementation VDependencyManager (VUserProfile)
 
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
+- (UIViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert( user != nil, @"Cannot create a VUserProfileViewController with a nil `user` parameter." );
-    // The assert is compiled out in staging+ so we shoudl still bail out if user is nil.
+    // The assert is compiled out in staging+ so we should still bail out if user is nil.
     if (user == nil)
     {
         return nil;
     }
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VDependencyManagerUserProfileViewComponentKey
-               withAddedDependencies:@{ VDependencyManagerUserKey: user }];
+    
+    return [self templateValueMatchingAnyType:@[VNewProfileViewController.class, VUserProfileViewController.class]
+                                       forKey:VDependencyManagerUserProfileViewComponentKey
+                        withAddedDependencies:@{ VDependencyManagerUserKey: user }];
 }
 
-- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
+- (UIViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
 {
     NSAssert( remoteId != nil, @"Cannot create a VUserProfileViewController with a nil user `remoteId` parameter." );
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VDependencyManagerUserProfileViewComponentKey
-               withAddedDependencies:@{ VDependencyManagerUserRemoteIdKey: remoteId }];
+    return [self templateValueMatchingAnyType:@[VNewProfileViewController.class, VUserProfileViewController.class]
+                                       forKey:VDependencyManagerUserProfileViewComponentKey
+                        withAddedDependencies:@{ VDependencyManagerUserRemoteIdKey: remoteId }];
 }
 
 - (UIViewController<VUserProfileHeader> *)userProfileHeaderWithUser:(VUser *)user

@@ -326,7 +326,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     }
     
     VNotification *notification = [self.dataSource.visibleItems objectAtIndex:indexPath.row];
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:notification.user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:notification.user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

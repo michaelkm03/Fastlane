@@ -27,16 +27,16 @@ extern NSString * const VDependencyManagerTrophyCaseScreenKey;
 @interface VDependencyManager (VUserProfile)
 
 /**
- Returns a new VUserProfileViewController instance according to the
- template configuration, primed to display the given user.
+ Returns a new VNewProfileViewController or VUserProfileViewController instance
+ according to the template configuration, primed to display the given user.
  */
-- (nullable VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user;
+- (nullable UIViewController *)userProfileViewControllerWithUser:(VUser *)user;
 
 /**
- Returns a new VUserProfileViewController instance according to the
- template configuration, primed to display the user with the given remoteID.
+ Returns a new VNewProfileViewController or VUserProfileViewController instance
+ according to the template configuration, primed to display the user with the given remoteID.
  */
-- (nullable VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId;
+- (nullable UIViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId;
 
 /**
  Returns a new template implementation of VUserProfileHeader primed to display the given user.
