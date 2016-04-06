@@ -63,7 +63,7 @@
                                     <connections>
                                         <action selector="onSliderDown:" destination="JX7-kd-Uhj" eventType="touchDown" id="VIG-pc-wlA"/>
                                         <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchUpInside" id="PNd-8D-0mm"/>
-                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchDragOutside" id="ROu-za-LLN"/>
+                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchUpOutside" id="ROu-za-LLN"/>
                                         <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchCancel" id="qYO-EA-Vj8"/>
                                         <action selector="onSliderValueChanged:" destination="JX7-kd-Uhj" eventType="valueChanged" id="EXu-ZA-RA7"/>
                                     </connections>

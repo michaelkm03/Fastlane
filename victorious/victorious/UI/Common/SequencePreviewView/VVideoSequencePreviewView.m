@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     VVideoStateBuffering,
     VVideoStatePlaying,
     VVideoStatePaused,
+    VVideoStateScrubbing
 };
 @interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
@@ -193,7 +194,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)setState:(VVideoState)state
 {
     _state = state;
-    
     [self updateUIState];
 }
 
@@ -373,15 +373,19 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStartBuffering:videoPlayer];
-    self.state = VVideoStateBuffering;
+    if (self.state != VVideoStateScrubbing )
+    {
+        self.state = VVideoStateBuffering;
+    }
 }
 
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStopBuffering:videoPlayer];
-    if ( self.state != VVideoStateEnded )
+    if ( self.state != VVideoStateEnded && self.state != VVideoStateScrubbing)
     {
         self.state = VVideoStatePlaying;
+        [self.videoPlayer play];
     }
 }
 
@@ -417,12 +421,13 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoToolbar:(VideoToolbarView *__nonnull)videoToolbar didStartScrubbingToLocation:(float)location
 {
     self.wasPlayingBeforeScrubbingStarted = self.videoPlayer.isPlaying;
+    [self.videoPlayer pause];
+    self.state = VVideoStateScrubbing;
 }
 
 - (void)videoToolbar:(VideoToolbarView *__nonnull)videoToolbar didScrubToLocation:(float)location
 {
     NSTimeInterval timeSeconds = location * self.videoPlayer.durationSeconds;
-    [self.videoPlayer pause];
     [self.videoPlayer seekToTimeSeconds:timeSeconds];
 }
 
@@ -432,6 +437,10 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     {
         self.wasPlayingBeforeScrubbingStarted = NO;
         [self.videoPlayer play];
+    }
+    else
+    {
+        self.state = VVideoStatePaused;
     }
 }
 
