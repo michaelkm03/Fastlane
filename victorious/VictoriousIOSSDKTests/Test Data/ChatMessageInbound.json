@@ -1,0 +1,10 @@
+{
+    "text": "Test message",
+    "giphy_url": "http://a.url.to.giphy",
+    "content_url": "http://a.url.to.content",
+    "from_user": {
+        "id": "1337",
+        "name": "Leetzor",
+        "profile_url": "http://a.link.to.profile"
+    }
+}

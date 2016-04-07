@@ -11,7 +11,7 @@ import UIKit
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer {
-    
+
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
             stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
@@ -44,6 +44,26 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         return forumVC
     }
     
+    // MARK: - ForumEventReceiver
+    
+    var childEventReceivers: [ForumEventReceiver] {
+        return [ stage as? ForumEventReceiver, chatFeed as? ForumEventReceiver, composer as? ForumEventReceiver ].flatMap { $0 }
+    }
+    
+    func receiveEvent(event: ForumEvent) {
+        for receiver in childEventReceivers {
+            receiver.receiveEvent(event)
+        }
+        
+        if let event = event as? WebSocketEvent {
+            switch event.type {
+            case .Disconnected(webSocketError: _):
+                connectToNetworkSource()
+            default: break
+            }
+        }
+    }
+
     // MARK: - ForumEventSender
     
     var nextSender: ForumEventSender? //< Calling code just needs to set this to get messages propagated from composer.
@@ -54,6 +74,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var composer: Composer?
     var chatFeed: ChatFeed?
     var dependencyManager: VDependencyManager!
+    var networkSource: TemplateNetworkSource?
     
     var originViewController: UIViewController {
         return self
@@ -81,6 +102,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         super.viewDidAppear(animated)
         //Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        
+        networkSource = dependencyManager.networkSource
+        setupNetworkSource(networkSource!)
+        connectToNetworkSource()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -90,7 +115,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debug_startGeneratingMessages(interval: 3.0)
+//        debug_startGeneratingMessages(interval: 3.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
@@ -98,7 +123,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             target: self,
             action: #selector(onClose)
         )
-        
         updateStyle()
     }
     
@@ -111,7 +135,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             stage.dependencyManager = dependencyManager.stageDependency
             stage.delegate = self
             self.stage = stage
-        
+            
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager.chatFeedDependency
             chatFeed.delegate = self
@@ -143,6 +167,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    // MARK: Private
+    
+    private func setupNetworkSource(networkSource: TemplateNetworkSource) {
+        // Add the network source as the next responder in the FEC.
+        nextSender = networkSource
+        // Inject ourselves into the child receiver list in order to link the chain together.
+        networkSource.addChildReceiver(self)
     }
 }
 
@@ -176,5 +209,9 @@ private extension VDependencyManager {
     
     var stageDependency: VDependencyManager {
         return childDependencyForKey("stage")!
+    }
+    
+    var networkSource: TemplateNetworkSource {
+        return (singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? TemplateNetworkSource) ?? WebSocketController.sharedInstance
     }
 }

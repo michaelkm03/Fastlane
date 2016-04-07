@@ -25,9 +25,9 @@ private var totalMessages = Int.max //< Hack for testing
 final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
-    let events: [ForumEvent]
+    let events: [ChatMessageInbound]
     
-    required init(events: [ForumEvent], paginator: StandardPaginator = StandardPaginator()) {
+    required init(events: [ChatMessageInbound], paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
         self.events = events
     }
@@ -47,6 +47,7 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
             let otherUser: VUser = context.v_findOrCreateObject(userData)
             otherUser.status = "test"
             
+            // TODO: set currentUser only for outbound messages
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }
@@ -54,18 +55,12 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
             var messages = [ChatMessage]()
             for event in self.events {
                 
-                let sender: VUser
-                if arc4random() % 5 == 1 {
-                    sender = currentUser
-                } else {
-                    sender = otherUser
-                }
-                
+                let sender: VUser = otherUser
                 let message = ChatMessage(displayOrder: totalMessages)
+                sender.name = event.fromUser.name
                 message.sender = sender
-                message.text = event.messageText
-                message.postedAt = NSDate()
-                message.media = event.media
+                message.text = event.text
+                message.postedAt = event.timestamp
                 messages.append(message)
                 totalMessages -= 1
             }

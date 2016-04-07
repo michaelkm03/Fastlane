@@ -25,7 +25,7 @@ extension ImageAsset {
         self.type = type
         
         // MARK: Stageable
-        guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["imageURL", "image_url"]) else {
+        guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["imageUrl", "image_url", "imageURL"]) else {
             return nil
         }
         self.mediaMetaData = mediaMetaData

@@ -18,9 +18,9 @@ class NewItemsController: NSObject {
     
     var depedencyManager: VDependencyManager! {
         didSet {
-            button.backgroundColor = depedencyManager.backgroundColor
-            button.titleLabel?.font = depedencyManager.font
-            button.titleLabel?.textColor = depedencyManager.textColor
+//            button.backgroundColor = depedencyManager.backgroundColor
+//            button.titleLabel?.font = depedencyManager.font
+//            button.titleLabel?.textColor = depedencyManager.textColor
         }
     }
     

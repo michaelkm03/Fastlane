@@ -1,5 +1,5 @@
 //
-//  ForumNetworkingTests.swift
+//  ForumEventChainTests.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/17/16.
@@ -9,15 +9,7 @@
 import XCTest
 @testable import victorious
 
-class ForumNetworkingTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
+class ForumEventChainTests: XCTestCase {
     
     func testDefaultReceiver() {
         let parent = MockReceiver()
@@ -26,11 +18,9 @@ class ForumNetworkingTests: XCTestCase {
         parent.receiveEvent(event)
         
         XCTAssertEqual(parent.receivedEvents.count, 1)
-        XCTAssertEqual(parent.receivedEvents.first, event)
     }
     
     func testReceiverWithChildren() {
-        
         let childA = MockReceiver()
         let childB = MockReceiver()
         let childC = MockReceiver()
@@ -42,11 +32,6 @@ class ForumNetworkingTests: XCTestCase {
         XCTAssertEqual(childA.receivedEvents.count, 1)
         XCTAssertEqual(childB.receivedEvents.count, 1)
         XCTAssertEqual(childC.receivedEvents.count, 1)
-        
-        
-        XCTAssertEqual(childA.receivedEvents.first, event)
-        XCTAssertEqual(childB.receivedEvents.first, event)
-        XCTAssertEqual(childC.receivedEvents.first, event)
     }
     
     func testDefaultSender() {
@@ -63,29 +48,43 @@ class ForumNetworkingTests: XCTestCase {
         senderLinkA.sendEvent(event)
         
         XCTAssertEqual(senderDestination.sentEvents.count, 1)
-        XCTAssertEqual(senderDestination.sentEvents.first, event)
     }
     
     func createEvent() -> ForumEvent {
         eventIdCounter += 1
-        return ForumEvent(
-            media: nil,
-            messageText: "\(eventIdCounter)",
-            date: NSDate()
-        )
+        return ForumEventTestable(timestamp: NSDate(timeIntervalSince1970: 1459178708), internalIdentifier: eventIdCounter)
+    }
+    
+    func testPerformance() {
+        let childA = MockReceiver()
+        let childB = MockReceiver()
+        let childC = MockReceiver()
+        
+        let parent = MockReceiverWithChildren(children: [childA, childB, childC])
+        let origin = MockReceiverWithChildren(children: [parent])
+        
+        self.measureBlock() {
+            for _ in 1...10000 {
+                let event = self.createEvent()
+                origin.receiveEvent(event)
+            }
+        }
     }
 }
 
 private var eventIdCounter = 0
 
-func ==(lhs: ForumEvent, rhs: ForumEvent) -> Bool {
-    return lhs.messageText! == rhs.messageText!
+// Internal struct made for testing the FEC (Forum Event Chain™).
+private struct ForumEventTestable: ForumEvent, Equatable {
+    let timestamp: NSDate
+    let internalIdentifier: Int
 }
 
-extension ForumEvent: Equatable { }
+private func ==(lhs: ForumEventTestable, rhs: ForumEventTestable) -> Bool {
+    return lhs.internalIdentifier == rhs.internalIdentifier
+}
 
 private class MockTerminusSender: ForumEventSender {
-    
     var sentEvents = [ForumEvent]()
     
     var nextSender: ForumEventSender?
@@ -96,12 +95,10 @@ private class MockTerminusSender: ForumEventSender {
 }
 
 private class MockLinkSender: ForumEventSender {
-    
     var nextSender: ForumEventSender?
 }
 
 private class MockReceiver: ForumEventReceiver {
-    
     var receivedEvents = [ForumEvent]()
     
     func receiveEvent(event: ForumEvent) {
@@ -110,7 +107,6 @@ private class MockReceiver: ForumEventReceiver {
 }
 
 private class MockReceiverWithChildren: ForumEventReceiver {
-    
     var children: [ForumEventReceiver]
     
     var childEventReceivers: [ForumEventReceiver] {

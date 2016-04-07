@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Composer: class, ComposerAttachmentTabBarDelegate {
+protocol Composer: class, ForumEventReceiver, ComposerAttachmentTabBarDelegate {
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.

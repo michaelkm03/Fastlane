@@ -23,6 +23,14 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     var composer: Composer? { get }
     var chatFeed: ChatFeed? { get }
     
+    /// The abstract network layer used for feeding the Forum events and for sending events out.
+    var networkSource: TemplateNetworkSource? { get }
+    
+    /**
+        Prepare the network source and opens the connection.
+     */
+    func connectToNetworkSource()
+    
     // MARK: - Behaviors
 
     func setStageHeight(value: CGFloat)
@@ -32,12 +40,6 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 /// intended as a concise and flexible mini-architecture and defines the
 /// most fundamental interation between parent and subcomponents.
 extension Forum {
-    
-    // MARK: - ForumEventReceiver
-    
-    var childEventReceivers: [ForumEventReceiver] {
-        return [ stage as? ForumEventReceiver, chatFeed as? ForumEventReceiver ].flatMap { $0 }
-    }
     
     // MARK: - ChatFeedDelegate
     
@@ -60,14 +62,11 @@ extension Forum {
     }
     
     func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
-        let event = ForumEvent(
-            media: nil,
-            messageText: caption,
-            date: NSDate()
-        )
-        sendEvent(event)
+        if let event = ChatMessageOutbound(text: caption) {
+            sendEvent(event)
+        }
     }
-    
+
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
         chatFeed?.setBottomInset(height)
     }
@@ -85,5 +84,16 @@ extension Forum {
     
     func stage(stage: Stage, didSelectMedia media: Stageable) {
         
+    }
+    
+    // MARK: Network Source
+    
+    func connectToNetworkSource() {
+        if let networkSource = networkSource where !networkSource.isConnected {
+            // TODO: Replace with real token fetching logics when that endpoint is implemented.
+            let newToken = "IOS\(arc4random_uniform(100))"
+            networkSource.replaceToken(newToken)
+            networkSource.connect()
+        }
     }
 }

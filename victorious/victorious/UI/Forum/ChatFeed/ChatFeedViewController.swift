@@ -16,7 +16,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
-        private static let topMargin: CGFloat = 20.0
+        private static let topMargin: CGFloat = 70.0
     }
     
     private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
@@ -214,6 +214,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
 private extension VDependencyManager {
     
     var newItemsDependency: VDependencyManager {
-        return childDependencyForKey("newItems")!
+        return self
+//        return childDependencyForKey("newItems")!
     }
 }

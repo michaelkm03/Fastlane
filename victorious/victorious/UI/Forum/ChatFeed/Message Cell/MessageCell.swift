@@ -105,7 +105,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     private func populateData() {
         textView.attributedText = attributedText
         if let media = viewData?.media {
-            mediaView.imageURL = media.url
+//            mediaView.imageURL = media.url
         }
         detailTextView.text = "\(viewData.username) (\(viewData.timeLabel))"
         avatarView.setProfileImageURL(viewData.avatarImageURL)
@@ -143,11 +143,14 @@ class MessageCell: UICollectionViewCell, VFocusable {
             options: [ .UsesLineFragmentOrigin ],
             context: nil).size
         size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
+        
+        // HACK: No time to figure out the actual issue here, width is not big enough for the text. 
+        // boundingRectWithSize lies for some reason.
+        size.width += contentMargin.left
         return size
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        
         guard let media = viewData?.media else {
             return CGSize.zero
         }

@@ -32,26 +32,26 @@ extension ForumViewController {
         if arc4random() % 10 > 7 || randomText.characters.isEmpty {
             let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
             let data = sampleMedia[rnd]
-            media = ForumMedia(
-                url: NSURL(string:data["url"] as! String)!,
-                thumbnailUrl: NSURL(string:data["thumbnailUrl"] as! String)!,
-                width: data["width"] as! Int,
-                height: data["height"] as! Int,
-                loop: true,
-                audioEnabled: false
-            )
+//            media = ForumMedia(
+//                url: NSURL(string:data["url"] as! String)!,
+//                thumbnailUrl: NSURL(string:data["thumbnailUrl"] as! String)!,
+//                width: data["width"] as! Int,
+//                height: data["height"] as! Int,
+//                loop: true,
+//                audioEnabled: false
+//            )
         } else {
             media = nil
         }
         
-        let event = ForumEvent(
-            media: media,
-            messageText: randomText,
-            date: NSDate()
-        )
+//        let event = ForumEvent(
+//            media: media,
+//            messageText: randomText,
+//            date: NSDate()
+//        )
         
         // Send each event to self as if from a socket controller
-        receiveEvent(event)
+//        receiveEvent(event)
     }
 }
 

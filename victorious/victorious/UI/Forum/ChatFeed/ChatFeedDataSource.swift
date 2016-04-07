@@ -18,27 +18,27 @@ class ForumEventQueue {
         self.maximimEventCount = maximimEventCount
     }
     
-    private var events = [ForumEvent]()
+    private var chatMessageevents = [ChatMessageInbound]()
     
-    func addEvent(event: ForumEvent) {
-        if let max = maximimEventCount where events.count + 1 >= max {
-            events.removeLast()
+    func addEvent(event: ChatMessageInbound) {
+        if let max = maximimEventCount where chatMessageevents.count + 1 >= max {
+            chatMessageevents.removeLast()
         }
-        events.append(event)
+        chatMessageevents.append(event)
     }
     
-    func dequeueEvents(count count: Int) -> [ForumEvent] {
-        guard count <= events.count else {
+    func dequeueEvents(count count: Int) -> [ChatMessageInbound] {
+        guard count <= chatMessageevents.count else {
             return dequeueAll()
         }
-        let output = events[0..<count]
-        events.removeRange(count..<events.count)
+        let output = chatMessageevents[0..<count]
+        chatMessageevents.removeRange(count..<chatMessageevents.count)
         return Array(output)
     }
     
-    func dequeueAll() -> [ForumEvent] {
-        let output = events
-        events = []
+    func dequeueAll() -> [ChatMessageInbound] {
+        let output = chatMessageevents
+        chatMessageevents = []
         return output
     }
 }
@@ -69,8 +69,10 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
     // MARK: - ForumEventReceiver
     
     func receiveEvent(event: ForumEvent) {
-        // Stash events in the queue when received and wait to dequeue on our timer cycle
-        eventQueue.addEvent(event)
+        // Stash ChatMessageInbounds in the queue when received and wait to dequeue on our timer cycle.
+        if let chatMessage = event as? ChatMessageInbound {
+            eventQueue.addEvent(chatMessage)
+        }
     }
     
     // MARK: - Live Update
@@ -131,14 +133,15 @@ class ChatFeedDataSource: PaginatedDataSource, ForumEventReceiver, UICollectionV
         bounds.size.width = collectionView.bounds.width
         sizingCell.bounds = bounds
         cellDecorator.decorateCell(sizingCell, withMessage: message, dependencyManager: dependencyManager.fanCellDependency)
-        return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+        let size = sizingCell.cellSizeWithinBounds(collectionView.bounds)
+        return size
     }
     
     func redecorateVisibleCells(collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MessageCell
             let message = visibleItems[ indexPath.row ] as! ChatMessage
-            cellDecorator.decorateCell(cell, withMessage:message, dependencyManager: dependencyManager.fanCellDependency)
+            cellDecorator.decorateCell(cell, withMessage: message, dependencyManager: dependencyManager.fanCellDependency)
         }
     }
 }
