@@ -9,9 +9,13 @@
 import Foundation
 
 public enum AlertType : String {
+    /// Alerts coming back from the backend
     case LevelUp = "levelUp"
     case Achievement = "achievement"
     case StatusUpdate = "statusUpdate"
+    
+    /// Alerts created on client side
+    case ClientSideCreated = "clientSideCreated"
 }
 
 public func ==(lhs: Alert, rhs: Alert) -> Bool {
@@ -24,7 +28,7 @@ public struct Alert {
         public let backgroundVideoURL: NSURL?
         public let description: String
         public let title: String
-        public let userFanLoyalty: FanLoyalty
+        public let userFanLoyalty: FanLoyalty?
         public let icons: [NSURL]
     }
     public let alertID: Int
@@ -46,6 +50,13 @@ extension Alert {
         self.parameters = parameters
         self.alertID = alertID
         self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
+    }
+    
+    public init(title: String, description: String, iconURL: NSURL? = nil) {
+        self.alertID = Int(NSDate().timeIntervalSince1970)
+        self.alertType = .ClientSideCreated
+        self.parameters = Alert.Parameters(backgroundVideoURL: nil, description: description, title: title, userFanLoyalty: nil, icons: [])
+        self.dateAcknowledged = nil
     }
 }
 

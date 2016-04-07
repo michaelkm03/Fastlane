@@ -16,7 +16,7 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController, InterstitialViewController, VVideoPlayerDelegate {
+class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegate {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
@@ -74,7 +74,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     // MARK: Interstitial View Controller
     
-    weak var interstitialDelegate: InterstitialViewControllerDelegate?
+    weak var interstitialDelegate: InterstitialDelegate?
     
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
         return LevelUpAnimator()
@@ -98,12 +98,12 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     var alert: Alert? {
         didSet {
-            guard let alert = alert else {
-                return
+            guard let alert = alert,
+                let fanLoyalty = alert.parameters.userFanLoyalty else {
+                    return
             }
             
-            let currentLevel = alert.parameters.userFanLoyalty.level
-            badgeView?.levelNumberString = String(currentLevel)
+            badgeView?.levelNumberString = String(fanLoyalty.level)
             titleLabel.text = alert.parameters.title
             descriptionLabel.text = alert.parameters.description
             icons = alert.parameters.icons
@@ -167,8 +167,9 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let alert = alert where !hasAppeared else {
-            return
+        guard let alert = alert,
+            let fanLoyalty = alert.parameters.userFanLoyalty where !hasAppeared else {
+                return
         }
         
         animateIn()
@@ -183,8 +184,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         // Assuming this level up alert contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears
         if let currentUser = VCurrentUser.user() {
-            currentUser.level = alert.parameters.userFanLoyalty.level
-            currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
+            currentUser.level = fanLoyalty.level
+            currentUser.levelProgressPercentage = fanLoyalty.progress
         }
     }
     

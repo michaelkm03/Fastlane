@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Trophy Case View Controller-->
@@ -70,108 +69,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FBa-sC-t3M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="241" y="255"/>
-        </scene>
-        <!--Achievement Detail View Controller-->
-        <scene sceneID="hM4-Oa-crU">
-            <objects>
-                <viewController storyboardIdentifier="AchievementDetailViewController" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="LEf-3l-MHk" customClass="AchievementDetailViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ge3-aL-qdM"/>
-                        <viewControllerLayoutGuide type="bottom" id="MLC-3f-daj"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="KyQ-C1-BRR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-UM-aoU" userLabel="Background Button">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="dismiss:" destination="LEf-3l-MHk" eventType="touchUpInside" id="szd-Sv-3ty"/>
-                                </connections>
-                            </button>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZM3-iY-oQD" userLabel="Alert">
-                                <rect key="frame" x="35" y="210" width="530" height="180"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Title" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-sz-btw">
-                                        <rect key="frame" x="30" y="30" width="470" height="29"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Achievement Detail" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jtf-Jp-hKf">
-                                        <rect key="frame" x="30" y="79" width="470" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3T-Un-jvL">
-                                        <rect key="frame" x="0.0" y="125" width="530" height="55"/>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="SKu-x9-GZz"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="Okay button placeholder">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dismiss:" destination="LEf-3l-MHk" eventType="touchUpInside" id="vtZ-GG-y50"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="8uB-sz-btw" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="4QH-3w-2zL"/>
-                                    <constraint firstAttribute="trailing" secondItem="Jtf-Jp-hKf" secondAttribute="trailing" constant="30" id="5Ps-mA-iUw"/>
-                                    <constraint firstItem="Y3T-Un-jvL" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" id="Adm-2E-Th0"/>
-                                    <constraint firstItem="Jtf-Jp-hKf" firstAttribute="leading" secondItem="ZM3-iY-oQD" secondAttribute="leading" constant="30" id="H9b-ZJ-wTG"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="HDO-f3-Vdj"/>
-                                    <constraint firstAttribute="trailing" secondItem="Y3T-Un-jvL" secondAttribute="trailing" id="KLk-er-Mha"/>
-                                    <constraint firstAttribute="trailing" secondItem="8uB-sz-btw" secondAttribute="trailing" constant="30" id="S3o-cW-wlV"/>
-                                    <constraint firstItem="Jtf-Jp-hKf" firstAttribute="centerY" secondItem="ZM3-iY-oQD" secondAttribute="centerY" id="alE-wt-ES1"/>
-                                    <constraint firstItem="Jtf-Jp-hKf" firstAttribute="top" secondItem="8uB-sz-btw" secondAttribute="bottom" constant="20" id="do6-Bx-0Ab"/>
-                                    <constraint firstItem="8uB-sz-btw" firstAttribute="top" secondItem="ZM3-iY-oQD" secondAttribute="top" constant="30" id="hQX-5d-24o"/>
-                                    <constraint firstAttribute="bottom" secondItem="Y3T-Un-jvL" secondAttribute="bottom" id="qsn-Rd-lod"/>
-                                </constraints>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <mask key="subviews">
-                                        <include reference="Y3T-Un-jvL"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="ZM3-iY-oQD" secondAttribute="trailing" constant="15" id="31a-i2-2yH"/>
-                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" constant="15" id="8px-Jx-Awu"/>
-                            <constraint firstItem="ZM3-iY-oQD" firstAttribute="centerY" secondItem="KyQ-C1-BRR" secondAttribute="centerY" id="GP6-OF-22l"/>
-                            <constraint firstItem="MLC-3f-daj" firstAttribute="top" secondItem="NVn-UM-aoU" secondAttribute="bottom" id="UlU-sb-nth"/>
-                            <constraint firstItem="NVn-UM-aoU" firstAttribute="top" secondItem="ge3-aL-qdM" secondAttribute="bottom" constant="-20" id="f1d-IN-p6S"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="NVn-UM-aoU" secondAttribute="trailing" constant="-20" id="p27-58-RAv"/>
-                            <constraint firstItem="NVn-UM-aoU" firstAttribute="leading" secondItem="KyQ-C1-BRR" secondAttribute="leadingMargin" constant="-20" id="pmm-gZ-jD7"/>
-                        </constraints>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="NVn-UM-aoU"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <connections>
-                        <outlet property="achievementDetailLabel" destination="Jtf-Jp-hKf" id="rx9-4Y-d1w"/>
-                        <outlet property="achievementTitleLabel" destination="8uB-sz-btw" id="lZt-no-6Za"/>
-                        <outlet property="alertView" destination="ZM3-iY-oQD" id="aeU-uB-Gwf"/>
-                        <outlet property="confirmationButton" destination="Y3T-Un-jvL" id="ntc-3H-U3t"/>
-                        <outlet property="semiTransparentBackgroundButton" destination="NVn-UM-aoU" id="R8d-kV-iwA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TkT-yt-yVt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="945" y="255"/>
         </scene>
     </scenes>
 </document>

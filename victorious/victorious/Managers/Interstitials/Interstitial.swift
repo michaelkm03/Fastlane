@@ -1,5 +1,5 @@
 //
-//  InterstitialViewController.swift
+//  Interstitial.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/11/15.
@@ -8,11 +8,21 @@
 
 import Foundation
 
-/// View controllers that wish to be presented as interstitials should conform to this protocol
-protocol InterstitialViewController: class {
+/// View controllers that wish to be presented as interstitials should conform to this protocol.
+///
+/// To create an alert locally and schedule it with `InterstitialManager`
+///
+/// - Construct an alert locally
+/// - Call `onAlertsReceived` on the singleton object `InterstitialManager`
+///
+/// Then the alert will be presented with the UI defined in `InterstitialAlertViewController`.
+protocol Interstitial: class {
+    
+    /// The `Alert` property being presented by this `Interstitial`
+    var alert: Alert? { get set }
     
     /// A delegate to be informed of interstitial events
-    weak var interstitialDelegate: InterstitialViewControllerDelegate? { get set }
+    weak var interstitialDelegate: InterstitialDelegate? { get set }
     
     /// Returns an animator object for animating the presentation of the interstitial view controller
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning
@@ -27,7 +37,7 @@ protocol InterstitialViewController: class {
     func preferredModalPresentationStyle() -> UIModalPresentationStyle
 }
 
-protocol InterstitialViewControllerDelegate: class {
+protocol InterstitialDelegate: class {
     
     /// Informs the delegate that the user wants to dismiss the interstitial
     func dismissInterstitial(interstitialViewController: UIViewController)

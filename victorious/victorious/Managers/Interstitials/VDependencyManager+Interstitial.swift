@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VDependencyManager {
     
-    func interstitialViewController(alert alert: Alert) -> InterstitialViewController? {
+    func interstitialViewController(alert alert: Alert) -> Interstitial? {
         switch alert.alertType {
             
         case .LevelUp:
@@ -21,7 +21,7 @@ extension VDependencyManager {
                 return viewController
             }
         
-        case .StatusUpdate, .Achievement:
+        case .StatusUpdate, .Achievement, .ClientSideCreated:
             let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
             if let imageAlertVC = templateValue as? InterstitialAlertViewController {
                 imageAlertVC.alert = alert

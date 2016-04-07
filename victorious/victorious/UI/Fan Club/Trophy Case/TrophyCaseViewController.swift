@@ -62,8 +62,9 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
                 return
         }
         
-        let detailViewController = AchievementDetailViewController.newAchievementDetailViewControllerWithDependencyManager(dependencyManager, achievement: achievement)
-        presentViewController(detailViewController, animated: false, completion: nil)
+        let detailViewController = InterstitialAlertViewController.newWithDependencyManager(dependencyManager)
+        detailViewController.alert = Alert(title: achievement.title, description: achievement.detailedDescription)
+        InterstitialManager.sharedInstance.onAlertsReceived([detailViewController.alert!])
     }
     
     //MARK: - Background Container

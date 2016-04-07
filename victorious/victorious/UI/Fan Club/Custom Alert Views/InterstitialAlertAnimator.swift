@@ -10,7 +10,10 @@ import Foundation
 
 class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
-    var isDismissal = false
+    let isDismissing: Bool
+    init(isDismissing: Bool) {
+        self.isDismissing = isDismissing
+    }
     
     private struct Constants {
         static let dismissalDuration = 0.3
@@ -18,7 +21,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        if isDismissal {
+        if isDismissing {
             return Constants.dismissalDuration
         }
         return Constants.presentationDuration
@@ -35,7 +38,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                 toView.frame = containerView.bounds
                 fromView.frame = containerView.bounds
                 
-                if isDismissal {
+                if isDismissing {
                     
                     // Because this is a custom modal transition, this needs to be called so that 
                     // viewWillDisappear gets called on the presenting view controller

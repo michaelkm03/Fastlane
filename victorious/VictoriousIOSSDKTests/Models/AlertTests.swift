@@ -30,8 +30,8 @@ class AlertTests: XCTestCase {
         XCTAssertEqual( alert.parameters.title, "Alert Title" )
         XCTAssertEqual( alert.parameters.icons.count, 1 )
         XCTAssertEqual( alert.parameters.icons[0], NSURL(string: "http://i.imgur.com/ietHgk6.png") )
-        XCTAssertEqual( alert.parameters.userFanLoyalty.points, 100 )
-        XCTAssertEqual( alert.parameters.userFanLoyalty.level, 2 )
-        XCTAssertEqual( alert.parameters.userFanLoyalty.progress, 25 )
+        XCTAssertEqual( alert.parameters.userFanLoyalty?.points, 100 )
+        XCTAssertEqual( alert.parameters.userFanLoyalty?.level, 2 )
+        XCTAssertEqual( alert.parameters.userFanLoyalty?.progress, 25 )
     }
 }

@@ -15,7 +15,7 @@ import VictoriousIOSSDK
 
 /// A singleton object for managing alerts received from the Victorious API and presenting appropriate
 /// intestitial view controllers to the user upon receipt.
-class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialViewControllerDelegate, AlertReceiver {
+class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialDelegate, AlertReceiver {
     
     var disabled: Bool = false
     
@@ -32,9 +32,9 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     private var shownAlerts = [Alert]()
     
-    private var presentedInterstitial: InterstitialViewController?
+    private var presentedInterstitial: Interstitial?
     
-    /// Presents modally any available interstitials on the provided presentingg view controller
+    /// Presents modally any available interstitials on the provided presenting view controller
     func showNextInterstitial( onViewController presentingViewController: UIViewController) -> Bool {
         if !registeredAlerts.isEmpty {
             showInterstitial( alert: registeredAlerts.removeAtIndex(0), presentingViewController: presentingViewController)
@@ -85,7 +85,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
     }
     
-    /// MARK: InterstitialViewController
+    /// MARK: Interstitial
     
     func dismissInterstitial(interstitialViewController: UIViewController) {
         interstitialViewController.dismissViewControllerAnimated(true, completion: nil)

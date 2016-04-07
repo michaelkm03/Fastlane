@@ -8,10 +8,10 @@
 
 import UIKit
 
-class InterstitialAlertViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
+class InterstitialAlertViewController: UIViewController, Interstitial, VBackgroundContainer {
 
     var alert: Alert?
-    weak var interstitialDelegate: InterstitialViewControllerDelegate?
+    weak var interstitialDelegate: InterstitialDelegate?
     
     @IBOutlet private weak var iconImageView: UIImageView?
     @IBOutlet private weak var titleLabel: UILabel!
@@ -21,8 +21,6 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
     @IBOutlet private weak var containerView: UIView!
     
     private var dependencyManager: VDependencyManager!
-
-    private let animator = InterstitialAlertAnimator()
     
     private struct Constants {
         static let cornerRadius: CGFloat = 10
@@ -50,15 +48,14 @@ class InterstitialAlertViewController: UIViewController, InterstitialViewControl
         }
     }
     
-    // MARK: - InterstitialViewController Protocol
+    // MARK: - Interstitial Protocol
             
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
-        return animator
+        return InterstitialAlertAnimator(isDismissing: false)
     }
     
     func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
-        animator.isDismissal = true
-        return animator
+        return InterstitialAlertAnimator(isDismissing: true)
     }
     
     func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
