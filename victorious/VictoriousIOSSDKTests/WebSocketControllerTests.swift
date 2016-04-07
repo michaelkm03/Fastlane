@@ -144,9 +144,9 @@ class WebSocketControllerTests : XCTestCase, ForumEventReceiver, ForumEventSende
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
             }
-        case let inboundChatMessage as ChatMessageInbound:
+        case is ChatMessageInbound:
             expectationIncomingChatMessage?.fulfill()
-        case let refreshStage as RefreshStage:
+        case is RefreshStage:
             expectationRefreshStageMessage?.fulfill()
         default:
             XCTFail("Unexpected ForumEvent type received. Event -> \(event)")
@@ -176,7 +176,7 @@ private class StubbedWebSocket: WebSocket {
         delegate?.websocketDidDisconnect(self, error: nil)
     }
 
-    override func writeString(str: String) {
+    override func writeString(str: String, completion: (() -> ())? = nil) {
         if let chatMessageOutboundString = chatMessageOutboundString where chatMessageOutboundString == str {
             expectationOutboundChatMessage?.fulfill()
         } else if let blockUserString = blockUserString where blockUserString == str {
