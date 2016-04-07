@@ -60,7 +60,6 @@ import VictoriousIOSSDK
     func cancelCurrentOperation() {
         currentPaginatedOperation?.cancel()
         currentPaginatedOperation = nil
-        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
     func removeDeletedItems() {
@@ -139,12 +138,16 @@ import VictoriousIOSSDK
         self.state = .Loading
         requestOperation.queue() { results, error, cancelled in
             
-            if let error = error {
+            if cancelled {
+                // Remove the page from `pagesLoaded` so that it can be attempted again
+                self.pagesLoaded.remove( operation.paginator.pageNumber )
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                
+            } else if let error = error {
                 // Remove the page from `pagesLoaded` so that it can be attempted again
                 self.pagesLoaded.remove( operation.paginator.pageNumber )
                 
                 // Return no results
-                operation.results = []
                 self.delegate?.paginatedDataSource(self, didReceiveError: error)
                 self.state = .Error
                 
