@@ -10,7 +10,6 @@ SCHEME=$1
 CONFIGURATION=$2
 DEVICE_NAME=$3
 DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/tests.mobileprovision"
-DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 BUILDINFO_PLIST="buildinfo.plist"
 
 # Check input
