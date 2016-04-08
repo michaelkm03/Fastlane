@@ -1,5 +1,5 @@
 //
-//  VGradientBackgroundView.swift
+//  VGradientBackground.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/18/16.
@@ -46,7 +46,7 @@ private extension VDependencyManager {
     
     var direction: VGradientBackgroundDirection {
         switch stringForKey("direction") ?? "" {
-        case "Horizontal":
+        case "horizontal":
             return .Horizontal
         case "vertical":
             return .Vertical

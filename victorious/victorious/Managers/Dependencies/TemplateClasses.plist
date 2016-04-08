@@ -33,7 +33,7 @@
 	<key>solidColor.background</key>
 	<string>VSolidColorBackground</string>
 	<key>gradient.background</key>
-	<string>VGradientBackground</string>
+	<string>victorious.VGradientBackground</string>
 	<key>tilePattern.background</key>
 	<string>VTilePatternBackground</string>
 	<key>video.background</key>

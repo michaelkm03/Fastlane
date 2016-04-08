@@ -27,15 +27,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
     }
     
-    @IBOutlet private weak var gradientView: VLinearGradientView! {
-        didSet {
-            // TOOD: Read colors from template, add to spec
-            gradientView.setColors( [UIColor.v_colorFromHexString("1a324c"), UIColor.v_colorFromHexString("151e27")] )
-            gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
-            gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
-        }
-    }
-    
     // MARK: - Initialization
     
     class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
@@ -160,7 +151,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
         
         title = dependencyManager.title
-        view.backgroundColor = dependencyManager.backgroundColor
         let attributes = [ NSForegroundColorAttributeName : UIColor.whiteColor() ]
         navigationController?.navigationBar.titleTextAttributes = attributes
         navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
@@ -187,11 +177,6 @@ private extension VDependencyManager {
     
     var navigationItemColor: UIColor {
         return colorForKey("color.navigationItem")
-    }
-    
-    var backgroundColor: UIColor? {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
-        return background?.backgroundColor
     }
     
     var navigationBarBackgroundColor: UIColor? {
