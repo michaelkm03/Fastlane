@@ -33,7 +33,9 @@ extension VUser: PersistenceParsable {
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
-        avatarBadgeType             = user.avatar?.badgeType ?? avatarBadgeType
+        
+        /// If backend does not send us a badgeType, we default to "", which means we show the default level badge
+        avatarBadgeType             = user.avatar?.badgeType ?? ""
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
