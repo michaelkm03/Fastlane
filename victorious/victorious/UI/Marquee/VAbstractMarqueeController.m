@@ -50,6 +50,10 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         _dependencyManager = dependencyManager;
         _registeredReuseIdentifiers = [[NSMutableSet alloc] init];
         _streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(disableScroll)
+                                                     name:VSessionTimerNewSessionShouldStart
+                                                   object:nil];
     }
     return self;
 }
@@ -58,6 +62,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     NSAssert(NO, @"Use the designated initializer");
     return nil;
+}
+
+- (void)disableScroll
+{
+    [self disableTimer];
+    self.collectionView.userInteractionEnabled = NO;
 }
 
 - (void)dealloc
