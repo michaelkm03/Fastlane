@@ -23,8 +23,6 @@
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
-@property (nonatomic, strong) NSNumber *followingCount;
-@property (nonatomic, strong) NSNumber *followersCount;
 
 @end
 
@@ -185,8 +183,7 @@
 
 - (void)setFollowersCount:(NSNumber *)followersCount
 {
-    _followersCount = followersCount;
-    BOOL hasFollowersCount = followersCount != nil;
+    BOOL hasFollowersCount = followersCount != nil && followersCount.integerValue >= 0;
     if ( hasFollowersCount )
     {
         self.followersLabel.text = [self.largeNumberFormatter stringForInteger:followersCount.integerValue];
@@ -198,8 +195,7 @@
 
 - (void)setFollowingCount:(NSNumber *)followingCount
 {
-    _followingCount = followingCount;
-    BOOL hasFollowingCount = followingCount != nil;
+    BOOL hasFollowingCount = followingCount != nil && followingCount.integerValue >= 0;
     if ( hasFollowingCount )
     {
         self.followingLabel.text = [self.largeNumberFormatter stringForInteger:followingCount.integerValue];
