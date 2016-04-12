@@ -42,13 +42,13 @@ class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testTrackingFailure() {
         
         let expectation = expectationWithDescription("BlockUserRemoteOperation")
-        let testError = NSError(domain:"", code:9809, userInfo:nil)
+        let testError = NSError(domain: "", code:9809, userInfo:nil)
         
         operation.requestExecutor = TestRequestExecutor(error: testError)
         operation.queue() { results, error, cancelled in
@@ -59,6 +59,6 @@ class BlockUserRemoteOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

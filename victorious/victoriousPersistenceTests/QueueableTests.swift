@@ -31,7 +31,7 @@ class MockOperation: NSOperation, Queueable {
     
     private var result: Bool = false
 
-    func queueOn( queue: NSOperationQueue, completionBlock: (@convention(block) (MockOperation)->())? ) {
+    func queueOn( queue: NSOperationQueue, completionBlock: (@convention(block) (MockOperation) -> ())? ) {
         if let completionBlock = completionBlock {
             self.testCompletionBlock = completionBlock
         }

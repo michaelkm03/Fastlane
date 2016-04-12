@@ -17,7 +17,7 @@ public struct ConversationDeleteRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/message/delete_conversation")!)
-        request.vsdk_addURLEncodedFormPost(["conversation_id" : conversationID])
+        request.vsdk_addURLEncodedFormPost(["conversation_id": conversationID])
         
         return request
     }

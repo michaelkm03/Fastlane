@@ -10,7 +10,7 @@ import Foundation
 
 /// Class for containing info about the context in which a certain
 /// stream cell was viewed or clicked
-class StreamCellContext : NSObject {
+class StreamCellContext: NSObject {
     let streamItem: VStreamItem
     let stream: VStream
     var fromShelf = false

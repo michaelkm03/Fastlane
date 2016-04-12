@@ -101,8 +101,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         updateToInitialState()
     }
     
-    private func updateTextPreviewView()
-    {
+    private func updateTextPreviewView() {
         guard let sequence = sequence,
             let dependencyManager = dependencyManager else {
                 return

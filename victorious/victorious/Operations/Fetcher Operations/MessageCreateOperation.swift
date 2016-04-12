@@ -21,7 +21,7 @@ class MessageCreateOperation: FetcherOperation {
         // Optimistically create a comment before sending request
         let newMessageObjectID: NSManagedObjectID? = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            let uniqueElements = [ "user.remoteId" : self.creationParameters.recipientID ]
+            let uniqueElements = [ "user.remoteId": self.creationParameters.recipientID ]
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
                 let conversation: VConversation = context.v_findObjects(uniqueElements).first else {
                     return nil

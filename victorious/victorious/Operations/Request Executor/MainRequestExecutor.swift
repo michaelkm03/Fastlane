@@ -36,7 +36,7 @@ class MainRequestExecutor: RequestExecutorType {
     
     var cancelled: Bool = false
     
-    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType->())?, onError: (NSError->())?) {
+    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError->())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)

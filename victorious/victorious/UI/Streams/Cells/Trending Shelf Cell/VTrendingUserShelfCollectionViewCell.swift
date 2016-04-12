@@ -190,7 +190,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     private func updateUsername() {
         if let shelf = shelf as? UserShelf, let dependencyManager = dependencyManager {
             let formattedUsername = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf)
-            usernameTextView.setupWithDatabaseFormattedText(formattedUsername, tagAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : dependencyManager.textColor], defaultAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : UIColor.whiteColor()], andTagTapDelegate: self)
+            usernameTextView.setupWithDatabaseFormattedText(formattedUsername, tagAttributes: [NSFontAttributeName: dependencyManager.usernameFont, NSForegroundColorAttributeName: dependencyManager.textColor], defaultAttributes: [NSFontAttributeName: dependencyManager.usernameFont, NSForegroundColorAttributeName: UIColor.whiteColor()], andTagTapDelegate: self)
         }
     }
     
@@ -229,7 +229,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
 }
 
-extension VTrendingUserShelfCollectionViewCell : VTagSensitiveTextViewDelegate {
+extension VTrendingUserShelfCollectionViewCell: VTagSensitiveTextViewDelegate {
     
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         respondToUserTap()

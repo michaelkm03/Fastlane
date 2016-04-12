@@ -52,7 +52,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                     else {
                         
                         let reuseIdentifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier:reuseIdentifier)
+                        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
                         
                     }
                 }
@@ -106,14 +106,14 @@ extension VTrendingShelfCollectionViewCell: TrackableShelf {
     }
 }
 
-extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
+extension VTrendingShelfCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let streamItems = shelf?.streamItems {
             let streamItem = streamItems[indexPath.row]
             let isShowMoreCell = indexPath.row == streamItems.count - 1
-            let T = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self
-            let identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let cellType = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self
+            let identifier = cellType.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager

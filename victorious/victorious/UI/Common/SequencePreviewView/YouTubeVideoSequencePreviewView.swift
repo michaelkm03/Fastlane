@@ -8,7 +8,7 @@
 
 import UIKit
 
-class YouTubeVideoSequencePreviewView : VVideoSequencePreviewView {
+class YouTubeVideoSequencePreviewView: VVideoSequencePreviewView {
     
     class func remoteSourceName() -> String { return "youtube" }
     

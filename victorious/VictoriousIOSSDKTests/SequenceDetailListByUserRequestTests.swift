@@ -44,6 +44,6 @@ class SequenceDetailListByUserRequestTests: XCTestCase {
                 return
         }
         let sequenceListRequest = SequenceDetailListByUserRequest(userID: 101)
-        AssertThrowsSpecific(try sequenceListRequest.parseResponse(NSURLResponse(), toRequest: sequenceListRequest.urlRequest, responseData: mockData, responseJSON: JSON(mockData)), ResponseParsingError())
+        assertThrowsSpecific(try sequenceListRequest.parseResponse(NSURLResponse(), toRequest: sequenceListRequest.urlRequest, responseData: mockData, responseJSON: JSON(mockData)), ResponseParsingError())
     }
 }

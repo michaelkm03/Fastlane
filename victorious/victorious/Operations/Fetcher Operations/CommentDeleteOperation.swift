@@ -29,7 +29,7 @@ class CommentDeleteOperation: FetcherOperation {
         
         // Perform data changes optimistically
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.commentID ]
+            let uniqueElements = [ "remoteId": self.commentID ]
             if let comment: VComment = context.v_findObjects( uniqueElements ).first {
                 comment.sequence?.commentCount -= 1
                 context.deleteObject( comment )

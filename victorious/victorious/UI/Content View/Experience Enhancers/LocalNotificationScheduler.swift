@@ -10,7 +10,7 @@ import UIKit
 
 /// A helper for schelduling local notifications that adds the ability to easily cancel
 /// notifications and provide deeplink URLs to be executed when notifications are viewed by the user.
-class LocalNotificationScheduler : NSObject {
+class LocalNotificationScheduler: NSObject {
     
     let dependencyManager: VDependencyManager
     
@@ -34,7 +34,7 @@ class LocalNotificationScheduler : NSObject {
     /// Unschedules notifications that were scheduled using this class's `scheduleNotification(_:identifier:deeplinkUrl:)` method.
     ///
     /// - parameter identifier: The identifier used to schedule the notification.
-    func unscheduleNotification( identifier identifier: String ){
+    func unscheduleNotification( identifier identifier: String ) {
         guard let scheduledLocalNotifications = UIApplication.sharedApplication().scheduledLocalNotifications else {
             return
         }
@@ -55,7 +55,7 @@ class LocalNotificationScheduler : NSObject {
             
             self.register() //< Configures settings and prompts for permission if required
             
-            var userInfo = [ LocalNotificationScheduler.identifierKey : identifier ]
+            var userInfo = [ LocalNotificationScheduler.identifierKey: identifier ]
             if let deeplinkUrl = templateNotification.deeplinkUrl {
                 userInfo[ LocalNotificationScheduler.deplinkURLKey ] = deeplinkUrl
             }

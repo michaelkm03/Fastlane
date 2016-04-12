@@ -100,7 +100,6 @@ public class WebSocketController: WebSocketDelegate, TemplateNetworkSource, WebS
         childEventReceivers.append(receiver)
     }
     
-    
     // MARK: - ForumEventReceiver
     
     public var childEventReceivers: [ForumEventReceiver] = []
@@ -115,7 +114,6 @@ public class WebSocketController: WebSocketDelegate, TemplateNetworkSource, WebS
     public func sendEvent(event: ForumEvent) {
         sendOutboundForumEvent(event)
     }
-    
     
     // MARK: - WebSocketDelegate
     
@@ -146,7 +144,6 @@ public class WebSocketController: WebSocketDelegate, TemplateNetworkSource, WebS
     public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
         // ignore incoming data
     }
-    
     
     // MARK: - Private
     

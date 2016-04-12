@@ -28,7 +28,7 @@ class SequenceDeleteOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testWithoutConfirmation() {

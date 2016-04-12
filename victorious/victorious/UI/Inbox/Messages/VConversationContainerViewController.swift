@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 public extension VConversationContainerViewController {
     
-    public func sendMessage( text text: String, publishParameters: VPublishParameters?, inConversation conversation: VConversation, completion:(()->())? = nil ) {
+    public func sendMessage( text text: String, publishParameters: VPublishParameters?, inConversation conversation: VConversation, completion: (() -> ())? = nil ) {
         guard let recipient = conversation.user else {
             return
         }

@@ -26,7 +26,7 @@ extension VConversationViewController: VPaginatedDataSourceDelegate {
                         self.scrollToBottomAnimated(true)
                     }
                 }
-                self.tableView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+                self.tableView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
                 CATransaction.commit()
             }
    
@@ -89,14 +89,14 @@ extension VConversationViewController {
         
         let newContentSize = self.tableView.contentSize
         let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
-        self.tableView.setContentOffset(newOffset, animated:false)
+        self.tableView.setContentOffset(newOffset, animated: false)
     }
     
     func scrollToBottomAnimated(animated: Bool) {
         let height = self.tableView.contentSize.height + self.tableView.contentInset.top + self.tableView.contentInset.bottom - CGRectGetHeight(self.tableView.bounds)
         let yValue = max(height, 0)
         let offset = CGPoint(x: 0, y: yValue)
-        self.tableView.setContentOffset(offset, animated:animated)
+        self.tableView.setContentOffset(offset, animated: animated)
     }
     
     // MARK: - Live Update

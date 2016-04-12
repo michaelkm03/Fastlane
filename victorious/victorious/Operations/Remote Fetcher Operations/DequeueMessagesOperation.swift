@@ -40,9 +40,9 @@ final class DequeueMessagesOperation: FetcherOperation, PaginatedOperation {
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let userData = [
-                "remoteId" : 3213,
-                "name" : "Gg",
-                "pictureUrl" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
+                "remoteId": 3213,
+                "name": "Gg",
+                "pictureUrl": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/23098f21be20502eccdf0af31ab14985/320x320.jpg"
             ]
             let otherUser: VUser = context.v_findOrCreateObject(userData)
             otherUser.status = "test"

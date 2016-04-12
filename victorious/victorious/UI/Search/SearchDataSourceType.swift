@@ -15,7 +15,7 @@ protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSo
     func registerCells( forTableView tableView: UITableView )
 
     /// Perform a paginated search over the network.
-    func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )
+    func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? )
     
     var searchTerm: String? { get }
 }

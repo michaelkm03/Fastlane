@@ -30,9 +30,9 @@ final class NotificationsRemoteOperation: RemoteFetcherOperation, PaginatedReque
             for result in results {
                 
                 /// Determining uniqueness based on time of creation and subject of the notification
-                let uniqueElements : [String : AnyObject] = [
-                    "createdAt" : result.createdAt,
-                    "subject" : result.subject
+                let uniqueElements: [String : AnyObject] = [
+                    "createdAt": result.createdAt,
+                    "subject": result.subject
                 ]
                 
                 let notification: VNotification = context.v_findOrCreateObject(uniqueElements)

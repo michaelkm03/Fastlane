@@ -24,29 +24,29 @@ extension VDependencyManager {
     class var localNotificationBallisticsCooldownIdentifier: String { return "ballisticsCooldown" }
     
     private struct Key {
-        static let Notifications    = "localNotifications"
-        static let Identifier       = "identifier"
-        static let Message          = "message"
-        static let Action           = "action"
-        static let DeeplinkUrl      = "deeplinkUrl"
-        static let BadgeNumber      = "badgeNumber"
+        static let notifications    = "localNotifications"
+        static let identifier       = "identifier"
+        static let message          = "message"
+        static let action           = "action"
+        static let deeplinkUrl      = "deeplinkUrl"
+        static let badgeNumber      = "badgeNumber"
     }
     
     /// Parses a `TemplateNotification` object from the template
     ///
     /// - parameter identifier: The identifier of a notification to find and parse from the template
     func getNotification( identifier identifier: String ) -> TemplateNotification? {
-        if let array = self.templateValueOfType( NSArray.self, forKey: Key.Notifications ) as? [AnyObject] {
+        if let array = self.templateValueOfType( NSArray.self, forKey: Key.notifications ) as? [AnyObject] {
             for object in array {
                 if let dictionary = object as? [ String : AnyObject ],
-                    let message = dictionary[ Key.Message ] as? String,
-                    let templateIdentifier = dictionary[ Key.Identifier ] as? String where templateIdentifier == identifier {
+                    let message = dictionary[ Key.message ] as? String,
+                    let templateIdentifier = dictionary[ Key.identifier ] as? String where templateIdentifier == identifier {
                         return TemplateNotification(
                             identifier: templateIdentifier,
                             message: message,
-                            action: dictionary[ Key.Action ] as? String,
-                            deeplinkUrl: dictionary[ Key.DeeplinkUrl ] as? String,
-                            badgeNumber: (dictionary[ Key.BadgeNumber ] as? NSNumber)?.integerValue
+                            action: dictionary[ Key.action ] as? String,
+                            deeplinkUrl: dictionary[ Key.deeplinkUrl ] as? String,
+                            badgeNumber: (dictionary[ Key.badgeNumber ] as? NSNumber)?.integerValue
                         )
                 }
             }

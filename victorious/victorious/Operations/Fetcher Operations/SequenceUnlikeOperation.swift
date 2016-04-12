@@ -27,7 +27,7 @@ class SequenceUnlikeOperation: FetcherOperation {
             sequence.isLikedByMainUser = false
             sequence.likeCount -= 1
             
-            let uniqueElements = [ "sequence"  : sequence, "user" : currentUser ]
+            let uniqueElements = [ "sequence": sequence, "user": currentUser ]
             context.v_deleteObjectsWithEntityName(VSequenceLiker.v_entityName(), queryDictionary: uniqueElements)
             
             context.v_save()

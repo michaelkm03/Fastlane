@@ -35,7 +35,6 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         return imageAlertViewController
     }
     
-    
     private func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
         titleLabel.text = title
         detailLabel.text = detail

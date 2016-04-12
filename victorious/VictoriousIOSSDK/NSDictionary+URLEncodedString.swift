@@ -62,4 +62,3 @@ extension NSMutableURLRequest {
         HTTPBody = postValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
     }
 }
-

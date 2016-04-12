@@ -37,12 +37,12 @@ final class PollResultSummaryBySequenceRemoteOperation: RemoteFetcherOperation, 
                     continue
                 }
                 let uniqueElements: [String : AnyObject] = [
-                    "answerId" : NSNumber(integer: answerID),
-                    "sequenceId" : self.sequenceID
+                    "answerId": NSNumber(integer: answerID),
+                    "sequenceId": self.sequenceID
                 ]
                 
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
-                persistentResult.populate(fromSourceModel:pollResult)
+                persistentResult.populate(fromSourceModel: pollResult)
                 persistentResult.displayOrder = displayOrder
                 displayOrder += 1
             }

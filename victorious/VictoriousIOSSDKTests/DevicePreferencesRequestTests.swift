@@ -37,18 +37,18 @@ class DevicePreferencesRequestTests: XCTestCase {
         do {
             let request = DevicePreferencesRequest()
             let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssert(result.contains(.CreatorPost))
-            XCTAssertFalse(result.contains(.FollowPost))
-            XCTAssertFalse(result.contains(.CommentPost))
-            XCTAssert(result.contains(.PrivateMessage))
-            XCTAssert(result.contains(.NewFollower))
-            XCTAssertFalse(result.contains(.TagPost))
-            XCTAssert(result.contains(.Mention))
-            XCTAssertFalse(result.contains(.LikePost))
-            XCTAssert(result.contains(.Announcement))
-            XCTAssertFalse(result.contains(.NextDay))
-            XCTAssertFalse(result.contains(.LapsedUser))
-            XCTAssertFalse(result.contains(.EmotiveBallistic))
+            XCTAssert(result.contains(.creatorPost))
+            XCTAssertFalse(result.contains(.followPost))
+            XCTAssertFalse(result.contains(.commentPost))
+            XCTAssert(result.contains(.privateMessage))
+            XCTAssert(result.contains(.newFollower))
+            XCTAssertFalse(result.contains(.tagPost))
+            XCTAssert(result.contains(.mention))
+            XCTAssertFalse(result.contains(.likePost))
+            XCTAssert(result.contains(.announcement))
+            XCTAssertFalse(result.contains(.nextDay))
+            XCTAssertFalse(result.contains(.lapsedUser))
+            XCTAssertFalse(result.contains(.emotiveBallistic))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
@@ -64,25 +64,25 @@ class DevicePreferencesRequestTests: XCTestCase {
         do {
             let request = DevicePreferencesRequest()
             let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssert(result.contains(.CreatorPost))
-            XCTAssert(result.contains(.FollowPost))
-            XCTAssert(result.contains(.CommentPost))
-            XCTAssert(result.contains(.PrivateMessage))
-            XCTAssert(result.contains(.NewFollower))
-            XCTAssert(result.contains(.TagPost))
-            XCTAssert(result.contains(.Mention))
-            XCTAssert(result.contains(.LikePost))
-            XCTAssert(result.contains(.Announcement))
-            XCTAssert(result.contains(.NextDay))
-            XCTAssert(result.contains(.LapsedUser))
-            XCTAssert(result.contains(.EmotiveBallistic))
+            XCTAssert(result.contains(.creatorPost))
+            XCTAssert(result.contains(.followPost))
+            XCTAssert(result.contains(.commentPost))
+            XCTAssert(result.contains(.privateMessage))
+            XCTAssert(result.contains(.newFollower))
+            XCTAssert(result.contains(.tagPost))
+            XCTAssert(result.contains(.mention))
+            XCTAssert(result.contains(.likePost))
+            XCTAssert(result.contains(.announcement))
+            XCTAssert(result.contains(.nextDay))
+            XCTAssert(result.contains(.lapsedUser))
+            XCTAssert(result.contains(.emotiveBallistic))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
     }
     
     func testChangeRequest() {
-        let request = DevicePreferencesRequest(preferences: [.CreatorPost: true, .NewFollower: false])
+        let request = DevicePreferencesRequest(preferences: [.creatorPost: true, .newFollower: false])
         let urlRequest = request.urlRequest
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")
@@ -98,18 +98,18 @@ class DevicePreferencesRequestTests: XCTestCase {
     }
     
     func testChangeRequestAllOff() {
-        let request = DevicePreferencesRequest(preferences: [.CreatorPost: false,
-            .FollowPost: false,
-            .CommentPost: false,
-            .PrivateMessage: false,
-            .NewFollower: false,
-            .TagPost: false,
-            .Mention: false,
-            .LikePost: false,
-            .Announcement: false,
-            .NextDay: false,
-            .LapsedUser: false,
-            .EmotiveBallistic: false])
+        let request = DevicePreferencesRequest(preferences: [.creatorPost: false,
+            .followPost: false,
+            .commentPost: false,
+            .privateMessage: false,
+            .newFollower: false,
+            .tagPost: false,
+            .mention: false,
+            .likePost: false,
+            .announcement: false,
+            .nextDay: false,
+            .lapsedUser: false,
+            .emotiveBallistic: false])
         let urlRequest = request.urlRequest
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")
@@ -135,18 +135,18 @@ class DevicePreferencesRequestTests: XCTestCase {
     }
     
     func testChangeRequestAllOn() {
-        let request = DevicePreferencesRequest(preferences: [.CreatorPost: true,
-            .FollowPost: true,
-            .CommentPost: true,
-            .PrivateMessage: true,
-            .NewFollower: true,
-            .TagPost: true,
-            .Mention: true,
-            .LikePost: true,
-            .Announcement: true,
-            .NextDay: true,
-            .LapsedUser: true,
-            .EmotiveBallistic: true])
+        let request = DevicePreferencesRequest(preferences: [.creatorPost: true,
+            .followPost: true,
+            .commentPost: true,
+            .privateMessage: true,
+            .newFollower: true,
+            .tagPost: true,
+            .mention: true,
+            .likePost: true,
+            .announcement: true,
+            .nextDay: true,
+            .lapsedUser: true,
+            .emotiveBallistic: true])
         let urlRequest = request.urlRequest
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")

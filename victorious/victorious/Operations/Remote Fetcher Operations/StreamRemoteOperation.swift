@@ -23,7 +23,7 @@ final class StreamRemoteOperation: RemoteFetcherOperation, PaginatedRequestOpera
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
     }
     
     func onComplete( sourceStream: StreamRequest.ResultType) {

@@ -21,7 +21,7 @@ class ExperimentSettingsDataSource: NSObject {
     
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
-    weak var delegate:ExperimentSettingsDataSourceDelegate?
+    weak var delegate: ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
         static let unmodified = UIColor.grayColor()

@@ -44,7 +44,7 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
             }
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     private func createSuggestedUser() -> SuggestedUser? {

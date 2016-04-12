@@ -43,8 +43,8 @@ public struct StreamPaginator: NumericPaginator {
     
     public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
         var dictionary: [NSObject : AnyObject] = [
-            Macro.PageNumber.rawValue : String(pageNumber),
-            Macro.ItemsPerPage.rawValue : String(itemsPerPage)
+            Macro.PageNumber.rawValue: String(pageNumber),
+            Macro.ItemsPerPage.rawValue: String(itemsPerPage)
         ]
         if let sequenceID = sequenceID {
             dictionary[ Macro.SequenceID.rawValue ] = sequenceID

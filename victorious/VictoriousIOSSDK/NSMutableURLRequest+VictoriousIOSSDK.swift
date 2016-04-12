@@ -10,7 +10,9 @@ import CoreLocation
 import Foundation
 
 #if os(iOS)
-import UIKit
+    
+    import UIKit
+    
 #endif
 
 /// Encapsulates information needed to execute authenticated requests to the Victorious API

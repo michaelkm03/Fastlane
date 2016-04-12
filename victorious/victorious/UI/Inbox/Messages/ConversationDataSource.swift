@@ -49,7 +49,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         self.conversation = conversation
     }
     
-    func loadMessages( pageType pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
+    func loadMessages( pageType pageType: VPageType, completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil ) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
@@ -64,7 +64,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         )
     }
     
-    func refresh( local local: Bool = false, completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
+    func refresh( local local: Bool = false, completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         

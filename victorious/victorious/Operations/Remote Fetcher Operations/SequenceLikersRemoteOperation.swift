@@ -37,7 +37,7 @@ final class SequenceLikersRemoteOperation: RemoteFetcherOperation, PaginatedRequ
                 let persistentUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID ] )
                 persistentUser.populate(fromSourceModel: user)
                 
-                let uniqueElements = [ "sequence"  : sequence, "user" : persistentUser ]
+                let uniqueElements = [ "sequence": sequence, "user": persistentUser ]
                 let userSequenceContext: VSequenceLiker = context.v_findOrCreateObject( uniqueElements )
                 userSequenceContext.sequence = sequence
                 userSequenceContext.user = persistentUser

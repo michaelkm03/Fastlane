@@ -34,6 +34,6 @@ class TrendingHashtagOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual(sourceResult.tag, tagString)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

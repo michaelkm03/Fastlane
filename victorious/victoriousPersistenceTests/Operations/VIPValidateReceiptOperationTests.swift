@@ -29,7 +29,7 @@ class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 1)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testInitializtionFailure() {
@@ -44,7 +44,7 @@ class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 0)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
 

@@ -34,7 +34,7 @@ class UnfollowUserOperationTests: BaseFetcherOperationTestCase {
         XCTAssertEqual(true, objectUser.isFollowedByMainUser)
         XCTAssertFalse( currentUser.isFollowingUserID(objectUser.remoteId.integerValue) )
 
-        let uniqueElements = [ "subjectUser" : currentUser, "objectUser" : objectUser ]
+        let uniqueElements = [ "subjectUser": currentUser, "objectUser": objectUser ]
         let followedUser: VFollowedUser = testStore.mainContext.v_findOrCreateObject( uniqueElements )
         followedUser.objectUser = objectUser
         followedUser.subjectUser = currentUser

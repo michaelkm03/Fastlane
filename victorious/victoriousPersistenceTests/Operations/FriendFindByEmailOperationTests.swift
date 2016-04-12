@@ -43,7 +43,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testError() {
@@ -74,7 +74,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 
     func testInitializationFail() {

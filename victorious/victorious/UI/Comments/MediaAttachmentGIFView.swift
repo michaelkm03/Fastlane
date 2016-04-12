@@ -9,7 +9,7 @@
 import Foundation
 
 // A media attachment view used for showing animated GIFs inline
-class MediaAttachmentGIFView : MediaAttachmentView {
+class MediaAttachmentGIFView: MediaAttachmentView {
     
     let videoPlayer: VVideoPlayer = VVideoView()
     

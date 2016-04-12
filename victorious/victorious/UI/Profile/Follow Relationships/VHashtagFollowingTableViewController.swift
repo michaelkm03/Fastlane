@@ -10,7 +10,7 @@ import Foundation
 
 extension VHashtagFollowingTableViewController: VPaginatedDataSourceDelegate {
     
-    func loadHashtags( pageType pageType: VPageType, completion:(NSError? -> ())? ) {
+    func loadHashtags( pageType pageType: VPageType, completion: (NSError? -> ())? ) {
         self.paginatedDataSource.delegate = self
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {

@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class RefreshStageTests : XCTestCase {
+class RefreshStageTests: XCTestCase {
 
     func testVIPInitialization() {
         guard let refreshStageVIPJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("RefreshStageVIP", withExtension: "json"),

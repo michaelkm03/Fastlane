@@ -72,7 +72,7 @@ import UIKit
             return true
         }
         catch {
-            print ("Could not set resource value for key \(NSURLIsExcludedFromBackupKey)")
+            print("Could not set resource value for key \(NSURLIsExcludedFromBackupKey)")
             return false
         }
     }

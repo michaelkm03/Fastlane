@@ -37,7 +37,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     
     //MARK: - API
     
-    func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         guard let operation = UserSearchOperation(searchTerm: searchTerm) else {
             completion?(nil)
             return

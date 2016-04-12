@@ -17,12 +17,12 @@ class AchievementTests: XCTestCase {
     
     func testAchievementInitialization() {
         let testConfiguration: [NSObject : AnyObject] = [
-            "identifier" : testIdentifier,
-            "title" : testTitle,
-            "description" : testDescription,
-            "display_order" : testDisplayOrder,
-            "assets" : UIImage(),
-            "locked_icon" : UIImage()
+            "identifier": testIdentifier,
+            "title": testTitle,
+            "description": testDescription,
+            "display_order": testDisplayOrder,
+            "assets": UIImage(),
+            "locked_icon": UIImage()
         ]
         
         let dependencyManager: VDependencyManager = VDependencyManager(

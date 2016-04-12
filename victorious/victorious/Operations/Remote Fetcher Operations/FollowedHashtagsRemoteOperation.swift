@@ -36,7 +36,7 @@ final class FollowedHashtagsRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
                 persistentHashtag.populate(fromSourceModel: hashtag)
                 
-                let uniqueInfo = [ "user" : currentUser, "hashtag" : persistentHashtag ]
+                let uniqueInfo = [ "user": currentUser, "hashtag": persistentHashtag ]
                 let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueInfo )
                 followedHashtag.user = currentUser
                 followedHashtag.hashtag = persistentHashtag

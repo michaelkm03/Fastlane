@@ -35,6 +35,6 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual(loadedUser.remoteId, userID)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

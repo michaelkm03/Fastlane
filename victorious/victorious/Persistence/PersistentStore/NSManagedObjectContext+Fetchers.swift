@@ -44,7 +44,7 @@ extension NSManagedObjectContext {
                     managedObject = object
                     message += "\n - Missing value for non-optional field \"\(validationField)\" on object \(managedObject?.dynamicType)."
             }
-            VLog(message + "\n\n")
+            v_log(message + "\n\n")
             assertionFailure()
         }
     }
@@ -57,7 +57,7 @@ extension NSManagedObjectContext {
             }
             return true
         } catch {
-            VLog( "Failed to delete objects with entity name \(fetchRequest.entityName): \(error)" )
+            v_log( "Failed to delete objects with entity name \(fetchRequest.entityName): \(error)" )
             return false
         }
     }
@@ -82,14 +82,14 @@ extension NSManagedObjectContext {
         return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as NSManagedObject
     }
     
-    func v_deleteObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? = nil ) {
+    func v_deleteObjectsWithEntityName( entityName: String, queryDictionary: [ String: AnyObject ]? = nil ) {
         let existingObjects = self.v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary )
         for object in existingObjects {
             self.deleteObject( object )
         }
     }
     
-    func v_findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject {
+    func v_findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String: AnyObject ] ) -> NSManagedObject {
         let objects = self.v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary )
         if let existingObject = objects.first {
             return existingObject
@@ -107,7 +107,7 @@ extension NSManagedObjectContext {
         return v_findObjectsWithEntityName( entityName, queryDictionary: nil )
     }
     
-    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? ) -> [NSManagedObject] {
+    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String: AnyObject ]? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName)
         request.returnsObjectsAsFaults = false
@@ -138,7 +138,7 @@ extension NSManagedObjectContext {
                 return results
             }
         } catch {
-            VLog( "Error: \(error)" )
+            v_log( "Error: \(error)" )
         }
         return [NSManagedObject]()
     }
@@ -159,7 +159,7 @@ extension NSManagedObjectContext {
                 return lowestDisplayOrder - 1
             }
         } catch {
-            VLog( "Error: \(error)" )
+            v_log( "Error: \(error)" )
         }
         return -1
     }

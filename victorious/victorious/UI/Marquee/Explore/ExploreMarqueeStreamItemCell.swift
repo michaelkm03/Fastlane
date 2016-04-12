@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc (ExploreMarqueeStreamItemCell)
+@objc(ExploreMarqueeStreamItemCell)
 class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {

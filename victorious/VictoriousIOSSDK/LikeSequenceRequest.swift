@@ -11,7 +11,7 @@ import Foundation
 public struct LikeSequenceRequest: RequestType {
     public let sequenceID: String
     
-    public init (sequenceID: String) {
+    public init(sequenceID: String) {
         self.sequenceID = sequenceID
     }
     

@@ -35,7 +35,7 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
             persistentStoreURL: persistentStoreURL,
             currentModelVersion: CoreDataManager.ModelVersion(
                 identifier: versionIdentifier,
-                managedObjectModelURL: pathHelper.URLForManagedObjectModelInBundle( versionedModelName,
+                managedObjectModelURL: pathHelper.urlForManagedObjectModelInBundle( versionedModelName,
                     modelVersion: versionIdentifier )
             )
         )

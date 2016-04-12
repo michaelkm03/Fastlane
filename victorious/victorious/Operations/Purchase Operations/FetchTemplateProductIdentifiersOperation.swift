@@ -39,7 +39,7 @@ class FetchTemplateProductIdentifiersOperation: BackgroundOperation {
                 self.finishedExecuting()
             },
             failure: { error in
-                VLog("\(self.dynamicType) FAILURE: Could not fetch products with identifiers \(allProductIdentifiers)")
+                v_log("\(self.dynamicType) FAILURE: Could not fetch products with identifiers \(allProductIdentifiers)")
                 self.error = error
                 self.finishedExecuting()
             }

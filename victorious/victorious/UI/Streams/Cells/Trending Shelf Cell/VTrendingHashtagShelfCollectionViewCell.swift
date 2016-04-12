@@ -129,7 +129,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: #selector(handleUserHashtagsArrayChange(_:)))
+        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options: NSKeyValueObservingOptions.Old, action: #selector(handleUserHashtagsArrayChange(_: )))
     }
     
     override class func nibForCell() -> UINib {
@@ -137,7 +137,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     }
     
     ///Updates the state of the follow control if an appropriate change has occurred
-    func handleUserHashtagsArrayChange(changeInfo: [NSObject : AnyObject]?) {
+    func handleUserHashtagsArrayChange(changeInfo: [NSObject: AnyObject]?) {
         guard shouldUpdateFollowControlState(forChangeInfo: changeInfo) else {
             return
         }
@@ -157,7 +157,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         followControl?.setControlState(controlState, animated: true)
     }
     
-    private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject : AnyObject]?) -> Bool {
+    private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject: AnyObject]?) -> Bool {
         guard let changeInfo = changeInfo else {
             return false
         }

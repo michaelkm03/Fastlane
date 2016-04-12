@@ -11,7 +11,7 @@ import Foundation
 public struct RepostSequenceRequest: RequestType {
     public let nodeID: Int
     
-    public init (nodeID: Int) {
+    public init(nodeID: Int) {
         self.nodeID = nodeID
     }
     

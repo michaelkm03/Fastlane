@@ -1,3 +1,11 @@
+//
+//  VNewProfileViewController.swift
+//  victorious
+//
+//  Created by Jarod Long on 4/1/16.
+//  Copyright © 2016 Victorious. All rights reserved.
+//
+
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.

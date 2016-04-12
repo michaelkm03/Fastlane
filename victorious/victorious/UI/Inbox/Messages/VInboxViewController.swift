@@ -29,7 +29,7 @@ extension VInboxViewController: SearchResultsViewControllerDelegate {
         }
         
         let loadedUser: VUser? = PersistentStoreSelector.defaultPersistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueInfo = [ "remoteId" : userResult.sourceResult.userID ]
+            let uniqueInfo = [ "remoteId": userResult.sourceResult.userID ]
             return context.v_findObjects( uniqueInfo ).first as? VUser
         }
         

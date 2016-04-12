@@ -24,7 +24,7 @@ private let templateDataDictionaryKey = "template"
     
     public func cachedTemplateData() -> NSData? {
         if let cachedData = dataCache.cachedDataForID(cacheIDForEnvironment(environment)),
-            let infoDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(cachedData) as? [String : AnyObject],
+            let infoDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(cachedData) as? [String: AnyObject],
             let cachedBuildNumber = infoDictionary[buildNumberDictionaryKey] as? String
             where cachedBuildNumber == buildNumber {
                 return infoDictionary[templateDataDictionaryKey] as? NSData

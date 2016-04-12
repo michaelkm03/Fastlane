@@ -15,10 +15,11 @@ class MockTracker: NSObject, VEventTracker {
     var lastEvent: String!
     var lastParams: [NSObject : AnyObject]!
     
-    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]? ) {
+    func trackEvent(eventName: String?, parameters: [NSObject: AnyObject]? ) {
         lastEvent = eventName
         lastParams = parameters
     }
+    
     func trackEvent(eventName: String?  ) {
         lastEvent = eventName
         lastParams = nil
@@ -40,8 +41,8 @@ class DefaultTimingTrackerTests: XCTestCase {
 		templateTracker = DefaultTimingTracker.sharedInstance()
 		templateTracker.tracker = mockTracker
         let config = [
-            "tracking" : [
-                "app_time" : [testTemplateURL]
+            "tracking": [
+                "app_time": [testTemplateURL]
             ]
         ]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: nil)

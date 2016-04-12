@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class WebSocketConfigurationTests : XCTestCase {
+class WebSocketConfigurationTests: XCTestCase {
     
     func testFailedConfiguration() {
         let brokenUrlString = "$%^&*"

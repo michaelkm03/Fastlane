@@ -16,7 +16,7 @@ class PasswordResetRequestTests: XCTestCase {
         let mockUserToken = "MockUserToken"
         let mockDeviceToken = "MockDeviceToken"
         
-        let request = PasswordResetRequest(newPassword:mockNewPassword, userToken: mockUserToken, deviceToken: mockDeviceToken)
+        let request = PasswordResetRequest(newPassword: mockNewPassword, userToken: mockUserToken, deviceToken: mockDeviceToken)
         let urlRequest = request.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/password_reset")

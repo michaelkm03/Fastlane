@@ -16,7 +16,7 @@ class UserSearchRequestTests: XCTestCase {
         let searchTerm = "asdf"
         let paginator = StandardPaginator(pageNumber: 2, itemsPerPage: 25)
         let request = UserSearchRequest(searchTerm: searchTerm, paginator: paginator)
-        XCTAssertEqual(request.urlRequest.URL, NSURL(string:"/api/userinfo/search_paginate/asdf/2/25/message"))
+        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/userinfo/search_paginate/asdf/2/25/message"))
     }
     
     func testParseResponse() {

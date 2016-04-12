@@ -20,7 +20,7 @@ extension UIScrollView {
         return contentOffset.y >= v_bottomOffset.y
     }
     
-    func v_scrollToBottomAnimated(animated: Bool, completion: (()->())? = nil) {
+    func v_scrollToBottomAnimated(animated: Bool, completion: (() -> ())? = nil) {
         if v_isScrolledToBottom {
             completion?()
             return
@@ -28,15 +28,15 @@ extension UIScrollView {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         CATransaction.setAnimationDuration(0.5)
-        setContentOffset(v_bottomOffset, animated:animated)
+        setContentOffset(v_bottomOffset, animated: animated)
         CATransaction.commit()
     }
 }
 
 extension UICollectionView {
     
-    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet) {
-        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated:false, completion:nil)
+    func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false, completion: nil)
     }
     
     func v_reloadForPreviousPage() {
@@ -51,11 +51,11 @@ extension UICollectionView {
         
         let newContentSize = contentSize
         let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
-        setContentOffset(newOffset, animated:false)
+        setContentOffset(newOffset, animated: false)
     }
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion:(()->())? = nil) {
+    func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion: (() -> ())? = nil) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {

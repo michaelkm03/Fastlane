@@ -36,7 +36,7 @@ class ShowShareSequenceOperation: MainQueueOperation {
                 sequence.textForSharing(),
                 sequence.shareURL() ?? NSNull()
             ],
-            applicationActivities:[
+            applicationActivities: [
                 fbActivity
             ]
         )
@@ -58,18 +58,18 @@ class ShowShareSequenceOperation: MainQueueOperation {
             
             if completed {
                 let params = [
-                    VTrackingKeySequenceCategory : self.sequence.category ?? "",
-                    VTrackingKeyShareDestination : activityType ?? "",
-                    VTrackingKeyUrls : tracking?.share ?? []
+                    VTrackingKeySequenceCategory: self.sequence.category ?? "",
+                    VTrackingKeyShareDestination: activityType ?? "",
+                    VTrackingKeyUrls: tracking?.share ?? []
                 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
             }
             else if let activityError = activityError {
                 let params = [
-                    VTrackingKeySequenceCategory : self.sequence.category ?? "",
-                    VTrackingKeyShareDestination : activityType ?? "",
-                    VTrackingKeyUrls : tracking?.share ?? [],
-                    VTrackingKeyErrorMessage : activityError.localizedDescription
+                    VTrackingKeySequenceCategory: self.sequence.category ?? "",
+                    VTrackingKeyShareDestination: activityType ?? "",
+                    VTrackingKeyUrls: tracking?.share ?? [],
+                    VTrackingKeyErrorMessage: activityError.localizedDescription
                 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
             }

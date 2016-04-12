@@ -38,6 +38,7 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let height: CGFloat = self.hidden ? 0.0 : 50.0
         return CGSize(width: collectionView.bounds.width, height: height)

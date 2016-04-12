@@ -26,6 +26,6 @@ class SequenceRepostRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     private func onError( error: NSError) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters: params )
     }
 }

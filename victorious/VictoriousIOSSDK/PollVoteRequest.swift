@@ -19,7 +19,7 @@ public struct PollVoteRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let pollAnswerInfo = [ "answer_id" : answerID, "sequence_id" : sequenceID ]
+        let pollAnswerInfo = [ "answer_id": answerID, "sequence_id": sequenceID ]
         
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/pollresult/create")!)
         request.vsdk_addURLEncodedFormPost(pollAnswerInfo)

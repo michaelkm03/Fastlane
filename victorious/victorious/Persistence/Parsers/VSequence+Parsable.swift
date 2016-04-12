@@ -54,7 +54,7 @@ extension VSequence: PersistenceParsable {
         
         if let parentUser = sequence.parentUser {
             self.parentUserId = NSNumber(integer: parentUser.userID)
-            let persistentParentUser = context.v_findOrCreateObject([ "remoteId" : parentUser.userID ]) as VUser
+            let persistentParentUser = context.v_findOrCreateObject([ "remoteId": parentUser.userID ]) as VUser
             persistentParentUser.populate(fromSourceModel: parentUser)
             self.parentUser = persistentParentUser
         }
@@ -90,8 +90,8 @@ extension VSequence: PersistenceParsable {
                     return nil
                 }
                 let uniqueElements: [String : AnyObject] = [
-                    "sequence.remoteId" : remoteId,
-                    "remoteId" : NSNumber(integer: id)
+                    "sequence.remoteId": remoteId,
+                    "remoteId": NSNumber(integer: id)
                 ]
                 
                 let persistentVoteResult: VVoteResult = self.v_managedObjectContext.v_findOrCreateObject(uniqueElements)
@@ -109,13 +109,13 @@ private extension VStreamItem {
         let uniqueInfo: [String : NSObject]
         if let apiPath = stream.apiPath {
             let stream: VStream = v_managedObjectContext.v_findOrCreateObject( [ "apiPath" : apiPath ] )
-            uniqueInfo = ["streamItem" : self, "streamParent" : stream]
+            uniqueInfo = ["streamItem": self, "streamParent": stream]
         } else {
             // If no `streamID` was provided, parse out an "empty" VStreamItemPointer,
             // i.e. one that points to a VStreamItem but has no associated streamParent
             // This is made available for calling code that has no reference to a stream,
             // such as a deeplinked sequence or the lightweight content view sequence.
-            uniqueInfo = ["streamItem" : self]
+            uniqueInfo = ["streamItem": self]
         }
         return v_managedObjectContext.v_findOrCreateObject( uniqueInfo )
     }

@@ -9,20 +9,20 @@
 import Foundation
 
 /// A emotive ballistic view which displays a radial cooldown animation
-class ExperienceEnhancerAnimatingIconView : UIView {
+class ExperienceEnhancerAnimatingIconView: UIView {
     
     private let radialAnimatingView = RadialAnimatingView()
     private let backgroundEBView = ExperienceEnhancerIconView()
     private let foregroundEBView = ExperienceEnhancerIconView()
     
-    var iconImage : UIImage? {
+    var iconImage: UIImage? {
         didSet {
             self.backgroundEBView.iconImage = iconImage
             self.foregroundEBView.iconImage = iconImage
         }
     }
     
-    var overlayImage : UIImage? {
+    var overlayImage: UIImage? {
         didSet {
             self.backgroundEBView.overlayImage = overlayImage
             self.foregroundEBView.overlayImage = overlayImage

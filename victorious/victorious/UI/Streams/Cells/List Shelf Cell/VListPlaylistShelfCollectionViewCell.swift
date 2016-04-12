@@ -42,11 +42,11 @@ extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDataSource m
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = shelf, streamItem = streamItemAt(indexPath: indexPath) {
-            var T = VShelfContentCollectionViewCell.self
+            var shelfType = VShelfContentCollectionViewCell.self
             if indexPath.row == 0 {
-                T = VListShelfContentCoverCell.self
+                shelfType = VListShelfContentCoverCell.self
             }
-            let identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let identifier = shelfType.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
                 cell.streamItem = streamItem
                 cell.dependencyManager = dependencyManager

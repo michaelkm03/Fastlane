@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     }
     
     func getTestInfo(caseNum: Int) {
-        let s = createSocket("getCaseInfo",caseNum)
+        let s = createSocket("getCaseInfo", caseNum)
         socketArray.append(s)
         s.onText = {(text: String) in
 //            let data = text.dataUsingEncoding(NSUTF8StringEncoding)
@@ -73,7 +73,7 @@ class ViewController: UIViewController {
     }
     
     func runTest(caseNum: Int) {
-        let s = createSocket("runCase",caseNum)
+        let s = createSocket("runCase", caseNum)
         self.socketArray.append(s)
         s.onText = {(text: String) in
             s.writeString(text)
@@ -94,14 +94,14 @@ class ViewController: UIViewController {
     }
     
     func verifyTest(caseNum: Int) {
-        let s = createSocket("getCaseStatus",caseNum)
+        let s = createSocket("getCaseStatus", caseNum)
         self.socketArray.append(s)
         s.onText = {(text: String) in
             let data = text.dataUsingEncoding(NSUTF8StringEncoding)
             do {
                 let resp: AnyObject? = try NSJSONSerialization.JSONObjectWithData(data!,
                     options: NSJSONReadingOptions())
-                if let dict = resp as? Dictionary<String,String> {
+                if let dict = resp as? Dictionary<String, String> {
                     if let status = dict["behavior"] {
                         if status == "OK" {
                             print("SUCCESS: \(caseNum)")
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
         s.onDisconnect = {[unowned self] (error: NSError?) in
             if !once {
                 once = true
-                let nextCase = caseNum+1
+                let nextCase = caseNum + 1
                 if nextCase <= self.caseCount {
                     self.getTestInfo(nextCase)
                 } else {
@@ -131,7 +131,7 @@ class ViewController: UIViewController {
     }
     
     func finishReports() {
-        let s = createSocket("updateReports",0)
+        let s = createSocket("updateReports", 0)
         self.socketArray.append(s)
         s.onDisconnect = {[unowned self] (error: NSError?) in
             print("finished all the tests!")
@@ -142,7 +142,7 @@ class ViewController: UIViewController {
     
     func createSocket(cmd: String, _ caseNum: Int) -> WebSocket {
         return WebSocket(url: NSURL(scheme: scheme,
-            host: host, path: buildPath(cmd,caseNum))!, protocols: [])
+            host: host, path: buildPath(cmd, caseNum))!, protocols: [])
     }
     
     func buildPath(cmd: String, _ caseNum: Int) -> String {

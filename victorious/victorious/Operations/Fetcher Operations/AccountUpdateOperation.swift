@@ -15,7 +15,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: AccountUpdateRequest!
     
-    init? (passwordUpdate: PasswordUpdate) {
+    init?(passwordUpdate: PasswordUpdate) {
         self.request = AccountUpdateRequest(passwordUpdate: passwordUpdate)
         super.init()
         if self.request == nil {
@@ -23,7 +23,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
         }
     }
     
-    init? (profileUpdate: ProfileUpdate) {
+    init?(profileUpdate: ProfileUpdate) {
         self.request = AccountUpdateRequest(profileUpdate: profileUpdate)
         super.init()
         if self.request == nil {
@@ -37,7 +37,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
         if let profileUpdate = self.request.profileUpdate {
             persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
 
-                guard let user = VCurrentUser.user(inManagedObjectContext:context) else {
+                guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
                 

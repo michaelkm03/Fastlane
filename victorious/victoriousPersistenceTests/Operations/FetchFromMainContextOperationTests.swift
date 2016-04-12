@@ -22,7 +22,7 @@ class FetchFromMainContextOperationTests: BasePersistentStoreTestCase {
         
         let fetchOperation = FetchFromMainContextOperation(
             entityName: VUser.v_entityName(),
-            predicate: NSPredicate(format:"remoteId == %i", testRemoteID)
+            predicate: NSPredicate(format: "remoteId == %i", testRemoteID)
         )
         
         queueExpectedOperation(operation: fetchOperation)

@@ -45,7 +45,7 @@ class URLEncodedStringTests: XCTestCase {
     
     func testArrayValueEncodedString() {
         let mockArray = [1, 2] as [Int]
-        let mockValues = ["test" : "yes", "mockIDs" : mockArray.flatMap({ $0 })] as NSDictionary
+        let mockValues = ["test": "yes", "mockIDs": mockArray.flatMap({ $0 })] as NSDictionary
         
         let urlRequest = NSMutableURLRequest()
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)

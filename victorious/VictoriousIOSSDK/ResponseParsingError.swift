@@ -25,7 +25,7 @@ public extension NSError {
             domain: "VictoriousIOSSDK.RequestError",
             code: requestError.code,
             userInfo: [
-                NSLocalizedDescriptionKey : requestError.localizedDescription
+                NSLocalizedDescriptionKey: requestError.localizedDescription
             ]
         )
     }

@@ -31,11 +31,11 @@ public struct AccountUpdateRequest: RequestType {
     }
     
     public init?(passwordUpdate: PasswordUpdate) {
-        self.init( passwordUpdate:passwordUpdate, profileUpdate:nil )
+        self.init( passwordUpdate: passwordUpdate, profileUpdate: nil )
     }
     
     public init?(profileUpdate: ProfileUpdate) {
-        self.init( passwordUpdate: nil, profileUpdate:profileUpdate )
+        self.init( passwordUpdate: nil, profileUpdate: profileUpdate )
     }
     
     public init?(passwordUpdate: PasswordUpdate?, profileUpdate: ProfileUpdate? ) {

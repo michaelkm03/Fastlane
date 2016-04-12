@@ -10,7 +10,7 @@ import UIKit
 
 /// Classes that conform to this protocol will receive messages about
 /// stream items being selected from trending shelves.
-protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
+protocol VShelfStreamItemSelectionResponder: NSObjectProtocol {
     /// Sent when a stream item is selected from a trending shelf.
     ///
     /// - parameter streamItem: The selected stream item.

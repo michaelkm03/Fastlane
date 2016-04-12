@@ -51,7 +51,7 @@ enum DeviceType {
  *
  */
 
-@objc enum VDeviceRating: Int{
+@objc enum VDeviceRating: Int {
     case Unknown = 1,
     Slow = 3,
     Decent = 5,
@@ -70,7 +70,7 @@ extension UIDevice {
     func v_numberOfConcurrentAnimationsSupported() -> VDeviceRating {
         
         // This detects the iOS simulator
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        #if(arch(i386) || arch(x86_64)) && os(iOS)
             return VDeviceRating.LightningFast
         
         #else

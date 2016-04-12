@@ -30,7 +30,7 @@ extension VStreamCollectionViewController {
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion:nil )
+        }, completion: nil )
         
         let isAlreadyShowingNoContent = collectionView.backgroundView == self.noContentView
         switch self.streamDataSource?.paginatedDataSource.state ?? .Cleared {

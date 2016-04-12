@@ -29,7 +29,7 @@ import UIKit
             return
         }
         
-        let templateValue = self.dependencyManager.templateValueOfType(VCreateSheetViewController.self, forKey:"createSheet")
+        let templateValue = self.dependencyManager.templateValueOfType(VCreateSheetViewController.self, forKey: "createSheet")
         if let createSheet = templateValue as? VCreateSheetViewController {
             createSheet.completionHandler = { (createSheetViewController, chosenCreationType) in
                 self.chosenCreationFlowType = chosenCreationType
@@ -38,7 +38,7 @@ import UIKit
             self.originViewController.presentViewController(createSheet, animated: true, completion: nil)
       
         } else {
-            self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment:"" ))
+            self.originViewController.v_showErrorWithTitle(nil, message: NSLocalizedString( "GenericFailMessage", comment: "" ))
             self.finishedExecuting()
         }
     }

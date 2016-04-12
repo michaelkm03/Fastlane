@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class ChatMessageInboundTests : XCTestCase {
+class ChatMessageInboundTests: XCTestCase {
 
     func testInitialization() {
         guard let chatMessageJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatMessageInbound", withExtension: "json"),
@@ -23,8 +23,8 @@ class ChatMessageInboundTests : XCTestCase {
         }
         
         XCTAssertEqual(chatMessage.text, "Test message")
-        XCTAssertEqual(chatMessage.giphyUrl, NSURL(string:"http://a.url.to.giphy"))
-        XCTAssertEqual(chatMessage.contentURL, NSURL(string:"http://a.url.to.content"))
+        XCTAssertEqual(chatMessage.giphyUrl, NSURL(string: "http://a.url.to.giphy"))
+        XCTAssertEqual(chatMessage.contentURL, NSURL(string: "http://a.url.to.content"))
         XCTAssertNotNil(chatMessage.fromUser)
     }
 }

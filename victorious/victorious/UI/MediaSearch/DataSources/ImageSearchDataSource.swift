@@ -21,7 +21,7 @@ class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 	
     // MARK: - MediaSearchDataSource
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? ) {
+	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
 		
 		let actualSearchTerm: String
 		if let searchTerm = searchTerm {

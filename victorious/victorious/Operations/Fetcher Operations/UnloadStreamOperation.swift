@@ -20,7 +20,7 @@ class UnloadStreamItemOperation: FetcherOperation {
     
     override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueInfo = [ "remoteId" : self.streamID ]
+            let uniqueInfo = [ "remoteId": self.streamID ]
             guard let stream: VStream = context.v_findObjects(uniqueInfo).first else {
                     return
             }

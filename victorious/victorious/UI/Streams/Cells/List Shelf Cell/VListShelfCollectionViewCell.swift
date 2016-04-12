@@ -26,7 +26,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         
         static let maxItemsCount = 7
         
-        static let StreamATFThresholdKey = "streamAtfViewThreshold"
+        static let streamATFThresholdKey = "streamAtfViewThreshold"
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -88,7 +88,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
                 titleLabel.textColor = dependencyManager.textColor
                 detailLabel.textColor = dependencyManager.textColor
                 
-                trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.StreamATFThresholdKey).floatValue)
+                trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
             }
         }
     }
@@ -103,8 +103,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         let totalWidths = VListShelfCollectionViewCell.totalCellWidths(collectionView.bounds.width)
         cellSideLength = VListShelfCollectionViewCell.cellSideLength(totalWidths)
         let newCollectionViewHeight = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
-        if ( collectionViewHeightConstraint.constant > newCollectionViewHeight )
-        {
+        if ( collectionViewHeightConstraint.constant > newCollectionViewHeight ) {
             //The current cells we have are too big, reload before updating the constraint to avoid warnings
             collectionView.reloadSections(NSIndexSet(index: 0))
         }
@@ -198,7 +197,7 @@ extension VListShelfCollectionViewCell: UICollectionViewDataSource {
     
 }
 
-extension VListShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {
+extension VListShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         var insets = Constants.collectionViewSectionEdgeInsets

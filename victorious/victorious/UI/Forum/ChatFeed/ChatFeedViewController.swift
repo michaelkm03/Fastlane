@@ -129,7 +129,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         let willScroll = collectionView.contentSize.height > collectionView.bounds.height
         guard willScroll else {
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
             return
         }
         
@@ -142,11 +142,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
                     self.collectionView.v_scrollToBottomAnimated(true)
                 }
             }
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
             CATransaction.commit()
             
         } else {
-            collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: true)
+            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
         }
     }
     
@@ -167,7 +167,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         let oldContentSize = self.collectionView.contentSize
         let oldOffset = self.collectionView.contentOffset
         
-        collectionView.v_applyChangeInSection(0, from:oldValue, to:newValue, animated: false) {
+        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false) {
             let newContentSize = self.collectionView.contentSize
             let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
             self.collectionView.contentOffset = newOffset
@@ -191,7 +191,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         guard let media = messageCell.viewData.media else {
             return
         }
-        delegate?.chatFeed(self, didSelectMedia:media)
+        delegate?.chatFeed(self, didSelectMedia: media)
     }
     
     // MARK: - VScrollPaginatorDelegate

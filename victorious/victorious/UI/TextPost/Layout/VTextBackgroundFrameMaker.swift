@@ -22,8 +22,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
     This will not automatically set the background frames to be rendered.  That is the reponsibility
     of calling code.
     */
-    func createBackgroundFramesForTextView( textView: UITextView, characterWidth: CGFloat, calloutRangeObjects: NSArray ) -> NSArray
-    {
+    func createBackgroundFramesForTextView( textView: UITextView, characterWidth: CGFloat, calloutRangeObjects: NSArray ) -> NSArray {
         let calloutRanges: [NSRange] = calloutRangeObjects.map { $0.rangeValue }
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         let fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )

@@ -10,7 +10,7 @@ import UIKit
 
 extension VContentDeepLinkHandler {
     
-    func loadSequence( sequenceID: String, streamID: String?, completion:((NSError?)->())? ) {
+    func loadSequence( sequenceID: String, streamID: String?, completion: ((NSError?) -> ())? ) {
         SequenceFetchOperation(sequenceID: sequenceID, streamID: streamID).queue() { results, error, cancelled in
             completion?( error )
         }

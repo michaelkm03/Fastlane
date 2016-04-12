@@ -14,7 +14,7 @@ extension NSBundle: ReceiptDataSource {
     
     func readReceiptData() -> NSData? {
         guard let appStoreReceiptURL = appStoreReceiptURL else {
-            VLog("Failed to obtain appStoreReceiptURL")
+            v_log("Failed to obtain appStoreReceiptURL")
             return nil
         }
         return NSData(contentsOfURL: appStoreReceiptURL)

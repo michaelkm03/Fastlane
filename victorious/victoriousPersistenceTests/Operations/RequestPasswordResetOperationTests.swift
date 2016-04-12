@@ -24,6 +24,6 @@ class PasswordRequestResetOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual(operation.deviceToken, self.mockDeviceToken)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

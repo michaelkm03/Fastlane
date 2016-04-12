@@ -19,7 +19,7 @@ public struct FollowHashtagRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/hashtag/follow")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "hashtag" : hashtag ]
+        let params = [ "hashtag": hashtag ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }

@@ -37,7 +37,7 @@ final class PollResultSummaryByUserOperation: RemoteFetcherOperation, PaginatedR
             }
             
             for pollResult in pollResults {
-                var uniqueElements = [String : AnyObject]()
+                var uniqueElements = [String: AnyObject]()
                 if let answerID = pollResult.answerID {
                     uniqueElements[ "answerId" ] = answerID
                 }

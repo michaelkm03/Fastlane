@@ -102,9 +102,9 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         contentView.addSubview(collectionView)
         
         // Setup constraints
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: [], metrics: ["height" : TrendingTopicContentCollectionViewCell.desiredSize().height, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: [], metrics: nil, views: ["collectionView" : collectionView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: [], metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: [], metrics: ["height": TrendingTopicContentCollectionViewCell.desiredSize().height, "topSpace": Constants.overLabelSpace, "bottomSpace": Constants.underLabelSpace], views: ["label": label, "collectionView": collectionView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: [], metrics: nil, views: ["collectionView": collectionView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: [], metrics: ["lspace": Constants.contentInsets.left, "rspace": Constants.contentInsets.right], views: ["label": label]))
         
         // Register trending topic content cell
         collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TrendingTopicContentCollectionViewCell.self))

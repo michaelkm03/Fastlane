@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MediaSearchViewController : UIScrollViewDelegate {
+extension MediaSearchViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
@@ -30,7 +30,7 @@ extension MediaSearchViewController : UIScrollViewDelegate {
     }
 }
 
-extension MediaSearchViewController : UICollectionViewDelegate {
+extension MediaSearchViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         

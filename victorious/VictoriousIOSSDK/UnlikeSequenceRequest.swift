@@ -11,7 +11,7 @@ import Foundation
 public struct UnlikeSequenceRequest: RequestType {
     public let sequenceID: String
     
-    public init (sequenceID: String) {
+    public init(sequenceID: String) {
         self.sequenceID = sequenceID
     }
     

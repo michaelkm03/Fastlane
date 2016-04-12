@@ -10,7 +10,9 @@ import CoreLocation
 import Foundation
 
 #if os(iOS)
-import UIKit
+    
+    import UIKit
+    
 #endif
 
 private struct HTTPHeader {

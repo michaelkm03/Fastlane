@@ -18,7 +18,7 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
         options.showPreview = true
     }
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? ) {
+	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
 		
 		self.loadPage( pageType,
 			createOperation: {

@@ -20,7 +20,7 @@ class ConversationDeleteOperation: FetcherOperation {
     override func main() {
         
         let remoteID: Int? = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = [ "user.remoteId" : self.userRemoteID ]
+            let uniqueElements = [ "user.remoteId": self.userRemoteID ]
             guard let conversation: VConversation = context.v_findObjects( uniqueElements ).first else {
                 return nil
             }

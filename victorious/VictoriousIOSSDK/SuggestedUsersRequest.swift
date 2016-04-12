@@ -26,7 +26,7 @@ public struct SuggestedUsersRequest: RequestType {
             for i in 0..<userJson["recent_sequences"].count {
                 userJson["recent_sequences"][i][ "user" ] = userJson
             }
-            let sequences = userJson["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) }
+            let sequences = userJson["recent_sequences"].arrayValue.flatMap{ Sequence(json: $0) }
             return SuggestedUser(user: validUser, recentSequences: sequences)
         }
         return suggestedUsers

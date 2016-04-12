@@ -49,7 +49,7 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
     private func fetchMessages() -> [VMessage] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let messagesPredicate = self.messagesPredicate else {
-                VLog("Unable to load messages without a converationID or userID.")
+                v_log("Unable to load messages without a converationID or userID.")
                 assertionFailure()
                 return []
             }

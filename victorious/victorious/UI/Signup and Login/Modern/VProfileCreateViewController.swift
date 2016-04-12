@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VProfileCreateViewController {
     
-    func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?)->())? ) -> NSOperation? {
+    func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?) -> ())? ) -> NSOperation? {
         
         let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(

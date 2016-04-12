@@ -9,7 +9,7 @@
 import UIKit
 
 /// A custom transition used to show `VNewContentViewController` with a "split-reveal" style animation.
-class ContentViewNextTransition : NSObject, VAnimatedTransition {
+class ContentViewNextTransition: NSObject, VAnimatedTransition {
     
     func canPerformCustomTransitionFrom(fromViewController: UIViewController?, to toViewController: UIViewController) -> Bool {
         return toViewController is VNewContentViewController && (fromViewController == nil || fromViewController is VNewContentViewController)

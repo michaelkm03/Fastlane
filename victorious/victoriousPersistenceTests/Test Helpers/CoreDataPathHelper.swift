@@ -11,7 +11,7 @@ import Foundation
 
 struct CoreDataPathHelper {
     
-    func URLForManagedObjectModelInBundle( versionedModelName: String, modelVersion: String ) -> NSURL {
+    func urlForManagedObjectModelInBundle( versionedModelName: String, modelVersion: String ) -> NSURL {
         let fullPath = ("\(versionedModelName).momd" as NSString).stringByAppendingPathComponent( modelVersion )
         return NSBundle(forClass: CoreDataManager.self).URLForResource( fullPath, withExtension: "mom" )!
     }

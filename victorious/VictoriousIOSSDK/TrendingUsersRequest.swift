@@ -18,7 +18,7 @@ public struct TrendingUsersRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User]{
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
         guard let json = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }

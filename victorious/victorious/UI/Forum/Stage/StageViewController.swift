@@ -172,7 +172,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private func clearStageMedia() {
         mainContentViewBottomConstraint.constant = 0
         UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
-            self.delegate?.stage(self, didUpdateContentHeight:0.0)
+            self.delegate?.stage(self, didUpdateContentHeight: 0.0)
             self.view.layoutIfNeeded()
         }
     }

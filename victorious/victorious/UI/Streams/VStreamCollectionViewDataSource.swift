@@ -14,7 +14,7 @@ extension VStreamCollectionViewDataSource {
     /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
-    func loadPage( pageType: VPageType, completion:(NSError?)->()) {
+    func loadPage( pageType: VPageType, completion: (NSError?) -> ()) {
         guard let apiPath = stream.apiPath else {
             completion(NSError(domain: "StreamLoadingError", code: 1, userInfo: nil))
             return
@@ -31,7 +31,7 @@ extension VStreamCollectionViewDataSource {
     
     /// If a stream is pre populated with its stream items, no network request
     /// is needed and we just fetch those stream items locally
-    func loadPreloadedStreamWithCompletion(completion: ((NSError?)->())? ) {
+    func loadPreloadedStreamWithCompletion(completion: ((NSError?) -> ())? ) {
         self.paginatedDataSource.loadPage( VPageType.First,
             createOperation: {
                 // For a preloaded stream, if the `stream` has an apiPath, we need to pass it in so that

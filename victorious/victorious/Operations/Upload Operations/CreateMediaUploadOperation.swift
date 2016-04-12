@@ -65,10 +65,10 @@ class CreateMediaUploadOperation: BackgroundOperation {
     
     private var formFields: [NSObject : AnyObject] {
         var dict: [NSObject : AnyObject] = [
-            "name" : publishParameters.caption,
-            "is_gif_style" : publishParameters.isGIF ? "true" : "false",
-            "did_crop" : publishParameters.didCrop ? "true" : "false",
-            "did_trim" : publishParameters.didTrim ? "true" : "false",
+            "name": publishParameters.caption,
+            "is_gif_style": publishParameters.isGIF ? "true" : "false",
+            "did_crop": publishParameters.didCrop ? "true" : "false",
+            "did_trim": publishParameters.didTrim ? "true" : "false",
         ]
         
         /// Assumption here is that we don't need to send both the assetRemoteID and mediaURL

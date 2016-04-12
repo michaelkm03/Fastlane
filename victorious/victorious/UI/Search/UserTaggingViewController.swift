@@ -34,7 +34,7 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
     
     //MARK: - API
     
-    func searchWithTerm(searchTerm:String) {
+    func searchWithTerm(searchTerm: String) {
         dataSource.search(searchTerm: searchTerm, pageType: .First)
     }
     
@@ -58,7 +58,7 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
         
         let fetchUserOperation = FetchFromMainContextOperation(
             entityName: VUser.v_entityName(),
-            predicate: NSPredicate(format:"remoteId == %i", result.sourceResult.userID)
+            predicate: NSPredicate(format: "remoteId == %i", result.sourceResult.userID)
         )
         fetchUserOperation.queue() { results, error, cancelled in
             if let user = results?.first as? VUser {

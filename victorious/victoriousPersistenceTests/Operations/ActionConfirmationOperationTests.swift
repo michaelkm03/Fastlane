@@ -17,7 +17,7 @@ class ActionConfirmationOperationTests: XCTestCase {
         let confirmation = MockConfirmationOperation(shouldConfirm: true)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation )
-        queue.addOperations( [confirmation, operation], waitUntilFinished:true )
+        queue.addOperations( [confirmation, operation], waitUntilFinished: true )
         
         XCTAssert( operation.didExecute )
     }
@@ -26,14 +26,14 @@ class ActionConfirmationOperationTests: XCTestCase {
         let confirmation = MockConfirmationOperation(shouldConfirm: false)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation )
-        queue.addOperations( [confirmation, operation], waitUntilFinished:true )
+        queue.addOperations( [confirmation, operation], waitUntilFinished: true )
         
         XCTAssertFalse( operation.didExecute )
     }
     
     func testNoConfirmation() {
         let operation = MockOperationWithPreconfrmation()
-        queue.addOperations( [operation], waitUntilFinished:true )
+        queue.addOperations( [operation], waitUntilFinished: true )
         XCTAssert( operation.didExecute )
     }
     
@@ -43,7 +43,7 @@ class ActionConfirmationOperationTests: XCTestCase {
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation1 )
         operation.addDependency( confirmation2 )
-        queue.addOperations( [confirmation1, confirmation2, operation], waitUntilFinished:true )
+        queue.addOperations( [confirmation1, confirmation2, operation], waitUntilFinished: true )
         
         XCTAssert( operation.didExecute )
     }
@@ -54,7 +54,7 @@ class ActionConfirmationOperationTests: XCTestCase {
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation1 )
         operation.addDependency( confirmation2 )
-        queue.addOperations( [confirmation1, confirmation2, operation], waitUntilFinished:true )
+        queue.addOperations( [confirmation1, confirmation2, operation], waitUntilFinished: true )
         
         XCTAssertFalse( operation.didExecute )
     }

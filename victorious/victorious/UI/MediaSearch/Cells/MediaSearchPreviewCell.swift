@@ -13,8 +13,6 @@ import UIKit
 /// from the list of GIF search results
 class MediaSearchPreviewCell: UICollectionViewCell {
     
-    static let ReuseIdentifier = "MediaSearchPreviewCell"
-    
     var videoPlayer: VVideoPlayer?
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!

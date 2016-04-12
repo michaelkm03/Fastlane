@@ -18,7 +18,7 @@ class TestTrackingManager: NSObject, VEventTracker {
 
     var trackEventCalls = [TrackingManagerCall]()
 
-    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]? ) {
+    func trackEvent(eventName: String?, parameters: [NSObject: AnyObject]? ) {
         let call = TrackingManagerCall(eventName: eventName, parameters: parameters)
         self.trackEventCalls.append( call )
     }

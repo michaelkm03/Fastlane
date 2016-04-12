@@ -10,6 +10,6 @@ import UIKit
 
 extension UICollectionViewCell {
     static var defaultSwiftReuseIdentifier: String {
-        return StringFromClass(self)
+        return stringFromClass(self)
     }
 }

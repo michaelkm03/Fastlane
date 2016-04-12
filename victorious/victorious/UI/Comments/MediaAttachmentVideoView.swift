@@ -9,7 +9,7 @@
 import Foundation
 
 // A media attachment view used for showing video preview images
-class MediaAttachmentVideoView : MediaAttachmentImageView {
+class MediaAttachmentVideoView: MediaAttachmentImageView {
     
     let playIcon = UIImageView(image: UIImage(named: "PlayIcon"))
     

@@ -44,7 +44,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     
     //MARK: - API
     
-    func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         
         self.searchTerm = searchTerm
         guard let operation = HashtagSearchOperation(searchTerm: searchTerm) else {

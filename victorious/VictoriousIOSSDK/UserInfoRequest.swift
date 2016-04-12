@@ -17,7 +17,7 @@ public struct UserInfoRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string:"/api/userinfo/fetch")!.URLByAppendingPathComponent( String(self.userID) )
+        let url = NSURL(string: "/api/userinfo/fetch")!.URLByAppendingPathComponent( String(self.userID) )
         return NSURLRequest(URL: url)
     }
     

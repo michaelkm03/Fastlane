@@ -110,10 +110,10 @@ class SequenceTests: XCTestCase {
             return nil
         }
 
-        guard let Sequence = Sequence(url: url) else {
+        guard let sequence = Sequence(url: url) else {
             return nil
         }
 
-        return Sequence
+        return sequence
     }
 }

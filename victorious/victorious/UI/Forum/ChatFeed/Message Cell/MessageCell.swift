@@ -67,8 +67,8 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped(_:))) )
-        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onMediaTapped(_:))) )
+        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped(_: ))) )
+        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onMediaTapped(_: ))) )
     }
     
     override func layoutSubviews() {
@@ -168,9 +168,9 @@ class MessageCell: UICollectionViewCell, VFocusable {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = layout.textAlignment
         let attributes = [
-            NSParagraphStyleAttributeName : paragraphStyle,
-            NSForegroundColorAttributeName : dependencyManager.messageTextColor,
-            NSFontAttributeName : dependencyManager.messageFont
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSForegroundColorAttributeName: dependencyManager.messageTextColor,
+            NSFontAttributeName: dependencyManager.messageFont
         ]
         return NSAttributedString(string: text, attributes: attributes)
     }

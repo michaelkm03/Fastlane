@@ -11,24 +11,24 @@ import UIKit
 
 /// A emotive ballistic view responsible for showing
 /// a border image and an icon image
-class ExperienceEnhancerIconView : UIView {
+class ExperienceEnhancerIconView: UIView {
     
     private let iconImageView = UIImageView()
     private let overlayImageView = UIImageView(image: UIImage(named: "ballistic_background_icon"))
     
-    var iconImage : UIImage? {
+    var iconImage: UIImage? {
         didSet {
             self.iconImageView.image = iconImage
         }
     }
     
-    var overlayImage : UIImage? {
+    var overlayImage: UIImage? {
         didSet {
             self.overlayImageView.image = overlayImage
         }
     }
     
-    var iconURL : NSURL? {
+    var iconURL: NSURL? {
         didSet {
             self.alpha = 0
             self.iconImageView.sd_setImageWithURL(iconURL, completed: {

@@ -26,7 +26,7 @@ class ShowMemersOperation: MainQueueOperation {
         
         guard let memeStream = dependencyManager.templateValueOfType(VStreamCollectionViewController.self,
             forKey: "memeStream",
-            withAddedDependencies:[ VSequenceIDKey: sequence.remoteId ]) as? VStreamCollectionViewController else  {
+            withAddedDependencies: [ VSequenceIDKey: sequence.remoteId ]) as? VStreamCollectionViewController else  {
                 self.finishedExecuting()
                 return
         }

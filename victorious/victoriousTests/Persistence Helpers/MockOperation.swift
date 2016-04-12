@@ -25,12 +25,12 @@ class MockOperation: NSOperation, Queuable {
         super.init()
     }
     
-    init( _ label: String, block:((MockOperation)->())? = nil ) {
+    init( _ label: String, block: ((MockOperation)->())? = nil ) {
         self.label = label
         self.operationBlock = block
     }
     
-    func queueOn( queue: NSOperationQueue, completionBlock:((MockOperation)->())? ) {
+    func queueOn( queue: NSOperationQueue, completionBlock: ((MockOperation) -> ())? ) {
         self.completionBlock = {
             completionBlock?( self )
         }

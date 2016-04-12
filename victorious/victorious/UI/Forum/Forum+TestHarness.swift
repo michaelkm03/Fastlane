@@ -57,25 +57,25 @@ extension ForumViewController {
 
 private let sampleMedia = [
     [
-        "url" : "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
-        "thumbnailUrl" : "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
-        "width" : 1067,
-        "height" : 600
-    ],[
-        "url" : "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
-        "thumbnailUrl" : "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
-        "width" : 625,
-        "height" : 417
-    ],[
-        "url" : "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
-        "thumbnailUrl" : "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
-        "width" : 620,
-        "height" : 387
-    ],[
-        "url" : "https://media3.giphy.com/media/6qalZjXQlpoGI/giphy.mp4",
-        "thumbnailUrl" : "https://media3.giphy.com/media/6qalZjXQlpoGI/100_s.gif",
-        "width" : 400,
-        "height" : 170
+        "url": "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
+        "thumbnailUrl": "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
+        "width": 1067,
+        "height": 600
+    ], [
+        "url": "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
+        "thumbnailUrl": "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
+        "width": 625,
+        "height": 417
+    ], [
+        "url": "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
+        "thumbnailUrl": "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
+        "width": 620,
+        "height": 387
+    ], [
+        "url": "https://media3.giphy.com/media/6qalZjXQlpoGI/giphy.mp4",
+        "thumbnailUrl": "https://media3.giphy.com/media/6qalZjXQlpoGI/100_s.gif",
+        "width": 400,
+        "height": 170
     ]
 ]
 

@@ -11,8 +11,7 @@ import UIKit
 /**
 Represents a line, part of a line or a single word of text
 */
-class VTextFragment
-{
+class VTextFragment {
     static let topInsetMultiplier: CGFloat = 0.42
     static let bottomInsetMultipler: CGFloat = 0.09
     
@@ -22,8 +21,7 @@ class VTextFragment
     let isCallout: Bool ///< Is this fragment a callout as indicated by a callout delimeter prefix ("#" or "@")
     let isNewLine: Bool ///< Is the fragment the star to of a new line
     
-    init( text: String, rect: CGRect, range: NSRange, isCallout: Bool, isNewLine: Bool )
-    {
+    init( text: String, rect: CGRect, range: NSRange, isCallout: Bool, isNewLine: Bool ) {
         self.text = text
         self.rect = rect
         self.range = range

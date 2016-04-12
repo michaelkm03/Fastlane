@@ -24,7 +24,7 @@ class SequenceRepostOperation: FetcherOperation {
             guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
                 return false
             }
-            let sequence:VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             guard let node = sequence.firstNode(), let nodeID = node.remoteId?.integerValue else {
                 return false
             }

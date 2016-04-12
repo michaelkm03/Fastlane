@@ -14,8 +14,8 @@ import VictoriousIOSSDK
 class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	struct ReuseIdentifier {
-		static let AttributionHeader = "MediaSearchAttributionView" ///< Set in storyboard
-		static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
+		static let attributionHeader = "MediaSearchAttributionView" ///< Set in storyboard
+		static let activityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
 	}
     
     weak var delegate: VPaginatedDataSourceDelegate?
@@ -37,7 +37,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		
 		/// The minimum amount of top and bottom space between a fullsize
 		/// search result and the colleciton view bounds
-		static let MinCollectionContainerMargin: CGFloat = 50.0
+		static let minCollectionContainerMargin: CGFloat = 50.0
 		
 		let results: [MediaSearchResult]
 		
@@ -62,7 +62,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
     var dataSource: MediaSearchDataSource?
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
+	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?) -> ())? ) {
 		guard let dataSource = self.dataSource else {
 			fatalError( "Attempt to perform a search without configuring a data source" )
 		}
@@ -146,7 +146,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
         while i < results.count {
             let resultsForSection: [MediaSearchResult] = {
                 if i + 1 < results.count {
-                    return [results[i], results[i+1]]
+                    return [results[i], results[i + 1]]
                 }
                 else {
                     return [results[i]]
@@ -154,7 +154,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
             }()
             i += 2
             
-            let section = Section( results:resultsForSection, isFullSize: false )
+            let section = Section( results: resultsForSection, isFullSize: false )
             self.sections.append( section )
         }
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
@@ -174,7 +174,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		if self.sections.isEmpty,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
+			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
 				self.configureNoContentCell( cell, forState: self.state )
 				return cell
 		}
@@ -182,12 +182,12 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		let section = self.sections[ indexPath.section ]
 		let resultObject = section.results[ indexPath.row ]
 		if section.isFullSize,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
+			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
 				cell.previewAssetUrl = resultObject.thumbnailImageURL
 				cell.assetUrl = resultObject.sourceMediaURL
 				return cell
 				
-		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
+		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
 			cell.assetUrl = resultObject.thumbnailImageURL
 			
 			if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
@@ -202,9 +202,9 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		
 		if indexPath.section == 0 {
-			return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: ReuseIdentifier.AttributionHeader, forIndexPath: indexPath )
+			return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: ReuseIdentifier.attributionHeader, forIndexPath: indexPath )
 		}
-		return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: ReuseIdentifier.ActivityFooter, forIndexPath: indexPath )
+		return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: ReuseIdentifier.activityFooter, forIndexPath: indexPath )
 	}
 	
 	// MARK: - Helpers

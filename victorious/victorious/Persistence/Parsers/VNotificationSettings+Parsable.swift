@@ -12,14 +12,14 @@ import VictoriousIOSSDK
 extension VNotificationSettings: PersistenceParsable {
     
     func populate(fromSourceModel sourceModel: NotificationPreference) {
-        self.isPostFromCreatorEnabled = sourceModel.contains(.CreatorPost)
-        self.isNewFollowerEnabled = sourceModel.contains(.NewFollower)
-        self.isNewPrivateMessageEnabled = sourceModel.contains(.PrivateMessage)
-        self.isNewCommentOnMyPostEnabled = sourceModel.contains(.CommentPost)
-        self.isPostFromFollowedEnabled = sourceModel.contains(.FollowPost)
-        self.isPostOnFollowedHashTagEnabled = sourceModel.contains(.TagPost)
-        self.isUserTagInCommentEnabled = sourceModel.contains(.Mention)
-        self.isPeopleLikeMyPostEnabled = sourceModel.contains(.LikePost)
+        self.isPostFromCreatorEnabled = sourceModel.contains(.creatorPost)
+        self.isNewFollowerEnabled = sourceModel.contains(.newFollower)
+        self.isNewPrivateMessageEnabled = sourceModel.contains(.privateMessage)
+        self.isNewCommentOnMyPostEnabled = sourceModel.contains(.commentPost)
+        self.isPostFromFollowedEnabled = sourceModel.contains(.followPost)
+        self.isPostOnFollowedHashTagEnabled = sourceModel.contains(.tagPost)
+        self.isUserTagInCommentEnabled = sourceModel.contains(.mention)
+        self.isPeopleLikeMyPostEnabled = sourceModel.contains(.likePost)
     }
     
 }
@@ -29,14 +29,14 @@ extension VNotificationSettings {
     func networkPreferences() -> [NotificationPreference: Bool] {
         var networkPreferences = [NotificationPreference: Bool]()
         
-        networkPreferences[.CreatorPost] = self.isPostFromCreatorEnabled?.boolValue ?? false
-        networkPreferences[.FollowPost] = self.isPostFromFollowedEnabled?.boolValue ?? false
-        networkPreferences[.CommentPost] = self.isNewCommentOnMyPostEnabled?.boolValue ?? false
-        networkPreferences[.PrivateMessage] = self.isNewPrivateMessageEnabled?.boolValue ?? false
-        networkPreferences[.TagPost] = self.isPostOnFollowedHashTagEnabled?.boolValue ?? false
-        networkPreferences[.Mention] = self.isUserTagInCommentEnabled?.boolValue ?? false
-        networkPreferences[.LikePost] = self.isPeopleLikeMyPostEnabled?.boolValue ?? false
-        networkPreferences[.NewFollower] = self.isNewFollowerEnabled?.boolValue ?? false
+        networkPreferences[.creatorPost] = self.isPostFromCreatorEnabled?.boolValue ?? false
+        networkPreferences[.followPost] = self.isPostFromFollowedEnabled?.boolValue ?? false
+        networkPreferences[.commentPost] = self.isNewCommentOnMyPostEnabled?.boolValue ?? false
+        networkPreferences[.privateMessage] = self.isNewPrivateMessageEnabled?.boolValue ?? false
+        networkPreferences[.tagPost] = self.isPostOnFollowedHashTagEnabled?.boolValue ?? false
+        networkPreferences[.mention] = self.isUserTagInCommentEnabled?.boolValue ?? false
+        networkPreferences[.likePost] = self.isPeopleLikeMyPostEnabled?.boolValue ?? false
+        networkPreferences[.newFollower] = self.isNewFollowerEnabled?.boolValue ?? false
         
         return networkPreferences
     }

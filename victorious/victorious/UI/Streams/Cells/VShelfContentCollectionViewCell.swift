@@ -47,13 +47,11 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     private func updatePreviewView(streamItem: VStreamItem?) {
         if let streamItem = streamItem {
             
-            if ( !previewView.onlyShowPreview )
-            {
+            if ( !previewView.onlyShowPreview ) {
                 previewView.onlyShowPreview = true
             }
             
-            if ( previewView.streamItem != streamItem )
-            {
+            if ( previewView.streamItem != streamItem ) {
                 previewView.updateToStreamItem(streamItem)
             }
             

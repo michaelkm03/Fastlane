@@ -164,13 +164,13 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
                         //Create a new section range for the section that just ended
                         let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
-                        add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
+                        add(sectionRange, toRanges: &tempRanges, atIndex: rangeIndex)
                         recentSectionLength = 0
                         rangeIndex += 1
                     }
                     let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                     let sectionRange = SectionRange(range: NSMakeRange(rangeStart, 1), isShelf: true)
-                    add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
+                    add(sectionRange, toRanges: &tempRanges, atIndex: rangeIndex)
                     rangeIndex += 1
                 }
                 else {
@@ -180,7 +180,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
                         //Create a new section range for the section that just ended
                         let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
-                        add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
+                        add(sectionRange, toRanges: &tempRanges, atIndex: rangeIndex)
                     }
                 }
             }
@@ -188,7 +188,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         sectionRanges = tempRanges
     }
     
-    private func add(sectionRange: SectionRange, inout toRanges ranges: [SectionRange], atIndex index:Int) {
+    private func add(sectionRange: SectionRange, inout toRanges ranges: [SectionRange], atIndex index: Int) {
         if index < ranges.count {
             ranges[index] = sectionRange
         }
@@ -280,7 +280,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         searchController.searchBar.sizeToFit()
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
-        let placeholderText = NSLocalizedString( "Search people and hashtags", comment:"");
+        let placeholderText = NSLocalizedString( "Search people and hashtags", comment: "");
         self.dependencyManager?.configureSearchBar(searchController.searchBar, placeholderText: placeholderText)
         return searchController
     }()
@@ -549,8 +549,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         /// Marquee item selection tracking
         let params = [
-            VTrackingKeyName : streamItem.name ?? "",
-            VTrackingKeyRemoteId : streamItem.remoteId ?? ""
+            VTrackingKeyName: streamItem.name ?? "",
+            VTrackingKeyRemoteId: streamItem.remoteId ?? ""
         ]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectItemFromMarquee, parameters: params)
         
@@ -580,7 +580,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     }
     
     private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
-        var configDict = [Constants.sequenceIDKey : stream.remoteId]
+        var configDict = [Constants.sequenceIDKey: stream.remoteId]
         if stream == currentStream {
             // Tapped on recent posts
             configDict[VDependencyManagerTitleKey] = dependencyManager?.stringForKey(VDependencyManagerTitleKey)

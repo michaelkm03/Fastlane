@@ -107,7 +107,7 @@ class VideoToolbarView: UIView {
     
     // MARK: - Visibility
     
-    func hide( animated animated:Bool = true ) {
+    func hide( animated animated: Bool = true ) {
         if !self.visible {
             return
         }
@@ -137,7 +137,7 @@ class VideoToolbarView: UIView {
         }
     }
     
-    func show( animated animated:Bool = true ) {
+    func show( animated animated: Bool = true ) {
         if self.visible {
             return
         }

@@ -27,20 +27,20 @@ public struct NotificationPreference: OptionSetType, Hashable {
     }
     
     // When new preferences are added to this list, make sure to also add them to the "all" collection!
-    public static let CreatorPost       = NotificationPreference(rawValue: 1 << 0,  stringValue: "notification_creator_post")
-    public static let FollowPost        = NotificationPreference(rawValue: 1 << 1,  stringValue: "notification_follow_post")
-    public static let CommentPost       = NotificationPreference(rawValue: 1 << 2,  stringValue: "notification_comment_post")
-    public static let PrivateMessage    = NotificationPreference(rawValue: 1 << 3,  stringValue: "notification_private_message")
-    public static let NewFollower       = NotificationPreference(rawValue: 1 << 4,  stringValue: "notification_new_follower")
-    public static let TagPost           = NotificationPreference(rawValue: 1 << 5,  stringValue: "notification_tag_post")
-    public static let Mention           = NotificationPreference(rawValue: 1 << 6,  stringValue: "notification_mention")
-    public static let LikePost          = NotificationPreference(rawValue: 1 << 7,  stringValue: "notification_like_post")
-    public static let Announcement      = NotificationPreference(rawValue: 1 << 8,  stringValue: "notification_announcement")
-    public static let NextDay           = NotificationPreference(rawValue: 1 << 9,  stringValue: "notification_next_day")
-    public static let LapsedUser        = NotificationPreference(rawValue: 1 << 10, stringValue: "notification_lapsed_user")
-    public static let EmotiveBallistic  = NotificationPreference(rawValue: 1 << 11, stringValue: "notification_emotive_ballistic")
+    public static let creatorPost       = NotificationPreference(rawValue: 1 << 0,  stringValue: "notification_creator_post")
+    public static let followPost        = NotificationPreference(rawValue: 1 << 1,  stringValue: "notification_follow_post")
+    public static let commentPost       = NotificationPreference(rawValue: 1 << 2,  stringValue: "notification_comment_post")
+    public static let privateMessage    = NotificationPreference(rawValue: 1 << 3,  stringValue: "notification_private_message")
+    public static let newFollower       = NotificationPreference(rawValue: 1 << 4,  stringValue: "notification_new_follower")
+    public static let tagPost           = NotificationPreference(rawValue: 1 << 5,  stringValue: "notification_tag_post")
+    public static let mention           = NotificationPreference(rawValue: 1 << 6,  stringValue: "notification_mention")
+    public static let likePost          = NotificationPreference(rawValue: 1 << 7,  stringValue: "notification_like_post")
+    public static let announcement      = NotificationPreference(rawValue: 1 << 8,  stringValue: "notification_announcement")
+    public static let nextDay           = NotificationPreference(rawValue: 1 << 9,  stringValue: "notification_next_day")
+    public static let lapsedUser        = NotificationPreference(rawValue: 1 << 10, stringValue: "notification_lapsed_user")
+    public static let emotiveBallistic  = NotificationPreference(rawValue: 1 << 11, stringValue: "notification_emotive_ballistic")
     
-    public static let all = [CreatorPost, FollowPost, CommentPost, PrivateMessage, NewFollower, TagPost, Mention, LikePost, Announcement, NextDay, LapsedUser, EmotiveBallistic]
+    public static let all = [creatorPost, followPost, commentPost, privateMessage, newFollower, tagPost, mention, likePost, announcement, nextDay, lapsedUser, emotiveBallistic]
 }
 
 public struct DevicePreferencesRequest: RequestType {

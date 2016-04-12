@@ -48,7 +48,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         if payload.array != nil {
             
             // User profile and other streams with `stream_id` in the response
-            var dictionary = [ "id" : responseJSON["stream_id"], "items" : payload ]
+            var dictionary = [ "id": responseJSON["stream_id"], "items" : payload ]
             dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
             
             if let streamFromItems = Stream(json: JSON(dictionary)) {
@@ -57,10 +57,10 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
                 throw ResponseParsingError()
             }
             
-        } else if payload["content"].array != nil{
+        } else if payload["content"].array != nil {
             
             // Liked posts, and other weird responses with no `stream_id` information
-            var dictionary = [ "id" : "anonymous:stream", "items" : payload["content"] ]
+            var dictionary = [ "id": "anonymous:stream", "items" : payload["content"] ]
             dictionary.vsdk_unionInPlace( dictionaryWithSupplementalValues(responseJSON) )
             
             if let streamFromItems = Stream(json: JSON(dictionary)) {
@@ -88,8 +88,8 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         return stream
     }
     
-    private func dictionaryWithSupplementalValues(responseJSON: JSON) -> [String : JSON] {
-        var dictionary = [String : JSON]()
+    private func dictionaryWithSupplementalValues(responseJSON: JSON) -> [String: JSON] {
+        var dictionary = [String: JSON]()
         
         dictionary["apiPath"]              = JSON(stringLiteral: self.apiPath)
         dictionary["shelf_id"]             = responseJSON["shelf_id"]

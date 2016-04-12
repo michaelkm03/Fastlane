@@ -39,7 +39,7 @@ class NewItemsController: NSObject {
             self.button.setTitle(title, forState: .Normal)
             UIView.setAnimationsEnabled(true)
             
-            let attributes = [ NSFontAttributeName : button.titleLabel!.font ]
+            let attributes = [ NSFontAttributeName: button.titleLabel!.font ]
             buttonWidthConstraint.constant = (title as NSString).sizeWithAttributes( attributes ).width
             button.layoutIfNeeded()
         }
@@ -102,7 +102,7 @@ class NewItemsController: NSObject {
             self.button.layoutIfNeeded()
             self.button.alpha = 0.0
         }
-        let completion = { (_:Bool) in
+        let completion = { (_: Bool) in
             self.count = 0
             self.isShowing = false
         }

@@ -88,7 +88,7 @@ extension VStream: PersistenceParsable {
         }
     }
     
-    private func shelf(fromStreamItem item: StreamItemType, withUniqueIdentifier identifier: [String : AnyObject], context: NSManagedObjectContext) -> Shelf? {
+    private func shelf(fromStreamItem item: StreamItemType, withUniqueIdentifier identifier: [String: AnyObject], context: NSManagedObjectContext) -> Shelf? {
         
         switch item.subtype {
             
@@ -127,7 +127,7 @@ extension VStream: PersistenceParsable {
      }
     
     private func createStreamItemPointer(pointingTo streamItem: VStreamItem, withSourceModel sourceModel: StreamItemType) {
-        let uniqueInfo = ["streamParent" : self, "streamItem" : streamItem]
+        let uniqueInfo = ["streamParent": self, "streamItem": streamItem]
         let pointer: VStreamItemPointer = v_managedObjectContext.v_findOrCreateObject(uniqueInfo)
         if let sequence = sourceModel as? Sequence {
             pointer.populate(fromSourceModel: sequence )

@@ -95,8 +95,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     /// Returns the optimium size for this badge view based on this badge view's current state.
     var desiredSize: CGSize {
         var size = image(verified, withImageType: levelBadgeImageType).size
-        if let text = text where !verified
-        {
+        if let text = text where !verified {
             let textWidth = text.boundingRectWithSize(CGSizeMake(CGFloat.max, size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [ NSFontAttributeName : badgeLabel.font ], context: nil).width + ( AvatarLevelBadgeView.kLabelInsets.left + AvatarLevelBadgeView.kLabelInsets.right )
             size.width = max(size.width, textWidth)
         }

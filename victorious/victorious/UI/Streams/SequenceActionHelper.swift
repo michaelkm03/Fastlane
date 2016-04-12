@@ -22,10 +22,10 @@ import UIKit
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,
-                    inViewController:originViewController,
-                    atLocation:triggeringView.convertRect(
+                    inViewController: originViewController,
+                    atLocation: triggeringView.convertRect(
                         triggeringView.bounds,
-                        toView:originViewController.view
+                        toView: originViewController.view
                     )
                 )
                 completion?( error == nil )
@@ -38,7 +38,7 @@ import UIKit
             
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )
+                VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters: params )
                 
             } else {
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
@@ -47,7 +47,7 @@ import UIKit
         }
     }
     
-    func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
+    func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion: ((Bool) -> Void)? ) {
         
         FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { (results, error) in
            

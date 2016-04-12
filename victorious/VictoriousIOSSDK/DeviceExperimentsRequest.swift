@@ -28,6 +28,6 @@ public struct DeviceExperimentsRequest: RequestType {
         
         let deviceExperiments = experimentsJSON.flatMap { DeviceExperiment(json: $0) }
         let defaultExperiments = defaultExperimentsJSON.flatMap{ Int($0.stringValue) }
-        return (deviceExperiments,defaultExperiments)
+        return (deviceExperiments, defaultExperiments)
     }
 }

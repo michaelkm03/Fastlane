@@ -32,7 +32,7 @@ public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
 
     public var urlRequest: NSURLRequest {
         let path = ConversationRequest.basePath.URLByAppendingPathComponent(String(self.conversationID)).URLByAppendingPathComponent(ConversationRequest.descPathParameter)
-        let urlRequest = NSMutableURLRequest(URL:path)
+        let urlRequest = NSMutableURLRequest(URL: path)
         paginator.addPaginationArgumentsToRequest(urlRequest)
         return urlRequest
     }

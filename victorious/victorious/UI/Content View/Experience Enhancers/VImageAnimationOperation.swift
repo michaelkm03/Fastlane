@@ -10,10 +10,10 @@ import UIKit
 
 @objc protocol VImageAnimationOperationDelegate {
     /// Should remove imageview after this call
-    func animation(animation: VImageAnimationOperation, didFinishAnimating completed:Bool)
+    func animation(animation: VImageAnimationOperation, didFinishAnimating completed: Bool)
     
     /// Should update UIImageView
-    func animation(animation: VImageAnimationOperation, updatedToImage image:UIImage?)
+    func animation(animation: VImageAnimationOperation, updatedToImage image: UIImage?)
 }
 
 class VImageAnimationOperation: BackgroundOperation {
@@ -63,7 +63,7 @@ class VImageAnimationOperation: BackgroundOperation {
     
     func beginAnimation() {
         
-        let frameDuration: Float = animationDuration/Float(animationSequence.count)
+        let frameDuration: Float = animationDuration / Float(animationSequence.count)
         ballisticAnimationBlock() {
             VTimerManager.addTimerManagerWithTimeInterval(NSTimeInterval(frameDuration), target: self, selector: #selector(self.updateFrame), userInfo: nil, repeats: true, toRunLoop: NSRunLoop.mainRunLoop(), withRunMode: NSRunLoopCommonModes)
         }
@@ -82,7 +82,7 @@ class VImageAnimationOperation: BackgroundOperation {
     func stopAnimating() {
         delegate?.animation(self, updatedToImage: nil)
         let finishedAnimation: Bool = currentFrame == animationSequence.count
-        delegate?.animation(self, didFinishAnimating:finishedAnimation)
+        delegate?.animation(self, didFinishAnimating: finishedAnimation)
         animationTimer.invalidate()
         finishedExecuting()
     }

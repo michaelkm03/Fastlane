@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
+class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     
     let dependencyManager: VDependencyManager
     
@@ -16,7 +16,7 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         self.dependencyManager = dependencyManager
     }
     
-    func loadNotifications( pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func loadNotifications( pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         self.loadPage( pageType,
             createOperation: {
                 return NotificationsOperation()
@@ -27,7 +27,7 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
+    func refreshRemote( completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
         self.loadNewItems(
             createOperation: {
                 return NotificationsOperation()
@@ -58,7 +58,7 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         return 72.0
     }
     
-    func decorate(cell notificationCell:VNotificationCell, atIndexPath indexPath: NSIndexPath) {
+    func decorate(cell notificationCell: VNotificationCell, atIndexPath indexPath: NSIndexPath) {
         let notification = visibleItems[ indexPath.row ] as! VNotification
         notificationCell.notification = notification
         notificationCell.dependencyManager = dependencyManager

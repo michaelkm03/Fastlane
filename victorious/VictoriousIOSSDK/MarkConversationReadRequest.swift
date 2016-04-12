@@ -19,7 +19,7 @@ public struct MarkConversationReadRequest : RequestType {
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: MarkConversationReadRequest.basePath)
-        urlRequest.vsdk_addURLEncodedFormPost(["conversation_id":String(conversationID)])
+        urlRequest.vsdk_addURLEncodedFormPost(["conversation_id": String(conversationID)])
         return urlRequest
     }
     

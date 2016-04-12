@@ -32,7 +32,7 @@ class FollowHashtagOperation: FetcherOperation {
             persistentHashtag.tag = self.hashtag
             
             // Find or create the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.hashtag ]
+            let uniqueElements = [ "user": currentUser, "hashtag.tag": self.hashtag ]
             let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueElements )
             followedHashtag.user = currentUser
             followedHashtag.hashtag = persistentHashtag

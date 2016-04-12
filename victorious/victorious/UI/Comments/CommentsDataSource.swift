@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
+class CommentsDataSource: PaginatedDataSource, UICollectionViewDataSource {
     
     private let sequence: VSequence
     
@@ -27,11 +27,11 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         self.KVOController.observe( self.sequence,
             keyPath: "comments",
             options: [],
-            action: #selector(onCommentsChanged(_:))
+            action: #selector(onCommentsChanged(_: ))
         )
     }
     
-    func onCommentsChanged( change: [NSObject : AnyObject]? ) {
+    func onCommentsChanged( change: [NSObject: AnyObject]? ) {
         guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
             let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
                 return
@@ -42,11 +42,11 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
                 op.localFetch = true
                 return op
             },
-            completion:nil
+            completion: nil
         )
     }
     
-    func loadComments( pageType: VPageType, completion:(([AnyObject]?, NSError?, Bool)->())? = nil ) {
+    func loadComments( pageType: VPageType, completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil ) {
         self.loadPage( pageType,
             createOperation: {
                 return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
@@ -58,7 +58,7 @@ class CommentsDataSource : PaginatedDataSource, UICollectionViewDataSource {
         )
     }
     
-    func deleteSequence( completion: (([AnyObject]?, NSError?, Bool)->())? = nil ) {
+    func deleteSequence( completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil ) {
         SequenceDeleteOperation(sequenceID: self.sequence.remoteId).queue() { results, error, cancelled in
             completion?(results, error, cancelled)
         }

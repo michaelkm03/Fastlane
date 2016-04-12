@@ -8,7 +8,7 @@
 
 import UIKit
 
-class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
+class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     private var currentItem: VVideoPlayerItem?
 
@@ -47,15 +47,15 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     private var playerVars: [NSObject: AnyObject] {
         // See https://developers.google.com/youtube/player_parameters for complete list
         return [
-            "controls"          : NSNumber(integer: 0),
-            "rel"               : NSNumber(integer: 0),
-            "playsinline"       : NSNumber(integer: 1),
-            "autohide"          : NSNumber(integer: 1),
-            "showinfo"          : NSNumber(integer: 0),
-            "fs"                : NSNumber(integer: 0),
-            "modestbranding"    : NSNumber(integer: 1),
-            "enablejsapi"       : NSNumber(integer: 1),
-            "iv_load_policy"    : NSNumber(integer: 3), ///< Removes annotations
+            "controls": NSNumber(integer: 0),
+            "rel": NSNumber(integer: 0),
+            "playsinline": NSNumber(integer: 1),
+            "autohide": NSNumber(integer: 1),
+            "showinfo": NSNumber(integer: 0),
+            "fs": NSNumber(integer: 0),
+            "modestbranding": NSNumber(integer: 1),
+            "enablejsapi": NSNumber(integer: 1),
+            "iv_load_policy": NSNumber(integer: 3), ///< Removes annotations
         ]
     }
     

@@ -12,18 +12,18 @@ import XCTest
 class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
     
     var fileURLs: [NSURL] = []
-    private let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+    private let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
     private let fileManager = NSFileManager.defaultManager()
 
     override func setUp() {
         super.setUp()
         
         // Cleanup first
-        let _ = try? fileManager.removeItemAtURL(URL)
-        let _ = try? fileManager.createDirectoryAtPath(URL.path!, withIntermediateDirectories: true, attributes: nil)
+        let _ = try? fileManager.removeItemAtURL(url)
+        let _ = try? fileManager.createDirectoryAtPath(url.path!, withIntermediateDirectories: true, attributes: nil)
         
         for _ in 1...10 {
-            let newURL = URL.URLByAppendingPathComponent(NSUUID().UUIDString)
+            let newURL = url.URLByAppendingPathComponent(NSUUID().UUIDString)
             fileURLs.append(newURL)
             fileManager.createFileAtPath(newURL.path!, contents: NSData(), attributes: [:])
         }
@@ -33,20 +33,20 @@ class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
         for url in fileURLs {
             let _ = try? fileManager.removeItemAtURL(url)
         }
-        let _ = try? fileManager.removeItemAtURL(URL)
+        let _ = try? fileManager.removeItemAtURL(url)
     }
     
     func testClears() {
         let expectation = expectationWithDescription("Cleanup Expectation")
         
-        XCTAssert(fileManager.fileExistsAtPath(URL.path!))
+        XCTAssert(fileManager.fileExistsAtPath(url.path!))
         for urls in fileURLs {
             XCTAssert(fileManager.fileExistsAtPath(urls.path!))
         }
         
         let op = TempDirectoryCleanupOperation()
         op.queue(){ _ in
-            XCTAssertFalse(self.fileManager.fileExistsAtPath(self.URL.path!))
+            XCTAssertFalse(self.fileManager.fileExistsAtPath(self.url.path!))
             for urls in self.fileURLs {
                 XCTAssertFalse(self.fileManager.fileExistsAtPath(urls.path!))
             }

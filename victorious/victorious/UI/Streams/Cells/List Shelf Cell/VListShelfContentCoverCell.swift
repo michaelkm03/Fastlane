@@ -9,7 +9,7 @@
 import UIKit
 
 /// A shelf content collection view cell with a stylized, centered label on top.
-class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
+class VListShelfContentCoverCell: VShelfContentCollectionViewCell {
     
     private struct Constants {
         static let kSpaceBetweenElements: CGFloat = 5
@@ -53,13 +53,13 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
         let constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-space-[left(>=minWidth)]-space-[label]-space-[right(>=minWidth)]-space-|",
             options: NSLayoutFormatOptions.AlignAllCenterY,
             metrics: [
-                "space" : Constants.kSpaceBetweenElements,
-                "minWidth" : Constants.kDividerLineMinimumWidth
+                "space": Constants.kSpaceBetweenElements,
+                "minWidth": Constants.kDividerLineMinimumWidth
             ],
             views: [
-                "left" : dividerLineLeft,
-                "label" : overlayLabel,
-                "right" : dividerLineRight
+                "left": dividerLineLeft,
+                "label": overlayLabel,
+                "right": dividerLineRight
             ]
         )
         overlayView.addConstraints(constraints)

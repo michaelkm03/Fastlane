@@ -27,7 +27,7 @@ extension VMessage: PersistenceParsable {
             
             // We MUST use the MP4 asset for gifs
             if mediaAttachment.type == .GIF {
-                mediaUrl = mediaAttachment.MP4URLForMediaAttachment()?.absoluteString
+                mediaUrl = mediaAttachment.mp4URLForMediaAttachment()?.absoluteString
             }
         }
         

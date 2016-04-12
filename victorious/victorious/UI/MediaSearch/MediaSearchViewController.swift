@@ -92,7 +92,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
-            action: #selector(exportSelectedItem(_:))
+            action: #selector(exportSelectedItem(_: ))
         )
 		
 		// Load with no search term for default results (determined by data sources)
@@ -268,7 +268,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     private func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion:nil )
+        }, completion: nil )
     }
     
     /// Removes the section showing a search result preview at the specified index path
@@ -283,7 +283,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion:nil )
+        }, completion: nil )
         
         self.updateNavigationItemState()
 	}

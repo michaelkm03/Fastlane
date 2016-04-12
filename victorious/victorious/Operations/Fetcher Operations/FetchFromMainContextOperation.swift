@@ -29,7 +29,7 @@ class FetchFromMainContextOperation: FetcherOperation {
             do {
                 self.results = try context.executeFetchRequest( request )
             } catch {
-                VLog( "Error: \(error)" )
+                v_log( "Error: \(error)" )
             }
         }
     }

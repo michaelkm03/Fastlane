@@ -36,7 +36,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh(_: )), forControlEvents: .ValueChanged)
         self.collectionView.addSubview( refreshControl )
         return refreshControl
     }()
@@ -361,7 +361,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func deleteComment(comment: VComment) {
-        CommentDeleteOperation(commentID: comment.remoteId.integerValue, removalReason:nil).queue() { results, error, cancelled in
+        CommentDeleteOperation(commentID: comment.remoteId.integerValue, removalReason: nil).queue() { results, error, cancelled in
             self.dataSource?.removeDeletedItems()
         }
     }

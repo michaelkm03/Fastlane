@@ -10,8 +10,6 @@ import GoogleInteractiveMediaAds
 import SafariServices
 import AdSupport
 
-private let VSDKAdIDMacro = "%%ADID%%"
-
 /// Provides an integration with Google IMA Ad system
 @objc class IMAAdViewController: NSObject, VAdViewControllerType, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate {
     let adTag: String
@@ -23,6 +21,7 @@ private let VSDKAdIDMacro = "%%ADID%%"
     var adsManager: IMAAdsManager?
     weak var delegate: AdLifecycleDelegate?
     private var hasBeenCalled = false
+    static let adIDMacro = "%%ADID%%"
 
     //MARK: - Initializers
 
@@ -43,7 +42,7 @@ private let VSDKAdIDMacro = "%%ADID%%"
             self.adsLoader.delegate = self
             NSNotificationCenter.defaultCenter().addObserver(
                 self,
-                selector: #selector(contentDidFinishPlaying(_:)),
+                selector: #selector(contentDidFinishPlaying(_: )),
                 name: AVPlayerItemDidPlayToEndTimeNotification,
                 object: player)
     }
@@ -51,7 +50,7 @@ private let VSDKAdIDMacro = "%%ADID%%"
     class func replaceAdTagMacro(adTag: String) -> String {
         let idfa: String = ASIdentifierManager.sharedManager().advertisingTrackingEnabled ? ASIdentifierManager.sharedManager().advertisingIdentifier.UUIDString : ""
         let newAdTag = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
-            VSDKAdIDMacro : idfa
+            adIDMacro: idfa
             ], inURLString: adTag)
         return newAdTag
     }
@@ -77,7 +76,7 @@ private let VSDKAdIDMacro = "%%ADID%%"
     func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
         self.adsManager = adsLoadedData.adsManager
         guard let adsManagerInstance = self.adsManager else {
-            VLog("Failed to instantiate IMAAdsManager, can't show ads without it")
+            v_log("Failed to instantiate IMAAdsManager, can't show ads without it")
             return
         }
         adsManagerInstance.delegate = self
@@ -89,10 +88,10 @@ private let VSDKAdIDMacro = "%%ADID%%"
 
     func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
         let imaError = adErrorData.adError
-        VLog("Failed to load ads with error: \(imaError.message)")
+        v_log("Failed to load ads with error: \(imaError.message)")
         let error = NSError(domain: kVictoriousErrorDomain,
             code: imaError.code.rawValue,
-            userInfo: [kVictoriousErrorMessageKey : imaError.message])
+            userInfo: [kVictoriousErrorMessageKey: imaError.message])
         delegate?.adHadError(error)
     }
 
@@ -141,10 +140,10 @@ private let VSDKAdIDMacro = "%%ADID%%"
     }
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdError error: IMAAdError!) {
-        VLog("IMAAdsManager has an error: \(error.message)")
+        v_log("IMAAdsManager has an error: \(error.message)")
         let nsError = NSError(domain: kVictoriousErrorDomain,
             code: error.code.rawValue,
-            userInfo: [kVictoriousErrorMessageKey : error.message])
+            userInfo: [kVictoriousErrorMessageKey: error.message])
         delegate?.adHadError(nsError)
     }
 

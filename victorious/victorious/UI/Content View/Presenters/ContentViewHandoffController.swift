@@ -97,10 +97,10 @@ class ContentViewHandoffController {
         superview.addConstraint( centerConstraint )
         
         self.previewLayout = PreviewLayout(
-            height: AnimatedConstraint(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue:0.0),
-            width: AnimatedConstraint(constraint: widthConstraint, originValue: widthConstraint.constant, destinationValue:0.0 ),
-            top: AnimatedConstraint(constraint: topConstraint, originValue: previewFrame.origin.y, destinationValue:0.0),
-            center: AnimatedConstraint(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue:0.0),
+            height: AnimatedConstraint(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue: 0.0),
+            width: AnimatedConstraint(constraint: widthConstraint, originValue: widthConstraint.constant, destinationValue: 0.0 ),
+            top: AnimatedConstraint(constraint: topConstraint, originValue: previewFrame.origin.y, destinationValue: 0.0),
+            center: AnimatedConstraint(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue: 0.0),
             view: previewView,
             parent: superview )
         
@@ -137,7 +137,7 @@ class ContentViewHandoffController {
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
                 options: [],
                 metrics: nil,
-                views: [ "topImageView" : topImageView ]
+                views: [ "topImageView": topImageView ]
             )
             superview.addConstraints( constraintsH )
             
@@ -168,7 +168,7 @@ class ContentViewHandoffController {
             superview.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat("H:|[midImageView]|",
                 options: [],
                 metrics: nil,
-                views: [ "midImageView" : midImageView ])
+                views: [ "midImageView": midImageView ])
             )
             let topConstraint = NSLayoutConstraint(item: midImageView,
                 attribute: .Top,
@@ -228,10 +228,10 @@ class ContentViewHandoffController {
                 constant: snapshotImage.size.height - botFrame.height)
             superview.addConstraint( bottomConstraint )
             
-            let views = [ "botImageView" : botImageView ]
+            let views = [ "botImageView": botImageView ]
             let constraintsV = NSLayoutConstraint.constraintsWithVisualFormat( "V:[botImageView(height)]",
                 options: [],
-                metrics: [ "height" : botImageView.frame.height, ],
+                metrics: [ "height": botImageView.frame.height, ],
                 views: views
             )
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[botImageView]|",

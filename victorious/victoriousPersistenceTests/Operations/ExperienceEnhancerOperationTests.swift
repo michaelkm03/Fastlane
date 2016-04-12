@@ -39,7 +39,7 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testMultipleVoteTypes() {
@@ -47,12 +47,11 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
         for voteTypeID in 0..<10 {
             let voteTypeDependencyManager = VDependencyManager(parentManager: nil,
                                     configuration: [
-                                        "flightDuration"    : 3*voteTypeID,
-                                        "animationDuration" : 3*voteTypeID+1,
-                                        "cooldownDuration"  : 3*voteTypeID+2,
-                                        "icon"              : UIImage(),
-                                        "voteTypeID"        : "\(voteTypeID)"
-                                        
+                                        "flightDuration": 3 * voteTypeID,
+                                        "animationDuration": 3 * voteTypeID + 1,
+                                        "cooldownDuration": 3 * voteTypeID + 2,
+                                        "icon": UIImage(),
+                                        "voteTypeID": "\(voteTypeID)"
                 ],
                 dictionaryOfClassesByTemplateName: nil)
             
@@ -84,14 +83,14 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
                 XCTAssertEqual(experienceEnhancer.iconImage, voteType.iconImage)
                 XCTAssertEqual(experienceEnhancer.voteCount, Int(voteType.voteTypeID))
                 
-                XCTAssertEqualWithAccuracy(experienceEnhancer.cooldownDuration, voteType.cooldownDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
-                XCTAssertEqualWithAccuracy(experienceEnhancer.flightDuration, voteType.flightDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
-                XCTAssertEqualWithAccuracy(experienceEnhancer.animationDuration, voteType.animationDuration.doubleValue/1000.0, accuracy: DBL_EPSILON)
+                XCTAssertEqualWithAccuracy(experienceEnhancer.cooldownDuration, voteType.cooldownDuration.doubleValue / 1000.0, accuracy: DBL_EPSILON)
+                XCTAssertEqualWithAccuracy(experienceEnhancer.flightDuration, voteType.flightDuration.doubleValue / 1000.0, accuracy: DBL_EPSILON)
+                XCTAssertEqualWithAccuracy(experienceEnhancer.animationDuration, voteType.animationDuration.doubleValue / 1000.0, accuracy: DBL_EPSILON)
             }
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
 

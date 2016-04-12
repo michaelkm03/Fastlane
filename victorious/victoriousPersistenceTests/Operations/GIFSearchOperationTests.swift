@@ -31,7 +31,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 
     func testValidResult() {
@@ -64,7 +64,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil or empty.")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 
     func testOnError() {
@@ -81,6 +81,6 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
             XCTAssertEqual( error, expectedError )
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }

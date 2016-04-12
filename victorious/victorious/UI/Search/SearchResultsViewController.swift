@@ -19,7 +19,7 @@ import VictoriousIOSSDK
     func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }
 
-class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate {
+class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate {
     
     private static let defaultSearchResultCellHeight: CGFloat = 50.0
     
@@ -71,14 +71,14 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
         dataSource?.cancelCurrentOperation()
     }
     
-    func search( searchTerm searchTerm: String, completion:((NSError?)->())? = nil ) {
+    func search( searchTerm searchTerm: String, completion: ((NSError?) -> ())? = nil ) {
         
         // Clear if we are starting from the beginning
         if let lastSearchTerm = dataSource?.searchTerm
             where !searchTerm.containsString(lastSearchTerm) {
                 dataSource?.unload()
         }
-        dataSource?.search(searchTerm: searchTerm, pageType: .First, completion:completion)
+        dataSource?.search(searchTerm: searchTerm, pageType: .First, completion: completion)
     }
     
     // MARK: - UIViewController
@@ -157,7 +157,6 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UITab
     var searchTerm: String? {
         return dataSource?.searchTerm
     }
-    
     
     // MARK: - VScrollPaginatorDelegate
     

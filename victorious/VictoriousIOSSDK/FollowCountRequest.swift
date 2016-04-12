@@ -11,7 +11,7 @@ import Foundation
 public struct FollowCountRequest: RequestType {
     public let userID: Int
     
-    public init (userID: Int) {
+    public init(userID: Int) {
         self.userID = userID
     }
     

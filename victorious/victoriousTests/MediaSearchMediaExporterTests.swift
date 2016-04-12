@@ -86,7 +86,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
-    func testDownloadURLWithValidExtension () {
+    func testDownloadURLWithValidExtension() {
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)

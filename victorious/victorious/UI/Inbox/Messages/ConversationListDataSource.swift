@@ -18,7 +18,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         self.dependencyManager = dependencyManager
     }
     
-    func loadConversations( pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func loadConversations( pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         self.loadPage( pageType,
             createOperation: {
                 return ConversationListOperation()
@@ -29,7 +29,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func refreshLocal( completion completion: (([AnyObject]?)->())? = nil) {
+    func refreshLocal( completion completion: (([AnyObject]?) -> ())? = nil) {
         self.loadNewItems( createOperation: {
             let op = ConversationListOperation()
             op.localFetch = true
@@ -40,7 +40,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         })
     }
     
-    func refreshRemote( completion:(([AnyObject]?, NSError?, Bool)->())? = nil) {
+    func refreshRemote( completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
         self.loadNewItems(
             createOperation: {
                 return ConversationListOperation()
@@ -100,7 +100,7 @@ class ConversationListDataSource: PaginatedDataSource, UITableViewDataSource {
         }
     }
     
-    private func decorate(cell conversationCell:VConversationCell, atIndexPath indexPath: NSIndexPath) {
+    private func decorate(cell conversationCell: VConversationCell, atIndexPath indexPath: NSIndexPath) {
         let conversation = visibleItems[ indexPath.row ] as! VConversation
         conversationCell.conversation = conversation
         conversationCell.dependencyManager = self.dependencyManager

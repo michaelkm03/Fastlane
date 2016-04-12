@@ -19,6 +19,4 @@ extension Experiment: PersistenceParsable {
         layerId     = sourceModel.layerID
         layerName   = sourceModel.layerName
     }
-    
 }
-

@@ -15,7 +15,7 @@ import Foundation
     class func debug_printObservation( keyPath keyPath: String, object: AnyObject, change: NSDictionary?) {
         let objectType = NSStringFromClass(object.classForCoder)
         if let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) {
+            let kind = NSKeyValueChange(rawValue: value) {
                 switch kind {
                 case .Setting:
                     print( "KVO :: \(objectType) :: Setting \(keyPath)" )

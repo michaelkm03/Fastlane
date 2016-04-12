@@ -151,7 +151,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
         
         title = dependencyManager.title
-        let attributes = [ NSForegroundColorAttributeName : UIColor.whiteColor() ]
+        let attributes = [ NSForegroundColorAttributeName: UIColor.whiteColor() ]
         navigationController?.navigationBar.titleTextAttributes = attributes
         navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
         navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor

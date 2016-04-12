@@ -18,7 +18,7 @@ private enum InterstitialType : String {
 /// any interstitials that it finds in a response object
 class AlertParser: NSObject {
     
-    func parseAlerts(payload payload: [[String : AnyObject]]?) {
+    func parseAlerts(payload payload: [[String: AnyObject]]?) {
         // Check if we have any interstitials to register
         guard let interstitials = payload else {
             return
@@ -33,16 +33,15 @@ class AlertParser: NSObject {
     }
     
     // Class function for parsing interstitials
-    private class func parseInterstitials(interstitials: [[String : AnyObject]]) -> [Interstitial] {
+    private class func parseInterstitials(interstitials: [[String: AnyObject]]) -> [Interstitial] {
         
         return interstitials.flatMap() { (config: [String : AnyObject]) -> Interstitial? in
             if let remoteIDString = config["id"] as? String,
                let typeString = config["type"] as? String,
-               let params = config["params"] as? [String : AnyObject],
+               let params = config["params"] as? [String: AnyObject],
                let remoteID = Int(remoteIDString),
                let type = InterstitialType(rawValue: typeString) {
-                switch (type)
-                {
+                switch (type) {
                 case .LevelUp:
                     return levelUpInterstitial(remoteID: remoteID, params: params)
                 case .Achievement:
@@ -57,7 +56,7 @@ class AlertParser: NSObject {
     /// Returns a fully-configured level-up interstitial
     ///
     /// - parameter configuration: A JSON dictionary containing all the configuration info for a level-up interstitial. If this information is invalid, this method returns nil.
-    private static func levelUpInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> LevelUpInterstitial? {
+    private static func levelUpInterstitial( remoteID remoteID: Int, params paramsDict: [String: AnyObject] ) -> LevelUpInterstitial? {
         if let userInfo = paramsDict["user"] as? [String : AnyObject],
             let fanLoyalty = FanLoyalty(dictionary: userInfo["fanloyalty"] as? [String : AnyObject]),
             let title = paramsDict["title"] as? String,
@@ -73,7 +72,7 @@ class AlertParser: NSObject {
     /// Returns a fully-configured achievement interstitial
     ///
     /// - parameter configuration: A JSON dictionary containing all the configuration info for an achievement interstitial. If this information is invalid, this method returns nil.
-    private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> AchievementInterstitial? {
+    private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String: AnyObject] ) -> AchievementInterstitial? {
         if let userInfo = paramsDict["user"] as? [String : AnyObject],
             let title = paramsDict["title"] as? String,
             let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),

@@ -23,7 +23,7 @@ class DeviceExperimentsOperation: RemoteFetcherOperation, RequestOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             for experiment in result.experiments {
-                let uniqueElements = [ "id" : experiment.id, "layerId" : experiment.layerID ]
+                let uniqueElements = [ "id": experiment.id, "layerId": experiment.layerID ]
                 let persistentExperiment: Experiment = context.v_findOrCreateObject(uniqueElements)
                 persistentExperiment.populate(fromSourceModel: experiment)
                 context.v_save()

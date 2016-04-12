@@ -97,8 +97,8 @@ class MainRequestExecutorTests: XCTestCase {
         
         stubRequest("GET", url)
         
-        let errorHandler1 = MockErrorHandler(code:999)
-        let errorHandler2 = MockErrorHandler(code:401)
+        let errorHandler1 = MockErrorHandler(code: 999)
+        let errorHandler2 = MockErrorHandler(code: 401)
         
         self.requestExecutor.errorHandlers.append( errorHandler1 )
         self.requestExecutor.errorHandlers.append( errorHandler2 )

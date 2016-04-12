@@ -41,7 +41,7 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     }
     
     class func suggestedReuseIdentifier() -> String {
-        return StringFromClass(RecentPostsExploreHeaderView)
+        return stringFromClass(RecentPostsExploreHeaderView)
     }
     
     class func desiredHeight(dependencyManager: VDependencyManager) -> CGFloat {

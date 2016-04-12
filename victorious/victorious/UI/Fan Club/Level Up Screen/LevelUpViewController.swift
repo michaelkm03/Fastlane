@@ -316,21 +316,21 @@ extension LevelUpViewController {
         
         var views: [String : UIView]
         var verticalVisualString = ""
-        var metrics = [String : AnyObject]()
+        var metrics = [String: AnyObject]()
         
         if let badgeView = badgeView {
             verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
-            views = ["badgeView" : badgeView, "titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
-            metrics = ["bHeight" : Constants.badgeHeight]
+            views = ["badgeView": badgeView, "titleLabel": titleLabel, "descriptionLabel": descriptionLabel, "iconCollectionView": iconCollectionView]
+            metrics = ["bHeight": Constants.badgeHeight]
             badgeView.translatesAutoresizingMaskIntoConstraints = false
             
             // Add badge specific constraints
             contentContainer.addSubview(badgeView)
-            badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: [], metrics: ["bWidth" : Constants.badgeWidth], views: views))
+            badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: [], metrics: ["bWidth": Constants.badgeWidth], views: views))
                    contentContainer.addConstraint(NSLayoutConstraint(item: contentContainer, attribute: .CenterX, relatedBy: .Equal, toItem: badgeView, attribute: .CenterX, multiplier: 1, constant: 0))
         } else {
             verticalVisualString = "V:|[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
-            views = ["titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
+            views = ["titleLabel": titleLabel, "descriptionLabel": descriptionLabel, "iconCollectionView": iconCollectionView]
         }
         
         let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: [], metrics: metrics, views: views)
@@ -345,7 +345,7 @@ extension LevelUpViewController {
         contentContainer.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(contentContainer)
         self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .CenterY, relatedBy: .Equal, toItem: contentContainer, attribute: .CenterY, multiplier: 1, constant: 0))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-distance-[contentContainer]-distance-|", options: [], metrics: ["distance" : Constants.distanceToContainerFromSide], views: ["contentContainer" : contentContainer]))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-distance-[contentContainer]-distance-|", options: [], metrics: ["distance": Constants.distanceToContainerFromSide], views: ["contentContainer": contentContainer]))
     }
 }
 

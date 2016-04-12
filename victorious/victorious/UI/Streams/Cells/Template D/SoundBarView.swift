@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SoundBarView : UIView {
+class SoundBarView: UIView {
     
     private var soundBars = [UIView]()
     private var endHeights = [CGFloat]()

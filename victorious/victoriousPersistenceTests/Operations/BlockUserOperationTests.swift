@@ -84,7 +84,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( dependentOperations.count, 1 )
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
         
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)
@@ -108,7 +108,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( dependentOperations.count, 1 )
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
         
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)

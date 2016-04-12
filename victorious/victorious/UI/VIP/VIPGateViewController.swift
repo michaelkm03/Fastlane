@@ -130,7 +130,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         }
     }
     
-    private func showResultWithMessage(message: String, completion:(()->())? = nil) {
+    private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         progressHUD.mode = .CustomView
@@ -183,16 +183,16 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - String Constants
     
     private struct Strings {
-        static let legalPrompt              = NSLocalizedString("SubscriptionLegalPrompt", comment:"")
-        static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment:"")
-        static let termsOfService           = NSLocalizedString("Terms of Service", comment:"")
-        static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment:"")
-        static let purchaseSucceeded        = NSLocalizedString("SubscriptionSucceeded", comment:"")
-        static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment:"")
-        static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment:"")
-        static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment:"")
-        static let restoreSucceeded         = NSLocalizedString("SubscriptionRestoreSucceeded", comment:"")
-        static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment:"")
+        static let legalPrompt              = NSLocalizedString("SubscriptionLegalPrompt", comment: "")
+        static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
+        static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
+        static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment: "")
+        static let purchaseSucceeded        = NSLocalizedString("SubscriptionSucceeded", comment: "")
+        static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")
+        static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
+        static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
+        static let restoreSucceeded         = NSLocalizedString("SubscriptionRestoreSucceeded", comment: "")
+        static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
     }
 }
 
@@ -225,8 +225,8 @@ private extension VDependencyManager {
     
     var legalLinkAttributes: [String : AnyObject] {
         return [
-            NSFontAttributeName : fontForKey("font.paragraph"),
-            NSForegroundColorAttributeName : colorForKey("subscribe.color"),
+            NSFontAttributeName: fontForKey("font.paragraph"),
+            NSForegroundColorAttributeName: colorForKey("subscribe.color"),
             NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
         ]
     }

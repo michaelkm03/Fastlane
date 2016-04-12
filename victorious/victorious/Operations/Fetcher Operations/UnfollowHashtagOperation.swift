@@ -29,7 +29,7 @@ class UnfollowHashtagOperation: FetcherOperation {
             }
             
             // Find the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user" : currentUser, "hashtag.tag" : self.hashtag ]
+            let uniqueElements = [ "user": currentUser, "hashtag.tag": self.hashtag ]
             if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( followedHashtag )
             }

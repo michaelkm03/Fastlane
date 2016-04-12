@@ -36,12 +36,12 @@ class VideoTrackingEvent: NSObject {
         }()
         
         let params = [
-            VTrackingKeyAutoplay : autoPlay ? "true" : "false",
-            VTrackingKeyConnectivity : connectivityString,
-            VTrackingKeyVolumeLevel : volumeString,
-            VTrackingKeyUrls : self.urls,
-            VTrackingKeyStreamId : trackingId,
-            VTrackingKeyTimeCurrent : String(currentTime?.floatValue ?? 0) ?? ""
+            VTrackingKeyAutoplay: autoPlay ? "true" : "false",
+            VTrackingKeyConnectivity: connectivityString,
+            VTrackingKeyVolumeLevel: volumeString,
+            VTrackingKeyUrls: self.urls,
+            VTrackingKeyStreamId: trackingId,
+            VTrackingKeyTimeCurrent: String(currentTime?.floatValue ?? 0) ?? ""
         ]
         VTrackingManager.sharedInstance().trackEvent( name, parameters: params )
     }
@@ -49,5 +49,5 @@ class VideoTrackingEvent: NSObject {
 
 @objc protocol VideoTracking {
     func trackAutoplayEvent(event: VideoTrackingEvent)
-    func additionalInfo() -> [String : AnyObject]
+    func additionalInfo() -> [String: AnyObject]
 }

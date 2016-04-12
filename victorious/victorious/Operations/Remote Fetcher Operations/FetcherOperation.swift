@@ -60,7 +60,7 @@ class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     
     // MARK: - Queueable
     
-    func executeCompletionBlock(completionBlock: ([AnyObject]?, NSError?)->()) {
+    func executeCompletionBlock(completionBlock: ([AnyObject]?, NSError?) -> ()) {
 
         // Calling the completion block on a cancelled requests can result in unexpected behaviour
         // since the reciver might not be in the right state to receive it.
@@ -79,7 +79,7 @@ class FetcherOperation: NSOperation, Queueable, ErrorOperation {
     /// A manual implementation of a method provided by a Swift protocol extension
     /// so that Objective-C can still easily queue and operation like other functions
     /// in the `Queueable` protocol.
-    func queueWithCompletion(completion: (([AnyObject]?, NSError?)->())? = nil ) {
+    func queueWithCompletion(completion: (([AnyObject]?, NSError?) -> ())? = nil ) {
         queue(completion: completion)
     }
 }

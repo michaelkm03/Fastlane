@@ -34,7 +34,7 @@ class AppTimingContentHelper: NSObject {
     /// Signals the start of a session during which tracking of completed endpoints may occur.
     func start() {
         if completedEndpoints.count < ContentViewEndpoint.allCases.count {
-            timingTracker.startEvent(type: VAppTimingEventTypeContentViewLoad, subtype:nil)
+            timingTracker.startEvent(type: VAppTimingEventTypeContentViewLoad, subtype: nil)
         }
     }
     
@@ -49,7 +49,7 @@ class AppTimingContentHelper: NSObject {
         completedEndpoints.insert( endpoint )
         
         if completedEndpoints.count == ContentViewEndpoint.allCases.count {
-            timingTracker.endEvent(type: VAppTimingEventTypeContentViewLoad, subtype:nil)
+            timingTracker.endEvent(type: VAppTimingEventTypeContentViewLoad, subtype: nil)
         }
     }
 }

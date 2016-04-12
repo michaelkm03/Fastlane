@@ -24,7 +24,7 @@ class CommentEditRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     private func onError( error: NSError ) {
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-        VTrackingManager.sharedInstance().trackEvent( VTrackingEventEditCommentDidFail, parameters:params)
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventEditCommentDidFail, parameters: params)
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType) {

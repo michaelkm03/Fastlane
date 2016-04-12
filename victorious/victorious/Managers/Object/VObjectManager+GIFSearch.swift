@@ -28,7 +28,7 @@ extension VObjectManager {
     /// - parameter pageType: An enum value indicating which page to load in a series of paginated requests
     /// - parameter success: Closure to be called when request receives a non-error response
     /// - parameter failure: Closure to be called when request receives an error response
-    func searchForGIF( searchText: String, pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
+    func searchForGIF( searchText: String, pageType: VPageType, success: GIFSearchSuccess?, failure: GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
         let filter = self.filterForKeywords( searchText )
         if !filter.canLoadPageType( pageType ) {
@@ -51,7 +51,7 @@ extension VObjectManager {
     /// - parameter pageType: An enum value indicating which page to load in a series of paginated requests
     /// - parameter success: Closure to be called when request receives a non-error response
     /// - parameter failure: Closure to be called when request receives an error response
-    func loadTrendingGIFs( pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
+    func loadTrendingGIFs( pageType: VPageType, success: GIFSearchSuccess?, failure: GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
         let filter = self.filterForTrending()
         if !filter.canLoadPageType( pageType ) {

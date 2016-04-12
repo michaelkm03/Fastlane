@@ -15,9 +15,9 @@ class TempDirectoryCleanupOperation: BackgroundOperation {
         
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            let URL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+            let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
             let fileManager = NSFileManager.defaultManager()
-            let _ = try? fileManager.removeItemAtURL(URL)
+            let _ = try? fileManager.removeItemAtURL(url)
             
             self.finishedExecuting()
         }

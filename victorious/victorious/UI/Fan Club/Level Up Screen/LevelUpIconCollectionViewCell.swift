@@ -33,7 +33,7 @@ class LevelUpIconCollectionViewCell: UICollectionViewCell {
     private func sharedInit() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView" : imageView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView" : imageView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView": imageView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView": imageView]))
     }
 }

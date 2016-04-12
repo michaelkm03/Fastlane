@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-@objc (VDismissButton)
+@objc(VDismissButton)
 class DismissButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)

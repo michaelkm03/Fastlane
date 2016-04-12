@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VChangePasswordViewController {
     
-    func updatePassword( currentPassword current: String, newPassword new: String, completion: ((NSError?)->())? ) -> NSOperation? {
+    func updatePassword( currentPassword current: String, newPassword new: String, completion: ((NSError?) -> ())? ) -> NSOperation? {
         let updateOperation = AccountUpdateOperation(
             passwordUpdate: PasswordUpdate(
                 email: VCurrentUser.user()!.email!,

@@ -20,27 +20,27 @@ class AppTimingStreamHelper: NSObject {
         self.timingTracker = timingTracker
     }
     
-    func startStreamLoadAppTimingEvents(pageType pageType:VPageType) {
+    func startStreamLoadAppTimingEvents(pageType pageType: VPageType) {
         
         if pageType == .First {
-            timingTracker.startEvent( type:VAppTimingEventTypeStreamRefresh, subtype:streamId )
+            timingTracker.startEvent( type: VAppTimingEventTypeStreamRefresh, subtype: streamId )
             
         } else {
-            timingTracker.startEvent( type:VAppTimingEventTypeStreamLoad, subtype:streamId )
+            timingTracker.startEvent( type: VAppTimingEventTypeStreamLoad, subtype: streamId )
         }
     }
     
-    func endStreamLoadAppTimingEvents(pageType pageType:VPageType) {
+    func endStreamLoadAppTimingEvents(pageType pageType: VPageType) {
         
         if pageType == .First {
-            timingTracker.endEvent( type:VAppTimingEventTypeStreamRefresh, subtype:streamId)
+            timingTracker.endEvent( type: VAppTimingEventTypeStreamRefresh, subtype: streamId)
             
             dispatch_once(&token) {
-                self.timingTracker.endEvent( type:VAppTimingEventTypeAppStart, subtype:self.streamId )
+                self.timingTracker.endEvent( type: VAppTimingEventTypeAppStart, subtype: self.streamId )
             }
             
         } else {
-            timingTracker.endEvent( type:VAppTimingEventTypeStreamLoad, subtype:streamId)
+            timingTracker.endEvent( type: VAppTimingEventTypeStreamLoad, subtype: streamId)
         }
     }
 }

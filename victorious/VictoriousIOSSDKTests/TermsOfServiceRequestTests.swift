@@ -20,7 +20,7 @@ class TermsOfServiceRequestTests: XCTestCase {
         }
         do {
             let tosRequest = TermsOfServiceRequest()
-            let htmlString = try tosRequest.parseResponse(NSURLResponse(), toRequest:tosRequest.urlRequest, responseData: mockData, responseJSON: JSON(data:mockData))
+            let htmlString = try tosRequest.parseResponse(NSURLResponse(), toRequest: tosRequest.urlRequest, responseData: mockData, responseJSON: JSON(data:mockData))
             XCTAssertEqual(htmlString, "<html>testHTML</html>")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")

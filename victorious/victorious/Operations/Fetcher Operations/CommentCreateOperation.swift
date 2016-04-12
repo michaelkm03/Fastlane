@@ -69,8 +69,8 @@ class CommentCreateOperation: FetcherOperation {
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
             parameters: [
-                VTrackingKeyTextLength : self.creationParameters.text?.characters.count ?? 0,
-                VTrackingKeyMediaType : self.creationParameters.mediaAttachment?.url.absoluteString ?? ""
+                VTrackingKeyTextLength: self.creationParameters.text?.characters.count ?? 0,
+                VTrackingKeyMediaType: self.creationParameters.mediaAttachment?.url.absoluteString ?? ""
             ]
         )
     }

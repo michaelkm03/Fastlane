@@ -9,7 +9,7 @@
 import Foundation
 
 /// A view which masks it's layer with a radial animation
-class RadialAnimatingView : UIView {
+class RadialAnimatingView: UIView {
     
     let circleAnimationKey = "animateCircle"
     private let circleLayer = CAShapeLayer()

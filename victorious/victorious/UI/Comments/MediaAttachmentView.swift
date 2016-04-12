@@ -17,12 +17,12 @@ protocol Reuse {
 
 // A class cluster used for returning a view configured to display media
 // attached to a comment or a message
-class MediaAttachmentView : UIView, VFocusable, Reuse {
+class MediaAttachmentView: UIView, VFocusable, Reuse {
     
     var comment: VComment?
     var message: VMessage?
     var dependencyManager: VDependencyManager?
-    var respondToButton:((previewImage: UIImage?) -> Void)?
+    var respondToButton: ((previewImage: UIImage?) -> Void)?
     
     // Factory method for returning correct concrete subclass with a comment
     class func mediaViewWithComment(comment: VComment) -> MediaAttachmentView? {

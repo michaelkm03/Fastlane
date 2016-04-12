@@ -9,7 +9,7 @@
 import XCTest
 
 /// Asserts that the `expression` throws a specific error
-func AssertThrowsSpecific<T: ErrorType>(@autoclosure expression: () throws -> Any, _ error: T) {
+func assertThrowsSpecific<T: ErrorType>(@autoclosure expression: () throws -> Any, _ error: T) {
     var didThrow = false
     do {
         try expression()
@@ -23,7 +23,7 @@ func AssertThrowsSpecific<T: ErrorType>(@autoclosure expression: () throws -> An
 }
 
 /// Asserts that the `expression` throws any error
-func AssertThrows(@autoclosure expression: () throws -> Any) {
+func assertThrows(@autoclosure expression: () throws -> Any) {
     var didThrow = false
     do {
         try expression()

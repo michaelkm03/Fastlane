@@ -20,7 +20,7 @@ public struct CommentEditRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/comment/edit")!
         let urlRequest = NSMutableURLRequest(URL: url)
-        let params = [ "comment_id" : String(commentID), "text" : text ]
+        let params = [ "comment_id": String(commentID), "text": text ]
         urlRequest.vsdk_addURLEncodedFormPost(params)
         return urlRequest
     }

@@ -34,7 +34,7 @@ final class UsersFollowingUserOperation: FetcherOperation, PaginatedOperation {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let followedUserPredicate = NSPredicate(format: "objectUser.remoteId == %i && subjectUser.remoteId != %i",self.userID, self.userID)
+            let followedUserPredicate = NSPredicate(format: "objectUser.remoteId == %i && subjectUser.remoteId != %i", self.userID, self.userID)
             fetchRequest.predicate = followedUserPredicate + self.paginator.paginatorPredicate
             let fetchResults: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
             self.results = fetchResults.flatMap { $0.subjectUser }

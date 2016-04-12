@@ -10,7 +10,7 @@ import Foundation
 import SDWebImage
 
 // A media attachment view used for showing image previews
-class MediaAttachmentImageView : MediaAttachmentView {
+class MediaAttachmentImageView: MediaAttachmentView {
     
     let imageView = UIImageView()
     let mediaButton = UIButton()
@@ -67,8 +67,7 @@ class MediaAttachmentImageView : MediaAttachmentView {
                 self.imageView.sd_setImageWithURL(previewURL, completed: {
                     (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
                     
-                    if (error != nil)
-                    {
+                    if (error != nil) {
                         return;
                     }
                     

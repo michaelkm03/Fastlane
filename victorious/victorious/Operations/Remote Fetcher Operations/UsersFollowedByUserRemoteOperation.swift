@@ -43,7 +43,7 @@ final class UsersFollowedByUserRemoteOperation: RemoteFetcherOperation, Paginate
                 let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
                 objectUser.populate(fromSourceModel: user)
                 
-                let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
+                let uniqueElements = [ "subjectUser": subjectUser, "objectUser": objectUser ]
                 let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
                 followedUser.objectUser = objectUser
                 followedUser.subjectUser = subjectUser

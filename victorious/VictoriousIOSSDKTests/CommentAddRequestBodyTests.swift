@@ -63,7 +63,7 @@ class CommentAddRequestBodyTests: XCTestCase {
             replyToCommentID: nil,
             mediaAttachment: MediaAttachment(
                 url: mockUserDataURL,
-                type:.Image,
+                type: .Image,
                 thumbnailURL: mockUserDataURL,
                 size: CGSize(width: 100.0, height: 100.0)
             ),

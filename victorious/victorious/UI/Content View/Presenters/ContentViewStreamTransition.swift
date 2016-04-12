@@ -9,7 +9,7 @@
 import UIKit
 
 /// A custom transition used to show `VNewContentViewController` with a "split-reveal" style animation.
-class ContentViewStreamTransition : NSObject, VAnimatedTransition {
+class ContentViewStreamTransition: NSObject, VAnimatedTransition {
     
     private let handoffController = ContentViewHandoffController()
     private var initialPreviewViewFocusType: VFocusType?

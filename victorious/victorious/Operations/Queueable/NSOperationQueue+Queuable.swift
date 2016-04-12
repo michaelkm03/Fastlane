@@ -22,7 +22,7 @@ extension NSOperationQueue {
         return operations.filter { $0.dependencies.contains(operation) }
     }
     
-    func v_addOperation( operation: NSOperation, completion: (()->())? ) {
+    func v_addOperation( operation: NSOperation, completion: (() -> ())? ) {
         operation.completionBlock = completion
         addOperation( operation )
     }
@@ -40,7 +40,7 @@ extension NSOperationQueue {
         }
     }
     
-    func v_chainOperations( operations: [NSOperation], completion:(()->())? = nil  ) {
+    func v_chainOperations( operations: [NSOperation], completion: (() -> ())? = nil  ) {
         var lastOp: NSOperation?
         for nextOp in operations {
             if let lastOp = lastOp {

@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class WebSocketControllerTests : XCTestCase, ForumEventReceiver, ForumEventSender {
+class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender {
     private var controller: WebSocketController!
     private var webSocket: StubbedWebSocket!
     
@@ -117,6 +117,7 @@ class WebSocketControllerTests : XCTestCase, ForumEventReceiver, ForumEventSende
     }
 
     // MARK: ForumEventReceiver
+    
     func receiveEvent(event: ForumEvent) {
         switch event {
         case let webSocketEvent as WebSocketEvent:

@@ -37,7 +37,7 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
             var displayOrder = self.request.paginator.displayOrderCounterStart
             var messagesLoaded = [VMessage]()
             for result in results {
-                let uniqueElements = [ "remoteId" : result.messageID ]
+                let uniqueElements = [ "remoteId": result.messageID ]
                 let newMessage: VMessage
                 if let message: VMessage = context.v_findObjects( uniqueElements ).first {
                     newMessage = message

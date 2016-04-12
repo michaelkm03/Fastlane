@@ -242,7 +242,7 @@ class RequestTypeTests: XCTestCase {
         let errorCode = 89732
         let errorMessage = "TEST ERROR"
         let mockRequestURL = NSURL(string: "http://api.example.com/api/test")!
-        let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
+        let mockJSONDictionary = [ "message": errorMessage, "error": errorCode ]
         let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
         stubRequest("GET", mockRequestURL.absoluteString).andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
         let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in
@@ -268,7 +268,7 @@ class RequestTypeTests: XCTestCase {
         let errorCode = 0
         let errorMessage = ""
         let mockRequestURL = NSURL(string: "http://api.example.com/api/test")!
-        let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
+        let mockJSONDictionary = [ "message": errorMessage, "error": errorCode ]
         let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
         stubRequest("GET", mockRequestURL.absoluteString).andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
         let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in

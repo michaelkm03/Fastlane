@@ -23,12 +23,12 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
             XCTAssertNil(operation.error)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testError() {
         let operation = FetchTemplateProductIdentifiersOperation(productsDataSource: productsDataSource)
-        let expectedError = NSError(domain:"", code: -99, userInfo:nil)
+        let expectedError = NSError(domain: "", code: -99, userInfo:nil)
         operation.purchaseManager = MockPurchaseManager(error: expectedError)
         
         let expectation = expectationWithDescription("FetchTemplateProductIdentifiersOperation")
@@ -36,7 +36,7 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
             XCTAssertEqual(operation.error, expectedError)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
+        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
 }
 

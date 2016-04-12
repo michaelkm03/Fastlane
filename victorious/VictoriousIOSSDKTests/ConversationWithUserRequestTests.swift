@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class ConversationWithUserRequestTests: XCTestCase {
 
-    func testConfiguredRequest () {
+    func testConfiguredRequest() {
         let conversationWithUserRequest = ConversationWithUserRequest(userID: 4823)
         XCTAssertEqual(conversationWithUserRequest.userID, 4823)
         XCTAssertEqual(conversationWithUserRequest.urlRequest.URL, NSURL(string: "/api/message/conversation_with_user/4823"))

@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class VSequenceActionController : NSObject {
+@objc class VSequenceActionController: NSObject {
     
     let dependencyManager: VDependencyManager
     let originViewController: UIViewController
@@ -28,8 +28,8 @@ import Foundation
     }
     
     /// Presents a VActionSheetViewController set up with options based off of the VSequence object provided.
-    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (()->())? ) {
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions, parameters: [VTrackingKeySequenceId : sequence.remoteId])
+    func showMoreWithSequence(sequence: VSequence, streamId: String?, completion: (() -> ())? ) {
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectMoreActions, parameters: [VTrackingKeySequenceId: sequence.remoteId])
         
         let actionSheetViewController = VActionSheetViewController()
         actionSheetViewController.dependencyManager = dependencyManager
@@ -67,7 +67,7 @@ import Foundation
     
     // MARK: - Share
     
-    func shareSequence(sequence: VSequence, streamID: String?, completion: (()->())? ) {
+    func shareSequence(sequence: VSequence, streamID: String?, completion: (() -> ())? ) {
         ShowShareSequenceOperation(originViewController: originViewController,
                                    dependencyManager: dependencyManager,
                                    sequence: sequence,
@@ -86,7 +86,7 @@ import Foundation
     
     /// Presents an Alert Controller to confirm flagging of a sequence. Upon confirmation, flags the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
-    func flagSequence(sequence: VSequence, completion: ((Bool)->())? ) {
+    func flagSequence(sequence: VSequence, completion: ((Bool) -> ())? ) {
         let flag = SequenceFlagOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("Report/Flag", comment: ""),
@@ -109,7 +109,7 @@ import Foundation
     /// Presents an Alert Controller to confirm blocking of a user. Upon
     /// confirmation, blocks the user and calls the completion block with a
     /// Boolean representing success/failure of the operation.
-    func blockUser(user: VUser, completion: ((Bool)->())? ) {
+    func blockUser(user: VUser, completion: ((Bool) -> ())? ) {
         
         let blockOrUnblock: FetcherOperation
         let actionTitle: String
@@ -143,7 +143,7 @@ import Foundation
     
     /// Presents an Alert Controller to confirm deletion of a sequence. Upon confirmation, deletes the
     /// sequence and calls the completion block with a Boolean representing success/failure of the operation.
-    func deleteSequence(sequence: VSequence, completion: ((Bool)->())? ) {
+    func deleteSequence(sequence: VSequence, completion: ((Bool) -> ())? ) {
         let delete = SequenceDeleteOperation(sequenceID: sequence.remoteId)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("DeleteButton", comment: ""),
@@ -162,15 +162,16 @@ import Foundation
     }
     
     // MARK: - Like
+    
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
         SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error, cancelled in
             
             self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                 VLikeButtonCoachmarkIdentifier,
-                inViewController:self.originViewController,
-                atLocation:triggeringView.convertRect(
+                inViewController: self.originViewController,
+                atLocation: triggeringView.convertRect(
                     triggeringView.bounds,
-                    toView:self.originViewController.view
+                    toView: self.originViewController.view
                 )
             )
             
@@ -317,7 +318,7 @@ import Foundation
         return shareItem
     }
     
-    private func repostActionItem(forSequence sequence: VSequence, loadingBlock: (VActionItem)->() ) -> VActionItem {
+    private func repostActionItem(forSequence sequence: VSequence, loadingBlock: (VActionItem) -> () ) -> VActionItem {
         let hasReposted = sequence.hasReposted.boolValue
         let localizedRepostRepostedText = hasReposted ? NSLocalizedString("Reposted", comment: "") : NSLocalizedString("Repost", comment: "")
         

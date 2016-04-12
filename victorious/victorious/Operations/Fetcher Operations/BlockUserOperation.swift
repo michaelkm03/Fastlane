@@ -30,7 +30,7 @@ class BlockUserOperation: FetcherOperation {
         // Delete the conversation locally
         if let conversationID = self.conversationID {
             persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-                let uniqueElements = [ "remoteId" : conversationID ]
+                let uniqueElements = [ "remoteId": conversationID ]
                 if let conversation: VConversation = context.v_findObjects(uniqueElements).first {
                     context.deleteObject(conversation)
                     context.v_saveAndBubbleToParentContext()

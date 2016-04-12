@@ -10,7 +10,7 @@ import UIKit
 
 extension VEditCommentViewController {
     
-    func editComment( comment: VComment, withText text:String ) {
+    func editComment( comment: VComment, withText text: String ) {
         CommentEditOperation(commentID: comment.remoteId.integerValue, text: text).queue()
     }
 }

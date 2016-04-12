@@ -10,6 +10,6 @@ import UIKit
 
 extension UITableViewCell {
     static var defaultSwiftReuseIdentifier: String {
-        return StringFromClass(self)
+        return stringFromClass(self)
     }
 }

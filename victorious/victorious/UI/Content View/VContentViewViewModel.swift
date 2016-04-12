@@ -38,7 +38,7 @@ extension VContentViewViewModel {
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
-                    let labelFormat = NSLocalizedString("followersCount", comment:"")
+                    let labelFormat = NSLocalizedString("followersCount", comment: "")
                     self.followersText = NSString(format: labelFormat, countString) as String
                 } else {
                     self.followersText = ""
@@ -77,7 +77,7 @@ extension VContentViewViewModel {
         CommentCreateOperation(creationParameters: creationParameters).queue()
     }
     
-    func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
+    func answerPoll( pollAnswer: VPollAnswer, completion: ((NSError?) -> ())? ) {
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
             let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.integerValue)
             operation.queue() { results, error, cancelled in
