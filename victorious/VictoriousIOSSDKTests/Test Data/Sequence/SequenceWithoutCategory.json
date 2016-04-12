@@ -165,12 +165,6 @@
             "progress": 22
         }
     },
-    "endcard": {
-        "remix": true,
-        "repost": true,
-        "share": true,
-        "permissions": 3486
-    },
     "parent_user_id": "3694",
     "parent_user": {
         "id": "3694",

@@ -135,12 +135,6 @@
     "is_paid": false,
     "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e063eaca658538013574646353759e8\/thumbnail-00001.jpg",
     "user": null,
-    "endcard": {
-        "remix": true,
-        "repost": true,
-        "share": true,
-        "permissions": 3486
-    },
     "parent_user_id": "3694",
     "parent_user": {
         "id": "3694",

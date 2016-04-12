@@ -109,12 +109,6 @@
         "canned_ad_xml": "",
         "timeout": 7000
     },
-    "endcard": {
-        "remix": true,
-        "repost": true,
-        "share": true,
-        "permissions": 3486
-    },
     "tracking": {
         "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=17690&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%"],
         "view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=17690&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%"],
