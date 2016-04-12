@@ -96,8 +96,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
         switch publishParameters.captionType {
         case .Meme:
             dict["subcategory"] = "meme"
-        case .Quote:
-            dict["subcategory"] = "secret"
         case .Normal:
             break
         }

@@ -50,8 +50,6 @@
 	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
-	<key>quote.tool</key>
-	<string>VQuoteTool</string>
 	<key>meme.tool</key>
 	<string>VMemeTool</string>
 	<key>crop.tool</key>

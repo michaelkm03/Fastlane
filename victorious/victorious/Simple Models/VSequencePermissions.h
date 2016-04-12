@@ -33,7 +33,6 @@
 @property (nonatomic, readonly) BOOL canDeleteComments;
 @property (nonatomic, readonly) BOOL canFlagSequence;
 @property (nonatomic, readonly) BOOL canMeme;
-@property (nonatomic, readonly) BOOL canQuote;
 @property (nonatomic, readonly) BOOL canAddGifComments;
 
 @end

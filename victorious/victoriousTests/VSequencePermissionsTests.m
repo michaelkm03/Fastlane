@@ -47,8 +47,7 @@
                                 VSelectorName( canEditComments ),
                                 VSelectorName( canDeleteComments ),
                                 VSelectorName( canFlagSequence ),
-                                VSelectorName( canMeme ),
-                                VSelectorName( canQuote ) ];
+                                VSelectorName( canMeme )];
     NSArray<NSNumber *> *bitmasks = @[
 //                          @(0),         //VSequencePermissionNone <- Not testing
                           @(1 << 0),    //VSequencePermissionCanDelete
@@ -61,7 +60,7 @@
                           @(1 << 7),    //VSequencePermissionCanFlagSequence
 //                          @(1 << 8),    //VSequencePermissionCanGifSequence <- Feature sunset from IOS-4145
                           @(1 << 9),    //VSequencePermissionCanMeme
-                          @(1 << 10),   //VSequencePermissionCanQuote
+//                          @(1 << 10),   //VSequencePermissionCanQuote <- Feature sunset from IOS-4468
                           @(1 << 11)    //VSequencePermissionCanAddGifComments
                           ];
     

@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, VTextTypeVerticalAlignment)
 };
 
 /**
- *   VTextTypeTool represents a type of a text tool. Such as meme, quote, etc.
+ *   VTextTypeTool represents a type of a text tool. Such as meme, quote (feature sunset in IOS-4468), etc.
  */
 @interface VTextTypeTool : NSObject <VHasManagedDependencies, VWorkspaceTool>
 

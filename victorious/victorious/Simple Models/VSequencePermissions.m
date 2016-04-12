@@ -25,7 +25,7 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     VSequencePermissionCanFlagSequence      = 1 << 7,
     //    VSequencePermissionCanGIF               = 1 << 8, // <- Feature sunset from IOS-4145
     VSequencePermissionCanMeme              = 1 << 9,
-    VSequencePermissionCanQuote             = 1 << 10,
+    //    VSequencePermissionCanQuote             = 1 << 10, // <- Feature sunset from IOS-4468
     VSequencePermissionCanAddGifComments    = 1 << 11
 };
 
@@ -105,11 +105,6 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
 - (BOOL)canMeme
 {
     return (self.value & VSequencePermissionCanMeme) != 0ul;
-}
-
-- (BOOL)canQuote
-{
-    return (self.value & VSequencePermissionCanQuote) != 0ul;
 }
 
 - (BOOL)canAddGifComments
