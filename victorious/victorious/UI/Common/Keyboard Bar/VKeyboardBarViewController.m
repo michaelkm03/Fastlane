@@ -194,7 +194,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^showCamera)(void) = ^void(void)
     {
-        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager];
         __weak typeof(self) welf = self;
         self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
         self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)

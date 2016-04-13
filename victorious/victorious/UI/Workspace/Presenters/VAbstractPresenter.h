@@ -20,7 +20,7 @@
 /**
  *  The designated initializer for VAbstractPresenter. All parameters are required.
  */
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

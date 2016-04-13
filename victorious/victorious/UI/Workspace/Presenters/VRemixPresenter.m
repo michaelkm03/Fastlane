@@ -34,18 +34,18 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
 
 @synthesize dependencyManager = _dependencyManager;
 
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSAssert(NO, @"Use initWithViewControllerToPresentOn:dependencymanager:sequenceToRemix:");
-    return [self initWithDependencymanager:dependencyManager
+    NSAssert(NO, @"Use initWithViewControllerToPresentOn:dependencyManager:sequenceToRemix:");
+    return [self initWithDependencyManager:dependencyManager
                            sequenceToRemix:nil];
 }
 
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                           sequenceToRemix:(VSequence *)sequenceToRemix
 {
     NSParameterAssert(sequenceToRemix != nil);
-    self = [super initWithDependencymanager:dependencyManager];
+    self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
         _dependencyManager = dependencyManager;

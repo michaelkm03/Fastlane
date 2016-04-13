@@ -99,7 +99,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 {
     self.parentNodeID = parentNodeID;
     self.parentSequenceID = parentSequenceID;
-    [self setupWorkspace];
     [self prepareWorkspaceWithMediaURL:mediaURL andPreviewImage:previewImage];
     [self addCloseButtonToViewController:self.workspaceViewController];
     self.viewControllers = @[self.workspaceViewController];
@@ -121,9 +120,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 {
     [super viewDidLoad];
     
-    [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
-    [self addCloseButtonToViewController:self.captureContainerViewController];
-    [self setViewControllers:@[self.captureContainerViewController]];
+    if (self.viewControllers.count == 0)
+    {
+        [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
+        [self addCloseButtonToViewController:self.captureContainerViewController];
+        [self setViewControllers:@[self.captureContainerViewController]];
+    }
     
     [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     
@@ -182,7 +184,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)setupPublishPresenter
 {
-    self.publishPresenter = [[VPublishPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.publishPresenter = [[VPublishPresenter alloc] initWithDependencyManager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
     self.publishPresenter.publishActionHandler = ^void(BOOL published)

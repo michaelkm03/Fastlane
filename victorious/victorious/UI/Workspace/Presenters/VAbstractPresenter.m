@@ -10,7 +10,7 @@
 
 @implementation VAbstractPresenter
 
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self != nil)

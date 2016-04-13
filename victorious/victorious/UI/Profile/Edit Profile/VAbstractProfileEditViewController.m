@@ -191,7 +191,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (IBAction)takePicture:(id)sender
 {
-    self.editProfilePicturePresenter = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.editProfilePicturePresenter = [[VEditProfilePicturePresenter alloc] initWithDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.editProfilePicturePresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {

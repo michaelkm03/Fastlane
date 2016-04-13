@@ -29,7 +29,7 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                         addedDependencies:(NSDictionary *)addedDependencies
 {
-    self = [self initWithDependencymanager:dependencyManager];
+    self = [self initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
         _addedDependencies = addedDependencies;

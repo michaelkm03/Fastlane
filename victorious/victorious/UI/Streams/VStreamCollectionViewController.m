@@ -426,7 +426,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
-    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencyManager:self.dependencyManager];
     self.creationFlowPresenter.showsCreationSheetFromTop = YES;
     [self.creationFlowPresenter presentOnViewController:self];
 }

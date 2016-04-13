@@ -53,7 +53,7 @@ import Foundation
     func showRemixWithSequence(sequence: VSequence) {
         assert(!sequence.isPoll(), "You cannot remix polls.")
         
-        remixPresenter = VRemixPresenter(dependencymanager: dependencyManager, sequenceToRemix: sequence)
+        remixPresenter = VRemixPresenter(dependencyManager: dependencyManager, sequenceToRemix: sequence)
         remixPresenter?.presentOnViewController(originViewController)
     }
     

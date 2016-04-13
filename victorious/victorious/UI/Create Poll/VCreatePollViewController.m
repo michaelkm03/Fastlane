@@ -334,7 +334,7 @@ static char KVOContext;
     }
     else
     {
-        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager];
     }
 
     __weak typeof(self) welf = self;

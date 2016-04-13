@@ -228,7 +228,7 @@
 
 - (void)authorizedShowCamera
 {
-    self.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithDependencyManager:self.dependencyManager];
     self.profilePicturePresetner.isRegistration = YES;
     __weak typeof(self) welf = self;
     self.profilePicturePresetner.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)

@@ -1272,7 +1272,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self.textEntryView stopEditing];
     
-    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
     VMediaAttachmentOptions attachmentOption;
     switch (attachmentType)

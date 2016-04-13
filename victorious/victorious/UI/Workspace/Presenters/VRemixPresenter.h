@@ -15,7 +15,7 @@
 /**
  *  Designate initializer for VRemixPresenter. Must pass in a valid sequenceToRemix.
  */
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                           sequenceToRemix:(VSequence *)sequenceToRemix NS_DESIGNATED_INITIALIZER;
 
 @end

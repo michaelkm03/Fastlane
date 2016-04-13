@@ -481,7 +481,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func addMediaToCommentWithAttachmentType(attachmentType: VKeyboardBarAttachmentType) {
         
-        mediaAttachmentPresenter = VMediaAttachmentPresenter(dependencymanager: dependencyManager)
+        mediaAttachmentPresenter = VMediaAttachmentPresenter(dependencyManager: dependencyManager)
         
         let mediaAttachmentOptions: VMediaAttachmentOptions = {
             switch attachmentType {

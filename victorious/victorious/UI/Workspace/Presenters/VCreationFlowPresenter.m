@@ -32,9 +32,9 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
 
 @implementation VCreationFlowPresenter
 
-- (id)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (id)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super initWithDependencymanager:dependencyManager];
+    self = [super initWithDependencyManager:dependencyManager];
     self.shouldShowPublishScreenForFlowController = YES;
     return self;
 }

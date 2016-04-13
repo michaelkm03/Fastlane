@@ -29,7 +29,7 @@
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        _creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:_dependencyManager];
+        _creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencyManager:_dependencyManager];
     }
     return self;
 }

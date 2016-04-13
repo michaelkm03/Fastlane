@@ -56,7 +56,7 @@ extension Forum {
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
-        let presenter = VCreationFlowPresenter(dependencymanager: dependencyManager)
+        let presenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
         presenter.shouldShowPublishScreenForFlowController = false
         presenter.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }

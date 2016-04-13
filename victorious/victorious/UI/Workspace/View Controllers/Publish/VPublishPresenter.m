@@ -21,9 +21,9 @@
 
 @implementation VPublishPresenter
 
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super initWithDependencymanager:dependencyManager];
+    self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
         _transitioner = [[VAlongsideTransitioner alloc] init];
