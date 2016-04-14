@@ -49,7 +49,7 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
         if template == nil {
             templateDownloadOperation.rechainAfter(loginOperation)
         } else {
-            templateDownloadOperation.after(self)
+            templateDownloadOperation.after(loginOperation)
         }
         
         loginOperation.queue()
@@ -67,7 +67,7 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
                 downloadOperation.cancel()
                 VEnvironmentManager.sharedInstance().revertToPreviousEnvironment()
                 let userInfo = [
-                    VEnvironmentDidFailToLoad : true
+                    VEnvironmentDidFailToLoad: true
                 ]
                 NSNotificationCenter.defaultCenter().postNotificationName(VSessionTimerNewSessionShouldStart,
                     object: self,
