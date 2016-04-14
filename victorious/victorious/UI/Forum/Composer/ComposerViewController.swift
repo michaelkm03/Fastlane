@@ -22,18 +22,20 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// Referenced so that it can be set toggled between 0 and it's default
     /// height when shouldShowAttachmentContainer is true
-    @IBOutlet private var attachmentContainerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet private var textView: VPlaceholderTextView!
-    @IBOutlet private var singleLineLabel: UILabel!
+    @IBOutlet weak private var textView: VPlaceholderTextView!
+    @IBOutlet weak private var singleLineLabel: UILabel!
     
-    @IBOutlet private var attachmentTabBar: ComposerAttachmentTabBar!
+    @IBOutlet weak private var attachmentTabBar: ComposerAttachmentTabBar!
     
-    @IBOutlet private var attachmentContainerView: UIView!
-    @IBOutlet private var interactiveContainerView: UIView!
-    @IBOutlet private var confirmButton: UIButton!
+    @IBOutlet weak private var attachmentContainerView: UIView!
+    @IBOutlet weak private var interactiveContainerView: UIView!
+    @IBOutlet weak private var confirmButton: UIButton!
+    
+    private var selectedMedia: MediaAttachment?
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -265,6 +267,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
         attachmentTabBar.tabItemTintColor = dependencyManager.tabItemTintColor
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
+        dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return interactiveContainerView
     }
     
     // MARK: - ComposerAttachmentTabBarDelegate
@@ -283,7 +292,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBAction func pressedConfirmButton() {
         // Call appropriate delegate methods based on caption / media in composer
-        delegate?.composer(self, didConfirmWithMedia: nil, caption: textView.text)
+        if let media = selectedMedia {
+            delegate?.composer(self, didConfirmWithMedia: media, caption: textView.text)
+        } else {
+            delegate?.composer(self, didConfirmWithCaption: textView.text)
+        }
         composerTextViewManager?.resetTextView(textView)
     }
     
@@ -301,7 +314,7 @@ private extension VDependencyManager {
     }
     
     var inputPromptText: String {
-        return stringForKey("inputPromptText")
+        return stringForKey("inputTextPrompt")
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {

@@ -176,11 +176,11 @@ private extension VDependencyManager {
     }
     
     var navigationItemColor: UIColor {
-        return colorForKey("color.navigationItem")
+        return colorForKey("barTintColor")
     }
     
     var navigationBarBackgroundColor: UIColor? {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background.topBar") as? VSolidColorBackground
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "navBarBackground") as? VSolidColorBackground
         return background?.backgroundColor
     }
     

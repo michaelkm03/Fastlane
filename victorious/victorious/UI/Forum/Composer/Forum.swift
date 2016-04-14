@@ -61,7 +61,13 @@ extension Forum {
         presenter.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }
     
-    func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment?, caption: String?) {
+    func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment, caption: String?) {
+        if let event = ChatMessageOutbound(text: caption, contentUrl: media.url) {
+            sendEvent(event)
+        }
+    }
+    
+    func composer(composer: Composer, didConfirmWithCaption caption: String) {
         if let event = ChatMessageOutbound(text: caption) {
             sendEvent(event)
         }
