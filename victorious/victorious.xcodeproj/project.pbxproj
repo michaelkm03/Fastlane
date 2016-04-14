@@ -1644,6 +1644,7 @@
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
+		BFBDFB3E1CBEB9CA00BE077A /* StartLoadingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */; };
 		BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */; };
 		BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
@@ -4288,6 +4289,7 @@
 		BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
+		BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartLoadingOperation.swift; sourceTree = "<group>"; };
 		BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerOperationTests.swift; sourceTree = "<group>"; };
 		BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceActionController.swift; sourceTree = "<group>"; };
 		BFDC0B021C7F9CA400E5421B /* VSequenceActionControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceActionControllerDelegate.h; sourceTree = "<group>"; };
@@ -7713,6 +7715,7 @@
 				A72C85AC1C977FF500E97D4F /* FTUEVideoOperation.swift */,
 				A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */,
 				67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */,
+				BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */,
 				BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */,
 			);
 			path = "Launch Operations";
@@ -12104,6 +12107,7 @@
 				A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */,
 				62168C511C7076DF008E34AA /* AdVideoPlayerViewController.swift in Sources */,
 				C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */,
+				BFBDFB3E1CBEB9CA00BE077A /* StartLoadingOperation.swift in Sources */,
 				7AE3EA331CAEF42E00272A6A /* VNewProfileHeaderView.swift in Sources */,
 				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
