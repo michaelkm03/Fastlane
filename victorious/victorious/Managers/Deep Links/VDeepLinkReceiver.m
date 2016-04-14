@@ -210,7 +210,7 @@
                 return supporter;
             }
         }
-        // Then check for conformation to VDeeplinkSupporter at top level, which may be nay object
+        // Then check for conformation to VDeeplinkSupporter at top level, which may be any object
         // including a VMultipleContainerViewController who supports deepLinks but whose children do not
         if ( [object conformsToProtocol:@protocol(VDeeplinkSupporter)] )
         {

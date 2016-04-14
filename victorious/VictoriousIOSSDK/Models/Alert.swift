@@ -13,6 +13,7 @@ public enum AlertType : String {
     case LevelUp = "levelUp"
     case Achievement = "achievement"
     case StatusUpdate = "statusUpdate"
+    case Toast = "toast"
     
     /// Alerts created on client side
     case ClientSideCreated = "clientSideCreated"
@@ -26,10 +27,10 @@ public struct Alert {
     
     public struct Parameters {
         public let backgroundVideoURL: NSURL?
-        public let description: String
+        public let description: String?
         public let title: String
         public let userFanLoyalty: FanLoyalty?
-        public let icons: [NSURL]
+        public let icons: [NSURL]?
     }
     public let alertID: Int
     public let alertType: AlertType
@@ -52,25 +53,28 @@ extension Alert {
         self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
     }
     
-    public init(title: String, description: String, iconURL: NSURL? = nil) {
+    /// Initialize an alert only with display information. This is provided for initializing alerts on the client side.
+    /// - parameter title: Title of the alert. Required.
+    /// - parameter description: Description of the alert. Optional
+    /// - parameter iconURLs: An array of icons for the alert
+    public init(title: String, description: String?, iconURLs: [NSURL]? = nil) {
         self.alertID = Int(NSDate().timeIntervalSince1970)
         self.alertType = .ClientSideCreated
-        self.parameters = Alert.Parameters(backgroundVideoURL: nil, description: description, title: title, userFanLoyalty: nil, icons: [])
+        self.parameters = Alert.Parameters(backgroundVideoURL: nil, description: description, title: title, userFanLoyalty: nil, icons: iconURLs)
         self.dateAcknowledged = nil
     }
 }
 
 extension Alert.Parameters {
     public init?(json: JSON) {
-        guard let description = json["description"].string,
-            let title = json["title"].string,
+        guard let title = json["title"].string,
             let userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"] ) else {
                 return nil
         }
-        self.userFanLoyalty = userFanLoyalty
-        self.description    = description
         self.title          = title
+        self.userFanLoyalty = userFanLoyalty
         
+        description         = json["description"].string
         icons               = json["icons"].arrayValue.map { $0.stringValue }.flatMap { NSURL(string: $0) }
         
         if let urlString = json["backgroundVideo"].string where !urlString.characters.isEmpty {

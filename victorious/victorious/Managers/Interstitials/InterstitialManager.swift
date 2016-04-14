@@ -37,7 +37,10 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     /// Presents modally any available interstitials on the provided presenting view controller
     func showNextInterstitial( onViewController presentingViewController: UIViewController) -> Bool {
         if !registeredAlerts.isEmpty {
-            showInterstitial( alert: registeredAlerts.removeAtIndex(0), presentingViewController: presentingViewController)
+            let alertToShow = registeredAlerts.removeFirst()
+            
+            showInterstitial(with: alertToShow, onto: presentingViewController)
+            
             return true
         }
         return false
@@ -48,7 +51,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         registeredAlerts.removeAll()
     }
     
-    private func showInterstitial( alert alert: Alert, presentingViewController: UIViewController) {
+    private func showInterstitial(with alert: Alert, onto presentingViewController: UIViewController) {
         guard !isShowingInterstital,
             let interstitial = dependencyManager?.interstitialViewController(alert: alert) else {
                 return
@@ -61,14 +64,34 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             return
         }
         
+        switch alert.alertType {
+            
+        case .Toast:
+            addInterstitialAsSubview(viewController)
+            
+        case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
+            viewController.transitioningDelegate = self
+            viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
+            presentingViewController.presentViewController(viewController, animated: true, completion: nil)
+        }
         
-        viewController.transitioningDelegate = self
-        viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-        presentingViewController.presentViewController(viewController, animated: true, completion: nil)
-        
+        acknowledgeAlert(alert)
+    }
+    
+    private func acknowledgeAlert(alert: Alert) {
         AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         shownAlerts.append( alert )
         isShowingInterstital = true
+    }
+    
+    private func addInterstitialAsSubview(viewController: UIViewController) {
+        guard let currentPresentedViewController = VRootViewController.sharedRootViewController()?.currentViewController else {
+            return
+        }
+        currentPresentedViewController.view.addSubview(viewController.view)
+        currentPresentedViewController.willMoveToParentViewController(currentPresentedViewController)
+        currentPresentedViewController.addChildViewController(viewController)
+        viewController.didMoveToParentViewController(currentPresentedViewController)
     }
     
     // MARK: - AlertReceiver
@@ -88,7 +111,12 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     /// MARK: Interstitial
     
     func dismissInterstitial(interstitialViewController: UIViewController) {
-        interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
+        if interstitialViewController.presentingViewController != nil {
+            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
+        } else if interstitialViewController.parentViewController != nil {
+            interstitialViewController.view.removeFromSuperview()
+        }
+        
         presentedInterstitial = nil
         self.isShowingInterstital = false
     }

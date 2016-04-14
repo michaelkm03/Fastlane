@@ -200,5 +200,7 @@
 	<string>TemplateNetworkSource</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
+	<key>toast.interstitial</key>
+	<string>victorious.InterstitialToastViewController</string>
 </dict>
 </plist>

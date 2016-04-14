@@ -63,4 +63,23 @@ extension InterstitialManager {
             }
         #endif
     }
+    
+    func debug_registerTestToastAlert() {
+        #if V_SHOW_TEST_ALERT_SETTINGS
+            self.disabled = true
+            let params = ["type": "toast",
+                          "params": [
+                            "user": ["fanloyalty": ["level": 5, "tier": "Gold", "name": "Level 5", "progress": 70]],
+                            "title": "You are a photographer! Keep posting cool photos to share with the community!",
+//                            "description" : "You have earned a new photographer badge",
+//                            "icons" : ["http://i.imgur.com/ietHgk6.png"]
+                ]]
+            if let addtionalParameters = params["params"] as? [String : AnyObject],
+                let type = params["type"] as? String {
+                AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
+                    self.disabled = false
+                }
+            }
+        #endif
+    }
 }

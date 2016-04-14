@@ -11,8 +11,11 @@ import Foundation
 
 class TestAlertsViewController: UITableViewController {
     
-    private enum Indexes: Int {
-        case LevelUp = 0, Achievement = 1, StatusUpdate = 2
+    private enum TestAlertIndex: Int {
+        case levelUp = 0
+        case achievement = 1
+        case statusUpdate = 2
+        case toast = 3
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -24,12 +27,20 @@ class TestAlertsViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if indexPath.row == Indexes.LevelUp.rawValue {
+        guard let index = TestAlertIndex(rawValue: indexPath.row) else {
+            assertionFailure("Unknown type of test alert registered")
+            return
+        }
+        
+        switch index {
+        case .levelUp:
             InterstitialManager.sharedInstance.debug_registerTestLevelUpAlert()
-        } else if indexPath.row == Indexes.Achievement.rawValue {
+        case .achievement:
             InterstitialManager.sharedInstance.debug_registerTestAchievementAlert()
-        } else if indexPath.row == Indexes.StatusUpdate.rawValue {
+        case .statusUpdate:
             InterstitialManager.sharedInstance.debug_registerTestStatusUpdateAlert()
+        case .toast:
+            InterstitialManager.sharedInstance.debug_registerTestToastAlert()
         }
     }
     

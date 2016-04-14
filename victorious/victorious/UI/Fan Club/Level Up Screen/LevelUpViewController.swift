@@ -76,11 +76,11 @@ class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegat
     
     weak var interstitialDelegate: InterstitialDelegate?
     
-    func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
+    func presentationAnimator() -> UIViewControllerAnimatedTransitioning? {
         return LevelUpAnimator()
     }
     
-    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
+    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning? {
         let levelUpAnimator = LevelUpAnimator()
         levelUpAnimator.isDismissal = true
         return levelUpAnimator
@@ -102,7 +102,6 @@ class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegat
                 let fanLoyalty = alert.parameters.userFanLoyalty else {
                     return
             }
-            
             badgeView?.levelNumberString = String(fanLoyalty.level)
             titleLabel.text = alert.parameters.title
             descriptionLabel.text = alert.parameters.description

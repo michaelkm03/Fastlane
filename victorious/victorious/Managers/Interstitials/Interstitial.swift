@@ -25,10 +25,10 @@ protocol Interstitial: class {
     weak var interstitialDelegate: InterstitialDelegate? { get set }
     
     /// Returns an animator object for animating the presentation of the interstitial view controller
-    func presentationAnimator() -> UIViewControllerAnimatedTransitioning
+    func presentationAnimator() -> UIViewControllerAnimatedTransitioning?
     
     /// Returns an animator object for animating the dismissal of the interstitial view controller
-    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning
+    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning?
     
     /// Returns a presentation controller for animating the presentation and dismissal of the view controller
     func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController

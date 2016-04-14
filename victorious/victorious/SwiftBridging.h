@@ -87,6 +87,7 @@
 #import "VCreateSheetViewController.h"
 #import "VCreationFlowPresenter.h"
 #import "VDataCache.h"
+#import "VDeepLinkHandler.h"
 #import "VDeepLinkReceiver.h"
 #import "VDefaultProfileButton.h"
 #import "VDefaultProfileImageView.h"

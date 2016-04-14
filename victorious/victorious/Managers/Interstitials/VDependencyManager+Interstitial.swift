@@ -27,6 +27,12 @@ extension VDependencyManager {
                 imageAlertVC.alert = alert
                 return imageAlertVC
             }
+        case .Toast:
+            let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "toastScreen")
+            if let toastViewController = templateValue as? InterstitialToastViewController {
+                toastViewController.alert = alert
+                return toastViewController
+            }
         }
         return nil
     }

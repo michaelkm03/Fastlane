@@ -35,10 +35,17 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         return imageAlertViewController
     }
     
-    private func configure(withTitle title: String, detailedDescription detail: String, iconImageURL iconURL: NSURL? = nil) {
+    private func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: NSURL?) {
         titleLabel.text = title
-        detailLabel.text = detail
-
+        
+        if let detail = detail {
+            detailLabel.hidden = false
+            detailLabel.text = detail
+        } else {
+            detailLabel.hidden = true
+            detailLabel.text = nil
+        }
+        
         if let iconURL = iconURL {
             iconImageView?.hidden = false
             iconImageView?.sd_setImageWithURL(iconURL)
@@ -48,12 +55,12 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
     }
     
     // MARK: - Interstitial Protocol
-            
-    func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
+    
+    func presentationAnimator() -> UIViewControllerAnimatedTransitioning? {
         return InterstitialAlertAnimator(isDismissing: false)
     }
     
-    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
+    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning? {
         return InterstitialAlertAnimator(isDismissing: true)
     }
     
@@ -77,7 +84,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         super.viewDidLoad()
         styleComponents()
         if let alert = alert {
-            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons.first)
+            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons?.first)
         }
     }
     
@@ -106,35 +113,37 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.colorWithAlphaComponent(0.5), forState: .Highlighted)
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
         confirmButton.setTitle(dependencyManager.confirmButtonTitle, forState: .Normal)
+        
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
 }
 
 private extension VDependencyManager {
     var confirmButtonBackgroundColor: UIColor? {
-        return self.colorForKey(VDependencyManagerLinkColorKey)
+        return colorForKey(VDependencyManagerLinkColorKey)
     }
     
     var confirmButtonTitleFont: UIFont? {
-        return self.fontForKey(VDependencyManagerHeading4FontKey)
+        return fontForKey(VDependencyManagerHeading4FontKey)
     }
     
     var confirmButtonTitleColor: UIColor? {
-        return self.colorForKey(VDependencyManagerContentTextColorKey)
+        return colorForKey(VDependencyManagerContentTextColorKey)
     }
     
     var titleFont: UIFont? {
-        return self.fontForKey(VDependencyManagerHeading3FontKey)
+        return fontForKey(VDependencyManagerHeading3FontKey)
     }
     
     var detailLabelFont: UIFont? {
-        return self.fontForKey(VDependencyManagerParagraphFontKey)
+        return fontForKey(VDependencyManagerParagraphFontKey)
     }
     
     var textColor: UIColor? {
-        return self.colorForKey(VDependencyManagerMainTextColorKey)
+        return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
-    var confirmButtonTitle: String {
-        return self.stringForKey("button.title") ?? NSLocalizedString("Dismiss Alert", comment: "")
+    var confirmButtonTitle: String? {
+        return stringForKey("button.title")
     }
 }

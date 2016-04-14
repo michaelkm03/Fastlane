@@ -817,7 +817,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    if (url == TrophyCaseDeepLinkHandler.deeplinkURL )
+    {
+        return [[TrophyCaseDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    else if ([url.absoluteString containsString:@"profile"])
+    {
+        return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 #pragma mark - VTabMenuContainedViewControllerNavigation

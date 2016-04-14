@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VAuthorizationContext.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VNavigationDestination, VDeeplinkHandler;
 
 /**
@@ -33,7 +35,7 @@
  @param viewController The view controller to display. Usually you should pass "self", but not always.
  If nil, navigation is cancelled and an error is displayed to the user.
  */
-typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewController *destinationViewController );
+typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewController *_Nullable destinationViewController );
 
 /**
  Objects conforming to this protocol are able to provide a view controller for
@@ -53,7 +55,7 @@ typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewContro
  @return YES if the receiver (or an alternate) can handle the given URL. NO if you should ask someone else. If NO is
          returned, the completion block MUST NOT be called.
  */
-- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion;
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(nullable VDeeplinkHandlerCompletionBlock)completion;
 
 /**
  Checks the URL for requisite structure and data.
@@ -77,3 +79,5 @@ typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewContro
 @property (nonatomic, assign, readonly) VAuthorizationContext authorizationContext;
 
 @end
+
+NS_ASSUME_NONNULL_END
