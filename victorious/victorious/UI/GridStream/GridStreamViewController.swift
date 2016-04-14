@@ -8,10 +8,13 @@
 
 import UIKit
 
+struct CollectionViewConfiguration {
+    var sectionInset: UIEdgeInsets = UIEdgeInsetsZero
+    var interItemSpacing: CGFloat = 3
+    var cellsPerRow: Int = 3
+}
+
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, ConfigurableGridStreamCollectionView, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
-    
-    private let defaultCellSpacing: CGFloat = 10.0
-    
     // MARK: Variables
     
     private let dependencyManager: VDependencyManager
@@ -22,6 +25,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private let dataSource: GridStreamDataSource<HeaderType>
     private let delegate: GridStreamDelegateFlowLayout<HeaderType>
     private let scrollPaginator = VScrollPaginator()
+    private let configuration: CollectionViewConfiguration
     
     // MARK: - Initializing
     
@@ -36,16 +40,20 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             content: content)
     }
     
+    // TODO: Set background from dependency manager
     private init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
-                 content: HeaderType.ContentType) {
+                 content: HeaderType.ContentType,
+                 configuration: CollectionViewConfiguration? = nil) {
         
         self.dependencyManager = dependencyManager
+        self.configuration = configuration ?? CollectionViewConfiguration()
         
         delegate = GridStreamDelegateFlowLayout<HeaderType>(
             dependencyManager: dependencyManager,
             header: header,
-            content: content)
+            content: content,
+            configuration: self.configuration)
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
@@ -57,14 +65,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         delegate.configurableViewController = self
         
         self.dependencyManager.addBackgroundToBackgroundHost(self)
-        collectionView.backgroundColor = UIColor.clearColor()
         
         dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
         
         collectionView.delegate = delegate
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = nil
+        collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
         
         collectionView.registerNib(
@@ -85,20 +92,16 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         view.v_addFitToParentConstraintsToSubview(collectionView)
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let spacing = defaultCellSpacing // TODO: Configurable
-            flowLayout.minimumInteritemSpacing = spacing
-            flowLayout.sectionInset = UIEdgeInsets(
-                top: 0.0,
-                left: spacing,
-                bottom: spacing,
-                right: spacing)
+            flowLayout.minimumInteritemSpacing = self.configuration.interItemSpacing
+            flowLayout.sectionInset = self.configuration.sectionInset
+            flowLayout.minimumLineSpacing = self.configuration.interItemSpacing
         }
         
         refreshControl.tintColor = dependencyManager.refreshControlColor
         refreshControl.addTarget(
-            self,
-            action: #selector(GridStreamViewController.refresh),
-            forControlEvents: .ValueChanged)
+        self,
+        action: #selector(GridStreamViewController.refresh),
+        forControlEvents: .ValueChanged)
         collectionView.insertSubview(refreshControl, atIndex: 0)
         
         dataSource.loadStreamItems(.First)
@@ -132,13 +135,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
                              didUpdateVisibleItemsFrom oldValue: NSOrderedSet,
-                             to newValue: NSOrderedSet) {
+                                                       to newValue: NSOrderedSet) {
         collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
                              didChangeStateFrom oldState: VDataSourceState,
-                             to newState: VDataSourceState) {
+                                                to newState: VDataSourceState) {
         if oldState == .Loading {
             refreshControl.endRefreshing()
         }
@@ -162,7 +165,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
-        return view
+        return UIView()
     }
     
     // MARK: - ConfigurableHeaderCollectionView

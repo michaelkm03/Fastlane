@@ -91,16 +91,17 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
         return headerView
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return cellFactory.collectionView(collectionView,
-                                          cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem,
-                                          atIndexPath: indexPath)
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath)
+        cell.layer.cornerRadius = 10
+        cell.backgroundColor = .clearColor()
+        cell.contentView.backgroundColor = .clearColor()
+        return cell
     }
 }
 
 private extension VDependencyManager {
     func streamAPIPath() -> String? {
-        return ""
+        return "http://dev.getvictorious.com/api/sequence/detail_list_by_user/6086/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
     }
 }

@@ -1,9 +1,9 @@
 //
 //  HeaderContentStreamDelegateFlowLayout.swift
-//
+//  victorious
 //
 //  Created by Vincent Ho on 4/22/16.
-//
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import UIKit
@@ -17,18 +17,19 @@ class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NS
     private var content: HeaderType.ContentType
     private var dependencyManager: VDependencyManager
     private var header: HeaderType?
-    
-    private let defaultCellsPerRow = 3
+    private var configuration: CollectionViewConfiguration
     
     var configurableViewController: ConfigurableGridStreamCollectionView?
     
     init(dependencyManager: VDependencyManager,
          header: HeaderType? = nil,
-         content: HeaderType.ContentType) {
+         content: HeaderType.ContentType,
+         configuration: CollectionViewConfiguration) {
         
         self.dependencyManager = dependencyManager
         self.content = content
         self.header = header
+        self.configuration = configuration
         super.init()
     }
     
@@ -56,7 +57,7 @@ class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NS
         
         return flowLayout.v_cellSize(
             fittingWidth: collectionView.bounds.width,
-            cellsPerRow: defaultCellsPerRow // TODO: Configurable
+            cellsPerRow: configuration.cellsPerRow
         )
     }
     

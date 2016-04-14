@@ -15,7 +15,7 @@ extension UICollectionViewFlowLayout {
     func v_cellSize(fittingWidth containerWidth: CGFloat, cellsPerRow: Int) -> CGSize {
         let outerSpacing = sectionInset.left + sectionInset.right
         let innerSpacing = minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
-        let length       = (containerWidth - outerSpacing - innerSpacing) / CGFloat(cellsPerRow)
+        let length       = floor((containerWidth - outerSpacing - innerSpacing) / CGFloat(cellsPerRow))
         return CGSize(width: length, height: length)
     }
     
