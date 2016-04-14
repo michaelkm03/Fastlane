@@ -318,7 +318,7 @@ private extension VDependencyManager {
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
-        let menuItemKey = owner ? "ownerItems" : VDependencyManagerMenuItemsKey
+        let menuItemKey = owner ? "ownerItems" : "userItems"
         return menuItemsForKey(menuItemKey)
     }
     
