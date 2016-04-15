@@ -8,6 +8,10 @@
 
 import Foundation
 
+public protocol ForumEvent {
+    var timestamp: NSDate { get }
+}
+
 public protocol ForumEventReceiver {
     var childEventReceivers: [ForumEventReceiver] { get }
     func receiveEvent(event: ForumEvent)

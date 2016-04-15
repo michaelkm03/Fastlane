@@ -8,11 +8,11 @@
 
 import Foundation
 
-private struct WebSocketEventKeys {
-    static let rootKey = "to_client"
-    static let chatKey = "chat"
-    static let refreshStageKey = "refresh"
-    static let epochTimeKey = "epoch_time"
+private struct Keys {
+    static let root             = "to_client"
+    static let chat             = "chat"
+    static let refreshStage     = "refresh"
+    static let epochTime        = "epoch_time"
 }
 
 protocol WebSocketEventDecoder {
@@ -24,15 +24,15 @@ extension WebSocketEventDecoder {
     func decodeEventsFromJson(json: JSON) -> [ForumEvent] {
         var messages: [ForumEvent] = []
         
-        if let epochTime = json[WebSocketEventKeys.rootKey][WebSocketEventKeys.epochTimeKey].double where json[WebSocketEventKeys.rootKey].isExists() {
+        if let epochTime = json[Keys.root][Keys.epochTime].double where json[Keys.root].isExists() {
             let timestamp = NSDate(timeIntervalSince1970: epochTime)
             
-            let chatJson = json[WebSocketEventKeys.rootKey][WebSocketEventKeys.chatKey]
-            if let chatMessage = ChatMessageInbound(json: chatJson, timestamp: timestamp) {
+            let chatJson = json[Keys.root][Keys.chat]
+            if let chatMessage = ChatMessage(json: chatJson, timestamp: timestamp) {
                 messages.append(chatMessage)
             }
             
-            let refreshJson = json[WebSocketEventKeys.rootKey][WebSocketEventKeys.refreshStageKey]
+            let refreshJson = json[Keys.root][Keys.refreshStage]
             if let refresh = RefreshStage(json: refreshJson, timestamp: timestamp) {
                 messages.append(refresh)
             }

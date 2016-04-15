@@ -23,5 +23,5 @@ protocol ChatFeedDelegate: class {
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia)
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: MediaAttachment)
 }

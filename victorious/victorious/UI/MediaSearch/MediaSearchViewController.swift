@@ -10,16 +10,20 @@ import MBProgressHUD
 import UIKit
 
 /// Delegate that handles events that originate from within a `MediaSearchViewController`
-@objc protocol MediaSearchViewControllerDelegate {
+@objc protocol MediaSearchDelegate {
     
     /// The user selected a search result and wants to proceed with it in a creation flow.
     func mediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult )
+    
+    /// The user did not select a search result and wants to exit this view
+    optional func mediaSearchDidCancel()
 }
 
 class MediaSearchOptions: NSObject {
     var showPreview: Bool = false
     var showAttribution: Bool = false
     var clearSelectionOnAppearance: Bool = false
+    var shouldSkipExportRendering: Bool = false
     
     static var defaultOptions: MediaSearchOptions {
         return MediaSearchOptions()
@@ -47,7 +51,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 	let dataSourceAdapter = MediaSearchDataSourceAdapter()
     private var mediaExporter: MediaSearchExporter?
     
-	weak var delegate: MediaSearchViewControllerDelegate?
+	weak var delegate: MediaSearchDelegate?
 	
 	class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
         
@@ -92,13 +96,29 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
-            action: #selector(exportSelectedItem(_: ))
+            action: #selector(continueWithSelectedItem(_:))
         )
 		
 		// Load with no search term for default results (determined by data sources)
 		self.performSearch(searchTerm: nil)
 		
         self.updateNavigationItemState()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Cancel", comment: ""),
+            style: .Plain,
+            target: self,
+            action: #selector(cancel)
+        )
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ]
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -107,22 +127,42 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         if self.options.clearSelectionOnAppearance {
             collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
         }
+        
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     func cancel() {
         progressHUD?.hide(true)
         self.mediaExporter?.cancelDownload()
+        delegate?.mediaSearchDidCancel?()
     }
     
     //MARK: - API
     
-    func exportSelectedItem( sender: AnyObject? ) {
+    func continueWithSelectedItem(sender: AnyObject?) {
         guard let indexPath = self.selectedIndexPath else {
 			return
 		}
 		
 		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
         
+        if options.shouldSkipExportRendering {
+            if let thumbnailImageURL = mediaSearchResultObject.thumbnailImageURL {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { [weak self] in
+                    if let previewImageData = try? NSData(contentsOfURL: thumbnailImageURL, options: []) {
+                        mediaSearchResultObject.exportPreviewImage = UIImage(data: previewImageData)
+                    }
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self?.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
+                    }
+                }
+            }
+        } else {
+            exportMedia(fromSearchResult: mediaSearchResultObject)
+        }
+    }
+    
+    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult) {
         guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
             return
         }

@@ -23,7 +23,7 @@ NSString * const VGIFCreationFlowControllerKey = @"gifCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController () <MediaSearchViewControllerDelegate, VVideoCameraViewControllerDelegate>
+@interface VGIFCreationFlowController () <MediaSearchDelegate, VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
@@ -130,7 +130,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     [self pushViewController:videoCamera animated:YES];
 }
 
-#pragma mark - MediaSearchViewControllerDelegate
+#pragma mark - MediaSearchDelegate
 
 - (void)mediaSearchResultSelected:(id<MediaSearchResult>)result
 {

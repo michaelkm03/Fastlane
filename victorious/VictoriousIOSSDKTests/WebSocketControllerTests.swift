@@ -27,15 +27,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     override func setUp() {
         super.setUp()
 
-        let testConfig = WebSocketConfiguration.init(endPoint: "ws://this.url.is.fake", port: 666, serviceVersion: "v1", forceDisconnectTimeout: 10, appId: "1")!
         webSocket = StubbedWebSocket()
-        let testToken = "tok3n"
-        controller = WebSocketController(webSocketConfiguration: testConfig, webSocket: webSocket, token: testToken)
+        controller = WebSocketController(webSocket: webSocket)
         webSocket.delegate = controller
-
-        // A event loop is created so we get messages passed from the controller.
-        nextSender = controller
-        controller.addChildReceiver(self)
     }
     
     override func tearDown() {
@@ -54,38 +48,56 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     }
     
     func testWebSocketConnectEvent() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+        
         XCTAssertFalse(controller.isConnected, "Expected controller to NOT be connected after initialization.")
         
         expectationConnectEvent = expectationWithDescription("WebSocket-connect-event")
-        controller.connect()
+        controller.setUp()
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testWebSocketDisconnectEvents() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+        
         webSocket.connect()
         XCTAssertTrue(controller.isConnected, "Expected controller to be connected in order to test out the disconnect event.")
 
         expectationDisconnectedEvent = expectationWithDescription("WebSocket-disconnect-event")
-        controller.disconnect()
+        controller.tearDown()
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testWebSocketInboundChatMessage() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+        
         guard let mockChatMessageURL = NSBundle(forClass: self.dynamicType).URLForResource("InboundWebsocketEvent", withExtension: "json"),
             let mockChatMessageString = try? String(contentsOfURL: mockChatMessageURL, encoding: NSUTF8StringEncoding) else {
                 XCTFail("Error reading mock JSON data for InboundChatMessage.")
                 return
         }
-
         expectationIncomingChatMessage = expectationWithDescription("WebSocket-incoming-chat-message")
         controller.websocketDidReceiveMessage(webSocket, text: mockChatMessageString)
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testWebSocketOutboundChatMessage() {
-        let chatMessageOutbound = ChatMessageOutbound(timestamp: NSDate(), text: "Test chat message", contentUrl: nil, giphyID: nil)!
-        let toServerPackage = JSON(["to_server": chatMessageOutbound.toJSON()])
-        webSocket.chatMessageOutboundString = toServerPackage.rawString()
+        nextSender = controller
+        
+        let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
+        let chatMessageOutbound = ChatMessage(timestamp: NSDate(), fromUser: user, text: "Test chat message")!
+        
+        let dictionaryConvertible = chatMessageOutbound as! DictionaryConvertible
+        let toServerDictionary = [
+            "to_server": [
+                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
+            ]
+        ]
+        
+        webSocket.chatMessageOutboundString = JSON(toServerDictionary).rawString()
         webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
         webSocket.connect()
         
@@ -94,9 +106,16 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     }
 
     func testWebSocketBlockUserMessage() {
+        nextSender = controller
+        
         let blockUser = BlockUser(timestamp: NSDate(), userID: "1337")
-        let toServerPackage = JSON(["to_server": blockUser.toJSON()])
-        webSocket.blockUserString = toServerPackage.rawString()
+        let dictionaryConvertible = blockUser as! DictionaryConvertible
+        let toServerDictionary = [
+            "to_server": [
+                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
+            ]
+        ]
+        webSocket.blockUserString = JSON(toServerDictionary).rawString()
         webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
         webSocket.connect()
 
@@ -105,6 +124,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     }
 
     func testWebSocketRefreshStage() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+        
         guard let mockStageMessageURL = NSBundle(forClass: self.dynamicType).URLForResource("RefreshStage", withExtension: "json"),
             let mockStageMessageString = try? String(contentsOfURL: mockStageMessageURL, encoding: NSUTF8StringEncoding) else {
                 XCTFail("Error reading mock JSON data for RefreshStage.")
@@ -117,7 +139,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     }
 
     // MARK: ForumEventReceiver
-    
+
     func receiveEvent(event: ForumEvent) {
         switch event {
         case let webSocketEvent as WebSocketEvent:
@@ -145,7 +167,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
             }
-        case is ChatMessageInbound:
+        case is ChatMessage:
             expectationIncomingChatMessage?.fulfill()
         case is RefreshStage:
             expectationRefreshStageMessage?.fulfill()
@@ -158,7 +180,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
 private class StubbedWebSocket: WebSocket {
     // Testing values to be compared to what gets passed into the `writeString:` function.
     var chatMessageOutboundString: String?
-    var blockUserString: String?
+    var blockUserString: String!
     var expectationOutboundChatMessage: XCTestExpectation?
     var expectationBlockUserMessage: XCTestExpectation?
     
@@ -176,7 +198,7 @@ private class StubbedWebSocket: WebSocket {
         _isConnected = false
         delegate?.websocketDidDisconnect(self, error: nil)
     }
-
+    
     override func writeString(str: String, completion: (() -> ())? = nil) {
         if let chatMessageOutboundString = chatMessageOutboundString where chatMessageOutboundString == str {
             expectationOutboundChatMessage?.fulfill()

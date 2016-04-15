@@ -24,12 +24,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     var chatFeed: ChatFeed? { get }
     
     /// The abstract network layer used for feeding the Forum events and for sending events out.
-    var networkSource: TemplateNetworkSource? { get }
-    
-    /**
-        Prepare the network source and opens the connection.
-     */
-    func connectToNetworkSource()
+    var networkSource: NetworkSource? { get }
     
     // MARK: - Behaviors
 
@@ -49,57 +44,60 @@ extension Forum {
             userId: userID).queue()
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: ForumMedia) {
-        
+    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: MediaAttachment) {
+        // FUTURE: Show closeup/lightbox
     }
     
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
-        let presenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
-        presenter.shouldShowPublishScreenForFlowController = false
-        presenter.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
-    }
-    
-    func composer(composer: Composer, didConfirmWithMedia media: MediaAttachment, caption: String?) {
-        if let event = ChatMessageOutbound(text: caption, contentUrl: media.url) {
-            sendEvent(event)
+        guard let attachmentType = creationFlowType.attachmentType else {
+            assertionFailure("Not supported")
+            return
         }
-    }
-    
-    func composer(composer: Composer, didConfirmWithCaption caption: String) {
-        if let event = ChatMessageOutbound(text: caption) {
-            sendEvent(event)
+        
+        let operation = SelectMediaAttachmentOperation(
+            originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            attachmentType: attachmentType,
+            animated: true
+        )
+        operation.queue() { error, cancelled in
+            if let result = operation.result {
+                composer.setSelectedMediaAttachment(result.mediaAttachment, previewImage: result.previewImage)
+            }
         }
     }
 
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
         chatFeed?.setBottomInset(height)
     }
-    
+
     // MARK: - StageDelegate
     
     func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
     }
-    
+
     func stage(stage: Stage, didUpdateWithMedia media: Stageable) {
         
     }
-    
+
     func stage(stage: Stage, didSelectMedia media: Stageable) {
         
     }
-    
-    // MARK: Network Source
-    
-    func connectToNetworkSource() {
-        if let networkSource = networkSource where !networkSource.isConnected {
-            // TODO: Replace with real token fetching logics when that endpoint is implemented.
-            let newToken = "IOS\(arc4random_uniform(100))"
-            networkSource.replaceToken(newToken)
-            networkSource.connect()
+}
+
+private extension VCreationFlowType {
+    var attachmentType: MediaAttachmentType? {
+        switch self {
+        case .GIF:
+            return .GIF
+        case .Image:
+            return .Image
+        default:
+            return nil
         }
     }
 }

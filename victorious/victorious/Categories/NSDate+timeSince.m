@@ -12,10 +12,20 @@
 
 - (NSString *)stringDescribingTimeIntervalSinceNow
 {
-    return [self stringDescribingTimeIntervalSince:[NSDate date]];
+    return [self stringDescribingTimeIntervalSinceNowWithPrecision:VTimeSincePrecisionMinutes];
 }
 
 - (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date
+{
+    return [self stringDescribingTimeIntervalSince:date precision:VTimeSincePrecisionMinutes];
+}
+
+- (NSString *)stringDescribingTimeIntervalSinceNowWithPrecision:(VTimeSincePrecision)precision
+{
+    return [self stringDescribingTimeIntervalSince:[NSDate date] precision:precision];
+}
+
+- (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date precision:(VTimeSincePrecision)precision
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:
@@ -94,6 +104,17 @@
         else
         {
             return [NSString stringWithFormat:NSLocalizedString(@"MinutesAgo", @""), components.minute];
+        }
+    }
+    else if (precision == VTimeSincePrecisionSeconds && components.second > 0)
+    {
+        if (components.second == 1)
+        {
+            return NSLocalizedString(@"SecondAgo", @"");
+        }
+        else
+        {
+            return [NSString stringWithFormat:NSLocalizedString(@"SecondsAgo", @""), components.second];
         }
     }
     else

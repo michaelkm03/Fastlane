@@ -18,6 +18,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultAttachmentContainerHeight: CGFloat = 52
     }
     
+    /// ForumEventSender
+    var nextSender: ForumEventSender? {
+        return delegate
+    }
+    
     private var visibleKeyboardHeight: CGFloat = 0
     
     /// Referenced so that it can be set toggled between 0 and it's default
@@ -39,6 +44,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
+    private var selectedMediaAttachment: MediaAttachment?
     
     private var totalComposerHeight: CGFloat {
         guard isViewLoaded() else {
@@ -77,7 +83,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return attachmentMenuItems != nil || textViewHasText
     }
     
-    weak var delegate: ComposerDelegate? {
+    var delegate: ComposerDelegate? {
         didSet {
             setupAttachmentTabBar()
         }
@@ -95,7 +101,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private lazy var updateHeightBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
+    private lazy var showKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
         
         self.updateViewsForNewVisibleKeyboardHeight(endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
     }
@@ -113,14 +119,27 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var maximumTextInputHeight = Constants.defaultMaximumTextInputHeight
     
+    func showKeyboard() {
+        textView.becomeFirstResponder()
+    }
+    
     func dismissKeyboard(animated: Bool) {
         textView.resignFirstResponder()
+    }
+    
+    func setSelectedMediaAttachment(mediaAttachment: MediaAttachment, previewImage: UIImage) {
+        selectedMediaAttachment = mediaAttachment
+    }
+    
+    func clearSelectedMediaAttachment() {
+        selectedMediaAttachment = nil
     }
     
     // MARK: - ComposerTextViewManagerDelegate
     
     var textViewHasText: Bool = false {
         didSet {
+            confirmButton.enabled = textViewHasText || selectedMediaAttachment != nil
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -140,7 +159,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: updateHeightBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: updateHeightBlock)
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: showKeyboardBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: showKeyboardBlock)
         
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         
@@ -246,7 +265,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func setupAttachmentTabBar() {
         if isViewLoaded() {
-            attachmentTabBar.setupWithAttachmentMenuItems(attachmentMenuItems, maxNumberOfMenuItems: Constants.maximumNumberOfTabs)
+            attachmentTabBar.setupWithAttachmentMenuItems(
+                attachmentMenuItems,
+                maxNumberOfMenuItems: Constants.maximumNumberOfTabs
+            )
             attachmentTabBar.delegate = self
         }
     }
@@ -291,17 +313,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
-        // Call appropriate delegate methods based on caption / media in composer
-        if let media = selectedMedia {
-            delegate?.composer(self, didConfirmWithMedia: media, caption: textView.text)
-        } else {
-            delegate?.composer(self, didConfirmWithCaption: textView.text)
-        }
+        sendMessage(text: textView.text, mediaAttachment: selectedMediaAttachment)
         composerTextViewManager?.resetTextView(textView)
+        selectedMediaAttachment = nil
     }
     
     @IBAction func touchedInputArea() {
-        textView.becomeFirstResponder()
+        showKeyboard()
         updateLabelVisibility()
     }
 }
@@ -356,5 +374,10 @@ private extension VDependencyManager {
     
     var confirmKeyText: String {
         return stringForKey("confirmKeyText")
+    }
+    
+    var backgroundColor: UIColor {
+        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as! VSolidColorBackground
+        return background.backgroundColor
     }
 }

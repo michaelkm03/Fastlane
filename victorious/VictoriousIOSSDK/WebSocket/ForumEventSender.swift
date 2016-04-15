@@ -8,15 +8,24 @@
 
 import Foundation
 
+/// Defines an object that as node in a ForumEvent tree can propagate messages
+/// up stream, i.e. from leaf to root.
 public protocol ForumEventSender {
+    
+    /// Events can be propagated up to the next sender (chain of responsibility)
     var nextSender: ForumEventSender? { get }
+    
     func sendEvent(event: ForumEvent)
 }
 
 public extension ForumEventSender {
     
     func sendEvent(event: ForumEvent) {
-        // Unless defined by a concrete type, the default behavior passes the message along.
-        nextSender?.sendEvent(event)
+        guard let nextSender = nextSender else {
+            return
+        }
+        
+        // Unless defined by a concrete type, the default behavior passes the event along.
+        nextSender.sendEvent(event)
     }
 }

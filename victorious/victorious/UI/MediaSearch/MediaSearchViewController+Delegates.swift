@@ -69,7 +69,7 @@ extension MediaSearchViewController: UICollectionViewDelegate {
     }
     
     func selectAndExport( itemAtIndexPath indexPath: NSIndexPath ) {
-        self.exportSelectedItem( nil )
+        self.continueWithSelectedItem(nil)
         self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
         dispatch_after(0.0) {
             self.selectCellAtSelectedIndexPath() //< Ensures it remains selected

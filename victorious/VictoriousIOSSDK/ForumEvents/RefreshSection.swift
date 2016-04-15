@@ -8,12 +8,7 @@
 
 import Foundation
 
-/**
- Represents the two different Stages.
- 
- - VIPStage:  The VIP stage should be refreshed.
- - MainStage: The main stage should be refreshed.
- */
+/// Represents the two different Stages.
 public enum RefreshSection {
     case VIPStage
     case MainStage

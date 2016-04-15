@@ -1,5 +1,5 @@
 //
-//  MessageCellLayout.swift
+//  ChatFeedMessageCellLayout.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/8/16.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-protocol MessageCellLayout {
+protocol ChatFeedMessageCellLayout {
     var textAlignment: NSTextAlignment { get }
-    func updateWithCell(cell: MessageCell)
+    func updateWithCell(cell: ChatFeedMessageCell)
 }
 
-struct LeftAlignmentCellLayout: MessageCellLayout {
+struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
     
     let textAlignment: NSTextAlignment = .Left
     
-    func updateWithCell(cell: MessageCell) {
+    func updateWithCell(cell: ChatFeedMessageCell) {
         let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
         let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(
@@ -71,11 +71,11 @@ struct LeftAlignmentCellLayout: MessageCellLayout {
     }
 }
 
-struct RightAlignmentCellLayout: MessageCellLayout {
+struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
     
     let textAlignment: NSTextAlignment = .Right
     
-    func updateWithCell(cell: MessageCell) {
+    func updateWithCell(cell: ChatFeedMessageCell) {
         let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
         let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
         let contentSize = CGSize(

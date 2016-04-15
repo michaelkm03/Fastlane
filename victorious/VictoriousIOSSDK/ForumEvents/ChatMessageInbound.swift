@@ -35,7 +35,7 @@ public struct ChatMessageInbound: ForumEvent {
         fromUser = user
         
         // Either one of these types are required to be counted as a chat message.
-        guard((text != nil) || (contentURL != nil) || (giphyUrl != nil)) else {
+        guard ((text != nil) || (contentURL != nil) || (giphyUrl != nil)) else {
             assertionFailure("Chat message invalid, unable to parse out any content. JSON -> \(json)")
             return nil
         }

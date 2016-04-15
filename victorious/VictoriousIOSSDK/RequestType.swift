@@ -16,6 +16,9 @@ public protocol RequestType {
     /// An instance of NSURLRequest that will be used to send this request to the server
     var urlRequest: NSURLRequest { get }
     
+    /// A custom base URL can be specified by the request.
+    var baseUrl: NSURL? { get }
+    
     /// Translates the raw data response from the server into an instance of ResponseType
     ///
     /// - parameter response: Details about the server's response
@@ -28,6 +31,11 @@ public protocol RequestType {
 /// For RequestType implementations that have no results, this extension provides a default implementation of
 /// parseResponse that does nothing. Useful for "fire and forget" API calls like tracking pings.
 extension RequestType {
+    
+    public var baseUrl: NSURL? {
+        return nil
+    }
+    
     public func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws {
         // This method intentionally left blank.
     }
@@ -59,6 +67,7 @@ extension RequestType {
         if let requestURLString = mutableRequest.URL?.absoluteString {
             mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
         }
+        
         if let authenticationContext = authenticationContext {
             mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
         } else {

@@ -1,5 +1,5 @@
 //
-//  MessageCell.swift
+//  ChatFeedMessageCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.
@@ -7,19 +7,20 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 @objc protocol SelfSizingCell {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
 }
 
-protocol MessageCellDelegate: class {
-    func messageCellDidSelectAvatarImage(messageCell: MessageCell)
-    func messageCellDidSelectMedia(messageCell: MessageCell)
+protocol ChatFeedMessageCellDelegate: class {
+    func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
 }
 
-class MessageCell: UICollectionViewCell, VFocusable {
+class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     
-    static let suggestedReuseIdentifier = "MessageCell"
+    static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
     @IBOutlet private(set) weak var avatarContainer: UIView!
     @IBOutlet private(set) weak var avatarView: VDefaultProfileImageView!
@@ -27,19 +28,19 @@ class MessageCell: UICollectionViewCell, VFocusable {
     @IBOutlet private(set) weak var contentContainer: UIView!
     @IBOutlet private(set) weak var detailTextView: UITextView!
     @IBOutlet private(set) weak var messageContainer: UIView!
-    @IBOutlet private(set) weak var mediaView: MessageMediaView!
+    @IBOutlet private(set) weak var mediaView: ChatFeedMessageMediaView!
     @IBOutlet private(set) weak var textView: UITextView!
     
     let horizontalSpacing: CGFloat = 10.0
     let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 75)
     
-    var layout: MessageCellLayout! {
+    var layout: ChatFeedMessageCellLayout! {
         didSet {
             layout.updateWithCell(self)
         }
     }
     
-    weak var delegate: MessageCellDelegate?
+    weak var delegate: ChatFeedMessageCellDelegate?
     
     var preloadedImage: UIImage? {
         return mediaView.preloadedImage
@@ -47,15 +48,7 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     var dependencyManager: VDependencyManager!
     
-    struct ViewData {
-        let text: String?
-        let timeLabel: String
-        let username: String
-        let avatarImageURL: NSURL?
-        let media: ForumMedia?
-    }
-    
-    var viewData: ViewData! {
+    var chatFeedMessage: ChatFeedMessage! {
         didSet {
             populateData()
             updateStyle()
@@ -104,11 +97,12 @@ class MessageCell: UICollectionViewCell, VFocusable {
     
     private func populateData() {
         textView.attributedText = attributedText
-        if let media = viewData?.media {
-//            mediaView.imageURL = media.url
+        if let mediaAttachment = chatFeedMessage?.mediaAttachment {
+            mediaView.previewURL = mediaAttachment.thumbnailURL   
+            mediaView.mediaURL = mediaAttachment.url
         }
-        detailTextView.text = "\(viewData.username) (\(viewData.timeLabel))"
-        avatarView.setProfileImageURL(viewData.avatarImageURL)
+        detailTextView.text = "\(chatFeedMessage.sender.name) (\(chatFeedMessage.timeLabel))"
+        avatarView.setProfileImageURL(chatFeedMessage.sender.profileURL)
     }
     
     // MARK: - SelfSizingCell
@@ -144,25 +138,24 @@ class MessageCell: UICollectionViewCell, VFocusable {
             context: nil).size
         size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         
-        // HACK: No time to figure out the actual issue here, width is not big enough for the text. 
-        // boundingRectWithSize lies for some reason.
-        size.width += contentMargin.left
+        size.width += contentMargin.left //< Eh, this isn't quite right, thought it looks okay fr now
         return size
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let media = viewData?.media else {
+        guard let mediaAttachment = chatFeedMessage?.mediaAttachment else {
             return CGSize.zero
         }
-        let maxContentWidth = maxContentWidthWithinBounds(bounds)
+        let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
+        let aspectRatio = dependencyManager.clampedAspectRatio(from: mediaAttachment.aspectRatio)
         return CGSize(
             width: maxContentWidth,
-            height: maxContentWidth / media.aspectRatio
+            height: maxContentWidth / aspectRatio
         )
     }
     
     private var attributedText: NSAttributedString? {
-        guard let text = viewData?.text where text != "" else {
+        guard let text = chatFeedMessage?.text where text != "" else {
             return nil
         }
         let paragraphStyle = NSMutableParagraphStyle()
@@ -190,27 +183,36 @@ class MessageCell: UICollectionViewCell, VFocusable {
 
 private extension VDependencyManager {
     
+    func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
+        let defaultMinium = 1.0
+        let defaultMaximum = 4.0
+        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinium)
+        let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
+        return min( maxAspect, max(rawAspectRatio, minAspect) )
+    }
+    
     var messageTextColor: UIColor {
-        return colorForKey("color.text")
+        return colorForKey("color.message.text")
     }
-    
+
     var messageFont: UIFont {
-        return fontForKey("font.message")
+        // TODO: Update the DenpendencyManager
+        return UIFont.boldSystemFontOfSize(16)
     }
-    
+
     var backgroundColor: UIColor {
-        return colorForKey("color.bubble")
+        return colorForKey("color.message.border")
     }
     
     var borderColor: UIColor {
-        return colorForKey("color.border")
+        return colorForKey("color.message.border")
     }
     
     var userLabelFont: UIFont {
-        return fontForKey("font.userLabel")
+        return UIFont.boldSystemFontOfSize(12)
     }
     
     var userLabelColor: UIColor {
-        return colorForKey("color.userLabel")
+        return colorForKey("color.username.text")
     }
 }

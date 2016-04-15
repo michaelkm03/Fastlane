@@ -51,27 +51,35 @@ public struct MediaAttachment {
             self.shouldAutoplay = shouldAutoplay
             self.formats = formats
     }
+    
+    public var aspectRatio: CGFloat {
+        guard let size = size else {
+            return  0.0
+        }
+        return CGFloat(size.width) / CGFloat(size.height)
+    }
 }
 
 extension MediaAttachment {
     
     public init?(json: JSON) {
-        guard let type          = MediaAttachmentType(rawValue: json["media_type"].stringValue),
-            let url             = NSURL(vsdk_string: json["media_url"].string),
-            let thumbnailURL    = NSURL(vsdk_string: json["thumbnail_url"].string) else {
+        guard let type = MediaAttachmentType(rawValue: json["media_type"].stringValue),
+            let url = NSURL(vsdk_string: json["media_url"].string),
+            let thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string) else {
                 return nil
         }
+        
         self.url                = url
         self.thumbnailURL       = thumbnailURL
         self.shouldAutoplay     = json["should_autoplay"].bool
+        
         if let shouldAutoplay = self.shouldAutoplay where shouldAutoplay == true {
             self.type = .GIF
-        }
-        else {
+        } else {
             self.type = type
         }
         
-        self.isGIFStyle         = json["is_gif_style"].bool
+        self.isGIFStyle = json["is_gif_style"].bool
         
         
         if let width = json["media_width"].float,

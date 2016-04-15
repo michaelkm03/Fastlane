@@ -166,12 +166,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     self.player.muted = muted;
 }
 
-- (void)setBounds:(CGRect)bounds
+- (void)layoutSubviews
 {
-    [super setBounds:bounds];
-    
-    //Since the playerLayer isn't a subview, we can't use constraints to make it's bounds change with its superview's
-    //Update bounds here to always have playerLayer's bounds fit its superview's
+    [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
 }
 

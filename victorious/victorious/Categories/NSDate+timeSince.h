@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, VTimeSincePrecision) {
+    VTimeSincePrecisionMinutes, //< Default
+    VTimeSincePrecisionSeconds
+};
+
 @interface NSDate (timeSince)
+
+- (NSString *)stringDescribingTimeIntervalSinceNowWithPrecision:(VTimeSincePrecision)precision;
+- (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date precision:(VTimeSincePrecision)precision;
 
 - (NSString *)stringDescribingTimeIntervalSinceNow;
 - (NSString *)stringDescribingTimeIntervalSince:(NSDate *)date;

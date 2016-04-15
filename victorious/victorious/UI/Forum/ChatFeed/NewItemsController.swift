@@ -12,15 +12,15 @@ import Foundation
     func onNewItemsSelected()
 }
 
-class NewItemsController: NSObject {
+class NewItemsController: NSObject, VBackgroundContainer {
     
     let largeNumberFormatter = VLargeNumberFormatter()
     
     var depedencyManager: VDependencyManager! {
         didSet {
-//            button.backgroundColor = depedencyManager.backgroundColor
-//            button.titleLabel?.font = depedencyManager.font
-//            button.titleLabel?.textColor = depedencyManager.textColor
+            depedencyManager.addBackgroundToBackgroundHost(self)
+            button.titleLabel?.font = depedencyManager.font
+            button.titleLabel?.textColor = depedencyManager.textColor
         }
     }
     
@@ -28,40 +28,24 @@ class NewItemsController: NSObject {
     
     var count: Int = 0 {
         didSet {
-            let formattedMessageCount: String = largeNumberFormatter.stringForInteger(count)
-            let title: String
-            if count == 1 {
-                title = NSString(format: NSLocalizedString("NewMessagesFormatSingular", comment:""), formattedMessageCount) as String
-            } else {
-                title = NSString(format: NSLocalizedString("NewMessagesFormatPlural", comment:""), formattedMessageCount) as String
-            }
-            UIView.setAnimationsEnabled(false)
-            self.button.setTitle(title, forState: .Normal)
-            UIView.setAnimationsEnabled(true)
-            
-            let attributes = [ NSFontAttributeName: button.titleLabel!.font ]
-            buttonWidthConstraint.constant = (title as NSString).sizeWithAttributes( attributes ).width
-            button.layoutIfNeeded()
-        }
-    }
-    @IBOutlet weak var delegate: NewItemsControllerDelegate?
-    
-    @IBOutlet weak var buttonWidthConstraint: NSLayoutConstraint!
-    
-    @IBOutlet private weak var button: UIButton! {
-        didSet {
-            button.layer.shadowColor = UIColor.blackColor().CGColor
-            button.layer.shadowRadius = 4.0
-            button.layer.shadowOpacity = 1.0
-            button.layer.cornerRadius = 5.0
-            button.layer.shadowOffset = CGSize(width:0, height:2)
+            let buttonTitle = localizedButtonTitle(count: count)
+            setButtonTitle(buttonTitle)
         }
     }
     
-    private var moreContentButtonToBottomStoryboardValue: CGFloat?
-    @IBOutlet private weak var buttonToBottomConstraint: NSLayoutConstraint! {
+    func backgroundContainerView() -> UIView {
+        return container
+    }
+    
+    weak var delegate: NewItemsControllerDelegate?
+    
+    @IBOutlet private weak var button: UIButton!
+    @IBOutlet private weak var container: UIView!
+    
+    private var containerHeightFromStoryboard: CGFloat?
+    @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
         didSet {
-            moreContentButtonToBottomStoryboardValue = buttonToBottomConstraint.constant
+            containerHeightFromStoryboard = containerHeight.constant
         }
     }
     
@@ -71,16 +55,15 @@ class NewItemsController: NSObject {
         }
         isShowing = true
         let animations = {
-            guard let bottomConstant = self.moreContentButtonToBottomStoryboardValue else {
-                assertionFailure("moreContentButtonToBottomStoryboardValue must be set as soon as this class is instantiated from a storyboard.")
+            guard let bottomConstant = self.containerHeightFromStoryboard else {
+                assertionFailure("`containerHeightFromStoryboard` must be set as soon as this class is instantiated from a storyboard.")
                 return
             }
-            self.buttonToBottomConstraint.constant = bottomConstant
-            self.button.alpha = 1.0
-            self.button.layoutIfNeeded()
+            self.containerHeight.constant = bottomConstant
+            self.container.superview?.layoutIfNeeded()
         }
         if animated {
-            UIView.animateWithDuration(0.4,
+            UIView.animateWithDuration(0.75,
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
@@ -98,9 +81,8 @@ class NewItemsController: NSObject {
             return
         }
         let animations = {
-            self.buttonToBottomConstraint.constant = self.button.bounds.height
-            self.button.layoutIfNeeded()
-            self.button.alpha = 0.0
+            self.containerHeight.constant = 0.0
+            self.container.superview?.layoutIfNeeded()
         }
         let completion = { (_: Bool) in
             self.count = 0
@@ -121,23 +103,40 @@ class NewItemsController: NSObject {
         }
     }
     
+    // MARK: - Private
+    
     @IBAction private func onNewItemsSelected() {
         delegate?.onNewItemsSelected()
         hide()
+    }
+    
+    private func localizedButtonTitle(count count: Int) -> String {
+        let formattedMessageCount: String = largeNumberFormatter.stringForInteger(count)
+        let title: String
+        if count == 1 {
+            let localizedFormat = NSLocalizedString("NewMessagesFormatSingular", comment: "")
+            title = NSString(format: localizedFormat, formattedMessageCount) as String
+        } else {
+            let localizedFormat = NSLocalizedString("NewMessagesFormatPlural", comment: "")
+            title = NSString(format: localizedFormat, formattedMessageCount) as String
+        }
+        return title
+    }
+    
+    private func setButtonTitle(title: String) {
+        let attributes = [ NSFontAttributeName: button.titleLabel!.font ]
+        let attributedText = NSAttributedString(string: title, attributes: attributes)
+        button.setAttributedTitle( attributedText, forState: .Normal)
     }
 }
 
 private extension VDependencyManager {
     
     var textColor: UIColor {
-        return colorForKey("color.text")
+        return colorForKey("color.newItems.text")
     }
     
     var font: UIFont {
-        return fontForKey("font.text")
-    }
-    
-    var backgroundColor: UIColor {
-        return colorForKey("color.background")
+        return fontForKey("font.newItems")
     }
 }

@@ -38,11 +38,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
-        return [ stage as? ForumEventReceiver, chatFeed as? ForumEventReceiver, composer as? ForumEventReceiver ].flatMap { $0 }
+        let children = [
+            stage as? ForumEventReceiver,
+            chatFeed as? ForumEventReceiver,
+            composer as? ForumEventReceiver
+        ]
+        return children.flatMap { $0 }
     }
     
     func receiveEvent(event: ForumEvent) {
-        for receiver in childEventReceivers {
+        let r = childEventReceivers
+        for receiver in r {
             receiver.receiveEvent(event)
         }
         
@@ -65,7 +71,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var composer: Composer?
     var chatFeed: ChatFeed?
     var dependencyManager: VDependencyManager!
-    var networkSource: TemplateNetworkSource?
+    var networkSource: NetworkSource?
     
     var originViewController: UIViewController {
         return self
@@ -91,12 +97,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         //Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        
-        networkSource = dependencyManager.networkSource
-        setupNetworkSource(networkSource!)
-        connectToNetworkSource()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -106,7 +109,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        debug_startGeneratingMessages(interval: 3.0)
+        // debug_startGeneratingMessages(interval: 1.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
@@ -115,6 +118,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             action: #selector(onClose)
         )
         updateStyle()
+        
+        networkSource = dependencyManager.networkSource
+        setupNetworkSource(networkSource!)
+        connectToNetworkSource()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -136,6 +143,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
             composer.dependencyManager = dependencyManager.composerDependency
             composer.delegate = self
             self.composer = composer
+        
+        } else {
+            // Hide any embedded container views from which a component could not be loaded
+            destination.view.superview?.hidden = true
+        }
+    }
+    
+    // MARK: Network Source
+    
+    func connectToNetworkSource() {
+        if let socketNetworkAdapter = networkSource as? SocketNetworkAdapter where !socketNetworkAdapter.isConnected {
+            socketNetworkAdapter.setUp()
         }
     }
     
@@ -161,7 +180,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     
     // MARK: Private
     
-    private func setupNetworkSource(networkSource: TemplateNetworkSource) {
+    private func setupNetworkSource(networkSource: NetworkSource) {
         // Add the network source as the next responder in the FEC.
         nextSender = networkSource
         // Inject ourselves into the child receiver list in order to link the chain together.
@@ -171,12 +190,12 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
 
 private extension VDependencyManager {
     
-    var title: String {
-        return stringForKey("title")
+    var title: String? {
+        return stringForKey("title.text")
     }
     
     var navigationItemColor: UIColor {
-        return colorForKey("barTintColor")
+        return colorForKey("color.navigationItem") ?? UIColor.redColor()
     }
     
     var navigationBarBackgroundColor: UIColor? {
@@ -184,19 +203,23 @@ private extension VDependencyManager {
         return background?.backgroundColor
     }
     
-    var chatFeedDependency: VDependencyManager {
-        return childDependencyForKey("chatFeed")!
+    var chatFeedDependency: VDependencyManager? {
+        return childDependencyForKey("chatFeed")
     }
     
-    var composerDependency: VDependencyManager {
-        return childDependencyForKey("composer")!
+    var composerDependency: VDependencyManager? {
+        return childDependencyForKey("composer")
     }
     
-    var stageDependency: VDependencyManager {
-        return childDependencyForKey("stage")!
+    var stageDependency: VDependencyManager? {
+        return childDependencyForKey("stage")
     }
     
-    var networkSource: TemplateNetworkSource {
-        return (singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? TemplateNetworkSource) ?? WebSocketController.sharedInstance
+    var networkSource: SocketNetworkAdapter {
+        return singletonObjectOfType(SocketNetworkAdapter.self, forKey: "networkLayerSource") as! SocketNetworkAdapter
+    }
+    
+    var networkResourcesDependency: VDependencyManager {
+        return childDependencyForKey("networkResources")!
     }
 }

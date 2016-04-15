@@ -5,14 +5,10 @@
       "text": "Test incoming chat message",
       "giphy_url": "http://giphy.url",
       "from_user": {
-        "id": "111",
+        "id": 111,
         "name": "TestUser",
         "profile_url": "http://victorious.com/user/1111"
       }
-    },
-    "refresh": {
-      "section": "VIP_STAGE",
-      "content_id": "76757"
     }
   }
 }

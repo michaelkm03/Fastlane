@@ -8,10 +8,9 @@
 
 import Foundation
 
-/**
- *  The `RefreshStage` command that tells the client to update either on of it's two stages.
- */
+/// Indicates to client to update either one of its stages.
 public struct RefreshStage: ForumEvent {
+    
     // MARK: ForumEvent
     public let timestamp: NSDate
     

@@ -196,8 +196,8 @@
 	<string>victorious.TrophyCaseViewController</string>
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
-	<key>networkLayerSource</key>
-	<string>TemplateNetworkSource</string>
+	<key>webSocket.networkLayer</key>
+	<string>victorious.SocketNetworkAdapter</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>

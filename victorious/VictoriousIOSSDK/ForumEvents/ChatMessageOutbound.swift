@@ -13,6 +13,7 @@ import Foundation
  */
 public struct ChatMessageOutbound: ForumEvent, JSONConvertable {
     // MARK: ForumEvent
+    
     public let timestamp: NSDate
     
     public let text: String?
@@ -21,7 +22,7 @@ public struct ChatMessageOutbound: ForumEvent, JSONConvertable {
 
     public init?(timestamp: NSDate = NSDate(), text: String? = nil, contentUrl: NSURL? = nil, giphyID: String? = nil) {
         
-        guard((text != nil) || (contentUrl != nil) || (giphyID != nil)) else {
+        guard ((text != nil) || (contentUrl != nil) || (giphyID != nil)) else {
             assertionFailure("A outbound chat message needs to have text, contentUrl or giphyID set in order to work.")
             return nil
         }
@@ -33,7 +34,7 @@ public struct ChatMessageOutbound: ForumEvent, JSONConvertable {
     }
 
     // MARK: JSONConvertible
-    
+
     public func toJSON() -> JSON {
         var messageAsDictionary = [String: AnyObject]()
         

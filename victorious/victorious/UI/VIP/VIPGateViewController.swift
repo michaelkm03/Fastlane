@@ -62,7 +62,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier!
+        let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier ?? ""
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
         setIsLoading(true, title: Strings.purchaseInProgress)

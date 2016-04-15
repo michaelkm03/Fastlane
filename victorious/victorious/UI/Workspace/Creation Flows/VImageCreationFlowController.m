@@ -24,7 +24,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSearchTerm";
 
-@interface VImageCreationFlowController () <MediaSearchViewControllerDelegate, VImageCameraViewControllerDelegate>
+@interface VImageCreationFlowController () <MediaSearchDelegate, VImageCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
@@ -137,7 +137,7 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
     [self pushViewController:cameraViewController animated:YES];
 }
 
-#pragma mark - MediaSearchViewControllerDelegate
+#pragma mark - MediaSearchDelegate
 
 - (void)mediaSearchResultSelected:(id<MediaSearchResult>)result
 {
