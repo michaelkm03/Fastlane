@@ -13,7 +13,7 @@ import VictoriousCommon
 extension RequestContext {
     
     init( environment: VEnvironment ) {
-        let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
+        let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         let firstInstallDeviceID = FirstInstallDeviceIDManager().generateFirstInstallDeviceID() ?? deviceID
         let sessionID = VRootViewController.sharedRootViewController()?.sessionTimer.sessionID
         let buildNumber: String

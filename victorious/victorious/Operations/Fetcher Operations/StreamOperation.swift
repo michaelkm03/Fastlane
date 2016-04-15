@@ -19,6 +19,8 @@ final class StreamOperation: FetcherOperation, PaginatedOperation {
         self.preloadedStreamObjectID = existingStreamID
         super.init()
         
+        self.queuePriority = .VeryHigh
+        
         if preloadedStreamObjectID == nil && !localFetch {
             let request = StreamRequest(
                 apiPath: paginator.apiPath,

@@ -17,22 +17,13 @@ class RemoteFetcherOperation: FetcherOperation {
     
     lazy var requestExecutor: RequestExecutorType = MainRequestExecutor()
     
-    /// An array of `RequestErrorHandler` objects that will handle errors when requests are executed.
-    /// Calling code may append, filter or anything else to customize the behavior.  When an error occurs,
-    /// `MainRequestExecutor` iterates through error handlers until it finds one that can
-    /// handle the error, then returns so that each error is handler by only one handler.
-    var errorHandlers = [RequestErrorHandler]()
-    
-    override func cancel() {
-        super.cancel()
-        
-        dispatch_async( dispatch_get_main_queue() ) {
-            self.requestExecutor.cancelled = true
-        }
-    }
-    
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private let alertsReceiver = AlertReceiverSelector.defaultReceiver
+    
+    override init() {
+        super.init()
+        addDefaultErrorHandlers()
+    }
     
     override var error: NSError? {
         set {
@@ -43,17 +34,32 @@ class RemoteFetcherOperation: FetcherOperation {
         }
     }
     
-    /// Can be set to `false` or overidden with custom logic to determine if
-    /// operations should bypass authorization error checking.
+    /// Allows subclasses to override to disabled unauthorized (401) error handling.
+    /// Otherwise, these errors are handled by default.
     var requiresAuthorization: Bool = true {
         didSet {
             if requiresAuthorization {
-                if !errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
-                    errorHandlers.append( UnauthorizedErrorHandler() )
-                }
+                self.addDefaultErrorHandlers()
             } else {
-                errorHandlers = errorHandlers.filter { ($0 is UnauthorizedErrorHandler) == false }
+                requestExecutor.errorHandlers = requestExecutor.errorHandlers.filter { ($0 is UnauthorizedErrorHandler) == false }
             }
+        }
+    }
+    
+    override func cancel() {
+        super.cancel()
+        
+        dispatch_async( dispatch_get_main_queue() ) {
+            self.requestExecutor.cancelled = true
+        }
+    }
+    
+    private func addDefaultErrorHandlers() {
+        if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+            requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
+        }
+        if !requestExecutor.errorHandlers.contains({ $0 is DebugErrorHanlder }) {
+            requestExecutor.errorHandlers.append( DebugErrorHanlder(requestIdentifier: "\(self.dynamicType)") )
         }
     }
 }

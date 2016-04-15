@@ -8,6 +8,7 @@
 
 #import "VPurchaseRecord.h"
 #import "NSData+AES.h"
+#import "victorious-Swift.h"
 
 @interface VPurchaseRecord ()
 
@@ -149,7 +150,7 @@
 
 - (NSString *)deviceIdentifier
 {
-    return [UIDevice currentDevice].identifierForVendor.UUIDString;
+    return [UIDevice currentDevice].v_authorizationDeviceID;
 }
 
 - (unichar *)generateKeyWithDeviceIdentifier:(NSString *)deviceIdentifier

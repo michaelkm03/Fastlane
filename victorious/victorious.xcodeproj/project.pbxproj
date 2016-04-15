@@ -705,8 +705,8 @@
 		67CEBCD01C473DAA00A3C4A0 /* PollCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCF1C473DAA00A3C4A0 /* PollCreateRequestTests.swift */; };
 		67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
-		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
 		67F2310A1CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */; };
+		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
 		67F231531CBD6134006BDBA5 /* ListMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */; };
 		67F231551CBD6178006BDBA5 /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */; };
 		67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231561CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift */; };
@@ -1081,7 +1081,6 @@
 		A72C866E1C977FF600E97D4F /* ConversationDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */; };
 		A72C866F1C977FF600E97D4F /* ConversationListRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */; };
 		A72C86711C977FF600E97D4F /* ConversationRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */; };
-		A72C86721C977FF600E97D4F /* ChatFeedModelAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D61C977FF500E97D4F /* ChatFeedModelAdapters.swift */; };
 		A72C86741C977FF600E97D4F /* FollowedHashtagsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */; };
 		A72C86751C977FF600E97D4F /* MessageSendRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */; };
 		A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */; };
@@ -1331,6 +1330,7 @@
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
+		A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */; };
 		A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */; };
 		A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
@@ -1434,6 +1434,7 @@
 		A7D0AD321C0D453D0018C63E /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A7D0ADBC1C0D45470018C63E /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
 		A7D15DD61CBED6610039761B /* DictionaryConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */; };
+		A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D15ED41CC05B510039761B /* UIDevice+UUID.swift */; };
 		A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */; };
 		A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378351AEF4ED5007FF197 /* VProfileHeaderCell.m */; };
 		A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378391AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m */; };
@@ -3034,8 +3035,8 @@
 		67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperationTests.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
-		67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuHashtagDataSource.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseDeepLinkHandler.swift; path = "Trophy Case/TrophyCaseDeepLinkHandler.swift"; sourceTree = "<group>"; };
+		67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuHashtagDataSource.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ListMenuViewController.storyboard; path = "List Menu/ListMenuViewController.storyboard"; sourceTree = "<group>"; };
 		67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuViewController.swift; path = "List Menu/ListMenuViewController.swift"; sourceTree = "<group>"; };
 		67F231561CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuCollectionViewDataSource.swift; path = "List Menu/ListMenuCollectionViewDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -3912,6 +3913,7 @@
 		A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E91AD7124D00F2564A /* VProfileDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
+		A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedModelAdapters.swift; sourceTree = "<group>"; };
 		A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollResultReceiver.h; sourceTree = "<group>"; };
 		A7A1CF5D1C62BE6400B08F07 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
@@ -4058,6 +4060,7 @@
 		A7D047931B97AE140091F366 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
 		A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewStreamTransition.swift; sourceTree = "<group>"; };
 		A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryConvertible.swift; sourceTree = "<group>"; };
+		A7D15ED41CC05B510039761B /* UIDevice+UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+UUID.swift"; sourceTree = "<group>"; };
 		A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewControllerTests.m; sourceTree = "<group>"; };
 		A7D3782D1AEF39FC007FF197 /* VHashtagSelectionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagSelectionResponder.h; sourceTree = "<group>"; };
 		A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPassthroughContainerView.h; sourceTree = "<group>"; };
@@ -7718,6 +7721,7 @@
 				A72C859F1C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift */,
 				A72C85A01C977FF500E97D4F /* MediaAttachment+PublishParameters.swift */,
 				A72C85A11C977FF500E97D4F /* RequestContext+Environment.swift */,
+				A7D15ED41CC05B510039761B /* UIDevice+UUID.swift */,
 				A72C85A21C977FF500E97D4F /* VFlaggedContent.h */,
 				A72C85A31C977FF500E97D4F /* VFlaggedContent.m */,
 				A72C85A41C977FF500E97D4F /* VLoginType+Credentials.swift */,
@@ -7933,12 +7937,13 @@
 				A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */,
 				A73BA2B21C9393ED008168B5 /* ChatFeed.swift */,
 				A73548621CA0DB2400A7106C /* ChatFeedCollectionDataSource.swift */,
+				A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */,
 				A73BA2B31C9393ED008168B5 /* ChatFeedNetworkDataSource.swift */,
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
 				A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */,
-				A7B844EA1CBC5B8B00CE02DE /* TouchDownController.swift */,
 				A73548601CA0DA3F00A7106C /* ReceivedEventQueue.swift */,
+				A7B844EA1CBC5B8B00CE02DE /* TouchDownController.swift */,
 			);
 			path = ChatFeed;
 			sourceTree = "<group>";
@@ -12317,8 +12322,9 @@
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
-				A72C86721C977FF600E97D4F /* ChatFeedModelAdapters.swift in Sources */,
+				A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
+				A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
 				A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */,

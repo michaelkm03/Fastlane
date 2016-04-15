@@ -54,7 +54,7 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
         
         do {
             let retrivedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: NSUTF8StringEncoding) as String
-            let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString
+            let currentDeviceID = UIDevice.currentDevice().v_authorizationDeviceID
             XCTAssertEqual(retrivedDeviceID, currentDeviceID)
         }
         catch {

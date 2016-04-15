@@ -23,10 +23,11 @@ import UIKit
     /// - returns: the device ID read from local file or generated from current device ID
     func generateFirstInstallDeviceID(withFileName filename: String = defaultDeviceIDFileName) -> String? {
         guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(filename),
-            let path = deviceIDFileURL.path,
-            let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
+            let path = deviceIDFileURL.path else {
                 return nil
         }
+        
+        let currentDeviceID = UIDevice.currentDevice().v_authorizationDeviceID
         
         // Tries to read from local file first
         if let retrievedDeviceID = readDeviceIDFromFile(path) {
