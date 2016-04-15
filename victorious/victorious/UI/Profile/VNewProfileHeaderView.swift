@@ -37,6 +37,7 @@ class VNewProfileHeaderView: UICollectionReusableView {
     // MARK: - Views
     
     @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var vipIconImageView: UIImageView!
     @IBOutlet var upvotesValueLabel: UILabel!
     @IBOutlet var upvotesTitleLabel: UILabel!
     @IBOutlet var upvotedValueLabel: UILabel!
@@ -59,20 +60,29 @@ class VNewProfileHeaderView: UICollectionReusableView {
     }
     
     private func applyDependencyManagerStyles() {
-        backgroundColor = dependencyManager?.colorForKey(VDependencyManagerBackgroundColorKey)
+        tintColor = dependencyManager?.accentColor
         
-        let mainTextColor = dependencyManager?.colorForKey(VDependencyManagerContentTextColorKey)
-        let secondaryTextColor = dependencyManager?.colorForKey(VDependencyManagerSecondaryTextColorKey)
+        nameLabel.textColor = dependencyManager?.headerTextColor
+        upvotesValueLabel.textColor = dependencyManager?.statValueTextColor
+        upvotesTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        upvotedValueLabel.textColor = dependencyManager?.statValueTextColor
+        upvotedTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        rankValueLabel.textColor = dependencyManager?.statValueTextColor
+        rankTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        locationLabel.textColor = dependencyManager?.subcontentTextColor
+        taglineLabel.textColor = dependencyManager?.subcontentTextColor
         
-        nameLabel.textColor = mainTextColor
-        upvotesValueLabel.textColor = mainTextColor
-        upvotesTitleLabel.textColor = secondaryTextColor
-        upvotedValueLabel.textColor = mainTextColor
-        upvotedTitleLabel.textColor = secondaryTextColor
-        rankValueLabel.textColor = mainTextColor
-        rankTitleLabel.textColor = secondaryTextColor
-        locationLabel.textColor = mainTextColor
-        taglineLabel.textColor = mainTextColor
+        nameLabel.font = dependencyManager?.headerFont
+        upvotesValueLabel.font = dependencyManager?.statValueFont
+        upvotesTitleLabel.font = dependencyManager?.statLabelFont
+        upvotedValueLabel.font = dependencyManager?.statValueFont
+        upvotedTitleLabel.font = dependencyManager?.statLabelFont
+        rankValueLabel.font = dependencyManager?.statValueFont
+        rankTitleLabel.font = dependencyManager?.statLabelFont
+        locationLabel.font = dependencyManager?.subcontentFont
+        taglineLabel.font = dependencyManager?.subcontentFont
+        
+        vipIconImageView.image = dependencyManager?.vipIcon
     }
     
     // MARK: - Populating content
@@ -81,6 +91,7 @@ class VNewProfileHeaderView: UICollectionReusableView {
         nameLabel.text = user?.name
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
+        vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
         
         let placeholderImage = UIImage(named: "profile_full")
         
@@ -112,5 +123,47 @@ class VNewProfileHeaderView: UICollectionReusableView {
             shadowBounds = newShadowBounds
             profilePictureShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
+    }
+}
+
+private extension VDependencyManager {
+    var accentColor: UIColor? {
+        return colorForKey(VDependencyManagerAccentColorKey)
+    }
+    
+    var headerTextColor: UIColor? {
+        return colorForKey("color.text.header")
+    }
+    
+    var statValueTextColor: UIColor? {
+        return colorForKey(VDependencyManagerContentTextColorKey)
+    }
+    
+    var statLabelTextColor: UIColor? {
+        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var subcontentTextColor: UIColor? {
+        return colorForKey("color.text.subcontent")
+    }
+    
+    var headerFont: UIFont? {
+        return fontForKey(VDependencyManagerHeaderFontKey)
+    }
+    
+    var statValueFont: UIFont? {
+        return fontForKey(VDependencyManagerHeading2FontKey)
+    }
+    
+    var statLabelFont: UIFont? {
+        return fontForKey(VDependencyManagerLabel2FontKey)
+    }
+    
+    var subcontentFont: UIFont? {
+        return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+    
+    var vipIcon: UIImage? {
+        return imageForKey("vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
     }
 }

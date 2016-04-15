@@ -130,7 +130,7 @@
 	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
-	<key>newUserProfile.screen</key>
+	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsViewController</string>

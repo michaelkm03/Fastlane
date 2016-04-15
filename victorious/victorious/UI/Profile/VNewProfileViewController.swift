@@ -2,17 +2,17 @@
 //  VNewProfileViewController.swift
 //  victorious
 //
-//  Created by Jarod Long on 4/1/16.
-//  Copyright © 2016 Victorious. All rights reserved.
+//  Created by Jarod Long on 3/31/16.
+//  Copyright (c) 2016 Victorious. All rights reserved.
 //
 
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate {
+class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
     // MARK: - Constants
     
-    private static let cellsPerRow = 2
+    private static let cellsPerRow = 3
     private static let cellSpacing: CGFloat = 10.0
     
     // MARK: - Initializing
@@ -32,7 +32,7 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
         
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
+        collectionView.backgroundColor = nil
         collectionView.alwaysBounceVertical = true
         
         scrollPaginator.delegate = self
@@ -40,6 +40,8 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
+        
+        dependencyManager.addBackgroundToBackgroundHost(self)
         
         view.addSubview(collectionView)
         view.v_addFitToParentConstraintsToSubview(collectionView)
@@ -156,5 +158,11 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
     
     func shouldLoadNextPage() {
         dataSource.loadStreamItems(.Next)
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
 }

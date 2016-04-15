@@ -13,33 +13,24 @@ class VNewProfileStreamDataSource: PaginatedDataSource, UICollectionViewDataSour
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        cellFactory = VSleekStreamCellFactory(dependencyManager: dependencyManager)
+        cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
     }
     
     // MARK: - Dependency manager
     
-    var dependencyManager: VDependencyManager!
+    let dependencyManager: VDependencyManager
     
     // MARK: - Models
     
     var user: VUser? {
         didSet {
             unload()
-            
-            if let user = user {
-                stream = VStreamItem.userProfileStreamWithUserID(user.remoteId)
-            }
-            else {
-                stream = nil
-            }
         }
     }
     
-    private var stream: VStream?
-    
     // MARK: - Cell factory
     
-    private let cellFactory: VSleekStreamCellFactory
+    private let cellFactory: VContentOnlyCellFactory
     
     // MARK: - Registering views
     
@@ -53,7 +44,7 @@ class VNewProfileStreamDataSource: PaginatedDataSource, UICollectionViewDataSour
     // MARK: - Loading content
     
     func loadStreamItems(pageType: VPageType, completion: ((error: NSError?) -> Void)? = nil) {
-        guard let apiPath = stream?.apiPath else {
+        guard let user = user, apiPath = dependencyManager.streamAPIPath(for: user) else {
             completion?(error: NSError(domain: "StreamLoadingError", code: 1, userInfo: nil))
             return
         }
@@ -82,6 +73,12 @@ class VNewProfileStreamDataSource: PaginatedDataSource, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath, inStream: stream)
+        return cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath)
+    }
+}
+
+private extension VDependencyManager {
+    func streamAPIPath(for user: VUser) -> String? {
+        return stringForKey("streamURL")?.stringByReplacingOccurrencesOfString("%%USER_ID%%", withString: "\(user.remoteId.integerValue)")
     }
 }
