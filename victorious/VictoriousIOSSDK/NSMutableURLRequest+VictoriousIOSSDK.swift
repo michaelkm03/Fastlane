@@ -74,6 +74,7 @@ private struct HTTPHeader {
     static let authorization = "Authorization"
     static let date = "Date"
     static let userAgent = "User-Agent"
+    static let appID = "X-Client-App-ID"
     static let platform = "X-Client-Platform"
     static let osVersion = "X-Client-OS-Version"
     static let appVersion = "X-Client-App-Version"
@@ -110,6 +111,11 @@ extension NSMutableURLRequest {
         }
         let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.HTTPMethod)")
         setValue("Basic \(authenticationContext.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
+    }
+    
+    /// Sets the "X-App-ID" header to the given value.
+    public func vsdk_setAppIDHeader(to appID: Int) {
+        setValue("\(appID)", forHTTPHeaderField: HTTPHeader.appID)
     }
     
     /// Sets the value of the "X-Client-Platform" header to a constant value

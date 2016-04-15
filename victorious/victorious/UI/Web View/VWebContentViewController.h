@@ -18,4 +18,11 @@
 
 - (void)setFailureWithError:(NSError *)error;
 
+#pragma mark - Actions
+
+/**
+ *  Calls dismissViewControllerAnimated:completion: on self. Can be hooked up to an action.
+ */
+- (void)dismissSelf;
+
 @end

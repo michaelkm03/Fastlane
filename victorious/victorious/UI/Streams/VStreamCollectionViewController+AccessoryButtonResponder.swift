@@ -16,11 +16,11 @@ extension VStreamCollectionViewController {
         
         let tosAction = UIAlertAction(title: NSLocalizedString("Terms of Service", comment: ""),
             style: .Default) { alertAction in
-                ShowTermsOfServiceOperation(dependencyManager: self.dependencyManager!).queue()
+                ShowTermsOfServiceOperation(originViewController: self).queue()
         }
         let privacyAction = UIAlertAction(title: NSLocalizedString("Privacy Policy", comment: ""),
             style: .Default) { alertAction in
-                ShowPrivacyPolicyOperation(dependencyManager: self.dependencyManager!).queue()
+                ShowPrivacyPolicyOperation(originViewController: self).queue()
         }
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""),
             style: .Cancel,

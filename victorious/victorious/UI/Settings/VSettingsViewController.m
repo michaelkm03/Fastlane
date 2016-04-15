@@ -47,6 +47,12 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
     VSettingsActionRegisterTestAlert
 };
 
+typedef NS_ENUM(NSInteger, VSettingsAboutAction)
+{
+    VSettingsAboutActionTermsOfService,
+    VSettingsAboutActionPrivacyPolicy
+};
+
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
 
@@ -299,6 +305,17 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             // Reset coachmarks
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
+        }
+    }
+    else if (indexPath.section == 1)
+    {
+        if (indexPath.row == VSettingsAboutActionTermsOfService)
+        {
+            [[[ShowTermsOfServiceOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
+        }
+        else if (indexPath.row == VSettingsAboutActionPrivacyPolicy)
+        {
+            [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
         }
     }
     

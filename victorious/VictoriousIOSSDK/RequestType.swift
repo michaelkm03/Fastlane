@@ -76,6 +76,7 @@ extension RequestType {
 #if os(iOS)
         mutableRequest.vsdk_setOSVersionHeader()
 #endif
+        mutableRequest.vsdk_setAppIDHeader(to: requestContext.appID)
         mutableRequest.vsdk_setPlatformHeader()
         mutableRequest.vsdk_setAppVersionHeaderValue(requestContext.appVersion)
         mutableRequest.vsdk_setIdentiferForVendorHeader(firstInstallDeviceID: requestContext.firstInstallDeviceID)

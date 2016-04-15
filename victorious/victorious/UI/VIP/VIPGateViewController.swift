@@ -103,11 +103,11 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowPrivacyPolicyOperation(dependencyManager: dependencyManager).queue()
+        ShowPrivacyPolicyOperation(originViewController: self).queue()
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowTermsOfServiceOperation(dependencyManager: dependencyManager).queue()
+        ShowTermsOfServiceOperation(originViewController: self).queue()
     }
     
     // MARK: - Private

@@ -203,6 +203,7 @@ class RequestTypeTests: XCTestCase {
         let request = MockRequest(requestURL: NSURL(string: "/api/test4")!) { (actualURLRequest: NSURLRequest, _, _, _) in
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Platform"], "iOS")
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-OS-Version"], UIDevice.currentDevice().systemVersion)
+            XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-App-ID"], "1")
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-App-Version"], "1.0")
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Session-ID"], "e384f969-a6c6-4b85-b8f2-ae7ef4c810f1")
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["X-Client-Experiment-IDs"], "1")

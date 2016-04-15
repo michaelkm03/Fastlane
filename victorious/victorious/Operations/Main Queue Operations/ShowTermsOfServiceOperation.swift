@@ -6,38 +6,16 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class ShowTermsOfServiceOperation: BackgroundOperation {
-    
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
-    
-    required init( dependencyManager: VDependencyManager, animated: Bool = true) {
-        self.dependencyManager = dependencyManager
-        self.animated = animated
-    }
-    
-    override func start() {
-        
-        guard !cancelled else {
-            self.finishedExecuting()
-            return
-        }
-        
-        dispatch_async( dispatch_get_main_queue() ) {
-            self.performNavigation()
-        }
-    }
-    
-    private func performNavigation() {
-        guard let targetViewController = UIViewController.v_rootPresentationTargetViewController() else {
-            assertionFailure("Failed to present view controller")
-            return
-        }
-        let viewController = VTOSViewController.presentableTermsOfServiceViewController()
-        targetViewController.presentViewController(viewController, animated: animated) {
-            self.finishedExecuting()
-        }
+class ShowTermsOfServiceOperation: ShowWebContentOperation {
+    init(originViewController: UIViewController, forceModal: Bool = false, animated: Bool = true) {
+        super.init(
+            originViewController: originViewController,
+            title: NSLocalizedString("Terms of Service", comment: ""),
+            createFetchOperation: { TermsOfServiceOperation() },
+            forceModal: forceModal,
+            animated: animated
+        )
     }
 }

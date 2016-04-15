@@ -8,11 +8,13 @@
 
 import Foundation
 
-class PrivacyPolicyOperation: RemoteFetcherOperation, RequestOperation {
+class PrivacyPolicyOperation: FetchWebContentOperation, RequestOperation {
     
     let request: PrivacyPolicyRequest! = PrivacyPolicyRequest()
     
-    var resultHTMLString: String?
+    override var publicBaseURL: NSURL {
+        return request.publicBaseURL
+    }
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )

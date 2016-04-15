@@ -117,6 +117,13 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Actions
+
+- (void)dismissSelf
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - WKNavigationDelegate
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation

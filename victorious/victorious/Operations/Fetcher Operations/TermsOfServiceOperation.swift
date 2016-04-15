@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TermsOfServiceOperation: RemoteFetcherOperation, RequestOperation {
+class TermsOfServiceOperation: FetchWebContentOperation, RequestOperation {
     
     let request: TermsOfServiceRequest! = TermsOfServiceRequest()
     
-    var resultHTMLString: String?
+    override var publicBaseURL: NSURL {
+        return request.publicBaseURL
+    }
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
