@@ -24,7 +24,7 @@ public struct ChatMessage: ForumEvent, DictionaryConvertible {
         text = json["text"].string
         mediaAttachment = MediaAttachment(fromForumJSON: json["media"])
         
-        guard let user = ChatMessageUser(json: json["from_user"]) else {
+        guard let user = ChatMessageUser(json: json["user"]) else {
             return nil
         }
         

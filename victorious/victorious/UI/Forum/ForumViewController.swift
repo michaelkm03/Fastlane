@@ -106,6 +106,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         return .LightContent
     }
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -195,7 +199,7 @@ private extension VDependencyManager {
     }
     
     var navigationItemColor: UIColor {
-        return colorForKey("color.navigationItem") ?? UIColor.redColor()
+        return colorForKey("barTintColor")
     }
     
     var navigationBarBackgroundColor: UIColor? {

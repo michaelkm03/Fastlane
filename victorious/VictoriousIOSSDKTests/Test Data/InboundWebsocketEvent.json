@@ -4,7 +4,7 @@
     "chat": {
       "text": "Test incoming chat message",
       "giphy_url": "http://giphy.url",
-      "from_user": {
+      "user": {
         "id": 111,
         "name": "TestUser",
         "profile_url": "http://victorious.com/user/1111"

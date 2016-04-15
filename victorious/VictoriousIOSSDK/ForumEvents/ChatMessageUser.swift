@@ -18,7 +18,7 @@ public struct ChatMessageUser {
     init?(json: JSON) {
         guard let profileURL = json["profile_url"].URL,
             let name = json["name"].string,
-            let id = json["id"].int else {
+            let id = json["id"].int ?? Int(json["id"].stringValue) else {
             return nil
         }
         self.id = id
