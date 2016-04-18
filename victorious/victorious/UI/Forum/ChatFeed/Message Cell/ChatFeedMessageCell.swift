@@ -98,8 +98,12 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     private func populateData() {
         textView.attributedText = attributedText
         if let mediaAttachment = chatFeedMessage?.mediaAttachment {
-            mediaView.previewURL = mediaAttachment.thumbnailURL   
-            mediaView.mediaURL = mediaAttachment.url
+            if mediaAttachment.type == .GIF || mediaAttachment.type == .Video {
+                mediaView.previewURL = mediaAttachment.thumbnailURL
+                mediaView.mediaURL = mediaAttachment.url
+            } else if mediaAttachment.type == .Image {
+                mediaView.previewURL = mediaAttachment.url
+            }
         }
         detailTextView.text = "\(chatFeedMessage.sender.name) (\(chatFeedMessage.timeLabel))"
         avatarView.setProfileImageURL(chatFeedMessage.sender.profileURL)

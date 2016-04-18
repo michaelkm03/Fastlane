@@ -15,15 +15,14 @@ public extension MediaAttachment {
         guard let type = MediaAttachmentType.value(fromForumValue: json["type"].stringValue),
             let url = NSURL(vsdk_string: json["url"].string),
             let height = json["height"].int,
-            let width = json["width"].int,
-            let thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string) else {
+            let width = json["width"].int else {
                 return nil
         }
         self.type = type
         self.url = url
         self.size = CGSize(width: CGFloat(width), height: CGFloat(height))
-        self.thumbnailURL = thumbnailURL
-        
+        self.thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string)
+
         // Not needed for forum
         self.isGIFStyle = nil
         self.shouldAutoplay = nil

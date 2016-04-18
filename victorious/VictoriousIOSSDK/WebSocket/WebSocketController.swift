@@ -176,7 +176,7 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
             ]
         ]
         if let jsonString = JSON(toServerDictionary).rawString() {
-            NSLog("sendOutboundForumEvent json -> ", jsonString)
+            NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
             receiveEvent(event)
         } else {
