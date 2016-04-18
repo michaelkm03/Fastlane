@@ -11,30 +11,25 @@ import VictoriousIOSSDK
 @testable import victorious
 
 class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
-
-    var operation: TrendingUsersOperation!
-
+    
     func testResults() {
         let userID = 20160118
         let user = User(userID: userID)
         testRequestExecutor = TestRequestExecutor(result:[user])
-        operation = TrendingUsersOperation()
+        let operation = TrendingUsersOperation()
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("TrendingUsersOperation")
-        operation.queue() { results, error, cancelled in
-            XCTAssertNil(error)
-            XCTAssertEqual(results?.count, 1)
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-            
-            guard let loadedUser = results?.first as? VUser else {
-                XCTFail("first object in results should be an instance of VUser")
-                return
-            }
-            
-            XCTAssertEqual(loadedUser.remoteId, userID)
-            expectation.fulfill()
+        operation.main()
+        
+        XCTAssertNil(operation.error)
+        XCTAssertEqual(operation.results?.count, 1)
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+        
+        guard let loadedUser = operation.results?.first as? VUser else {
+            XCTFail("first object in results should be an instance of VUser")
+            return
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        
+        XCTAssertEqual(loadedUser.remoteId, userID)
     }
 }
