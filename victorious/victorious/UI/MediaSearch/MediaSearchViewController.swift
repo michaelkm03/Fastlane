@@ -96,7 +96,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
-            action: #selector(continueWithSelectedItem(_:))
+            action: #selector(continueWithSelectedItem(_: ))
         )
 		
 		// Load with no search term for default results (determined by data sources)
@@ -117,7 +117,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName : UIColor.whiteColor()
+            NSForegroundColorAttributeName: UIColor.whiteColor()
         ]
     }
     
