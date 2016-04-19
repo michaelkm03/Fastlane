@@ -76,6 +76,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let hashtagCell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuHashtagCollectionViewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ListMenuHashtagCollectionViewCell
             if let hashtag = hashtagDataSource?.visibleItems[indexPath.item] {
                 hashtagCell.configureCell(with: hashtag)
+                hashtagCell.dependencyManager = self.dependencyManager
             }
             
             return hashtagCell

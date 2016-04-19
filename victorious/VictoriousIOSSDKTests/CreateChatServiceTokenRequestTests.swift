@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class CreateChatServiceTokenRequestTests : XCTestCase {
+class CreateChatServiceTokenRequestTests: XCTestCase {
     
     private let expandableURLString = "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token"
     private let userID = 1337

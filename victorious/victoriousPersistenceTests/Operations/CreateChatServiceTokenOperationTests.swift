@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class CreateChatServiceTokenOperationTests : BaseFetcherOperationTestCase {
+class CreateChatServiceTokenOperationTests: BaseFetcherOperationTestCase {
 
     private var operation: CreateChatServiceTokenOperation!
     private let workingUrlString = "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token"

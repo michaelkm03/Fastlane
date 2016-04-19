@@ -9,7 +9,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class ChatMessageTests : XCTestCase {
+class ChatMessageTests: XCTestCase {
 
     func testInitialization() {
         guard let chatMessageJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatMessageInbound", withExtension: "json"),

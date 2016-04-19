@@ -37,6 +37,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UICollectionView Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
@@ -45,7 +46,23 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         case .community:
             return CGSizeZero
         case .hashtags:
-            return CGSizeMake(collectionView.bounds.width, 80)
+            return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
+        }
+    }
+    
+    // MARK: - UICollectionView Delegate
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
+        
+        switch listMenuSection {
+        case .creator:
+            break
+        case .community:
+            break
+        case .hashtags:
+            break
         }
     }
 }
