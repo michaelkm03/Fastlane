@@ -104,12 +104,16 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		
         self.updateNavigationItemState()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel", comment: ""),
-            style: .Plain,
-            target: self,
-            action: #selector(cancel)
-        )
+        // Only modify the left navigaiton item if we are the root of the nav stack
+        if self.navigationController?.viewControllers.first == self {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                title: NSLocalizedString("Cancel", comment: ""),
+                style: .Plain,
+                target: self,
+                action: #selector(cancel)
+            )
+        }
+        
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         self.navigationController?.navigationBar.titleTextAttributes = [
