@@ -205,7 +205,7 @@ private extension VDependencyManager {
     }
 
     var backgroundColor: UIColor {
-        return colorForKey("color.message.border")
+        return colorForKey("color.message.bubble")
     }
     
     var borderColor: UIColor {
