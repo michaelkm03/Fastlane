@@ -35,6 +35,11 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
         collectionView.backgroundColor = nil
         collectionView.alwaysBounceVertical = true
         
+        collectionView.registerNib(VFooterActivityIndicatorView.nibForSupplementaryView(),
+            forSupplementaryViewOfKind: UICollectionElementKindSectionFooter,
+            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
+        )
+        
         scrollPaginator.delegate = self
         
         edgesForExtendedLayout = .Bottom
@@ -52,6 +57,10 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
             flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: spacing, bottom: spacing, right: spacing)
         }
         
+        refreshControl.tintColor = dependencyManager.refreshControlColor
+        refreshControl.addTarget(self, action: #selector(VNewProfileViewController.refresh), forControlEvents: .ValueChanged)
+        collectionView.insertSubview(refreshControl, atIndex: 0)
+        
         setUser()
     }
     
@@ -66,6 +75,7 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
     // MARK: - Views
     
     private let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Data source
     
@@ -103,6 +113,14 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
         }
     }
     
+    // MARK: - Refreshing
+    
+    func refresh() {
+        dataSource.loadStreamItems(.First) { [weak self] _ in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+    
     // MARK: - Configuration
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -129,6 +147,10 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
         return CGSize(width: width, height: height)
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
@@ -136,6 +158,13 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
             fittingWidth: collectionView.bounds.width,
             cellsPerRow: VNewProfileViewController.cellsPerRow
         )
+    }
+    
+    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if let footerView = view as? VFooterActivityIndicatorView {
+            footerView.activityIndicator.color = dependencyManager.refreshControlColor
+            footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+        }
     }
     
     // MARK: - UIScrollViewDelegate
@@ -148,6 +177,16 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
+    }
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
+        if oldState == .Loading {
+            refreshControl.endRefreshing()
+        }
+        
+        if newState == .Loading || oldState == .Loading {
+            collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
@@ -164,5 +203,11 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
     
     func backgroundContainerView() -> UIView {
         return view
+    }
+}
+
+private extension VDependencyManager {
+    var refreshControlColor: UIColor? {
+        return colorForKey(VDependencyManagerMainTextColorKey)
     }
 }

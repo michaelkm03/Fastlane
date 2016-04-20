@@ -11,12 +11,6 @@
 static const CGFloat kActivityIndicatorScale = 0.8f;
 static const CGFloat kSupplementaryViewHeight = 60.0f;
 
-@interface VFooterActivityIndicatorView()
-
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@end
-
 @implementation VFooterActivityIndicatorView
 
 + (NSString *)reuseIdentifier

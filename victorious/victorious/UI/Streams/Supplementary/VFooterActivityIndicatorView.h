@@ -18,4 +18,6 @@
 
 - (void)setActivityIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end

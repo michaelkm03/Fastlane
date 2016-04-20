@@ -150,7 +150,7 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
 
 - (void)updateProfileImage
 {
-    NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:self.view.bounds.size];
+    NSURL *imageURL = [self.user pictureURLOfMinimumSize:self.view.bounds.size];
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
         UIImage *launchScreenImage = [[VLaunchScreenProvider launchImage] scaleToSize:[UIScreen mainScreen].bounds.size];

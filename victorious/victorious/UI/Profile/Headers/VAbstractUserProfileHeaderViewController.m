@@ -145,35 +145,6 @@
     // Implement in sublass
 }
 
-- (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize
-{
-    NSURL *imageURL = nil;
-    
-    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
-    
-    if ( self.user.previewAssets.count > 0 )
-    {
-        // Try to load high-res from server and make sure it's valid and large enough to display
-        VImageAsset *imageAsset = [assetFinder assetWithPreferredMinimumSize:minimumSize fromAssets:self.user.previewAssets];
-        imageURL = [NSURL URLWithString:imageAsset.imageURL];
-    }
-    
-    if ( imageURL == nil || imageURL.absoluteString.length == 0 )
-    {
-        // Otherwise fall back on local or low-res
-        VImageAsset *imageAsset = [assetFinder largestAssetFromAssets:self.user.previewAssets];
-        imageURL = [NSURL URLWithString:imageAsset.imageURL];
-    }
-    
-    if ( imageURL == nil || imageURL.absoluteString.length == 0 )
-    {
-        // Otherwise fall back on local or low-res
-        imageURL = [NSURL URLWithString:self.user.pictureUrl];
-    }
-    
-    return imageURL;
-}
-
 - (void)setState:(VUserProfileHeaderState)state
 {
     _state = state;

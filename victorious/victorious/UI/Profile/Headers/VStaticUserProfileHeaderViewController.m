@@ -192,7 +192,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 - (void)updateProfileImage
 {
     CGSize minimumSize = CGSizeMake( kMinimumBlurredImageSize, kMinimumBlurredImageSize );
-    NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:minimumSize];
+    NSURL *imageURL = [self.user pictureURLOfMinimumSize:minimumSize];
+    
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
         [self clearBackgroundImage];

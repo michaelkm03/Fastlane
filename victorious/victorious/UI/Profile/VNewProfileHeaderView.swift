@@ -24,6 +24,8 @@ class VNewProfileHeaderView: UICollectionReusableView {
         profilePictureShadowView.layer.shadowRadius = VNewProfileHeaderView.shadowRadius
         profilePictureShadowView.layer.shadowOpacity = VNewProfileHeaderView.shadowOpacity
         profilePictureShadowView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        
+        populateUserContent()
     }
     
     // MARK: - Models
@@ -36,18 +38,21 @@ class VNewProfileHeaderView: UICollectionReusableView {
     
     // MARK: - Views
     
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var vipIconImageView: UIImageView!
-    @IBOutlet var upvotesValueLabel: UILabel!
-    @IBOutlet var upvotesTitleLabel: UILabel!
-    @IBOutlet var upvotedValueLabel: UILabel!
-    @IBOutlet var upvotedTitleLabel: UILabel!
-    @IBOutlet var rankValueLabel: UILabel!
-    @IBOutlet var rankTitleLabel: UILabel!
-    @IBOutlet var locationLabel: UILabel!
-    @IBOutlet var taglineLabel: UILabel!
-    @IBOutlet var profilePictureView: UIImageView!
-    @IBOutlet var profilePictureShadowView: UIView!
+    @IBOutlet private var contentContainerView: UIView!
+    @IBOutlet private var loadingContainerView: UIView!
+    @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet private var nameLabel: UILabel!
+    @IBOutlet private var vipIconImageView: UIImageView!
+    @IBOutlet private var upvotesValueLabel: UILabel!
+    @IBOutlet private var upvotesTitleLabel: UILabel!
+    @IBOutlet private var upvotedValueLabel: UILabel!
+    @IBOutlet private var upvotedTitleLabel: UILabel!
+    @IBOutlet private var rankValueLabel: UILabel!
+    @IBOutlet private var rankTitleLabel: UILabel!
+    @IBOutlet private var locationLabel: UILabel!
+    @IBOutlet private var taglineLabel: UILabel!
+    @IBOutlet private var profilePictureView: UIImageView!
+    @IBOutlet private var profilePictureShadowView: UIView!
     
     // MARK: - Dependency manager
     
@@ -61,7 +66,7 @@ class VNewProfileHeaderView: UICollectionReusableView {
     
     private func applyDependencyManagerStyles() {
         tintColor = dependencyManager?.accentColor
-        
+
         nameLabel.textColor = dependencyManager?.headerTextColor
         upvotesValueLabel.textColor = dependencyManager?.statValueTextColor
         upvotesTitleLabel.textColor = dependencyManager?.statLabelTextColor
@@ -83,6 +88,8 @@ class VNewProfileHeaderView: UICollectionReusableView {
         taglineLabel.font = dependencyManager?.subcontentFont
         
         vipIconImageView.image = dependencyManager?.vipIcon
+        
+        loadingSpinner.color = dependencyManager?.loadingSpinnerColor
     }
     
     // MARK: - Populating content
@@ -95,11 +102,14 @@ class VNewProfileHeaderView: UICollectionReusableView {
         
         let placeholderImage = UIImage(named: "profile_full")
         
-        if let picturePath = user?.pictureUrl, pictureURL = NSURL(string: picturePath) {
+        if let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size) {
             profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
         } else {
             profilePictureView.image = placeholderImage
         }
+        
+        contentContainerView.hidden = user == nil
+        loadingContainerView.hidden = user != nil
     }
     
     // MARK: - Layout
@@ -129,6 +139,10 @@ class VNewProfileHeaderView: UICollectionReusableView {
 private extension VDependencyManager {
     var accentColor: UIColor? {
         return colorForKey(VDependencyManagerAccentColorKey)
+    }
+    
+    var loadingSpinnerColor: UIColor? {
+        return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
     var headerTextColor: UIColor? {
