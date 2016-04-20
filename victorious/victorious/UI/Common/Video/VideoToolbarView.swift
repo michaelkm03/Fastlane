@@ -42,7 +42,7 @@ class VideoToolbarView: UIView {
     @IBOutlet private weak var containerView: UIView!
     
     @IBOutlet private weak var containerTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var containerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerBottomConstraint: NSLayoutConstraint!
     
     private var isSliderDown: Bool = false
     private lazy var timeFormatter = VElapsedTimeFormatter()
@@ -115,7 +115,7 @@ class VideoToolbarView: UIView {
         layoutIfNeeded()
         let animations: ()->() = {
             self.containerTopConstraint.constant = self.frame.height
-            self.containerHeightConstraint.constant = -self.frame.height
+            self.containerBottomConstraint.constant = -self.frame.height
             self.layoutIfNeeded()
             
             self.delegate?.animateAlongsideVideoToolbarWillDisappear?(self)
@@ -145,7 +145,7 @@ class VideoToolbarView: UIView {
         layoutIfNeeded()
         let animations: ()->() = {
             self.containerTopConstraint.constant = 0.0
-            self.containerHeightConstraint.constant = 0.0
+            self.containerBottomConstraint.constant = 0.0
             self.layoutIfNeeded()
             
             self.delegate?.animateAlongsideVideoToolbarWillAppear?(self)
