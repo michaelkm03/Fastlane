@@ -103,7 +103,11 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
                 mediaView.mediaURL = mediaAttachment.url
             } else if mediaAttachment.type == .Image {
                 mediaView.previewURL = mediaAttachment.url
+                mediaView.mediaURL = nil
             }
+            mediaView.hidden = false
+        } else {
+            mediaView.hidden = true
         }
         detailTextView.text = "\(chatFeedMessage.sender.name) (\(chatFeedMessage.timeLabel))"
         avatarView.setProfileImageURL(chatFeedMessage.sender.profileURL)

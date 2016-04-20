@@ -31,7 +31,7 @@ class ReceivedEventQueueTests: XCTestCase {
                 XCTFail()
                 return
             }
-            queue.addEvent( ChatFeedMessage(source: source) )
+            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
             XCTAssertEqual(queue.count, i+1)
         }
         
@@ -49,7 +49,7 @@ class ReceivedEventQueueTests: XCTestCase {
                 XCTFail()
                 return
             }
-            queue.addEvent( ChatFeedMessage(source: source) )
+            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
             XCTAssertEqual(queue.count, min(i+1, maximimEventCount))
         }
         
@@ -67,7 +67,7 @@ class ReceivedEventQueueTests: XCTestCase {
                 XCTFail()
                 return
             }
-            queue.addEvent( ChatFeedMessage(source: source) )
+            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
         }
         
         let dequeuedEvents = queue.dequeueAll()
@@ -87,7 +87,7 @@ class ReceivedEventQueueTests: XCTestCase {
                 XCTFail()
                 return
             }
-            queue.addEvent( ChatFeedMessage(source: source) )
+            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
         }
         
         let dequeCount = 10
@@ -108,7 +108,7 @@ class ReceivedEventQueueTests: XCTestCase {
                 XCTFail()
                 return
             }
-            queue.addEvent( ChatFeedMessage(source: source) )
+            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
         }
         
         let dequeCount = 40

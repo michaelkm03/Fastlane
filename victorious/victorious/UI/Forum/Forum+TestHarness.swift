@@ -80,7 +80,7 @@ extension ForumViewController {
         
         guard let event: ForumEvent = ChatMessage(
             timestamp: NSDate(),
-            text: text,
+            text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             mediaAttachment: media,
             fromUser: ChatMessageUser(
                 id: 1000 + Int(arc4random() % 9999),
@@ -90,9 +90,12 @@ extension ForumViewController {
         ) else {
             return
         }
+        totalCount += 1
         receiveEvent(event)
     }
 }
+
+private var totalCount = 0
 
 private let sampleMedia = [
     [

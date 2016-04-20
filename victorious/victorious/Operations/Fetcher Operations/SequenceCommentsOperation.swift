@@ -42,7 +42,7 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = self.request.paginator.displayOrderCounterStart
+            var displayOrder = self.request.paginator.displayOrderCounterEnd
             
             var newComments = [VComment]()
             for comment in unflaggedResults {
@@ -50,7 +50,7 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 persistentComment.populate( fromSourceModel: comment )
                 persistentComment.sequenceId = self.sequenceID
                 persistentComment.displayOrder = displayOrder
-                displayOrder += 1
+                displayOrder -= 1
                 newComments.append( persistentComment )
             }
             sequence.v_addObjects( newComments, to: "comments" )

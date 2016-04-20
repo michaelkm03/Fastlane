@@ -493,7 +493,6 @@
 		0E5F7E401CA1E42000B3AF14 /* NetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E3F1CA1E42000B3AF14 /* NetworkSource.swift */; };
 		0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */; };
 		0E85A1F61CAE221C00BE950E /* ChatMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A1F51CAE221C00BE950E /* ChatMessageTests.swift */; };
-		0E85A1F81CAE266100BE950E /* ChatMessageInbound.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E85A1F71CAE266100BE950E /* ChatMessageInbound.json */; };
 		0E85A1FA1CAE28F400BE950E /* RefreshStageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A1F91CAE28F400BE950E /* RefreshStageTests.swift */; };
 		0E85A1FC1CAE299100BE950E /* RefreshStageVIP.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E85A1FB1CAE299100BE950E /* RefreshStageVIP.json */; };
 		0E85A1FE1CAE29C700BE950E /* RefreshStageMain.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E85A1FD1CAE29C700BE950E /* RefreshStageMain.json */; };
@@ -1333,6 +1332,7 @@
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
 		A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */; };
+		A7A191751CC7F7CA00E37F3C /* ChatMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = A7A191741CC7F7CA00E37F3C /* ChatMessage.json */; };
 		A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */; };
 		A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
@@ -2817,7 +2817,6 @@
 		0E5F7E3F1CA1E42000B3AF14 /* NetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkSource.swift; sourceTree = "<group>"; };
 		0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEventDecoder.swift; path = WebSocket/WebSocketEventDecoder.swift; sourceTree = "<group>"; };
 		0E85A1F51CAE221C00BE950E /* ChatMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageTests.swift; sourceTree = "<group>"; };
-		0E85A1F71CAE266100BE950E /* ChatMessageInbound.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatMessageInbound.json; sourceTree = "<group>"; };
 		0E85A1F91CAE28F400BE950E /* RefreshStageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshStageTests.swift; sourceTree = "<group>"; };
 		0E85A1FB1CAE299100BE950E /* RefreshStageVIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RefreshStageVIP.json; sourceTree = "<group>"; };
 		0E85A1FD1CAE29C700BE950E /* RefreshStageMain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RefreshStageMain.json; sourceTree = "<group>"; };
@@ -3919,6 +3918,7 @@
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedModelAdapters.swift; sourceTree = "<group>"; };
 		A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollResultReceiver.h; sourceTree = "<group>"; };
+		A7A191741CC7F7CA00E37F3C /* ChatMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatMessage.json; sourceTree = "<group>"; };
 		A7A1CF5D1C62BE6400B08F07 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
 		A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Operators.swift"; sourceTree = "<group>"; };
@@ -5960,6 +5960,7 @@
 				62575EC11C54BD0A00B49CB0 /* AdBreak */,
 				A7039CF71C24A9270023DE6F /* Alert.json */,
 				F09E8C671C88CBF300437ACD /* Asset.json */,
+				A7A191741CC7F7CA00E37F3C /* ChatMessage.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
 				A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */,
 				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
@@ -5980,7 +5981,6 @@
 				C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */,
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
 				67C210201BFA7A210074E40E /* HashtagSearchResponse.json */,
-				0E85A1F71CAE266100BE950E /* ChatMessageInbound.json */,
 				67C210211BFA7A210074E40E /* ImageAsset.json */,
 				C32D8BDD1BF2E06300AB5085 /* ImageSearchResponse.json */,
 				C32D8BE31BF2E0EE00AB5085 /* ImageSearchResult.json */,
@@ -5999,8 +5999,8 @@
 				C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */,
 				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				0EBF418D1CAC889C002966B3 /* RefreshStage.json */,
-				0E85A1FB1CAE299100BE950E /* RefreshStageVIP.json */,
 				0E85A1FD1CAE29C700BE950E /* RefreshStageMain.json */,
+				0E85A1FB1CAE299100BE950E /* RefreshStageVIP.json */,
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				62575EE21C54CAF100B49CB0 /* Sequence */,
 				A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */,
@@ -10742,7 +10742,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				79D9FC561BF2812F00445D2D /* NoDataConverationResponse.json in Resources */,
-				0E85A1F81CAE266100BE950E /* ChatMessageInbound.json in Resources */,
 				A7D69C131C0E33B600B462C3 /* StreamResponse.json in Resources */,
 				A7D69C101C0E33B600B462C3 /* Stream.json in Resources */,
 				A7D69C0F1C0E33B600B462C3 /* User.json in Resources */,
@@ -10800,6 +10799,7 @@
 				62575EF01C54CB2000B49CB0 /* Sequence.json in Resources */,
 				678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */,
 				670C65921C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json in Resources */,
+				A7A191751CC7F7CA00E37F3C /* ChatMessage.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
 				A7039CF81C24A9270023DE6F /* Alert.json in Resources */,

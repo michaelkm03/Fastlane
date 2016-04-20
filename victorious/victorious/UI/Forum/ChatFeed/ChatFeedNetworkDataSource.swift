@@ -17,9 +17,6 @@ protocol ChatFeedNetworkDataSourceType: VScrollPaginatorDelegate, ForumEventRece
 
 class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     
-    private let purgeTriggerCount = 20 //< Max count before purge should occur.
-    private let purgeTargetCount = 15 //< How many items should remain after purge.
-    
     private let eventQueue = ReceivedEventQueue<ChatFeedMessage>()
     
     /// If this interval is too small, the scrolling animations will become choppy
@@ -29,6 +26,8 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     private var timerManager: VTimerManager?
     
     var shouldStashNewContent: Bool = false
+    
+    private var eventCounter = Int.max
     
     // MARK: Initializer and external dependencies
     
@@ -59,8 +58,15 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     func receiveEvent(event: ForumEvent) {
         // Stash events in the queue when received and wait to dequeue on our timer cycle
         if let message =  event as? ChatMessage {
-            let chatFeedMessage = ChatFeedMessage(source: message)
+            let chatFeedMessage = ChatFeedMessage(displayOrder: eventCounter, source: message)
             eventQueue.addEvent(chatFeedMessage)
+            eventCounter -= 1
+            
+            // Deuque messages right away if from the current user so FetcherOperation
+            // So that the sending feels responsive and nothing gets out of order
+            if chatFeedMessage.sender.id == VCurrentUser.user()?.remoteId?.integerValue {
+                dequeueMessages()
+            }
         }
     }
     
@@ -88,9 +94,9 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     }
     
     func onTimerTick() {
-        if paginatedDataSource.visibleItems.count > purgeTriggerCount {
+        if paginatedDataSource.visibleItems.count > dependencyManager.purgeTriggerCount {
             // Instead of dequeuing on this tick, we need to purge
-            paginatedDataSource.purgeOlderItems(limit: purgeTargetCount)
+            paginatedDataSource.purgeOlderItems(limit: dependencyManager.purgeTargetCount)
         } else {
             // Now we can continue dequeuing
             dequeueMessages()
@@ -118,5 +124,18 @@ private final class DequeueMessagesOperation: FetcherOperation {
     
     override func main() {
         self.results = messages
+    }
+}
+
+private extension VDependencyManager {
+    
+    /// Max count before purge should occur.
+    var purgeTriggerCount: Int {
+        return numberForKey("purgeTriggerCount")?.integerValue ?? 100
+    }
+    
+    /// How many items should remain after purge.
+    var purgeTargetCount: Int {
+        return numberForKey("purgeTargetCount")?.integerValue ?? 80
     }
 }

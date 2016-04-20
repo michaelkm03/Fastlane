@@ -12,7 +12,7 @@ import XCTest
 class ChatMessageTests: XCTestCase {
 
     func testInitialization() {
-        guard let chatMessageJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatMessageInbound", withExtension: "json"),
+        guard let chatMessageJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatMessage", withExtension: "json"),
             let jsonData = NSData(contentsOfURL: chatMessageJSONURL) else {
                 XCTFail("Error reading ChatMessage JSON data.")
                 return

@@ -42,6 +42,10 @@ extension NumericPaginator {
         return (pageNumber - 1) * itemsPerPage
     }
     
+    public var displayOrderCounterEnd: Int {
+        return pageNumber * itemsPerPage
+    }
+    
     public var displayOrderRangeStart: Int {
         let start = (pageNumber - 1) * itemsPerPage
         if start > 0 {

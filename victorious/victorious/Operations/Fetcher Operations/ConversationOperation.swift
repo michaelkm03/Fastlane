@@ -55,9 +55,7 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
             }
             
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
-            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: false) ]
             fetchRequest.predicate = self.paginator.paginatorPredicate + messagesPredicate
-            
             return context.v_executeFetchRequest( fetchRequest ) as [VMessage]
         }
     }

@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A reference type adaptor for value type `VictoriousIOSSDK.ChatMessage`.
 class ChatFeedMessage: NSObject, PaginatedObjectType {
     
-    var displayOrder = NSNumber()
+    var displayOrder: NSNumber
     
     private let source: ChatMessage
     
@@ -22,8 +22,9 @@ class ChatFeedMessage: NSObject, PaginatedObjectType {
     
     let mediaAttachment: MediaAttachment?
     
-    init(source: ChatMessage) {
+    init(displayOrder: NSNumber, source: ChatMessage) {
         self.source = source
+        self.displayOrder = displayOrder
         self.mediaAttachment = source.mediaAttachment
     }
     

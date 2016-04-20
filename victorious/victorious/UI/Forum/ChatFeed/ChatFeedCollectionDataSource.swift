@@ -63,9 +63,6 @@ class ChatFeedCollectionDataSource: NSObject, UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let message = paginatedDataSource.visibleItems[ indexPath.row ] as! ChatFeedMessage
-        var bounds = sizingCell.bounds
-        bounds.size.width = collectionView.bounds.width
-        sizingCell.bounds = bounds
         decorateCell(sizingCell, message: message, dependencyManager: dependencyManager)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
