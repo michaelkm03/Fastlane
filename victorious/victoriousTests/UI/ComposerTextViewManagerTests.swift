@@ -94,6 +94,8 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         var onSetTextViewHasText: (Void -> ())? = nil
         
+        var onSetTextViewIsEditing: (Void -> ())? = nil
+        
         var textViewContentSize: CGSize = CGSize.zero {
             didSet {
                 onSetTextViewContentSize?()
@@ -105,5 +107,13 @@ class ComposerTextViewManagerTests: XCTestCase {
                 onSetTextViewHasText?()
             }
         }
+        
+        var textViewIsEditing: Bool = false {
+            didSet {
+                onSetTextViewIsEditing?()
+            }
+        }
+        
+        var textViewCanDismiss: Bool = true
     }
 }

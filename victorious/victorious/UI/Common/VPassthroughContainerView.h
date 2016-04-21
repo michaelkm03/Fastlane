@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@class VPassthroughContainerView;
+
+@protocol VPassthroughContainerViewDelegate <NSObject>
+
+- (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView;
+
+@end
+
 /**
  Overrides `hitTest:withEvent:` to only allow subviews to receive touches
  and not this view itself, essentially allowing touches to "pass through" its
  background.
  */
 @interface VPassthroughContainerView : UIView
+
+@property(nonatomic, weak) id <VPassthroughContainerViewDelegate>delegate;
 
 @end

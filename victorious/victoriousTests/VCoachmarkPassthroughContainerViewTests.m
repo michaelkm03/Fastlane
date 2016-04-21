@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VCoachmarkView *coachmarkView;
 @property (nonatomic, assign) CGRect coachmarkPassthroughContainerViewFrame;
-@property (nonatomic, strong) id <VCoachmarkPassthroughContainerViewDelegate> mockDelegate;
+@property (nonatomic, strong) id <VPassthroughContainerViewDelegate> mockDelegate;
 
 @end
 
@@ -27,7 +27,7 @@
     [super setUp];
     self.coachmarkView = [[VCoachmarkView alloc] init];
     self.coachmarkPassthroughContainerViewFrame = CGRectMake(10, 20, 30, 40);
-    self.mockDelegate = [OCMockObject niceMockForProtocol:@protocol(VCoachmarkPassthroughContainerViewDelegate)];
+    self.mockDelegate = [OCMockObject niceMockForProtocol:@protocol(VPassthroughContainerViewDelegate)];
 }
 
 - (void)tearDown
@@ -56,9 +56,9 @@
 
 #pragma mark - Silencing compiler warnings
 
-- (void)passthroughViewRecievedTouch:(VCoachmarkPassthroughContainerView *)passthroughContainerView
+- (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView
 {
-    
+    XCTAssert([passthroughContainerView isKindOfClass:[VCoachmarkPassthroughContainerView class]]);
 }
 
 @end

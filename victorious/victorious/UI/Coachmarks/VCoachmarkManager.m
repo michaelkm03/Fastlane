@@ -24,7 +24,7 @@ static NSString * const kPassthroughContainerViewKey = @"passthroughContainerVie
 static const CGFloat kAnimationDuration = 0.4f;
 static const CGFloat kAnimationVerticalOffset = 10.0f;
 
-@interface VCoachmarkManager () <VCoachmarkPassthroughContainerViewDelegate>
+@interface VCoachmarkManager () <VPassthroughContainerViewDelegate>
 
 @property (nonatomic, strong) NSArray *coachmarks;
 @property (nonatomic, strong) NSMutableArray *hideTimers;

@@ -43,7 +43,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         if shouldDismissForText(text) {
-            textView.resignFirstResponder()
+            if let delegate = delegate where delegate.textViewCanDismiss {
+                textView.resignFirstResponder()
+            }
             return false
         }
         
@@ -80,5 +82,13 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
         updateDelegateOfTextViewStatus(textView)
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        delegate?.textViewIsEditing = true
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        delegate?.textViewIsEditing = false
     }
 }

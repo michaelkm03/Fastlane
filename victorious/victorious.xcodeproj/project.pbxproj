@@ -4897,7 +4897,6 @@
 		F07409741B05876200C44623 /* VCoachmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkView.m; sourceTree = "<group>"; };
 		F074097D1B059CA200C44623 /* VCoachmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkManager.h; sourceTree = "<group>"; };
 		F074097E1B059CA200C44623 /* VCoachmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkManager.m; sourceTree = "<group>"; };
-		F07409811B059E9600C44623 /* VCoachmarkPassthroughContainerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkPassthroughContainerViewDelegate.h; sourceTree = "<group>"; };
 		F07409821B059FEA00C44623 /* VCoachmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmark.h; sourceTree = "<group>"; };
 		F07409831B059FEA00C44623 /* VCoachmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmark.m; sourceTree = "<group>"; };
 		F07557E41B73B49F00BB2648 /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
@@ -10143,7 +10142,6 @@
 				F0C83A541B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m */,
 				F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */,
 				F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */,
-				F07409811B059E9600C44623 /* VCoachmarkPassthroughContainerViewDelegate.h */,
 				F07409731B05876200C44623 /* VCoachmarkView.h */,
 				F07409741B05876200C44623 /* VCoachmarkView.m */,
 			);

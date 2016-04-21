@@ -17,7 +17,7 @@
 
 @implementation VCoachmarkPassthroughContainerView
 
-+ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView andDelegate:(id <VCoachmarkPassthroughContainerViewDelegate>)delegate
++ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView andDelegate:(id <VPassthroughContainerViewDelegate>)delegate
 {
     NSParameterAssert(coachmarkView != nil);
     
@@ -26,20 +26,6 @@
     [coachmarkPassthroughContainerView addSubview:coachmarkView];
     coachmarkPassthroughContainerView.delegate = delegate;
     return coachmarkPassthroughContainerView;
-}
-
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    UIView *result = [super hitTest:point withEvent:event];
-    if ( result == self )
-    {
-        if ( self.delegate != nil )
-        {
-            [self.delegate passthroughViewRecievedTouch:self];
-        }
-        return nil;
-    }
-    return result;
 }
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VCoachmarkPassthroughContainerViewDelegate.h"
+#import "VPassthroughContainerView.h"
 
 @class VCoachmarkView;
 
@@ -16,7 +16,7 @@
     while sending a message to its delegate, can be
     thought of much like an invisible button.
  */
-@interface VCoachmarkPassthroughContainerView : UIView
+@interface VCoachmarkPassthroughContainerView : VPassthroughContainerView
 
 /**
     Creates a new Coachmark Passthrough Container View and assigns
@@ -29,13 +29,7 @@
     @return A ready-for-display Coachmark Passthrough Container View.
  */
 + (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView
-                                                       andDelegate:(id <VCoachmarkPassthroughContainerViewDelegate>)delegate;
-
-/**
-    The delegate that will respond to touch events that occur
-    in this Coachmark Passthrough Container View
- */
-@property (nonatomic, weak) id <VCoachmarkPassthroughContainerViewDelegate> delegate;
+                                                       andDelegate:(id <VPassthroughContainerViewDelegate>)delegate;
 
 /**
     The coachmark view that is being displayed within this Coachmark
