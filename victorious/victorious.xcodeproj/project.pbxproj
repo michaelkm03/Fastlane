@@ -793,6 +793,7 @@
 		79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */; };
 		79FE18581C53188700170E5B /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18571C53188700170E5B /* Keyable.swift */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
+		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
@@ -3137,6 +3138,7 @@
 		79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VConversation+Keyable.swift"; sourceTree = "<group>"; };
 		79FE18571C53188700170E5B /* Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
+		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
 		7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
@@ -5338,6 +5340,7 @@
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
+				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
 				F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */,
 				F0C83A5D1B16214F00A6EC1A /* StreamPreviewView */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
@@ -12325,6 +12328,7 @@
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
 				A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
+				7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
 				A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */,
 				7AB14CAE1CBEF96B006E674B /* ShowWebContentOperation.swift in Sources */,
