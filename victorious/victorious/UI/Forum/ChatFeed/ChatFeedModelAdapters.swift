@@ -29,7 +29,7 @@ class ChatFeedMessage: NSObject, PaginatedObjectType {
     }
     
     var timeLabel: String {
-        return source.timestamp.stringDescribingTimeIntervalSinceNowWithPrecision(.Seconds)
+        return source.timestamp.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
     
     var text: String? {

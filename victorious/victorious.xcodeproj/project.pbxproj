@@ -45,7 +45,6 @@
 		0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D39919B46B5E00FA363C /* VConversationCell.m */; };
 		0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D39C19B46B5E00FA363C /* VMessageCell.m */; };
 		0314D4AB19B46B5E00FA363C /* VConversationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D39F19B46B5E00FA363C /* VConversationContainerViewController.m */; };
-		0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3A619B46B5E00FA363C /* VNotificationCell.m */; };
 		0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B019B46B5E00FA363C /* VImageLightboxViewController.m */; };
 		0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B219B46B5E00FA363C /* VLightboxDismissAnimator.m */; };
 		0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B419B46B5E00FA363C /* VLightboxDisplayAnimator.m */; };
@@ -406,7 +405,7 @@
 		0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */; };
 		0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086B19F39F6A00FD7EDF /* VConversationCell.xib */; };
 		0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086D19F39F9900FD7EDF /* VMessageCell.xib */; };
-		0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */; };
+		0390087019F3A01A00FD7EDF /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* NotificationCell.xib */; };
 		0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */; };
 		039269AF1B5F354700FCD0AA /* VCreatePollViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039269B11B5F354700FCD0AA /* VCreatePollViewController.storyboard */; };
 		039269C91B5F370F00FCD0AA /* VPublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039269CB1B5F370F00FCD0AA /* VPublishViewController.xib */; };
@@ -794,6 +793,8 @@
 		79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */; };
 		79FE18581C53188700170E5B /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18571C53188700170E5B /* Keyable.swift */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
+		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
+		7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
 		7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */; };
 		7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */; };
@@ -917,7 +918,6 @@
 		A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8761B572452000B7901 /* VSequence+Fetcher.m */; };
 		A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B01B572453000B7901 /* NSArray+VMap.m */; };
 		A721E9391B572454000B7901 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B41B572453000B7901 /* NSData+AES.m */; };
-		A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B61B572453000B7901 /* NSDate+timeSince.m */; };
 		A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */; };
 		A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */; };
 		A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BC1B572453000B7901 /* NSIndexSet+Map.m */; };
@@ -2291,8 +2291,6 @@
 		0314D39F19B46B5E00FA363C /* VConversationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationContainerViewController.m; sourceTree = "<group>"; };
 		0314D3A219B46B5E00FA363C /* VConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversationViewController.h; sourceTree = "<group>"; };
 		0314D3A319B46B5E00FA363C /* VConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationViewController.m; sourceTree = "<group>"; };
-		0314D3A519B46B5E00FA363C /* VNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationCell.h; sourceTree = "<group>"; };
-		0314D3A619B46B5E00FA363C /* VNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationCell.m; sourceTree = "<group>"; };
 		0314D3AF19B46B5E00FA363C /* VImageLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageLightboxViewController.h; sourceTree = "<group>"; };
 		0314D3B019B46B5E00FA363C /* VImageLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLightboxViewController.m; sourceTree = "<group>"; };
 		0314D3B119B46B5E00FA363C /* VLightboxDismissAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDismissAnimator.h; sourceTree = "<group>"; };
@@ -2643,7 +2641,7 @@
 		0390086A19F39EC200FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		0390086B19F39F6A00FD7EDF /* VConversationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VConversationCell.xib; sourceTree = "<group>"; };
 		0390086D19F39F9900FD7EDF /* VMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMessageCell.xib; sourceTree = "<group>"; };
-		0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotificationCell.xib; sourceTree = "<group>"; };
+		0390086F19F3A01A00FD7EDF /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFullscreenMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		0390087719F3A14500FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
 		0390087819F3A14E00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Profile.strings; sourceTree = "<group>"; };
@@ -3139,6 +3137,8 @@
 		79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VConversation+Keyable.swift"; sourceTree = "<group>"; };
 		79FE18571C53188700170E5B /* Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
+		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
+		7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
 		7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCell.swift; sourceTree = "<group>"; };
 		7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCellFactory.swift; sourceTree = "<group>"; };
@@ -3340,8 +3340,6 @@
 		A721E8B01B572453000B7901 /* NSArray+VMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VMap.m"; sourceTree = "<group>"; };
 		A721E8B31B572453000B7901 /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
 		A721E8B41B572453000B7901 /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
-		A721E8B51B572453000B7901 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
-		A721E8B61B572453000B7901 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		A721E8B71B572453000B7901 /* NSDictionary+VJSONLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VJSONLogging.h"; sourceTree = "<group>"; };
 		A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VJSONLogging.m"; sourceTree = "<group>"; };
 		A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
@@ -5534,13 +5532,12 @@
 		0314D3A419B46B5E00FA363C /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				0314D3A519B46B5E00FA363C /* VNotificationCell.h */,
-				0314D3A619B46B5E00FA363C /* VNotificationCell.m */,
-				0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */,
+				7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */,
+				0390086F19F3A01A00FD7EDF /* NotificationCell.xib */,
+				A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */,
 				035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */,
 				035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */,
 				A7AAE58E1C7509D900AD7682 /* VNotificationsViewController.swift */,
-				A7C565E71C4438AF00E4DF6A /* NotificationsDataSource.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -7478,8 +7475,7 @@
 				A721E8B31B572453000B7901 /* NSData+AES.h */,
 				A721E8B41B572453000B7901 /* NSData+AES.m */,
 				79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */,
-				A721E8B51B572453000B7901 /* NSDate+timeSince.h */,
-				A721E8B61B572453000B7901 /* NSDate+timeSince.m */,
+				7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */,
 				A721E8B71B572453000B7901 /* NSDictionary+VJSONLogging.h */,
 				A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */,
 				A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */,
@@ -10891,8 +10887,8 @@
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
 				A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */,
 				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
-				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				A7B844E71CB88D7B00CE02DE /* forum.json in Resources */,
+				0390087019F3A01A00FD7EDF /* NotificationCell.xib in Resources */,
 				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
 				0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */,
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
@@ -12314,7 +12310,6 @@
 				F06BEABE1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A72C86441C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift in Sources */,
-				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */,
 				5A75EAD91C51860700B08056 /* SearchDataSourceType.swift in Sources */,
@@ -12386,6 +12381,7 @@
 				D8A411C21AE5B17A000A7229 /* VCreationInfoContainer.m in Sources */,
 				A72C867C1C977FF600E97D4F /* SequenceLikersRemoteOperation.swift in Sources */,
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
+				7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */,
 				A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */,
 				A72C862F1C977FF500E97D4F /* SequenceInteractionsOperation.swift in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
@@ -12790,7 +12786,6 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
-				A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */,
 				A72C86851C977FF600E97D4F /* AlertsRequestDecorator.swift in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				C348D2101B8C03CA0040042C /* KMeans.swift in Sources */,
@@ -13122,6 +13117,7 @@
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
 				A72C86511C977FF500E97D4F /* ShowCommentsOperation.swift in Sources */,
+				7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */,
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,

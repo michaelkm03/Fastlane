@@ -39,7 +39,7 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     // MARK: - UITableViewDataSource
     
     func registerCells( tableView: UITableView ) {
-        let identifier = "VNotificationCell"
+        let identifier = "NotificationCell"
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass:self.dynamicType) )
         tableView.registerNib( nib, forCellReuseIdentifier: identifier)
     }
@@ -49,20 +49,14 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("VNotificationCell", forIndexPath: indexPath) as! VNotificationCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("NotificationCell", forIndexPath: indexPath) as! NotificationCell
         decorate(cell: cell, atIndexPath: indexPath)
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 72.0
-    }
-    
-    func decorate(cell notificationCell: VNotificationCell, atIndexPath indexPath: NSIndexPath) {
+    func decorate(cell notificationCell: NotificationCell, atIndexPath indexPath: NSIndexPath) {
         let notification = visibleItems[ indexPath.row ] as! VNotification
-        notificationCell.notification = notification
-        notificationCell.dependencyManager = dependencyManager
-        notificationCell.backgroundColor = notification.isRead!.boolValue ? UIColor.whiteColor() : UIColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1.0)
+        notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
     }
     
     

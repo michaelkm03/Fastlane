@@ -10,7 +10,6 @@
 #import "VInStreamCommentCellContents.h"
 #import "VTagSensitiveTextView.h"
 #import "VDefaultProfileButton.h"
-#import "NSDate+timeSince.h"
 #import "VInStreamMediaLink.h"
 #import "VTagSensitiveTextViewDelegate.h"
 #import "VUserTag.h"

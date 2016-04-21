@@ -8,7 +8,6 @@
 
 #import "VNotificationsViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VNotificationCell.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
@@ -20,11 +19,13 @@
 #import "VConversationListViewController.h"
 #import "victorious-Swift.h"
 
-static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
-static CGFloat const kVNotificationCellHeight = 64.0f;
+static NSString * const kNotificationCellViewIdentifier = @"NotificationCell";
+static CGFloat const kNotificationCellHeight = 64.0f;
+static CGFloat const kNotificationAddedVerticalInset = 5.0f;
 
-@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate>
+@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer>
 
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
@@ -91,11 +92,18 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     self.dataSource.delegate = self;
     self.tableView.dataSource = self.dataSource;
     
-    self.tableView.contentInset = self.v_layoutInsets;
+    UIEdgeInsets contentInset = self.v_layoutInsets;
+    
+    if (self.dependencyManager.festivalIsEnabled)
+    {
+        contentInset.top += kNotificationAddedVerticalInset;
+        contentInset.bottom += kNotificationAddedVerticalInset;
+    }
+    
+    self.tableView.contentInset = contentInset;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = kVNotificationCellHeight;
-    self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.tableView.estimatedRowHeight = kNotificationCellHeight;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
@@ -107,7 +115,22 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectZero];
+    [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl beginRefreshing];
+    
+    if (self.dependencyManager.festivalIsEnabled)
+    {
+        [self.dependencyManager addBackgroundToBackgroundHost:self];
+        self.refreshControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    }
+    else
+    {
+        self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.separatorColor = [UIColor lightGrayColor];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,20 +195,22 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [cell isKindOfClass:[VNotificationCell class]] )
+    if ( [cell isKindOfClass:[NotificationCell class]] )
     {
-        VNotificationCell *notificationCell = (VNotificationCell *)cell;
+        NotificationCell *notificationCell = (NotificationCell *)cell;
         notificationCell.delegate = self;
     }
+    
+    cell.backgroundColor = nil;
 }
 
 - (void)redecorateVisibleCells
 {
     for (UITableViewCell *cell in self.tableView.visibleCells)
     {
-        if ([cell isKindOfClass:VNotificationCell.class])
+        if ([cell isKindOfClass:NotificationCell.class])
         {
-            [self.dataSource decorateWithCell:(VNotificationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
+            [self.dataSource decorateWithCell:(NotificationCell *)cell atIndexPath:[self.tableView indexPathForCell:cell]];
         }
     }
 }
@@ -204,11 +229,6 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
          [self markAllItemsAsRead];
          [self redecorateVisibleCells];
      }];
-}
-
-- (IBAction)refresh:(UIRefreshControl *)refreshControl
-{
-    [self refresh];
 }
 
 #pragma mark - NSNotification handlers
@@ -346,6 +366,13 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 {
     UIViewController *viewControllerForError = self.navigationController ?: self;
     [viewControllerForError v_showErrorDefaultError];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
 }
 
 @end

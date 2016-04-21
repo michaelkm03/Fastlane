@@ -26,6 +26,7 @@ static NSString * const kPlistFileExtension = @"plist";
 // multi-purpose keys
 NSString * const VDependencyManagerTitleKey = @"title";
 NSString * const VDependencyManagerBackgroundKey = @"background";
+NSString * const VDependencyManagerCellBackgroundKey = @"background.cell";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
@@ -557,6 +558,13 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         [self.singletonsByID removeAllObjects];
         [self.childDependencyManagersByID removeAllObjects];
     });
+}
+
+#pragma mark - Feature toggle flags
+
+- (BOOL)festivalIsEnabled
+{
+    return [[self numberForKey:@"festivalEnabled"] boolValue];
 }
 
 #pragma mark - Dependency getter primatives

@@ -14,7 +14,7 @@
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager, NotificationsDataSource;
 
-@interface VNotificationsViewController : UITableViewController <VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VAccessoryNavigationSource>
+@interface VNotificationsViewController : UIViewController <VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VAccessoryNavigationSource>
 
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
@@ -22,5 +22,7 @@
 
 @property (strong, nonatomic) VNoContentView *noContentView;
 @property (strong, nonatomic) NotificationsDataSource *dataSource;
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end

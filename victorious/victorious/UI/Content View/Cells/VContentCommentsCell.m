@@ -20,7 +20,6 @@
 // Formatting
 #import "UIImage+ImageCreation.h"
 #import "AVAsset+Orientation.h"
-#import "NSDate+timeSince.h"
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
 #import "UIView+AutoLayout.h"

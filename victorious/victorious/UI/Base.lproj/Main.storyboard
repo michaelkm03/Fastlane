@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -990,49 +990,43 @@
             <point key="canvasLocation" x="-3374" y="-228"/>
         </scene>
         <!--Notifications View Controller-->
-        <scene sceneID="9EW-hc-aLf">
+        <scene sceneID="eaX-lv-JEH">
             <objects>
-                <tableViewController storyboardIdentifier="VNotificationsViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rLz-i9-Pmc" customClass="VNotificationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="92" sectionHeaderHeight="22" sectionFooterHeight="22" id="SKi-ks-3dX">
+                <viewController storyboardIdentifier="VNotificationsViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rx2-mH-CAj" customClass="VNotificationsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wBe-xA-GTA"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ygg-MF-rlt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7N8-1T-d2Q">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <connections>
-                            <outlet property="dataSource" destination="rLz-i9-Pmc" id="Ae5-9m-asg"/>
-                            <outlet property="delegate" destination="rLz-i9-Pmc" id="Pp5-CB-NKT"/>
-                        </connections>
-                    </tableView>
+                        <subviews>
+                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8lg-GT-Q7v">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="rx2-mH-CAj" id="Zrq-zD-9Cr"/>
+                                    <outlet property="delegate" destination="rx2-mH-CAj" id="01N-c0-9c6"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Ygg-MF-rlt" firstAttribute="top" secondItem="8lg-GT-Q7v" secondAttribute="bottom" id="J3i-2W-q4V"/>
+                            <constraint firstItem="8lg-GT-Q7v" firstAttribute="leading" secondItem="7N8-1T-d2Q" secondAttribute="leading" id="R0P-MV-HTA"/>
+                            <constraint firstAttribute="trailing" secondItem="8lg-GT-Q7v" secondAttribute="trailing" id="YjI-hT-7v8"/>
+                            <constraint firstItem="8lg-GT-Q7v" firstAttribute="top" secondItem="7N8-1T-d2Q" secondAttribute="top" id="oZ1-rQ-hfH"/>
+                        </constraints>
+                    </view>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="2pN-7o-3DD">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <attributedString key="attributedTitle"/>
-                        <connections>
-                            <action selector="refresh:" destination="rLz-i9-Pmc" eventType="valueChanged" id="iOu-A5-NOv"/>
-                        </connections>
-                    </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="QRR-5I-cva" id="yy1-pk-b2t"/>
+                        <outlet property="tableView" destination="8lg-GT-Q7v" id="iXj-C8-IId"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xKy-ya-Nnk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="8yx-rR-2Td">
-                    <connections>
-                        <outlet property="delegate" destination="rLz-i9-Pmc" id="nG6-n0-HQD"/>
-                        <outlet property="searchContentsController" destination="rLz-i9-Pmc" id="xON-mc-MwT"/>
-                        <outlet property="searchResultsDataSource" destination="rLz-i9-Pmc" id="ypu-2j-9gS"/>
-                        <outlet property="searchResultsDelegate" destination="rLz-i9-Pmc" id="0bI-Z8-inS"/>
-                    </connections>
-                </searchDisplayController>
-                <searchDisplayController id="4vT-fF-nMZ">
-                    <connections>
-                        <outlet property="delegate" destination="rLz-i9-Pmc" id="JQN-OP-Sp0"/>
-                        <outlet property="searchContentsController" destination="rLz-i9-Pmc" id="WYM-23-ViK"/>
-                        <outlet property="searchResultsDataSource" destination="rLz-i9-Pmc" id="TxD-dM-smW"/>
-                        <outlet property="searchResultsDelegate" destination="rLz-i9-Pmc" id="eaE-80-dGT"/>
-                    </connections>
-                </searchDisplayController>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MCP-7e-aCz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4338" y="-228"/>
+            <point key="canvasLocation" x="-4282" y="-250"/>
         </scene>
     </scenes>
     <resources>

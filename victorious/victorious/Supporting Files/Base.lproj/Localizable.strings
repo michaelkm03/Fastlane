@@ -189,6 +189,21 @@
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
 
+"SecondAgo Verbose"  = "1 second ago";
+"SecondsAgo Verbose" = "%d seconds ago";
+"MinuteAgo Verbose"  = "1 minute ago";
+"MinutesAgo Verbose" = "%d minutes ago";
+"HourAgo Verbose"    = "1 hour ago";
+"HoursAgo Verbose"   = "%d hours ago";
+"Yesterday Verbose"  = "1 day ago";
+"DaysAgo Verbose"    = "%d days ago";
+"LastWeek Verbose"   = "1 week ago";
+"WeeksAgo Verbose"   = "%d weeks ago";
+"LastMonth Verbose"  = "1 month ago";
+"MonthsAgo Verbose"  = "%d months ago";
+"LastYear Verbose"   = "1 year ago";
+"YearsAgo Verbose"   = "%d years ago";
+
 "JustAMoment"           =   "Just a moment";
 
 "Edit"                  =   "Edit";

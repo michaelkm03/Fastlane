@@ -7,12 +7,12 @@
 //
 
 #import "VConversationCell.h"
-#import "NSDate+timeSince.h"
 #import "VUserProfileViewController.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VUser.h"
 #import "VConversation.h"
+#import "victorious-Swift.h"
 
 const CGFloat VConversationCellHeight = 72.0f;
 static const CGFloat kLineSpacing = 3.0f;

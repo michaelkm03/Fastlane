@@ -12,6 +12,7 @@
 // multi-purpose keys
 extern NSString * const VDependencyManagerTitleKey;
 extern NSString * const VDependencyManagerBackgroundKey;
+extern NSString * const VDependencyManagerCellBackgroundKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
@@ -246,6 +247,11 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  of class, we return nil.
  */
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Returns whether "festival" (5.0) UI is enabled.
+ */
+- (BOOL)festivalIsEnabled;
 
 /**
  Performs necessary cleanup before deallocating the receiver. 

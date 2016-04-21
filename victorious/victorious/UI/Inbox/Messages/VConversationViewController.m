@@ -7,7 +7,6 @@
 //
 
 #import "MBProgressHUD.h"
-#import "NSDate+timeSince.h"
 #import "NSURL+MediaType.h"
 #import "VConversation.h"
 #import "VMessageTextAndMediaView.h"

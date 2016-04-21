@@ -19,7 +19,9 @@
 
 // Formatters
 #import "VLargeNumberFormatter.h"
-#import "NSDate+timeSince.h"
+
+// Swift
+#import "victorious-Swift.h"
 
 static const CGFloat kClockSize = 8.5f;
 static const CGFloat kSpacing = 2.0f;

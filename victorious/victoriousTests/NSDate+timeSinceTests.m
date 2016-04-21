@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "NSDate+timeSince.h"
+#import "victorious-Swift.h"
 
 @interface NSDate_timeSinceTests : XCTestCase
 

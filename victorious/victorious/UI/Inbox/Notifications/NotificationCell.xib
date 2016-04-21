@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="96" id="g6F-yQ-WNN" customClass="NotificationCell" customModule="victorious" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g6F-yQ-WNN" id="Piw-pF-kIO">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-UC-jqE" userLabel="Container View">
+                        <rect key="frame" x="12" y="6" width="296" height="84"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lah-z8-5d3" userLabel="Profile Shadow View">
+                                <rect key="frame" x="9" y="12" width="45" height="45"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgV-KO-Ggl" userLabel="Profile Button" customClass="VDefaultProfileButton">
+                                <rect key="frame" x="9" y="12" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="7XI-UI-KdW"/>
+                                    <constraint firstAttribute="height" constant="45" id="jST-La-baC"/>
+                                </constraints>
+                                <state key="normal" image="profile_full">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="profileButtonWasPressed" destination="g6F-yQ-WNN" eventType="touchUpInside" id="669-ww-cRc"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="message" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zon-jL-8wU" userLabel="Message label" customClass="IntrinsicContentSizeHackLabel" customModule="victorious" customModuleProvider="target">
+                                <rect key="frame" x="63" y="15" width="224" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EL9-An-auI">
+                                <rect key="frame" x="63" y="36" width="13" height="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.27058823529999998" green="0.27058823529999998" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.25" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EL9-An-auI" secondAttribute="bottom" constant="12" id="0wo-WP-7cl"/>
+                            <constraint firstItem="zon-jL-8wU" firstAttribute="top" secondItem="qgV-KO-Ggl" secondAttribute="top" constant="3" id="71I-FK-CHP"/>
+                            <constraint firstItem="qgV-KO-Ggl" firstAttribute="leading" secondItem="QUQ-UC-jqE" secondAttribute="leading" constant="9" id="7hM-mH-gyu"/>
+                            <constraint firstItem="EL9-An-auI" firstAttribute="top" secondItem="zon-jL-8wU" secondAttribute="bottom" constant="1" id="CRw-dd-e1i"/>
+                            <constraint firstItem="zon-jL-8wU" firstAttribute="leading" secondItem="qgV-KO-Ggl" secondAttribute="trailing" constant="9" id="HY6-sB-oog"/>
+                            <constraint firstItem="lah-z8-5d3" firstAttribute="top" secondItem="qgV-KO-Ggl" secondAttribute="top" id="HxQ-rk-WD6"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qgV-KO-Ggl" secondAttribute="bottom" priority="999" constant="12" id="KWr-Qk-2lL"/>
+                            <constraint firstItem="qgV-KO-Ggl" firstAttribute="top" secondItem="QUQ-UC-jqE" secondAttribute="top" constant="12" id="YgU-HS-wS6"/>
+                            <constraint firstItem="lah-z8-5d3" firstAttribute="trailing" secondItem="qgV-KO-Ggl" secondAttribute="trailing" id="aBa-an-clz"/>
+                            <constraint firstItem="lah-z8-5d3" firstAttribute="leading" secondItem="qgV-KO-Ggl" secondAttribute="leading" id="cto-iD-BKL"/>
+                            <constraint firstItem="lah-z8-5d3" firstAttribute="bottom" secondItem="qgV-KO-Ggl" secondAttribute="bottom" id="dxd-VK-9CT"/>
+                            <constraint firstAttribute="trailing" secondItem="zon-jL-8wU" secondAttribute="trailing" constant="9" id="uEf-fe-RFS"/>
+                            <constraint firstItem="EL9-An-auI" firstAttribute="leading" secondItem="zon-jL-8wU" secondAttribute="leading" id="v00-Ck-AVQ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="QUQ-UC-jqE" secondAttribute="bottom" constant="6" id="GwG-A4-deg"/>
+                    <constraint firstItem="QUQ-UC-jqE" firstAttribute="top" secondItem="Piw-pF-kIO" secondAttribute="top" constant="6" id="iWa-ia-DuN"/>
+                    <constraint firstItem="QUQ-UC-jqE" firstAttribute="leading" secondItem="Piw-pF-kIO" secondAttribute="leading" constant="12" id="imk-vg-Det"/>
+                    <constraint firstAttribute="trailing" secondItem="QUQ-UC-jqE" secondAttribute="trailing" constant="12" id="mCI-MB-ELP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="containerView" destination="QUQ-UC-jqE" id="YiE-KN-xPF"/>
+                <outlet property="containerViewBottomSpacingConstraint" destination="GwG-A4-deg" id="1Qk-yv-aSU"/>
+                <outlet property="containerViewLeftSpacingConstraint" destination="imk-vg-Det" id="s0Q-Lz-j9d"/>
+                <outlet property="containerViewRightSpacingConstraint" destination="mCI-MB-ELP" id="GwJ-ZJ-ijn"/>
+                <outlet property="containerViewTopSpacingConstraint" destination="iWa-ia-DuN" id="Ao5-Hv-CbA"/>
+                <outlet property="dateLabel" destination="EL9-An-auI" id="plD-8p-qDi"/>
+                <outlet property="messageLabel" destination="zon-jL-8wU" id="J1F-lh-GvH"/>
+                <outlet property="profileButton" destination="qgV-KO-Ggl" id="VGA-FT-FGW"/>
+                <outlet property="profileShadowView" destination="lah-z8-5d3" id="xOW-y4-6YC"/>
+            </connections>
+            <point key="canvasLocation" x="336" y="283.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="profile_full" width="80" height="80"/>
+    </resources>
+</document>
