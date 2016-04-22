@@ -1,5 +1,5 @@
 //
-//  SequenceCommentsRemoteOperation.swift
+//  SequenceCommentsOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/3/16.

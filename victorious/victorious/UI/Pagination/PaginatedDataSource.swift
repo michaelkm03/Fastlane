@@ -29,11 +29,13 @@ import VictoriousIOSSDK
         shouldStashNewItems = true
     }
     
+    var sortOrder: NSComparisonResult = .OrderedAscending
+    
     private var isPurging = false
     
     func unstashAll() {
         shouldStashNewItems = false
-        visibleItems = visibleItems.v_orderedSet(byAddingObjects: stashedItems.array)
+        visibleItems = visibleItems.v_orderedSet(byAddingObjects: stashedItems.array, sortOrder: self.sortOrder)
         purgedStashedCount = 0
         stashedItems = NSOrderedSet()
     }
@@ -131,7 +133,7 @@ import VictoriousIOSSDK
     
     /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
     /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)? = nil ) {
+    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)?) {
         
         let operation: FetcherOperation = createOperation()
         
@@ -147,9 +149,9 @@ import VictoriousIOSSDK
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
                 if self.shouldStashNewItems {
-                    self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults)
+                    self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
                 } else {
-                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults)
+                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
                 }
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error, cancelled )
@@ -210,7 +212,7 @@ import VictoriousIOSSDK
                 
             } else {
                 let results = operation.results ?? []
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, sortOrder: self.sortOrder)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
@@ -223,24 +225,6 @@ import VictoriousIOSSDK
 
 private extension NSOrderedSet {
     
-    func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
-        let output: NSOrderedSet
-        
-        switch pageType {
-            
-        case .First: //< reset
-            output = NSOrderedSet(array: objects)
-            
-        case .Next: //< apend
-            output = NSOrderedSet(array: self.array + objects)
-            
-        case .Previous: //< prepend
-            output = NSOrderedSet(array: objects + self.array)
-        }
-        
-        return output.v_orderedSetFitleredForDeletedObjects()
-    }
-    
     func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {
         let predicate = NSPredicate() { (object, dictionary) -> Bool in
             if let managedObject = object as? NSManagedObject {
@@ -252,8 +236,17 @@ private extension NSOrderedSet {
         return results
     }
     
-    func v_orderedSet( byAddingObjects objects: [AnyObject]) -> NSOrderedSet {
-        return NSOrderedSet(array: (self.array + objects).sortedPaginatedObjects)
+    func v_orderedSet( byAddingObjects objects: [AnyObject], sortOrder: NSComparisonResult) -> NSOrderedSet {
+        let combinedArray = self.array + objects
+        let paginatedObjects = combinedArray.flatMap { $0 as? PaginatedObjectType }
+        if paginatedObjects.isEmpty {
+            // If we don't have `PaginatedObjectType`, we fall back to the "append to next page" strategy
+            return NSOrderedSet(array: combinedArray)
+        } else {
+            // If we have instances of `PaginatedObjectType` we can sort directly on `displayOrder`.
+            let sortedArray = paginatedObjects.sort { $0.displayOrder.compare($1.displayOrder) == sortOrder }
+            return NSOrderedSet(array: sortedArray)
+        }
     }
     
     func v_orderedSetPurgedBy(limit: Int) -> NSOrderedSet {
@@ -261,14 +254,5 @@ private extension NSOrderedSet {
         let rangeEnd = count
         let remaining = Array(array[rangeStart..<rangeEnd])
         return NSOrderedSet(array: remaining)
-    }
-}
-
-private extension Array {
-    
-    var sortedPaginatedObjects: [PaginatedObjectType] {
-        return self
-            .flatMap { $0 as? PaginatedObjectType }
-            .sort { $0.displayOrder.integerValue > $1.displayOrder.integerValue }
     }
 }

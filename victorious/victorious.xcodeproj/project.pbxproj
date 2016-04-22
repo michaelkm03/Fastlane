@@ -1016,7 +1016,7 @@
 		A72C86281C977FF500E97D4F /* PollVoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85821C977FF500E97D4F /* PollVoteOperation.swift */; };
 		A72C86291C977FF500E97D4F /* PrunePersistentStoreOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85831C977FF500E97D4F /* PrunePersistentStoreOperation.swift */; };
 		A72C862A1C977FF500E97D4F /* RegisterPushNotificationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85841C977FF500E97D4F /* RegisterPushNotificationOperation.swift */; };
-		A72C862B1C977FF500E97D4F /* SequenceCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85851C977FF500E97D4F /* SequenceCommentsOperation.swift */; };
+		A72C862B1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85851C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */; };
 		A72C862C1C977FF500E97D4F /* SequenceDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85861C977FF500E97D4F /* SequenceDeleteOperation.swift */; };
 		A72C862D1C977FF500E97D4F /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85871C977FF500E97D4F /* SequenceFetchOperation.swift */; };
 		A72C862E1C977FF500E97D4F /* SequenceFlagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85881C977FF500E97D4F /* SequenceFlagOperation.swift */; };
@@ -1087,7 +1087,7 @@
 		A72C86751C977FF600E97D4F /* MessageSendRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */; };
 		A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */; };
 		A72C86771C977FF600E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */; };
-		A72C86781C977FF600E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */; };
+		A72C86781C977FF600E97D4F /* SequenceCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DC1C977FF500E97D4F /* SequenceCommentsOperation.swift */; };
 		A72C86791C977FF600E97D4F /* SequenceDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */; };
 		A72C867A1C977FF600E97D4F /* SequenceFlagRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DE1C977FF500E97D4F /* SequenceFlagRemoteOperation.swift */; };
 		A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DF1C977FF500E97D4F /* SequenceLikeRemoteOperation.swift */; };
@@ -3478,7 +3478,7 @@
 		A72C85821C977FF500E97D4F /* PollVoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollVoteOperation.swift; sourceTree = "<group>"; };
 		A72C85831C977FF500E97D4F /* PrunePersistentStoreOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrunePersistentStoreOperation.swift; sourceTree = "<group>"; };
 		A72C85841C977FF500E97D4F /* RegisterPushNotificationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPushNotificationOperation.swift; sourceTree = "<group>"; };
-		A72C85851C977FF500E97D4F /* SequenceCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsOperation.swift; sourceTree = "<group>"; };
+		A72C85851C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85861C977FF500E97D4F /* SequenceDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceDeleteOperation.swift; sourceTree = "<group>"; };
 		A72C85871C977FF500E97D4F /* SequenceFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchOperation.swift; sourceTree = "<group>"; };
 		A72C85881C977FF500E97D4F /* SequenceFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFlagOperation.swift; sourceTree = "<group>"; };
@@ -3554,7 +3554,7 @@
 		A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryBySequenceRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsRemoteOperation.swift; sourceTree = "<group>"; };
+		A72C85DC1C977FF500E97D4F /* SequenceCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsOperation.swift; sourceTree = "<group>"; };
 		A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DE1C977FF500E97D4F /* SequenceFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFlagRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DF1C977FF500E97D4F /* SequenceLikeRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceLikeRemoteOperation.swift; sourceTree = "<group>"; };
@@ -7689,7 +7689,7 @@
 				A7F3F80E1C9D3A2200CC2374 /* PrivacyPolicyOperation.swift */,
 				A72C85831C977FF500E97D4F /* PrunePersistentStoreOperation.swift */,
 				A72C85841C977FF500E97D4F /* RegisterPushNotificationOperation.swift */,
-				A72C85851C977FF500E97D4F /* SequenceCommentsOperation.swift */,
+				A72C85851C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */,
 				A72C85861C977FF500E97D4F /* SequenceDeleteOperation.swift */,
 				A72C85871C977FF500E97D4F /* SequenceFetchOperation.swift */,
 				A72C85881C977FF500E97D4F /* SequenceFlagOperation.swift */,
@@ -7828,7 +7828,7 @@
 				A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */,
 				A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */,
 				A72C85DB1C977FF500E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift */,
-				A72C85DC1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift */,
+				A72C85DC1C977FF500E97D4F /* SequenceCommentsOperation.swift */,
 				A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */,
 				A72C85DE1C977FF500E97D4F /* SequenceFlagRemoteOperation.swift */,
 				A72C85DF1C977FF500E97D4F /* SequenceLikeRemoteOperation.swift */,
@@ -12114,7 +12114,7 @@
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
-				A72C862B1C977FF500E97D4F /* SequenceCommentsOperation.swift in Sources */,
+				A72C862B1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
 				A72C86911C977FF600E97D4F /* CreateTextPostOperation.swift in Sources */,
 				A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */,
@@ -12437,7 +12437,7 @@
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
 				67B783BE1C80F98900940D61 /* Achievement.swift in Sources */,
-				A72C86781C977FF600E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */,
+				A72C86781C977FF600E97D4F /* SequenceCommentsOperation.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,

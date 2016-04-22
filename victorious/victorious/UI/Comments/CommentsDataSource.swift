@@ -22,20 +22,9 @@ class CommentsDataSource: PaginatedDataSource, UICollectionViewDataSource {
     init(sequence: VSequence, dependencyManager: VDependencyManager) {
         self.sequence = sequence
         self.dependencyManager = dependencyManager
-        super.init()
-        
-        self.KVOController.observe( self.sequence,
-            keyPath: "comments",
-            options: [],
-            action: #selector(onCommentsChanged(_: ))
-        )
     }
     
-    func onCommentsChanged( change: [NSObject: AnyObject]? ) {
-        guard hasLoadedOnce, let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) where kind != .Removal else {
-                return
-        }
+    func loadNewComments() {
         self.loadNewItems(
             createOperation: {
                 let op = SequenceCommentsOperation(sequenceID: sequence.remoteId)
