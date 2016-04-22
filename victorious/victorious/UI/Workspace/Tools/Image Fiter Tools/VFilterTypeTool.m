@@ -12,9 +12,7 @@
 
 - (NSString *)title
 {
-    return self.filter.name;
+    return self.filter.localizedName;
 }
 
 @end
-
-

@@ -23,7 +23,7 @@
 - (id)copyWithZone:(NSZone *)zone
 {
     VPhotoFilter *copy = [[VPhotoFilter alloc] init];
-    copy.name = self.name;
+    copy.localizedName = self.localizedName;
     NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:self.components.count];
     for (id component in self.components)
     {
@@ -37,7 +37,7 @@
 {
     if (_description == nil)
     {
-        _description = [NSString stringWithFormat:@"%@, %@", [super description], self.name];
+        _description = [NSString stringWithFormat:@"%@, %@", [super description], self.localizedName];
     }
 
     return _description;

@@ -464,6 +464,7 @@
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
 		03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */; };
+		03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */; };
 		03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */ = {isa = PBXBuildFile; fileRef = 03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */; };
 		03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */; };
 		03E7305A1C974ADD008CB191 /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
@@ -2771,6 +2772,7 @@
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
+		03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterNameLocalization.swift; sourceTree = "<group>"; };
 		03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VDataCacheTests.cachedData; sourceTree = "<group>"; };
 		03E910821B96B032009CC937 /* TrendingTopicGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicGradientView.swift; sourceTree = "<group>"; };
 		03EBF62F1C6D4FB300B938FB /* VPaginatedDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginatedDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -8082,6 +8084,7 @@
 		A75ED0071AB0B6D100C35063 /* Image Fiter Tools */ = {
 			isa = PBXGroup;
 			children = (
+				03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */,
 				A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */,
 				A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */,
 				A75ED0081AB0B6D100C35063 /* VFilterTool.h */,
@@ -12480,6 +12483,7 @@
 				A72C867E1C977FF600E97D4F /* SequenceRepostRemoteOperation.swift in Sources */,
 				A72C860B1C977FF500E97D4F /* FetchExperienceEnhancersOperation.swift in Sources */,
 				A72C86271C977FF500E97D4F /* PollResultSummaryByUserOperation.swift in Sources */,
+				03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				A72C86331C977FF500E97D4F /* SequenceRepostersOperation.swift in Sources */,
 				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,

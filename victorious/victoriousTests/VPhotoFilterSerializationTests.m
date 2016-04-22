@@ -26,7 +26,7 @@
     XCTAssertEqual(filters.count, 2u);
     
     VPhotoFilter *filter1 = filters[0];
-    XCTAssertEqualObjects(filter1.name, @"July 11, 2014 at 11:40 AM");
+    XCTAssertEqualObjects(filter1.localizedName, @"LA");
     XCTAssertEqualObjects([filter1.components[0] name], @"CIColorControls");
     XCTAssertEqualObjects([filter1.components[0] valueForKey:@"inputSaturation"], @1.26);
     XCTAssertEqualObjects([filter1.components[0] valueForKey:@"inputBrightness"], @(-0.04));
@@ -36,7 +36,7 @@
     XCTAssertEqualObjects([filter1.components[2] name], @"CIPhotoEffectChrome");
     
     VPhotoFilter *filter2 = filters[1];
-    XCTAssertEqualObjects(filter2.name, @"July 11, 2014 at 11:47 AM");
+    XCTAssertEqualObjects(filter2.localizedName, @"Oslo");
     XCTAssertEqualObjects([filter2.components[0] name], @"CIColorControls");
     XCTAssertEqualObjects([filter2.components[0] valueForKey:@"inputSaturation"], @1.388);
     XCTAssertEqualObjects([filter2.components[0] valueForKey:@"inputBrightness"], @(-0.012));

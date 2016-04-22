@@ -62,11 +62,11 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         
         photoFilters = [photoFilters sortedArrayUsingComparator:^NSComparisonResult(VPhotoFilter *filter1, VPhotoFilter *filter2)
         {
-            return [filter1.name caseInsensitiveCompare:filter2.name];
+            return [filter1.localizedName caseInsensitiveCompare:filter2.localizedName];
         }];
         
         VPhotoFilter *noFilterFilter = [[VPhotoFilter alloc] init];
-        noFilterFilter.name = NSLocalizedString(@"#nofilter", @"No Filter filter name.");
+        noFilterFilter.localizedName = NSLocalizedString(@"#nofilter", @"No Filter filter name.");
         NSMutableArray *mutablePhotoFilters = [[NSMutableArray alloc] initWithArray:photoFilters];
         [mutablePhotoFilters insertObject:noFilterFilter atIndex:0];
         
@@ -75,7 +75,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         NSArray *filterTools = [photoFilters v_map:^id(VPhotoFilter *photoFilter)
         {
             VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
-            photoFilter.name = [NSLocalizedString(photoFilter.name, @"") uppercaseStringWithLocale:[NSLocale currentLocale]];
+            photoFilter.localizedName = [photoFilter.localizedName uppercaseStringWithLocale:[NSLocale currentLocale]];
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
