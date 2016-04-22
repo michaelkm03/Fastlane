@@ -88,7 +88,9 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    private var verified: Bool = false
+    private var verified: Bool {
+        return avatarBadgeType == .Verified
+    }
 
     // MARK: Readonly variables
     
@@ -130,7 +132,6 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     var avatarBadgeType: AvatarBadgeType = .None {
         didSet {
             if avatarBadgeType != oldValue {
-                verified = avatarBadgeType == .Verified
                 updateBadgeIcon()
                 updateBadgeText()
             }
@@ -224,5 +225,23 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
     private func updateBadgeText() {
         badgeLabel.text = verified ? nil : text
+    }
+
+    /// Updates the badge view's visibility and level based on the passed in user.
+    func updateBadge(forUser user: VUser?) {
+        guard let user = user else {
+            hidden = true
+            return
+        }
+        let userLevel = user.level.integerValue
+        hidden = (userLevel < badgeDependencyManager?.minimumLevel() || userLevel == 0) && !verified
+        
+        level = userLevel
+    }
+}
+
+private extension VDependencyManager {
+    func minimumLevel() -> Int {
+        return numberForKey("minLevel").integerValue
     }
 }

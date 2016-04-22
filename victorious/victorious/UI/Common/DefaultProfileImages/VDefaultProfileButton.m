@@ -15,7 +15,6 @@
 #import "FBKVOController.h"
 #import "victorious-Swift.h"
 
-static NSString * const kMinUserLevelKey = @"minLevel";
 static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 
 @interface VDefaultProfileButton ()
@@ -114,10 +113,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
     }
     else if ( self.levelBadgeView != nil )
     {
-        NSNumber *userLevel = self.user.level;
-        NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
-        self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue || userLevel.integerValue == 0;
-        self.levelBadgeView.level = userLevel.integerValue;
+        [self.levelBadgeView updateBadgeForUser:self.user];
         self.levelBadgeView.avatarBadgeType = [self.user badgeType];
         self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
         [self setNeedsLayout];
