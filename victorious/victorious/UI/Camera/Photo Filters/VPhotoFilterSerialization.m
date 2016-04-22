@@ -7,6 +7,7 @@
 //
 
 #import "CIFilter+VPhotoFilterComponentConformance.h"
+#import "victorious-Swift.h"
 #import "VPhotoFilter.h"
 #import "VPhotoFilterComponent.h"
 #import "VPhotoFilterSerialization.h"
@@ -28,6 +29,7 @@ static NSString * const kFilterComponentInputValueKey = @"value";
         return nil;
     }
     
+    VFilterNameLocalization *localization = [[VFilterNameLocalization alloc] init];
     NSArray *filterPlist = [NSPropertyListSerialization propertyListWithData:filterData
                                                                      options:NSPropertyListImmutable
                                                                       format:nil
@@ -36,7 +38,7 @@ static NSString * const kFilterComponentInputValueKey = @"value";
     for (NSDictionary *filterDefinition in filterPlist)
     {
         VPhotoFilter *filter = [[VPhotoFilter alloc] init];
-        filter.name = filterDefinition[kFilterNameKey];
+        filter.localizedName = [localization localizedStringForFilterName:filterDefinition[kFilterNameKey]];
         NSArray *componentDefinitions = filterDefinition[kFilterComponentsKey];
         NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:componentDefinitions.count];
         for (NSDictionary *componentDefinition in componentDefinitions)
