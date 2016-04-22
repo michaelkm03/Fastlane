@@ -34,7 +34,7 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : conversationID ])
-            var displayOrder = self.request.paginator.displayOrderCounterEnd
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             var messagesLoaded = [VMessage]()
             for result in results {
                 let uniqueElements = [ "remoteId": result.messageID ]
@@ -52,7 +52,7 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
                     conversation.postedAt = newMessage.postedAt
                 }
                 newMessage.displayOrder = displayOrder
-                displayOrder -= 1
+                displayOrder += 1
                 messagesLoaded.append( newMessage )
             }
             conversation.v_addObjects( messagesLoaded, to: "messages" )

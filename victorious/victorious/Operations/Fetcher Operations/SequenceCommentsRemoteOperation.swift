@@ -1,5 +1,5 @@
 //
-//  SequenceCommentsOperation.swift
+//  SequenceCommentsRemoteOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/19/15.
@@ -42,7 +42,7 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = self.request.paginator.displayOrderCounterEnd
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             
             var newComments = [VComment]()
             for comment in unflaggedResults {
@@ -50,11 +50,10 @@ final class SequenceCommentsRemoteOperation: RemoteFetcherOperation, PaginatedRe
                 persistentComment.populate( fromSourceModel: comment )
                 persistentComment.sequenceId = self.sequenceID
                 persistentComment.displayOrder = displayOrder
-                displayOrder -= 1
+                displayOrder += 1
                 newComments.append( persistentComment )
             }
             sequence.v_addObjects( newComments, to: "comments" )
-            
             context.v_save()
         }
     }

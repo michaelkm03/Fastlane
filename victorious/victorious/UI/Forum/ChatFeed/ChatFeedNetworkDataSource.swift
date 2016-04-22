@@ -37,6 +37,9 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     init( paginatedDataSource: PaginatedDataSource, dependencyManager: VDependencyManager ) {
         self.paginatedDataSource = paginatedDataSource
         self.dependencyManager = dependencyManager
+        super.init()
+        
+        self.paginatedDataSource.sortOrder = .OrderedDescending
     }
     
     deinit {

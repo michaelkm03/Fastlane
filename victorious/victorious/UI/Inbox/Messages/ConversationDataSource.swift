@@ -9,35 +9,9 @@
 import UIKit
 import VictoriousIOSSDK
 
-class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSourceDelegate {
+class ConversationDataSource: PaginatedDataSource, UITableViewDataSource {
     
     static var liveUpdateFrequency: NSTimeInterval = 5.0
-    
-    private lazy var paginatedDataSource: PaginatedDataSource = {
-        let dataSource = PaginatedDataSource()
-        dataSource.delegate = self
-        return dataSource
-    }()
-    
-    private(set) var visibleItems = NSOrderedSet() {
-        didSet {
-            self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
-        }
-    }
-    
-    func isLoading() -> Bool {
-        return self.paginatedDataSource.isLoading()
-    }
-    
-    weak var delegate: VPaginatedDataSourceDelegate?
-    
-    var state: VDataSourceState {
-        return self.paginatedDataSource.state
-    }
-    
-    func removeDeletedItems() {
-        self.paginatedDataSource.removeDeletedItems()
-    }
     
     private var hasLoadedOnce: Bool = false
     
@@ -47,13 +21,16 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
+        super.init()
+        
+        sortOrder = .OrderedDescending
     }
     
     func loadMessages( pageType pageType: VPageType, completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil ) {
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
-        self.paginatedDataSource.loadPage( pageType,
+        self.loadPage( pageType,
             createOperation: {
                 return ConversationOperation(conversationID: conversationID, userID: userID)
             },
@@ -68,7 +45,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
         let userID: Int? = self.conversation.user?.remoteId.integerValue
         let conversationID: Int? = self.conversation.remoteId?.integerValue
         
-        self.paginatedDataSource.loadNewItems(
+        self.loadNewItems(
             createOperation: {
                 let operation = ConversationOperation(conversationID: conversationID, userID: userID)
                 operation.localFetch = local
@@ -76,21 +53,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, VPaginatedDataSou
             },
             completion: completion
         )
-    }
-    
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.displayOrder.compare($1.displayOrder) == .OrderedDescending }
-        self.visibleItems = NSOrderedSet(array: sortedArray)
-    }
-    
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
-    }
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
-        self.delegate?.paginatedDataSource( paginatedDataSource, didReceiveError: error)
     }
     
     // MARK: - UITableViewDataSource

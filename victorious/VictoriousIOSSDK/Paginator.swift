@@ -33,17 +33,12 @@ public protocol NumericPaginator: Paginator {
     var itemsPerPage: Int { get }
     var displayOrderCounterStart: Int { get }
     var displayOrderRangeStart: Int { get }
-    var displayOrderRangeEnd: Int { get }
 }
 
 extension NumericPaginator {
     
     public var displayOrderCounterStart: Int {
         return (pageNumber - 1) * itemsPerPage
-    }
-    
-    public var displayOrderCounterEnd: Int {
-        return pageNumber * itemsPerPage
     }
     
     public var displayOrderRangeStart: Int {
