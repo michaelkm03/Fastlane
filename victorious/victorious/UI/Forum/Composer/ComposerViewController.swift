@@ -99,7 +99,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return false
         }
         
-        if dependencyManager.alwaysShowAttachmentBar {
+        if let alwaysShowAttachmentBar = dependencyManager.alwaysShowAttachmentBar where alwaysShowAttachmentBar == true {
             return true
         }
         
@@ -410,8 +410,8 @@ private extension VDependencyManager {
         return colorForKey("color.link.selected")
     }
     
-    var alwaysShowAttachmentBar: Bool {
-        return numberForKey("alwaysShowAttachmentBar").boolValue
+    var alwaysShowAttachmentBar: Bool? {
+        return numberForKey("alwaysShowAttachmentBar")?.boolValue
     }
     
     var keyboardAppearance: UIKeyboardAppearance {
