@@ -6,15 +6,16 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class ListMenuHashtagDataSource: ListMenuSectionDataSource {
+final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     
-    private let dependencyManager: VDependencyManager
+    typealias Cell = ListMenuHashtagCollectionViewCell
+
+    let dependencyManager: VDependencyManager
     
     // MARK: - Initialization
     
     /// Initializes a ListMenuHashtagDataSource, then start to fetch trending hashtags from backend
-    init(dependencyManager: VDependencyManager, delegate: ListMenuSectionDataSourceDelegate) {
-        self.delegate = delegate
+    init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         
         fetchRemoteData()
@@ -26,11 +27,11 @@ class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     /// and gets populated after `fetchRemoteData` is called
     private(set) var visibleItems: [HashtagSearchResultObject] = [] {
         didSet {
-            self.delegate.didUpdateVisibleItems(forSection: .hashtags)
+            delegate?.didUpdateVisibleItems(forSection: .hashtags)
         }
     }
     
-    private(set) var delegate: ListMenuSectionDataSourceDelegate
+    weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
         let operation = TrendingHashtagOperation()

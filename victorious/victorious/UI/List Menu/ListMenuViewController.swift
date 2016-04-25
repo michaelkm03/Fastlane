@@ -34,6 +34,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return viewController
     }
     
+    // MARK: - UIViewController overrides
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
     // MARK: - UICollectionView Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -42,12 +48,20 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         switch listMenuSection {
         case .creator:
-            return CGSizeZero
+            return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
         case .community:
-            return CGSizeZero
+            return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
         case .hashtags:
             return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 12, left: 0, bottom: 24, right: 0)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.bounds.width, height: ListMenuSectionHeaderView.preferredHeight)
     }
     
     // MARK: - UICollectionView Delegate

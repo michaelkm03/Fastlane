@@ -28,13 +28,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let listMenuViewController: ListMenuViewController
     private let dependencyManager: VDependencyManager
     
-    private lazy var hashtagDataSource: ListMenuHashtagDataSource? = {
-        guard let childDependency = self.dependencyManager.childDependencyForKey(self.dependencyManager.trendingHashtagsKey) else {
-            assertionFailure("List menu is missing trending hashtags child dependency")
-            return nil
-        }
-        return ListMenuHashtagDataSource(dependencyManager: childDependency, delegate: self)
-    }()
+    private let communityDataSource: ListMenuCommunityDataSource
+    private let hashtagDataSource: ListMenuHashtagDataSource
+    private let creatorDataSource: ListMenuCreatorDataSource
     
     // MARK: - Initialization
     
@@ -42,7 +38,15 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
         
+        creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
+        communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
+        hashtagDataSource = ListMenuHashtagDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
+        
         super.init()
+        
+        creatorDataSource.setupDataSource(with: self)
+        communityDataSource.setupDataSource(with: self)
+        hashtagDataSource.setupDataSource(with: self)
     }
     
     // MARK: - UICollectionView Data Source
@@ -56,11 +60,11 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         
         switch listMenuSection {
         case .creator:
-            return 0
+            return creatorDataSource.visibleItems.count
         case .community:
-            return 0
+            return communityDataSource.visibleItems.count
         case .hashtags:
-            return hashtagDataSource?.visibleItems.count ?? 0
+            return hashtagDataSource.visibleItems.count
         }
     }
     
@@ -68,36 +72,53 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-        case .creator:
-            return UICollectionViewCell()
-        case .community:
-            return UICollectionViewCell()
-        case .hashtags:
-            let hashtagCell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuHashtagCollectionViewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ListMenuHashtagCollectionViewCell
-            if let hashtag = hashtagDataSource?.visibleItems[indexPath.item] {
-                hashtagCell.configureCell(with: hashtag)
-                hashtagCell.dependencyManager = self.dependencyManager
-            }
             
-            return hashtagCell
+        case .creator:
+            return creatorDataSource.dequeueCell(from: collectionView, for: indexPath)
+        
+        case .community:
+            return communityDataSource.dequeueCell(from: collectionView, for: indexPath)
+        
+        case .hashtags:
+            return hashtagDataSource.dequeueCell(from: collectionView, for: indexPath)
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        let headerIdentifier = stringFromClass(ListMenuSectionHeaderView.self)
+        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerIdentifier , forIndexPath: indexPath) as! ListMenuSectionHeaderView
+        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
+        
+        switch listMenuSection {
+        case .creator:
+            headerView.dependencyManager = dependencyManager.creatorsChildDependency
+        case .community:
+            headerView.dependencyManager = dependencyManager.communityChildDependency
+        case .hashtags:
+            headerView.dependencyManager = dependencyManager.hashtagsChildDependency
+        }
+        
+        return headerView
     }
     
     // MARK: - List Menu Network Data Source Delegate
     
     func didUpdateVisibleItems(forSection section: ListMenuSection) {
-        listMenuViewController.collectionView.reloadSections(NSIndexSet(index: section.rawValue))
+        listMenuViewController.collectionView.reloadData()
     }
 }
 
 private extension VDependencyManager {
-    var creatorsKey: String {
-        return "creators"
+    
+    var creatorsChildDependency: VDependencyManager {
+        return self.childDependencyForKey("creators") ?? self
     }
-    var communityKey: String {
-        return "community"
+    
+    var communityChildDependency: VDependencyManager {
+        return self.childDependencyForKey("community") ?? self
     }
-    var trendingHashtagsKey: String {
-       return "trending"
+    
+    var hashtagsChildDependency: VDependencyManager {
+        return self.childDependencyForKey("trending") ?? self
     }
 }

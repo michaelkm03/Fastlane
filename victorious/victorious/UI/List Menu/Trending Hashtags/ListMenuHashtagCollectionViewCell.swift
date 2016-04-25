@@ -17,46 +17,53 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
         }
     }
     
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            applyTemplateAppearance(with: dependencyManager)
-        }
-    }
-    
-    func configureCell(with hashtag: HashtagSearchResultObject) {
-        titleLabel.text = "#\(hashtag.tag)"
-    }
-    
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
-        titleBackgroundView.backgroundColor = dependencyManager.hashtagBackgroundColor
-        titleLabel.font = dependencyManager.hashtagItemFont
-    }
-    
     override var selected: Bool {
         didSet {
-            if selected {
-                contentView.backgroundColor = dependencyManager.hashtagBackgroundColor
-                titleBackgroundView.backgroundColor = nil
-            } else {
-                contentView.backgroundColor = nil
-                titleBackgroundView.backgroundColor = dependencyManager.hashtagBackgroundColor
-            }
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager.selectedBackgroundColor, isSelected: selected)
         }
     }
     
     // MARK: - List Menu Section Cell
     
-    static var preferredHeight: CGFloat {
-        return 36
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            applyTemplateAppearance(with: dependencyManager)
+        }
+    }
+
+    func configureCell(with hashtag: HashtagSearchResultObject) {
+        titleLabel.text = "#\(hashtag.tag)"
+    }
+    
+    func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool) {
+        if isSelected {
+            backgroundContainer.backgroundColor = color
+            titleBackgroundView.backgroundColor = nil
+        } else {
+            backgroundContainer.backgroundColor = nil
+            titleBackgroundView.backgroundColor = dependencyManager.hashtagBackgroundColor
+        }
+    }
+    
+    // MARK: - Private methods
+    
+    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        titleBackgroundView.backgroundColor = dependencyManager.hashtagBackgroundColor
+        titleLabel.font = dependencyManager.hashtagItemFont
     }
 }
 
 private extension VDependencyManager {
+    
     var hashtagBackgroundColor: UIColor? {
         return colorForKey(VDependencyManagerLinkColorKey)
     }
     
     var hashtagItemFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+    
+    var selectedBackgroundColor: UIColor? {
+        return colorForKey(VDependencyManagerAccentColorKey)
     }
 }
