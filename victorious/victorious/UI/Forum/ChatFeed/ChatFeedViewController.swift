@@ -185,13 +185,17 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
             CATransaction.commit()
         } else {
+            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
             CATransaction.begin()
-            setTopInset(max(collectionView.bounds.height - Layout.topMargin - totalHeight, 0.0))
-            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: true)
-            CATransaction.commit()
-            dispatch_after(0.01) {
-                self.collectionView.v_scrollToBottomAnimated(true)
+            let targetInset = max(self.collectionView.bounds.height - Layout.topMargin, 0.0)
+            self.setTopInset(targetInset)
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            CATransaction.setCompletionBlock() {
+                dispatch_after(0.0) {
+                    self.collectionView.v_scrollToBottomAnimated(true)
+                }
             }
+            CATransaction.commit()
         }
     }
     
