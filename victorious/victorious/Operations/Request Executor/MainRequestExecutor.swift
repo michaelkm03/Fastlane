@@ -40,7 +40,7 @@ class MainRequestExecutor: RequestExecutorType {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
-        let baseURL = request.baseUrl ?? currentEnvironment.baseURL
+        let baseURL = request.baseURL ?? currentEnvironment.baseURL
         
         let authenticationContext: AuthenticationContext? = dispatch_sync( dispatch_get_main_queue() ) {
             return AuthenticationContext(currentUser: VCurrentUser.user())

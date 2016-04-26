@@ -14,20 +14,18 @@ public struct CreateChatServiceTokenRequest: RequestType {
 
     private let userIDExpander = "%%USER_ID%%"
     
-    private let currentUserId: Int
     private let url: NSURL
 
     public init?(expandableURLString: String, currentUserID: Int) {
-        let expandedURLString = expandableURLString.stringByReplacingOccurrencesOfString(userIDExpander, withString: String(currentUserID))
+        let expandedURLString = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([userIDExpander: String(currentUserID)], inURLString: expandableURLString)
         guard let url = NSURL(string: expandedURLString) else {
             return nil
         }
         
         self.url = url
-        self.currentUserId = currentUserID
     }
     
-    public var baseUrl: NSURL? {
+    public var baseURL: NSURL? {
         return url.baseURL
     }
 

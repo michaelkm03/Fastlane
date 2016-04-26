@@ -21,7 +21,7 @@ class CreateChatServiceTokenRequestTests: XCTestCase {
         let expandedURLString = "https://vapi-dev.getvictorious.com/v1/users/1337/chat/token"
         let url = NSURL(string: expandedURLString)!
         
-        XCTAssertEqual(url.baseURL, request?.baseUrl)
+        XCTAssertEqual(url.baseURL, request?.baseURL)
         XCTAssertEqual(url, request?.urlRequest.URL)
     }
 }

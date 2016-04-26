@@ -23,6 +23,6 @@
  */
 @interface VPassthroughContainerView : UIView
 
-@property(nonatomic, weak) id <VPassthroughContainerViewDelegate>delegate;
+@property (nonatomic, weak) id <VPassthroughContainerViewDelegate>delegate;
 
 @end

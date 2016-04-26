@@ -30,14 +30,18 @@ public struct TextPostParameters {
 public struct TextPostCreateRequest: RequestType {
     
     public let parameters: TextPostParameters
-    public let baseURL: NSURL
+    public let injectedBaseURL: NSURL
     
     public init?(parameters: TextPostParameters, baseURL: NSURL) {
         if parameters.isInvalid() {
             return nil
         }
         self.parameters = parameters
-        self.baseURL = baseURL
+        self.injectedBaseURL = baseURL
+    }
+    
+    public var baseURL: NSURL? {
+        return injectedBaseURL
     }
     
     public var urlRequest: NSURLRequest {

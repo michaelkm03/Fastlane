@@ -29,12 +29,19 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        let operation = TrendingUsersOperation()
+        let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString
+        let operation = CreatorListOperation(expandableURLString: endpointURLFromTemplate)
         operation.queue() { [weak self] results, error, cancelled in
             guard let users = results as? [VUser] else {
                 return
             }
             self?.visibleItems = users
         }
+    }
+}
+
+private extension VDependencyManager {
+    var listOfCreatorsURLString: String? {
+        return stringForKey("listOfCreatorsURL")
     }
 }

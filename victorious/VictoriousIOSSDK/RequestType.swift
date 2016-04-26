@@ -17,7 +17,7 @@ public protocol RequestType {
     var urlRequest: NSURLRequest { get }
     
     /// A custom base URL can be specified by the request.
-    var baseUrl: NSURL? { get }
+    var baseURL: NSURL? { get }
     
     /// Translates the raw data response from the server into an instance of ResponseType
     ///
@@ -32,7 +32,7 @@ public protocol RequestType {
 /// parseResponse that does nothing. Useful for "fire and forget" API calls like tracking pings.
 extension RequestType {
     
-    public var baseUrl: NSURL? {
+    public var baseURL: NSURL? {
         return nil
     }
     

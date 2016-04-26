@@ -42,14 +42,18 @@ public struct PollParameters {
 public struct PollCreateRequest: RequestType {
     
     public let parameters: PollParameters
-    public let baseURL: NSURL
+    public let injectedBaseURL: NSURL
     
     public init?( parameters: PollParameters, baseURL: NSURL ) {
         if parameters.isInvalid() {
             return nil
         }
         self.parameters = parameters
-        self.baseURL = baseURL
+        self.injectedBaseURL = baseURL
+    }
+    
+    public var baseURL: NSURL? {
+        return injectedBaseURL
     }
     
     public var urlRequest: NSURLRequest {

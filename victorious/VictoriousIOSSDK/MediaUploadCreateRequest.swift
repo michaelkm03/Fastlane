@@ -10,10 +10,14 @@ import Foundation
 
 public struct MediaUploadCreateRequest: RequestType {
     
-    public let baseURL: NSURL
+    public let injectedBaseURL: NSURL
     
     public init(baseURL: NSURL) {
-        self.baseURL = baseURL
+        self.injectedBaseURL = baseURL
+    }
+    
+    public var baseURL: NSURL? {
+        return injectedBaseURL
     }
     
     public var urlRequest: NSURLRequest {

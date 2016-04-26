@@ -26,7 +26,6 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
-    
     func setupWithAttachmentMenuItems(navigationMenuItems: [VNavigationMenuItem]?, maxNumberOfMenuItems: Int) {
         
         var actionItems = [UIView]()
