@@ -32,7 +32,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     @IBOutlet private(set) weak var textView: UITextView!
     
     let horizontalSpacing: CGFloat = 10.0
-    let contentMargin = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 75)
+    let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     
     var layout: ChatFeedMessageCellLayout! {
         didSet {
@@ -83,6 +83,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
         detailTextView.contentInset = UIEdgeInsetsZero
         detailTextView.font = dependencyManager.userLabelFont
         detailTextView.textColor = dependencyManager.userLabelColor
+        detailTextView.textAlignment = layout.textAlignment
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
@@ -118,8 +119,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
         let mediaSize = calculateMediaSizeWithinBounds(bounds)
         let textSize = calculateTextSizeWithinBounds(bounds)
-        let totalHeight = contentMargin.top
-            + detailTextView.frame.height
+        let totalHeight = detailTextView.frame.height
             + textSize.height
             + mediaSize.height
             + contentMargin.bottom
