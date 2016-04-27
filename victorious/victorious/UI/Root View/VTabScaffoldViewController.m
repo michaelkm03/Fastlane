@@ -359,23 +359,16 @@ static NSString * const kMenuKey = @"menu";
     
     ShowQueuedDeeplinkOperation *deeplinkOperation = [[ShowQueuedDeeplinkOperation alloc] initWithDeepLinkReceiver:[VRootViewController sharedRootViewController].deepLinkReceiver];
     
-    FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
-                                                                         viewControllerToPresentOn:self
-                                                                                      sessionTimer:[VRootViewController sharedRootViewController].sessionTimer];
-    
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
     
     // Determine execution order by setting dependencies
     [deeplinkOperation addDependency:pushNotificationOperation];
-    [pushNotificationOperation addDependency:ftueVideoOperation];
-    [ftueVideoOperation addDependency:showLoginOperation];
+    [pushNotificationOperation addDependency:showLoginOperation];
     
     [showLoginOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
     {
         [welf configureTabBar];
     }];
-    
-    [ftueVideoOperation queueWithCompletion:nil];
     
     [pushNotificationOperation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
     {

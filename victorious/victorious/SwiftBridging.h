@@ -155,7 +155,6 @@
 #import "VLargeNumberFormatter.h"
 #import "VLaunchScreenProvider.h"
 #import "VLightboxTransitioningDelegate.h"
-#import "VLightweightContentViewController.h"
 #import "VLinearGradientView.h"
 #import "VListicleView.h"
 #import "VLoadingViewController.h"

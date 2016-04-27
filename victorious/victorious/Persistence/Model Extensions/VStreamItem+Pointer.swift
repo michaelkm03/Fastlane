@@ -34,8 +34,8 @@ extension VStreamItem {
     
     /// Provides a `VStreamItemPointer` for the receiver in the stream that corresponds
     /// to the provided `streamID`.  If the caller legimiately has no reference
-    /// to a stream or streamID (such as a deeplinked sequence or the lightweight
-    /// content view sequence), use `streamItemPointerForStandloneStreamItem` instead.
+    /// to a stream or streamID (such as a deeplinked sequence use
+    /// `streamItemPointerForStandloneStreamItem` instead.
     func streamItemPointer(streamID streamID: String) -> VStreamItemPointer? {
         return self.streamItemPointerForStreamID(streamID)
     }
@@ -60,7 +60,7 @@ extension VStreamItem {
             // If no `streamID` was provided, find an "empty" VStreamItemPointer,
             // i.e. one that points to a VStreamItem but has no associated streamParent.
             // This is made available for calling code that has no reference to a stream,
-            // such as a deeplinked sequence or the lightweight content view sequence.
+            // such as a deeplinked sequence.
             filter = { $0.streamParent == nil}
         }
         

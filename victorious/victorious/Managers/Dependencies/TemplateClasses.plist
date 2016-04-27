@@ -142,8 +142,6 @@
 	<string>VDiscoverContainerViewController</string>
 	<key>comments.screen</key>
 	<string>victorious.CommentsViewController</string>
-	<key>lightweight.contentView</key>
-	<string>VLightweightContentViewController</string>
 	<key>collections.directoryCell</key>
 	<string>VCollectionsDirectoryCellFactory</string>
 	<key>showcase.directoryCell</key>

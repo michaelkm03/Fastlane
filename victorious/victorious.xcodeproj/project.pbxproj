@@ -458,8 +458,6 @@
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
 		03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */; };
-		03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C92D131ABB96030057D30E /* LightweightContentView.storyboard */; };
-		03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C92D151ABB96030057D30E /* VLightweightContentViewController.m */; };
 		03CA69621C5485200039BD01 /* PersistenceTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA69611C5485200039BD01 /* PersistenceTemplateDownloader.swift */; };
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
@@ -1063,7 +1061,6 @@
 		A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A72C85A71C977FF500E97D4F /* VStoredLogin.m */; };
 		A72C864B1C977FF500E97D4F /* VStoredPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = A72C85A91C977FF500E97D4F /* VStoredPassword.m */; };
 		A72C864C1C977FF500E97D4F /* AnonymousLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AB1C977FF500E97D4F /* AnonymousLoginOperation.swift */; };
-		A72C864D1C977FF500E97D4F /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AC1C977FF500E97D4F /* FTUEVideoOperation.swift */; };
 		A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */; };
 		A72C864F1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */; };
 		A72C86501C977FF500E97D4F /* PreloadUserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */; };
@@ -2779,9 +2776,6 @@
 		03C185C619B42FD600E27D05 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
 		03C82F1E1A81DDFE00190C7D /* VUserTaggingTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorage.h; sourceTree = "<group>"; };
 		03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTaggingTextStorage.m; sourceTree = "<group>"; };
-		03C92D131ABB96030057D30E /* LightweightContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightweightContentView.storyboard; sourceTree = "<group>"; };
-		03C92D141ABB96030057D30E /* VLightweightContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightweightContentViewController.h; sourceTree = "<group>"; };
-		03C92D151ABB96030057D30E /* VLightweightContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightweightContentViewController.m; sourceTree = "<group>"; };
 		03CA69611C5485200039BD01 /* PersistenceTemplateDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceTemplateDownloader.swift; sourceTree = "<group>"; };
 		03CE66F419B47B590011BB9E /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
 		03CE66F519B47B590011BB9E /* VTwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterManager.m; sourceTree = "<group>"; };
@@ -3550,7 +3544,6 @@
 		A72C85A81C977FF500E97D4F /* VStoredPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStoredPassword.h; sourceTree = "<group>"; };
 		A72C85A91C977FF500E97D4F /* VStoredPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredPassword.m; sourceTree = "<group>"; };
 		A72C85AB1C977FF500E97D4F /* AnonymousLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousLoginOperation.swift; sourceTree = "<group>"; };
-		A72C85AC1C977FF500E97D4F /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
 		A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmDestructiveActionOperation.swift; sourceTree = "<group>"; };
 		A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadUserInfoOperation.swift; sourceTree = "<group>"; };
@@ -5307,7 +5300,6 @@
 				0314D39619B46B5E00FA363C /* Inbox */,
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
-				03C92D121ABB96030057D30E /* Lightweight Content View */,
 				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
@@ -6866,16 +6858,6 @@
 			path = "User Tagging";
 			sourceTree = "<group>";
 		};
-		03C92D121ABB96030057D30E /* Lightweight Content View */ = {
-			isa = PBXGroup;
-			children = (
-				03C92D131ABB96030057D30E /* LightweightContentView.storyboard */,
-				03C92D141ABB96030057D30E /* VLightweightContentViewController.h */,
-				03C92D151ABB96030057D30E /* VLightweightContentViewController.m */,
-			);
-			path = "Lightweight Content View";
-			sourceTree = "<group>";
-		};
 		03CE66F019B47B590011BB9E /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -7819,7 +7801,6 @@
 			isa = PBXGroup;
 			children = (
 				A72C85AB1C977FF500E97D4F /* AnonymousLoginOperation.swift */,
-				A72C85AC1C977FF500E97D4F /* FTUEVideoOperation.swift */,
 				A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */,
 				67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */,
 				BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */,
@@ -11020,7 +11001,6 @@
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,
 				F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */,
 				7AE3EA371CAF2A9000272A6A /* VNewProfileHeaderView.xib in Resources */,
-				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
 				C32F6B131BD06E6D00779FB1 /* ModernLoadingViewController.storyboard in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
@@ -12410,7 +12390,6 @@
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
 				A75486E11C695B4F003024D8 /* RepostersDataSource.swift in Sources */,
-				A72C864D1C977FF500E97D4F /* FTUEVideoOperation.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
@@ -13049,7 +13028,6 @@
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,
 				A7B844EB1CBC5B8B00CE02DE /* TouchDownController.swift in Sources */,
-				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,
 				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */,
