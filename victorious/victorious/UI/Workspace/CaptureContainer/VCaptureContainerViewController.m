@@ -15,6 +15,8 @@
 #import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
 
+#import <KVOController/FBKVOController.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VCaptureContainerViewController ()
@@ -58,6 +60,15 @@ NS_ASSUME_NONNULL_BEGIN
         // Forward navigationItem
         self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
         self.navigationItem.rightBarButtonItem = self.viewControllerToContain.navigationItem.rightBarButtonItem;
+        
+        //This KVO allows view the contained view controller to update the
+        //right bar button item of our navigation item
+        [self.KVOController observe:self.viewControllerToContain.navigationItem
+                           keyPaths:@[@"rightBarButtonItems", @"rightBarButtonItem"]
+                            options:NSKeyValueObservingOptionNew
+                              block:^(id observer, id object, NSDictionary *change) {
+                                  self.navigationItem.rightBarButtonItem = self.viewControllerToContain.navigationItem.rightBarButtonItem;
+        }];
     }
 }
 

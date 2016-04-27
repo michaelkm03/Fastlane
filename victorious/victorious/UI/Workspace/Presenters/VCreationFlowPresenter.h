@@ -8,6 +8,7 @@
 
 #import "VAbstractPresenter.h"
 #import "VCreationFlowTypes.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 
 @class VDependencyManager;
 
@@ -28,5 +29,7 @@
 @property (nonatomic, assign) BOOL shouldShowPublishScreenForFlowController;
 
 - (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationFlowType:(VCreationFlowType)creationFlowType;
+
++ (VWorkspaceViewController *)preferredWorkspaceForMediaType:(MediaType)mediaType fromDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

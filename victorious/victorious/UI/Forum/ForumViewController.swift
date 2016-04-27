@@ -72,6 +72,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     var chatFeed: ChatFeed?
     var dependencyManager: VDependencyManager!
     var networkSource: NetworkSource?
+    func creationFlowPresenter() -> VCreationFlowPresenter? {
+        return composer?.creationFlowPresenter
+    }
     
     var originViewController: UIViewController {
         return self

@@ -32,13 +32,11 @@
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
 
+#import "victorious-Swift.h"
+
 static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
-static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
-static NSString * const kFlashIconKey = @"flashIcon";
-static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
 static NSString * const kMaximumDimensionKey = @"maximumDimension";
-static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
 static const CGFloat kVerySmallOuterRadius = 0.01f;
@@ -51,13 +49,12 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
 @property (nonatomic, assign) VCameraContext cameraContext;
 
 // Views
-@property (nonatomic, strong) IBOutlet VCaptureVideoPreviewView *previewView;
-@property (nonatomic, strong) IBOutlet UIView *cameraControlContainer;
-@property (nonatomic, strong) IBOutlet UIImageView *capturedImageView;
-@property (nonatomic, strong) IBOutlet VRadialGradientView *shutterView;
-@property (nonatomic, strong) VCameraControl *cameraControl;
-@property (nonatomic, strong) UIButton *switchCameraButton;
-@property (nonatomic, strong) UIButton *flashButton;
+@property (nonatomic, weak) IBOutlet VCaptureVideoPreviewView *previewView;
+@property (nonatomic, weak) IBOutlet UIImageView *capturedImageView;
+@property (nonatomic, weak) IBOutlet VRadialGradientView *shutterView;
+@property (nonatomic, weak) IBOutlet VCameraControl *cameraControl;
+@property (nonatomic, strong) IBOutlet VCameraDirectionButton *switchCameraButton;
+@property (nonatomic, strong) IBOutlet VCameraFlashBarButtonItem *flashBarButtonItem;
 
 // Hardware
 @property (nonatomic, strong) VCameraCaptureController *captureController;
@@ -126,45 +123,20 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
     self.permissionController = [[VCameraPermissionsController alloc] initWithViewControllerToPresentOn:self];
     
     // Camera control
-    self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
-    self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
     self.cameraControl.captureMode = VCameraControlCaptureModeImage;
-    self.cameraControl.defaultTintColor = [UIColor whiteColor];
-    self.cameraControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.cameraControl addTarget:self
                            action:@selector(photoAction:)
                  forControlEvents:VCameraControlEventWantsStillImage];
     
-    [self.cameraControlContainer addSubview:self.cameraControl];
-    
     // Switch Camera button
-    self.switchCameraButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.switchCameraButton addTarget:self action:@selector(reverseCameraAction:) forControlEvents:UIControlEventTouchUpInside];
-    // disabled and hidden by default
-    self.switchCameraButton.hidden = YES;
-    self.switchCameraButton.enabled = NO;
-    self.switchCameraButton.frame = kDefaultBarItemFrame;
-    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey]
-                             forState:UIControlStateNormal];
-    
+    self.switchCameraButton.dependencyManager = self.dependencyManager;
     self.navigationItem.titleView = self.switchCameraButton;
     
     // Flash
-    self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.flashButton addTarget:self action:@selector(switchFlashAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.flashButton.hidden = YES;
-    self.flashButton.enabled = NO;
-    self.flashButton.frame = kDefaultBarItemFrame;
-    [self.flashButton setImage:[self.dependencyManager imageForKey:kDisableFlashIconKey]
-                      forState:UIControlStateNormal];
-    [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey]
-                      forState:UIControlStateSelected];
-    [self.flashButton setBackgroundImage:nil forState:UIControlStateSelected];
-    self.flashButton.imageView.contentMode = UIViewContentModeCenter;
-    UIBarButtonItem *flashBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.flashButton];
-    [flashBarButtonItem setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    self.navigationItem.rightBarButtonItem = flashBarButtonItem;
+    [self.flashBarButtonItem.interactiveButton addTarget:self action:@selector(switchFlashAction:) forControlEvents: UIControlEventTouchUpInside];
+    self.flashBarButtonItem.dependencyManager = self.dependencyManager;
+    self.navigationItem.rightBarButtonItem = self.flashBarButtonItem;
     
     // Shutter
     CGPoint boundsCenter = CGPointMake(CGRectGetMidX(self.shutterView.bounds), CGRectGetMidY(self.shutterView.bounds));
@@ -219,7 +191,7 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
     
     self.switchCameraButton.enabled = NO;
-    self.flashButton.enabled = NO;
+    self.flashBarButtonItem.enabled = NO;
     
     __weak typeof(self) welf = self;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
@@ -281,7 +253,7 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
     }];
 }
 
-- (void)reverseCameraAction:(UIButton *)reverseButton
+- (IBAction)reverseCameraAction:(UIButton *)reverseButton
 {
     AVCaptureDevice *deviceForPosition = [self.captureController firstAlternatePositionDevice];
     __weak typeof(self) welf = self;
@@ -361,10 +333,10 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
 - (void)updateFlashStateForCurrentDevice
 {
     BOOL hasFlash = self.captureController.currentDevice.hasFlash;
-    self.flashButton.hidden = !hasFlash;
-    self.flashButton.enabled = hasFlash;
+    self.flashBarButtonItem.interactiveButton.hidden = !hasFlash;
+    self.flashBarButtonItem.enabled = hasFlash;
     BOOL flashEnabled = (self.captureController.currentDevice.flashMode == AVCaptureFlashModeOn);
-    self.flashButton.selected = flashEnabled;
+    self.flashBarButtonItem.interactiveButton.selected = flashEnabled;
 }
 
 - (void)setupCapturingKVO

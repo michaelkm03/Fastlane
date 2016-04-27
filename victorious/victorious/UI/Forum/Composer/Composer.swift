@@ -15,22 +15,31 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     /// could be updated to better represent its content inside a frame with the new height.
     var maximumTextInputHeight: CGFloat { get set }
     
-    var delegate: ComposerDelegate? { get set }
+    var creationFlowPresenter: VCreationFlowPresenter! { get }
+    
+    weak var delegate: ComposerDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
     
     func dismissKeyboard(animated: Bool)
     
-    func sendMessage(text text: String?, mediaAttachment: MediaAttachment?)
+    func sendMessage(mediaAttachment mediaAttachment: MediaAttachment, text: String?)
     
-    func setSelectedMediaAttachment(mediaAttachment: MediaAttachment, previewImage: UIImage)
-    
-    func clearSelectedMediaAttachment()
+    func sendMessage(text text: String)    
 }
 
 extension Composer {
     
-    func sendMessage(text text: String?, mediaAttachment: MediaAttachment?) {
+    func sendMessage(text text: String) {
+        guard let currentUser = self.currentUser,
+            let event: ForumEvent = ChatMessage(fromUser: currentUser, text: text) else {
+                assertionFailure("Unable to construct message from Composer.")
+                return
+        }
+        sendEvent(event)
+    }
+    
+    func sendMessage(mediaAttachment mediaAttachment: MediaAttachment, text: String?) {
         guard let currentUser = self.currentUser,
             let event: ForumEvent = ChatMessage(fromUser: currentUser, text: text, mediaAttachment: mediaAttachment) else {
                 assertionFailure("Unable to construct message from Composer.")
@@ -51,7 +60,7 @@ extension Composer {
 
 /// Conformers will recieve messages when a composer's buttons are pressed and when
 /// a composer changes its height.
-protocol ComposerDelegate: ForumEventSender {
+protocol ComposerDelegate: class, ForumEventSender {
     
     func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
     

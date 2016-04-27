@@ -105,7 +105,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         }
         case VPermissionStateAuthorized:
         case VPermissionStateSystemDenied:
-        case VPermissionUnsupported:
+        case VPermissionStateUnsupported:
             // Nothing to do here
             break;
     }

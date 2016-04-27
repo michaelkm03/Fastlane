@@ -16,6 +16,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     
     var dependencyManager: VDependencyManager! { get }
     var originViewController: UIViewController { get }
+    func creationFlowPresenter() -> VCreationFlowPresenter?
     
     // MARK: - Abstract subcomponents/dependencies
     
@@ -51,22 +52,7 @@ extension Forum {
     // MARK: - ComposerDelegate
     
     func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
-        guard let attachmentType = creationFlowType.attachmentType else {
-            assertionFailure("Not supported")
-            return
-        }
-        
-        let operation = SelectMediaAttachmentOperation(
-            originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            attachmentType: attachmentType,
-            animated: true
-        )
-        operation.queue() { error, cancelled in
-            if let result = operation.result {
-                composer.setSelectedMediaAttachment(result.mediaAttachment, previewImage: result.previewImage)
-            }
-        }
+        creationFlowPresenter()?.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }
 
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {

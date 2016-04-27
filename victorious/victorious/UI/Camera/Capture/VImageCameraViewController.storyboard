@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X5o-Se-YNs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X5o-Se-YNs">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Image Camera View Controller-->
+        <!--Delegate-->
         <scene sceneID="1HA-mC-6XF">
             <objects>
                 <viewController id="X5o-Se-YNs" customClass="VImageCameraViewController" sceneMemberID="viewController">
@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="FgQ-37-48y"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uXp-bH-xYz">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="400" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2jh-hN-06C" userLabel="Captured Image View">
@@ -34,7 +34,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oQt-Vu-58D" userLabel="Camera Control Container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oQt-Vu-58D" userLabel="Camera Control Container" customClass="VCameraControl">
                                 <rect key="frame" x="160" y="406" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -64,13 +64,24 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
-                        <outlet property="cameraControlContainer" destination="oQt-Vu-58D" id="gge-d6-3vO"/>
+                        <outlet property="cameraControl" destination="oQt-Vu-58D" id="oO0-TE-jaq"/>
                         <outlet property="capturedImageView" destination="2jh-hN-06C" id="gf6-Rp-EY9"/>
+                        <outlet property="flashBarButtonItem" destination="gLv-RX-Rb5" id="uba-gT-TyP"/>
                         <outlet property="previewView" destination="wwx-1U-bZf" id="Uuh-gM-Clu"/>
                         <outlet property="shutterView" destination="Al4-Jf-ge3" id="Zvs-kn-MKL"/>
+                        <outlet property="switchCameraButton" destination="col-MP-CiT" id="7Ss-a6-qnF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8eA-Nf-9wS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="col-MP-CiT" customClass="VCameraDirectionButton">
+                    <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="reverseCameraAction:" destination="X5o-Se-YNs" eventType="touchUpInside" id="2AM-gQ-PWs"/>
+                    </connections>
+                </button>
+                <barButtonItem title="Item" id="gLv-RX-Rb5" customClass="VCameraFlashBarButtonItem"/>
             </objects>
             <point key="canvasLocation" x="372" y="392"/>
         </scene>

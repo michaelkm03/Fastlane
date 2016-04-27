@@ -36,7 +36,7 @@
         return;
     }
     
-    if (state == VPermissionStateSystemDenied || state == VPermissionUnsupported)
+    if (state == VPermissionStateSystemDenied || state == VPermissionStateUnsupported)
     {
         // were already denied authorization
         if (completion != nil)

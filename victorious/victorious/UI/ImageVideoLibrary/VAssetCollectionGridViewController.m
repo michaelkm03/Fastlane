@@ -110,7 +110,7 @@ static NSString * const kMixedMediaTitleKey = @"mixedMediaTitle";
         case VPermissionStatePromptDenied:
         case VPermissionStateUnknown:
         case VPermissionStateSystemDenied:
-        case VPermissionUnsupported:
+        case VPermissionStateUnsupported:
             self.unauthorizedDataSource = [[VAssetCollectionUnauthorizedDataSource alloc] initWithDependencyManager:self.dependencyManager];
             self.unauthorizedDataSource.delegate = self;
             [self setCollectionViewDataSourceTo:self.unauthorizedDataSource];

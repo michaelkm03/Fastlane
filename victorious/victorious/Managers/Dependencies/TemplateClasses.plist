@@ -68,6 +68,8 @@
 	<string>VImageCameraViewController</string>
 	<key>videoCamera.screen</key>
 	<string>VVideoCameraViewController</string>
+	<key>mixedMediaCamera.screen</key>
+	<string>victorious.MixedMediaCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>imageVideoGallery.screen</key>
@@ -78,6 +80,8 @@
 	<string>VTextWorkspaceFlowController</string>
 	<key>library.creationFlow</key>
 	<string>victorious.LibraryCreationFlowController</string>
+	<key>mixedMediaCamera.creationFlow</key>
+	<string>victorious.MixedMediaCameraCreationFlowController</string>
 	<key>poll.creationFlow</key>
 	<string>VPollCreationFlowController</string>
 	<key>video.creationFlow</key>

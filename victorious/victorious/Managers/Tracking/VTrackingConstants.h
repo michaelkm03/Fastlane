@@ -43,7 +43,7 @@ extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move f
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
 extern NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary; 
-extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< Params: Context; User tapped the garbage icon to see deletion confirmation.
+extern NSString * const VTrackingEventCameraUserDidConfirmDelete; //< Params: Context; User tapped the garbage icon to see deletion confirmation.
 extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< Params: Context; User confirmed deletion of any recorded video.
 extern NSString * const VTrackingEventCameraUserDidExit; //< Params: Context; User tapped (X) icon to leave camera without capturing or importing a photo or videoParams: Context;
 extern NSString * const VTrackingEventCameraUserDidEnter; //< Params: Context

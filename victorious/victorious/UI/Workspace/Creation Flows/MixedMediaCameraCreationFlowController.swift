@@ -1,22 +1,28 @@
 //
-//  LibraryCreationFlowController.swift
+//  MixedMediaCameraCreationFlowController.swift
 //  victorious
 //
-//  Created by Sharif Ahmed on 3/22/16.
+//  Created by Sharif Ahmed on 4/11/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 
-/// Displays a flow starting with a library from which the user can select either a photo or a video
-class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
+/// Displays a flow starting with a camera that can take either a photo or a video
+class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowController, MixedMediaCameraViewControllerDelegate {
     
     private struct Constants {
-        static let imageVideoLibraryKey = "imageVideoLibrary"
+        static let mixedMediaCameraKey = "mixedMediaCameraScreen"
     }
     
+    private lazy var mixedMediaCameraViewController: MixedMediaCameraViewController = {
+        let mixedMediaCamera = MixedMediaCameraViewController.mixedMediaCamera(self.dependencyManager, cameraContext: .MixedMediaContentCreation)
+        mixedMediaCamera.delegate = self
+        return mixedMediaCamera
+    }()
+        
     override func mediaType() -> MediaType {
-
+        
         guard let capturedMediaURL = capturedMediaURL else {
             return .Unknown
         }
@@ -25,19 +31,12 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
     }
     
     override func gridViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
-        
-        return dependencyManager.templateValueOfType(VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.Unknown.rawValue)]) as? VAssetCollectionGridViewController
+        return nil
     }
     
     override func workspaceViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
         
-        let workspace: VWorkspaceViewController? = VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
-        
-        guard let selectedWorkspace = workspace else {
-            fatalError("Workspace requested from mixed media creation flow controller when no valid media was selected")
-        }
-        
-        return selectedWorkspace
+        return VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
     }
     
     override func configurePublishParameters(publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
@@ -53,7 +52,7 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
             publishParameters.didCrop = imageToolController.didCrop
             publishParameters.isVideo = false
         } else {
-            assertionFailure("Library creation flow controller encountered an unexpected tool controller")
+            fatalError("Library creation flow controller encountered an unexpected tool controller")
         }
     }
     
@@ -63,7 +62,6 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
         } else if asset.mediaType == .Video {
             return VVideoAssetDownloader(asset: asset)
         }
-        assertionFailure("Library creation view controller was asked for an asset downloader with for an unsupported asset type")
         return nil
     }
     
@@ -75,10 +73,12 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
         return false
     }
     
-    // MARK: VAssetCollectionGridViewControllerDelegate
+    override func initialViewController() -> UIViewController {
+        return mixedMediaCameraViewController
+    }
     
-    override func gridViewController(gridViewController: VAssetCollectionGridViewController, selectedAsset asset: PHAsset) {
-        source = .Library
-        super.gridViewController(gridViewController, selectedAsset: asset)
+    func mixedMediaCameraViewController(mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: NSURL, previewImage: UIImage) {
+        source = .Camera
+        self.captureFinishedWithMediaURL(mediaURL, previewImage: previewImage)
     }
 }

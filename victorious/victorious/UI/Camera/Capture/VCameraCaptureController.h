@@ -11,7 +11,9 @@
 
 @class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 
-extern NSString * const VCameraCaptureControllerErrorDomain;
+NS_ASSUME_NONNULL_BEGIN
+
+extern NSString *_Nonnull const VCameraCaptureControllerErrorDomain;
 extern const NSInteger VCameraCaptureControllerErrorCode;
 
 /**
@@ -31,24 +33,24 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 /**
  An array of available video capture devices.
  */
-@property (nonatomic, readonly) NSArray /* AVCaptureDevice */ *devices;
+@property (nonatomic, readonly, nullable) NSArray /* AVCaptureDevice */ *devices;
 
 /**
  The default video capture device.
  */
-@property (nonatomic, readonly) AVCaptureDevice *defaultDevice;
+@property (nonatomic, readonly, nullable) AVCaptureDevice *defaultDevice;
 
 /**
  The video device that is currently being captured.
  */
-@property (nonatomic, strong) AVCaptureDevice *currentDevice;
+@property (nonatomic, strong, nullable) AVCaptureDevice *currentDevice;
 
 /**
  The object in this property will be added as a sample buffer
  delegate, so it can begin receiving frames and writing them
  to disk.
  */
-@property (nonatomic, strong) VCameraVideoEncoder *videoEncoder;
+@property (nonatomic, strong, nullable) VCameraVideoEncoder *videoEncoder;
 
 @property (nonatomic, readonly) int32_t maxOutputSideLength;
 
@@ -57,7 +59,7 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  
  @param completion Will be called on a private queue when the session has been set.
  */
-- (void)setSessionPreset:(NSString *)sessionPreset completion:(void(^)(BOOL wasSet))completion;
+- (void)setSessionPreset:(NSString *)sessionPreset completion:(nullable void(^)(BOOL wasSet))completion;
 
 /**
  Fires up the camera.
@@ -66,14 +68,14 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  audio input and video & audio outputs.
  @param completion Will be called on a private queue when the camera is fully ready.
  */
-- (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void(^)(NSError *))completion;
+- (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(nullable void(^)(NSError *_Nullable))completion;
 
 /**
  Changes the current capture device
 
  @param completion Will be called on a private queue when the capture device is fully swapped.
  */
-- (void)setCurrentDevice:(AVCaptureDevice *)currentDevice withCompletion:(void(^)(NSError *))completion;
+- (void)setCurrentDevice:(AVCaptureDevice *)currentDevice withCompletion:(nullable void(^)(NSError *_Nullable))completion;
 
 /**
  Takes the current device orientation and applies it to the
@@ -88,19 +90,19 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  
  @param completion Will be called on a private queue when the image has been captured
  */
-- (void)captureStillWithCompletion:(void(^)(UIImage *image, NSError *error))completion;
+- (void)captureStillWithCompletion:(void(^)(UIImage *_Nullable image, NSError *_Nullable error))completion;
 
 /**
  Shuts down the camera
 
  @param completion Will be called on a private queue when the camera is fully shut down.
  */
-- (void)stopRunningWithCompletion:(void(^)(void))completion;
+- (void)stopRunningWithCompletion:(nullable void(^)(void))completion;
 
 /**
  *  Exposed so that consumers can KVO imageOutput's properties for UI fun and profit.
  */
-@property (nonatomic, strong, readonly) AVCaptureStillImageOutput *imageOutput;
+@property (nonatomic, strong, readonly, nullable) AVCaptureStillImageOutput *imageOutput;
 
 
 /*
@@ -111,12 +113,12 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 /**
  *  Returns the first device found for an alternate front/back position.
  */
-- (AVCaptureDevice *)firstAlternatePositionDevice;
+- (AVCaptureDevice *_Nullable)firstAlternatePositionDevice;
 
 /**
  *  Toggles the flash of the current capture device from on to off. NEVER goes to auto.
  */
-- (void)toggleFlashWithCompletion:(void(^)(NSError *error))completion;
+- (void)toggleFlashWithCompletion:(nullable void(^)(NSError *_Nullable error))completion;
 
 /**
  *  Will focus at the passes in interest point. Begins listenting for 
@@ -124,13 +126,15 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  *  if a subjectArea change notification comes through.
  */
 - (void)focusAtPointOfInterest:(CGPoint)locationInCaptureDeviceCoordinates
-                withCompletion:(void(^)(NSError *error))completion;
+                withCompletion:(nullable void(^)(NSError *_Nullable error))completion;
 
 /**
  *  Forces the camera to restore continuous focus if it was focusing at a specific focus 
  *  point of interest. Internally this method is called after a subjectArea change 
  *  notification comes through.
  */
-- (void)restoreContinuousFocusWithCompletion:(void(^)(NSError *error))completion;
+- (void)restoreContinuousFocusWithCompletion:(nullable void(^)(NSError *_Nullable error))completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

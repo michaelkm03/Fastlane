@@ -33,7 +33,8 @@ typedef NS_ENUM(NSInteger, VCameraContext)
     VCameraContextProfileImage,
     VCameraContextProfileImageRegistration,
     VCameraContextImageContentCreation,
-    VCameraContextVideoContentCreation
+    VCameraContextVideoContentCreation,
+    VCameraContextMixedMediaContentCreation
 };
 
 #endif

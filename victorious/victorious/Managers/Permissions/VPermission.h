@@ -27,7 +27,7 @@ typedef NS_ENUM( NSInteger, VPermissionState )
     /**
      *  Permission not supported on this device.
      */
-    VPermissionUnsupported,
+    VPermissionStateUnsupported,
     /**
      *  Initial prompt for permission was denied.
      */

@@ -17,6 +17,7 @@ static const CGFloat kWidthScaleFactorDefault = 1.7f;
 static const CGFloat kHighlightedAlpha = 0.6f;
 static const CGFloat kHighlightedScaleFactor = 0.85;
 static const CGFloat kRecordingDotDiameter = 27.0f;
+static const CGFloat kExpansionAmount = 35.0f;
 static NSString * const kRecordingDotHexColor = @"ED1C24";
 
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
@@ -33,6 +34,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 @property (nonatomic, assign) NSTimeInterval currentStartTrackingTime;
 @property (nonatomic, assign) BOOL growing;
 @property (nonatomic, assign) BOOL recording;
+@property (nonatomic, assign) BOOL expanded;
 
 @property (nonatomic, strong) UIView *redDotView;
 
@@ -73,6 +75,10 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressView.userInteractionEnabled = NO;
     [self addSubview:self.progressView];
+    
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.autoresizingMask = UIViewAutoresizingNone;
+    self.defaultTintColor = [UIColor whiteColor];
     
     [self addTarget:self action:@selector(dragInside) forControlEvents:UIControlEventTouchDragEnter];
     [self addTarget:self action:@selector(dragOutside) forControlEvents:UIControlEventTouchDragExit];
@@ -170,6 +176,17 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     }];
 }
 
+- (void)setExpanded:(BOOL)expanded
+{
+    BOOL shouldUpdateFrame = expanded != _expanded;
+    _expanded = expanded;
+    if ( shouldUpdateFrame )
+    {
+        CGFloat insetAmount = expanded ? -kExpansionAmount : kExpansionAmount;
+        self.frame = CGRectInset(self.frame, insetAmount, 0);
+    }
+}
+
 - (void)setEnabled:(BOOL)enabled
 {
     [UIView animateWithDuration:0.2f
@@ -210,8 +227,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
                 self.redDotView.alpha = (self.recordingProgress == 0.0f) ? 1.0f : 0.0f;
                 self.backgroundColor = self.defaultTintColor;
                 self.transform = CGAffineTransformIdentity;
+                self.expanded = NO;
                 self.layer.cornerRadius = kMinHeightSize * 0.5f;
-                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -231,7 +248,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
                 self.redDotView.alpha = 0.0f;
                 self.alpha = 1.0f;
                 self.transform = CGAffineTransformIdentity;
-                self.frame = CGRectInset(self.frame, -35.0f, 0.0f);
+                self.expanded = YES;
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -257,6 +274,12 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
                      completion:completion];
     
     _cameraControlState = cameraControlState;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 #pragma mark - UIControl

@@ -1957,6 +1957,9 @@
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
+		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
+		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
+		F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -1975,6 +1978,8 @@
 		F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */; };
 		F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */; };
 		F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */; };
+		F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */; };
+		F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */; };
 		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
 		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
 		F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0161C84F973004F516A /* BlockUserRequestTests.swift */; };
@@ -1991,6 +1996,10 @@
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
 		F059A0031B852D1800037BC8 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F059A0021B852D1800037BC8 /* Shelf.swift */; };
 		F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AD66C1B828EF300500CCF /* ListShelf.swift */; };
+		F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */; };
+		F063506B1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */; };
+		F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */; };
+		F06350751CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */; };
 		F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F065A4091B433C7B00F0281B /* VFollowControl.m */; };
 		F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */; };
 		F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */; };
@@ -4822,6 +4831,9 @@
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
+		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
+		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
+		F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PreviewImage.swift"; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -4858,6 +4870,8 @@
 		F0411E8B1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingMarqueeLabel.h; sourceTree = "<group>"; };
 		F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingMarqueeLabel.m; sourceTree = "<group>"; };
 		F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCaptionView.xib; sourceTree = "<group>"; };
+		F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFlashBarButtonItem.swift; sourceTree = "<group>"; };
+		F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDirectionButton.swift; sourceTree = "<group>"; };
 		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
 		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
 		F048B0161C84F973004F516A /* BlockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequestTests.swift; sourceTree = "<group>"; };
@@ -4879,6 +4893,10 @@
 		F059A0061B86B98F00037BC8 /* VImagePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VImagePreviewView.h; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
 		F05AD66C1B828EF300500CCF /* ListShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelf.swift; sourceTree = "<group>"; };
+		F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraViewController.swift; sourceTree = "<group>"; };
+		F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MixedMediaCameraViewController.storyboard; sourceTree = "<group>"; };
+		F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraViewControllerDelegate.swift; sourceTree = "<group>"; };
+		F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraCreationFlowController.swift; sourceTree = "<group>"; };
 		F065A4081B433C7B00F0281B /* VFollowControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowControl.h; sourceTree = "<group>"; };
 		F065A4091B433C7B00F0281B /* VFollowControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowControl.m; sourceTree = "<group>"; };
 		F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureSequencePreviewView.h; sourceTree = "<group>"; };
@@ -6590,12 +6608,18 @@
 				D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */,
 				D8332DBB1A7C275800C3FEE0 /* VCameraControl.h */,
 				D8332DBC1A7C275800C3FEE0 /* VCameraControl.m */,
+				F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */,
+				F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */,
+				F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */,
 				A6B9FD101B6070B100166BE8 /* VCameraFocusView.h */,
 				A6B9FD111B6070B100166BE8 /* VCameraFocusView.m */,
 				039ED27C19C563B700305987 /* VCameraVideoEncoder.h */,
 				039ED27D19C563B700305987 /* VCameraVideoEncoder.m */,
 				A6B9FD0A1B60413500166BE8 /* VCaptureVideoPreviewView.h */,
 				A6B9FD0B1B60413500166BE8 /* VCaptureVideoPreviewView.m */,
+				F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */,
+				F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */,
+				F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */,
 				A6B9FD051B603FC600166BE8 /* VImageCameraViewController.h */,
 				A6B9FD061B603FC600166BE8 /* VImageCameraViewController.m */,
 				A6B9FD081B603FD300166BE8 /* VImageCameraViewController.storyboard */,
@@ -7349,6 +7373,7 @@
 			isa = PBXGroup;
 			children = (
 				F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */,
+				F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */,
 				A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */,
 				A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */,
 				A601FB4D1B4355A30050536C /* VCreationFlowController.h */,
@@ -7554,6 +7579,7 @@
 				A721E8CF1B572453000B7901 /* NSURL+VPathHelper.m */,
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
+				F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */,
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
 				0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */,
 				A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */,
@@ -7569,6 +7595,7 @@
 				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
 				A721E8DA1B572453000B7901 /* UIColor+VHex.m */,
 				7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */,
+				F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */,
 				F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */,
 				C3D4E83E1BBDCF39000AD70A /* UIFont+Layout.swift */,
 				A721E8DB1B572453000B7901 /* UIImage+Cropping.h */,
@@ -11058,6 +11085,7 @@
 				D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */,
 				0366EAF91B68714A0073A233 /* VAssetCollectionListViewController.storyboard in Resources */,
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
+				F063506B1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard in Resources */,
 				6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */,
 				C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
@@ -12133,6 +12161,7 @@
 				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
 				79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */,
 				A72C861A1C977FF500E97D4F /* ImageSearchOperation.swift in Sources */,
+				F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				F0BD81271C9A18020062D079 /* CreationFlowTypeHelper.swift in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
@@ -12506,6 +12535,7 @@
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
+				F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */,
 				A72C86711C977FF600E97D4F /* ConversationRemoteOperation.swift in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
@@ -12684,6 +12714,7 @@
 				A73BA2A61C938B68008168B5 /* CloseUpViewController.swift in Sources */,
 				A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
+				F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */,
 				A757DC861C80F9FB00618C0D /* VSocialLoginErrors.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A72C868A1C977FF600E97D4F /* UnauthorizedErrorHandler.swift in Sources */,
@@ -12775,6 +12806,7 @@
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
+				F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */,
 				A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
@@ -12840,6 +12872,7 @@
 				A7AF17B41C599331007BCAFE /* VUser+Following.swift in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
+				F06350751CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift in Sources */,
 				67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
 				A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */,
@@ -13031,6 +13064,7 @@
 				A72C86281C977FF500E97D4F /* PollVoteOperation.swift in Sources */,
 				79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */,
 				A72C866E1C977FF600E97D4F /* ConversationDeleteRemoteOperation.swift in Sources */,
+				F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */,
 				A721E95C1B572454000B7901 /* UIView+Masking.m in Sources */,
 				A778CB6D1C474EF7007DF0C2 /* VConversationViewController.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
@@ -13050,6 +13084,7 @@
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
 				A72C868B1C977FF600E97D4F /* BackgroundOperation.swift in Sources */,
 				A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */,
+				F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */,
 				A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */,
 				A72C86831C977FF600E97D4F /* UsersFollowingUserRemoteOperation.swift in Sources */,
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
@@ -13102,6 +13137,7 @@
 				A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				A72C867D1C977FF600E97D4F /* SequenceRepostersRemoteOperation.swift in Sources */,
+				F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */,
 				677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */,
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
 				034BA9311C602B7F00C23D7E /* VTFLog.m in Sources */,

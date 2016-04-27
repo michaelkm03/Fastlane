@@ -111,6 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly, nullable) NSURL *capturedMediaURL;
 
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+
 - (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
                                previewImage:(UIImage *)previewImage
                               fromWorkspace:(VWorkspaceViewController *)workspace;

@@ -21,8 +21,8 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 static NSString * const kPollCreateFlow = @"pollCreateFlow";
 static NSString * const kTextCreateFlow = @"textCreateFlow";
 static NSString * const kLibraryCreateFlow = @"libraryCreateFlow";
-static NSString * const kMixedMediaCameraFlow = @"mixedMediaCameraFlow";
-static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
+static NSString * const kMixedMediaCameraCreateFlow = @"mixedMediaCameraCreateFlow";
+static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
@@ -71,11 +71,11 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
             break;
         case VCreationFlowTypeMixedMediaCamera:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromMixedMediaCameraSelected];
-            [self presentCreateFlowWithKey:kMixedMediaCameraFlow];
+            [self presentCreateFlowWithKey:kMixedMediaCameraCreateFlow];
             break;
         case VCreationFlowTypeNativeCamera:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromNativeCameraSelected];
-            [self presentCreateFlowWithKey:kNativeCameraFlow];
+            [self presentCreateFlowWithKey:kNativeCameraCreateFlow];
             break;
         case VCreationFlowTypeUnknown:
             break;
@@ -89,6 +89,11 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
     Class type = [VCreationFlowController class];
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:type forKey:key];
     flowController.creationFlowDelegate = self;
+    if (flowController == nil)
+    {
+        NSAssert(NO, @"Failed to present the desired workspace flow");
+        return;
+    }
     [self.viewControllerPresentedOn presentViewController:flowController animated:YES completion:nil];
 }
 
@@ -99,6 +104,26 @@ static NSString * const kNativeCameraFlow = @"nativeCameraFlow";
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
     [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
+}
+
++ (VWorkspaceViewController *)preferredWorkspaceForMediaType:(MediaType)mediaType fromDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSString *workspaceKey = nil;
+    switch (mediaType)
+    {
+        case MediaTypeImage:
+            workspaceKey = VDependencyManagerImageWorkspaceKey;
+            break;
+            
+        case MediaTypeVideo:
+            workspaceKey = VDependencyManagerVideoWorkspaceKey;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return (VWorkspaceViewController *)[dependencyManager viewControllerForKey:workspaceKey];
 }
 
 @end

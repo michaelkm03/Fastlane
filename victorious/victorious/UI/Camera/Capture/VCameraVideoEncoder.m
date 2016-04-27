@@ -7,9 +7,14 @@
 //
 
 #import "VCameraVideoEncoder.h"
+#import "NSURL+VTemporaryFiles.h"
+#import "VConstants.h"
+#import "VCameraCaptureVideoSize.h"
 
 NSString * const VCameraVideoEncoderErrorDomain = @"VCameraVideoEncoderErrorDomain";
 const NSInteger VCameraVideoEncoderErrorCode = 100;
+
+const NSInteger kCameraVideoDefaultSideLength = 640;
 
 @interface VCameraVideoEncoder ()
 
@@ -43,6 +48,20 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         _firstVideoFrameTime = kCMTimeInvalid;
     }
     return self;
+}
+
++ (VCameraVideoEncoder *)videoEncoderWithMaximumOutputSideLength:(NSInteger)maxSideLength dependencyManager:(VDependencyManager *)dependencyManager error:(NSError *__autoreleasing *)error
+{
+    NSURL *url = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory: kCameraDirectory];
+    NSInteger captureSideLength = kCameraVideoDefaultSideLength;
+    NSNumber *templateMaxDimension = [dependencyManager numberForKey:@"maximumDimension"];
+    if (templateMaxDimension != nil)
+    {
+        captureSideLength = fmax(templateMaxDimension.integerValue, captureSideLength);
+    }
+    captureSideLength = fmin(captureSideLength, maxSideLength);
+    VCameraCaptureVideoSize captureSize =  { captureSideLength, captureSideLength };
+    return [VCameraVideoEncoder videoEncoderWithFileURL:url videoSize:captureSize error:error];
 }
 
 + (instancetype)videoEncoderWithFileURL:(NSURL *)fileURL videoSize:(VCameraCaptureVideoSize)videoSize error:(NSError *__autoreleasing *)error

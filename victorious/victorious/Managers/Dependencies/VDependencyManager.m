@@ -80,6 +80,7 @@ NSString * const VDependencyManagerTextWorkspaceFlowKey = @"textCreateFlow";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
+NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
 
 @interface VDependencyManager ()
 

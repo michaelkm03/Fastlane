@@ -7,6 +7,7 @@
 //
 
 #import "VCameraCaptureVideoSize.h"
+#import "VDependencyManager.h"
 
 #import <Foundation/Foundation.h>
 
@@ -81,6 +82,14 @@ extern const NSInteger VCameraVideoEncoderErrorCode;
  @return nil if the object could not be created
  */
 + (instancetype)videoEncoderWithFileURL:(NSURL *)fileURL videoSize:(VCameraCaptureVideoSize)videoSize error:(NSError *__autoreleasing *)error;
+
+/**
+ Creates a new video encoder using a temporary file url, respecting the maxSideLength
+ and, if provided, the maximum video dimension from the dependency manager
+ 
+ @return A new instance or nil
+ */
++ (VCameraVideoEncoder *)videoEncoderWithMaximumOutputSideLength:(NSInteger)maxSideLength dependencyManager:(VDependencyManager *)dependencyManager error:(NSError *__autoreleasing *)error;
 
 /**
  Sets the recording property to false and finishes writing all frames to disk.

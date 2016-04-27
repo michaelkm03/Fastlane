@@ -458,6 +458,11 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (AVCaptureDevice *)firstAlternatePositionDevice
 {
+    if (self.currentDevice == nil)
+    {
+        return nil;
+    }
+    
     AVCaptureDevicePosition currentPostion = self.currentDevice.position;
     AVCaptureDevicePosition desiredPostion = (currentPostion == AVCaptureDevicePositionFront) ? AVCaptureDevicePositionBack : AVCaptureDevicePositionFront;
     return [self firstDeviceForPosition:desiredPostion];

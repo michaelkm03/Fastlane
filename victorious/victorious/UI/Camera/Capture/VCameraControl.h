@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VDependencyManager.h"
 
 /**
  *  This extends UIControlEvents. VCameraCaptureControl sends these events to any targets.
@@ -42,6 +43,12 @@ typedef NS_OPTIONS(NSInteger, VCameraControlCaptureMode)
  */
 IB_DESIGNABLE
 @interface VCameraControl : UIControl
+
+/**
+ *  The dependency manager used to style this control.
+ *  Setting it will cause a UI update.
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  *  The default color of the camera control.

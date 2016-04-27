@@ -21,12 +21,8 @@
 #import "VPermissionMicrophone.h"
 #import "victorious-Swift.h"
 
-static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kCameraScreenKey = @"videoCameraScreen";
-static NSString * const kMaximumDimensionKey = @"maximumDimension";
-static NSString * const kNextTextKey = @"nextText";
 static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
-static const CGFloat kDefaultVideoSideLength = 640.0f;
 
 @interface VVideoCameraViewController () <VCaptureVideoPreviewViewDelegate, VCameraVideoEncoderDelegate>
 
@@ -35,14 +31,13 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
 @property (nonatomic, assign) VCameraContext cameraContext;
 
 // Views
-@property (nonatomic, strong) IBOutlet VCaptureVideoPreviewView *previewView;
-@property (nonatomic, strong) IBOutlet UIView *cameraControlContainer;
-@property (nonatomic, strong) IBOutlet UIImageView *capturedImageView;
-@property (nonatomic, strong) IBOutlet UIButton *trashButton;
-@property (nonatomic, strong) IBOutlet UILabel *coachMarkLabel;
-@property (nonatomic, strong) VCameraControl *cameraControl;
-@property (nonatomic, strong) UIButton *switchCameraButton;
-@property (nonatomic, strong) UIBarButtonItem *nextButton;
+@property (nonatomic, weak) IBOutlet VCaptureVideoPreviewView *previewView;
+@property (nonatomic, weak) IBOutlet UIImageView *capturedImageView;
+@property (nonatomic, weak) IBOutlet UIButton *trashButton;
+@property (nonatomic, weak) IBOutlet UILabel *coachMarkLabel;
+@property (nonatomic, weak) IBOutlet VCameraControl *cameraControl;
+@property (nonatomic, strong) IBOutlet VCameraDirectionButton *switchCameraButton;
+@property (nonatomic, strong) IBOutlet VCameraNextBarButtonItem *nextButton;
 @property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 // Hardware
@@ -124,12 +119,7 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     self.coachMarkLabel.text = NSLocalizedString(@"VideoCoachMessage", @"Video coach message");
     
     // Camera control
-    self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
-    self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
     self.cameraControl.captureMode = VCameraControlCaptureModeVideo;
-    self.cameraControl.defaultTintColor = [UIColor whiteColor];
-    self.cameraControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.cameraControl addTarget:self
                            action:@selector(startRecording:)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
@@ -140,25 +130,15 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
                            action:@selector(failedRecording:)
                  forControlEvents:VCameraControlEventFailedRecordingVideo];
     
-    [self.cameraControlContainer addSubview:self.cameraControl];
-    
     // Switch Camera button
-    self.switchCameraButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.switchCameraButton addTarget:self action:@selector(reverseCameraAction:) forControlEvents:UIControlEventTouchUpInside];
-    // disabled and hidden by default
-    self.switchCameraButton.hidden = YES;
-    self.switchCameraButton.enabled = NO;
-    self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
-    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey]
-                             forState:UIControlStateNormal];
+    self.switchCameraButton.dependencyManager = self.dependencyManager;
     self.navigationItem.titleView = self.switchCameraButton;
 
     // Next
-    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:[self.dependencyManager stringForKey:kNextTextKey]
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(nextAction:)];
-    self.nextButton.enabled = NO;
+    self.nextButton.action = @selector(nextAction:);
+    self.nextButton.target = self;
+    self.nextButton.dependencyManager = self.dependencyManager;
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
     // Trash
@@ -266,7 +246,7 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     }
     else
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidConfirmtDelete];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidConfirmDelete];
         
         self.captureController.videoEncoder = nil;
         [self clearRecordedVideoAndResetControl];
@@ -297,14 +277,7 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     }
     
     NSError *encoderError;
-    NSURL *urlForEncoderDestination = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kCameraDirectory];
-    NSNumber *templateMaxSideLength = [self.dependencyManager numberForKey:kMaximumDimensionKey];
-    CGFloat maximumVideoSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultVideoSideLength;
-    CGFloat side = MIN(self.captureController.maxOutputSideLength, maximumVideoSideLength);
-    VCameraCaptureVideoSize size = { side, side };
-    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:urlForEncoderDestination
-                                                                      videoSize:size
-                                                                          error:&encoderError];
+    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithMaximumOutputSideLength:self.captureController.maxOutputSideLength dependencyManager:self.dependencyManager error:&encoderError];
     if (encoder != nil)
     {
         self.captureController.videoEncoder = encoder;
@@ -367,17 +340,6 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     CGFloat progress = ABS( totalRecorded / maxUploadDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
-}
-
-- (UIImage *)previewImageWithAssetAtURL:(NSURL *)url
-{
-    AVURLAsset *assetAtURL = [AVURLAsset assetWithURL:url];
-    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:assetAtURL];
-    imageGenerator.appliesPreferredTrackTransform = YES;
-    CGImageRef imageAtTimeZero = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:nil];
-    UIImage *image = [UIImage imageWithCGImage:imageAtTimeZero];
-    CGImageRelease(imageAtTimeZero);
-    return image;
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -492,7 +454,7 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
                        else
                        {
                            self.savedVideoURL = videoEncoder.fileURL;
-                           self.previewImage = [self previewImageWithAssetAtURL:self.savedVideoURL];
+                           self.previewImage = self.savedVideoURL.v_videoPreviewImage;
                            self.captureController.videoEncoder = nil;
                            if (self.captureController.captureSession.running)
                            {
@@ -520,20 +482,6 @@ static const CGFloat kDefaultVideoSideLength = 640.0f;
     hud.mode = MBProgressHUDModeText;
     hud.labelText = errorText;
     [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
-}
-
-@end
-
-@implementation VVideoCameraViewController (CreatorExtensions)
-
-- (void)clearCaptureState
-{
-    [self clearRecordedVideoAndResetControl];
-}
-
-- (void)resumeCapture
-{
-    [self viewWillAppear:YES];
 }
 
 @end

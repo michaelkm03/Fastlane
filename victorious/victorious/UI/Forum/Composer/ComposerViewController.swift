@@ -65,7 +65,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
-    private var selectedMediaAttachment: MediaAttachment?
     
     private var totalComposerHeight: CGFloat {
         guard isViewLoaded() else {
@@ -121,6 +120,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             maximumTextLength = dependencyManager.maximumTextLengthForOwner(userIsOwner)
             attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
             updateAppearanceFromDependencyManager()
+            creationFlowPresenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
+        }
+    }
+    
+    var creationFlowPresenter: VCreationFlowPresenter! {
+        didSet {
+            creationFlowPresenter.shouldShowPublishScreenForFlowController = false
         }
     }
     
@@ -154,19 +160,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    func setSelectedMediaAttachment(mediaAttachment: MediaAttachment, previewImage: UIImage) {
-        selectedMediaAttachment = mediaAttachment
-    }
-    
-    func clearSelectedMediaAttachment() {
-        selectedMediaAttachment = nil
-    }
-    
     // MARK: - ComposerTextViewManagerDelegate
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedMediaAttachment != nil
+            confirmButton.enabled = textViewHasText || selectedMedia != nil
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -209,6 +207,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateAppearanceFromDependencyManager()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        textView.resignFirstResponder()
+    }
+
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
         guard self.visibleKeyboardHeight != visibleKeyboardHeight else {
             return
@@ -352,9 +360,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
-        sendMessage(text: textView.text, mediaAttachment: selectedMediaAttachment)
+        if let media = selectedMedia {
+            sendMessage(mediaAttachment: media, text: textView.text)
+        } else {
+            sendMessage(text: textView.text)
+        }
         composerTextViewManager?.resetTextView(textView)
-        selectedMediaAttachment = nil
+        selectedMedia = nil
     }
 }
 
