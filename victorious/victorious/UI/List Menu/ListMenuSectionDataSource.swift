@@ -8,6 +8,14 @@
 
 import Foundation
 
+/// Possible states for List Menu Data Source based on the results fetched
+enum ListMenuDataSourceState {
+    case loading
+    case failed(error: ErrorType?)
+    case items
+    case noContent
+}
+
 /// Discrete data source for a section within a List Menu component.
 /// Mainly in charge of fetch data from backend, and notify its delegate
 protocol ListMenuSectionDataSource: class {
@@ -22,15 +30,21 @@ protocol ListMenuSectionDataSource: class {
     /// The delegate to be notified when data get updated
     weak var delegate: ListMenuSectionDataSourceDelegate? { get set }
     
+    /// The current state of the data source based on its results
+    var state: ListMenuDataSourceState { get }
+    
+    /// The number of items to show for this data source, based on its `state` and `visibleItems`
+    var numberOfItems: Int { get }
+    
     /// The visible items fetched from backend and should be displayed
     var visibleItems: [SectionItem] { get }
     
     /// Kick off a network request to fetch data and fill `visibleItems`
     func fetchRemoteData()
     
-    /// Dequeues a cell from the data source. The return type `Cell` will be specified by conformer.
+    /// Dequeues a cell from the data source that displays a valid item in the section. The return type `Cell` will be specified by conformer.
     /// Default implementation will dequeue the cell, configure the cell with `SectionItem`, and set `dependencyManager` on it
-    func dequeueCell(from collectionView: UICollectionView, for indexPath: NSIndexPath) -> Cell
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell
     
     /// Performs initial setup work after initialization of the data source.
     /// Default implementation sets up the delegate and kicks off the initial data fetch
@@ -47,7 +61,7 @@ protocol ListMenuSectionDataSourceDelegate: class {
 
 extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: ListMenuSectionCell, SectionItem == Cell.CellData {
     
-    func dequeueCell(from collectionView: UICollectionView, for indexPath: NSIndexPath) -> Cell {
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Cell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! Cell
         cell.configureCell(with: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
@@ -58,5 +72,14 @@ extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: List
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
         fetchRemoteData()
+    }
+    
+    var numberOfItems: Int {
+        switch state {
+        case .loading, .failed, .noContent:
+            return 1
+        case .items:
+            return visibleItems.count
+        }
     }
 }

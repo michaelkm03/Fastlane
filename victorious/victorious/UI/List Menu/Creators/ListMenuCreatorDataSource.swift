@@ -22,9 +22,12 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     private(set) var visibleItems: [VUser] = [] {
         didSet {
+            state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .creator)
         }
     }
+
+    private(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
@@ -33,6 +36,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
         let operation = CreatorListOperation(expandableURLString: endpointURLFromTemplate)
         operation.queue() { [weak self] results, error, cancelled in
             guard let users = results as? [VUser] else {
+                self?.state = .failed(error: error)
                 return
             }
             self?.visibleItems = users

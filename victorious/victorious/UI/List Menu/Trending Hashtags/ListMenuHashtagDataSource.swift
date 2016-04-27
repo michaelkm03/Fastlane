@@ -27,9 +27,12 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     /// and gets populated after `fetchRemoteData` is called
     private(set) var visibleItems: [HashtagSearchResultObject] = [] {
         didSet {
+            state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)
         }
     }
+    
+    private(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
@@ -37,6 +40,7 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
         let operation = TrendingHashtagOperation()
         operation.queue { [weak self] results, error, cancelled in
             guard let hashtags = results as? [HashtagSearchResultObject] else {
+                self?.state = .failed(error: error)
                 return
             }
             self?.visibleItems = hashtags

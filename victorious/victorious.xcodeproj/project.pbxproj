@@ -719,6 +719,7 @@
 		67F231591CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231581CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift */; };
 		67F2315B1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2315A1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift */; };
 		67F6B7B61CCEBFB400232CAF /* CreatorListOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F6B7B51CCEBFB400232CAF /* CreatorListOperationTests.swift */; };
+		67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F6B7B71CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift */; };
 		67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */; };
 		67F9EAA71CCE93030005A2EF /* CreatorListRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F9EAA61CCE93030005A2EF /* CreatorListRemoteOperation.swift */; };
 		67F9EAA91CCE9BA80005A2EF /* CreatorListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F9EAA81CCE9BA80005A2EF /* CreatorListOperation.swift */; };
@@ -3069,6 +3070,7 @@
 		67F231581CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuHashtagCollectionViewCell.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67F2315A1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuSectionDataSource.swift; path = "List Menu/ListMenuSectionDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F6B7B51CCEBFB400232CAF /* CreatorListOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorListOperationTests.swift; sourceTree = "<group>"; };
+		67F6B7B71CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuNoContentCollectionViewCell.swift; path = "List Menu/ListMenuNoContentCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67F951581C20C03E005E2A4D /* VMockRequestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMockRequestRecorder.h; sourceTree = "<group>"; };
 		67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMockRequestRecorder.m; sourceTree = "<group>"; };
 		67F9EAA61CCE93030005A2EF /* CreatorListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorListRemoteOperation.swift; sourceTree = "<group>"; };
@@ -7323,6 +7325,7 @@
 				67486B711CC713AB00B03926 /* Community */,
 				67486B721CC713B700B03926 /* Creators */,
 				67F231561CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift */,
+				67F6B7B71CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift */,
 				67A20A221CC6A20900629487 /* ListMenuSectionCell.swift */,
 				67F2315A1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift */,
 				67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */,
@@ -12781,6 +12784,7 @@
 				A72C86401C977FF500E97D4F /* UserInfoOperation.swift in Sources */,
 				A72C868C1C977FF600E97D4F /* FetcherOperation.swift in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
+				67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */,
 				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,

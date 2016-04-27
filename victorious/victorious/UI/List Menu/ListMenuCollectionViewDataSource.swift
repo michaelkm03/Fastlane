@@ -47,6 +47,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         creatorDataSource.setupDataSource(with: self)
         communityDataSource.setupDataSource(with: self)
         hashtagDataSource.setupDataSource(with: self)
+        
+        registerNibs(for: listMenuViewController.collectionView)
     }
     
     // MARK: - UICollectionView Data Source
@@ -60,27 +62,26 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         
         switch listMenuSection {
         case .creator:
-            return creatorDataSource.visibleItems.count
+            return creatorDataSource.numberOfItems
         case .community:
-            return communityDataSource.visibleItems.count
+            return communityDataSource.numberOfItems
         case .hashtags:
-            return hashtagDataSource.visibleItems.count
+            return hashtagDataSource.numberOfItems
         }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
+        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
+
         switch listMenuSection {
             
         case .creator:
-            return creatorDataSource.dequeueCell(from: collectionView, for: indexPath)
-        
+            return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
         case .community:
-            return communityDataSource.dequeueCell(from: collectionView, for: indexPath)
-        
+            return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
         case .hashtags:
-            return hashtagDataSource.dequeueCell(from: collectionView, for: indexPath)
+            return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
         }
     }
     
@@ -106,6 +107,41 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     func didUpdateVisibleItems(forSection section: ListMenuSection) {
         listMenuViewController.collectionView.reloadData()
     }
+    
+    // MARK: - Private Methods
+    
+    private func registerNibs(for collectionView: UICollectionView) {
+        let identifier = ActivityIndicatorCollectionCell.defaultSwiftReuseIdentifier
+        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ActivityIndicatorCollectionCell.self) )
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+    }
+    
+    private func dequeueLoadingCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ActivityIndicatorCollectionCell {
+        let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(ActivityIndicatorCollectionCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ActivityIndicatorCollectionCell
+        loadingCell.color = dependencyManager.activityIndicatorColor
+        
+        return loadingCell
+    }
+    
+    private func dequeueNoContentCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+        let noContentCell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuNoContentCollectionViewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ListMenuNoContentCollectionViewCell
+        
+        noContentCell.dependencyManager = dependencyManager
+        noContentCell.configure(withTitle: NSLocalizedString("No results", comment: "List Menu failed to load results for a section, e.g. creators, communities or trending hashtags"))
+        
+        return noContentCell
+    }
+
+    private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+        switch dataSource.state {
+        case .loading:
+            return dequeueLoadingCell(from: collectionView, at: indexPath)
+        case .items:
+            return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
+        case .failed, .noContent:
+            return dequeueNoContentCell(from: collectionView, at: indexPath)
+        }
+    }
 }
 
 private extension VDependencyManager {
@@ -120,5 +156,9 @@ private extension VDependencyManager {
     
     var hashtagsChildDependency: VDependencyManager {
         return self.childDependencyForKey("trending") ?? self
+    }
+    
+    var activityIndicatorColor: UIColor? {
+        return colorForKey(VDependencyManagerMainTextColorKey)
     }
 }

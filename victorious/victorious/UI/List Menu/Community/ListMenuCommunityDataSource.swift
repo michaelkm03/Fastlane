@@ -22,14 +22,18 @@ final class ListMenuCommunityDataSource: ListMenuSectionDataSource {
     
     private(set) var visibleItems: [ListMenuCommunityItem] = [] {
         didSet {
+            state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .community)
         }
     }
+    
+    private(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
         guard let dependencies = dependencyManager.arrayForKey("items") as? [[String: AnyObject]] else {
+            state = .failed(error: NSError(domain: "ListMenuCommunityDataSource", code: 1, userInfo: nil))
             return
         }
         visibleItems = dependencies.flatMap { ListMenuCommunityItem($0) }
