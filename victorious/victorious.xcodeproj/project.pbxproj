@@ -428,6 +428,8 @@
 		039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29419C908F400305987 /* VCVideoPlayerViewController.m */; };
 		039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29619C908F400305987 /* VElapsedTimeFormatter.m */; };
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
+		03A75DD81CD167510035226C /* Stageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E242F441C9C834A008A7286 /* Stageable.swift */; };
+		03A75DD91CD1675F0035226C /* MediaMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFBEAC1C91FAFE00325332 /* MediaMetaData.swift */; };
 		03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */; };
 		03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */; };
 		03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3D21A3BC4DD00F0634A /* VNumericalBadgeView.m */; };
@@ -11950,6 +11952,7 @@
 				0372BEBB1C84FF02004950CF /* SequenceRepostersRequest.swift in Sources */,
 				0372BEE11C84FF0C004950CF /* User.swift in Sources */,
 				0372BED81C84FF0C004950CF /* ProfileUpdate.swift in Sources */,
+				03A75DD91CD1675F0035226C /* MediaMetaData.swift in Sources */,
 				0372BE871C84FF02004950CF /* DateFormat.swift in Sources */,
 				0372BE8A1C84FF02004950CF /* DeleteSequenceRequest.swift in Sources */,
 				0372BE891C84FF02004950CF /* DeleteConversationRequest.swift in Sources */,
@@ -12006,6 +12009,7 @@
 				0372BEBD1C84FF02004950CF /* StandardPaginator.swift in Sources */,
 				0372BE971C84FF02004950CF /* HashtagSearchRequest.swift in Sources */,
 				0372BED71C84FF0C004950CF /* PollResult.swift in Sources */,
+				03A75DD81CD167510035226C /* Stageable.swift in Sources */,
 				0372BECE1C84FF0C004950CF /* ImageSearchResult.swift in Sources */,
 				0372BEE31C84FF0C004950CF /* VoteResult.swift in Sources */,
 				0372BE881C84FF02004950CF /* DeleteCommentRequest.swift in Sources */,
