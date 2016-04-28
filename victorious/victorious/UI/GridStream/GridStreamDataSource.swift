@@ -102,6 +102,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
 
 private extension VDependencyManager {
     func streamAPIPath() -> String? {
-        return "http://dev.getvictorious.com/api/sequence/detail_list_by_user/6086/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+        return ""
     }
 }
