@@ -160,7 +160,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     // MARK: Network Source
     
     func connectToNetworkSource() {
-        if let socketNetworkAdapter = networkSource as? SocketNetworkAdapter where !socketNetworkAdapter.isConnected {
+        if let socketNetworkAdapter = networkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
             socketNetworkAdapter.setUp()
         }
     }
@@ -222,11 +222,7 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var networkSource: SocketNetworkAdapter {
-        return singletonObjectOfType(SocketNetworkAdapter.self, forKey: "networkLayerSource") as! SocketNetworkAdapter
-    }
-    
-    var networkResourcesDependency: VDependencyManager {
-        return childDependencyForKey("networkResources")!
+    var networkSource: WebSocketNetworkAdapter {
+        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as! WebSocketNetworkAdapter
     }
 }

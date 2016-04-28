@@ -199,7 +199,7 @@
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
-	<string>victorious.SocketNetworkAdapter</string>
+	<string>victorious.WebSocketNetworkAdapter</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>

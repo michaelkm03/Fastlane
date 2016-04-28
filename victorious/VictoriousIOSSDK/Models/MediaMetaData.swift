@@ -9,9 +9,7 @@
 import CoreGraphics
 
 public struct MediaMetaData {
-    
-    public let duration: Double?
-    
+
     public let url: NSURL
 
     public let size: CGSize?
@@ -41,8 +39,5 @@ public struct MediaMetaData {
         } else {
             size = nil
         }
-        
-        // This is where the shared duration logics will go when we know what the backend will return.
-        self.duration = json["duration"].double
     }
 }

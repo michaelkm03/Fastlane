@@ -9,5 +9,6 @@
 import Foundation
 
 public protocol Stageable {
-    var mediaMetaData: MediaMetaData { get }
+    var url: NSURL { get }
+    var contentType: ContentType { get }
 }

@@ -6,35 +6,31 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import CoreGraphics
-
-public struct VideoAsset: Stageable {
+public struct VideoAsset {
 
     public enum VideoType: String {
-        case HLS
-        case MP4
+        case HLS = "HLS"
+        case MP4 = "MP4"
     }
     
     public let mimeType: VideoType
     public let bitrate: Int?
     
-    /// StartTime is used in order to sync viewers to the same spot in the video.
-    public let startTime: Double
+    /// `startTime` is used in order to sync viewers to the same spot in the video, defaults to 0.0.
+    public let startTime: NSTimeInterval
     
-    // MARK: Stageable
     public let mediaMetaData: MediaMetaData
     
     public init?(json: JSON) {
-        guard let mimeType = json["mimeType"].string,
-            let startTime = json["start_time"].double else {
+        guard let mimeType = json["mimeType"].string else {
                 return nil
         }
-        
+
         self.mimeType = VideoType(rawValue:mimeType)!
-        self.startTime = startTime
+        self.startTime = json["start_time"].double ?? 0.0
 
         bitrate = json["bitrate"].int
-        
+
         // MARK: Stageable
         guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["resourceLocation"]) else {
             return nil

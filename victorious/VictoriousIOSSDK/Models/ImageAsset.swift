@@ -9,11 +9,10 @@
 import Foundation
 
 /// A thumbnail, profile picture, or other image asset
-public struct ImageAsset: Stageable {
+public struct ImageAsset {
 
     public let type: String
  
-    // MARK: Stageable
     public let mediaMetaData: MediaMetaData
 }
 

@@ -18,10 +18,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         static let fixedStageHeight: CGFloat = 200.0
     }
     
-    private struct InterruptMessageConstants {
-        static let videoPlayerKey = "videoPlayer"
-    }
-    
     /// The content view that is grows and shrinks depending on the content it is displaying.
     /// Is is also this size that will be broadcasted to the stage delegate.
     @IBOutlet private weak var mainContentView: UIView!
@@ -37,41 +33,48 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentStagedMedia: Stageable?
     
-    private var playbackInterrupterTimer: NSTimer?
-
+    private var stageDataSource: StageDataSource?
+    
     weak var delegate: StageDelegate?
     
-    var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
+            stageDataSource = setupDataSource(dependencyManager)
+        }
+    }
     
-    // MARK: UIViewController
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        terminateInterrupterTimer()
+    private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
+        let dataSource = StageDataSource(dependencyManager: dependencyManager)
+        dataSource.delegate = self
+        return dataSource
     }
     
     //MARK: - Stage
     
     func startPlayingMedia(media: Stageable) {
-        terminateInterrupterTimer()
         videoPlayer.pause()
         currentStagedMedia = media
         
-        switch media {
-        case let videoAsset as VideoAsset:
-            addVideoAsset(videoAsset)
-        case let imageAsset as ImageAsset:
-            addImageAsset(imageAsset)
-        case let gifAsset as GifAsset:
-            addGifAsset(gifAsset)
-        default:
-            assertionFailure("Unknown stagable type: \(media)")
+        switch media.contentType {
+        case .video:
+            addVideoAsset(media)
+        case .image:
+            addImageAsset(media)
+        case .gif:
+            addGifAsset(media)
         }
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
-    
+
     func stopPlayingMedia() {
         clearStageMedia()
+    }
+    
+    // MARK: - ForumEventReceiver
+    
+    var childEventReceivers: [ForumEventReceiver] {
+        return [stageDataSource].flatMap { $0 }
     }
     
     // MARK: - VVideoPlayerDelegate
@@ -90,71 +93,42 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         videoPlayer.backgroundColor = UIColor.clearColor()
         containerView.addSubview(videoPlayer.view)
         containerView.v_addFitToParentConstraintsToSubview(videoPlayer.view)
-        
         return videoPlayer
-    }
-    
-    // MARK: - ForumEventReceiver {
-    
-    func receiveEvent(event: ForumEvent) {
-        
     }
     
     // MARK: Video Asset
     
-    private func addVideoAsset(videoAsset: VideoAsset) {
-        let videoItem = VVideoPlayerItem(URL: videoAsset.mediaMetaData.url)
+    private func addVideoAsset(videoAsset: Stageable) {
+        let videoItem = VVideoPlayerItem(URL: videoAsset.url)
         videoPlayer.setItem(videoItem)
     }
     
     // MARK: Image Asset
     
-    private func addImageAsset(imageAsset: ImageAsset) {
-        imageView.sd_setImageWithURL(imageAsset.mediaMetaData.url) { [weak self] (image, error, cacheType, url) in
+    private func addImageAsset(imageAsset: Stageable) {
+        imageView.sd_setImageWithURL(imageAsset.url) { [weak self] (image, error, cacheType, url) in
             guard let strongSelf = self else {
                 return
             }
             
-            guard let stageImageUrl = strongSelf.currentStagedMedia?.mediaMetaData.url where stageImageUrl == url else {
+            guard let stageImageUrl = strongSelf.currentStagedMedia?.url where stageImageUrl == url else {
                 return
             }
             
             strongSelf.switchToContentView(strongSelf.imageView, fromContentView: strongSelf.currentContentView)
         }
     }
-    
+
     // MARK: Gif Playback
     
-    private func addGifAsset(gifAsset: GifAsset) {
-        let videoItem = VVideoPlayerItem(URL: gifAsset.mediaMetaData.url)
+    private func addGifAsset(gifAsset: Stageable) {
+        let videoItem = VVideoPlayerItem(URL: gifAsset.url)
         videoItem.loop = true
         videoPlayer.setItem(videoItem)
-        
-        if let duration = gifAsset.mediaMetaData.duration {
-            let interruptMessage = [InterruptMessageConstants.videoPlayerKey: videoPlayer]
-            playbackInterrupterTimer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: #selector(interruptPlayback(_:)), userInfo: interruptMessage, repeats: false)
-        }
     }
-    
-    // MARK: Interrupt Playback Timer
-    
-    @objc private func interruptPlayback(timer: NSTimer) {
-        if let interruptMessage = timer.userInfo as? NSDictionary {
-            if let videoPlayer = interruptMessage[InterruptMessageConstants.videoPlayerKey] as? VVideoPlayer {
-                videoPlayer.pause()
-            }
-        }
-        
-        timer.invalidate()
-    }
-    
-    private func terminateInterrupterTimer() {
-        playbackInterrupterTimer?.invalidate()
-        playbackInterrupterTimer = nil
-    }
-    
+
     // MARK: Clear Media
-    
+
     private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
         if newContentView != oldContentView {
             UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
@@ -164,9 +138,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         }
         currentContentView = newContentView
         
-        let height = currentStagedMedia?.mediaMetaData.size?.height ?? Constants.fixedStageHeight
-        let clampedHeight = min(height, Constants.fixedStageHeight)
-        delegate?.stage(self, didUpdateContentHeight: clampedHeight)
+        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
     private func clearStageMedia() {

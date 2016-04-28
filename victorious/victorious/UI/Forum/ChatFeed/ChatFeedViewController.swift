@@ -70,7 +70,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var childEventReceivers: [ForumEventReceiver] {
         return [ networkDataSource ]
     }
-        
+   
     // MARK: - NewItemsControllerDelegate
         
     func onNewItemsSelected() {

@@ -1,5 +1,5 @@
 //
-//  SocketNetworkAdapter.swift
+//  WebSocketNetworkAdapter.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 12/4/16.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousCommon
 
-class SocketNetworkAdapter: NSObject, NetworkSource {
+class WebSocketNetworkAdapter: NSObject, NetworkSource {
 
     private struct Constants {
         static let appIdExpander = "%%APP_ID%%"
@@ -22,8 +22,8 @@ class SocketNetworkAdapter: NSObject, NetworkSource {
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> SocketNetworkAdapter {
-        return SocketNetworkAdapter(dependencyManager: dependencyManager)
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> WebSocketNetworkAdapter {
+        return WebSocketNetworkAdapter(dependencyManager: dependencyManager)
     }
     
     init(dependencyManager: VDependencyManager) {
@@ -82,14 +82,14 @@ class SocketNetworkAdapter: NSObject, NetworkSource {
             operation.queue() { [weak self] results, error, canceled in
                 guard let strongSelf = self,
                     let token = results?.first as? String where !token.characters.isEmpty else {
-                        assertionFailure("Failed to parse the token from the response. Results -> \(results)")
+                        v_log("Failed to parse the token from the response. Results -> \(results)")
                         return
                 }
 
                 let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
                 print("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
                 guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
-                    assertionFailure("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
+                    v_log("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
                     return
                 }
                 
