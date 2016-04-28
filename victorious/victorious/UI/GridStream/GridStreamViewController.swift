@@ -165,7 +165,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
-        return UIView()
+        return view
     }
     
     // MARK: - ConfigurableHeaderCollectionView
