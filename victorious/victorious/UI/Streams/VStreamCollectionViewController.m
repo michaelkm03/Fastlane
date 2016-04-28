@@ -797,10 +797,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         context.streamId = streamID;
         context.viewController = self;
         context.originDependencyManager = self.dependencyManager;
-//        [self.contentViewPresenter presentContentViewWithContext:context];
-        [[[ShowCloseUpOperation alloc] initWithOriginViewController:self
-                                                      dependencyManager:self.dependencyManager
-                                                               sequence: context.sequence] queueWithCompletion:nil];
+        [self.contentViewPresenter presentContentViewWithContext:context];
     }
 }
 
