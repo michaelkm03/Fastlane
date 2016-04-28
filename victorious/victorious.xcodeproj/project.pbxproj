@@ -1145,7 +1145,6 @@
 		A73BA2A31C938B68008168B5 /* CloseUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2921C938B68008168B5 /* CloseUp.swift */; };
 		A73BA2A41C938B68008168B5 /* CloseUpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2931C938B68008168B5 /* CloseUpDelegate.swift */; };
 		A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */; };
-		A73BA2A61C938B68008168B5 /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2951C938B68008168B5 /* CloseUpViewController.swift */; };
 		A73BA2A71C938B68008168B5 /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2971C938B68008168B5 /* Composer.swift */; };
 		A73BA2AA1C938B68008168B5 /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA29A1C938B68008168B5 /* ComposerViewController.swift */; };
 		A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA29D1C938B68008168B5 /* Stage.swift */; };
@@ -1649,6 +1648,13 @@
 		BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */; };
+		BF2AE2A91CD1211A00A9967A /* CloseUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2A81CD1211A00A9967A /* CloseUpViewController.swift */; };
+		BF2AE2BD1CD280CB00A9967A /* ConfigurableGridStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */; };
+		BF2AE2BE1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */; };
+		BF2AE2BF1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */; };
+		BF2AE2C01CD280CB00A9967A /* GridStreamDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */; };
+		BF2AE2C11CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */; };
+		BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
 		BF425FF11C88EE2800283089 /* SequenceLikeToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FF01C88EE2800283089 /* SequenceLikeToggleOperationTests.swift */; };
@@ -3632,7 +3638,6 @@
 		A73BA2921C938B68008168B5 /* CloseUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUp.swift; sourceTree = "<group>"; };
 		A73BA2931C938B68008168B5 /* CloseUpDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpDelegate.swift; sourceTree = "<group>"; };
 		A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpMenuItem.swift; sourceTree = "<group>"; };
-		A73BA2951C938B68008168B5 /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpViewController.swift; sourceTree = "<group>"; };
 		A73BA2971C938B68008168B5 /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
 		A73BA2991C938B68008168B5 /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerDelegate.swift; sourceTree = "<group>"; };
 		A73BA29A1C938B68008168B5 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
@@ -4318,6 +4323,13 @@
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowProfileOperationTests.m; sourceTree = "<group>"; };
+		BF2AE2A81CD1211A00A9967A /* CloseUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpViewController.swift; sourceTree = "<group>"; };
+		BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeader.swift; path = GridStream/ConfigurableGridStreamHeader.swift; sourceTree = "<group>"; };
+		BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeaderView.swift; path = GridStream/ConfigurableGridStreamHeaderView.swift; sourceTree = "<group>"; };
+		BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfigurableGridStreamHeaderView.xib; path = GridStream/ConfigurableGridStreamHeaderView.xib; sourceTree = "<group>"; };
+		BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamDataSource.swift; path = GridStream/GridStreamDataSource.swift; sourceTree = "<group>"; };
+		BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamDelegateFlowLayout.swift; path = GridStream/GridStreamDelegateFlowLayout.swift; sourceTree = "<group>"; };
+		BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamViewController.swift; path = GridStream/GridStreamViewController.swift; sourceTree = "<group>"; };
 		BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperationTests.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -5281,7 +5293,6 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				67F2314B1CBC8970006BDBA5 /* ListMenu */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				F07409801B059CAD00C44623 /* Coachmarks */,
@@ -5296,11 +5307,13 @@
 				D85B70371B0EAF3F0038CA5B /* Find Friends */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
 				A73BA28D1C938B68008168B5 /* Forum */,
+				BF2AE2B61CD280BF00A9967A /* GridStream */,
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
 				A76D938D1B32151B007A150D /* Like */,
+				67F2314B1CBC8970006BDBA5 /* ListMenu */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
 				A73C3EA31C45890E00A8452C /* MediaSearch */,
@@ -7961,7 +7974,7 @@
 				A73BA2921C938B68008168B5 /* CloseUp.swift */,
 				A73BA2931C938B68008168B5 /* CloseUpDelegate.swift */,
 				A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */,
-				A73BA2951C938B68008168B5 /* CloseUpViewController.swift */,
+				BF2AE2A81CD1211A00A9967A /* CloseUpViewController.swift */,
 			);
 			path = CloseUp;
 			sourceTree = "<group>";
@@ -9386,6 +9399,19 @@
 				F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */,
 			);
 			path = Marquee;
+			sourceTree = "<group>";
+		};
+		BF2AE2B61CD280BF00A9967A /* GridStream */ = {
+			isa = PBXGroup;
+			children = (
+				BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */,
+				BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */,
+				BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */,
+				BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */,
+				BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */,
+				BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */,
+			);
+			name = GridStream;
 			sourceTree = "<group>";
 		};
 		C30546B61BD9B9DC005F6712 /* Supporting Files */ = {
@@ -11084,6 +11110,7 @@
 				03645B0F1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
+				BF2AE2BF1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib in Resources */,
 				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
 				F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
@@ -12496,6 +12523,7 @@
 				629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */,
 				A72C861D1C977FF500E97D4F /* LogoutOperation.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
+				BF2AE2BE1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
@@ -12658,6 +12686,7 @@
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
+				BF2AE2BD1CD280CB00A9967A /* ConfigurableGridStreamHeader.swift in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,
 				7AB14CAC1CBEF8AE006E674B /* FetchWebContentOperation.swift in Sources */,
 				A75FAF1919E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m in Sources */,
@@ -12690,7 +12719,6 @@
 				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */,
-				A73BA2A61C938B68008168B5 /* CloseUpViewController.swift in Sources */,
 				A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */,
@@ -12886,6 +12914,7 @@
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
+				BF2AE2C11CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A7AF87331C460E9200B49478 /* VConversationViewController.swift in Sources */,
@@ -12897,6 +12926,7 @@
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				67F2310A1CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift in Sources */,
+				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				A72C86261C977FF500E97D4F /* PollResultSummaryBySequenceOperation.swift in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
@@ -13003,6 +13033,7 @@
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,
 				C38211421B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
+				BF2AE2A91CD1211A00A9967A /* CloseUpViewController.swift in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */,
 				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,
@@ -13125,6 +13156,7 @@
 				A73BA2C61C9393ED008168B5 /* ChatFeedNetworkDataSource.swift in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
+				BF2AE2C01CD280CB00A9967A /* GridStreamDataSource.swift in Sources */,
 				A7B1330D1C606C2C006EC4F5 /* VStreamItemPointer.swift in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A7FFCE511C8FCDD900B1BE49 /* VIPValidateSuscriptionOperation.swift in Sources */,
