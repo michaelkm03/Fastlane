@@ -222,7 +222,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         self.visibleKeyboardHeight = visibleKeyboardHeight
-        inputViewToBottomConstraint.constant = visibleKeyboardHeight
         updateViewConstraints()
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
@@ -231,7 +230,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 self.view.layoutIfNeeded()
             }, completion: nil)
         } else {
+            inputViewToBottomConstraint.constant = visibleKeyboardHeight
             self.view.setNeedsLayout()
+            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
         }
     }
     
