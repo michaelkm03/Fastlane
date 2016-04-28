@@ -56,7 +56,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     }
     
     func registerCells( forTableView tableView: UITableView ) {
-        let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
+        let identifier = UserSearchResultTableViewCell.defaultReuseIdentifier
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: UserSearchResultTableViewCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
         
@@ -70,7 +70,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
+        let identifier = UserSearchResultTableViewCell.defaultReuseIdentifier
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! UserSearchResultTableViewCell
         let visibleItem = visibleItems[indexPath.row] as! UserSearchResultObject
         let userNetworkStruct = visibleItem.sourceResult

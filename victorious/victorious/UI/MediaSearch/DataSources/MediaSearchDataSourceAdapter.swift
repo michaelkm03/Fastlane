@@ -174,7 +174,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		if self.sections.isEmpty,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
+			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
 				self.configureNoContentCell( cell, forState: self.state )
 				return cell
 		}
@@ -182,12 +182,12 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		let section = self.sections[ indexPath.section ]
 		let resultObject = section.results[ indexPath.row ]
 		if section.isFullSize,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
+			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
 				cell.previewAssetUrl = resultObject.thumbnailImageURL
 				cell.assetUrl = resultObject.sourceMediaURL
 				return cell
 				
-		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
+		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
 			cell.assetUrl = resultObject.thumbnailImageURL
 			
 			if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {

@@ -167,14 +167,14 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let noContentIdentifier = SettingsEmptyCell.defaultSwiftReuseIdentifier
+        let noContentIdentifier = SettingsEmptyCell.defaultReuseIdentifier
         if self.state != .Content,
             let cell = tableView.dequeueReusableCellWithIdentifier( noContentIdentifier, forIndexPath: indexPath ) as? SettingsEmptyCell {
                 cell.message = self.state.message
                 return cell
         }
         
-        let buttonCellIdentifier = SettingsButtonCell.defaultSwiftReuseIdentifier
+        let buttonCellIdentifier = SettingsButtonCell.defaultReuseIdentifier
         if self.state == .Content && indexPath.section == tableView.lastSection(),
             let cell = tableView.dequeueReusableCellWithIdentifier( buttonCellIdentifier, forIndexPath: indexPath ) as? SettingsButtonCell {
                 if let button = cell.button as? VButton,

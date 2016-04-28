@@ -40,10 +40,6 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    class func suggestedReuseIdentifier() -> String {
-        return stringFromClass(RecentPostsExploreHeaderView)
-    }
-    
     class func desiredHeight(dependencyManager: VDependencyManager) -> CGFloat {
         let height = Constants.baseHeight
         if let font = dependencyManager.labelTextFont, text = dependencyManager.labelText {

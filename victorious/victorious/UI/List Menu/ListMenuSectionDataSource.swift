@@ -62,7 +62,7 @@ protocol ListMenuSectionDataSourceDelegate: class {
 extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: ListMenuSectionCell, SectionItem == Cell.CellData {
     
     func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Cell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! Cell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Cell.defaultReuseIdentifier, forIndexPath: indexPath) as! Cell
         cell.configureCell(with: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         

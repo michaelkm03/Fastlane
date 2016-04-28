@@ -86,7 +86,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let headerIdentifier = stringFromClass(ListMenuSectionHeaderView.self)
+        let headerIdentifier = ListMenuSectionHeaderView.defaultReuseIdentifier
         let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerIdentifier , forIndexPath: indexPath) as! ListMenuSectionHeaderView
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
@@ -111,20 +111,20 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     // MARK: - Private Methods
     
     private func registerNibs(for collectionView: UICollectionView) {
-        let identifier = ActivityIndicatorCollectionCell.defaultSwiftReuseIdentifier
+        let identifier = ActivityIndicatorCollectionCell.defaultReuseIdentifier
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ActivityIndicatorCollectionCell.self) )
         collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
     }
     
     private func dequeueLoadingCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ActivityIndicatorCollectionCell {
-        let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(ActivityIndicatorCollectionCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ActivityIndicatorCollectionCell
+        let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(ActivityIndicatorCollectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ActivityIndicatorCollectionCell
         loadingCell.color = dependencyManager.activityIndicatorColor
         
         return loadingCell
     }
     
     private func dequeueNoContentCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
-        let noContentCell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuNoContentCollectionViewCell.defaultSwiftReuseIdentifier, forIndexPath: indexPath) as! ListMenuNoContentCollectionViewCell
+        let noContentCell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuNoContentCollectionViewCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ListMenuNoContentCollectionViewCell
         
         noContentCell.dependencyManager = dependencyManager
         noContentCell.configure(withTitle: NSLocalizedString("No results", comment: "List Menu failed to load results for a section, e.g. creators, communities or trending hashtags"))

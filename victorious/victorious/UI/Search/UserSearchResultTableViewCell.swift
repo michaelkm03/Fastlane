@@ -48,8 +48,4 @@ class UserSearchResultTableViewCell: UITableViewCell {
     
     @IBOutlet private var profileButton: VDefaultProfileButton!
     @IBOutlet private var usernameLabel: UILabel!
-    
-    class func suggestedReuseIdentifier() -> String {
-        return stringFromClass(UserSearchResultTableViewCell.self)
-    }
 }
