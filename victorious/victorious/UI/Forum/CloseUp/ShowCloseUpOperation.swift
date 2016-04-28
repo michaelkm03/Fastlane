@@ -116,7 +116,8 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     override func start() {
         
-        guard !self.cancelled else {
+        guard let childDependencyManager = dependencyManager.childDependencyForKey("contentScreen")
+            where !self.cancelled else {
             finishedExecuting()
             return
         }
@@ -124,11 +125,11 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
-        let header = CloseUpView.newWithDependencyManager(dependencyManager,
+        let header = CloseUpView.newWithDependencyManager(childDependencyManager,
                                                           delegate: nil)
         
         let closeUpViewController =
-            GridStreamViewController<CloseUpView>.newWithDependencyManager(dependencyManager,
+            GridStreamViewController<CloseUpView>.newWithDependencyManager(childDependencyManager,
                                                                                                 header: header,
                                                                                                 content: content)
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
