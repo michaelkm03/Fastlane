@@ -73,22 +73,27 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     func collectionView(collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        if headerView != nil {
+        if kind == UICollectionElementKindSectionFooter {
+            return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
+        }
+        else {
+            if headerView != nil {
+                return headerView
+            }
+            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                                                               withReuseIdentifier: headerName,
+                                                                               forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
+            header?.decorateHeader(dependencyManager,
+                                   maxHeight: CGRectGetHeight(collectionView.bounds),
+                                   content: content)
+            
+            guard let header = header as? UIView else {
+                assertionFailure("header is not a UIView")
+                return headerView
+            }
+            headerView.addHeader(header)
             return headerView
         }
-        headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                                                           withReuseIdentifier: headerName,
-                                                                           forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
-        header?.decorateHeader(dependencyManager,
-                              maxHeight: CGRectGetHeight(collectionView.bounds),
-                              content: content)
-        
-        guard let header = header as? UIView else {
-            assertionFailure("header is not a UIView")
-            return headerView
-        }
-        headerView.addHeader(header)
-        return headerView
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
