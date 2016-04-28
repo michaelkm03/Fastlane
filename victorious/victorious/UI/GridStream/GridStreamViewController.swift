@@ -174,10 +174,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         footerView.activityIndicator.color = dependencyManager.refreshControlColor
         footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
     }
-    
-    func sizeForFooter() -> CGSize {
-        return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
-    }
 }
 
 private extension VDependencyManager {

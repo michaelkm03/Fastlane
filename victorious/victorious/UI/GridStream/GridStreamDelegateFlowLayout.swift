@@ -10,7 +10,6 @@ import UIKit
 
 protocol ConfigurableGridStreamCollectionView {
     func willDisplaySupplementaryView(footerView: VFooterActivityIndicatorView)
-    func sizeForFooter() -> CGSize
 }
 
 class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDelegateFlowLayout {
@@ -69,11 +68,5 @@ class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NS
         if let footerView = view as? VFooterActivityIndicatorView {
             configurableViewController?.willDisplaySupplementaryView(footerView)
         }
-    }
-    
-    func collectionView(collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForFooterInSection section: Int) -> CGSize {
-        return configurableViewController?.sizeForFooter() ?? CGSizeZero
     }
 }
