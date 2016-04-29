@@ -12,12 +12,12 @@ import Foundation
 /// `self.results` are of type `[VUser]`
 final class CreatorListOperation: FetcherOperation {
     
-    required init(expandableURLString: String? = nil) {
+    required init(urlString: String? = nil) {
         super.init()
         
-        if let url = expandableURLString where !localFetch {
+        if let url = urlString where !localFetch {
             let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.integerValue
-            CreatorListRemoteOperation(expandableURLString: url, appID: appID)?.before(self).queue()
+            CreatorListRemoteOperation(urlString: url, appID: appID)?.before(self).queue()
         }
     }
     

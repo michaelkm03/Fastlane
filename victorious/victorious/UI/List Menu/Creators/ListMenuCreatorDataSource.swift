@@ -33,7 +33,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     func fetchRemoteData() {
         let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString
-        let operation = CreatorListOperation(expandableURLString: endpointURLFromTemplate)
+        let operation = CreatorListOperation(urlString: endpointURLFromTemplate)
         operation.queue() { [weak self] results, error, cancelled in
             guard let users = results as? [VUser] else {
                 self?.state = .failed(error: error)

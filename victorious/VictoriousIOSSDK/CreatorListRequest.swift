@@ -12,12 +12,10 @@ import Foundation
 /// Response of this request should be `[User]`
 public struct CreatorListRequest: RequestType {
     
-    private let appIDMacro = "%%APP_ID%%"
     private let url: NSURL
     
-    public init?(expandableURLString: String, appID: Int) {
-        let expandedURLString = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([appIDMacro: String(appID)], inURLString: expandableURLString)
-        guard let url = NSURL(string: expandedURLString) else {
+    public init?(urlString: String, appID: Int) {
+        guard let url = NSURL(string: urlString) else {
             return nil
         }
         

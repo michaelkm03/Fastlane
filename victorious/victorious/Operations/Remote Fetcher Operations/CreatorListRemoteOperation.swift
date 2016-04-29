@@ -19,8 +19,8 @@ final class CreatorListRemoteOperation: RemoteFetcherOperation {
         self.request = request
     }
     
-    convenience init?(expandableURLString: String, appID: Int) {
-        guard let request = CreatorListRequest(expandableURLString: expandableURLString, appID: appID) else {
+    convenience init?(urlString: String, appID: Int) {
+        guard let request = CreatorListRequest(urlString: urlString, appID: appID) else {
             return nil
         }
         self.init(request: request)
