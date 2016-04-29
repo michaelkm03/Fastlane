@@ -143,7 +143,9 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
             let json = JSON(data: dataFromString)
             let events = decodeEventsFromJson(json)
             for event in events {
-                receiveEvent(event)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.receiveEvent(event)
+                }
             }
         }
     }

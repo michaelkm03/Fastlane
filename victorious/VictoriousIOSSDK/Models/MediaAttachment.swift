@@ -38,7 +38,7 @@ public struct MediaAttachment {
     public init(
         url: NSURL,
         type: MediaAttachmentType,
-        thumbnailURL: NSURL,
+        thumbnailURL: NSURL?,
         size: CGSize?,
         isGIFStyle: Bool? = nil,
         shouldAutoplay: Bool? = nil,

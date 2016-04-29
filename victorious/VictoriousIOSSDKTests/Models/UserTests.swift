@@ -29,6 +29,8 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.tagline, "My coolest tagline")
         XCTAssertEqual(user.fanLoyalty?.points, Int(2764))
         XCTAssertEqual(user.numberOfFollowers, Int(15))
+        XCTAssertEqual(user.likesGiven, 99)
+        XCTAssertEqual(user.likesReceived, 40)
         
         if let previewImageAssets = user.previewImageAssets where previewImageAssets.count == 2 {
             XCTAssertEqual(previewImageAssets[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))

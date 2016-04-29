@@ -13,7 +13,7 @@
 #import "VNavigationMenuItem.h"
 #import "VCreateSheetTransitionDelegate.h"
 #import "VDependencyManager+VStatusBarStyle.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "victorious-Swift.h"
 
 static NSString * const kStoryboardName = @"CreateSheet";

@@ -11,11 +11,19 @@ import XCTest
 
 class ComposerTextViewManagerTests: XCTestCase {
     
-    let textView = UITextView()
+    let textView: UITextView = {
+        let textView = UITextView()
+        textView.textColor = .redColor()
+        textView.font = UIFont.systemFontOfSize(10)
+        return textView
+    }()
 
     func testDefaultInitializerValues() {
         
-        let manager = ComposerTextViewManager(textView: textView)
+        guard let manager = ComposerTextViewManager(textView: textView) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
         XCTAssertEqual(manager.maximumTextLength, 0)
         XCTAssertTrue(manager.dismissOnReturn)
         XCTAssertNil(manager.delegate)
@@ -23,10 +31,10 @@ class ComposerTextViewManagerTests: XCTestCase {
     
     func testSetsTextViewDelegate() {
         
-        let manager = ComposerTextViewManager(textView: textView)
-        guard let delegate = textView.delegate as? ComposerTextViewManager else {
-            XCTFail()
-            return
+        guard let manager = ComposerTextViewManager(textView: textView),
+            let delegate = textView.delegate as? ComposerTextViewManager else {
+                XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+                return
         }
         XCTAssertEqual(delegate, manager)
     }
@@ -38,7 +46,10 @@ class ComposerTextViewManagerTests: XCTestCase {
         let baseTextLength = baseText.characters.count
         let additionalTextLength = additionalText.characters.count
         textView.text = baseText
-        let manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: baseTextLength)
+        guard let manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: baseTextLength) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
         XCTAssertFalse(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength, length: 0), replacementText: additionalText))
         XCTAssertTrue(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength - additionalTextLength, length: additionalTextLength), replacementText: additionalText))
         XCTAssertTrue(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength - additionalTextLength, length: additionalTextLength), replacementText: ""))
@@ -58,25 +69,38 @@ class ComposerTextViewManagerTests: XCTestCase {
         delegate.onSetTextViewHasText = {
             textViewHasTextExpectation.fulfill()
         }
-        let manager = ComposerTextViewManager(textView: textView, delegate: delegate)
+        guard let manager = ComposerTextViewManager(textView: textView, delegate: delegate) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
         manager.updateDelegateOfTextViewStatus(textView)
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
     func testDismissOnReturn() {
         
-        var manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: true)
+        guard var manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: true) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
         XCTAssertFalse(manager.shouldDismissForText("a"))
         XCTAssertTrue(manager.shouldDismissForText("\n"))
         
-        manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: false)
+        guard let updatedManager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 0, dismissOnReturn: false) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
+        manager = updatedManager
         XCTAssertFalse(manager.shouldDismissForText("a"))
         XCTAssertFalse(manager.shouldDismissForText("\n"))
     }
     
     func testAppendIfPossible() {
         
-        let manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 10, dismissOnReturn: true)
+        guard let manager = ComposerTextViewManager(textView: textView, delegate: nil, maximumTextLength: 10, dismissOnReturn: true) else {
+            XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
+            return
+        }
         textView.text = "0123456789" // Fill up text view with text
         XCTAssertFalse(manager.appendTextIfPossible(textView, text: "a"))
         
@@ -96,6 +120,8 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         var onSetTextViewIsEditing: (Void -> ())? = nil
         
+        var onSetTextViewHasPrependedImage: (Void -> ())? = nil
+        
         var textViewContentSize: CGSize = CGSize.zero {
             didSet {
                 onSetTextViewContentSize?()
@@ -111,6 +137,12 @@ class ComposerTextViewManagerTests: XCTestCase {
         var textViewIsEditing: Bool = false {
             didSet {
                 onSetTextViewIsEditing?()
+            }
+        }
+        
+        private var textViewHasPrependedImage: Bool = false {
+            didSet {
+                onSetTextViewHasPrependedImage?()
             }
         }
         

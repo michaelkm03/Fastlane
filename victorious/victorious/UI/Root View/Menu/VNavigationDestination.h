@@ -23,20 +23,11 @@
 - (NSInteger)badgeNumber;
 
 /**
- Asks the receiver if it is ready to be navigated to. If the receiver
- is not a UIViewController subclass, it would be a programmer error
- to return YES without specifying an alternate destination via the
- alternateViewController parameter.
- 
- @param alternateViewController An "out" parameter that specifies a view controller
-                                that should be displayed instead of the receiver. 
-                                If specified, the return value should be YES. If
-                                return value is NO, all navigation is canceled including
-                                to any alternate destination.
+ Asks the receiver if it is ready to be navigated to.
  
  @return YES if all systems are GO for navigation, or NO to cancel navigation.
  */
-- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController;
+- (BOOL)shouldNavigate;
 
 @optional
 
@@ -47,13 +38,5 @@
  check for `respondsToSelector:` and check against nil.
  */
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
-
-/**
- Optionally exposes a stored alternate view controller of this navigation destination
- which could be used to gather data and references to other related components for larger
- systems in the app's architecture, such as deep linking.  Calling code should always
- check for `respondsToSelector:` and check against nil.
- */
-- (UIViewController *)alternateViewController;
 
 @end

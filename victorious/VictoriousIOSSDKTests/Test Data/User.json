@@ -31,5 +31,9 @@
         "level": 7,
         "progress": 24
     },
-    "number_of_followers": "15"
+    "number_of_followers": "15",
+    "engagements": {
+        "likes_given": 99,
+        "likes_received": 40
+    }
 }

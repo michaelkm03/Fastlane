@@ -8,10 +8,9 @@
 
 import CoreGraphics
 
-public struct GifAsset: Stageable {
+public struct GifAsset {
     public let thumbnailURL: String?
 
-    // MARK: Stageable
     public let mediaMetaData: MediaMetaData
 }
 

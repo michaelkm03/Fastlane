@@ -19,7 +19,7 @@
 #import "VBarButton.h"
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;

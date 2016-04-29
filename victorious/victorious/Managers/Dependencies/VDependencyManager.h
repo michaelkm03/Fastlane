@@ -60,6 +60,8 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 extern NSString * const VDependencyManagerNativeWorkspaceKey;
 
+@protocol Scaffold;
+
 /**
  Provides loose coupling between components.
  Acts as both repository of shared objects
@@ -128,6 +130,11 @@ extern NSString * const VDependencyManagerNativeWorkspaceKey;
  Returns a singleton instance of a view controller with the specified key
  */
 - (UIViewController *)singletonViewControllerForKey:(NSString *)key;
+
+/**
+ Returns a reference to the singleton instance of the current template's scaffolding
+ */
+- (UIViewController<Scaffold> *)scaffoldViewController;
 
 /**
  Returns the NSArray with the specified key. If the array

@@ -36,6 +36,7 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
 {
     self = [super initWithDependencyManager:dependencyManager];
     self.shouldShowPublishScreenForFlowController = YES;
+    self.creationFlowControllerDelegate = self;
     return self;
 }
 
@@ -88,7 +89,7 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
     
     Class type = [VCreationFlowController class];
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:type forKey:key];
-    flowController.creationFlowDelegate = self;
+    flowController.creationFlowDelegate = self.creationFlowControllerDelegate;
     if (flowController == nil)
     {
         NSAssert(NO, @"Failed to present the desired workspace flow");

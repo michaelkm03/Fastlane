@@ -160,7 +160,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
     // MARK: Network Source
     
     func connectToNetworkSource() {
-        if let socketNetworkAdapter = networkSource as? SocketNetworkAdapter where !socketNetworkAdapter.isConnected {
+        if let socketNetworkAdapter = networkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
             socketNetworkAdapter.setUp()
         }
     }
@@ -177,12 +177,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
         
         title = dependencyManager.title
-        let attributes = [ NSForegroundColorAttributeName: UIColor.whiteColor() ]
-        navigationController?.navigationBar.titleTextAttributes = attributes
-        navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
-        navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor
+        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    // MARK: - VCoachmarkDisplayer
+    
+    func screenIdentifier() -> String! {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
     
     // MARK: Private
@@ -201,15 +204,6 @@ private extension VDependencyManager {
         return stringForKey("title.text")
     }
     
-    var navigationItemColor: UIColor {
-        return colorForKey("barTintColor")
-    }
-    
-    var navigationBarBackgroundColor: UIColor? {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "navBarBackground") as? VSolidColorBackground
-        return background?.backgroundColor
-    }
-    
     var chatFeedDependency: VDependencyManager? {
         return childDependencyForKey("chatFeed")
     }
@@ -222,11 +216,7 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var networkSource: SocketNetworkAdapter {
-        return singletonObjectOfType(SocketNetworkAdapter.self, forKey: "networkLayerSource") as! SocketNetworkAdapter
-    }
-    
-    var networkResourcesDependency: VDependencyManager {
-        return childDependencyForKey("networkResources")!
+    var networkSource: WebSocketNetworkAdapter {
+        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as! WebSocketNetworkAdapter
     }
 }

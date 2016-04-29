@@ -155,7 +155,7 @@ private extension VDependencyManager {
     }
     
     var hashtagsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("trending") ?? self
+        return self.childDependencyForKey("trendingHashtags") ?? self
     }
     
     var activityIndicatorColor: UIColor? {

@@ -16,5 +16,7 @@ protocol ComposerTextViewManagerDelegate: class {
     
     var textViewIsEditing: Bool { get set }
     
+    var textViewHasPrependedImage: Bool { get set }
+    
     var textViewCanDismiss: Bool { get }
 }

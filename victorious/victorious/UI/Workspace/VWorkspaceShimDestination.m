@@ -34,7 +34,7 @@
     return self;
 }
 
-- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+- (BOOL)shouldNavigate
 {
     UIViewController *originVC = [VRootViewController sharedRootViewController];
     ShowCreateSheetOperation *operation = [[ShowCreateSheetOperation alloc] initWithOriginViewController:originVC

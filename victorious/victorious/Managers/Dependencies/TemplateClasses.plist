@@ -90,8 +90,12 @@
 	<string>VGIFCreationFlowController</string>
 	<key>pollCreation.screen</key>
 	<string>VCreatePollViewController</string>
+	<key>sideNav.scaffold</key>
+	<string>victorious.SideNavScaffoldViewController</string>
+	<key>rightNav.screen</key>
+	<string>victorious.RightNavViewController</string>
 	<key>tabMenu.scaffold</key>
-	<string>VTabScaffoldViewController</string>
+	<string>victorious.VTabScaffoldViewController</string>
 	<key>tab.menu</key>
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
@@ -199,7 +203,7 @@
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
-	<string>victorious.SocketNetworkAdapter</string>
+	<string>victorious.WebSocketNetworkAdapter</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>

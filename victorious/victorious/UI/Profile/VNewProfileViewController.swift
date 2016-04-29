@@ -17,11 +17,7 @@ class VNewProfileViewController: UIViewController, UICollectionViewDelegateFlowL
     
     // MARK: - Initializing
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> VNewProfileViewController {
-        return VNewProfileViewController(dependencyManager: dependencyManager)
-    }
-    
-    private init(dependencyManager: VDependencyManager) {
+    init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         dataSource = VNewProfileStreamDataSource(dependencyManager: dependencyManager)
         

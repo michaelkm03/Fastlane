@@ -10,7 +10,7 @@
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
 #import "VConversationListViewController.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "victorious-swift.h"
 
 @import MBProgressHUD;

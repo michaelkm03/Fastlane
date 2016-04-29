@@ -455,22 +455,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let shouldResumeEditing = inputAccessoryView.isEditing()
         inputAccessoryView.stopEditing()
         
-        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete(
-            {
-                self.publishParameters?.mediaToUploadURL = nil
+        let promptOperation = ShowMediaDeletionPromptOperation(originViewController: self)
+        promptOperation.queue() { [weak self] _ in
+            
+            if promptOperation.confirmedDelete {
+                self?.publishParameters?.mediaToUploadURL = nil
                 inputAccessoryView.setSelectedThumbnail(nil)
-                if shouldResumeEditing {
-                    inputAccessoryView.startEditing()
-                }
-            },
-            cancel: {
-                if shouldResumeEditing {
-                    inputAccessoryView.startEditing()
-                }
             }
-        )
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
+            
+            if shouldResumeEditing {
+                inputAccessoryView.startEditing()
+            }
+            
+        }
     }
     
     func keyboardInputAccessoryViewDidBeginEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {

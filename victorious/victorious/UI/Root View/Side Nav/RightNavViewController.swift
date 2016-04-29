@@ -1,0 +1,54 @@
+//
+//  RightNavViewController.swift
+//  victorious
+//
+//  Created by Jarod Long on 4/21/16.
+//  Copyright © 2016 Victorious. All rights reserved.
+//
+
+import UIKit
+
+/// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
+class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigationDestination {
+    // MARK: - Initializing
+    
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
+        addChildViewController(contentViewController)
+        view.addSubview(contentViewController.view)
+        view.v_addFitToParentConstraintsToSubview(contentViewController.view)
+        contentViewController.didMoveToParentViewController(self)
+        
+        navigationItem.leftItemsSupplementBackButton = true
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - Dependency manager
+    
+    let dependencyManager: VDependencyManager
+    
+    // MARK: - View events
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
+    }
+    
+    // MARK - VCoachmarkDisplayer
+    
+    func screenIdentifier() -> String! {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    }
+}

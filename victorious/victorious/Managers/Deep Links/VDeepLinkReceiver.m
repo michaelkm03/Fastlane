@@ -8,12 +8,11 @@
 
 #import "VDeeplinkReceiver.h"
 #import "VMultipleContainer.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VTabScaffoldViewController.h"
 #import "VUser.h"
 #import "victorious-Swift.h"
 
@@ -21,7 +20,6 @@
 
 @interface VDeeplinkReceiver()
 
-@property (nonatomic, readonly) VTabScaffoldViewController *scaffold;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deep link URL that came in before we were ready for it
 
 @end
@@ -52,7 +50,7 @@
     return self;
 }
 
-- (VTabScaffoldViewController *)scaffold
+- (UIViewController<Scaffold> *)scaffold
 {
     return [self.dependencyManager scaffoldViewController];
 }
@@ -99,7 +97,7 @@
         return;
     }
     
-    NSArray *possibleDeeplinkSupporters = [[self.scaffold navigationDestinations] arrayByAddingObject:self.scaffold];
+    NSArray *possibleDeeplinkSupporters = [(NSArray<id> *)self.navigationDestinations arrayByAddingObject:self.scaffold];
     
     NSMutableOrderedSet *navigationStack = [[NSMutableOrderedSet alloc] init];
     
@@ -155,7 +153,7 @@
                 }
                 else
                 {
-                    [self.scaffold navigateToDestination:destination animated:YES];
+                    [self navigateTo:destination animated:YES];
                 }
                 parentDestination = destination;
             }
@@ -212,16 +210,13 @@
         }
         // Then check for conformation to VDeeplinkSupporter at top level, which may be any object
         // including a VMultipleContainerViewController who supports deepLinks but whose children do not
-        if ( [object conformsToProtocol:@protocol(VDeeplinkSupporter)] )
+        if ([object respondsToSelector:@selector(deepLinkHandlerForURL:)])
         {
             id<VDeeplinkSupporter> supporter = object;
-            if ( [supporter conformsToProtocol:@protocol(VDeeplinkSupporter)] )
+            id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
+            if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
-                id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
-                if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
-                {
-                    return supporter;
-                }
+                return supporter;
             }
         }
     }

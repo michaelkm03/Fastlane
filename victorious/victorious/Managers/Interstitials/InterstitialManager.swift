@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-@objc protocol InterstitialListener {
+protocol InterstitialListener {
     func newInterstitialHasBeenRegistered()
 }
 

@@ -25,7 +25,6 @@
 #import "VBadgeResponder.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VAccessoryScreens.h"
-#import "UIViewController+VRootNavigationController.h"
 #import "VNavigationController.h"
 #import "victorious-swift.h"
 
@@ -503,7 +502,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+- (BOOL)shouldNavigate
 {
     return YES;
 }

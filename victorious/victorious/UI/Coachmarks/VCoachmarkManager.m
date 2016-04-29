@@ -9,20 +9,22 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmark.h"
 #import "VCoachmarkView.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VTimerManager.h"
 #import "VCoachmarkPassthroughContainerView.h"
 #import "VCoachmarkManager+VObjectAssociation.h"
-#import "VDependencyManager+VCoachmarkManager.h"
+#import "victorious-Swift.h"
 
 static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
 static const CGFloat kAnimationDuration = 0.4f;
 static const CGFloat kAnimationVerticalOffset = 10.0f;
+
+NSString * const VLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
 
 @interface VCoachmarkManager () <VPassthroughContainerViewDelegate>
 

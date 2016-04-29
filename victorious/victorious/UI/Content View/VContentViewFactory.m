@@ -15,7 +15,7 @@
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VSequenceActionControllerDelegate.h"
 @import SafariServices;
 

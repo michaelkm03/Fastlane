@@ -7,13 +7,12 @@
 //
 
 #import "VDependencyManager.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VNavigationController.h"
 #import "VNavigationControllerScrollDelegate.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
-#import "VTabScaffoldViewController.h"
 #import "victorious-Swift.h"
 
 #import <objc/runtime.h>
@@ -462,6 +461,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
     {
         viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
     }
+    
+    [self.delegate navigationController:self willShowViewController:viewController animated:animated];
 }
 
 - (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController

@@ -20,6 +20,9 @@ public struct RefreshStage: ForumEvent {
     /// The new content to be fetched and played on stage.
     public let contentID: String
     
+    /// May be set in order to sync cliets to the same spot.
+    public let startTime: NSTimeInterval?
+    
     public init?(json: JSON, timestamp: NSDate) {
         self.timestamp = timestamp
         
@@ -28,6 +31,7 @@ public struct RefreshStage: ForumEvent {
             return nil
         }
         self.contentID = contentID
+        self.startTime = json["start_time"].double
         
         let lowerCasedSection = section.lowercaseString
         switch lowerCasedSection {

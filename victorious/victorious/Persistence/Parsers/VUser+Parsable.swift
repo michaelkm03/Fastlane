@@ -29,6 +29,8 @@ extension VUser: PersistenceParsable {
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
+        likesGiven                  = user.likesGiven ?? likesGiven
+        likesReceived               = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage

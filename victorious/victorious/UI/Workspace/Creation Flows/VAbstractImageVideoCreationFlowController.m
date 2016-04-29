@@ -104,11 +104,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self.viewControllers = @[self.workspaceViewController];
 }
 
-- (MediaType)mediaType
-{
-    return MediaTypeUnknown;
-}
-
 - (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
 {
     //Itentionally empty

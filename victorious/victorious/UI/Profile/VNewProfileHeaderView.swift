@@ -33,8 +33,20 @@ class VNewProfileHeaderView: UICollectionReusableView {
     var user: VUser? {
         didSet {
             populateUserContent()
+            
+            if let oldValue = oldValue {
+                KVOController.unobserve(oldValue)
+            }
+            
+            if let user = user {
+                KVOController.observe(user, keyPaths: VNewProfileHeaderView.observedUserProperties, options: [.New]) { [weak self] _, _, _ in
+                    self?.populateUserContent()
+                }
+            }
         }
     }
+    
+    private static let observedUserProperties = ["name", "location", "tagline", "isVIPSubscriber", "likesGiven", "likesReceived", "pictureURL"]
     
     // MARK: - Views
     
@@ -99,6 +111,8 @@ class VNewProfileHeaderView: UICollectionReusableView {
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
+        upvotesValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven?.integerValue ?? 0)
+        upvotedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived?.integerValue ?? 0)
         
         let placeholderImage = UIImage(named: "profile_full")
         
@@ -111,6 +125,8 @@ class VNewProfileHeaderView: UICollectionReusableView {
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
     }
+    
+    private let numberFormatter = VLargeNumberFormatter()
     
     // MARK: - Layout
     
