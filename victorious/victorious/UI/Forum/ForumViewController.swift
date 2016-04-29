@@ -177,10 +177,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         }
         
         title = dependencyManager.title
-        let attributes = [ NSForegroundColorAttributeName: UIColor.whiteColor() ]
-        navigationController?.navigationBar.titleTextAttributes = attributes
-        navigationController?.navigationBar.tintColor = dependencyManager.navigationItemColor
-        navigationController?.navigationBar.barTintColor = dependencyManager.navigationBarBackgroundColor
+        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
@@ -205,15 +202,6 @@ private extension VDependencyManager {
     
     var title: String? {
         return stringForKey("title.text")
-    }
-    
-    var navigationItemColor: UIColor {
-        return colorForKey("barTintColor")
-    }
-    
-    var navigationBarBackgroundColor: UIColor? {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "navBarBackground") as? VSolidColorBackground
-        return background?.backgroundColor
     }
     
     var chatFeedDependency: VDependencyManager? {
