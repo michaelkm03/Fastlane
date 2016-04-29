@@ -192,9 +192,9 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
 private extension VDependencyManager {
     
     func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinium = 1.0
+        let defaultMinimum = 1.0
         let defaultMaximum = 4.0
-        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinium)
+        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
         let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
         return min( maxAspect, max(rawAspectRatio, minAspect) )
     }

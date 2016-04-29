@@ -8,13 +8,14 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
         static let maximumComposerToScreenRatio: CGFloat = 0.2
         static let defaultMaximumTextLength = 0
+        static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
     }
     
@@ -43,11 +44,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    @IBOutlet weak private var textView: VPlaceholderTextView! {
-        didSet {
-            composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
-        }
-    }
+    @IBOutlet weak private var textView: VPlaceholderTextView!
     
     @IBOutlet weak private var attachmentTabBar: ComposerAttachmentTabBar!
     
@@ -126,7 +123,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var creationFlowPresenter: VCreationFlowPresenter! {
         didSet {
-            creationFlowPresenter.shouldShowPublishScreenForFlowController = false
+            creationFlowPresenter.creationFlowControllerDelegate = self
         }
     }
     
@@ -187,6 +184,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    var textViewHasPrependedImage: Bool = false {
+        didSet {
+            if oldValue != textViewHasPrependedImage {
+                attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+            }
+        }
+    }
+    
     var textViewCanDismiss: Bool {
         return interactiveContainerView.layer.animationKeys() == nil
     }
@@ -205,6 +210,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         setupAttachmentTabBar()
         setupTextView()
         updateAppearanceFromDependencyManager()
+        composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -352,6 +358,43 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    // MARK: - VCreationFlowControllerDelegate
+    
+    func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
+        
+        guard let mediaType = MediaAttachmentType(creationFlowController: creationFlowController) else {
+            creationFlowController.v_showErrorDefaultError()
+            return
+        }
+        
+        var preview = previewImage
+        if mediaType == .GIF,
+            let image = capturedMediaURL.v_videoPreviewImage {
+            
+            preview = image
+        }
+        
+        selectedMedia = MediaAttachment(url: capturedMediaURL, type: mediaType, thumbnailURL: nil, size: nil)
+        let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
+        let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
+        composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
+        self.dismissViewControllerAnimated(true) { [weak self] _ in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.view.setNeedsUpdateConstraints()
+            let textView = strongSelf.textView
+            textView.becomeFirstResponder()
+            textView.selectedRange = NSMakeRange(textView.text.characters.count, 0)
+        }
+    }
+    
+    func shouldShowPublishScreenForFlowController() -> Bool {
+        return false
+    }
+    
     // MARK: - VPassthroughContainerViewDelegate
     
     func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
@@ -387,11 +430,11 @@ private extension VDependencyManager {
         return menuItemsForKey(menuItemKey)
     }
     
-    var inputTextColor: UIColor {
+    var inputTextColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
-    var inputPlaceholderTextColor: UIColor {
+    var inputPlaceholderTextColor: UIColor? {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
@@ -407,10 +450,10 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerAccentColorKey)
     }
     
-    var inputTextFont: UIFont {
+    var inputTextFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
-    
+
     var confirmButtonTextFont: UIFont {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }

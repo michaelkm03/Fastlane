@@ -298,7 +298,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
                     return
                 }
                 
-                let previewImage = image.fixOrientation().scaledImageWithMaxDimension(Constants.maxImageDimension).squareImageByCropping()
+                let previewImage = image.fixOrientation().scaledImageWithMaxDimension(Constants.maxImageDimension, upScaling: false).squareImageByCropping()
                 guard let savedFileURL = strongSelf.persistToFileWithImage(previewImage),
                     let delegate = strongSelf.delegate else {
                     return

@@ -333,10 +333,10 @@
     return croppedImage;
 }
 
-- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension
+- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension upScaling:(BOOL)scaleUp
 {
     // Do nothing we are already the correct size
-    if (self.size.width < maxDimension && self.size.height < maxDimension)
+    if (!scaleUp && self.size.width < maxDimension && self.size.height < maxDimension)
     {
         return self;
     }

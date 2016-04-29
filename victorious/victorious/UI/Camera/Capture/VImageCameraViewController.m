@@ -240,7 +240,7 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
             
             NSNumber *templateMaxSideLength = [strongSelf.dependencyManager numberForKey:kMaximumDimensionKey];
             CGFloat maximumImageSideLength = templateMaxSideLength != nil ? templateMaxSideLength.floatValue : kDefaultImageSideLength;
-            UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength];
+            UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension: maximumImageSideLength upScaling:NO];
             UIImage *previewImage = [smallerImage squareImageByCropping];
             NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
             dispatch_async(dispatch_get_main_queue(), ^

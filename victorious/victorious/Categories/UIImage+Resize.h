@@ -35,8 +35,9 @@
  *  Scales the image, preserving aspect ratio, to a new size with a given max height or width.
  *
  *  @param maxDimension The maximum height or width of the new image.
+ *  @param scaleUp If true, the image will be scaled up to meet the maximum dimension if necessary.
  */
-- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension;
+- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension upScaling:(BOOL)scaleUp;
 
 /**
  *  Crops an image to what it would looko like in a square imageView with aspectFill.

@@ -130,6 +130,7 @@
 #import "VFollowedHashtag.h"
 #import "VFollowedUser.h"
 #import "VFooterActivityIndicatorView.h"
+#import "VGifCreationFlowController.h"
 #import "VHasManagedDependencies.h"
 #import "VHashTag.h"
 #import "VHashTagTextView.h"

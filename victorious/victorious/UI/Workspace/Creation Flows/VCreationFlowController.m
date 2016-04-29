@@ -114,6 +114,11 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     }
 }
 
+- (MediaType)mediaType
+{
+    return MediaTypeUnknown;
+}
+
 #pragma mark - UIViewControllerTransitioningDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented

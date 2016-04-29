@@ -8,6 +8,7 @@
 
 #import "VAbstractPresenter.h"
 #import "VCreationFlowTypes.h"
+#import "VCreationFlowController.h"
 #import "VAbstractImageVideoCreationFlowController.h"
 
 @class VDependencyManager;
@@ -22,6 +23,12 @@
  *  animation from the top of the screen.
  */
 @property (nonatomic, assign) BOOL showsCreationSheetFromTop;
+
+/**
+ *  On presenting a creation flow, the value of this property will be
+ *  assigned as the delegate.
+ */
+@property (nonatomic, weak) id <VCreationFlowControllerDelegate>creationFlowControllerDelegate;
 
 /**
  *  Defaults to true.

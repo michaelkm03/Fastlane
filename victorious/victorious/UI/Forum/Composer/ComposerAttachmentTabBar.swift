@@ -14,6 +14,15 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     weak var delegate: ComposerAttachmentTabBarDelegate?
     
+    var buttonsEnabled: Bool = true {
+        didSet {
+            let buttonItems = buttons()
+            for button in buttonItems {
+                button.enabled = buttonsEnabled
+            }
+        }
+    }
+    
     var tabItemDeselectedTintColor: UIColor? = nil {
         didSet {
             updateTintColorOfButtons()
@@ -62,19 +71,10 @@ class ComposerAttachmentTabBar: VFlexBar {
     }
     
     private func updateTintColorOfButtons() {
-        var buttons = [UIButton]()
-        for view in actionItems {
-            if let button = view as? UIButton {
-                buttons.append(button)
-            }
-        }
         
-        guard !buttons.isEmpty else {
-            return
-        }
-        
+        let buttonItems = buttons()
         let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
-        for button in buttons {
+        for button in buttonItems {
             let updatedImage = button.imageForState(.Normal)?.imageWithRenderingMode(renderingMode)
             button.setImage(updatedImage, forState: .Normal)
             if let tabItemTintColor = tabItemDeselectedTintColor {
@@ -85,5 +85,12 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
         delegate?.composerAttachmentTabBar(self, didSelectNagiationItem: button.navigationMenuItem)
+    }
+    
+    private func buttons() -> [ComposerAttachmentTabBarButton] {
+        let buttons = actionItems.filter { (item: AnyObject) -> Bool in
+            item.dynamicType == ComposerAttachmentTabBarButton.self
+        }
+        return buttons as? [ComposerAttachmentTabBarButton] ?? []
     }
 }

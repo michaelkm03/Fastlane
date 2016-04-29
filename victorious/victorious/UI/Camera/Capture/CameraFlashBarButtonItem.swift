@@ -19,7 +19,6 @@ class CameraFlashBarButtonItem: UIBarButtonItem {
         button.setBackgroundImage(nil, forState: .Selected)
         button.imageView?.contentMode = .Center
         button.setTitle(nil, forState: .Normal)
-        button.setTitle(nil, forState: .Selected)
         return button
     }()
 

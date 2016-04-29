@@ -1975,6 +1975,7 @@
 		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
 		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
 		F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */; };
+		F00DEBA51CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEBA41CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
@@ -2009,6 +2010,7 @@
 		F050D3461CAEF69D007A05ED /* NSPredicate+MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
+		F057CB101CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */; };
 		F059A0031B852D1800037BC8 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F059A0021B852D1800037BC8 /* Shelf.swift */; };
 		F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AD66C1B828EF300500CCF /* ListShelf.swift */; };
 		F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */; };
@@ -3658,7 +3660,6 @@
 		A73BA2931C938B68008168B5 /* CloseUpDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpDelegate.swift; sourceTree = "<group>"; };
 		A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpMenuItem.swift; sourceTree = "<group>"; };
 		A73BA2971C938B68008168B5 /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
-		A73BA2991C938B68008168B5 /* ComposerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerDelegate.swift; sourceTree = "<group>"; };
 		A73BA29A1C938B68008168B5 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		A73BA29D1C938B68008168B5 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		A73BA2A01C938B68008168B5 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
@@ -4857,6 +4858,7 @@
 		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
 		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
 		F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PreviewImage.swift"; sourceTree = "<group>"; };
+		F00DEBA41CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMediaDeletionPromptOperation.swift; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -4912,6 +4914,7 @@
 		F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedUserRetryCell.h; sourceTree = "<group>"; };
 		F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedUserRetryCell.m; sourceTree = "<group>"; };
 		F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedUserRetryCell.xib; sourceTree = "<group>"; };
+		F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachmentType+ConvenienceInit.swift"; sourceTree = "<group>"; };
 		F059A0021B852D1800037BC8 /* Shelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
 		F059A0061B86B98F00037BC8 /* VImagePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VImagePreviewView.h; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
@@ -7394,6 +7397,7 @@
 			children = (
 				F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */,
 				F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */,
+				F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */,
 				A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */,
 				A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */,
 				A601FB4D1B4355A30050536C /* VCreationFlowController.h */,
@@ -7856,6 +7860,7 @@
 				A72C85B41C977FF500E97D4F /* ShowLikersOperation.swift */,
 				A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */,
 				A72C85B61C977FF500E97D4F /* ShowMediaContentOperation.swift */,
+				F00DEBA41CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift */,
 				A72C85B81C977FF500E97D4F /* ShowMemersOperation.swift */,
 				A7F3F8071C9D19F800CC2374 /* ShowPrivacyPolicyOperation.swift */,
 				A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */,
@@ -8012,7 +8017,6 @@
 				F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */,
 				F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */,
 				F0BD811E1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift */,
-				A73BA2991C938B68008168B5 /* ComposerDelegate.swift */,
 				F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */,
 				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
 				F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */,
@@ -12425,6 +12429,7 @@
 				A72C861F1C977FF500E97D4F /* MessageUnreadCountOperation.swift in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VConversationListViewController.m in Sources */,
 				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
+				F057CB101CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,
 				A72C86681C977FF600E97D4F /* Queueable.swift in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
@@ -12740,6 +12745,7 @@
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
 				A72C86691C977FF600E97D4F /* BlockUserRemoteOperation.swift in Sources */,
+				F00DEBA51CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift in Sources */,
 				A722B9461C3C53010014BA42 /* CommentsDataSource.swift in Sources */,
 				A72C86541C977FF500E97D4F /* ShowLikersOperation.swift in Sources */,
 				A72C86311C977FF500E97D4F /* SequenceLikersOperation.swift in Sources */,

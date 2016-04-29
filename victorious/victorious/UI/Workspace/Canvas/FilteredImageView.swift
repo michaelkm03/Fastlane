@@ -24,7 +24,7 @@ class FilteredImageView: GLKView {
     var inputImage: UIImage? {
         didSet {
             if let inputImage = inputImage {
-                self.scaledImage = inputImage.fixOrientation().scaledImageWithMaxDimension(300.0)
+                self.scaledImage = inputImage.fixOrientation().scaledImageWithMaxDimension(300.0, upScaling: false)
             }
         }
     }

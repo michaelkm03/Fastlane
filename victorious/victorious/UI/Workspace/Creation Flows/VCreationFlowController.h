@@ -17,6 +17,15 @@
 
 extern NSString * const VCreationFLowCaptureScreenKey;
 
+/*
+ *  The media type that the CreationFlowController contains.
+ */
+typedef NS_ENUM (NSUInteger, MediaType) {
+    MediaTypeImage,
+    MediaTypeVideo,
+    MediaTypeUnknown,
+};
+
 typedef NS_ENUM(NSInteger, VCreationFlowSource)
 {
     VCreationFlowSourceLibrary,
@@ -83,6 +92,8 @@ typedef NS_ENUM(NSInteger, VCreationFlowSource)
  *  Use this to determine the next text of the workspace.
  */
 - (BOOL)shouldShowPublishText;
+
+- (MediaType)mediaType; /// < returns MediaTypeUnknown. Subclasses should override
 
 @property (nonatomic, strong, readonly) VAlternateCaptureOption *cameraCaptureOption;
 

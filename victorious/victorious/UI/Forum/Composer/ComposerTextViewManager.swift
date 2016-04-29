@@ -16,7 +16,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
-    init(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissOnReturn: Bool = true) {
+    private var attachmentStringLength: Int
+    
+    private var updatingSelection = false
+    
+    init?(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissOnReturn: Bool = true) {
+        
+        guard let imageString = ComposerTextViewManager.attachmentStringForImage(UIImage(), fromTextView: textView) else {
+            assertionFailure("Failed to initialize ComposerTextViewManager because it was provided a textView with no textColor or font")
+            return nil
+        }
+        self.attachmentStringLength = imageString.length
         self.maximumTextLength = maximumTextLength
         self.delegate = delegate
         self.dismissOnReturn = dismissOnReturn
@@ -28,17 +38,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
-        let appendedText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
-        if appendedText {
+        let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
+        if canAppendText {
             textView.text = textView.text + text
         }
-        return appendedText
+        return canAppendText
     }
     
     func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
         
         var additionalTextLength = text.characters.count
-        guard additionalTextLength > 0 else {
+        if additionalTextLength <= 0 {
             return true
         }
         
@@ -63,6 +73,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     func updateDelegateOfTextViewStatus(textView: UITextView) {
         delegate?.textViewHasText = textView.text.characters.count > 0
         delegate?.textViewContentSize = textView.contentSize
+        let imageRange = NSMakeRange(0, attachmentStringLength)
+        let hasImage = textView.attributedText.length >= attachmentStringLength && textView.attributedText.containsAttachmentsInRange(imageRange)
+        delegate?.textViewHasPrependedImage = hasImage
     }
     
     func resetTextView(textView: UITextView) {
@@ -77,7 +90,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     //MARK: - UITextViewDelegate
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        return canUpdateTextView(textView, textInRange: range, replacementText: text)
+        guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+            return false
+        }
+        
+        if text.characters.count == 0 &&
+            shouldRemoveImageFromTextView(textView, tryingToDeleteRange: range) {
+            removePrependedImageFrom(textView)
+            return true
+        }
+        
+        return true
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -90,5 +113,88 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         delegate?.textViewIsEditing = false
+    }
+    
+    func textViewDidChangeSelection(textView: UITextView) {
+        guard let delegate = delegate where !updatingSelection else {
+            updatingSelection = false
+            return
+        }
+        
+        if delegate.textViewHasPrependedImage && textView.selectedRange.location < attachmentStringLength {
+            let amountInAttachmentArea = attachmentStringLength - textView.selectedRange.location
+            let length = max(0, textView.selectedRange.length - amountInAttachmentArea)
+            updatingSelection = true
+            textView.selectedRange = NSMakeRange(attachmentStringLength, length)
+        }
+    }
+    
+    //MARK: - Helpers
+    
+    private static func attributedTextAttributesFor(textView: UITextView) -> [String: AnyObject]? {
+        
+        guard let font = textView.font,
+            let color = textView.textColor else {
+                return nil
+        }
+        
+        return [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
+    }
+    
+    //MARK: - Image management
+    
+    private static func attachmentStringForImage(image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
+        
+        guard let attributes = attributedTextAttributesFor(textView) else {
+            return nil
+        }
+        
+        let attachment = NSTextAttachment()
+        attachment.image = image
+        let screenScale = UIScreen.mainScreen().scale
+        attachment.bounds.size = CGSizeMake(image.size.width / screenScale, image.size.height / screenScale)
+        let imageString = NSAttributedString(attachment: attachment).mutableCopy() as! NSMutableAttributedString
+        imageString.addAttributes(attributes, range: NSMakeRange(0, imageString.length))
+        let newLineString = NSAttributedString(string: "\n", attributes: attributes)
+        imageString.appendAttributedString(newLineString)
+        return imageString
+    }
+    
+    func prependImage(image: UIImage, toTextView textView: UITextView) -> Bool {
+        
+        guard let prependedString = ComposerTextViewManager.attachmentStringForImage(image, fromTextView: textView) else {
+            return false
+        }
+        
+        removePrependedImageFrom(textView)
+        
+        let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
+        mutableText.insertAttributedString(prependedString, atIndex: 0)
+        textView.attributedText = mutableText
+        updateDelegateOfTextViewStatus(textView)
+        return true
+    }
+    
+    func removePrependedImageFrom(textView: UITextView) {
+        guard let delegate = delegate else {
+            return
+        }
+        
+        if delegate.textViewHasPrependedImage {
+            let imageRange = NSMakeRange(0, attachmentStringLength)
+            let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
+            mutableText.deleteCharactersInRange(imageRange)
+            textView.attributedText = mutableText
+        }
+        updateDelegateOfTextViewStatus(textView)
+    }
+    
+    private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
+        
+        guard let delegate = delegate else {
+            return false
+        }
+        
+        return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
     }
 }
