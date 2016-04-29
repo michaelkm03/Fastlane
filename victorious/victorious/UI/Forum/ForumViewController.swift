@@ -185,6 +185,12 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
+    // MARK: - VCoachmarkDisplayer
+    
+    func screenIdentifier() -> String! {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    }
+    
     // MARK: Private
     
     private func setupNetworkSource(networkSource: NetworkSource) {

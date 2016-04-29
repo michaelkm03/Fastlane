@@ -9,11 +9,10 @@
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
 #import "VRootViewController.h"
-#import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
@@ -231,11 +230,24 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
+- (void)showLogin
+{
+    ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
+                                                                                    dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
+                                                                                              context:VAuthorizationContextDefault
+                                                                                             animated:NO];
+    
+    [showLoginOperation queueWithCompletion: ^(NSError *error, BOOL cancelled) {
+        [self initializeScaffold];
+    }];
+}
+
 - (void)initializeScaffold
 {
     self.applicationTracking.dependencyManager = self.dependencyManager;
+    [DefaultTimingTracker sharedInstance].dependencyManager = self.dependencyManager;
     
-    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    UIViewController *scaffold = [self.dependencyManager scaffoldViewController];
     
     NSDictionary *scaffoldConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
     VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
@@ -489,7 +501,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         }
         else
         {
-            [self initializeScaffold];
+            [self showLogin];
         }
     }
 }
@@ -505,7 +517,16 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)URLSelected:(NSURL *)URL
 {
-    [[self.dependencyManager scaffoldViewController] showWebBrowserWithURL:URL];
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
 }
 
 @end

@@ -17,7 +17,7 @@
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"

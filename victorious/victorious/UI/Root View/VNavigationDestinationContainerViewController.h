@@ -20,9 +20,9 @@
  required login/authentication to not be instantiated until the user has 
  explicitly asked for them to be brought on screen.
  
- When the navigationDestination returns YES for -shouldNavigateWithAlternateDestination:
- you should assign your desired viewController hierarchy to the 
- containedViewController property.
+ When the navigationDestination returns YES for -shouldNavigate: you should
+ assign your desired viewController hierarchy to the containedViewController
+ property.
  
  VNavigationDestinationContainerViewController is garuanteed to have a 
  navigationDestination.

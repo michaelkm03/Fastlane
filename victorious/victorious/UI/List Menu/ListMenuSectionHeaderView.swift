@@ -40,6 +40,6 @@ private extension VDependencyManager {
     }
     
     var titleText: String {
-        return stringForKey("name") ?? ""
+        return stringForKey("title") ?? ""
     }
 }

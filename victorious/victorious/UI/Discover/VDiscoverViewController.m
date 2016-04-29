@@ -23,7 +23,6 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import <KVOController/FBKVOController.h>
-#import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VLayoutInsets.h"

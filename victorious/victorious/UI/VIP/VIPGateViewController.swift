@@ -49,7 +49,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     // MARK: - VNavigationDestination
     
-    func shouldNavigateWithAlternateDestination(alternateViewController: AutoreleasingUnsafeMutablePointer<AnyObject?>) -> Bool {
+    func shouldNavigate() -> Bool {
         // Don't allow this tab to be selected if already validated as a VIP subscriber,
         // skip ahead to presenting the VIP Forum section
         if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber.boolValue {
@@ -146,7 +146,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     private func openGate() {
         let originVC = dependencyManager.scaffoldViewController()
         ShowForumOperation(originViewController: originVC, dependencyManager: dependencyManager).queue() { _ in
-            self.dependencyManager.scaffoldViewController()?.setSelectedMenuItemAtIndex(0)
+            (originVC as? VTabScaffoldViewController)?.setSelectedMenuItemAtIndex(0)
         }
     }
     

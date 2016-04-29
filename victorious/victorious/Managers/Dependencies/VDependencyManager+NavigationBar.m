@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+VScaffoldViewController.m
+//  VDependencyManager+NavigationBar.m
 //  victorious
 //
 //  Created by Josh Hinman on 2/12/15.
@@ -7,22 +7,16 @@
 //
 
 #import "UIImage+VSolidColor.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "victorious-Swift.h"
 
-NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigationBarAppearance";
+NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarAppearance";
 
-@implementation VDependencyManager (VScaffoldViewController)
-
-- (VTabScaffoldViewController *)scaffoldViewController
-{
-    return [self singletonObjectOfType:[VTabScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
-}
+@implementation VDependencyManager (NavigationBar)
 
 - (NSDictionary *)styleDictionaryForNavigationBar
 {
-    return [self templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerNavigationBarAppearanceKey];
+    return [self templateValueOfType:[NSDictionary class] forKey:VDependencyManagerNavigationBarAppearanceKey];
 }
 
 - (VDependencyManager *)dependencyManagerForNavigationBar
@@ -37,7 +31,11 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
 
-    navigationBar.shadowImage = [UIImage v_singlePixelImageWithColor:[UIColor v_navigationAndTabBarShadowColor]];
+    if (!self.festivalIsEnabled)
+    {
+        navigationBar.shadowImage = [UIImage v_singlePixelImageWithColor:[UIColor v_navigationAndTabBarShadowColor]];
+    }
+
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self barItemTintColor];
     UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];

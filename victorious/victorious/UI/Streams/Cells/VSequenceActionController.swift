@@ -166,7 +166,7 @@ import Foundation
     func likeSequence(sequence: VSequence, triggeringView: UIView, completion: ((Bool) -> Void)?) {
         SequenceLikeToggleOperation(sequenceObjectId: sequence.objectID).queue() { results, error, cancelled in
             
-            self.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
+            self.dependencyManager.coachmarkManager?.triggerSpecificCoachmarkWithIdentifier(
                 VLikeButtonCoachmarkIdentifier,
                 inViewController: self.originViewController,
                 atLocation: triggeringView.convertRect(

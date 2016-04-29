@@ -7,7 +7,6 @@
 //
 
 #import "VNavigationDestinationContainerViewController.h"
-#import "VTabScaffoldViewController.h"
 
 @implementation VNavigationDestinationContainerViewController
 

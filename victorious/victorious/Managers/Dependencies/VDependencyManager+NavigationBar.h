@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+VTabScaffoldViewController.h
+//  VDependencyManager+NavigationBar.h
 //  victorious
 //
 //  Created by Josh Hinman on 2/12/15.
@@ -12,16 +12,9 @@
  The key that identifies an NSDictionary of
  style attributes for the navigation bar
  */
-extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
+extern NSString * const VDependencyManagerNavigationBarAppearanceKey;
 
-@class VTabScaffoldViewController;
-
-@interface VDependencyManager (VTabScaffoldViewController)
-
-/**
- Returns a reference to the singleton instance of the current template's scaffolding
- */
-- (VTabScaffoldViewController *)scaffoldViewController;
+@interface VDependencyManager (NavigationBar)
 
 /**
  Applies style information to a navigation bar according 

@@ -17,6 +17,7 @@
 #import "VTemplateImageMacro.h"
 #import "VTemplateImageSet.h"
 #import "VTemplatePackageManager.h"
+#import "victorious-Swift.h"
 
 typedef BOOL (^TypeTest)(Class);
 
@@ -287,6 +288,11 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
 - (UIViewController *)singletonViewControllerForKey:(NSString *)key
 {
     return [self singletonObjectOfType:[UIViewController class] forKey:key];
+}
+
+- (UIViewController<Scaffold> *)scaffoldViewController
+{
+    return (UIViewController<Scaffold> *)[self singletonViewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
 }
 
 #pragma mark - Arrays of dependencies

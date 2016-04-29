@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class VDependencyManager;
+@protocol Scaffold;
 
 /**
  This class should be used to receive deep links from the app delegate.  It handles
@@ -18,6 +19,8 @@
 @interface VDeeplinkReceiver : NSObject
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, readonly) UIViewController<Scaffold> *scaffold;
 
 /**
  Let's callign code know if any deep links can be received at this time.

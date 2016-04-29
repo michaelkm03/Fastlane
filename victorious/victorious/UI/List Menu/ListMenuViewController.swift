@@ -10,7 +10,7 @@ import UIKit
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
-class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -19,7 +19,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    private var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager!
     
     private lazy var collectionViewDataSource: ListMenuCollectionViewDataSource = {
         ListMenuCollectionViewDataSource(dependencyManager: self.dependencyManager, listMenuViewController: self)
@@ -30,6 +30,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
+        dependencyManager.addBackgroundToBackgroundHost(viewController)
         
         return viewController
     }
@@ -78,5 +79,17 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         case .hashtags:
             break
         }
+    }
+    
+    // MARK - VCoachmarkDisplayer
+    
+    func screenIdentifier() -> String! {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
 }

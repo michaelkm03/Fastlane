@@ -11,7 +11,7 @@
 #import "VDependencyManager.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 
 @interface VWebBrowserHeaderViewController() <VBackgroundContainer>
 

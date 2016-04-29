@@ -24,7 +24,7 @@ enum SideMenuControllerEdge {
 class SideMenuController: UIViewController {
     // MARK: - Config
     
-    private static let sideViewControllerWidth: CGFloat = 260.0
+    private static let visibleCenterEdgeWidth: CGFloat = 52.0
     private static let slideAnimationDuration: NSTimeInterval = 0.5
     private static let statusBarAnimationDuration: NSTimeInterval = 0.2
     private static let panTriggerThreshold: CGFloat = 80.0
@@ -45,12 +45,17 @@ class SideMenuController: UIViewController {
     }
     
     private func setup() {
+        view.addSubview(leftContainerView)
+        view.addSubview(rightContainerView)
         view.addSubview(centerContainerView)
         
-        panRecognizer.addTarget(self, action: #selector(SideMenuController.panWasRecognized))
+        leftContainerView.clipsToBounds = true
+        rightContainerView.clipsToBounds = true
+        
+        panRecognizer.addTarget(self, action: #selector(panWasRecognized))
         view.addGestureRecognizer(panRecognizer)
         
-        tapRecognizer.addTarget(self, action: #selector(SideMenuController.centerViewTapWasRecognized))
+        tapRecognizer.addTarget(self, action: #selector(centerViewTapWasRecognized))
         tapRecognizer.enabled = false
         centerContainerView.addGestureRecognizer(tapRecognizer)
     }
@@ -109,7 +114,7 @@ class SideMenuController: UIViewController {
         }
         
         beginRemoving(oldOpenSideController, animated: animated)
-        beginAdding(newOpenSideController, animated: animated, below: centerContainerView)
+        beginAdding(newOpenSideController, toSuperview: containerView(on: edge), animated: animated)
         
         openEdge = edge
         
@@ -201,19 +206,14 @@ class SideMenuController: UIViewController {
         }
     }
     
-    private func beginAdding(childViewController: UIViewController?, animated: Bool, below overlappingSubview: UIView? = nil) {
+    private func beginAdding(childViewController: UIViewController?, toSuperview superview: UIView, animated: Bool) {
         guard let childViewController = childViewController else {
             return
         }
         
         childViewController.beginAppearanceTransition(true, animated: animated)
         addChildViewController(childViewController)
-        
-        if let overlappingSubview = overlappingSubview {
-            view.insertSubview(childViewController.view, belowSubview: overlappingSubview)
-        } else {
-            view.addSubview(childViewController.view)
-        }
+        superview.addSubview(childViewController.view)
     }
     
     private func endAdding(childViewController: UIViewController?) {
@@ -242,6 +242,21 @@ class SideMenuController: UIViewController {
         return view
     }()
     
+    /// A container view for `leftViewController`'s view.
+    private let leftContainerView = UIView()
+    
+    /// A container view for `rightViewController`'s view.
+    private let rightContainerView = UIView()
+    
+    private func containerView(on edge: SideMenuControllerEdge) -> UIView {
+        switch edge {
+        case .left:
+            return leftContainerView
+        case .right:
+            return rightContainerView
+        }
+    }
+    
     // MARK: - Gesture recognizers
     
     private let panRecognizer = UIPanGestureRecognizer()
@@ -249,6 +264,16 @@ class SideMenuController: UIViewController {
     
     /// The value of `centerViewXOffset` when a pan was first recognized.
     private var initialPanningCenterViewXOffset: CGFloat = 0.0
+    
+    /// Whether or not the panning gesture to open or close side view controllers is enabled.
+    var panningIsEnabled: Bool {
+        get {
+            return panRecognizer.enabled
+        }
+        set {
+            panRecognizer.enabled = newValue
+        }
+    }
     
     @objc private func panWasRecognized() {
         switch panRecognizer.state {
@@ -272,7 +297,7 @@ class SideMenuController: UIViewController {
         
         // Side view controllers that are revealed by panning need to be added immediately.
         if let visibleEdge = visibleEdge, let visibleSideViewController = sideViewController(on: visibleEdge) where !viewControllerIsActive(on: visibleEdge) {
-            beginAdding(visibleSideViewController, animated: false, below: centerContainerView)
+            beginAdding(visibleSideViewController, toSuperview: containerView(on: visibleEdge), animated: false)
             endAdding(visibleSideViewController)
         }
         
@@ -339,9 +364,14 @@ class SideMenuController: UIViewController {
     
     // MARK: - Layout
     
+    /// The width of an open side view controller.
+    private var sideViewControllerWidth: CGFloat {
+        return view.bounds.width - SideMenuController.visibleCenterEdgeWidth
+    }
+    
     /// The constrained, calculated X offset to apply to the center view.
     private var centerViewXOffset: CGFloat {
-        let sideWidth = SideMenuController.sideViewControllerWidth
+        let sideWidth = sideViewControllerWidth
         let minX = rightViewController == nil ? 0.0 : -sideWidth
         let maxX = leftViewController == nil ? 0.0 : sideWidth
         return max(minX, min(maxX, openEdgeXOffset + panXOffset))
@@ -355,9 +385,9 @@ class SideMenuController: UIViewController {
         
         switch openEdge {
         case .left:
-            return SideMenuController.sideViewControllerWidth
+            return sideViewControllerWidth
         case .right:
-            return -SideMenuController.sideViewControllerWidth
+            return -sideViewControllerWidth
         }
     }
     
@@ -410,21 +440,37 @@ class SideMenuController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        let sideWidth = sideViewControllerWidth
+        
         centerContainerView.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0.0)
         centerViewController?.view.frame = centerContainerView.bounds
         
-        leftViewController?.view.frame = CGRect(
+        leftContainerView.frame = CGRect(
             x: view.bounds.minX,
             y: view.bounds.minY,
             width: max(0.0, centerContainerView.frame.minX - view.bounds.minX),
             height: view.bounds.height
         )
         
-        rightViewController?.view.frame = CGRect(
+        leftViewController?.view.frame = CGRect(
+            x: leftContainerView.bounds.minX,
+            y: leftContainerView.bounds.minY,
+            width: sideWidth,
+            height: leftContainerView.bounds.height
+        )
+        
+        rightContainerView.frame = CGRect(
             x: centerContainerView.frame.maxX,
             y: view.bounds.minY,
             width: max(0.0, view.bounds.maxX - centerContainerView.frame.maxX),
             height: view.bounds.height
+        )
+        
+        rightViewController?.view.frame = CGRect(
+            x: rightContainerView.bounds.maxX - sideWidth,
+            y: rightContainerView.bounds.minY,
+            width: sideWidth,
+            height: rightContainerView.bounds.height
         )
     }
 }

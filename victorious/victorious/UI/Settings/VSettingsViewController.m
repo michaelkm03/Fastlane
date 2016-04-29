@@ -22,7 +22,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
@@ -503,7 +502,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+- (BOOL)shouldNavigate
 {
     return YES;
 }

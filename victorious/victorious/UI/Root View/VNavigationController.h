@@ -12,7 +12,7 @@
 
 
 @class VNavigationControllerScrollDelegate;
-@protocol VTabMenuContainedViewControllerNavigation;
+@protocol VTabMenuContainedViewControllerNavigation, VNavigationControllerDelegate;
 
 /**
  A wrapper around UINavigation controller 
@@ -37,6 +37,11 @@
  A supplementary header view, if one exists
  */
 @property (nonatomic, readonly) UIView *supplementaryHeaderView;
+
+/**
+ The navigation controller's delegate object.
+ */
+@property (nonatomic, weak) id<VNavigationControllerDelegate> delegate;
 
 /**
  Adds a transform to the navigation bar and any supplemental header views
@@ -92,5 +97,19 @@
  header. Will appear and disappear along with the header.
  */
 @property (nonatomic, strong, setter=v_setSupplementaryHeaderView:) UIView *v_supplementaryHeaderView;
+
+@end
+
+#pragma mark -
+
+/**
+ A delegate protocol for `VNavigationController`.
+ */
+@protocol VNavigationControllerDelegate
+
+/**
+ Called when the navigation controller is about to display `viewController`.
+ */
+- (void)navigationController:(VNavigationController * _Nonnull)navigationController willShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
 
 @end

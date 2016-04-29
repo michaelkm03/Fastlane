@@ -8,8 +8,7 @@
 
 #import "VContentDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VTabScaffoldViewController.h"
+#import "VDependencyManager+NavigationBar.h"
 #import "victorious-Swift.h"
 
 @import MBProgressHUD;
@@ -19,7 +18,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VContentDeepLinkHandler()
 
-@property (nonatomic, weak) VTabScaffoldViewController *scaffoldViewController;
+@property (nonatomic, weak) UIViewController<Scaffold> *scaffoldViewController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 
@@ -34,7 +33,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         NSParameterAssert( _dependencyManager != nil );
-                              
+        
         _scaffoldViewController = [dependencyManager scaffoldViewController];
         NSParameterAssert( _scaffoldViewController != nil );
         
