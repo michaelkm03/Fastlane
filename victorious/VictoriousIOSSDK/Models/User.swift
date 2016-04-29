@@ -45,6 +45,8 @@ public struct User {
     public let isFollowedByMainUser: Bool?
     public let numberOfFollowers: Int?
     public let numberOfFollowing: Int?
+    public let likesGiven: Int?
+    public let likesReceived: Int?
     public let profileImageURL: String?
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]?
@@ -78,6 +80,8 @@ extension User {
         isFollowedByMainUser        = json["am_following"].bool
         numberOfFollowers           = Int(json["number_of_followers"].stringValue)
         numberOfFollowing           = Int(json["number_of_following"].stringValue)
+        likesGiven                  = json["engagements"]["likes_given"].int
+        likesReceived               = json["engagements"]["likes_received"].int
         profileImageURL             = json["profile_image"].string
         maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
         tokenUpdatedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)

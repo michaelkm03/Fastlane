@@ -25,6 +25,8 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfFollowers;
 @property (nonatomic, retain) NSNumber * numberOfFollowing;
+@property (nonatomic, retain) NSNumber * likesGiven;
+@property (nonatomic, retain) NSNumber * likesReceived;
 @property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * status;

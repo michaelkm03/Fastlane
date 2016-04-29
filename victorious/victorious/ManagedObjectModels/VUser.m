@@ -32,6 +32,8 @@
 @dynamic name;
 @dynamic numberOfFollowers;
 @dynamic numberOfFollowing;
+@dynamic likesGiven;
+@dynamic likesReceived;
 @dynamic pictureUrl;
 @dynamic remoteId;
 @dynamic status;

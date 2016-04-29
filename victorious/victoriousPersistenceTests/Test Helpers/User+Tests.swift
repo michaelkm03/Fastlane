@@ -25,6 +25,8 @@ extension User {
         self.isFollowedByMainUser = nil
         self.numberOfFollowers = nil
         self.numberOfFollowing = nil
+        self.likesReceived = nil
+        self.likesGiven = nil
         self.profileImageURL = nil
         self.tokenUpdatedAt = nil
         self.previewImageAssets = nil
