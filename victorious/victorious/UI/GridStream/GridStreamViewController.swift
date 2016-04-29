@@ -14,7 +14,7 @@ struct CollectionViewConfiguration {
     var cellsPerRow: Int = 3
 }
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, ConfigurableGridStreamCollectionView, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
     // MARK: Variables
     
     private let dependencyManager: VDependencyManager
@@ -23,9 +23,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private let refreshControl = UIRefreshControl()
     
     private let dataSource: GridStreamDataSource<HeaderType>
-    private let delegate: GridStreamDelegateFlowLayout<HeaderType>
     private let scrollPaginator = VScrollPaginator()
     private let configuration: CollectionViewConfiguration
+    
+    private var content: HeaderType.ContentType!
+    private var header: HeaderType?
     
     // MARK: - Initializing
     
@@ -47,13 +49,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
                  configuration: CollectionViewConfiguration? = nil) {
         
         self.dependencyManager = dependencyManager
+        self.header = header
+        self.content = content
         self.configuration = configuration ?? CollectionViewConfiguration()
-        
-        delegate = GridStreamDelegateFlowLayout<HeaderType>(
-            dependencyManager: dependencyManager,
-            header: header,
-            content: content,
-            configuration: self.configuration)
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
@@ -62,14 +60,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         super.init(nibName: nil, bundle: nil)
         
-        delegate.configurableViewController = self
-        
         self.dependencyManager.addBackgroundToBackgroundHost(self)
         
         dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
         
-        collectionView.delegate = delegate
+        collectionView.delegate = self
         collectionView.dataSource = dataSource
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
@@ -125,12 +121,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         return [.Portrait]
     }
     
-    // MARK: - UIScrollViewDelegate
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidScroll(scrollView)
-    }
-    
     // MARK: - VPaginatedDataSourceDelegate
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
@@ -162,20 +152,60 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         dataSource.loadStreamItems(.Next)
     }
     
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
         return view
     }
     
-    // MARK: - ConfigurableHeaderCollectionView
+    // MARK: - UICollectionViewDelegateFlowLayout
     
-    func willDisplaySupplementaryView(footerView: VFooterActivityIndicatorView) {
-        footerView.activityIndicator.color = dependencyManager.refreshControlColor
-        footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+    func collectionView(collectionView: UICollectionView, layout
+        collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        guard let header = header,
+            content = content else {
+            return CGSizeZero
+        }
+        let size = header.sizeForHeader(
+            dependencyManager,
+            maxHeight: CGRectGetHeight(collectionView.bounds),
+            content: content)
+        return size
     }
     
-    func sizeForFooter() -> CGSize {
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        
+        return flowLayout.v_cellSize(
+            fittingWidth: collectionView.bounds.width,
+            cellsPerRow: configuration.cellsPerRow
+        )
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        willDisplaySupplementaryView view: UICollectionReusableView,
+                                                     forElementKind elementKind: String,
+                                                                    atIndexPath indexPath: NSIndexPath) {
+        if let footerView = view as? VFooterActivityIndicatorView {
+            footerView.activityIndicator.color = dependencyManager.refreshControlColor
+            footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               referenceSizeForFooterInSection section: Int) -> CGSize {
         return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
 }
