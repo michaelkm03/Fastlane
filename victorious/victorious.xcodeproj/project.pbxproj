@@ -1653,7 +1653,6 @@
 		BF2AE2BE1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */; };
 		BF2AE2BF1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */; };
 		BF2AE2C01CD280CB00A9967A /* GridStreamDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */; };
-		BF2AE2C11CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */; };
 		BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -4333,7 +4332,6 @@
 		BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeaderView.swift; path = GridStream/ConfigurableGridStreamHeaderView.swift; sourceTree = "<group>"; };
 		BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfigurableGridStreamHeaderView.xib; path = GridStream/ConfigurableGridStreamHeaderView.xib; sourceTree = "<group>"; };
 		BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamDataSource.swift; path = GridStream/GridStreamDataSource.swift; sourceTree = "<group>"; };
-		BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamDelegateFlowLayout.swift; path = GridStream/GridStreamDelegateFlowLayout.swift; sourceTree = "<group>"; };
 		BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridStreamViewController.swift; path = GridStream/GridStreamViewController.swift; sourceTree = "<group>"; };
 		BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperationTests.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
@@ -9423,7 +9421,6 @@
 				BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */,
 				BF2AE2B91CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib */,
 				BF2AE2BA1CD280CB00A9967A /* GridStreamDataSource.swift */,
-				BF2AE2BB1CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift */,
 				BF2AE2BC1CD280CB00A9967A /* GridStreamViewController.swift */,
 			);
 			name = GridStream;
@@ -12934,7 +12931,6 @@
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
-				BF2AE2C11CD280CB00A9967A /* GridStreamDelegateFlowLayout.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A7AF87331C460E9200B49478 /* VConversationViewController.swift in Sources */,
