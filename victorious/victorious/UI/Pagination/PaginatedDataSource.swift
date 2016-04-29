@@ -212,7 +212,17 @@ import VictoriousIOSSDK
                 
             } else {
                 let results = operation.results ?? []
-                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, sortOrder: self.sortOrder)
+                if self.visibleItems.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
+                    self.visibleItems = self.visibleItems.v_orderedSet(
+                        byAddingObjects: results,
+                        forPageType: pageType
+                    )
+                } else {
+                    self.visibleItems = self.visibleItems.v_orderedSet(
+                        byAddingObjects: results,
+                        sortOrder: self.sortOrder
+                    )
+                }
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
@@ -236,17 +246,30 @@ private extension NSOrderedSet {
         return results
     }
     
+    func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
+        let output: NSOrderedSet
+        
+        switch pageType {
+            
+        case .First: //< reset
+            output = NSOrderedSet(array: objects)
+            
+        case .Next: //< append
+            output = NSOrderedSet(array: self.array + objects)
+            
+        case .Previous: //< prepend
+            output = NSOrderedSet(array: objects + self.array)
+        }
+        
+        return output.v_orderedSetFitleredForDeletedObjects()
+    }
+    
     func v_orderedSet( byAddingObjects objects: [AnyObject], sortOrder: NSComparisonResult) -> NSOrderedSet {
         let combinedArray = self.array + objects
-        let paginatedObjects = combinedArray.flatMap { $0 as? PaginatedObjectType }
-        if paginatedObjects.isEmpty {
-            // If we don't have `PaginatedObjectType`, we fall back to the "append to next page" strategy
-            return NSOrderedSet(array: combinedArray)
-        } else {
-            // If we have instances of `PaginatedObjectType` we can sort directly on `displayOrder`.
-            let sortedArray = paginatedObjects.sort { $0.displayOrder.compare($1.displayOrder) == sortOrder }
-            return NSOrderedSet(array: sortedArray)
-        }
+        let sortedArray = combinedArray
+            .flatMap { $0 as? PaginatedObjectType }
+            .sort { $0.displayOrder.compare($1.displayOrder) == sortOrder }
+        return NSOrderedSet(array: sortedArray)
     }
     
     func v_orderedSetPurgedBy(limit: Int) -> NSOrderedSet {
