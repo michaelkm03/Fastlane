@@ -50,11 +50,30 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var blurredImageView: UIImageView!
-    var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            configureFontsAndColors()
+        }
+    }
     var delegate: CloseUpViewDelegate?
     
     @IBAction func selectedProfile(sender: AnyObject) {
         delegate?.didSelectProfile()
+    }
+    
+    func configureFontsAndColors() {
+        userNameButton.setTitleColor(dependencyManager.usernameColor, forState: .Normal)
+        createdAtLabel.textColor = dependencyManager.timestampColor
+        captionLabel.textColor = dependencyManager.captionColor
+        userNameButton.titleLabel!.font = dependencyManager.usernameFont
+        createdAtLabel.font = dependencyManager.timestampFont
+        captionLabel.font = dependencyManager.captionFont
+        
+        
+        
+//        related.textColor = dependencyManager.usernameColor
+//        related.font = dependencyManager.relatedFont
+//        related.text = dependencyManager.relatedText
     }
     
     func clearContent() {
@@ -69,7 +88,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     var content: CloseUpContent? {
         didSet {
-            // TODO: Set fonts/colors based on dependency manager
             guard let content = content else {
                 return
             }
@@ -176,5 +194,43 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                        content: CloseUpContent) -> CGSize
     {
         return sizeForContent(content)
+    }
+}
+
+private extension VDependencyManager {
+    var usernameColor: UIColor? {
+        return colorForKey("color.text.header")
+    }
+    
+    var timestampColor: UIColor? {
+        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var captionColor: UIColor? {
+        return colorForKey(VDependencyManagerContentTextColorKey)
+    }
+    
+    var relatedColor: UIColor? {
+        return colorForKey("color.text.subcontent")
+    }
+    
+    var usernameFont: UIFont? {
+        return fontForKey(VDependencyManagerHeaderFontKey)
+    }
+    
+    var timestampFont: UIFont? {
+        return fontForKey(VDependencyManagerLabel2FontKey)
+    }
+    
+    var captionFont: UIFont? {
+        return fontForKey(VDependencyManagerHeading2FontKey)
+    }
+    
+    var relatedFont: UIFont? {
+        return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+    
+    var relatedText: String? {
+        return stringForKey("related")
     }
 }

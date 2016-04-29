@@ -11,6 +11,7 @@ import UIKit
 protocol ConfigurableGridStreamCollectionView {
     func willDisplaySupplementaryView(footerView: VFooterActivityIndicatorView)
     func sizeForFooter() -> CGSize
+    func didSelectIndexPath(indexPath: NSIndexPath)
 }
 
 class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDelegateFlowLayout {
@@ -35,6 +36,10 @@ class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NS
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        configurableViewController?.didSelectIndexPath(indexPath)
+    }
     
     func collectionView(collectionView: UICollectionView, layout
         collectionViewLayout: UICollectionViewLayout,

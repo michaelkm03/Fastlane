@@ -178,6 +178,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func sizeForFooter() -> CGSize {
         return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
+    
+    func didSelectIndexPath(indexPath: NSIndexPath) {
+        let seq = dataSource.visibleItems[indexPath.row] as! VSequence
+        ShowCloseUpOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            sequence: seq).queue()
+    }
 }
 
 private extension VDependencyManager {
