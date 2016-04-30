@@ -42,7 +42,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             content: content)
     }
     
-    // TODO: Set background from dependency manager
     private init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType,
@@ -101,6 +100,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionView.insertSubview(refreshControl, atIndex: 0)
         
         dataSource.loadStreamItems(.First)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
     }
     
     // MARK: - Refreshing
