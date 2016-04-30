@@ -34,19 +34,21 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     static func newWithDependencyManager(
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
-        content: HeaderType.ContentType) -> GridStreamViewController {
+        content: HeaderType.ContentType,
+        streamApiPath: String) -> GridStreamViewController {
         
         return GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
-            content: content)
+            content: content,
+            streamApiPath: streamApiPath)
     }
     
-    // TODO: Set background from dependency manager
     private init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType,
-                 configuration: CollectionViewConfiguration? = nil) {
+                 configuration: CollectionViewConfiguration? = nil,
+                 streamApiPath: String) {
         
         self.dependencyManager = dependencyManager
         self.header = header
@@ -56,7 +58,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
             header: header,
-            content: content)
+            content: content,
+            streamApiPath: streamApiPath)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -101,6 +104,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionView.insertSubview(refreshControl, atIndex: 0)
         
         dataSource.loadStreamItems(.First)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
     }
     
     // MARK: - Refreshing
