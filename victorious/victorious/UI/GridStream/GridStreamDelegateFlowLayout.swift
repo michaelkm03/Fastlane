@@ -56,7 +56,7 @@ class GridStreamDelegateFlowLayout<HeaderType: ConfigurableGridStreamHeader>: NS
         
         return flowLayout.v_cellSize(
             fittingWidth: collectionView.bounds.width,
-            cellsPerRow: defaultCellsPerRow // TODO: Configurable
+            cellsPerRow: defaultCellsPerRow
         )
     }
     

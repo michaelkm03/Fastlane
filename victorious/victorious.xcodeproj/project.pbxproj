@@ -1724,14 +1724,6 @@
 		C3348B231BF53FAA004183A1 /* Bool+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3348B221BF53FAA004183A1 /* Bool+InitializersTests.swift */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
-		C348D20A1B8C03CA0040042C /* ColorDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FE1B8C03CA0040042C /* ColorDifference.swift */; };
-		C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2021B8C03CA0040042C /* DominantColors.swift */; };
-		C348D20E1B8C03CA0040042C /* INVector3.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2051B8C03CA0040042C /* INVector3.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */; };
-		C348D2101B8C03CA0040042C /* KMeans.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2071B8C03CA0040042C /* KMeans.swift */; };
-		C348D2111B8C03CA0040042C /* Memoization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2081B8C03CA0040042C /* Memoization.swift */; };
-		C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2091B8C03CA0040042C /* PlatformExtensions.swift */; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
 		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
 		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
@@ -4416,17 +4408,6 @@
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
 		C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForcedWorkspaceContainerViewController.m; sourceTree = "<group>"; };
 		C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VForcedWorkspaceContainerViewController.storyboard; sourceTree = "<group>"; };
-		C348D1FE1B8C03CA0040042C /* ColorDifference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorDifference.swift; sourceTree = "<group>"; };
-		C348D1FF1B8C03CA0040042C /* ColorSpaceConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSpaceConversion.h; sourceTree = "<group>"; };
-		C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSpaceConversion.m; sourceTree = "<group>"; };
-		C348D2011B8C03CA0040042C /* DominantColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DominantColor.h; sourceTree = "<group>"; };
-		C348D2021B8C03CA0040042C /* DominantColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DominantColors.swift; sourceTree = "<group>"; };
-		C348D2041B8C03CA0040042C /* INVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVector3.h; sourceTree = "<group>"; };
-		C348D2051B8C03CA0040042C /* INVector3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVector3.m; sourceTree = "<group>"; };
-		C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INVector3SwiftExtensions.swift; sourceTree = "<group>"; };
-		C348D2071B8C03CA0040042C /* KMeans.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KMeans.swift; sourceTree = "<group>"; };
-		C348D2081B8C03CA0040042C /* Memoization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memoization.swift; sourceTree = "<group>"; };
-		C348D2091B8C03CA0040042C /* PlatformExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformExtensions.swift; sourceTree = "<group>"; };
 		C35265FA1B28EA09001F093F /* CreateSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateSheet.storyboard; sourceTree = "<group>"; };
 		C35265FC1B28F167001F093F /* VCreateSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateSheetViewController.h; sourceTree = "<group>"; };
 		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateSheetViewController.m; sourceTree = "<group>"; };
@@ -6826,7 +6807,6 @@
 			isa = PBXGroup;
 			children = (
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
-				C348D1FD1B8C03CA0040042C /* DominantColor */,
 				62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
 				792D46C81BD953F500DE662A /* Reveal.framework */,
@@ -9480,24 +9460,6 @@
 				C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */,
 			);
 			path = Permissions;
-			sourceTree = "<group>";
-		};
-		C348D1FD1B8C03CA0040042C /* DominantColor */ = {
-			isa = PBXGroup;
-			children = (
-				C348D1FE1B8C03CA0040042C /* ColorDifference.swift */,
-				C348D1FF1B8C03CA0040042C /* ColorSpaceConversion.h */,
-				C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */,
-				C348D2011B8C03CA0040042C /* DominantColor.h */,
-				C348D2021B8C03CA0040042C /* DominantColors.swift */,
-				C348D2041B8C03CA0040042C /* INVector3.h */,
-				C348D2051B8C03CA0040042C /* INVector3.m */,
-				C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */,
-				C348D2071B8C03CA0040042C /* KMeans.swift */,
-				C348D2081B8C03CA0040042C /* Memoization.swift */,
-				C348D2091B8C03CA0040042C /* PlatformExtensions.swift */,
-			);
-			path = DominantColor;
 			sourceTree = "<group>";
 		};
 		C35265F91B28E349001F093F /* Create Sheet */ = {
@@ -12319,7 +12281,6 @@
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
 				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
-				C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
@@ -12546,10 +12507,8 @@
 				A75DF5271C3DE23300A4C82A /* DiscoverSearchViewController.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
-				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
-				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
 				A72C863E1C977FF500E97D4F /* UnfollowUserOperation.swift in Sources */,
 				A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */,
@@ -12742,11 +12701,9 @@
 				A72C86311C977FF500E97D4F /* SequenceLikersOperation.swift in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
-				C348D2111B8C03CA0040042C /* Memoization.swift in Sources */,
 				A700330F1C5FEA1800AB4A57 /* VComment+Equitable.swift in Sources */,
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
-				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
 				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -12807,7 +12764,6 @@
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				A7EBF5341C2B99A20080C7CF /* VUserIsFollowingDataSource.swift in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
-				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,
 				7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */,
 				A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */,
 				F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */,
@@ -12855,7 +12811,6 @@
 				A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
-				C348D20A1B8C03CA0040042C /* ColorDifference.swift in Sources */,
 				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
 				F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
@@ -12934,7 +12889,6 @@
 				67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */,
 				A72C86851C977FF600E97D4F /* AlertsRequestDecorator.swift in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
-				C348D2101B8C03CA0040042C /* KMeans.swift in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				A72C86501C977FF500E97D4F /* PreloadUserInfoOperation.swift in Sources */,
@@ -13913,6 +13867,7 @@
 					"$(inherited)",
 					"-DNDEBUG",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -15075,6 +15030,7 @@
 					"$(inherited)",
 					"-DNDEBUG",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -15363,6 +15319,7 @@
 					"-framework",
 					Reveal,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -15394,6 +15351,7 @@
 					"$(inherited)",
 					"-lTestFairy",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -15549,6 +15507,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;

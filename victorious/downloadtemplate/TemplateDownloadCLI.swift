@@ -43,7 +43,6 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             
             let downloadOperation = VTemplateDownloadOperation(downloader: downloader, andDelegate: self)
             downloadOperation.dataCache = dataCache
-            // TODO: downloadOperation.templateConfigurationCacheID = environment.templateCacheIdentifier()
             downloadOperation.shouldRetry = false
             operationQueue.addOperations([downloadOperation], waitUntilFinished: true)
             

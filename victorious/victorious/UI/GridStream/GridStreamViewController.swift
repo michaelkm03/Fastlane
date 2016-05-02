@@ -85,7 +85,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         view.v_addFitToParentConstraintsToSubview(collectionView)
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let spacing = defaultCellSpacing // TODO: Configurable
+            let spacing = defaultCellSpacing
             flowLayout.minimumInteritemSpacing = spacing
             flowLayout.sectionInset = UIEdgeInsets(
                 top: 0.0,
@@ -178,4 +178,3 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
 }
-

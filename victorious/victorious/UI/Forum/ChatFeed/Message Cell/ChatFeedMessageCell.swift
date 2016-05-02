@@ -204,7 +204,6 @@ private extension VDependencyManager {
     }
 
     var messageFont: UIFont {
-        // TODO: Update the DenpendencyManager
         return UIFont.boldSystemFontOfSize(16)
     }
 

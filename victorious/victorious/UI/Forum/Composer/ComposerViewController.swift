@@ -95,7 +95,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return false
         }
         
-        if let alwaysShowAttachmentBar = dependencyManager.alwaysShowAttachmentBar where alwaysShowAttachmentBar == true {
+        if dependencyManager.alwaysShowAttachmentBar == true {
             return true
         }
         

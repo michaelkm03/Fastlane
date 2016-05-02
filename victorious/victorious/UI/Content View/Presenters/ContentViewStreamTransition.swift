@@ -16,7 +16,7 @@ class ContentViewStreamTransition: NSObject, VAnimatedTransition {
     
     func canPerformCustomTransitionFrom(fromViewController: UIViewController?, to toViewController: UIViewController) -> Bool {
         for vc in [ fromViewController, Optional(toViewController) ] {
-            if let contentViewController = (vc as? VNavigationController)?.innerNavigationController?.topViewController as? VNewContentViewController {
+            if let contentViewController = (vc as? VNavigationController)?.innerNavigationController.topViewController as? VNewContentViewController {
                 return contentViewController.viewModel.context.contentPreviewProvider != nil
             }
         }
@@ -26,7 +26,7 @@ class ContentViewStreamTransition: NSObject, VAnimatedTransition {
     func prepareForTransitionIn(model: VTransitionModel) {
         
         guard let navController = model.toViewController as? VNavigationController,
-            let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentViewController = navController.innerNavigationController.topViewController as? VNewContentViewController,
             let previewProvider = contentViewController.viewModel.context.contentPreviewProvider,
             let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver else {
                 fatalError( "Missing references required for transition animation" )
@@ -75,7 +75,7 @@ class ContentViewStreamTransition: NSObject, VAnimatedTransition {
         
         // Restore the focus type
         if let navController = model.fromViewController as? VNavigationController,
-            let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentView = navController.innerNavigationController.topViewController as? VNewContentViewController,
             let initialPreviewViewFocusType = self.initialPreviewViewFocusType,
             let previewView = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
                 previewView.focusType = initialPreviewViewFocusType
@@ -113,7 +113,7 @@ class ContentViewStreamTransition: NSObject, VAnimatedTransition {
     func performTransitionOut(model: VTransitionModel, completion: ((Bool) -> Void)?) {
         
         guard let navController = model.fromViewController as? VNavigationController,
-            let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentView = navController.innerNavigationController.topViewController as? VNewContentViewController,
             let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider else {
                 fatalError( "Missing references required for transition animation" )
         }
