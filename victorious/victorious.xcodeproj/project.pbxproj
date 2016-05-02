@@ -781,7 +781,6 @@
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
 		79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */; };
-		79B719011C56E95800578012 /* VSequence+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B719001C56E95800578012 /* VSequence+Keyable.swift */; };
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */; };
@@ -808,8 +807,6 @@
 		79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */; };
 		79F8B4A11C3DD3EA00313976 /* User+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F8B4A01C3DD3EA00313976 /* User+Tests.swift */; };
 		79FE184E1C53098D00170E5B /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
-		79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */; };
-		79FE18581C53188700170E5B /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18571C53188700170E5B /* Keyable.swift */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
@@ -3156,7 +3153,6 @@
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
 		79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Deletable.swift"; sourceTree = "<group>"; };
-		79B719001C56E95800578012 /* VSequence+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Keyable.swift"; sourceTree = "<group>"; };
 		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
 		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
 		79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Aspect.swift"; sourceTree = "<group>"; };
@@ -3185,8 +3181,6 @@
 		79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceExperimentsResponse.json; sourceTree = "<group>"; };
 		79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+Parsable.swift"; sourceTree = "<group>"; };
 		79F8B4A01C3DD3EA00313976 /* User+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Tests.swift"; sourceTree = "<group>"; };
-		79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VConversation+Keyable.swift"; sourceTree = "<group>"; };
-		79FE18571C53188700170E5B /* Keyable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
@@ -8895,10 +8889,8 @@
 				79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */,
 				A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */,
 				A700330E1C5FEA1800AB4A57 /* VComment+Equitable.swift */,
-				79FE18511C5317EF00170E5B /* VConversation+Keyable.swift */,
 				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
 				A700330C1C5FEA0600AB4A57 /* VMessage+Equitable.swift */,
-				79B719001C56E95800578012 /* VSequence+Keyable.swift */,
 				A719B3DE1C64397100537B45 /* VStreamItem+Pointer.swift */,
 				A7E8CF381C92083800D126BF /* VUser+AvatarBadgeType.swift */,
 				7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */,
@@ -8910,7 +8902,6 @@
 		A7EBF5641C2F3BF40080C7CF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				79FE18571C53188700170E5B /* Keyable.swift */,
 				A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */,
 				5A75EADB1C57653200B08056 /* VPublishParameters.h */,
 				5A75EADC1C57653200B08056 /* VPublishParameters.m */,
@@ -13209,7 +13200,6 @@
 				67486B741CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
 				A72C862C1C977FF500E97D4F /* SequenceDeleteOperation.swift in Sources */,
-				79FE18521C5317EF00170E5B /* VConversation+Keyable.swift in Sources */,
 				5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */,
 				C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */,
 				A73BA2AA1C938B68008168B5 /* ComposerViewController.swift in Sources */,
@@ -13226,7 +13216,6 @@
 				F03C135D1B698F7000287F4C /* VComment.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
-				79B719011C56E95800578012 /* VSequence+Keyable.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A72C863C1C977FF500E97D4F /* UnblockUserOperation.swift in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
@@ -13264,7 +13253,6 @@
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,
 				A73BA2CE1C9393ED008168B5 /* NewItemsController.swift in Sources */,
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
-				79FE18581C53188700170E5B /* Keyable.swift in Sources */,
 				A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A72C86371C977FF500E97D4F /* StreamOperation.swift in Sources */,
