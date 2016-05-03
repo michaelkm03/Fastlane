@@ -8,10 +8,13 @@
 
 import UIKit
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, ConfigurableGridStreamCollectionView, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
-    
-    private let defaultCellSpacing: CGFloat = 10.0
-    
+struct CollectionViewConfiguration {
+    var sectionInset: UIEdgeInsets = UIEdgeInsetsZero
+    var interItemSpacing: CGFloat = 3
+    var cellsPerRow: Int = 3
+}
+
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
     // MARK: Variables
     
     private let dependencyManager: VDependencyManager
@@ -20,51 +23,56 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private let refreshControl = UIRefreshControl()
     
     private let dataSource: GridStreamDataSource<HeaderType>
-    private let delegate: GridStreamDelegateFlowLayout<HeaderType>
     private let scrollPaginator = VScrollPaginator()
+    private let configuration: CollectionViewConfiguration
+    
+    private var content: HeaderType.ContentType!
+    private var header: HeaderType?
     
     // MARK: - Initializing
     
     static func newWithDependencyManager(
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
-        content: HeaderType.ContentType) -> GridStreamViewController {
+        content: HeaderType.ContentType,
+        configuration: CollectionViewConfiguration? = nil,
+        streamAPIPath: String) -> GridStreamViewController {
         
         return GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
-            content: content)
+            content: content,
+            configuration: configuration,
+            streamAPIPath: streamAPIPath)
     }
     
     private init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
-                 content: HeaderType.ContentType) {
+                 content: HeaderType.ContentType,
+                 configuration: CollectionViewConfiguration? = nil,
+                 streamAPIPath: String) {
         
         self.dependencyManager = dependencyManager
-        
-        delegate = GridStreamDelegateFlowLayout<HeaderType>(
-            dependencyManager: dependencyManager,
-            header: header,
-            content: content)
+        self.header = header
+        self.content = content
+        self.configuration = configuration ?? CollectionViewConfiguration()
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
             header: header,
-            content: content)
+            content: content,
+            streamAPIPath: streamAPIPath)
         
         super.init(nibName: nil, bundle: nil)
         
-        delegate.configurableViewController = self
-        
         self.dependencyManager.addBackgroundToBackgroundHost(self)
-        collectionView.backgroundColor = UIColor.clearColor()
         
         dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
         
-        collectionView.delegate = delegate
+        collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = nil
+        collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
         
         collectionView.registerNib(
@@ -85,13 +93,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         view.v_addFitToParentConstraintsToSubview(collectionView)
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let spacing = defaultCellSpacing
-            flowLayout.minimumInteritemSpacing = spacing
-            flowLayout.sectionInset = UIEdgeInsets(
-                top: 0.0,
-                left: spacing,
-                bottom: spacing,
-                right: spacing)
+            flowLayout.minimumInteritemSpacing = self.configuration.interItemSpacing
+            flowLayout.sectionInset = self.configuration.sectionInset
+            flowLayout.minimumLineSpacing = self.configuration.interItemSpacing
         }
         
         refreshControl.tintColor = dependencyManager.refreshControlColor
@@ -99,9 +103,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             self,
             action: #selector(GridStreamViewController.refresh),
             forControlEvents: .ValueChanged)
-        collectionView.insertSubview(refreshControl, atIndex: 0)
+            collectionView.insertSubview(refreshControl, atIndex: 0
+        )
         
         dataSource.loadStreamItems(.First)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
     }
     
     // MARK: - Refreshing
@@ -120,12 +129,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [.Portrait]
-    }
-    
-    // MARK: - UIScrollViewDelegate
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidScroll(scrollView)
     }
     
     // MARK: - VPaginatedDataSourceDelegate
@@ -159,17 +162,62 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         dataSource.loadStreamItems(.Next)
     }
     
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
         return view
     }
     
-    // MARK: - ConfigurableHeaderCollectionView
+    // MARK: - UICollectionViewDelegateFlowLayout
     
-    func willDisplaySupplementaryView(footerView: VFooterActivityIndicatorView) {
-        footerView.activityIndicator.color = dependencyManager.refreshControlColor
-        footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+    func collectionView(collectionView: UICollectionView, layout
+        collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        guard let header = header,
+            content = content else {
+            return CGSizeZero
+        }
+        let size = header.sizeForHeader(
+            dependencyManager,
+            maxHeight: CGRectGetHeight(collectionView.bounds),
+            content: content
+        )
+        return size
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        
+        return flowLayout.v_cellSize(
+            fittingWidth: collectionView.bounds.width,
+            cellsPerRow: configuration.cellsPerRow
+        )
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        willDisplaySupplementaryView view: UICollectionReusableView,
+                        forElementKind elementKind: String,
+                        atIndexPath indexPath: NSIndexPath) {
+        if let footerView = view as? VFooterActivityIndicatorView {
+            footerView.activityIndicator.color = dependencyManager.refreshControlColor
+            footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForFooterInSection section: Int) -> CGSize {
+        return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
 }
 
@@ -178,3 +226,4 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
 }
+

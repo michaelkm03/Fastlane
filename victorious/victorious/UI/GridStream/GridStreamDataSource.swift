@@ -11,7 +11,7 @@ import UIKit
 private let headerName = "ConfigurableGridStreamHeaderView"
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedDataSource, UICollectionViewDataSource {
-    
+    private var streamAPIPath: String!
     private var headerView: ConfigurableGridStreamHeaderView!
     private var header: HeaderType?
     private let dependencyManager: VDependencyManager
@@ -26,10 +26,12 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     
     init(dependencyManager: VDependencyManager,
          header: HeaderType? = nil,
-         content: HeaderType.ContentType) {
+         content: HeaderType.ContentType,
+         streamAPIPath: String) {
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
+        self.streamAPIPath = streamAPIPath
         
         cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
     }
@@ -48,14 +50,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     // MARK: - Loading content
     
     func loadStreamItems(pageType: VPageType, completion: ((error: NSError?) -> Void)? = nil) {
-        guard let apiPath = dependencyManager.streamAPIPath() else {
-            assertionFailure("StreamLoadingError")
-            return
-        }
-        
         loadPage(pageType,
                  createOperation: {
-                    return StreamOperation(apiPath: apiPath)
+                    return StreamOperation(apiPath: streamAPIPath)
             },
                  completion: { results, error, cancelled in
                     completion?(error: error)
@@ -73,34 +70,34 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     func collectionView(collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        if headerView != nil {
+        if kind == UICollectionElementKindSectionFooter {
+            return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
+        }
+        else {
+            if headerView != nil {
+                return headerView
+            }
+            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                                                               withReuseIdentifier: headerName,
+                                                                               forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
+            header?.decorateHeader(dependencyManager,
+                                   maxHeight: CGRectGetHeight(collectionView.bounds),
+                                   content: content)
+            
+            guard let header = header as? UIView else {
+                assertionFailure("header is not a UIView")
+                return headerView
+            }
+            headerView.addHeader(header)
             return headerView
         }
-        headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                                                           withReuseIdentifier: headerName,
-                                                                           forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
-        header?.decorateHeader(dependencyManager,
-                              maxHeight: CGRectGetHeight(collectionView.bounds),
-                              content: content)
-        
-        guard let header = header as? UIView else {
-            assertionFailure("header is not a UIView")
-            return headerView
-        }
-        headerView.addHeader(header)
-        return headerView
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return cellFactory.collectionView(collectionView,
-                                          cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem,
-                                          atIndexPath: indexPath)
-    }
-}
-
-private extension VDependencyManager {
-    func streamAPIPath() -> String? {
-        return ""
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath)
+        cell.layer.cornerRadius = 10
+        cell.backgroundColor = .clearColor()
+        cell.contentView.backgroundColor = .clearColor()
+        return cell
     }
 }
