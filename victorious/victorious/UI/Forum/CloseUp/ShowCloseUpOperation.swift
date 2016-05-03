@@ -125,13 +125,14 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
-        let header = CloseUpView.newWithDependencyManager(childDependencyManager,
-                                                          delegate: nil)
+        let header = CloseUpView.newWithDependencyManager(childDependencyManager)
+        let apiPath = ""
         
         let closeUpViewController =
             GridStreamViewController<CloseUpView>.newWithDependencyManager(childDependencyManager,
                                                                                                 header: header,
-                                                                                                content: content)
+                                                                                                content: content,
+                                                                                                streamApiPath: apiPath)
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
     }
     

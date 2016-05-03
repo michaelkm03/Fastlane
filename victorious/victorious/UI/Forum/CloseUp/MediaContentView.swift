@@ -15,7 +15,7 @@ private let kMinimumPlayButtonInset: CGFloat = 14
 class MediaContentView: UIView {
     var previewImageView: UIImageView = UIImageView()
     var videoContainerView: VPassthroughContainerView = VPassthroughContainerView()
-    private var videoCoordinator: VideoPlayerCoordinator!
+    private(set) var videoCoordinator: VideoPlayerCoordinator!
     
     private var singleTapRecognizer: UITapGestureRecognizer!
     private var doubleTapRecognizer: UITapGestureRecognizer!

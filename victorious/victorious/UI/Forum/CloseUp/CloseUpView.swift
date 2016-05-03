@@ -21,7 +21,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var captionLabel: UILabel!
     
     private var videoPlayer: VVideoPlayer?
-    private var previewView: VSequencePreviewView!
     private let placeholderImage = UIImage(named: "profile_full")
     private let horizontalMargins: CGFloat = 16
     private let verticalMargins:CGFloat = 18
@@ -81,7 +80,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         profileImageView.image = nil
         userNameButton.setTitle("", forState: UIControlState.Normal)
         createdAtLabel.text = ""
-        previewView = nil
     }
     
     var maxHeight: CGFloat = CGFloat.max
@@ -127,12 +125,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         mediaContentViewFrame.origin.y = totalHeight
         mediaContentViewFrame.size.height = contentHeight
         mediaContentView.frame = mediaContentViewFrame
-        
-        if previewView != nil {
-            previewView.removeFromSuperview()
-        }
-        
-        // TODO: Set up preview view
         
         totalHeight = totalHeight + CGRectGetHeight(mediaContentView.bounds)
         
