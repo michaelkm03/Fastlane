@@ -35,20 +35,22 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
         content: HeaderType.ContentType,
-        streamApiPath: String) -> GridStreamViewController {
+        configuration: CollectionViewConfiguration? = nil,
+        streamAPIPath: String) -> GridStreamViewController {
         
         return GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: content,
-            streamApiPath: streamApiPath)
+            configuration: configuration,
+            streamAPIPath: streamAPIPath)
     }
     
     private init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType,
                  configuration: CollectionViewConfiguration? = nil,
-                 streamApiPath: String) {
+                 streamAPIPath: String) {
         
         self.dependencyManager = dependencyManager
         self.header = header
@@ -59,7 +61,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             dependencyManager: dependencyManager,
             header: header,
             content: content,
-            streamApiPath: streamApiPath)
+            streamAPIPath: streamAPIPath)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -98,10 +100,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         refreshControl.tintColor = dependencyManager.refreshControlColor
         refreshControl.addTarget(
-        self,
-        action: #selector(GridStreamViewController.refresh),
-        forControlEvents: .ValueChanged)
-        collectionView.insertSubview(refreshControl, atIndex: 0)
+            self,
+            action: #selector(GridStreamViewController.refresh),
+            forControlEvents: .ValueChanged)
+            collectionView.insertSubview(refreshControl, atIndex: 0
+        )
         
         dataSource.loadStreamItems(.First)
     }
@@ -184,13 +187,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let size = header.sizeForHeader(
             dependencyManager,
             maxHeight: CGRectGetHeight(collectionView.bounds),
-            content: content)
+            content: content
+        )
         return size
     }
     
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+                        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
@@ -202,8 +206,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func collectionView(collectionView: UICollectionView,
                         willDisplaySupplementaryView view: UICollectionReusableView,
-                                                     forElementKind elementKind: String,
-                                                                    atIndexPath indexPath: NSIndexPath) {
+                        forElementKind elementKind: String,
+                        atIndexPath indexPath: NSIndexPath) {
         if let footerView = view as? VFooterActivityIndicatorView {
             footerView.activityIndicator.color = dependencyManager.refreshControlColor
             footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
@@ -212,7 +216,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                               referenceSizeForFooterInSection section: Int) -> CGSize {
+                        referenceSizeForFooterInSection section: Int) -> CGSize {
         return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
     
@@ -221,7 +225,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         ShowCloseUpOperation(
             originViewController: self,
             dependencyManager: dependencyManager,
-            sequence: seq).queue()
+            sequence: seq
+        ).queue()
     }
 }
 

@@ -99,6 +99,11 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     return YES;
 }
 
+- (UINavigationController *)rootFlowController
+{
+    return self;
+}
+
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton
 {
     [self.view endEditing:YES];

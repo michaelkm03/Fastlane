@@ -23,8 +23,6 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private var label = UILabel()
     private var blurredImageView = UIImageView()
     
-    // A cache to check for the dominant color in the preview image
-    var colorCache: NSCache?
     var renderedTextPostCache: NSCache?
     
     private lazy var blurMask: TrendingTopicGradientView = {
@@ -149,15 +147,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             return
         }
         
-        let colorCacheKey = cacheKey
-        
-        if let colorCache = colorCache, cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
-            gradient.primaryColor = cachedColor
-        }
-        else if let color = image.dominantColors(accuracy: .Low).first {
-            gradient.primaryColor = color
-            colorCache?.setObject(color, forKey: colorCacheKey)
-        }
+        gradient.primaryColor = UIColor.whiteColor()
         
         let finish = { (blurredImage: UIImage) -> Void in
             dispatch_async(dispatch_get_main_queue()) {

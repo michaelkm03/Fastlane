@@ -424,7 +424,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     // MARK: - VTabMenuContainedViewControllerNavigation
     
     func reselected() {
-        v_navigationController().setNavigationBarHidden(false)
+        v_navigationController()?.setNavigationBarHidden(false)
         collectionView.setContentOffset(CGPointZero, animated: true)
     }
     

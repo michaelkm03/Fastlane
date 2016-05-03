@@ -14,6 +14,8 @@
 @class VNavigationControllerScrollDelegate;
 @protocol VTabMenuContainedViewControllerNavigation, VNavigationControllerDelegate;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A wrapper around UINavigation controller 
  that adds some new functionality
@@ -78,7 +80,7 @@
  If this view controller has been pushed onto a navigation controller
  controlled by an instance of VNavigationController, return it.
  */
-- (VNavigationController *)v_navigationController;
+- (nullable VNavigationController *)v_navigationController;
 
 /**
  An optional method for supplying a custom background color for the status bar background view.
@@ -113,3 +115,5 @@
 - (void)navigationController:(VNavigationController * _Nonnull)navigationController willShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
 
 @end
+
+NS_ASSUME_NONNULL_END

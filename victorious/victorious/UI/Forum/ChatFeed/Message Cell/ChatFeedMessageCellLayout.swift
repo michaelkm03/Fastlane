@@ -115,9 +115,9 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
         )
         cell.contentContainer.frame = CGRect(
             x: cell.bounds.width
-                - (cell.messageContainer.bounds.width
-                    + cell.horizontalSpacing
-                    + cell.avatarContainer.bounds.width)
+                - cell.messageContainer.bounds.width
+                - cell.horizontalSpacing
+                - cell.avatarContainer.bounds.width
                 - cell.contentMargin.left,
             y: cell.contentMargin.top,
             width: cell.messageContainer.bounds.width

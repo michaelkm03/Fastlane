@@ -31,7 +31,7 @@ public struct CreatorListRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
-        guard let json = responseJSON["payload"].array else {
+        guard let json = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }
         

@@ -12,6 +12,7 @@ private let headerName = "ConfigurableGridStreamHeaderView"
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedDataSource, UICollectionViewDataSource {
     private var apiPath: String!
+    private var streamAPIPath: String!
     private var headerView: ConfigurableGridStreamHeaderView!
     private var header: HeaderType?
     private let dependencyManager: VDependencyManager
@@ -27,12 +28,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     init(dependencyManager: VDependencyManager,
          header: HeaderType? = nil,
          content: HeaderType.ContentType,
-         streamApiPath: String) {
+         streamAPIPath: String) {
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
-        apiPath = streamApiPath
-        
+        self.streamAPIPath = streamAPIPath
         cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
     }
     
@@ -52,7 +52,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     func loadStreamItems(pageType: VPageType, completion: ((error: NSError?) -> Void)? = nil) {
         loadPage(pageType,
                  createOperation: {
-                    return StreamOperation(apiPath: apiPath)
+                    return StreamOperation(apiPath: streamAPIPath)
             },
                  completion: { results, error, cancelled in
                     completion?(error: error)

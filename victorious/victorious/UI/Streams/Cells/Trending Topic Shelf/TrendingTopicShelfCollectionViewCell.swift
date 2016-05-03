@@ -18,7 +18,6 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     // MARK: Properties
     
-    private let colorCache = NSCache()
     private let renderedTextPostCache = NSCache()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
@@ -144,7 +143,6 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
         if let streamItems = shelf?.streamItems as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
-            cell.colorCache = colorCache
             cell.renderedTextPostCache = renderedTextPostCache
             cell.sequence = streamItem
             cell.dependencyManager = dependencyManager

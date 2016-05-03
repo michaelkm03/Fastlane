@@ -150,9 +150,12 @@ NSString * const VLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
 
 #pragma mark - VPassthroughContainerViewDelegate
 
-- (void)passthroughViewRecievedTouch:(VCoachmarkPassthroughContainerView *)passthroughContainerView
+- (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView
 {
-    [self removePassthroughContainerView:passthroughContainerView animated:YES];
+    if ([passthroughContainerView isKindOfClass:[VCoachmarkPassthroughContainerView class]])
+    {
+        [self removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:YES];
+    }
 }
 
 #pragma mark - Adding and removing coachmark views

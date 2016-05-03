@@ -70,7 +70,7 @@ typedef NS_ENUM(NSInteger, VCreationFlowSource)
 
 @end
 
-@interface VCreationFlowController : UINavigationController <VHasManagedDependencies>
+@interface VCreationFlowController : UINavigationController <VHasManagedDependencies, UIViewControllerTransitioningDelegate>
 
 /**
  *  The VCreationFlowControllerDelegate for this flow controller.
@@ -93,7 +93,16 @@ typedef NS_ENUM(NSInteger, VCreationFlowSource)
  */
 - (BOOL)shouldShowPublishText;
 
-- (MediaType)mediaType; /// < returns MediaTypeUnknown. Subclasses should override
+/**
+ *  The navigation controller that manages the creation flow.
+ *  Defaults to self.
+ */
+- (UINavigationController *)rootFlowController;
+
+/**
+ *  Returns MediaTypeUnknown. Subclasses should override
+ */
+- (MediaType)mediaType;
 
 @property (nonatomic, strong, readonly) VAlternateCaptureOption *cameraCaptureOption;
 
