@@ -27,6 +27,7 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
+@property (nonatomic, strong) VCreationFlowController *currentCreationFlow;
 
 @end
 
@@ -95,7 +96,14 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
         NSAssert(NO, @"Failed to present the desired workspace flow");
         return;
     }
-    [self.viewControllerPresentedOn presentViewController:flowController animated:YES completion:nil];
+    [self.viewControllerPresentedOn presentViewController:flowController.rootFlowController animated:YES completion:nil];
+    self.currentCreationFlow = flowController;
+}
+
+- (void)dismissCurrentFlowController
+{
+    [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
+    self.currentCreationFlow = nil;
 }
 
 #pragma mark - VCreationFlowController
@@ -104,7 +112,13 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    [self dismissCurrentFlowController];
+}
+
+- (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController
+{
     [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
+    self.currentCreationFlow = nil;
 }
 
 + (VWorkspaceViewController *)preferredWorkspaceForMediaType:(MediaType)mediaType fromDependencyManager:(VDependencyManager *)dependencyManager

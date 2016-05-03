@@ -395,6 +395,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return false
     }
     
+    func creationFlowControllerDidCancel(creationFlowController: VCreationFlowController!) {
+        creationFlowPresenter.dismissCurrentFlowController()
+    }
+    
     // MARK: - VPassthroughContainerViewDelegate
     
     func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {

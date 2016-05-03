@@ -37,6 +37,8 @@
 
 - (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationFlowType:(VCreationFlowType)creationFlowType;
 
+- (void)dismissCurrentFlowController;
+
 + (VWorkspaceViewController *)preferredWorkspaceForMediaType:(MediaType)mediaType fromDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
