@@ -138,6 +138,7 @@ class VideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelega
     }
     
     // MARK: - VideoToolbarDelegate
+    
     func videoToolbarDidPlay(videoToolbar: VideoToolbarView) {
         videoPlayer.play()
     }

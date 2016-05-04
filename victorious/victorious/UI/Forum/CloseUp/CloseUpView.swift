@@ -23,7 +23,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     private var videoPlayer: VVideoPlayer?
     private let placeholderImage = UIImage(named: "profile_full")
     private let horizontalMargins: CGFloat = 16
-    private let verticalMargins:CGFloat = 18
+    private let verticalMargins: CGFloat = 18
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager,
                                         delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
@@ -177,14 +177,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
                         content: CloseUpContent) {
-        //        self.maxHeight = maxHeight
         self.content = content
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: CloseUpContent) -> CGSize
-    {
+                       content: CloseUpContent) -> CGSize {
         return sizeForContent(content)
     }
 }
