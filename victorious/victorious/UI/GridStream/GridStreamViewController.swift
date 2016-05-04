@@ -9,7 +9,7 @@
 import UIKit
 
 struct CollectionViewConfiguration {
-    var sectionInset: UIEdgeInsets = UIEdgeInsetsZero
+    var sectionInset: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
     var interItemSpacing: CGFloat = 3
     var cellsPerRow: Int = 3
 }
