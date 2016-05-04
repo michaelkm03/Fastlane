@@ -15,6 +15,7 @@ struct CollectionViewConfiguration {
 }
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
+    
     // MARK: Variables
     
     private let dependencyManager: VDependencyManager
