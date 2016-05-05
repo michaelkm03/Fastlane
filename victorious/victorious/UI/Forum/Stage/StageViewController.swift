@@ -18,7 +18,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         static let fixedStageHeight: CGFloat = 200.0
     }
     
-    /// The content view that is grows and shrinks depending on the content it is displaying.
+    /// The content view that grows and shrinks depending on the content it is displaying.
     /// Is is also this size that will be broadcasted to the stage delegate.
     @IBOutlet private weak var mainContentView: UIView!
     @IBOutlet private weak var mainContentViewBottomConstraint: NSLayoutConstraint!
@@ -31,7 +31,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentContentView: UIView?
     
-    private var currentStagedMedia: Stageable?
+    private var currentStagedContent: StageContent?
     
     private var stageDataSource: StageDataSource?
     
@@ -43,48 +43,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             stageDataSource = setupDataSource(dependencyManager)
         }
     }
-    
-    private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
-        let dataSource = StageDataSource(dependencyManager: dependencyManager)
-        dataSource.delegate = self
-        return dataSource
-    }
-    
-    //MARK: - Stage
-    
-    func startPlayingMedia(media: Stageable) {
-        videoPlayer.pause()
-        currentStagedMedia = media
-        
-        switch media.contentType {
-        case .video:
-            addVideoAsset(media)
-        case .image:
-            addImageAsset(media)
-        case .gif:
-            addGifAsset(media)
-        }
-        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
-    }
 
-    func stopPlayingMedia() {
-        clearStageMedia()
-    }
-    
-    // MARK: - ForumEventReceiver
-    
-    var childEventReceivers: [ForumEventReceiver] {
-        return [stageDataSource].flatMap { $0 }
-    }
-    
-    // MARK: - VVideoPlayerDelegate
-    
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        switchToContentView(videoContentView, fromContentView: currentContentView)
-        videoPlayer.playFromStart()
-    }
-    
-    // MARK: Video
+    // MARK: Life cycle
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
@@ -96,22 +56,77 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return videoPlayer
     }
     
-    // MARK: Video Asset
+    private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
+        let dataSource = StageDataSource(dependencyManager: dependencyManager)
+        dataSource.delegate = self
+        return dataSource
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        clearStageMedia()
+    }
+
+    //MARK: - Stage
     
-    private func addVideoAsset(videoAsset: Stageable) {
-        let videoItem = VVideoPlayerItem(URL: videoAsset.url)
-        videoPlayer.setItem(videoItem)
+    func addContent(stageContent: StageContent) {
+        videoPlayer.pause()
+        currentStagedContent = stageContent
+
+        switch stageContent {
+        case .video:
+            addVideoAsset(stageContent)
+        case .image:
+            addImageAsset(stageContent)
+        case .gif:
+            addGifAsset(stageContent)
+        }
+        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
+    }
+
+    func removeContent() {
+        clearStageMedia()
+    }
+
+    // MARK: - ForumEventReceiver
+    
+    var childEventReceivers: [ForumEventReceiver] {
+        return [stageDataSource].flatMap { $0 }
     }
     
+    // MARK: - VVideoPlayerDelegate
+    
+    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        switchToContentView(videoContentView, fromContentView: currentContentView)
+        videoPlayer.play()
+    }
+    
+    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+        // This callback could happen multiple times so we don't want to queue up multiple seeks, therefore we need to compare the current time of the video to the actual seek.
+        if let seekAheadTime = currentStagedContent?.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        }
+    }
+    
+    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
+        currentStagedContent = nil
+    }
+
+    // MARK: Video Asset
+
+    private func addVideoAsset(videoContent: StageContent) {
+        let videoItem = VVideoPlayerItem(URL: videoContent.url)
+        videoPlayer.setItem(videoItem)
+    }
+
     // MARK: Image Asset
     
-    private func addImageAsset(imageAsset: Stageable) {
-        imageView.sd_setImageWithURL(imageAsset.url) { [weak self] (image, error, cacheType, url) in
+    private func addImageAsset(imageContent: StageContent) {
+        imageView.sd_setImageWithURL(imageContent.url) { [weak self] (image, error, cacheType, url) in
             guard let strongSelf = self else {
                 return
             }
-            
-            guard let stageImageUrl = strongSelf.currentStagedMedia?.url where stageImageUrl == url else {
+
+            guard let stageImageURL = strongSelf.currentStagedContent?.url where stageImageURL == url else {
                 return
             }
             
@@ -121,10 +136,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     // MARK: Gif Playback
     
-    private func addGifAsset(gifAsset: Stageable) {
-        let videoItem = VVideoPlayerItem(URL: gifAsset.url)
+    private func addGifAsset(gifContent: StageContent) {
+        let videoItem = VVideoPlayerItem(URL: gifContent.url)
         videoItem.loop = true
         videoPlayer.setItem(videoItem)
+        videoPlayer.seekToTimeSeconds(0)
     }
 
     // MARK: Clear Media
@@ -137,15 +153,21 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             }
         }
         currentContentView = newContentView
+        mainContentViewBottomConstraint.constant = Constants.fixedStageHeight
         
+        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
+            self.view.layoutIfNeeded()
+        }
+
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
-    private func clearStageMedia() {
+    private func clearStageMedia(animated: Bool = false) {
         mainContentViewBottomConstraint.constant = 0
-        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
-            self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+        
+        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
+        self.delegate?.stage(self, didUpdateContentHeight: 0.0)
     }
 }

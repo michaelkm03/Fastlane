@@ -12,14 +12,14 @@ import CoreGraphics
 public struct ChatMessage: ForumEvent, DictionaryConvertible {
     
     // MARK: ForumEvent
-    public let timestamp: NSDate
+    public let serverTime: NSDate
 
     public let text: String?
     public let mediaAttachment: MediaAttachment?
     public let fromUser: ChatMessageUser
     
-    public init?(json: JSON, timestamp: NSDate) {
-        self.timestamp = timestamp
+    public init?(json: JSON, serverTime: NSDate) {
+        self.serverTime = serverTime
         
         text = json["text"].string
         mediaAttachment = MediaAttachment(fromForumJSON: json["media"])
@@ -36,12 +36,12 @@ public struct ChatMessage: ForumEvent, DictionaryConvertible {
         }
     }
     
-    public init?(timestamp: NSDate = NSDate(), fromUser: ChatMessageUser, text: String? = nil, mediaAttachment: MediaAttachment? = nil) {
+    public init?(serverTime: NSDate = NSDate(), fromUser: ChatMessageUser, text: String? = nil, mediaAttachment: MediaAttachment? = nil) {
         guard text != nil || mediaAttachment != nil else {
             return nil
         }
-        
-        self.timestamp = timestamp
+
+        self.serverTime = serverTime
         self.fromUser = fromUser
         self.text = text
         self.mediaAttachment = mediaAttachment

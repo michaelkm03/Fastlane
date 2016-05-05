@@ -31,7 +31,6 @@ public struct VideoAsset {
 
         bitrate = json["bitrate"].int
 
-        // MARK: Stageable
         guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["resourceLocation"]) else {
             return nil
         }

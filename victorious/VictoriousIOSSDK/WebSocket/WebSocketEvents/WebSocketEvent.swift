@@ -13,12 +13,12 @@ import Foundation
  */
 public struct WebSocketEvent: ForumEvent {
     // MARK: ForumEvent
-    public let timestamp: NSDate
+    public let serverTime: NSDate
     
     public let type: WebSocketEventType
     
-    public init(type: WebSocketEventType, timestamp: NSDate = NSDate()) {
+    public init(type: WebSocketEventType, serverTime: NSDate = NSDate()) {
         self.type = type
-        self.timestamp = timestamp
+        self.serverTime = serverTime
     }
 }

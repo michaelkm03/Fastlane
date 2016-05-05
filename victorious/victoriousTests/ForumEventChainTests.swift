@@ -52,7 +52,7 @@ class ForumEventChainTests: XCTestCase {
     
     func createEvent() -> ForumEvent {
         eventIdCounter += 1
-        return ForumEventTestable(timestamp: NSDate(timeIntervalSince1970: 1459178708), internalIdentifier: eventIdCounter)
+        return ForumEventTestable(serverTime: NSDate(timeIntervalSince1970: 1234567890), internalIdentifier: eventIdCounter)
     }
     
     func testPerformance() {
@@ -76,7 +76,7 @@ private var eventIdCounter = 0
 
 // Internal struct made for testing the FEC (Forum Event Chain™).
 private struct ForumEventTestable: ForumEvent, Equatable {
-    let timestamp: NSDate
+    let serverTime: NSDate
     let internalIdentifier: Int
 }
 

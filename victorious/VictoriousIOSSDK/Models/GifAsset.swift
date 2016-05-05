@@ -18,7 +18,6 @@ extension GifAsset {
     public init?(json: JSON) {
         thumbnailURL = json["thumbnail_url"].string
         
-        // MARK: Stageable
         guard let mediaMetaData = MediaMetaData(json: json, customUrlKeys: ["resourceLocation"]) else {
             return nil
         }

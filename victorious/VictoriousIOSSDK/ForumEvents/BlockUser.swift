@@ -14,9 +14,9 @@ public struct BlockUser: ForumEvent, DictionaryConvertible {
     
     // MARK: ForumEvent
     
-    public let timestamp: NSDate
+    public let serverTime: NSDate
     public let userID: String
-    
+
     // MARK: DictionaryConvertible
     
     public var defaultKey: String {

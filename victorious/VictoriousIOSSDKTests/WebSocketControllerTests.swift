@@ -88,7 +88,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         nextSender = controller
         
         let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
-        let chatMessageOutbound = ChatMessage(timestamp: NSDate(), fromUser: user, text: "Test chat message")!
+        let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
         
         let dictionaryConvertible = chatMessageOutbound as DictionaryConvertible
         let toServerDictionary = [
@@ -108,7 +108,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketBlockUserMessage() {
         nextSender = controller
         
-        let blockUser = BlockUser(timestamp: NSDate(), userID: "1337")
+        let blockUser = BlockUser(serverTime: NSDate(timeIntervalSince1970: 1234567890), userID: "1337")
         let dictionaryConvertible = blockUser as DictionaryConvertible
         let toServerDictionary = [
             "to_server": [

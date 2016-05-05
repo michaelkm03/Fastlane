@@ -18,7 +18,8 @@ class ChatMessageTests: XCTestCase {
                 return
         }
         let json = JSON(data: jsonData)
-        guard let chatMessage = ChatMessage(json: json, timestamp: NSDate(timeIntervalSince1970:1234567890)) else {
+        let serverTime = NSDate(timeIntervalSince1970: 1234567890)
+        guard let chatMessage = ChatMessage(json: json, serverTime: serverTime) else {
             XCTFail("ChatMessage initializer failed.")
             return
         }

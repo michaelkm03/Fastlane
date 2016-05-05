@@ -11,10 +11,10 @@ import Foundation
 class StageDataSource: ForumEventReceiver {
     
     weak var delegate: Stage?
-    
+
     private let dependencyManager: VDependencyManager?
     
-    private var currentContentFetchOperation: ContentViewFetchOperation?
+    private var currentContentFetchOperation: ViewedContentFetchOperation?
     
     // MARK: Initialiation
     
@@ -36,22 +36,24 @@ class StageDataSource: ForumEventReceiver {
         
         guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue
             where VCurrentUser.isLoggedIn() else {
-                v_log("The current user is not logged and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
+                v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
                 return
         }
-        
+
         currentContentFetchOperation?.cancel()
         
         let contentFetchURL = dependencyManager.contentFetchURL
-        if let contentViewFetchOperation = ContentViewFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, contentID: stageEvent.contentID) {
-            currentContentFetchOperation = contentViewFetchOperation
-            contentViewFetchOperation.queue() { [weak self] results, error, canceled in
+        if let viewedContentFetchOperation = ViewedContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent) {
+            currentContentFetchOperation = viewedContentFetchOperation
+            viewedContentFetchOperation.queue() { [weak self] results, error, canceled in
                 guard let strongSelf = self,
-                    let delegate = strongSelf.delegate else {
+                    let delegate = strongSelf.delegate
+                    where canceled != true else {
                         return
                 }
-                if let result = results?.first as? Stageable {
-                    delegate.startPlayingMedia(result)
+                if let content = results?.first as? Content,
+                let stageContent = content.stageContent {
+                    delegate.addContent(stageContent)
                 }
             }
         }
