@@ -113,7 +113,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     VUser *selectedUser = self.dataSource.visibleItems[ indexPath.row ];
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:selectedUser];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:selectedUser];
     NSAssert( self.navigationController != nil, @"View controller must be in a navigation controller." );
     [self.navigationController pushViewController:profileViewController animated:YES];
 }

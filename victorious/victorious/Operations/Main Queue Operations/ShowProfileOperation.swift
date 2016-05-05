@@ -48,7 +48,7 @@ class ShowProfileOperation: BackgroundOperation {
         }
         
         guard let targetNavController = navController,
-            let viewController = dependencyManager.userProfileViewControllerWithRemoteID(userId) else {
+            let viewController = dependencyManager.userProfileViewController(withRemoteID: userId) else {
                 return
         }
         

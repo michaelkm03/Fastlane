@@ -647,7 +647,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     commentCell.onUserProfileTapped = ^(void)
     {
-        UIViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
+        UIViewController *profileViewController = [welf.dependencyManager userProfileViewControllerFor:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }

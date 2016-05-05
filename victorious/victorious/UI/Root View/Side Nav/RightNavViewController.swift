@@ -1,4 +1,3 @@
-
 //
 //  RightNavViewController.swift
 //  victorious
