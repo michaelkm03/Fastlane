@@ -32,7 +32,7 @@ extension VDependencyManager {
             [VNewProfileViewController.self, VUserProfileViewController.self],
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
-            ) as? UIViewController
+        ) as? UIViewController
     }
     
     func userProfileHeaderWithUser(for user: VUser) -> VUserProfileHeader? {
@@ -42,5 +42,4 @@ extension VDependencyManager {
             withAddedDependencies: [VDependencyManager.userKey: user]
         ) as? VUserProfileHeader
     }
-    
 }
