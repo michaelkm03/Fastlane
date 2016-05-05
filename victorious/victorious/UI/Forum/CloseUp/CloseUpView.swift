@@ -176,13 +176,16 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
-                        content: CloseUpContent) {
+                        content: CloseUpContent?) {
         self.content = content
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: CloseUpContent) -> CGSize {
+                       content: CloseUpContent?) -> CGSize {
+        guard let content = content else {
+            return CGSizeZero
+        }
         return sizeForContent(content)
     }
 }
