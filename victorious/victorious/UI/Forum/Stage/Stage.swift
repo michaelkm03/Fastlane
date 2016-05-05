@@ -14,11 +14,11 @@ protocol Stage: class, ForumEventReceiver {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    /// Replaces the currently playing media with the one provided.
-    func startPlayingMedia(media: Stageable)
+    /// Replaces the currently content on the stage with the new one.
+    func addContent(stageContent: StageContent)
     
-    /// Stops displaying the currently shown media.
-    func stopPlayingMedia()
+    /// Removes the current content on the stage.
+    func removeContent()
 }
 
 /// Conformers will recieve messages related to the stage resizing.

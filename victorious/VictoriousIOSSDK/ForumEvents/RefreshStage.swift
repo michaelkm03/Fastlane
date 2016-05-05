@@ -12,7 +12,7 @@ import Foundation
 public struct RefreshStage: ForumEvent {
     
     // MARK: ForumEvent
-    public let timestamp: NSDate
+    public let serverTime: NSDate
     
     /// Points to the different instaces of Stage.
     public let section: RefreshSection
@@ -21,18 +21,23 @@ public struct RefreshStage: ForumEvent {
     public let contentID: String
     
     /// May be set in order to sync cliets to the same spot.
-    public let startTime: NSTimeInterval?
+    public let startTime: NSDate?
     
-    public init?(json: JSON, timestamp: NSDate) {
-        self.timestamp = timestamp
-        
+    public init?(json: JSON, serverTime: NSDate) {
+        self.serverTime = serverTime
+
         guard let section = json["section"].string,
             let contentID = json["content_id"].string else {
             return nil
         }
         self.contentID = contentID
-        self.startTime = json["start_time"].double
         
+        if let startTime = json["start_time"].double {
+            self.startTime = NSDate(millisecondsSince1970: startTime)
+        } else {
+            self.startTime = nil
+        }
+
         let lowerCasedSection = section.lowercaseString
         switch lowerCasedSection {
         case "vip_stage":

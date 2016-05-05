@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSString * const kPlaybackBufferLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
 static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
+static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 @interface VVideoView()
 
@@ -176,7 +177,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferLikelyToKeepUpKey];
     [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferEmptyKey];
-    
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlayerItemIsReadyToPlay];
+
     __weak VVideoView *weakSelf = self;
     [self.KVOController observe:playerItem
                        keyPaths:@[kPlaybackBufferLikelyToKeepUpKey]
@@ -204,6 +206,21 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerDidStartBuffering:)])
              {
                  [strongSelf.delegate videoPlayerDidStartBuffering:strongSelf];
+             }
+         }
+     }];
+    
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlayerItemIsReadyToPlay]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.status == AVPlayerItemStatusReadyToPlay)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerItemIsReadyToPlay:)])
+             {
+                 [strongSelf.delegate videoPlayerItemIsReadyToPlay:strongSelf];
              }
          }
      }];
@@ -330,7 +347,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     if ( CMTIME_COMPARE_INLINE(self.player.currentItem.currentTime, !=, time) )
     {
-        [self.player seekToTime:time];
+        [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }
 }
 

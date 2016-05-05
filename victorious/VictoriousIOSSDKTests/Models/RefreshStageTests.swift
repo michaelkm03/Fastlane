@@ -17,15 +17,15 @@ class RefreshStageTests: XCTestCase {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }
-        let timestamp = NSDate(timeIntervalSince1970: 1234567890)
-        guard let refreshStage = RefreshStage(json: JSON(data: jsonData), timestamp: timestamp) else {
+        let serverTime = NSDate(timeIntervalSince1970: 1234567890)
+        guard let refreshStage = RefreshStage(json: JSON(data: jsonData), serverTime: serverTime) else {
             XCTFail("RefreshStage initializer failed.")
             return
         }
         
         XCTAssertEqual(refreshStage.contentID, "BB7670057")
         XCTAssertEqual(refreshStage.section, RefreshSection.VIPStage)
-        XCTAssertEqual(refreshStage.timestamp, timestamp)
+        XCTAssertEqual(refreshStage.serverTime, serverTime)
     }
     
     func testMainInitialization() {
@@ -34,14 +34,14 @@ class RefreshStageTests: XCTestCase {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }
-        let timestamp = NSDate(timeIntervalSince1970: 1234567890)
-        guard let refreshStage = RefreshStage(json: JSON(data: jsonData), timestamp: timestamp) else {
+        let serverTime = NSDate(timeIntervalSince1970: 1234567890)
+        guard let refreshStage = RefreshStage(json: JSON(data: jsonData), serverTime: serverTime) else {
             XCTFail("RefreshStage initializer failed.")
             return
         }
         
         XCTAssertEqual(refreshStage.contentID, "XBXBX8888")
         XCTAssertEqual(refreshStage.section, RefreshSection.MainStage)
-        XCTAssertEqual(refreshStage.timestamp, timestamp)
+        XCTAssertEqual(refreshStage.serverTime, serverTime)
     }
 }

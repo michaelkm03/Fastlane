@@ -53,6 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayer:(id<VVideoPlayer>)videoPlayer didPlayToTime:(Float64)time;
 
+/**
+ Called when the item loaded in the player is ready to be played.
+ */
+- (void)videoPlayerItemIsReadyToPlay:(id<VVideoPlayer>)videoPlayer;
+
 @end
 
 NS_ASSUME_NONNULL_END

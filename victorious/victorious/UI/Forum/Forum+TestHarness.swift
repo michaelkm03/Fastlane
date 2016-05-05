@@ -11,8 +11,8 @@ import Foundation
 private var debugTimer = VTimerManager()
 
 private extension ChatMessage {
-    init(timestamp: NSDate, text: String?, mediaAttachment: MediaAttachment?, fromUser: ChatMessageUser) {
-        self.timestamp = timestamp
+    init(serverTime: NSDate, text: String?, mediaAttachment: MediaAttachment?, fromUser: ChatMessageUser) {
+        self.serverTime = serverTime
         self.text = text
         self.mediaAttachment = mediaAttachment
         self.fromUser = fromUser
@@ -79,7 +79,7 @@ extension ForumViewController {
         }
         
         guard let event: ForumEvent = ChatMessage(
-            timestamp: NSDate(),
+            serverTime: NSDate(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             mediaAttachment: media,
             fromUser: ChatMessageUser(
