@@ -91,8 +91,7 @@ class MediaContentView: UIView {
     }
     
     func onContentDoubleTap() {
-        // TODO: Other features: like/upvote?
-        //        videoPlayer.useAspectFit = !videoPlayer.useAspectFit
+        
     }
     
     // MARK: - Helpers
@@ -100,6 +99,4 @@ class MediaContentView: UIView {
     private func shouldReplay() -> Bool {
         return content?.contentType == .GIF
     }
-    
-    // TODO: VFocusable, tracking
 }
