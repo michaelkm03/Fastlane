@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ViewedContent.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 25/4/16.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-public class ContentView {
+public class ViewedContent {
     public let content: Content
     
     public init?(json: JSON) {
         guard let content = Content(json: json["payload", "content"]) else {
                 return nil
         }
-
+        
         self.content = content
     }
 }

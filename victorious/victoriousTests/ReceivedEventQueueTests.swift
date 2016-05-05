@@ -27,7 +27,7 @@ class ReceivedEventQueueTests: XCTestCase {
     func testAdd() {
         queue = ReceivedEventQueue<ChatFeedMessage>()
         for i in 0..<eventCount {
-            guard let source = ChatMessage(timestamp: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
+            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
                 XCTFail()
                 return
             }
@@ -45,7 +45,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue(maximimEventCount: maximimEventCount)
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(timestamp: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
+            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
                 XCTFail()
                 return
             }
@@ -63,7 +63,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(timestamp: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
+            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
                 XCTFail()
                 return
             }
@@ -83,7 +83,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(timestamp: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
+            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
                 XCTFail()
                 return
             }
@@ -104,7 +104,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(timestamp: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
+            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
                 XCTFail()
                 return
             }

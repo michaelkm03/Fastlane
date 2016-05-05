@@ -66,11 +66,11 @@ extension Forum {
         chatFeed?.setTopInset(height)
     }
 
-    func stage(stage: Stage, didUpdateWithMedia media: Stageable) {
+    func stage(stage: Stage, didUpdateWithMedia media: StageContent) {
         
     }
 
-    func stage(stage: Stage, didSelectMedia media: Stageable) {
+    func stage(stage: Stage, didSelectMedia media: StageContent) {
         
     }
 }

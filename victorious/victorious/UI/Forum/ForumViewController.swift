@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Foumr's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable {
 
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
@@ -180,6 +180,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer {
         dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    // MARK: - VFocusable
+    
+    var focusType: VFocusType = .None {
+        didSet {
+            view.userInteractionEnabled = focusType != .None
+        }
     }
     
     // MARK: - VCoachmarkDisplayer

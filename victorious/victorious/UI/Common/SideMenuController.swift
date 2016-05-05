@@ -29,6 +29,8 @@ class SideMenuController: UIViewController {
     private static let statusBarAnimationDuration: NSTimeInterval = 0.2
     private static let panTriggerThreshold: CGFloat = 80.0
     
+    private var associatedChildViewControllers = [UIView: UIViewController]()
+    
     // MARK: - Initializing
     
     init(centerViewController: UIViewController? = nil, leftViewController: UIViewController? = nil, rightViewController: UIViewController? = nil) {
@@ -65,6 +67,7 @@ class SideMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addCenterViewController()
+        updateFocusOfContainedViews()
     }
     
     // MARK: - Status bar
@@ -94,6 +97,7 @@ class SideMenuController: UIViewController {
         didSet {
             animateStatusBarUpdate()
             tapRecognizer.enabled = openEdge != nil
+            updateFocusOfContainedViews()
         }
     }
     
@@ -153,6 +157,50 @@ class SideMenuController: UIViewController {
         }
     }
     
+    // MARK: - Focus management
+    
+    private func updateFocusOfContainedViews() {
+        
+        addFocusWithType(currentFocusTypeForEdge(.left), toControllerAssociatedWithContainer: leftContainerView)
+        addFocusWithType(currentFocusTypeForEdge(nil), toControllerAssociatedWithContainer: centerContainerView)
+        addFocusWithType(currentFocusTypeForEdge(.right), toControllerAssociatedWithContainer: rightContainerView)
+    }
+    
+    private func currentFocusTypeForEdge(edge: SideMenuControllerEdge?) -> VFocusType {
+        
+        let isFocused = panRecognizer.state != .Changed && openEdge == edge
+        return isFocused ? .Stream : .None
+    }
+    
+    private func addFocusWithType(focusType: VFocusType, toControllerAssociatedWithContainer container: UIView) {
+        guard let viewController = associatedChildViewControllers[container] else {
+            return
+        }
+        
+        addFocusWithType(focusType, toViewController: viewController)
+    }
+    
+    /// Calls recursively to adjust the focus of the provided view controller, any focusable
+    /// view controller inside the provided viewController's `viewControllers` array (in the
+    /// case of it being a navigation controller), and the viewController's child view controllers
+    private func addFocusWithType(focusType: VFocusType, toViewController viewController: UIViewController) {
+        
+        if let focusable = viewController as? VFocusable {
+            focusable.focusType = focusType
+        }
+        
+        if let navigationController = viewController as? UINavigationController,
+            let topViewController = navigationController.topViewController {
+            addFocusWithType(focusType, toViewController: topViewController)
+        } else if let navigationController = viewController as? VNavigationController {
+            addFocusWithType(focusType, toViewController: navigationController.innerNavigationController)
+        }
+        
+        for childViewController in viewController.childViewControllers {
+            addFocusWithType(focusType, toViewController: childViewController)
+        }
+    }
+    
     // MARK: - Managing child view controllers
     
     /// The view controller which normally occupies the entire container and displays the main content.
@@ -201,8 +249,8 @@ class SideMenuController: UIViewController {
         }
         
         if let centerViewController = centerViewController {
-            addChildViewController(centerViewController)
-            centerContainerView.addSubview(centerViewController.view)
+            beginAdding(centerViewController, toSuperview: centerContainerView, animated: false)
+            endAdding(centerViewController)
         }
     }
     
@@ -211,6 +259,7 @@ class SideMenuController: UIViewController {
             return
         }
         
+        associatedChildViewControllers[superview] = childViewController
         childViewController.beginAppearanceTransition(true, animated: animated)
         addChildViewController(childViewController)
         superview.addSubview(childViewController.view)
@@ -221,6 +270,9 @@ class SideMenuController: UIViewController {
     }
     
     private func beginRemoving(childViewController: UIViewController?, animated: Bool) {
+        if let superview = childViewController?.view.superview {
+            associatedChildViewControllers[superview] = nil
+        }
         childViewController?.beginAppearanceTransition(false, animated: animated)
         childViewController?.willMoveToParentViewController(nil)
     }

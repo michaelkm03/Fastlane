@@ -9,7 +9,8 @@
 import Foundation
 
 public protocol ForumEvent {
-    var timestamp: NSDate { get }
+    /// Server time sent as a Unix timestamp in milliseconds.
+    var serverTime: NSDate { get }
 }
 
 public protocol ForumEventReceiver {

@@ -8,13 +8,11 @@
 
 import Foundation
 
-public struct ContentViewFetchRequest : RequestType {
+public struct ViewedContentFetchRequest : RequestType {
     private let urlMacroExpander = VSDKURLMacroReplacement()
-    
-    private let contentID: String
-    private let currentUserID: String
+
     private let url: NSURL
-    
+
     public init?(macroURLString: String, currentUserID: String, contentID: String) {
         let replacementDictionary: [NSObject : AnyObject] = ["%%SEQUENCE_ID%%": contentID, "%%USER_ID%%": currentUserID]
         let urlString = urlMacroExpander.urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: macroURLString)
@@ -24,10 +22,8 @@ public struct ContentViewFetchRequest : RequestType {
         }
         
         self.url = url
-        self.currentUserID = currentUserID
-        self.contentID = contentID
     }
-    
+
     public var baseUrl: NSURL? {
         return url.baseURL
     }
@@ -36,8 +32,8 @@ public struct ContentViewFetchRequest : RequestType {
         return NSMutableURLRequest(URL: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentView {
-        guard let contentView = ContentView(json: responseJSON) else {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ViewedContent {
+        guard let contentView = ViewedContent(json: responseJSON) else {
             throw ResponseParsingError()
         }
         return contentView
