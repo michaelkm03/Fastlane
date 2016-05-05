@@ -12,7 +12,6 @@
 #import "VSequence.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "victorious-Swift.h"
 

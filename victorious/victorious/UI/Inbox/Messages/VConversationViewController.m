@@ -17,7 +17,6 @@
 #import "VUserProfileViewController.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"

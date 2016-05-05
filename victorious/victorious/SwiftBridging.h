@@ -102,7 +102,6 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager.h"
 #import "VDirectoryCellFactory.h"
 #import "VDirectoryCellUpdateableFactory.h"

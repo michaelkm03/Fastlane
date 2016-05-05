@@ -14,7 +14,6 @@
 #import "VUser.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"

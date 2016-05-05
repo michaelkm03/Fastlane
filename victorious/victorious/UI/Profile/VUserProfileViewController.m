@@ -21,7 +21,6 @@
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
 #import "VBarButton.h"

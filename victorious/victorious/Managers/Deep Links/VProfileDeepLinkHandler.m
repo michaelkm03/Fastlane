@@ -10,7 +10,6 @@
 #import "VUserProfileViewController.h"
 #import "VDependencyManager.h"
 #import "NSURL+VPathHelper.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "victorious-Swift.h"
 
 static NSString * const kProfileDeeplinkHostComponent = @"profile";

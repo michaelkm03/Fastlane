@@ -7,7 +7,6 @@
 //
 
 #import "VStaticUserProfileHeaderViewController.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"

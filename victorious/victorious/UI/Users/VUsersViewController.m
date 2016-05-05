@@ -10,7 +10,6 @@
 #import "UIView+AutoLayout.h"
 #import "VUserCell.h"
 #import "VUserProfileViewController.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"

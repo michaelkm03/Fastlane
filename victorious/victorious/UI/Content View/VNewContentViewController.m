@@ -27,7 +27,6 @@
 #import "VContentPollQuestionCell.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VEditCommentViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VExperienceEnhancer.h"
