@@ -19,7 +19,7 @@ extension VDependencyManager {
     static var profileEditButtonStylePill: String { return "rounded" }
     static var trophyCaseScreenKey: String { return "trophyCaseScreen" }
     
-    func userProfileViewController(withUser user: VUser) -> UIViewController? {
+    func userProfileViewController(for user: VUser) -> UIViewController? {
         return templateValueMatchingAnyType(
             [VNewProfileViewController.self, VUserProfileViewController.self],
             forKey: VDependencyManager.userProfileViewComponentKey,
@@ -27,20 +27,19 @@ extension VDependencyManager {
         ) as? UIViewController
     }
     
-    func userProfileViewControllerWithRemoteID(remoteID: NSNumber) -> UIViewController? {
+    func userProfileViewController(withRemoteID remoteID: NSNumber) -> UIViewController? {
         return templateValueMatchingAnyType(
             [VNewProfileViewController.self, VUserProfileViewController.self],
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
-            ) as? UIViewController
+        ) as? UIViewController
     }
     
-    func userProfileHeaderWithUser(user: VUser) -> VUserProfileHeader? {
+    func userProfileHeaderWithUser(for user: VUser) -> VUserProfileHeader? {
         return templateValueConformingToProtocol(
             VUserProfileHeader.self,
             forKey: VDependencyManager.userProfileHeaderComponentKey,
             withAddedDependencies: [VDependencyManager.userKey: user]
         ) as? VUserProfileHeader
     }
-    
 }

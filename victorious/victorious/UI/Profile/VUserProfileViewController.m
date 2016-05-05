@@ -130,7 +130,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.profileHeaderViewController == nil )
     {
-        self.profileHeaderViewController = (UIViewController<VUserProfileHeader> *)[self.dependencyManager userProfileHeaderWithUser:self.user];
+        self.profileHeaderViewController = (UIViewController<VUserProfileHeader> *)[self.dependencyManager userProfileHeaderWithUserFor:self.user];
         if ( self.profileHeaderViewController != nil )
         {
             self.profileHeaderViewController.delegate = self;

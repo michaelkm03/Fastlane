@@ -518,7 +518,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
     
     VConversation *conversation = [self.dataSource.visibleItems objectAtIndex:indexPath.row];
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:conversation.user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:conversation.user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

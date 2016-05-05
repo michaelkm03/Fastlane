@@ -224,7 +224,7 @@
     
     if ( [self navigationHistoryContainsUserProfileForUser:message.sender] )
     {
-        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:message.sender];
+        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:message.sender];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
 }
