@@ -35,7 +35,7 @@ class VideoTrackingEvent: NSObject {
             return ""
         }()
         
-        let params = [
+        let params: [String: AnyObject] = [
             VTrackingKeyAutoplay: autoPlay ? "true" : "false",
             VTrackingKeyConnectivity: connectivityString,
             VTrackingKeyVolumeLevel: volumeString,

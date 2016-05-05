@@ -51,7 +51,9 @@ extension Stream {
         isUserPostAllowed           = json["ugc_post_allowed"].bool
         apiPath                     = json["streamUrl"].string ?? json["apiPath"].string
         
-        items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
+        let itemsJSON: [JSON]? = json["items"].array ?? json["content"].array ?? json["stream_items"].array
+        
+        items = itemsJSON?.flatMap {
             switch $0["type"].stringValue {
             case "sequence":
                 return Sequence(json: $0)

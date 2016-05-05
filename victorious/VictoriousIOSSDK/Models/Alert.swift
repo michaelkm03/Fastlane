@@ -23,7 +23,7 @@ public func ==(lhs: Alert, rhs: Alert) -> Bool {
     return lhs.alertID == rhs.alertID
 }
 
-public struct Alert {
+public struct Alert: Equatable {
     
     public struct Parameters {
         public let backgroundVideoURL: NSURL?

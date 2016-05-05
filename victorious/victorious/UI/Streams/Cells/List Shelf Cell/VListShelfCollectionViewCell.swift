@@ -123,7 +123,9 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private class func collectionViewHeight(cellSideLength length: CGFloat) -> CGFloat {
         let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
-        return ceil(length * 2) + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
+        let insetHeight = collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
+        let baseHeight = ceil(length * 2)
+        return baseHeight + Constants.interCellSpace + insetHeight
     }
     
     /// The optimal size for this cell.

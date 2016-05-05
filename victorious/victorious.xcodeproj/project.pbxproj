@@ -30,7 +30,6 @@
 		0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D08019B4688E00FA363C /* Icon-60@2x.png */; };
 		0314D09019B4694600FA363C /* VInteractionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D08F19B4694600FA363C /* VInteractionManager.m */; };
 		0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2DE19B46AF300FA363C /* VThemeManager.m */; };
-		0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2E819B46B2200FA363C /* VErrorMessage.m */; };
 		0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */; };
 		0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */; };
 		0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */; };
@@ -2292,8 +2291,6 @@
 		0314D08F19B4694600FA363C /* VInteractionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionManager.m; sourceTree = "<group>"; };
 		0314D2DD19B46AF300FA363C /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThemeManager.h; sourceTree = "<group>"; };
 		0314D2DE19B46AF300FA363C /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThemeManager.m; sourceTree = "<group>"; };
-		0314D2E719B46B2200FA363C /* VErrorMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VErrorMessage.h; sourceTree = "<group>"; };
-		0314D2E819B46B2200FA363C /* VErrorMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VErrorMessage.m; sourceTree = "<group>"; };
 		0314D34A19B46B5E00FA363C /* VKeyboardBarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarContainerViewController.h; sourceTree = "<group>"; };
 		0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarContainerViewController.m; sourceTree = "<group>"; };
 		0314D34C19B46B5E00FA363C /* VKeyboardBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarViewController.h; sourceTree = "<group>"; };
@@ -9849,8 +9846,6 @@
 				F0FC97F41B5D50390098AFCB /* In Stream Comments */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
-				0314D2E719B46B2200FA363C /* VErrorMessage.h */,
-				0314D2E819B46B2200FA363C /* VErrorMessage.m */,
 				A7EB574A1AF82159006AA1CF /* VLoginType.h */,
 				030931911A184285004E9781 /* VNavigationMenuItem.h */,
 				030931921A184285004E9781 /* VNavigationMenuItem.m */,
@@ -11223,7 +11218,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\n";
+			shellScript = "if [ ${CONFIGURATION} != Debug ] ; then\n    ./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\nfi";
 			showEnvVarsInLog = 0;
 		};
 		0352FCF01B72D1C600DB6EAB /* Install */ = {
@@ -12664,7 +12659,6 @@
 				A73BA2A41C938B68008168B5 /* CloseUpDelegate.swift in Sources */,
 				A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */,
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
-				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				A72C86381C977FF500E97D4F /* SuggestedUsersOperation.swift in Sources */,
 				A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */,
@@ -13853,8 +13847,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "";
 				ProductPrefix = "";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SKIP_SWIFTCLEAN = 1;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = (
@@ -15016,8 +15010,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_NO_ENFORCE_PURCHASABLE_BALLISTICS";
 				ProductPrefix = "staging-";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SKIP_SWIFTCLEAN = 1;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = (
@@ -15207,6 +15201,7 @@
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DefaultEnvironment = Dev;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
@@ -15248,6 +15243,7 @@
 				ProductPrefix = "debug-";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
+				SKIP_SWIFTCLEAN = 1;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -15304,8 +15300,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "";
 				ProductPrefix = "";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SKIP_SWIFTCLEAN = 1;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = (
@@ -15499,8 +15495,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_NO_ENFORCE_PURCHASABLE_BALLISTICS";
 				ProductPrefix = "qa-";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SKIP_SWIFTCLEAN = 1;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				WARNING_CFLAGS = (
 					"-Wall",
