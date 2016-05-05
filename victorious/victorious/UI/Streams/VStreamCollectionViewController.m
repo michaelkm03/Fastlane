@@ -27,7 +27,6 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VDirectoryCollectionViewController.h"
 #import "VFocusable.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"

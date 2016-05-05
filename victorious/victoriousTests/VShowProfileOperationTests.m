@@ -43,7 +43,7 @@
                                                                  configuration:nil
                                              dictionaryOfClassesByTemplateName:nil];
     
-    self.origImp = [VDependencyManager v_swizzleMethod:@selector(userProfileViewControllerWithRemoteId:)
+    self.origImp = [VDependencyManager v_swizzleMethod:@selector(userProfileViewControllerWithRemoteID:)
                                              withBlock:^VUserProfileViewController *(VDependencyManager *dependencyManager, NSNumber *userID)
                     {
                         VUserProfileViewController *profileVC = [[VUserProfileViewController alloc] init];
@@ -59,7 +59,7 @@
 {
     [super tearDown];
     [VDependencyManager v_restoreOriginalImplementation:self.origImp
-                                              forMethod:@selector(userProfileViewControllerWithRemoteId:)];
+                                              forMethod:@selector(userProfileViewControllerWithRemoteID:)];
 }
 
 - (void)testNotOnProfile
@@ -87,7 +87,7 @@
 
 - (void)testOnOtherUserProfile
 {
-    UIViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(OTHER_USER_ID)];
+    UIViewController *otherProfileViewController = [self.dependencyManager userProfileViewControllerWithRemoteID:@(OTHER_USER_ID)];
     [self.navigationController pushViewController:otherProfileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:otherProfileViewController
@@ -114,7 +114,7 @@
 
 - (void)testOnCurrentUserProfile
 {
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:@(USER_ID)];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteID:@(USER_ID)];
     [self.navigationController pushViewController:profileViewController animated:NO];
     
     ShowProfileOperation *operation = [[ShowProfileOperation alloc] initWithOriginViewController:profileViewController

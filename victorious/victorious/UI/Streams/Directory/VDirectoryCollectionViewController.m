@@ -16,7 +16,6 @@
 #import "VDependencyManager+NavigationBar.h"
 #import "VStreamCollectionViewController.h"
 #import "VDirectoryCollectionFlowLayout.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
