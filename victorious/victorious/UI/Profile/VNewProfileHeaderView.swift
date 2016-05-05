@@ -136,8 +136,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
-        
-        setNeedsLayout()
     }
     
     private let numberFormatter = VLargeNumberFormatter()
@@ -176,6 +174,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
                        content: VUser?) -> CGSize {
+        self.user = content
+        
         setNeedsLayout()
         layoutIfNeeded()
         
