@@ -27,7 +27,7 @@ class ShowShareSequenceOperation: MainQueueOperation {
         self.beganExecuting()
         
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectShare)
-        let appInfo: VAppInfo = VAppInfo(dependencyManager: dependencyManager)
+        let appInfo = VAppInfo(dependencyManager: dependencyManager)
         
         let fbActivity: VFacebookActivity = VFacebookActivity()
         let activityViewController: UIActivityViewController = UIActivityViewController(
@@ -45,42 +45,41 @@ class ShowShareSequenceOperation: MainQueueOperation {
         let emailSubject = String(format: NSLocalizedString("EmailShareSubjectFormat", comment: ""), creatorName)
         activityViewController.setValue(emailSubject, forKey: "subject")
         activityViewController.excludedActivityTypes = [UIActivityTypePostToFacebook]
-        activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
-            
-            var tracking: VTracking?
-            if let streamID = self.streamID {
-                tracking = self.sequence.streamItemPointer(streamID: streamID)?.tracking
-            }
-            else {
-                tracking = self.sequence.streamItemPointerForStandloneStreamItem()?.tracking
-            }
-            assert(tracking != nil, "Cannot track 'share' event because tracking data is missing.")
-            
-            if completed {
-                let params = [
-                    VTrackingKeySequenceCategory: self.sequence.category ?? "",
-                    VTrackingKeyShareDestination: activityType ?? "",
-                    VTrackingKeyUrls: tracking?.share ?? []
-                ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
-            }
-            else if let activityError = activityError {
-                let params = [
-                    VTrackingKeySequenceCategory: self.sequence.category ?? "",
-                    VTrackingKeyShareDestination: activityType ?? "",
-                    VTrackingKeyUrls: tracking?.share ?? [],
-                    VTrackingKeyErrorMessage: activityError.localizedDescription
-                ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: params)
-            }
-            
-            self.originViewController.reloadInputViews()
-            self.finishedExecuting()
+        activityViewController.completionWithItemsHandler = { [weak self] activityType, completed, _, activityError in
+            self?.activityViewDidFinish(activityType: activityType ?? "", completed: completed, activityError: activityError)
         }
         
         originViewController.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
+    private func activityViewDidFinish(activityType activityType: String, completed: Bool, activityError: NSError?) {
+        let tracking: VTracking?
+        
+        if let streamID = streamID {
+            tracking = sequence.streamItemPointer(streamID: streamID)?.tracking
+        } else {
+            tracking = sequence.streamItemPointerForStandloneStreamItem()?.tracking
+        }
+        
+        assert(tracking != nil, "Cannot track 'share' event because tracking data is missing.")
+        
+        var trackingParameters: [String:AnyObject] = [
+            VTrackingKeySequenceCategory: sequence.category ?? "",
+            VTrackingKeyShareDestination: activityType,
+            VTrackingKeyUrls: tracking?.share ?? []
+        ]
+        
+        if completed {
+            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: trackingParameters)
+        }
+        else if let activityError = activityError {
+            trackingParameters[VTrackingKeyErrorMessage] = activityError.localizedDescription
+            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: trackingParameters)
+        }
+        
+        originViewController.reloadInputViews()
+        finishedExecuting()
+    }
 }
 
 private extension VSequence {

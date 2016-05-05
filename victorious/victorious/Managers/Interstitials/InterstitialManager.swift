@@ -98,8 +98,9 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     func onAlertsReceived( alerts: [Alert] ) {
         let newAlerts = alerts.filter { alert in
-            !registeredAlerts.contains { $0 == alert } && !shownAlerts.contains { $0 == alert }
+            !registeredAlerts.contains(alert) && !shownAlerts.contains(alert)
         }
+        
         for alert in newAlerts {
             registeredAlerts.append(alert)
             if let interstitialListener = interstitialListener {
