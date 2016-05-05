@@ -12,6 +12,8 @@ protocol CloseUpViewDelegate {
     func didSelectProfile()
 }
 
+private let blurredImageAlpha: CGFloat = 0.5
+
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -45,9 +47,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                                                          selector: #selector(closeUpDismissed),
                                                          name: "closeUpDismissed",
                                                          object: nil)
+        blurredImageView.alpha = blurredImageAlpha
     }
     
-    @IBOutlet weak var overlayView: UIView!
+    @IBOutlet weak var lightOverlayView: UIView!
     @IBOutlet weak var blurredImageView: UIImageView!
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -98,7 +101,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             else {
                 profileImageView.image = placeholderImage
             }
-            blurredImageView.applyBlurToImageURL(content.previewImageURL, withRadius: 10.0)
+            blurredImageView.applyBlurToImageURL(content.previewImageURL, withRadius: 12.0) { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.blurredImageView.alpha = blurredImageAlpha
+            }
             
             createdAtLabel.text = content.creationDate?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.title

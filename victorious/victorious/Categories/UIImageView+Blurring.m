@@ -186,7 +186,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      }];
 }
 
-- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius
+- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock
 {
     if ( [self isURLDownloaded:url] )
     {
@@ -213,7 +213,8 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                             
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+                                               self.image = blurredImage;
+                                               callbackBlock();
                                            });
                         });
      }];

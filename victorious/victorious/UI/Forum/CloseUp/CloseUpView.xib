@@ -10,26 +10,26 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="axG-c0-dBU">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="axG-c0-dBU">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </imageView>
-                <view alpha="0.5" contentMode="scaleToFill" id="bvC-DL-PD5" userLabel="overlayView">
+                <view alpha="0.14999999999999999" contentMode="scaleToFill" id="r6Z-rq-Xpm" userLabel="lightOverlayView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="TF1-tJ-TCB" userLabel="closeUpHeader">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VzU-MB-cia">
-                            <rect key="frame" x="10" y="7" width="30" height="30"/>
+                            <rect key="frame" x="10" y="10" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KXm-IF-yUA" userLabel="profileName">
-                            <rect key="frame" x="55" y="7" width="191" height="30"/>
+                            <rect key="frame" x="48" y="10" width="191" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
@@ -41,7 +41,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vmn-ZP-QUH" userLabel="timeLabel">
-                            <rect key="frame" x="245" y="7" width="60" height="30"/>
+                            <rect key="frame" x="245" y="10" width="60" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="12"/>
                             <color key="textColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
@@ -51,24 +51,25 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleAspectFit" id="Oai-Hq-HeT" userLabel="mediaContentView" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="44" width="320" height="100"/>
+                    <rect key="frame" x="0.0" y="50" width="320" height="100"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="0.4045170092" blue="0.51572655150000002" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dho-2P-v81">
-                    <rect key="frame" x="16" y="162" width="288" height="292"/>
+                    <rect key="frame" x="15" y="165" width="290" height="300"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                     <color key="textColor" white="1" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="blurredImageView" destination="axG-c0-dBU" id="Uvj-cr-Y9n"/>
                 <outlet property="captionLabel" destination="dho-2P-v81" id="wr7-oi-Sbu"/>
                 <outlet property="createdAtLabel" destination="Vmn-ZP-QUH" id="u8w-eE-8ut"/>
                 <outlet property="headerSection" destination="TF1-tJ-TCB" id="Xlj-vI-6Tr"/>
+                <outlet property="lightOverlayView" destination="r6Z-rq-Xpm" id="FRR-Wm-HWs"/>
                 <outlet property="mediaContentView" destination="Oai-Hq-HeT" id="9E2-cn-CPj"/>
                 <outlet property="profileImageView" destination="VzU-MB-cia" id="beB-cv-Ow5"/>
                 <outlet property="userNameButton" destination="KXm-IF-yUA" id="JES-yG-JXZ"/>
