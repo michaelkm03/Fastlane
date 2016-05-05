@@ -658,7 +658,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
+        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteID:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else

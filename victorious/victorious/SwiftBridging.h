@@ -255,6 +255,7 @@
 #import "VUploadTaskInformation.h"
 #import "VUser.h"
 #import "VUserCell.h"
+#import "VUserProfileHeader.h"
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VUserTaggingTextStorage.h"

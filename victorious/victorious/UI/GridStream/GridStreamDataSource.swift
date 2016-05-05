@@ -16,7 +16,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     private var header: HeaderType?
     private let dependencyManager: VDependencyManager
     private let cellFactory: VContentOnlyCellFactory
-    private var content: HeaderType.ContentType {
+    var content: HeaderType.ContentType? {
         didSet {
             unload()
         }
@@ -26,7 +26,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     
     init(dependencyManager: VDependencyManager,
          header: HeaderType? = nil,
-         content: HeaderType.ContentType,
+         content: HeaderType.ContentType?,
          streamAPIPath: String) {
         self.dependencyManager = dependencyManager
         self.header = header

@@ -18,16 +18,21 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: Variables
     
-    private let dependencyManager: VDependencyManager
-    private let collectionView = UICollectionView(frame: CGRectZero,
-                                                  collectionViewLayout: UICollectionViewFlowLayout())
+    let dependencyManager: VDependencyManager
+    let collectionView = UICollectionView(frame: CGRectZero,
+                                          collectionViewLayout: UICollectionViewFlowLayout())
+    let dataSource: GridStreamDataSource<HeaderType>
+    var content: HeaderType.ContentType? {
+        didSet {
+            dataSource.content = content
+        }
+    }
+    
     private let refreshControl = UIRefreshControl()
     
-    private let dataSource: GridStreamDataSource<HeaderType>
     private let scrollPaginator = VScrollPaginator()
     private let configuration: CollectionViewConfiguration
     
-    private var content: HeaderType.ContentType!
     private var header: HeaderType?
     
     // MARK: - Initializing
@@ -47,9 +52,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             streamAPIPath: streamAPIPath)
     }
     
-    private init(dependencyManager: VDependencyManager,
+    init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
-                 content: HeaderType.ContentType,
+                 content: HeaderType.ContentType?,
                  configuration: CollectionViewConfiguration? = nil,
                  streamAPIPath: String) {
         

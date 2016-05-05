@@ -1,0 +1,46 @@
+//
+//  VDependencyManager+VUserProfile.swift
+//  victorious
+//
+//  Created by Vincent Ho on 5/4/16.
+//  Copyright © 2016 Victorious. All rights reserved.
+//
+
+import Foundation
+
+extension VDependencyManager {
+    
+    static var userProfileViewComponentKey: String { return "userProfileView" }
+    static var userProfileHeaderComponentKey: String { return "userProfileHeader" }
+    static var userKey: String { return "user" }
+    static var userRemoteIdKey: String { return "remoteId" }
+    static var findFriendsIconKey: String { return "findFriendsIcon" }
+    static var profileEditButtonStyleKey: String { return "editButtonStyle" }
+    static var profileEditButtonStylePill: String { return "rounded" }
+    static var trophyCaseScreenKey: String { return "trophyCaseScreen" }
+    
+    func userProfileViewController(withUser user: VUser) -> UIViewController? {
+        return templateValueMatchingAnyType(
+            [VNewProfileViewController.self, VUserProfileViewController.self],
+            forKey: VDependencyManager.userProfileViewComponentKey,
+            withAddedDependencies: [VDependencyManager.userKey: user]
+        ) as? UIViewController
+    }
+    
+    func userProfileViewControllerWithRemoteID(remoteID: NSNumber) -> UIViewController? {
+        return templateValueMatchingAnyType(
+            [VNewProfileViewController.self, VUserProfileViewController.self],
+            forKey: VDependencyManager.userProfileViewComponentKey,
+            withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
+            ) as? UIViewController
+    }
+    
+    func userProfileHeaderWithUser(user: VUser) -> VUserProfileHeader? {
+        return templateValueConformingToProtocol(
+            VUserProfileHeader.self,
+            forKey: VDependencyManager.userProfileHeaderComponentKey,
+            withAddedDependencies: [VDependencyManager.userKey: user]
+        ) as? VUserProfileHeader
+    }
+    
+}

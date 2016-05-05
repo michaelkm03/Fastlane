@@ -66,7 +66,7 @@
     
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
-    self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
+    self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManager.userKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -178,8 +178,8 @@
 
 - (void)applyStyle
 {
-    NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey];
-    const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManagerProfileEditButtonStylePill];
+    NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManager.profileEditButtonStyleKey];
+    const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManager.profileEditButtonStylePill];
     [self.primaryActionButton layoutIfNeeded];
     const CGFloat roundedCornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
     self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;

@@ -167,13 +167,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
-                        content: VUser) {
+                        content: VUser?) {
         self.user = content
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: VUser) -> CGSize {
+                       content: VUser?) -> CGSize {
         setNeedsLayout()
         layoutIfNeeded()
         

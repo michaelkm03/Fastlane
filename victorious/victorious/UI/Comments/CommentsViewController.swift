@@ -263,7 +263,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.commentsUtilitiesDelegate = self
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
-                guard let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(comment.user) else {
+                guard let profileViewController = strongSelf.dependencyManager.userProfileViewController(withUser: comment.user) else {
                     return
                 }
                 strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
@@ -321,7 +321,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 guard let strongSelf = self else {
                     return
                 }
-                if let user = operation.result, let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(user) {
+                if let user = operation.result, let profileViewController = strongSelf.dependencyManager.userProfileViewController(withUser: user) {
                     strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
                 }
             }
