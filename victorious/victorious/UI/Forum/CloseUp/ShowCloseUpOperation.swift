@@ -116,7 +116,7 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     override func start() {
         
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUp")
+        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView")
             where !self.cancelled else {
             finishedExecuting()
             return

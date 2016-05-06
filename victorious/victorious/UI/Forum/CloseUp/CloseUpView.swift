@@ -21,6 +21,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var createdAtLabel: UILabel!
     @IBOutlet weak var mediaContentView: MediaContentView!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var relatedLabel: UILabel!
     
     private var videoPlayer: VVideoPlayer?
     private let placeholderImage = UIImage(named: "profile_full")
@@ -70,12 +71,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         userNameButton.titleLabel!.font = dependencyManager.usernameFont
         createdAtLabel.font = dependencyManager.timestampFont
         captionLabel.font = dependencyManager.captionFont
-        
-        
-        
-//        related.textColor = dependencyManager.usernameColor
-//        related.font = dependencyManager.relatedFont
-//        related.text = dependencyManager.relatedText
+        relatedLabel.textColor = dependencyManager.usernameColor
+        relatedLabel.font = dependencyManager.relatedFont
+        relatedLabel.text = dependencyManager.relatedText
     }
     
     func clearContent() {
@@ -151,7 +149,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         let contentHeight: CGFloat = min(screenWidth / aspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
         
         if !contentHasTitle(content) {
-            return CGSizeMake(screenWidth, CGRectGetHeight(headerSection.bounds) + contentHeight)
+            return CGSizeMake(screenWidth, CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(relatedLabel.bounds))
         }
         
         var frame = captionLabel.frame
@@ -160,7 +158,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         captionLabel.text = content.title
         captionLabel.sizeToFit()
         
-        let height = CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(captionLabel.bounds) + 2*verticalMargins
+        let height = CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(captionLabel.bounds) + 2*verticalMargins + CGRectGetHeight(relatedLabel.bounds)
         return CGSizeMake(screenWidth, height)
     }
     
