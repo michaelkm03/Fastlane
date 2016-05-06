@@ -232,6 +232,6 @@ private extension VDependencyManager {
     }
     
     var relatedText: String? {
-        return stringForKey("related")
+        return stringForKey("related_text")
     }
 }
