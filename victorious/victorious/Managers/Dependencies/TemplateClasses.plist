@@ -72,6 +72,8 @@
 	<string>victorious.MixedMediaCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
+	<key>nativeWorkspace.screen</key>
+	<string>victorious.NativeWorkspaceViewController</string>
 	<key>imageVideoGallery.screen</key>
 	<string>VAssetCollectionGridViewController</string>
 	<key>workspace</key>

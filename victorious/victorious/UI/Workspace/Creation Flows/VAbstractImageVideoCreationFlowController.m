@@ -37,6 +37,8 @@
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "victorious-Swift.h"
+
 // Sources
 static NSString * const kCreationFlowSourceLibrary = @"library";
 static NSString * const kCreationFlowSourceCamera = @"camera";
@@ -326,7 +328,16 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     {
         [self prepareWorkspaceWithMediaURL:mediaURL
                            andPreviewImage:previewImage];
-        [self pushViewController:self.workspaceViewController animated:YES];
+        if ([self.workspaceViewController isKindOfClass:[NativeWorkspaceViewController class]])
+        {
+            //The navive workspace view controller must be
+            //presented to avoid layout animation issues
+            [self presentViewController:self.workspaceViewController animated:YES completion:nil];
+        }
+        else
+        {
+            [self showViewController:self.workspaceViewController sender:nil];
+        }
     }
 }
 
@@ -337,16 +348,10 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)showAlertForBadMediaFileSelected
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:NSLocalizedString(@"GenericFailMessage", @"")
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *_Nonnull action)
-                      {
-                          [[self navigationController] popViewControllerAnimated:YES];
-                      }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self v_showAlertWithTitle:nil message:NSLocalizedString(@"GenericFailMessage", @"") completion:^
+    {
+        [[self navigationController] popViewControllerAnimated:YES];
+    }];
 }
 
 #pragma mark - UINavigationControllerDelegate

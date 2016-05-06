@@ -55,6 +55,7 @@
 #import "VBadgeImageType.h"
 #import "VBaseCollectionViewCell.h"
 #import "VBaseVideoSequencePreviewView.h"
+#import "VBaseWorkspaceViewController.h"
 #import "VButton.h"
 #import "VCameraCaptureController.h"
 #import "VCameraCoachMarkAnimator.h"

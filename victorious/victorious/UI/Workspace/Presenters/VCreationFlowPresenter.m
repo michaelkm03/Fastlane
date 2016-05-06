@@ -123,22 +123,27 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
 
 + (VWorkspaceViewController *)preferredWorkspaceForMediaType:(MediaType)mediaType fromDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *workspaceKey = nil;
+    VWorkspaceViewController *workspace = nil;
     switch (mediaType)
     {
         case MediaTypeImage:
-            workspaceKey = VDependencyManagerImageWorkspaceKey;
+            workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
             break;
             
         case MediaTypeVideo:
-            workspaceKey = VDependencyManagerVideoWorkspaceKey;
+            workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerNativeWorkspaceKey];
+            if ( workspace == nil )
+            {
+                //Fall back to video workspace
+                workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+            }
             break;
             
         default:
             break;
     }
     
-    return (VWorkspaceViewController *)[dependencyManager viewControllerForKey:workspaceKey];
+    return workspace;
 }
 
 @end

@@ -23,7 +23,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VBaseWorkspaceViewController : UIViewController <VHasManagedDependencies, VToolControllerDelegate>
+@interface VBaseWorkspaceViewController : UIViewController <VToolControllerDelegate>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
@@ -40,6 +40,8 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, assign) BOOL disablesInpectorOnKeyboardAppearance;
 @property (nonatomic, assign) BOOL adjustsCanvasViewFrameOnKeyboardAppearance;
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)callCompletionWithSuccess:(BOOL)success
                      previewImage:(UIImage *)previewImage
