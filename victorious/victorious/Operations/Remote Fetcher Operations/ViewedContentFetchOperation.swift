@@ -31,8 +31,6 @@ class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        operationStartTime = NSDate()
-        
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
