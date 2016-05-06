@@ -22,6 +22,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var mediaContentView: MediaContentView!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
+    @IBOutlet weak var closeUpContentContainerView: UIView!
     
     private var videoPlayer: VVideoPlayer?
     private let placeholderImage = UIImage(named: "profile_full")
@@ -42,6 +43,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     override func awakeFromNib() {
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2.0
+        closeUpContentContainerView.layer.cornerRadius = 6.0
         clearContent()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -120,7 +122,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             return
         }
         
-        var totalHeight = CGRectGetHeight(headerSection.bounds)
+        var totalHeight = CGRectGetHeight(headerSection.bounds) + headerSection.frame.origin.y
         
         let screenWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
         let aspectRatio = content.aspectRatio // width to height ratio
