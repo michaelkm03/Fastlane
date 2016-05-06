@@ -1,5 +1,5 @@
 //
-//  ViewedContentFetchOperation.swift
+//  StageContentFetchOperation.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 25/4/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
+class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
     internal let request: ViewedContentFetchRequest!
     
@@ -25,7 +25,7 @@ class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         guard let request = ViewedContentFetchRequest(macroURLString: macroURLString,
                                                     currentUserID: currentUserID,
                                                     contentID: refreshStageEvent.contentID) else {
-                                                        v_log("Failed to create ViewedContentFetchOperation since request failed to initialize. Using macro URL string -> \(macroURLString)")
+                                                        v_log("Failed to create StageContentFetchOperation since request failed to initialize. Using macro URL string -> \(macroURLString)")
                                                         return nil
         }
         
