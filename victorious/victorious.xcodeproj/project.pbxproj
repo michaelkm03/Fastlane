@@ -499,7 +499,7 @@
 		0E8EB2CB1CCF0B570087D815 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2CA1CCF0B570087D815 /* Content.swift */; };
 		0E8EB2CF1CCF0B960087D815 /* ViewedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2CE1CCF0B960087D815 /* ViewedContent.swift */; };
 		0E8EB2D11CCF0BCB0087D815 /* ViewedContentFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2D01CCF0BCB0087D815 /* ViewedContentFetchRequest.swift */; };
-		0E8EB2D31CCF0C130087D815 /* ViewedContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2D21CCF0C130087D815 /* ViewedContentFetchOperation.swift */; };
+		0E8EB2D31CCF0C130087D815 /* StageContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */; };
 		0E8F131A1CA4CB92004AF0B0 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F13191CA4CB92004AF0B0 /* WebSocketEvent.swift */; };
 		0E8F131B1CA4DC6B004AF0B0 /* WebSocketControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168E1C99010F0005CF86 /* WebSocketControllerTests.swift */; };
 		0E96809F1CD03E130094ADF4 /* Stage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E96809E1CD03E130094ADF4 /* Stage.storyboard */; };
@@ -1677,6 +1677,7 @@
 		BF8237EA1C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */; };
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
+		BFA4C9081CDD4AD500E496FD /* ViewedContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA4C9071CDD4AD500E496FD /* ViewedContentFetchOperation.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
 		BFBDFB3E1CBEB9CA00BE077A /* StartLoadingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */; };
 		BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */; };
@@ -2848,7 +2849,7 @@
 		0E8EB2CA1CCF0B570087D815 /* Content.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		0E8EB2CE1CCF0B960087D815 /* ViewedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContent.swift; sourceTree = "<group>"; };
 		0E8EB2D01CCF0BCB0087D815 /* ViewedContentFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFetchRequest.swift; sourceTree = "<group>"; };
-		0E8EB2D21CCF0C130087D815 /* ViewedContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFetchOperation.swift; sourceTree = "<group>"; };
+		0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContentFetchOperation.swift; sourceTree = "<group>"; };
 		0E8F13191CA4CB92004AF0B0 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E96809E1CD03E130094ADF4 /* Stage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Stage.storyboard; sourceTree = "<group>"; };
 		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
@@ -3590,7 +3591,6 @@
 		A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D61C977FF500E97D4F /* ChatFeedModelAdapters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedModelAdapters.swift; sourceTree = "<group>"; };
 		A72C85D71C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendRemoteOperation.swift; sourceTree = "<group>"; };
@@ -4352,6 +4352,7 @@
 		BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCancellableView.xib; sourceTree = "<group>"; };
 		BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
+		BFA4C9071CDD4AD500E496FD /* ViewedContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFetchOperation.swift; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
 		BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartLoadingOperation.swift; sourceTree = "<group>"; };
 		BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerOperationTests.swift; sourceTree = "<group>"; };
@@ -7894,7 +7895,6 @@
 			isa = PBXGroup;
 			children = (
 				A72C85CD1C977FF500E97D4F /* BlockUserRemoteOperation.swift */,
-				A72C85D61C977FF500E97D4F /* ChatFeedModelAdapters.swift */,
 				A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */,
 				A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */,
 				A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */,
@@ -7917,11 +7917,12 @@
 				A72C85E11C977FF500E97D4F /* SequenceRepostersRemoteOperation.swift */,
 				A72C85E21C977FF500E97D4F /* SequenceRepostRemoteOperation.swift */,
 				A72C85E31C977FF500E97D4F /* SequenceUnlikeRemoteOperation.swift */,
+				0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */,
 				A72C85E41C977FF500E97D4F /* StreamRemoteOperation.swift */,
 				A72C85E51C977FF500E97D4F /* UnfollowUsersRemoteOperation.swift */,
 				A72C85E61C977FF500E97D4F /* UsersFollowedByUserRemoteOperation.swift */,
 				A72C85E71C977FF500E97D4F /* UsersFollowingUserRemoteOperation.swift */,
-				0E8EB2D21CCF0C130087D815 /* ViewedContentFetchOperation.swift */,
+				BFA4C9071CDD4AD500E496FD /* ViewedContentFetchOperation.swift */,
 			);
 			path = "Remote Fetcher Operations";
 			sourceTree = "<group>";
@@ -12335,13 +12336,14 @@
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
+				BFA4C9081CDD4AD500E496FD /* ViewedContentFetchOperation.swift in Sources */,
 				A72C86241C977FF500E97D4F /* PasswordResetOperation.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowSource.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,
-				0E8EB2D31CCF0C130087D815 /* ViewedContentFetchOperation.swift in Sources */,
+				0E8EB2D31CCF0C130087D815 /* StageContentFetchOperation.swift in Sources */,
 				A79342F01C9CDD0200C855BE /* VGradientBackground.swift in Sources */,
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
 				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
