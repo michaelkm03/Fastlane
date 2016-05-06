@@ -204,11 +204,11 @@ private extension VDependencyManager {
     }
     
     var timestampColor: UIColor? {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+        return colorForKey("color.text.secondary")
     }
     
     var captionColor: UIColor? {
-        return colorForKey(VDependencyManagerContentTextColorKey)
+        return colorForKey("color.text.content")
     }
     
     var relatedColor: UIColor? {
@@ -216,19 +216,19 @@ private extension VDependencyManager {
     }
     
     var usernameFont: UIFont? {
-        return fontForKey(VDependencyManagerHeaderFontKey)
+        return fontForKey("font.header")
     }
     
     var timestampFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return fontForKey("font.secondary")
     }
     
     var captionFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading2FontKey)
+        return fontForKey("font.content")
     }
     
     var relatedFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return fontForKey("font.subcontent")
     }
     
     var relatedText: String? {
