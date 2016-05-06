@@ -16,7 +16,6 @@
 #import "VDependencyManager+NavigationBar.h"
 #import "VStreamCollectionViewController.h"
 #import "VDirectoryCollectionFlowLayout.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
@@ -227,7 +226,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

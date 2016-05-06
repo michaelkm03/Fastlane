@@ -9,13 +9,25 @@
 import Foundation
 
 /// The collection header view used for `VNewProfileViewController`.
-class VNewProfileHeaderView: UICollectionReusableView {
+class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
     // MARK: - Constants
     
     private static let shadowRadius: CGFloat = 2.0
     private static let shadowOpacity: Float = 0.5
     
     // MARK: - Initializing
+    
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
+        guard let view = NSBundle.mainBundle().loadNibNamed(
+                "VNewProfileHeaderView",
+                owner: self,
+                options: nil
+            ).first as? VNewProfileHeaderView else {
+                fatalError("Could not load a VNewProfileHeaderView.")
+        }
+        view.dependencyManager = dependencyManager
+        return view
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -149,6 +161,31 @@ class VNewProfileHeaderView: UICollectionReusableView {
             shadowBounds = newShadowBounds
             profilePictureShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
+    }
+    
+    // MARK: - Configurable Header
+    
+    func decorateHeader(dependencyManager: VDependencyManager,
+                        maxHeight: CGFloat,
+                        content: VUser?) {
+        self.user = content
+    }
+    
+    func sizeForHeader(dependencyManager: VDependencyManager,
+                       maxHeight: CGFloat,
+                       content: VUser?) -> CGSize {
+        self.user = content
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
+        let width = CGRectGetWidth(UIScreen.mainScreen().bounds)
+        let widthConstraint = v_addWidthConstraint(width)
+        let height = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        
+        removeConstraint(widthConstraint)
+        
+        return CGSizeMake(width, height)
     }
 }
 

@@ -17,7 +17,6 @@
 #import "VUserProfileViewController.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
@@ -225,7 +224,7 @@
     
     if ( [self navigationHistoryContainsUserProfileForUser:message.sender] )
     {
-        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:message.sender];
+        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:message.sender];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
 }

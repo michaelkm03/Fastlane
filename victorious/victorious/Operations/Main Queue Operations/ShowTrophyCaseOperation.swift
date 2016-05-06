@@ -39,7 +39,7 @@ class ShowTrophyCaseOperation: MainQueueOperation {
 
 extension VDependencyManager {
     func trophyCaseViewController() -> TrophyCaseViewController? {
-        guard let trophyCaseViewController = templateValueOfType(TrophyCaseViewController.self, forKey: VDependencyManagerTrophyCaseScreenKey) as? TrophyCaseViewController else {
+        guard let trophyCaseViewController = templateValueOfType(TrophyCaseViewController.self, forKey: VDependencyManager.trophyCaseScreenKey) as? TrophyCaseViewController else {
             return nil
         }
         return trophyCaseViewController

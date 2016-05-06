@@ -27,7 +27,6 @@
 #import "VContentPollQuestionCell.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VEditCommentViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VExperienceEnhancer.h"
@@ -648,7 +647,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     commentCell.onUserProfileTapped = ^(void)
     {
-        UIViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
+        UIViewController *profileViewController = [welf.dependencyManager userProfileViewControllerFor:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -658,7 +657,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
+        UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteID:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else

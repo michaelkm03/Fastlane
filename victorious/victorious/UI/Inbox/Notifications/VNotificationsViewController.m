@@ -346,7 +346,7 @@ static CGFloat const kNotificationAddedVerticalInset = 5.0f;
     }
     
     VNotification *notification = [self.dataSource.visibleItems objectAtIndex:indexPath.row];
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:notification.user];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:notification.user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

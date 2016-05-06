@@ -21,7 +21,6 @@
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
 #import "VBarButton.h"
@@ -76,8 +75,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [viewController addLoginStatusChangeObserver];
     [viewController updateAccessoryItems];
     
-    VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
-    NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
+    VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManager.userKey];
+    NSNumber *userRemoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManager.userRemoteIdKey];
     
     if ( user != nil )
     {
@@ -131,7 +130,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.profileHeaderViewController == nil )
     {
-        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+        self.profileHeaderViewController = (UIViewController<VUserProfileHeader> *)[self.dependencyManager userProfileHeaderWithUserFor:self.user];
         if ( self.profileHeaderViewController != nil )
         {
             self.profileHeaderViewController.delegate = self;

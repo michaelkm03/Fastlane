@@ -10,7 +10,6 @@
 #import "VUserProfileViewController.h"
 #import "VDependencyManager.h"
 #import "NSURL+VPathHelper.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "victorious-Swift.h"
 
 static NSString * const kProfileDeeplinkHostComponent = @"profile";
@@ -62,7 +61,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     }
     
     NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
-    UIViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteId:@(userID)];
+    UIViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteID:@(userID)];
     completion( YES, profileVC );
 }
 

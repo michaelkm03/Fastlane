@@ -9,7 +9,7 @@
 import UIKit
 
 struct CollectionViewConfiguration {
-    var sectionInset: UIEdgeInsets = UIEdgeInsetsZero
+    var sectionInset: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
     var interItemSpacing: CGFloat = 3
     var cellsPerRow: Int = 3
 }
@@ -18,16 +18,21 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: Variables
     
-    private let dependencyManager: VDependencyManager
-    private let collectionView = UICollectionView(frame: CGRectZero,
-                                                  collectionViewLayout: UICollectionViewFlowLayout())
+    let dependencyManager: VDependencyManager
+    let collectionView = UICollectionView(frame: CGRectZero,
+                                          collectionViewLayout: UICollectionViewFlowLayout())
+    let dataSource: GridStreamDataSource<HeaderType>
+    var content: HeaderType.ContentType? {
+        didSet {
+            dataSource.content = content
+        }
+    }
+    
     private let refreshControl = UIRefreshControl()
     
-    private let dataSource: GridStreamDataSource<HeaderType>
     private let scrollPaginator = VScrollPaginator()
     private let configuration: CollectionViewConfiguration
     
-    private var content: HeaderType.ContentType!
     private var header: HeaderType?
     
     // MARK: - Initializing
@@ -47,9 +52,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             streamAPIPath: streamAPIPath)
     }
     
-    private init(dependencyManager: VDependencyManager,
+    init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
-                 content: HeaderType.ContentType,
+                 content: HeaderType.ContentType?,
                  configuration: CollectionViewConfiguration? = nil,
                  streamAPIPath: String) {
         
@@ -73,7 +78,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
         collectionView.alwaysBounceVertical = true
         
         collectionView.registerNib(

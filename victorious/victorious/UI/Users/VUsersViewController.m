@@ -10,7 +10,6 @@
 #import "UIView+AutoLayout.h"
 #import "VUserCell.h"
 #import "VUserProfileViewController.h"
-#import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
@@ -153,7 +152,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *selectedUser = self.usersDataSource.users[ indexPath.row ];
-    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:selectedUser];
+    UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:selectedUser];
     NSAssert( self.navigationController != nil, @"View controller must be in a navigation controller." );
     [self.navigationController pushViewController:profileViewController animated:YES];
 }

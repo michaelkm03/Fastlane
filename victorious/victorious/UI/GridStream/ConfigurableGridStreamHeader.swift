@@ -14,8 +14,8 @@ protocol ConfigurableGridStreamHeader {
     associatedtype ContentType
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
-                        content: ContentType)
+                        content: ContentType?)
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: ContentType) -> CGSize
+                       content: ContentType?) -> CGSize
 }
