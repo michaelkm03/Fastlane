@@ -15,8 +15,6 @@
 #import "VNotification.h"
 #import "VPollResult.h"
 #import "VSequence.h"
-#import "VUser.h"
-
 
 @implementation VUser
 
@@ -36,7 +34,7 @@
 @dynamic likesReceived;
 @dynamic pictureUrl;
 @dynamic remoteId;
-@dynamic status;
+@dynamic completedProfile;
 @dynamic tagline;
 @dynamic token;
 @dynamic tokenUpdatedAt;

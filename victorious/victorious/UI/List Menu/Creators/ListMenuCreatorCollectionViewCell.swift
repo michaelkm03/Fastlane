@@ -42,10 +42,9 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     func configureCell(with user: VUser) {
         creatorNameLabel.text = user.name
         
-        guard let profileImageURL = NSURL(string: user.pictureUrl) else {
-            return
-        }
-        profileImageView.sd_setImageWithURL(profileImageURL)
+        let placeholderImage = UIImage(named: "profile_full")
+        let imageURL = NSURL(v_string: user.pictureUrl ?? "")
+        profileImageView.sd_setImageWithURL(imageURL, placeholderImage: placeholderImage)
     }
     
     // MARK: - Private methods

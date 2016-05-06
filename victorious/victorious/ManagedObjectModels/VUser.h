@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSNumber * likesReceived;
 @property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSNumber * completedProfile;
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
