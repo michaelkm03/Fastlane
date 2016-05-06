@@ -20,6 +20,12 @@
 @property (nonatomic, weak) VAbstractImageVideoCreationFlowController *creationFlowController;
 
 /**
+ *  Describes whether or not this workspace will read and utilize editing tools
+ *  from the "tools" array if it's provided in the template. Defaults to YES.
+ */
+@property (nonatomic, readonly) BOOL supportsTools;
+
+/**
  Publishes the current content in the workspace.
  */
 - (void)publishContent;

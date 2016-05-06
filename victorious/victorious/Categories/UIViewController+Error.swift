@@ -11,16 +11,16 @@ import MBProgressHUD
 
 extension UIViewController {
     
-    var defaultTitle: String {
+    var v_defaultErrorTitle: String {
         return NSLocalizedString("WereSorry", comment:"" )
     }
     
-    var defaultMessage: String {
+    var v_defaultErrorMessage: String {
         return NSLocalizedString("ErrorOccured", comment:"")
     }
     
     func v_showErrorDefaultError() {
-        v_showErrorWithTitle( defaultTitle, message: defaultMessage )
+        v_showErrorWithTitle( v_defaultErrorTitle, message: v_defaultErrorMessage )
     }
     
     func v_showErrorWithTitle(title: String?, message: String?) {

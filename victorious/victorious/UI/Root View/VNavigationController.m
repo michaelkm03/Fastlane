@@ -103,20 +103,23 @@ static const CGFloat kStatusBarHeight = 20.0f;
     [self.dependencyManager applyStyleToNavigationBar:self.innerNavigationController.navigationBar];
     [self.innerNavigationController didMoveToParentViewController:self];
 
-    UIView *statusBarBackgroundView = [[UIView alloc] init];
-    statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    statusBarBackgroundView.userInteractionEnabled = NO;
-    statusBarBackgroundView.backgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
-    [self.view addSubview:statusBarBackgroundView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[statusBarBackgroundView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[statusBarBackgroundView(==kStatusBarHeight)]"
-                                                                      options:0
-                                                                      metrics:@{ @"kStatusBarHeight": @(kStatusBarHeight) }
-                                                                        views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
-    self.statusBarBackgroundView = statusBarBackgroundView;
+    if (!self.dependencyManager.festivalIsEnabled)
+    {
+        UIView *statusBarBackgroundView = [[UIView alloc] init];
+        statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+        statusBarBackgroundView.userInteractionEnabled = NO;
+        statusBarBackgroundView.backgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+        [self.view addSubview:statusBarBackgroundView];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[statusBarBackgroundView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[statusBarBackgroundView(==kStatusBarHeight)]"
+                                                                          options:0
+                                                                          metrics:@{ @"kStatusBarHeight": @(kStatusBarHeight) }
+                                                                            views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
+        self.statusBarBackgroundView = statusBarBackgroundView;
+    }
 }
 
 - (void)viewDidLoad
@@ -128,9 +131,11 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)viewDidLayoutSubviews
 {
-    if ( !UIApplication.sharedApplication.statusBarHidden &&
-         CGAffineTransformIsIdentity(self.innerNavigationController.navigationBar.transform) &&
-         CGRectGetMinY(self.innerNavigationController.navigationBar.frame) < CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]) )
+    if (
+        !self.dependencyManager.festivalIsEnabled &&
+        !UIApplication.sharedApplication.statusBarHidden &&
+        CGAffineTransformIsIdentity(self.innerNavigationController.navigationBar.transform) &&
+        CGRectGetMinY(self.innerNavigationController.navigationBar.frame) < CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]))
     {
         CGRect frame = self.innerNavigationController.navigationBar.frame;
         frame.origin.y = CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]);

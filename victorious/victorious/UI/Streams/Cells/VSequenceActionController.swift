@@ -134,7 +134,9 @@ import Foundation
             }
             let didBlockUser = user.isBlockedByMainUser.boolValue
             if didBlockUser {
-                self.originViewController.v_showBlockedUserAlert(completion: completion)
+                self.originViewController.v_showBlockedUserAlert() {
+                    completion?(true)
+                }
             }
         }
     }

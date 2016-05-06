@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "UIColor+VBrightness.h"
 #import "UIImage+VSolidColor.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "victorious-Swift.h"
@@ -27,7 +28,15 @@ NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarA
 - (void)applyStyleToNavigationBar:(UINavigationBar *)navigationBar
 {
     VDependencyManager *dependenciesForNavigationBar = [self dependencyManagerForNavigationBar];
-    [navigationBar setBackgroundImage:[UIImage v_imageWithColor:[dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey]]
+    
+    // We bake the alpha into the RGB values because we don't properly support transparent navigation bars right now.
+    UIColor *baseBackgroundColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey];
+    CGFloat alpha = 0.0;
+    [baseBackgroundColor getRed:nil green:nil blue:nil alpha:&alpha];
+    
+    UIColor *backgroundColor = [[baseBackgroundColor v_colorDarkenedBy:1.0 - alpha] colorWithAlphaComponent:1.0];
+    
+    [navigationBar setBackgroundImage:[UIImage v_imageWithColor:backgroundColor]
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
 

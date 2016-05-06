@@ -9,7 +9,7 @@
 import Foundation
 
 /// Displays a flow starting with a library from which the user can select either a photo or a video
-class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
+class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, MixedMediaCreationFlow {
     
     private struct Constants {
         static let imageVideoLibraryKey = "imageVideoLibrary"
@@ -42,19 +42,7 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
     
     override func configurePublishParameters(publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
         
-        if let videoToolController = workspace.toolController as? VVideoToolController {
-            publishParameters.didTrim = videoToolController.didTrim
-            publishParameters.isGIF = false
-            publishParameters.isVideo = true
-        } else if let imageToolController = workspace.toolController as? VImageToolController {
-            publishParameters.embeddedText = imageToolController.embeddedText
-            publishParameters.textToolType = imageToolController.textToolType
-            publishParameters.filterName = imageToolController.filterName
-            publishParameters.didCrop = imageToolController.didCrop
-            publishParameters.isVideo = false
-        } else {
-            assertionFailure("Library creation flow controller encountered an unexpected tool controller")
-        }
+        updatePublishParameters(publishParameters, workspace: workspace)
     }
     
     override func downloaderWithAsset(asset: PHAsset) -> VAssetDownloader? {
