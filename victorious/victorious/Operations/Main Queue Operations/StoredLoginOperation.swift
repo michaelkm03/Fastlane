@@ -31,9 +31,6 @@ class StoredLoginOperation: BackgroundOperation {
                 let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
                 user.loginType = info.lastLoginType.rawValue
                 user.token = info.token
-                if user.status == nil {
-                    user.status = "stored"
-                }
                 context.v_save()
                 return user
             }

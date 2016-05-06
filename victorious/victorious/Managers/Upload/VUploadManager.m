@@ -715,7 +715,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     VUser *user = (VUser *)[[persistentStore mainContext] v_createObjectAndSaveWithEntityName:@"User" configurations:^(NSManagedObject *_Nonnull object) {
         VUser *user = (VUser *)object;
         user.remoteId = @123;
-        user.status = @"stored";
         user.token = @"abcd";
     }];
     [user setAsCurrentUser];

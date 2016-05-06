@@ -294,6 +294,7 @@
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="achievementsUnlocked" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBlockedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -314,7 +315,6 @@
         <attribute name="numberOfFollowing" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <attribute name="status" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>

@@ -17,7 +17,6 @@ struct PersistentStoreTestHelper {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { user in
                 user.remoteId = remoteId
-                user.status = "stored"
                 user.token = token
             }
         }

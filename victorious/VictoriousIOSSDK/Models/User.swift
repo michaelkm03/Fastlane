@@ -6,15 +6,6 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
-/// The status of a user's profile information
-public enum ProfileStatus: String {
-    /// We have enough information about this user
-    case Complete = "complete"
-    
-    /// We're missing something required in this user's profile
-    case Incomplete = "incomplete"
-}
-
 /// A struct representing a user's information
 public struct User {
     
@@ -32,15 +23,34 @@ public struct User {
         }
     }
     
+    public enum AccessLevel {
+        case owner, user
+        
+        public init?(json: JSON) {
+            switch json.stringValue {
+                case "API_OWNER": self = .owner
+                case "API_USER": self = .user
+                default: return nil
+            }
+        }
+        
+        public var isCreator: Bool {
+            switch self {
+                case .owner: return true
+                case .user: return false
+            }
+        }
+    }
+    
     public let userID: Int
     public let email: String?
     public let name: String?
-    public let status: ProfileStatus?
+    public let completedProfile: Bool?
     public let location: String?
     public let tagline: String?
     public let fanLoyalty: FanLoyalty?
     public let isBlockedByMainUser: Bool?
-    public let isCreator: Bool?
+    public let accessLevel: AccessLevel?
     public let isDirectMessagingDisabled: Bool?
     public let isFollowedByMainUser: Bool?
     public let numberOfFollowers: Int?
@@ -57,35 +67,32 @@ public struct User {
 
 extension User {
     public init?(json: JSON) {
-        
         // Check for "id" as either a string or a number, because the back-end is inconsistent.
-        guard let userID = Int(json["id"].stringValue) ?? json["id"].int,
-            let statusString = json["status"].string,
-            let status = ProfileStatus(rawValue: statusString) else {
-                return nil
+        guard let userID = Int(json["id"].stringValue) ?? json["id"].int else {
+            return nil
         }
-        self.userID = userID
-        self.status = status
         
-        avatar                      = Avatar(json: json["avatar"])
-        email                       = json["email"].string
-        name                        = json["name"].string
-        location                    = json["profile_location"].string
-        tagline                     = json["profile_tagline"].string
-        fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByMainUser         = json["is_blocked"].bool
-        vipStatus                   = VIPStatus(json: json["vip"])
-        isCreator                   = json["isCreator"].bool
-        isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
-        isFollowedByMainUser        = json["am_following"].bool
-        numberOfFollowers           = Int(json["number_of_followers"].stringValue)
-        numberOfFollowing           = Int(json["number_of_following"].stringValue)
-        likesGiven                  = json["engagements"]["likes_given"].int
-        likesReceived               = json["engagements"]["likes_received"].int
-        profileImageURL             = json["profile_image"].string
-        maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
-        tokenUpdatedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
-    
+        self.userID               = userID
+        avatar                    = Avatar(json: json["avatar"])
+        email                     = json["email"].string
+        name                      = json["name"].string
+        completedProfile          = json["is_complete"].boolValue || json["status"].string == "complete"
+        location                  = json["profile_location"].string
+        tagline                   = json["profile_tagline"].string
+        fanLoyalty                = FanLoyalty(json: json["fanloyalty"])
+        isBlockedByMainUser       = json["is_blocked"].bool
+        vipStatus                 = VIPStatus(json: json["vip"])
+        accessLevel               = AccessLevel(json: json["access_level"])
+        isDirectMessagingDisabled = json["is_direct_message_disabled"].bool
+        isFollowedByMainUser      = json["am_following"].bool
+        numberOfFollowers         = Int(json["number_of_followers"].stringValue)
+        numberOfFollowing         = Int(json["number_of_following"].stringValue)
+        likesGiven                = json["engagements"]["likes_given"].int
+        likesReceived             = json["engagements"]["likes_received"].int
+        profileImageURL           = json["profile_image"].string
+        maxVideoUploadDuration    = Int(json["max_video_duration"].stringValue)
+        tokenUpdatedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
+        
         if let previewImageAssets = json["preview"]["assets"].array {
             self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }
         } else {

@@ -25,6 +25,7 @@ class FanLoyaltyTests: XCTestCase {
         XCTAssertEqual(fanLoyalty.points, Int(2764))
         XCTAssertEqual(fanLoyalty.level, 7)
         XCTAssertEqual(fanLoyalty.progress, 24)
+        XCTAssertEqual(fanLoyalty.tier, "Cool Dude")
         XCTAssertEqual(fanLoyalty.achievementsUnlocked?.count, 5)
         XCTAssertEqual(fanLoyalty.achievementsUnlocked?.first, "receive_like_10")
         XCTAssertEqual(fanLoyalty.achievementsUnlocked?.last, "any_post_1")

@@ -32,11 +32,6 @@ class AnonymousLoginOperation: BackgroundOperation {
             user.loginType = anonymousLoginType.rawValue
             user.token = anonymousToken
             user.isVIPSubscriber = false
-            
-            if user.status == nil {
-                user.status = "anonymous"
-            }
-            
             user.setAsCurrentUser()
             context.v_save()
             self.finishedExecuting()

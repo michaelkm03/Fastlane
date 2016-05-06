@@ -12,8 +12,8 @@ import VictoriousIOSSDK
 extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
-        remoteId                    = user.userID ?? user.userID
-        status                      = user.status?.rawValue ?? status
+        remoteId                    = user.userID ?? remoteId
+        completedProfile            = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
         name                        = user.name ?? name
         location                    = user.location ?? location
@@ -21,7 +21,7 @@ extension VUser: PersistenceParsable {
         isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         vipSubscribeDate            = user.vipStatus?.subscribeDate ?? vipSubscribeDate
-        isCreator                   = user.isCreator ?? isCreator
+        isCreator                   = user.accessLevel?.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
         pictureUrl                  = user.profileImageURL ?? pictureUrl

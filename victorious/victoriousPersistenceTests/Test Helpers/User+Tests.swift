@@ -15,12 +15,12 @@ extension User {
         self.userID = userID
         self.email = nil
         self.name = nil
-        self.status = ProfileStatus.Complete
+        self.completedProfile = nil
         self.location = nil
         self.tagline = nil
         self.fanLoyalty = nil
         self.isBlockedByMainUser = nil
-        self.isCreator = nil
+        self.accessLevel = nil
         self.isDirectMessagingDisabled = nil
         self.isFollowedByMainUser = nil
         self.numberOfFollowers = nil
