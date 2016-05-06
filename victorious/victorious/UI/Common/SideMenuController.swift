@@ -77,7 +77,7 @@ class SideMenuController: UIViewController {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return centerViewXOffset != 0.0 || panRecognizer.state == .Changed || centerViewController?.prefersStatusBarHidden() == true
+        return centerViewXOffset != 0.0 || panState?.hasShownSideMenu == true || centerViewController?.prefersStatusBarHidden() == true
     }
     
     override func childViewControllerForStatusBarStyle() -> UIViewController? {
@@ -314,8 +314,8 @@ class SideMenuController: UIViewController {
     private let panRecognizer = UIPanGestureRecognizer()
     private let tapRecognizer = UITapGestureRecognizer()
     
-    /// The value of `centerViewXOffset` when a pan was first recognized.
-    private var initialPanningCenterViewXOffset: CGFloat = 0.0
+    /// The state of the current pan gesture. Will be nil if a pan gesture is not being performed.
+    private var panState: SideMenuControllerPanState?
     
     /// Whether or not the panning gesture to open or close side view controllers is enabled.
     var panningIsEnabled: Bool {
@@ -341,7 +341,10 @@ class SideMenuController: UIViewController {
     }
     
     private func beginPan() {
-        initialPanningCenterViewXOffset = centerViewXOffset
+        panState = SideMenuControllerPanState(
+            initialCenterViewXOffset: centerViewXOffset,
+            hasShownSideMenu: false
+        )
     }
     
     private func updatePan() {
@@ -351,6 +354,7 @@ class SideMenuController: UIViewController {
         if let visibleEdge = visibleEdge, let visibleSideViewController = sideViewController(on: visibleEdge) where !viewControllerIsActive(on: visibleEdge) {
             beginAdding(visibleSideViewController, toSuperview: containerView(on: visibleEdge), animated: false)
             endAdding(visibleSideViewController)
+            panState?.hasShownSideMenu = true
         }
         
         slideCenterViewToCurrentOffset(animated: false)
@@ -370,13 +374,14 @@ class SideMenuController: UIViewController {
             endRemoving(rightViewController)
         }
         
-        let translation = abs(centerViewXOffset - initialPanningCenterViewXOffset)
+        let translation = abs(centerViewXOffset - (panState?.initialCenterViewXOffset ?? 0.0))
         
         // Reset panning state.
         panXOffset = 0.0
-        initialPanningCenterViewXOffset = 0.0
+        panState = nil
         
         triggerPanActionIfNeeded(with: translation, from: visibleEdge)
+        animateStatusBarUpdate()
     }
     
     private func triggerPanActionIfNeeded(with translation: CGFloat, from visibleEdge: SideMenuControllerEdge?) {
@@ -525,4 +530,12 @@ class SideMenuController: UIViewController {
             height: rightContainerView.bounds.height
         )
     }
+}
+
+private struct SideMenuControllerPanState {
+    /// The value of `centerViewXOffset` when a pan was first recognized.
+    var initialCenterViewXOffset: CGFloat
+    
+    /// Whether a side menu has become visible during this pan yet or not.
+    var hasShownSideMenu: Bool
 }
