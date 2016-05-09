@@ -8,14 +8,9 @@
 
 import Foundation
 
-@objc enum VTestPurchaseConfirmationType: Int {
-    case Subscription
-    case Product
-}
-
 class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirmationOperation {
     
-    private let type: VTestPurchaseConfirmationType
+    private let type: VPurchaseType
     private let title: String?
     private let price: String?
     
@@ -23,7 +18,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
     
     var didConfirmAction: Bool = false
     
-    init(type: VTestPurchaseConfirmationType, title: String?, price: String?) {
+    init(type: VPurchaseType, title: String?, price: String?) {
         self.type = type
         self.price = price
         self.title = title
@@ -74,7 +69,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
     }
 }
 
-private extension VTestPurchaseConfirmationType {
+private extension VPurchaseType {
     
     var confirmTitle: String {
         switch self {

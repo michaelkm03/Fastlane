@@ -8,10 +8,11 @@
 
 import UIKit
 
-struct CollectionViewConfiguration {
-    var sectionInset: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
-    var interItemSpacing: CGFloat = 3
-    var cellsPerRow: Int = 3
+struct GridStreamConfiguration {
+    var sectionInset = UIEdgeInsetsMake(3, 0, 3, 0)
+    var interItemSpacing = CGFloat(3)
+    var cellsPerRow = 3
+    var allowsForRefresh = true
 }
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
@@ -31,7 +32,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private let refreshControl = UIRefreshControl()
     
     private let scrollPaginator = VScrollPaginator()
-    private let configuration: CollectionViewConfiguration
+    private let configuration: GridStreamConfiguration
     
     private var header: HeaderType?
     
@@ -41,7 +42,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
         content: HeaderType.ContentType,
-        configuration: CollectionViewConfiguration? = nil,
+        configuration: GridStreamConfiguration? = nil,
         streamAPIPath: String) -> GridStreamViewController {
         
         return GridStreamViewController(
@@ -55,13 +56,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType?,
-                 configuration: CollectionViewConfiguration? = nil,
+                 configuration: GridStreamConfiguration? = nil,
                  streamAPIPath: String) {
         
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
-        self.configuration = configuration ?? CollectionViewConfiguration()
+        self.configuration = configuration ?? GridStreamConfiguration()
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
@@ -104,13 +105,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             flowLayout.minimumLineSpacing = self.configuration.interItemSpacing
         }
         
-        refreshControl.tintColor = dependencyManager.refreshControlColor
-        refreshControl.addTarget(
-            self,
-            action: #selector(GridStreamViewController.refresh),
-            forControlEvents: .ValueChanged)
-            collectionView.insertSubview(refreshControl, atIndex: 0
-        )
+        if self.configuration.allowsForRefresh {
+            refreshControl.tintColor = dependencyManager.refreshControlColor
+            refreshControl.addTarget(
+                self,
+                action: #selector(GridStreamViewController.refresh),
+                forControlEvents: .ValueChanged
+            )
+            collectionView.insertSubview(refreshControl, atIndex: 0)
+        }
         
         dataSource.loadStreamItems(.First)
     }

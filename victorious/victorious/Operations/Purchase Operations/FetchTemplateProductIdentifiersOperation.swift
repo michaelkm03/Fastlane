@@ -21,25 +21,23 @@ class FetchTemplateProductIdentifiersOperation: BackgroundOperation {
         super.start()
         beganExecuting()
         
+        var productIdentifiersSet = Set<String>()
         let voteTypeProductIdentifiers = productsDataSource.productIdentifiersForVoteTypes.filter { !$0.characters.isEmpty }
-        
-        let subscriptionProductIdentiers: [String]
-        if let vipSubscriptionProductIdentifier = productsDataSource.vipSubscriptionProductIdentifier {
-            subscriptionProductIdentiers = [vipSubscriptionProductIdentifier]
-        } else {
-            subscriptionProductIdentiers = []
+        for productIdentifier in voteTypeProductIdentifiers {
+            productIdentifiersSet.insert(productIdentifier)
         }
-        
-        let allProductIdentifiers = voteTypeProductIdentifiers + subscriptionProductIdentiers
-        guard allProductIdentifiers.count > 0 else {
+        if let vipSubscriptionProductIdentifier = productsDataSource.vipSubscription?.productIdentifier {
+            productIdentifiersSet.insert(vipSubscriptionProductIdentifier)
+        }
+        guard !productIdentifiersSet.isEmpty else {
             return
         }
-        purchaseManager.fetchProductsWithIdentifiers(Set<NSObject>(arrayLiteral: allProductIdentifiers),
+        
+        purchaseManager.fetchProductsWithIdentifiers(productIdentifiersSet,
             success: { results in
                 self.finishedExecuting()
             },
             failure: { error in
-                v_log("\(self.dynamicType) FAILURE: Could not fetch products with identifiers \(allProductIdentifiers)")
                 self.error = error
                 self.finishedExecuting()
             }

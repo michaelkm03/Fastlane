@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 @interface VPurchaseCell : UITableViewCell
 
-- (void)setProductImage:(UIImage *)image withTitle:(NSString *)title;
+@property (weak, nonatomic) VDependencyManager *dependencyManager;
+
++ (void)registerNibWithTableView:(UITableView *)tableView;
+
+- (void)setProductImage:(UIImage *)image title:(NSString *)title;
+
+- (void)setSubscriptionImage:(UIImage *)image title:(NSString *)title localizedPrice:(NSString *)localizedPrice expirationDate:(NSDate *)expirationDate;
+
+- (CGSize)cellSizeWithinBounds:(CGRect)bounds;
 
 @end

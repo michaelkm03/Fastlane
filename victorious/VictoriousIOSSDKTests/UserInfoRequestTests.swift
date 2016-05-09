@@ -11,12 +11,17 @@ import XCTest
 
 class UserInfoRequestTests: XCTestCase {
     
-    func testConfiguredRequest() {
-        let id: Int = 3694
-        let request =  UserInfoRequest(userID: id )
-        XCTAssertEqual( request.urlRequest.URL, NSURL(string: "/api/userinfo/fetch/\(id)") )
-        XCTAssertEqual( request.userID, id )
-        XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
+    func testRequestConfigurationWithoutAPIPath() {
+        let id = 3694
+        let request = UserInfoRequest(userID: id)
+        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/userinfo/fetch/\(id)"))
+        XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
+    }
+    
+    func testRequestConfigurationWithAPIPath() {
+        let id = 9090
+        let request = UserInfoRequest(userID: id, apiPath: "http://api.getvictorious.com/my/cool/path/%%USER_ID%%")
+        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "http://api.getvictorious.com/my/cool/path/\(id)"))
     }
     
     func testParseResponse() {

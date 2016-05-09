@@ -26,6 +26,7 @@
 @dynamic level;
 @dynamic levelProgressPercentage;
 @dynamic levelProgressPoints;
+@dynamic tier;
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;
@@ -57,8 +58,9 @@
 @dynamic accountIdentifier;
 @dynamic isNewUser;
 @dynamic isVIPSubscriber;
-@dynamic vipSubscribeDate;
+@dynamic vipEndDate;
 @dynamic achievementsUnlocked;
 @dynamic avatarBadgeType;
+@dynamic viewedContent;
 
 @end

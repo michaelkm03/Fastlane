@@ -433,7 +433,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     _userRemoteId = userRemoteId;
     
-    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue];
+    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue apiPath:nil];
     [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
         VUser *user = userInfoOperation.user;
         if ( user != nil && error == nil )

@@ -18,12 +18,6 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var legalPromptLabel: UILabel!
     
-    private lazy var vipIconView: UIView = {
-        let imageView = UIImageView(image: UIImage(named:"vip")!.imageWithRenderingMode(.AlwaysTemplate))
-        imageView.tintColor = UIColor.whiteColor()
-        return imageView
-    }()
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             updateViews()
@@ -62,7 +56,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.vipSubscriptionProductIdentifier ?? ""
+        let productIdentifier = dependencyManager.vipSubscription?.productIdentifier ?? ""
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
         setIsLoading(true, title: Strings.purchaseInProgress)
@@ -116,8 +110,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         if isLoading {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
             let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            progressHUD.mode = .CustomView
-            progressHUD.customView = vipIconView
+            progressHUD.mode = .Indeterminate
             progressHUD.labelText = title
         } else {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
@@ -133,8 +126,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        progressHUD.mode = .CustomView
-        progressHUD.customView = vipIconView
+        progressHUD.mode = .Text
         progressHUD.labelText = message
         
         dispatch_after(1.0) {

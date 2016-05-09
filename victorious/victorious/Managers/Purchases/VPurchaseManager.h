@@ -13,6 +13,8 @@
 #import "VPurchase.h"
 #import "VPurchaseManagerType.h"
 
+@class VPurchaseRecord;
+
 /**
  Posted when a successful call to `fetchProductsWithIdentifiers:success:failure` returns.
  This is needed to update and UI that lists purchaseable products.
@@ -31,15 +33,8 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  on non-existent delegate objects and the app will crash without so much as a meaningful
  stack trace.
  */
-+ (VPurchaseManager *)sharedInstance;
++ (id<VPurchaseManagerType>)sharedInstance;
 
-#ifdef V_RESET_PURCHASES
-
-/**
- For testing a debugging purposes, this will erase the local purchase record.
- */
-- (void)resetPurchases;
-
-#endif
+@property (nonatomic, readonly) VPurchaseRecord *purchaseRecord;
 
 @end

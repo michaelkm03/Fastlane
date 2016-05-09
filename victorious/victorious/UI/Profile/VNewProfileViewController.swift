@@ -41,7 +41,7 @@ class VNewProfileViewController: UIViewController {
             gridStreamController.content = user
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue)
+            let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: dependencyManager.userFetchAPIPath)
             
             userInfoOperation.queue { [weak self] results, error, cancelled in
                 self?.gridStreamController.content = userInfoOperation.user
@@ -70,6 +70,10 @@ class VNewProfileViewController: UIViewController {
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    var userFetchAPIPath: String? {
+        return stringForKey("userInfoURL")
     }
 }
 

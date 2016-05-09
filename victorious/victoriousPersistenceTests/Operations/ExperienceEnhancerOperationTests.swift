@@ -96,7 +96,7 @@ class ExperienceEnhancerOperationTests: BaseFetcherOperationTestCase {
 
 class MockVoteTypesDataSource: NSObject, TemplateProductsDataSource {
     
-    var vipSubscriptionProductIdentifier: String? {
+    var vipSubscription: Subscription? {
         abort()
     }
     

@@ -67,12 +67,12 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var vipIconImageView: UIImageView!
-    @IBOutlet private var upvotesValueLabel: UILabel!
-    @IBOutlet private var upvotesTitleLabel: UILabel!
-    @IBOutlet private var upvotedValueLabel: UILabel!
-    @IBOutlet private var upvotedTitleLabel: UILabel!
-    @IBOutlet private var rankValueLabel: UILabel!
-    @IBOutlet private var rankTitleLabel: UILabel!
+    @IBOutlet private var likesGivenValueLabel: UILabel!
+    @IBOutlet private var likesGivenTitleLabel: UILabel!
+    @IBOutlet private var likesReceivedValueLabel: UILabel!
+    @IBOutlet private var likesReceivedTitleLabel: UILabel!
+    @IBOutlet private var tierValueLabel: UILabel!
+    @IBOutlet private var tierTitleLabel: UILabel!
     @IBOutlet private var locationLabel: UILabel!
     @IBOutlet private var taglineLabel: UILabel!
     @IBOutlet private var profilePictureView: UIImageView!
@@ -92,22 +92,22 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tintColor = dependencyManager?.accentColor
 
         nameLabel.textColor = dependencyManager?.headerTextColor
-        upvotesValueLabel.textColor = dependencyManager?.statValueTextColor
-        upvotesTitleLabel.textColor = dependencyManager?.statLabelTextColor
-        upvotedValueLabel.textColor = dependencyManager?.statValueTextColor
-        upvotedTitleLabel.textColor = dependencyManager?.statLabelTextColor
-        rankValueLabel.textColor = dependencyManager?.statValueTextColor
-        rankTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        likesGivenValueLabel.textColor = dependencyManager?.statValueTextColor
+        likesGivenTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        likesReceivedValueLabel.textColor = dependencyManager?.statValueTextColor
+        likesReceivedTitleLabel.textColor = dependencyManager?.statLabelTextColor
+        tierValueLabel.textColor = dependencyManager?.statValueTextColor
+        tierTitleLabel.textColor = dependencyManager?.statLabelTextColor
         locationLabel.textColor = dependencyManager?.subcontentTextColor
         taglineLabel.textColor = dependencyManager?.subcontentTextColor
         
         nameLabel.font = dependencyManager?.headerFont
-        upvotesValueLabel.font = dependencyManager?.statValueFont
-        upvotesTitleLabel.font = dependencyManager?.statLabelFont
-        upvotedValueLabel.font = dependencyManager?.statValueFont
-        upvotedTitleLabel.font = dependencyManager?.statLabelFont
-        rankValueLabel.font = dependencyManager?.statValueFont
-        rankTitleLabel.font = dependencyManager?.statLabelFont
+        likesGivenValueLabel.font = dependencyManager?.statValueFont
+        likesGivenTitleLabel.font = dependencyManager?.statLabelFont
+        likesReceivedValueLabel.font = dependencyManager?.statValueFont
+        likesReceivedTitleLabel.font = dependencyManager?.statLabelFont
+        tierValueLabel.font = dependencyManager?.statValueFont
+        tierTitleLabel.font = dependencyManager?.statLabelFont
         locationLabel.font = dependencyManager?.subcontentFont
         taglineLabel.font = dependencyManager?.subcontentFont
         
@@ -123,8 +123,14 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
-        upvotesValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven?.integerValue ?? 0)
-        upvotedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived?.integerValue ?? 0)
+        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven?.integerValue ?? 0)
+        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived?.integerValue ?? 0)
+        
+        let tier = user?.tier
+        let shouldDisplayTier = tier?.isEmpty == false
+        tierValueLabel.text = tier
+        tierTitleLabel.hidden = !shouldDisplayTier
+        tierValueLabel.hidden = !shouldDisplayTier
         
         let placeholderImage = UIImage(named: "profile_full")
         

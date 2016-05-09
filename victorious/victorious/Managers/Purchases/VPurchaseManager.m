@@ -5,11 +5,6 @@
 //  Created by Patrick Lynch on 12/1/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
-
-#if DEBUG || TARGET_IOS_SIMULATOR
-#import "VPurchaseDebugSettings.h"
-#endif
-
 @import StoreKit;
 
 #import "VPseudoProduct.h"
@@ -22,17 +17,13 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification = @"VPurchaseMana
 
 static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.devicelog"; // A touch of obscurity
 
-@interface VPurchaseManager() <SKProductsRequestDelegate, SKPaymentTransactionObserver>
+@interface VPurchaseManager() <SKProductsRequestDelegate, SKPaymentTransactionObserver, SKRequestDelegate>
 
 @property (nonatomic, strong) VPurchase *activePurchase;
 @property (nonatomic, strong) VProductsRequest *activeProductRequest;
 @property (nonatomic, strong) VPurchase *activePurchaseRestore;
-@property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
+@property (nonatomic, strong, readwrite) VPurchaseRecord *purchaseRecord;
 @property (nonatomic, strong) NSMutableDictionary *fetchedProducts;
-
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-@property (nonatomic, strong) NSMutableSet *simulatedPurchasedProductIdentifiers; ///< Product IDs that are being treated as purchased even though they may not have actually been purchased.
-#endif
 
 @end
 
@@ -40,13 +31,17 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 #pragma mark - Initialization
 
-+ (VPurchaseManager *)sharedInstance
++ (id<VPurchaseManagerType>)sharedInstance
 {
     static VPurchaseManager *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+                      instance = [[SimulatedPurchaseManager alloc] init];
+#else
                       instance = [[VPurchaseManager alloc] init];
+#endif
                   });
     return instance;
 }
@@ -60,20 +55,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kDocumentDirectoryRelativePath];
         [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-        
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-        _simulatedPurchasedProductIdentifiers = [[NSMutableSet alloc] init];
-#endif
     }
     return self;
 }
 
 #pragma mark - Primary public methods
-
-- (BOOL)isPurchasingEnabled
-{
-    return self.fetchedProducts.count > 0;
-}
 
 - (BOOL)isPurchaseRequestActive
 {
@@ -87,56 +73,32 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
-    BOOL purchased = [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-    purchased = purchased || [self.simulatedPurchasedProductIdentifiers containsObject:productIdentifier];
-#endif
-    return purchased;
+    return [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];;
+}
+
+- (VPurchaseType)purchaseTypeForProductIdentifier:(NSString *)productIdentifier
+{
+    // TODO: VERY HACKY! Considering a template change but leaving for now to keep moving
+    if ( [productIdentifier containsString:@"ballistic"] )
+    {
+        return VPurchaseTypeProduct;
+    }
+    else
+    {
+        return VPurchaseTypeSubscription;
+    }
+}
+
+- (BOOL)shouldAddProductIdentifierToPurchaseRecord:(NSString *)productIdentifier
+{
+    // Products of type `VPurchaseTypeSubscription` are not stored on the local purchase record
+    // but instead are tracked by the backend and readable from the `VUser`.
+    return [self purchaseTypeForProductIdentifier:productIdentifier] != VPurchaseTypeSubscription;
 }
 
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     VProduct *product = [self purchaseableProductForProductIdentifier:productIdentifier];
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-    if ( product.storeKitProduct == nil )
-    {
-        // Simulate a bit of network latency...
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void) {
-            
-            // A slightly-hacky way to figure out which alert to show. Should modifiy 
-            // if more robustness is required, but dont't want to overengineer this just yet.
-            VTestPurchaseConfirmationType type;
-            NSString *title = productIdentifier.pathExtension;
-            if ( [productIdentifier containsString:@"ballistic"] )
-            {
-                type = VTestPurchaseConfirmationTypeProduct;
-            }
-            else
-            {
-                type = VTestPurchaseConfirmationTypeSubscription;
-            }
-            // Simulate the system alert to confirm purchase
-            BackgroundOperation *showTestAlert = [[ShowTestPurchaseConfirmationOperation alloc] initWithType:type title:title price:nil];
-            [showTestAlert queueWithCompletion:^(NSError *error, BOOL canceled) {
-                
-                if (!canceled)
-                {
-                    // Simulate success!
-                    [self.simulatedPurchasedProductIdentifiers addObject:productIdentifier];
-                    successCallback([NSSet setWithObject:productIdentifier]);
-                }
-                else
-                {
-                    // Nil error means canceled
-                    failureCallback(nil);
-                }
-            }];
-        });
-        
-        // Abort the real purchase code path
-        return;
-    }
-#endif
     [self purchaseProduct:product success:successCallback failure:failureCallback];
 }
 
@@ -145,19 +107,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     NSParameterAssert( failureCallback != nil );
     NSParameterAssert( successCallback != nil );
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
-    
-#if SIMULATE_STOREKIT && !SIMULATE_FETCH_PRODUCTS_ERROR
-    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
-    self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-#if SIMULATE_PURCHASE_ERROR
-                       [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
-#else
-                       [self transactionDidCompleteWithProductIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
-#endif
-                   });
-#else
     
     // This could happen if product requests are failing
     if ( product == nil )
@@ -171,33 +120,13 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     SKPayment *payment = [SKPayment paymentWithProduct:product.storeKitProduct];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
-#endif
 }
 
 - (void)restorePurchasesSuccess:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     NSAssert( !self.isPurchaseRequestActive, @"A purchase restore is already in progress." );
-    
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
-    
-#if SIMULATE_STOREKIT
-    for ( NSUInteger i = 0; i < SIMULATED_RESTORED_PURCHASE_COUNT; i++ )
-    {
-        NSString *identifier = [NSString stringWithFormat:@"%@%lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)i];
-        [self.activePurchaseRestore.restoredProductIdentifiers addObject:identifier];
-    }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-#if SIMULATE_RESTORE_PURCHASE_ERROR
-        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Failed to restore." code:-1 userInfo:nil]];
-#else
-        [self purchasesDidRestore];
-#endif
-    });
-#else
-    
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
-#endif
 }
 
 - (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
@@ -219,64 +148,22 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers
                                                                              success:successCallback
                                                                              failure:failureCallback];
-#if SIMULATE_STOREKIT
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-#if SIMULATE_FETCH_PRODUCTS_ERROR
-        for ( NSString *identifier in uncachedProductIndentifiers )
-        {
-            [self.activeProductRequest productIdentifierFailedToFetch:identifier];
-        }
-        NSString *message = NSLocalizedString( @"Failed to fetch products", nil );
-        [self productsRequestDidFailWithError:[NSError errorWithDomain:message code:-1 userInfo:nil]];
-#else
-        for ( __unused NSString *identifier in uncachedProductIndentifiers )
-        {
-            [self.activeProductRequest productFetched:[[VProduct alloc] init]];
-        }
-        [self productsRequestDidSucceed];
-#endif
-    });
-#else
-
-    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers];
+    
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
     request.delegate = self;
     [request start];
-#endif
 }
-
-#ifdef V_RESET_PURCHASES
 
 - (void)resetPurchases
 {
+#ifdef V_RESET_PURCHASES
     [self.purchaseRecord clear];
-}
-
 #endif
+}
 
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
-    VProduct *product;
-    
-#if SIMULATE_STOREKIT && !SIMULATE_FETCH_PRODUCTS_ERROR
-    product = [[VProduct alloc] init];
-    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
-#else
-    
-    product = [self.fetchedProducts objectForKey:productIdentifier];
-    
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-    if ( product == nil )
-    {
-        product = [[VPseudoProduct alloc] initWithProductIdentifier:productIdentifier
-                                                              price:@"$$$"
-                                               localizedDescription:@"The description of the in-app purchase goes here."
-                                                     localizedTitle:@"In-App Purchase"];
-    }
-#endif
-#endif
-
-    return product;
+    return [self.fetchedProducts objectForKey:productIdentifier];
 }
 
 #pragma mark - Purchase product helpers
@@ -344,17 +231,16 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)transactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
 {
-#if SIMULATE_STOREKIT
-    BOOL isValidProduct = YES;
-#else
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
-#endif
     if ( self.activePurchase != nil && isValidProduct )
     {
         NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
         
-        [self.purchaseRecord addProductIdentifier:productIdentifier];
+        if ( [self shouldAddProductIdentifierToPurchaseRecord:productIdentifier] )
+        {
+            [self.purchaseRecord addProductIdentifier:productIdentifier];
+        }
         self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
         self.activePurchase = nil;
     }
@@ -368,11 +254,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     {
         [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
          {
-#if SIMULATE_STOREKIT
-             NSString *productIdentifier = [NSString stringWithFormat:@"%@%.lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)idx];
-#else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
-#endif
              [self.fetchedProducts setValue:product forKey:productIdentifier];
          }];
         if ( self.activeProductRequest.successCallback != nil )
@@ -416,10 +298,12 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     if ( self.activePurchaseRestore != nil )
     {
         [self.activePurchaseRestore.restoredProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, BOOL *stop)
-        {
-            [self.purchaseRecord addProductIdentifier:identifier];
+         {
+             if ( [self shouldAddProductIdentifierToPurchaseRecord:identifier] )
+             {
+                 [self.purchaseRecord addProductIdentifier:identifier];
+             }
         }];
-        
         
         NSDictionary *params = @{ VTrackingKeyCount : @(self.activePurchaseRestore.restoredProductIdentifiers.count) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidRestorePurchases parameters:params];
@@ -469,6 +353,8 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         [self productsRequestDidFailWithError:nil];
     }
 }
+
+#pragma mark - SKRequestDelegate
 
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {

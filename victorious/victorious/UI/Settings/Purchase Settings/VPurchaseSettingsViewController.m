@@ -7,7 +7,7 @@
 //
 
 #import "VPurchaseSettingsViewController.h"
-#import "VPurchaseManager.h"
+#import "VPurchaseManagerType.h"
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
 #import "VVoteType.h"
@@ -16,9 +16,12 @@
 #import "VThemeManager.h"
 #import "victorious-Swift.h"
 
+// If this enum grows beyond 4 cases, this view controller shoud be refactored to remove
+// the big if-else and switch statements in most of the methods.
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
     VPurchaseSettingsTableViewSectionPurchases,
+    VPurchaseSettingsTableViewSectionSubscriptions,
     VPurchaseSettingsTableViewSectionActions,
     VPurchaseSettingsTableViewSectionCount
 };
@@ -26,6 +29,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 {
     VPurchaseSettingsActionRestore,
+    VPurchaseSettingsActionManageSubcription,
 #ifdef V_RESET_PURCHASES
     VPurchaseSettingsActionReset,
 #endif
@@ -36,11 +40,15 @@ static const CGFloat kNoPurchasesCelRowlHeight      = 85.0f;
 static const CGFloat kActionCellRowHeight           = 60.0f;
 static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 
+static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions";
+
 @interface VPurchaseSettingsViewController()
 
-@property (nonatomic, strong) VPurchaseManager *purchaseManager;
+@property (nonatomic, strong) id<VPurchaseManagerType> purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
-@property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
+@property (nonatomic, strong) VPurchaseStringMaker *stringMaker;
+@property (nonatomic, strong) NSArray *purchasedProductsIdentifiers;
+@property (nonatomic, strong) VPurchaseCell *subscriptionSizingCell;
 
 @end
 
@@ -52,11 +60,27 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 {
     [super viewDidLoad];
     
+    self.subscriptionSizingCell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VPurchaseCell class]) owner:self options:nil] firstObject];
+    self.subscriptionSizingCell.dependencyManager = self.dependencyManager;
+    
     self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
+    [VPurchaseCell registerNibWithTableView:self.tableView];
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadProductIdentifiers];
+    [self.tableView reloadData];
+}
+
+- (void)reloadProductIdentifiers
+{
+    self.purchasedProductsIdentifiers = self.purchaseManager.purchasedProductIdentifiers.allObjects;
 }
 
 #pragma mark - Helpers
@@ -72,40 +96,52 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     }
     
     self.isRestoringPurchases = YES;
+    [self setIsLoading:YES title:NSLocalizedString(@"ActivityRestoring", @"")];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:VPurchaseSettingsTableViewSectionActions];
     VPurchaseActionCell *cell = (VPurchaseActionCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell.button showActivityIndicator];
     cell.button.enabled = NO;
     
-    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoreProductIdentifiers)
+    void (^onRestoreComplete)() = ^
+    {
+        [self reloadProductIdentifiers];
+        [self.tableView reloadData];
+        [self setIsLoading:NO title:nil];
+        cell.button.enabled = YES;
+    };
+    
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoredProductIdentifiers)
      {
          self.isRestoringPurchases = NO;
          
-         if ( restoreProductIdentifiers.count == 0 )
+         if ( restoredProductIdentifiers.count == 0 )
          {
              [self showAlertWithTitle:[self.stringMaker localizedSuccessTitleWithProductsCount:0]
                               message:[self.stringMaker localizedSuccessMessageWithProductsCount:0]];
-             [self.tableView reloadData];
+             onRestoreComplete();
+         }
+         else if ( [restoredProductIdentifiers containsObject:[self.dependencyManager vipSubscription].productIdentifier] )
+         {
+             // Validate and force success since even if there's an error, we must deliver the product restores to the user
+             VIPValidateSuscriptionOperation *op = [[VIPValidateSuscriptionOperation alloc] initWithShouldForceSuccess:YES];
+             [op queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
+              {
+                  onRestoreComplete();
+              }];
          }
          else
          {
-             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:VPurchaseSettingsTableViewSectionPurchases];
-             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-             
+             onRestoreComplete();
          }
-         [cell.button hideActivityIndicator];
-         cell.button.enabled = YES;
      }
                                           failure:^(NSError *error)
      {
+         self.isRestoringPurchases = NO;
+         
+         onRestoreComplete();
+         
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
-         self.isRestoringPurchases = NO;
-         [self.tableView reloadData];
-         
-         [cell.button hideActivityIndicator];
-         cell.button.enabled = YES;
      }];
 }
 
@@ -126,27 +162,90 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+
+- (VProduct *)subscriptionProduct
+{
+    NSString *productIdentifier = [self.dependencyManager vipSubscription].productIdentifier;
+    if ( productIdentifier != nil )
+    {
+        // We don't want to check `purchasedProductIdentifiers` because subscriptions do not
+        // work by that same system that uses a local purchase record. Instead, we get the product
+        // from the list of those fetched on app launch just to read the price, title and other info.
+        VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
+        return product;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+- (BOOL)shouldShowPurchasedSubscription
+{
+    BOOL isVIPSubscriber = [VCurrentUser user].isVIPSubscriber.boolValue;
+    VProduct *subscriptionProduct = [self subscriptionProduct];
+    return subscriptionProduct != nil && isVIPSubscriber;
+}
+
 #pragma mark - UITableViewDataSource
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section)
+    {
+        case VPurchaseSettingsTableViewSectionPurchases:
+            return NSLocalizedString(@"PurchasesSettingsTitle", nil);
+        case VPurchaseSettingsTableViewSectionSubscriptions:
+            return NSLocalizedString(@"SubscriptionsSettingsTitle", nil);
+        default:
+            return nil;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( indexPath.section == VPurchaseSettingsTableViewSectionPurchases )
     {
-        if ( self.purchaseManager.purchasedProductIdentifiers.count > 0 )
+        if ( self.purchasedProductsIdentifiers.count > 0 )
         {
             NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
             VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-            NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
+            NSString *productIdentifier = [self.purchasedProductsIdentifiers objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
             VVoteType *voteType = [self.dependencyManager voteTypeForProductIdentifier:productIdentifier];
-            [cell setProductImage:voteType.iconImage withTitle:product.localizedTitle];
+            cell.dependencyManager = self.dependencyManager;
+            [cell setProductImage:voteType.iconImage title:product.localizedTitle];
             return cell;
         }
         else
         {
             VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            cell.centered = YES;
             [cell setMessage:NSLocalizedString( @"SettingsRestorePurchasesPrompt", nil)];
+            return cell;
+        }
+    }
+    else if ( indexPath.section == VPurchaseSettingsTableViewSectionSubscriptions)
+    {
+        if ( [self shouldShowPurchasedSubscription] )
+        {
+            if (indexPath.row == 0)
+            {
+                NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
+                VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+                [self decorateSubscriptionCell:cell forIndexPath:indexPath];
+                return cell;
+            }
+            else if (indexPath.row == 1)
+            {
+                VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
+                [cell setMessage:NSLocalizedString( @"SettingsSubscriptionSettingsPrompt", nil)];
+                return cell;
+            }
+        }
+        else
+        {
+            VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
+            [cell setMessage:NSLocalizedString( @"SettingsNoSubcriptionPrompt", nil)];
             return cell;
         }
     }
@@ -157,13 +256,21 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
         cell.button.style = VButtonStylePrimary;
         cell.button.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         cell.button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-        [cell.button setTitle:NSLocalizedString( @"SettingsRestorePurchases", nil) forState:UIControlStateNormal];
         
         if ( indexPath.row == VPurchaseSettingsActionRestore )
         {
+            [cell.button setTitle:NSLocalizedString( @"SettingsRestorePurchases", nil) forState:UIControlStateNormal];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self restorePurchases];
+             }];
+        }
+        else if ( indexPath.row == VPurchaseSettingsActionManageSubcription )
+        {
+            [cell.button setTitle:NSLocalizedString( @"SettingsManageSubscriptions", nil) forState:UIControlStateNormal];
+            [cell setAction:^(VPurchaseActionCell *actionCell)
+             {
+                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAppStoreSubscriptionSettingsURL]];
              }];
         }
 #ifdef V_RESET_PURCHASES
@@ -172,9 +279,12 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
             [cell.button setTitle:NSLocalizedString(@"Reset Purchases", @"") forState:UIControlStateNormal];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
-                 [self.purchaseManager resetPurchases];
-                 NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:VPurchaseSettingsTableViewSectionPurchases];
-                 [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                 [[[VIPClearSubscriptionOperation alloc] init] queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
+                  {
+                      [self.purchaseManager resetPurchases];
+                      [self reloadProductIdentifiers];
+                      [self.tableView reloadData];
+                  }];
              }];
         }
 #endif
@@ -188,7 +298,18 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 {
     if ( section == VPurchaseSettingsTableViewSectionPurchases )
     {
-        return MAX( self.purchaseManager.purchasedProductIdentifiers.count, (NSUInteger)1 );
+        return MAX( self.purchasedProductsIdentifiers.count, (NSUInteger)1 );
+    }
+    if ( section == VPurchaseSettingsTableViewSectionSubscriptions )
+    {
+        if ( [self shouldShowPurchasedSubscription] )
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
+        }
     }
     else if ( section == VPurchaseSettingsTableViewSectionActions )
     {
@@ -203,22 +324,40 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     return VPurchaseSettingsTableViewSectionCount;
 }
 
+- (void)decorateSubscriptionCell:(VPurchaseCell *)cell forIndexPath:(NSIndexPath *)indexPath
+{
+    VProduct *product = [self subscriptionProduct];
+    cell.dependencyManager = self.dependencyManager;
+    Subscription *vipSubscription = self.dependencyManager.vipSubscription;
+    NSDate *expirationDate = [VCurrentUser user].vipEndDate;
+    [cell setSubscriptionImage:vipSubscription.iconImage
+                         title:product.localizedTitle
+                localizedPrice:product.price
+                expirationDate:expirationDate];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL isNoPurchasesCell = indexPath.section == VPurchaseSettingsTableViewSectionPurchases
-                                && self.purchaseManager.purchasedProductIdentifiers.count == 0;
+    const BOOL isSubscribed = [VCurrentUser user].isVIPSubscriber.boolValue;
+    const BOOL showNoSubscription = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && !isSubscribed;
+    const BOOL showNoProducts = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && self.purchasedProductsIdentifiers.count == 0;
+    const BOOL isNoContentCell = showNoSubscription || showNoProducts;
     
-    BOOL isActionCell = indexPath.section == VPurchaseSettingsTableViewSectionActions;
-    
-    if ( isNoPurchasesCell )
+    if ( isNoContentCell )
     {
         return kNoPurchasesCelRowlHeight;
     }
-    else if ( isActionCell )
+    else if ( indexPath.section == VPurchaseSettingsTableViewSectionActions )
     {
         return kActionCellRowHeight;
+    }
+    else if (indexPath.row == 0 && indexPath.section == VPurchaseSettingsTableViewSectionSubscriptions && isSubscribed)
+    {
+        // Only the subscription cell uses dynamic height calculated in `cellSizeWithinBounds:`
+        [self decorateSubscriptionCell:self.subscriptionSizingCell forIndexPath:indexPath];
+        return [self.subscriptionSizingCell cellSizeWithinBounds:tableView.bounds].height;
     }
     else
     {

@@ -35,7 +35,6 @@ class ShowForumOperation: MainQueueOperation {
         
         let navigationController = UINavigationController(rootViewController: viewController)
         originViewController?.presentViewController(navigationController, animated: animated) {
-            (self.dependencyManager.scaffoldViewController() as? VTabScaffoldViewController)?.setSelectedMenuItemAtIndex(0)
             self.finishedExecuting()
         }
     }

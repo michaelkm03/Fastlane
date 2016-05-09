@@ -19,7 +19,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 @interface VPurchaseViewController ()
 
-@property (strong, nonatomic) VPurchaseManager *purchaseManager;
+@property (strong, nonatomic) id<VPurchaseManagerType> purchaseManager;
 @property (strong, nonatomic) VProduct *product;
 @property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
+@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser, VViewedContent;
 
 @interface VUser : NSManagedObject
 
@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSNumber * level;
 @property (nonatomic, retain) NSNumber * levelProgressPercentage;
 @property (nonatomic, retain) NSNumber * levelProgressPoints;
+@property (nonatomic, retain) NSString * tier;
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfFollowers;
@@ -52,8 +53,9 @@
 @property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
 @property (nonatomic, retain) NSNumber * isNewUser; //< Transient
 @property (nonatomic, retain) NSNumber * isVIPSubscriber; //< Transient (so that validation only comes from the backend and is never read from disk)
-@property (nonatomic, retain) NSDate * vipSubscribeDate; //< Transient
+@property (nonatomic, retain) NSDate * vipEndDate; //< Transient
 @property (nonatomic, retain) id achievementsUnlocked;
 @property (nonatomic, retain) NSString * avatarBadgeType;
+@property (nonatomic, retain) NSSet<VViewedContent *> *viewedContent;
 
 @end
