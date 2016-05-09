@@ -42,8 +42,8 @@ class FetchTemplateProductIdentifiersOperationTests: BaseFetcherOperationTestCas
 
 class MockProductsDataSource: NSObject, TemplateProductsDataSource {
     
-    var vipSubscriptionProductIdentifier: String? {
-        return "test_vip_subscription"
+    var vipSubscription: Subscription? {
+        return Subscription(productIdentifier: "test_vip_subscription")
     }
     
     var productIdentifiersForVoteTypes: [String] {

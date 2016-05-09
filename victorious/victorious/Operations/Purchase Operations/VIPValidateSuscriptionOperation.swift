@@ -20,7 +20,7 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
     let shouldForceSuccess: Bool
     
     /// Pings the server with receipt data from the bundle and sets the current user
-    /// as a valid VIP scriber if a successful response was returned. 
+    /// as a valid VIP scriber if a successful response was returned.
     ///
     /// - parameter shouldForceSuccess: Allows calling code to force validation to
     /// succeed and VIP access granted regardless of the response from the server.
@@ -35,32 +35,52 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
     override func main() {
         guard request != nil else {
             if shouldForceSuccess {
-                onComplete()
+                updateUser(status: VIPStatus(isVIP: true) )
             }
             return
         }
         
         // Let the backend validate the receipt and they will let us know at next login
         // whether or not the user is a VIP user
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
     }
     
-    func onComplete(result: ValidateReceiptRequest.ResultType) {
-        setCurrentUserValidated(true)
+    func onComplete(status: VIPStatus) {
+        updateUser(status: status)
     }
     
     private func onError(error: NSError) {
         if shouldForceSuccess {
             self.error = nil
-            setCurrentUserValidated(true)
+            updateUser(status: VIPStatus(isVIP: true) )
         } else {
-            setCurrentUserValidated(false)
+            updateUser(status: nil)
         }
     }
     
-    private func setCurrentUserValidated(validated: Bool) {
+    private func updateUser(status status: VIPStatus?) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            VCurrentUser.user(inManagedObjectContext: context)?.isVIPSubscriber = validated
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
+            if let status = status {
+                currentUser.populateVIPStatus(fromSourceModel: status)
+            } else {
+                currentUser.clearVIPStatus()
+            }
+            context.v_save()
+        }
+    }
+}
+
+class VIPClearSubscriptionOperation: FetcherOperation {
+    
+    override func main() {
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
+            currentUser.clearVIPStatus()
             context.v_save()
         }
     }

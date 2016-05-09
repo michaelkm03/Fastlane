@@ -55,6 +55,7 @@
 #if SIMULATE_STOREKIT
     return _productIdentifier;
 #else
+    VLog(@"%@", _productIdentifier);
     return _storeKitProduct.productIdentifier;
 #endif
 }

@@ -22,6 +22,11 @@
     successCallback( [NSSet set] );
 }
 
+- (VPurchaseType)purchaseTypeForProductIdentifier:(NSString *)productIdentifier
+{
+    return VPurchaseTypeProduct;
+}
+
 - (void)purchaseProduct:(VProduct *)product
                 success:(VPurchaseSuccessBlock)successCallback
                 failure:(VPurchaseFailBlock)failureCallback
@@ -35,7 +40,7 @@
     successCallback( [NSSet set] );
 }
 
-- (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
+- (void)fetchProductsWithIdentifiers:(NSArray<NSString *> *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
@@ -45,6 +50,11 @@
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
     return nil;
+}
+
+- (void)resetPurchases
+{
+    
 }
 
 @end

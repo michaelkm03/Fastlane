@@ -9,20 +9,6 @@
 /// A struct representing a user's information
 public struct User {
     
-    public struct VIPStatus {
-        public let isVIP: Bool
-        public let subscribeDate: NSDate
-        
-        public init?(json: JSON) {
-            guard let isVIP = json["is_vip"].bool,
-                let subscribeDate = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["subscribe_date"].stringValue) else {
-                    return nil
-            }
-            self.isVIP = isVIP
-            self.subscribeDate = subscribeDate
-        }
-    }
-    
     public enum AccessLevel {
         case owner, user
         

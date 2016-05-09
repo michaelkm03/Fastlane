@@ -11,7 +11,6 @@
 
 @interface VMockPurchaseManager : NSObject <VPurchaseManagerType>
 
-@property (nonatomic, assign) BOOL isPurchasingEnabled;
 @property (nonatomic, assign) BOOL isPurchaseRequestActive;
 @property (nonatomic, strong) NSSet *purchasedProductIdentifiers;
 

@@ -15,20 +15,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, VPurchaseType) {
+    VPurchaseTypeProduct,
+    VPurchaseTypeSubscription
+};
+
 /**
  Defines an object that interacts with StoreKit in order to make purchases of IAP
  and subscriptions.
  */
 @protocol VPurchaseManagerType
-
-/**
- Should return YES if a successful products request has returned and there are products
- available for purchase (or that are already purchased).  The idea is that if no valid
- products can be found, we should assume that purchasing is not enabled.  This could
- also be the case if an error is preventing products from being loaded, but in most cases
- the application should behave in the same way.
- */
-@property (nonatomic, readonly) BOOL isPurchasingEnabled;
 
 /**
  Should return YES if a products fetch request, purchase restore or purchase is in progress.
@@ -48,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
  Should return YES if productIdentifier is listed in the local purchased record.
  */
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier;
-
 
 /**
  Begin the process of purchasing the supplied product as an In-App Purchase
@@ -96,6 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
  fetchProductsWithIdentifiers:success:failure.
  */
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier;
+
+- (VPurchaseType)purchaseTypeForProductIdentifier:(NSString *)productIdentifier;
+
+- (void)resetPurchases;
 
 @end
 

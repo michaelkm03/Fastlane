@@ -6,15 +6,18 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension VDependencyManager: TemplateProductsDataSource {
     
-    var vipSubscriptionProductIdentifier: String? {
-        guard let dictionary = templateValueOfType(NSDictionary.self, forKey: "subscription") as? NSDictionary else {
+    var vipSubscription: Subscription? {
+        guard let subscription = childDependencyForKey("subscription"),
+            let productIdentifier = subscription.stringForKey("appleProductId")
+            where !productIdentifier.isEmpty else {
             return nil
         }
-        return dictionary["appleProductId"] as? String
+        let iconImage = subscription.imageForKey("icon")
+        return Subscription(productIdentifier: productIdentifier, iconImage: iconImage)
     }
     
     var productIdentifiersForVoteTypes: [String] {

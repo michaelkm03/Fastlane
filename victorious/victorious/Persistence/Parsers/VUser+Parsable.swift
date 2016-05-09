@@ -20,7 +20,7 @@ extension VUser: PersistenceParsable {
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
-        vipSubscribeDate            = user.vipStatus?.subscribeDate ?? vipSubscribeDate
+        vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
         isCreator                   = user.accessLevel?.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
@@ -36,6 +36,10 @@ extension VUser: PersistenceParsable {
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
         
+        if let vipStatus = user.vipStatus {
+            populateVIPStatus(fromSourceModel: vipStatus)
+        }
+        
         /// If backend does not send us a badgeType, we default to "", which means we show the default level badge
         avatarBadgeType             = user.avatar?.badgeType ?? ""
         
@@ -46,6 +50,22 @@ extension VUser: PersistenceParsable {
                 return imageAsset
             }
             self.v_addObjects( newPreviewAssets, to: "previewAssets" )
+        }
+    }
+    
+    func clearVIPStatus() {
+        isVIPSubscriber = false
+        vipEndDate = nil
+    }
+    
+    func populateVIPStatus( fromSourceModel vipStatus: VIPStatus ) {
+        // If the user already is a VIP, we do not want to undo that.  We only want
+        // to update the status if the existing value is undefined (nil) or false.
+        // The purposes of this is to allow the user to remain a VIP for the duration of
+        // their session even if their subscription expires during the session.
+        // Upon the next session, the user will not be a VIP and must re-subscribe.
+        if !isVIPSubscriber.boolValue {
+            isVIPSubscriber = vipStatus.isVIP
         }
     }
 }

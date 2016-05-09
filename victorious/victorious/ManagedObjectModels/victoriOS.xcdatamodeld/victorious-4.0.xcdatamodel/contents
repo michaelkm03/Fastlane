@@ -301,7 +301,7 @@
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isFollowedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isNewUser" optional="YES" transient="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isVIPSubscriber" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isVIPSubscriber" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPercentage" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPoints" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -318,7 +318,7 @@
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="vipSubscribeDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="vipEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
@@ -375,7 +375,7 @@
         <element name="Shelf" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Stream" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="StreamItemPointer" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
         <element name="User" positionX="0" positionY="0" width="128" height="705"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>

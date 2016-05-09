@@ -67,7 +67,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
-@property (nonatomic, assign) BOOL showPurchaseSettings;
 @property (nonatomic, assign) BOOL showResetCoachmarks;
 @property (nonatomic, assign) BOOL showExperimentSettings;
 @property (nonatomic, assign) BOOL showTestAlertCell;
@@ -136,8 +135,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
-    [self updatePurchasesCount];
-    
 #ifdef V_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = YES;
 #else
@@ -169,11 +166,15 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.showTestAlertCell = NO;
 #endif
     
-    self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
+    
+    // Removes the title from the back button on any VCs pushed from here
+    // This is to make room for the larger titles
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -221,12 +222,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
-}
-
-- (void)updatePurchasesCount
-{
-    NSUInteger count = [VPurchaseManager sharedInstance].purchasedProductIdentifiers.count;
-    self.resetPurchasesCell.detailTextLabel.text = @( count ).stringValue;
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -386,7 +381,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
     {
-        return self.showPurchaseSettings ? self.tableView.rowHeight : 0.0;
+        return self.tableView.rowHeight;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionTracking)
     {

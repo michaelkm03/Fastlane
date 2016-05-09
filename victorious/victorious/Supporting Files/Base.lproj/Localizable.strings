@@ -192,20 +192,20 @@
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
 
-"SecondAgo Verbose"  = "1 second ago";
-"SecondsAgo Verbose" = "%d seconds ago";
-"MinuteAgo Verbose"  = "1 minute ago";
-"MinutesAgo Verbose" = "%d minutes ago";
-"HourAgo Verbose"    = "1 hour ago";
-"HoursAgo Verbose"   = "%d hours ago";
-"Yesterday Verbose"  = "1 day ago";
-"DaysAgo Verbose"    = "%d days ago";
-"LastWeek Verbose"   = "1 week ago";
-"WeeksAgo Verbose"   = "%d weeks ago";
-"LastMonth Verbose"  = "1 month ago";
-"MonthsAgo Verbose"  = "%d months ago";
-"LastYear Verbose"   = "1 year ago";
-"YearsAgo Verbose"   = "%d years ago";
+"SecondAgo Verbose"  	= "1 second ago";
+"SecondsAgo Verbose" 	= "%d seconds ago";
+"MinuteAgo Verbose"  	= "1 minute ago";
+"MinutesAgo Verbose" 	= "%d minutes ago";
+"HourAgo Verbose"    	= "1 hour ago";
+"HoursAgo Verbose"   	= "%d hours ago";
+"Yesterday Verbose"     = "1 day ago";
+"DaysAgo Verbose"    	= "%d days ago";
+"LastWeek Verbose"   	= "1 week ago";
+"WeeksAgo Verbose"   	= "%d weeks ago";
+"LastMonth Verbose"  	= "1 month ago";
+"MonthsAgo Verbose"  	= "%d months ago";
+"LastYear Verbose"   	= "1 year ago";
+"YearsAgo Verbose"   	= "%d years ago";
 
 "JustAMoment"           =   "Just a moment";
 
@@ -231,7 +231,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Invalid New Password";
 "ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that is different than your current password.";
 
-"Resend Email"           =   "Resend Email";
+"Resend Email"          =   "Resend Email";
 
 "EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
 "EmailNotValid"         =   "Please enter the email used to create this account.";
@@ -350,8 +350,15 @@
 "ActivityPurchasing"                    = "  Purchasing...";
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restore Purchases";
+"SettingsManageSubscriptions"           = "Manage Subscriptions";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
+"SettingsNoSubcriptionPrompt"           = "You do not have any active subscriptions on this device.\nIf you've subscribed on another device, tap Restore Purchases to restore them.";
+"SettingsSubscriptionSettingsPrompt"    = "To manage your subscription settings in the App Store, tap Manage Subscription.";
 "Reset Purchases"                       = "Reset Purchases";
+"SubscriptionDescriptionFormat"         = "%@ per month.  Subscription period ends on %@.";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "%@ per month.";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "In-App Purchases";
+"SubscriptionsSettingsTitle"            = "Subscriptions";
 
 "SubscriptionRestoreFailed"             = "Failed to restore subcription.";
 "SubscriptionSucceeded"                 = "Subscription complete!";

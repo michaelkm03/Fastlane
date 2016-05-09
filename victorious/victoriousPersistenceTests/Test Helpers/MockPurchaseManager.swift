@@ -8,6 +8,7 @@
 
 import Foundation
 import victorious
+import XCTest
 
 class MockPurchaseManager: NSObject, VPurchaseManagerType {
     
@@ -18,8 +19,6 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
     }
     
     // MARK: - VPurchaseManagerType
-    
-    var isPurchasingEnabled = true
     
     var isPurchaseRequestActive = false
     
@@ -62,6 +61,17 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
     }
     
     func purchaseableProductForProductIdentifier(productIdentifier: String) -> VProduct {
+        XCTFail("MockPurchaseManager :: purchaseableProductForProductIdentifier :: Not yet implemented")
+        abort()
+    }
+    
+    func resetPurchases() {
+        XCTFail("MockPurchaseManager :: resetPurchases :: Not yet implemented")
+        abort()
+    }
+    
+    func purchaseTypeForProductIdentifier(productIdentifier: String) -> VPurchaseType {
+        XCTFail("MockPurchaseManager :: purchaseTypeForProductIdentifier :: Not yet implemented")
         abort()
     }
 }

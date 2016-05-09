@@ -7,8 +7,8 @@
 //
 
 #import "VProductsRequest.h"
-
 #import "VProduct.h"
+
 @interface VProductsRequest()
 
 @property (nonatomic, assign) NSUInteger productsFailedCount;

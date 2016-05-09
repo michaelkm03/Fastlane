@@ -52,7 +52,7 @@
 @property (nonatomic, retain) NSString * accountIdentifier;  //< Transient
 @property (nonatomic, retain) NSNumber * isNewUser; //< Transient
 @property (nonatomic, retain) NSNumber * isVIPSubscriber; //< Transient (so that validation only comes from the backend and is never read from disk)
-@property (nonatomic, retain) NSDate * vipSubscribeDate; //< Transient
+@property (nonatomic, retain) NSDate * vipEndDate; //< Transient
 @property (nonatomic, retain) id achievementsUnlocked;
 @property (nonatomic, retain) NSString * avatarBadgeType;
 
