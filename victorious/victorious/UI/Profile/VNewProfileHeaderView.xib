@@ -57,13 +57,13 @@
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Silver" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zLV-Ya-zG1">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Silver" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zLV-Ya-zG1">
                                     <rect key="frame" x="138" y="0.0" width="68" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                     <color key="textColor" white="0.34999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="This Week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smk-lX-SlD">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="This Week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smk-lX-SlD">
                                     <rect key="frame" x="138" y="35" width="58" height="15"/>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -158,19 +158,19 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="contentContainerView" destination="2CI-b7-Xcv" id="ml5-Iz-uiy"/>
+                <outlet property="likesGivenTitleLabel" destination="Gic-9d-iw2" id="ekF-rV-tSA"/>
+                <outlet property="likesGivenValueLabel" destination="5As-gv-BaS" id="MkJ-WR-HXv"/>
+                <outlet property="likesReceivedTitleLabel" destination="7xf-du-JmB" id="RhZ-B6-Q8R"/>
+                <outlet property="likesReceivedValueLabel" destination="kQF-eD-PYq" id="ypB-ol-azh"/>
                 <outlet property="loadingContainerView" destination="UTa-SH-v5N" id="6aI-vo-3bD"/>
                 <outlet property="loadingSpinner" destination="b9t-c7-QRb" id="yhN-eb-J9Z"/>
                 <outlet property="locationLabel" destination="bgN-Fc-zF5" id="I9Y-wV-tra"/>
                 <outlet property="nameLabel" destination="mcj-ia-6iG" id="aRy-cH-aRf"/>
                 <outlet property="profilePictureShadowView" destination="qcs-Ld-7x5" id="zsW-sn-HsT"/>
                 <outlet property="profilePictureView" destination="OvJ-TG-jlp" id="bqC-ie-tVk"/>
-                <outlet property="rankTitleLabel" destination="Smk-lX-SlD" id="uFu-ZK-hPc"/>
-                <outlet property="rankValueLabel" destination="zLV-Ya-zG1" id="mJf-4K-1MP"/>
                 <outlet property="taglineLabel" destination="Y66-IZ-W3V" id="g6a-Ct-rUB"/>
-                <outlet property="upvotedTitleLabel" destination="Gic-9d-iw2" id="9IJ-MA-c8N"/>
-                <outlet property="upvotedValueLabel" destination="5As-gv-BaS" id="aHm-QR-UTy"/>
-                <outlet property="upvotesTitleLabel" destination="7xf-du-JmB" id="a7H-TL-Spa"/>
-                <outlet property="upvotesValueLabel" destination="kQF-eD-PYq" id="TEK-6c-3x6"/>
+                <outlet property="tierTitleLabel" destination="Smk-lX-SlD" id="xZh-vz-Xbj"/>
+                <outlet property="tierValueLabel" destination="zLV-Ya-zG1" id="2UK-43-405"/>
                 <outlet property="vipIconImageView" destination="pFB-H3-sxq" id="QAS-8n-Azw"/>
             </connections>
             <point key="canvasLocation" x="1096" y="-167.5"/>

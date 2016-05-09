@@ -9,21 +9,33 @@
 import Foundation
 
 public struct UserInfoRequest: RequestType {
+    public let urlRequest: NSURLRequest
     
-    let userID: Int
-    
-    public init( userID: Int ) {
-        self.userID = userID
+    private static func defaultURL(forUserID userID: Int) -> NSURL {
+         return NSURL(string: "/api/userinfo/fetch")!.URLByAppendingPathComponent(String(userID))
     }
     
-    public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/userinfo/fetch")!.URLByAppendingPathComponent( String(self.userID) )
-        return NSURLRequest(URL: url)
+    public init(userID: Int, apiPath: String? = nil) {
+        let url: NSURL
+        
+        if let apiPath = apiPath {
+            let macroReplacer = VSDKURLMacroReplacement()
+            
+            let processedAPIPath = macroReplacer.urlByReplacingMacrosFromDictionary([
+                "%%USER_ID%%": String(userID)
+            ], inURLString: apiPath)
+            
+            url = NSURL(string: processedAPIPath) ?? UserInfoRequest.defaultURL(forUserID: userID)
+        } else {
+            url = UserInfoRequest.defaultURL(forUserID: userID)
+        }
+        
+        urlRequest = NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
         let results = responseJSON["payload"].arrayValue.flatMap({ User(json: $0) })
-         if let user = results.first {
+        if let user = results.first {
             return user
         }
         throw ResponseParsingError()

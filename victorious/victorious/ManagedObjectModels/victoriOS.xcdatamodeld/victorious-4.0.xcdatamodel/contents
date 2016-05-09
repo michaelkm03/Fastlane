@@ -316,6 +316,7 @@
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="vipEndDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -377,7 +378,7 @@
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="705"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="720"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>

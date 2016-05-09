@@ -2203,6 +2203,13 @@
 			remoteGlobalIDString = 0372BE661C84FA56004950CF;
 			remoteInfo = "VictoriousIOSSDK-OSX";
 		};
+		7AF9301E1CDA6F6800F02EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
+		};
 		A7EBF5251C2B8CA20080C7CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -10530,6 +10537,7 @@
 			);
 			dependencies = (
 				03314F281BE3E2DF00EE74FD /* PBXTargetDependency */,
+				7AF9301F1CDA6F6800F02EDB /* PBXTargetDependency */,
 			);
 			name = VictoriousIOSSDKTests;
 			productName = VictoriousIOSSDKTests;
@@ -10747,6 +10755,7 @@
 					};
 					03314F241BE3E2DF00EE74FD = {
 						CreatedOnToolsVersion = 7.1;
+						TestTargetID = BE171D751868BE64004E5202;
 					};
 					0352FC7D1B72B90000DB6EAB = {
 						CreatedOnToolsVersion = 6.4;
@@ -13447,6 +13456,11 @@
 			target = 0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */;
 			targetProxy = 03C116C71C850E7E00F3F873 /* PBXContainerItemProxy */;
 		};
+		7AF9301F1CDA6F6800F02EDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = 7AF9301E1CDA6F6800F02EDB /* PBXContainerItemProxy */;
+		};
 		A7EBF5261C2B8CA20080C7CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BE171D751868BE64004E5202 /* victorious */;
@@ -14097,7 +14111,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "build/Debug-iphoneos/VictoriousIOSSDKTestApp.app/VictoriousIOSSDKTestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Debug;
 		};
@@ -14115,7 +14129,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "build/QA-iphoneos/VictoriousIOSSDKTestApp.app/VictoriousIOSSDKTestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = QA;
 		};
@@ -14133,7 +14147,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "build/Staging-iphoneos/VictoriousIOSSDKTestApp.app/VictoriousIOSSDKTestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Staging;
 		};
@@ -14151,7 +14165,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "build/Stable-iphoneos/VictoriousIOSSDKTestApp.app/VictoriousIOSSDKTestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Stable;
 		};
@@ -14169,7 +14183,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "build/Release-iphoneos/VictoriousIOSSDKTestApp.app/VictoriousIOSSDKTestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Release;
 		};

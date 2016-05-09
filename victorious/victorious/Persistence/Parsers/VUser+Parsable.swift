@@ -34,6 +34,7 @@ extension VUser: PersistenceParsable {
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
+        tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
         
         if let vipStatus = user.vipStatus {

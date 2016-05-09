@@ -26,6 +26,7 @@
 @dynamic level;
 @dynamic levelProgressPercentage;
 @dynamic levelProgressPoints;
+@dynamic tier;
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;

@@ -16,8 +16,8 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     /// The result (if successfuly), a user loaded from the main context
     var user: VUser?
     
-    init( userID: Int ) {
-        self.request = UserInfoRequest(userID: userID)
+    init(userID: Int, apiPath: String? = nil) {
+        self.request = UserInfoRequest(userID: userID, apiPath: apiPath)
     }
     
     override func main() {
