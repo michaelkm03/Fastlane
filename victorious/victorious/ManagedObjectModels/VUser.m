@@ -61,5 +61,6 @@
 @dynamic vipEndDate;
 @dynamic achievementsUnlocked;
 @dynamic avatarBadgeType;
+@dynamic viewedContent;
 
 @end

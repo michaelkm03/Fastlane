@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -63,6 +63,31 @@
         <relationship name="inStreamSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="recentComments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="Content" representedClassName=".VContent" syncable="YES">
+        <attribute name="isUGC" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="remoteID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="shareURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="assets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentData" inverseName="content" inverseEntity="ContentData" syncable="YES"/>
+        <relationship name="previewImages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentPreview" inverseName="content" inverseEntity="ContentPreview" syncable="YES"/>
+        <relationship name="viewedContent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ViewedContent" inverseName="content" inverseEntity="ViewedContent" syncable="YES"/>
+    </entity>
+    <entity name="ContentData" representedClassName=".VContentData" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="remoteSource" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="NO" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="assets" inverseEntity="Content" syncable="YES"/>
+    </entity>
+    <entity name="ContentPreview" representedClassName=".VContentPreview" syncable="YES">
+        <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageURL" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="previewImages" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -336,11 +361,16 @@
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserShelf" inverseName="user" inverseEntity="UserShelf" syncable="YES"/>
+        <relationship name="viewedContent" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ViewedContent" inverseName="author" inverseEntity="ViewedContent" syncable="YES"/>
     </entity>
     <entity name="UserShelf" representedClassName="victorious.UserShelf" parentEntity="Shelf" syncable="YES">
         <attribute name="followersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="postsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="shelves" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="ViewedContent" representedClassName=".VViewedContent" syncable="YES">
+        <relationship name="author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="viewedContent" inverseEntity="User" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="viewedContent" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -353,6 +383,9 @@
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Content" positionX="81" positionY="153" width="128" height="180"/>
+        <element name="ContentData" positionX="108" positionY="180" width="128" height="120"/>
+        <element name="ContentPreview" positionX="99" positionY="171" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="FollowedHashtag" positionX="0" positionY="0" width="128" height="90"/>
@@ -380,6 +413,7 @@
         <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
         <element name="User" positionX="0" positionY="0" width="128" height="720"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="ViewedContent" positionX="90" positionY="162" width="128" height="75"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>
 </model>

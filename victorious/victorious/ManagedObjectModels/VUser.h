@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
+@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser, VViewedContent;
 
 @interface VUser : NSManagedObject
 
@@ -56,5 +56,6 @@
 @property (nonatomic, retain) NSDate * vipEndDate; //< Transient
 @property (nonatomic, retain) id achievementsUnlocked;
 @property (nonatomic, retain) NSString * avatarBadgeType;
+@property (nonatomic, retain) NSSet<VViewedContent *> *viewedContent;
 
 @end
