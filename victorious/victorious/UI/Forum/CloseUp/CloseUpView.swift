@@ -87,46 +87,57 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     var maxHeight: CGFloat = CGFloat.max
     
-    var content: CloseUpContent? {
+    var viewedContent: VViewedContent? {
         didSet {
-            guard let content = content else {
+            guard let viewedContent = viewedContent,
+                let author = viewedContent.author,
+                let content = viewedContent.content else {
                 return
             }
+            
+            
             // Header
-            userNameButton.setTitle(content.user.name, forState: UIControlState.Normal)
-            if let picturePath = content.user.pictureUrl, pictureURL = NSURL(string: picturePath) {
+            userNameButton.setTitle(author.name, forState: UIControlState.Normal)
+            if let picturePath = author.pictureUrl, pictureURL = NSURL(string: picturePath) {
                 profileImageView.sd_setImageWithURL(pictureURL,
                                                     placeholderImage: placeholderImage)
             }
             else {
                 profileImageView.image = placeholderImage
             }
-            blurredImageView.applyBlurToImageURL(content.previewImageURL, withRadius: 12.0) { [weak self] in
-                guard let strongSelf = self else {
-                    return
+            let minWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
+
+            if let preview = content.previewImageWithMinimumWidth(minWidth),
+                let remoteSource = preview.imageURL,
+                let remoteURL = NSURL(string: remoteSource) {
+                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    strongSelf.blurredImageView.alpha = blurredImageAlpha
                 }
-                strongSelf.blurredImageView.alpha = blurredImageAlpha
             }
             
-            createdAtLabel.text = content.creationDate?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.title
             mediaContentView.content = content
             
             // Update size
-            self.frame.size = sizeForContent(content)
+            self.frame.size = sizeForContent(viewedContent)
         }
     }
     
     override func layoutSubviews() {
-        guard let content = content else {
+        guard let content = viewedContent?.content else {
             return
         }
         
         var totalHeight = CGRectGetHeight(headerSection.bounds) + headerSection.frame.origin.y
         
         let screenWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
-        let aspectRatio = content.aspectRatio // width to height ratio
-        let contentHeight: CGFloat = min(screenWidth / aspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
+        
+        let contentAspectRatio = aspectRatio(for: content)
+        let contentHeight: CGFloat = min(screenWidth / contentAspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -145,10 +156,24 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
     }
     
-    func sizeForContent(content: CloseUpContent) -> CGSize {
+    func aspectRatio(for content: VContent) -> CGFloat {
+        guard let preview = content.previewImages?.allObjects.first as? VContentPreview,
+            let height = preview.height?.integerValue,
+            let width = preview.width?.integerValue
+            where height > 0 && width > 0 else {
+            return 1.0
+        }
+        return CGFloat(width) / CGFloat(height)
+    }
+    
+    func sizeForContent(viewedContent: VViewedContent) -> CGSize {
+        guard let content = viewedContent.content else {
+                return CGSizeZero
+        }
         let screenWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
-        let aspectRatio = content.aspectRatio // width to height ratio
-        let contentHeight: CGFloat = min(screenWidth / aspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
+        
+        let contentAspectRatio = aspectRatio(for: content)
+        let contentHeight: CGFloat = min(screenWidth / contentAspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
         
         if !contentHasTitle(content) {
             return CGSizeMake(screenWidth, CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(relatedLabel.bounds))
@@ -164,11 +189,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         return CGSizeMake(screenWidth, height)
     }
     
-    private func contentHasTitle(content: CloseUpContent) -> Bool {
-        if content.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count == 0 {
+    private func contentHasTitle(content: VContent) -> Bool {
+        guard let title = content.title else {
             return false
         }
-        return true
+        return title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count > 0
     }
     
     @objc private func closeUpDismissed() {
@@ -184,13 +209,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
-                        content: CloseUpContent?) {
-        self.content = content
+                        content: VViewedContent?) {
+        self.viewedContent = content
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: CloseUpContent?) -> CGSize {
+                       content: VViewedContent?) -> CGSize {
         guard let content = content else {
             return CGSizeZero
         }

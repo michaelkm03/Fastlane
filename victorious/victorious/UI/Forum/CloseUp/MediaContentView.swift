@@ -36,38 +36,44 @@ class MediaContentView: UIView {
         v_addFitToParentConstraintsToSubview(previewImageView)
     }
     
-    var content: CloseUpContent? {
+    var content: VContent? {
         didSet {
             guard let content = content else {
                 fatalError("Content cannot be nil")
             }
             videoCoordinator = VideoPlayerCoordinator(content: content)
-            previewImageView.sd_setImageWithURL(content.previewImageURL)
-            setupForContentType(content.contentType)
-            if content.contentType != .Image {
-                setupVideoContainer()
-                videoCoordinator.setupVideoPlayer(in: videoContainerView)
-                videoCoordinator.setupToolbar(in: self, initallyVisible: false)
-                videoCoordinator.loadVideo()
+            let minWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
+            
+            if let preview = content.previewImageWithMinimumWidth(minWidth),
+                let previewRemoteURL = preview.imageURL,
+                let previewImageURL = NSURL(string: previewRemoteURL) {
+                previewImageView.sd_setImageWithURL(previewImageURL)
             }
+            setupForContent(content)
+//            if content.contentType != .Image {
+//                setupVideoContainer()
+//                videoCoordinator.setupVideoPlayer(in: videoContainerView)
+//                videoCoordinator.setupToolbar(in: self, initallyVisible: false)
+//                videoCoordinator.loadVideo()
+//            }
         }
     }
     
-    private func setupForContentType(contentType: CloseUpContentType) {
-        switch contentType {
-        case .Image:
+    private func setupForContent(content: VContent) {
+//        switch content {
+//        case .Image:
             videoContainerView.hidden = true
             previewImageView.hidden = false
-        case .Video:
-            videoContainerView.hidden = false
-            previewImageView.hidden = true
-        case .GIF:
-            videoContainerView.hidden = false
-            previewImageView.hidden = true
-        case .Youtube:
-            videoContainerView.hidden = false
-            previewImageView.hidden = true
-        }
+//        case .Video:
+//            videoContainerView.hidden = false
+//            previewImageView.hidden = true
+//        case .GIF:
+//            videoContainerView.hidden = false
+//            previewImageView.hidden = true
+//        case .Youtube:
+//            videoContainerView.hidden = false
+//            previewImageView.hidden = true
+//        }
     }
     
     private func setupVideoContainer() {
@@ -77,8 +83,9 @@ class MediaContentView: UIView {
     }
     
     private func shouldShowToolbar() -> Bool {
-        let currentContentType = content?.contentType
-        return currentContentType == .Video || currentContentType == .Youtube
+//        let currentContentType = content?.contentType
+//        return currentContentType == .Video || currentContentType == .Youtube
+        return true
     }
     
     // MARK: - Actions
@@ -97,6 +104,7 @@ class MediaContentView: UIView {
     // MARK: - Helpers
     
     private func shouldReplay() -> Bool {
-        return content?.contentType == .GIF
+//        return content?.contentType == .GIF
+        return true
     }
 }

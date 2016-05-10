@@ -228,13 +228,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
                         referenceSizeForFooterInSection section: Int) -> CGSize {
         return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
-    
+
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let seq = dataSource.visibleItems[indexPath.row] as! VSequence
         ShowCloseUpOperation(
             originViewController: self,
             dependencyManager: dependencyManager,
-            sequence: seq
+            contentID: seq.remoteId
         ).queue()
     }
 }

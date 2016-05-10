@@ -28,22 +28,24 @@ class VideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelega
             toolbar.paused = state != .Playing
         }
     }
-    private var content: CloseUpContent
+    private var content: VContent
     private var shouldLoop: Bool {
-        return content.contentType == .GIF
+//        return content.contentType == .GIF
+        return true
     }
     private var shouldMute: Bool {
-        return content.contentType == .GIF
+//        return content.contentType == .GIF
+        return true
     }
     
-    init(content: CloseUpContent) {
+    init(content: VContent) {
         self.content = content
         
         super.init()
         
-        if content.contentType == .Youtube {
-            videoPlayer = YouTubeVideoPlayer()
-        }
+//        if content.contentType == .Youtube {
+//            videoPlayer = YouTubeVideoPlayer()
+//        }
         videoPlayer.delegate = self
         videoPlayer.view.backgroundColor = UIColor.clearColor()
         
@@ -69,7 +71,9 @@ class VideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelega
     }
     
     func loadVideo() {
-        guard let contentURL = content.mediaURL else {
+        guard let contentData = content.assets?.allObjects.first as? VContentData,
+            let remoteSource = contentData.remoteSource,
+            let contentURL = NSURL(string: remoteSource) else {
             return
         }
         let item = VVideoPlayerItem(URL: contentURL)
