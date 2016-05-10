@@ -18,6 +18,7 @@ public class Content {
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentDataAsset]?
+    public let type: String?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -39,6 +40,7 @@ public class Content {
         self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue)
         self.isUGC = json["is_ugc"].bool
         self.tags = nil
+        self.type = type
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         if type == "image" {

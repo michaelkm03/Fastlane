@@ -71,6 +71,7 @@
         <attribute name="shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentData" inverseName="content" inverseEntity="ContentData" syncable="YES"/>
         <relationship name="previewImages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentPreview" inverseName="content" inverseEntity="ContentPreview" syncable="YES"/>
         <relationship name="viewedContent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ViewedContent" inverseName="content" inverseEntity="ViewedContent" syncable="YES"/>
@@ -381,7 +382,7 @@
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="Content" positionX="81" positionY="153" width="128" height="180"/>
+        <element name="Content" positionX="81" positionY="153" width="128" height="195"/>
         <element name="ContentData" positionX="108" positionY="180" width="128" height="90"/>
         <element name="ContentPreview" positionX="99" positionY="171" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
