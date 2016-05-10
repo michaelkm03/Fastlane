@@ -17,6 +17,7 @@ extension VContent: PersistenceParsable {
         shareURL = sourceModel.shareURL?.absoluteString ?? shareURL
         status = sourceModel.status ?? status
         title = sourceModel.title ?? title
+        type = sourceModel.type ?? type
         
         if let previewAssets = sourceModel.previewImages {
             let persistentAssets: [VContentPreview] = previewAssets.flatMap {
