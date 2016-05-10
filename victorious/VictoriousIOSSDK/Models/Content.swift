@@ -8,19 +8,74 @@
 
 import Foundation
 
-public struct ContentDataAsset {
-    public let width: Double?
-    public let height: Double?
-    public let duration: Double?
-    public let data: String?
-}
-
-extension ContentDataAsset {
-    public init?(json: JSON) {
-        data            = json["data"].string
-        duration        = json["duration"].double
-        width           = json["width"].double
-        height          = json["height"].double
+public enum ContentDataAsset {
+    case video(url: NSURL, source: String?)
+    case gif(url: NSURL, source: String?)
+    case image(url: NSURL)
+    
+    init?(contentType: String, sourceType: String, json: JSON) {
+        
+        switch contentType {
+        case "image":
+            guard let url = json["data"].URL else {
+                return nil
+            }
+            self = .image(url: url)
+        case "video", "gif":
+            var url: NSURL?
+            
+            switch sourceType {
+            case "video_assets":
+                url = json["data"].URL
+            case "remote_assets":
+                url = json["remote_content_url"].URL
+            default:
+                return nil
+            }
+            
+            let source = json["source"].string
+            
+            if url != nil {
+                if contentType == "video" {
+                    self = .video(url: url!, source: source)
+                }
+                else if contentType == "gif" {
+                    self = .gif(url: url!, source: source)
+                }
+                else {
+                    return nil
+                }
+            }
+            else {
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
+    
+    /// URL pointing to the resource.
+    public var url: NSURL {
+        switch self {
+        case .video(let url, _):
+            return url
+        case .gif(let url, _):
+            return url
+        case .image(let url):
+            return url
+        }
+    }
+    
+    /// String describing the source. May return "youtube", "giphy", or nil.
+    public var source: String? {
+        switch self {
+        case .video(_, let source):
+            return source
+        case .gif(_, let source):
+            return source
+        default:
+            return nil
+        }
     }
 }
 
@@ -42,7 +97,7 @@ public class Content {
         guard let id = json["id"].string,
             let type = json["type"].string,
             let previewType = json["preview"]["type"].string,
-            let contentType = json[type]["type"].string else {
+            let sourceType = json[type]["type"].string else {
             NSLog("ID misssing in content json -> \(json)")
             return nil
         }
@@ -57,6 +112,12 @@ public class Content {
         self.tags = nil
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        self.contentData = (json[type][contentType].array ?? []).flatMap { ContentDataAsset(json: $0) }
+        self.contentData = (json[type][sourceType].array ?? []).flatMap {
+            ContentDataAsset(
+                contentType: type,
+                sourceType: sourceType,
+                json: $0
+            )
+        }
     }
 }

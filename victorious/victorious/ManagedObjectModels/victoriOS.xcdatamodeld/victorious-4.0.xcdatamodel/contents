@@ -76,10 +76,8 @@
         <relationship name="viewedContent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ViewedContent" inverseName="content" inverseEntity="ViewedContent" syncable="YES"/>
     </entity>
     <entity name="ContentData" representedClassName=".VContentData" syncable="YES">
-        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
         <attribute name="remoteSource" attributeType="String" syncable="YES"/>
-        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="NO" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="assets" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="ContentPreview" representedClassName=".VContentPreview" syncable="YES">
@@ -384,7 +382,7 @@
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Content" positionX="81" positionY="153" width="128" height="180"/>
-        <element name="ContentData" positionX="108" positionY="180" width="128" height="120"/>
+        <element name="ContentData" positionX="108" positionY="180" width="128" height="90"/>
         <element name="ContentPreview" positionX="99" positionY="171" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
