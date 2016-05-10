@@ -11,9 +11,7 @@ import UIKit
 extension VContentData: PersistenceParsable {
     
     func populate( fromSourceModel sourceModel: ContentDataAsset ) {
-        duration = sourceModel.duration
-        width = sourceModel.width
-        height = sourceModel.height
-        remoteSource = sourceModel.data
+        remoteSource = sourceModel.url.absoluteString ?? remoteSource
+        source = sourceModel.source ?? source
     }
 }

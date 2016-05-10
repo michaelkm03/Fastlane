@@ -12,10 +12,8 @@ import CoreData
 
 class VContentData: NSManagedObject {
     
-    @NSManaged var duration: NSNumber?
-    @NSManaged var width: NSNumber?
-    @NSManaged var height: NSNumber?
     @NSManaged var remoteSource: String?
+    @NSManaged var source: String?
     @NSManaged var content: VContent?
 
 }
