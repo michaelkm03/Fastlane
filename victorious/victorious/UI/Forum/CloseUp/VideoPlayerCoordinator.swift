@@ -30,22 +30,30 @@ class VideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelega
     }
     private var content: VContent
     private var shouldLoop: Bool {
-//        return content.contentType == .GIF
-        return true
+        guard let contentType = content.contentType() else {
+            return false
+        }
+        return contentType == .gif
     }
     private var shouldMute: Bool {
-//        return content.contentType == .GIF
-        return true
+        guard let contentType = content.contentType() else {
+            return false
+        }
+        return contentType == .gif
     }
     
-    init(content: VContent) {
+    init?(content: VContent) {
         self.content = content
+        guard let firstAsset = content.assets?.allObjects.first as? VContentData else {
+            return nil
+        }
+        
+        if let contentType = content.contentType()
+            where contentType == .video && firstAsset.source == "youtube" {
+            videoPlayer = YouTubeVideoPlayer()
+        }
         
         super.init()
-        
-//        if content.contentType == .Youtube {
-//            videoPlayer = YouTubeVideoPlayer()
-//        }
         videoPlayer.delegate = self
         videoPlayer.view.backgroundColor = UIColor.clearColor()
         
