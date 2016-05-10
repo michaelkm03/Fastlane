@@ -1685,6 +1685,7 @@
 		BF5857EC1C920276007684FE /* MediaSearchMediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */; };
 		BF68C4F01C7CEE9900739D87 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* Avatar.swift */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentDataAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentDataAsset.swift */; };
+		BF78BF0B1CE2940E00AFB8F3 /* VContent+Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF0A1CE2940E00AFB8F3 /* VContent+Fetcher.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */; };
 		BF79C7721C98D3D100222C8A /* LoadingCancellableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */; };
@@ -4381,6 +4382,7 @@
 		BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporterTests.swift; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* Avatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		BF78BF061CE27FB800AFB8F3 /* ContentDataAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDataAsset.swift; sourceTree = "<group>"; };
+		BF78BF0A1CE2940E00AFB8F3 /* VContent+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContent+Fetcher.swift"; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
 		BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCancellableView.xib; sourceTree = "<group>"; };
@@ -7718,6 +7720,7 @@
 				A721E8761B572452000B7901 /* VSequence+Fetcher.m */,
 				A7A1CF5D1C62BE6400B08F07 /* VStreamItem+Fetcher.h */,
 				A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */,
+				BF78BF0A1CE2940E00AFB8F3 /* VContent+Fetcher.swift */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -12228,6 +12231,7 @@
 				F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				F0BD81271C9A18020062D079 /* CreationFlowTypeHelper.swift in Sources */,
+				BF78BF0B1CE2940E00AFB8F3 /* VContent+Fetcher.swift in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
