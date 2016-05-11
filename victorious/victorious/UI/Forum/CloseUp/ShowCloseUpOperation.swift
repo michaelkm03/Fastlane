@@ -27,10 +27,10 @@ class ShowCloseUpOperation: MainQueueOperation {
         let userID = VCurrentUser.user()!.remoteId.integerValue ?? 0
         
         let request = ViewedContentFetchRequest(
-            macroURLString: "https://vapi-dev.getvictorious.com/v1/content/%%SEQUENCE_ID%%/user/%%USER_ID%%",
+            macroURLString: dependencyManager.contentFetchURL,
             currentUserID: "\(userID)",
             contentID: contentID
-            )!
+        )!
         
         fetcherOperation = ViewedContentFetchOperation(request: request)
         super.init()
@@ -66,4 +66,12 @@ class ShowCloseUpOperation: MainQueueOperation {
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
     }
     
+}
+
+private extension VDependencyManager {
+    var contentFetchURL: String {
+        let centerScreen = childDependencyForKey("centerScreen")
+        let networkResources = centerScreen?.childDependencyForKey("networkResources")
+        return networkResources?.stringForKey("contentFetchURL") ?? ""
+    }
 }
