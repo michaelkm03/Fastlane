@@ -186,6 +186,40 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      }];
 }
 
+- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock
+{
+    if ( [self isURLDownloaded:url] )
+    {
+        return;
+    }
+    
+    __weak UIImageView *weakSelf = self;
+    self.alpha = 0.0f;
+    [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        {
+            if ( error != nil )
+            {
+                weakSelf.image = nil;
+                weakSelf.alpha = 1.0f;
+                return;
+            }
+            
+            UIImage *blurredImage = [image applyBlurWithRadius:blurRadius
+                                                     tintColor:nil
+                                         saturationDeltaFactor:1.0
+                                                     maskImage:nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                self.image = blurredImage;
+                callbackBlock();
+            });
+        });
+    }];
+}
+
 #pragma mark - internal helpers
 
 - (BOOL)isURLDownloaded:(NSURL *)url

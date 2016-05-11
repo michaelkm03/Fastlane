@@ -11,6 +11,7 @@ import UIKit
 private let headerName = "ConfigurableGridStreamHeaderView"
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedDataSource, UICollectionViewDataSource {
+    private var apiPath: String!
     private var streamAPIPath: String!
     private var headerView: ConfigurableGridStreamHeaderView!
     private var header: HeaderType?
@@ -32,7 +33,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
         self.header = header
         self.content = content
         self.streamAPIPath = streamAPIPath
-        
         cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
     }
     
@@ -95,7 +95,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath)
-        cell.layer.cornerRadius = 10
+        cell.layer.cornerRadius = 6
         cell.backgroundColor = .clearColor()
         cell.contentView.backgroundColor = .clearColor()
         return cell

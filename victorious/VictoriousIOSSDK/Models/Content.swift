@@ -37,7 +37,7 @@ public class Content {
         self.status = json["status"].string
         self.title = json["title"].string
         self.shareURL = json["share_url"].URL
-        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue)
+        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) /// <backend returns in milliseconds
         self.isUGC = json["is_ugc"].bool
         self.tags = nil
         self.type = type
