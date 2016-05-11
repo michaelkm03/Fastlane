@@ -144,13 +144,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
                              didUpdateVisibleItemsFrom oldValue: NSOrderedSet,
-                                                       to newValue: NSOrderedSet) {
+                             to newValue: NSOrderedSet) {
         collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
     }
     
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
                              didChangeStateFrom oldState: VDataSourceState,
-                                                to newState: VDataSourceState) {
+                             to newState: VDataSourceState) {
         if oldState == .Loading {
             refreshControl.endRefreshing()
         }
