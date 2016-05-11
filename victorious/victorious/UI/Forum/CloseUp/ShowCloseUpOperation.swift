@@ -8,53 +8,6 @@
 
 import UIKit
 
-//enum CloseUpContentType {
-//    case Image
-//    case GIF
-//    case Video
-//    case Youtube
-//}
-//
-//protocol CloseUpContent {
-//    var title: String { get }
-//    var contentType: CloseUpContentType { get }
-//    var mediaURL: NSURL? { get }
-//    var previewImageURL: NSURL { get }
-//    var aspectRatio: CGFloat { get }
-//    var user: VUser { get }
-//    var creationDate: NSDate? { get }
-//    var remoteID: String? { get }
-//}
-//
-//class CUVContent: NSObject, CloseUpContent {
-//    var title: String
-//    var contentType: CloseUpContentType
-//    var mediaURL: NSURL?
-//    var previewImageURL: NSURL
-//    var aspectRatio: CGFloat
-//    var user: VUser
-//    var creationDate: NSDate?
-//    var remoteID: String?
-//    init(title: String,
-//         contentType: CloseUpContentType,
-//         mediaURL: NSURL? = nil,
-//         remoteID: String,
-//         previewImageURL: NSURL,
-//         aspectRatio: CGFloat,
-//         user: VUser,
-//         creationDate: NSDate?) {
-//        
-//        self.title = title
-//        self.contentType = contentType
-//        self.mediaURL = mediaURL
-//        self.remoteID = remoteID
-//        self.previewImageURL = previewImageURL
-//        self.aspectRatio = aspectRatio
-//        self.user = user
-//        self.creationDate = creationDate
-//    }
-//}
-
 class ShowCloseUpOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
