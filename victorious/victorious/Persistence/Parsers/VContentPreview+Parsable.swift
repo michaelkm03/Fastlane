@@ -14,6 +14,6 @@ extension VContentPreview: PersistenceParsable {
         width = sourceModel.mediaMetaData.size?.width ?? width
         height = sourceModel.mediaMetaData.size?.height ?? height
         imageURL = sourceModel.mediaMetaData.url.absoluteString ?? imageURL
-        type = sourceModel.type
+        type = sourceModel.type ?? type
     }
 }

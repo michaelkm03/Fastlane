@@ -8,22 +8,6 @@
 
 import Foundation
 
-public struct ContentDataAsset {
-    public let width: Double?
-    public let height: Double?
-    public let duration: Double?
-    public let data: String?
-}
-
-extension ContentDataAsset {
-    public init?(json: JSON) {
-        data            = json["data"].string
-        duration        = json["duration"].double
-        width           = json["width"].double
-        height          = json["height"].double
-    }
-}
-
 public class Content {
     public let id: String
     public let status: String?
@@ -34,6 +18,7 @@ public class Content {
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentDataAsset]?
+    public let type: String?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -42,7 +27,7 @@ public class Content {
         guard let id = json["id"].string,
             let type = json["type"].string,
             let previewType = json["preview"]["type"].string,
-            let contentType = json[type]["type"].string else {
+            let sourceType = json[type]["type"].string else {
             NSLog("ID misssing in content json -> \(json)")
             return nil
         }
@@ -55,8 +40,27 @@ public class Content {
         self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue)
         self.isUGC = json["is_ugc"].bool
         self.tags = nil
+        self.type = type
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        self.contentData = (json[type][contentType].array ?? []).flatMap { ContentDataAsset(json: $0) }
+        if type == "image" {
+            if let asset = ContentDataAsset(
+                contentType: type,
+                sourceType: sourceType,
+                json: json[type]
+                ) {
+                self.contentData = [asset]
+            } else {
+                self.contentData = []
+            }
+        } else {
+            self.contentData = (json[type][sourceType].array ?? []).flatMap {
+                ContentDataAsset(
+                    contentType: type,
+                    sourceType: sourceType,
+                    json: $0
+                )
+            }
+        }
     }
 }

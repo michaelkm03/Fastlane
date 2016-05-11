@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class VContent: NSManagedObject {
     
     @NSManaged var isUGC: NSNumber?
@@ -18,6 +17,7 @@ class VContent: NSManagedObject {
     @NSManaged var shareURL: String?
     @NSManaged var status: String?
     @NSManaged var title: String?
+    @NSManaged var type: String? /// < "image", "video", "gif"
     @NSManaged var assets: NSSet?
     @NSManaged var previewImages: NSSet?
     @NSManaged var viewedContent: VViewedContent?

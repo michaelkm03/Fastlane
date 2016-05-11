@@ -17,6 +17,7 @@ extension VContent: PersistenceParsable {
         shareURL = sourceModel.shareURL?.absoluteString ?? shareURL
         status = sourceModel.status ?? status
         title = sourceModel.title ?? title
+        type = sourceModel.type ?? type
         
         if let previewAssets = sourceModel.previewImages {
             let persistentAssets: [VContentPreview] = previewAssets.flatMap {
@@ -30,7 +31,7 @@ extension VContent: PersistenceParsable {
         
         if let contentData = sourceModel.contentData {
             let persistentAssets: [VContentData] = contentData.flatMap {
-                let data: VContentData = self.v_managedObjectContext.v_findOrCreateObject([ "remoteSource" : $0.data! ])
+                let data: VContentData = self.v_managedObjectContext.v_findOrCreateObject([ "remoteSource" :  $0.url.absoluteString])
                 data.populate( fromSourceModel: $0 )
                 data.content = self
                 return data
