@@ -58,4 +58,13 @@ extension VContent {
         }
         return assetsByAscendingArea.last
     }
+    
+    func largestPreviewAsset() -> VContentPreview? {
+        guard let previewImages = previewImages as? Set<VContentPreview> else {
+            return nil
+        }
+        
+        let assetsByAscendingArea = previewImages.sort { $0.area < $1.area }
+        return assetsByAscendingArea.last
+    }
 }
