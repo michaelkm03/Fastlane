@@ -22,8 +22,6 @@ class ShowCloseUpOperation: MainQueueOperation {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = true
-        return nil
-        
         
         guard let userID = VCurrentUser.user()?.remoteId.integerValue,
             let request = ViewedContentFetchRequest(
