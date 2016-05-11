@@ -14,7 +14,7 @@ public struct ViewedContentFetchRequest : RequestType {
     private let url: NSURL
 
     public init?(macroURLString: String, currentUserID: String, contentID: String) {
-        let replacementDictionary: [NSObject : AnyObject] = ["%%SEQUENCE_ID%%": contentID, "%%USER_ID%%": currentUserID]
+        let replacementDictionary: [NSObject : AnyObject] = ["%%CONTENT_ID%%": contentID, "%%USER_ID%%": currentUserID]
         let urlString = urlMacroExpander.urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: macroURLString)
         
         guard let url = NSURL(string: urlString) else {
