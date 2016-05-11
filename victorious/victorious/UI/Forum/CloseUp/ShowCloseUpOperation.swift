@@ -34,36 +34,6 @@ class ShowCloseUpOperation: MainQueueOperation {
         
         fetcherOperation = ViewedContentFetchOperation(request: request)
         super.init()
-        
-        fetcherOperation.before(self).queue() { results, error, cancelled in
-            if let content = results?.first as? VViewedContent {
-                self.content = content
-            }
-        }
-    }
-    
-    override func start() {
-        
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView"),
-            content = content
-            where !self.cancelled else {
-                finishedExecuting()
-                return
-        }
-        defer {
-            finishedExecuting()
-        }
-        
-        let header = CloseUpView.newWithDependencyManager(childDependencyManager)
-        let apiPath = ""
-        
-        let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            childDependencyManager,
-            header: header,
-            content: content,
-            streamAPIPath: apiPath
-        )
-        originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
     }
 }
 
