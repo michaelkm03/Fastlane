@@ -28,21 +28,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     private let placeholderImage = UIImage(named: "profile_full")
     private let horizontalMargins: CGFloat = 16
     private let verticalMargins: CGFloat = 18
+    private let screenWidth = UIScreen.mainScreen().bounds.size.width
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager,
                                         delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
-        guard let view = NSBundle.mainBundle().loadNibNamed("CloseUpView",
-                                                            owner: self,
-                                                            options: nil).first as? CloseUpView else {
-                                                                fatalError("Could not load a close up view.")
-        }
+        let view : CloseUpView = CloseUpView.v_fromNib()
         view.dependencyManager = dependencyManager
         view.delegate = delegate
         return view
     }
     
     override func awakeFromNib() {
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2.0
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.v_roundCornerRadius
         closeUpContentContainerView.layer.cornerRadius = 6.0
         clearContent()
         
@@ -81,11 +78,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func clearContent() {
         captionLabel.text = ""
         profileImageView.image = nil
-        userNameButton.setTitle("", forState: UIControlState.Normal)
+        userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
     }
     
-    var maxHeight: CGFloat = CGFloat.max
+    /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
+    var maxContentHeight: CGFloat = CGFloat.max
     
     var viewedContent: VViewedContent? {
         didSet {
@@ -97,7 +95,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             
             // Header
-            userNameButton.setTitle(author.name, forState: UIControlState.Normal)
+            userNameButton.setTitle(author.name, forState: .Normal)
             if let picturePath = author.pictureUrl, pictureURL = NSURL(string: picturePath) {
                 profileImageView.sd_setImageWithURL(pictureURL,
                                                     placeholderImage: placeholderImage)
@@ -105,16 +103,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             else {
                 profileImageView.image = placeholderImage
             }
-            let minWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
+            let minWidth = UIScreen.mainScreen().bounds.size.width
 
             if let preview = content.previewImageWithMinimumWidth(minWidth),
                 let remoteSource = preview.imageURL,
                 let remoteURL = NSURL(string: remoteSource) {
                 blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    strongSelf.blurredImageView.alpha = blurredImageAlpha
+                    self?.blurredImageView.alpha = blurredImageAlpha
                 }
             }
             
@@ -128,16 +123,16 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         guard let content = viewedContent?.content else {
             return
         }
         
-        var totalHeight = CGRectGetHeight(headerSection.bounds) + headerSection.frame.origin.y
+        var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
         
-        let screenWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
-        
-        let contentAspectRatio = aspectRatio(for: content)
-        let contentHeight: CGFloat = min(screenWidth / contentAspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
+        let contentAspectRatio = content.aspectRatio
+        let contentHeight: CGFloat =
+            min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -145,7 +140,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         mediaContentViewFrame.size.height = contentHeight
         mediaContentView.frame = mediaContentViewFrame
         
-        totalHeight = totalHeight + CGRectGetHeight(mediaContentView.bounds)
+        totalHeight = totalHeight + mediaContentView.bounds.size.height
         
         // Caption
         var frame = captionLabel.frame
@@ -156,27 +151,20 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
     }
     
-    func aspectRatio(for content: VContent) -> CGFloat {
-        guard let preview = content.previewImages?.allObjects.first as? VContentPreview,
-            let height = preview.height?.integerValue,
-            let width = preview.width?.integerValue
-            where height > 0 && width > 0 else {
-            return 1.0
-        }
-        return CGFloat(width) / CGFloat(height)
-    }
-    
     func sizeForContent(viewedContent: VViewedContent) -> CGSize {
         guard let content = viewedContent.content else {
                 return CGSizeZero
         }
-        let screenWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
         
-        let contentAspectRatio = aspectRatio(for: content)
-        let contentHeight: CGFloat = min(screenWidth / contentAspectRatio, maxHeight - CGRectGetHeight(headerSection.bounds))
+        let contentAspectRatio = content.aspectRatio
+        let contentHeight: CGFloat =
+            min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
         
         if !contentHasTitle(content) {
-            return CGSizeMake(screenWidth, CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(relatedLabel.bounds))
+            return CGSizeMake(
+                screenWidth,
+                headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
+            )
         }
         
         var frame = captionLabel.frame
@@ -185,7 +173,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         captionLabel.text = content.title
         captionLabel.sizeToFit()
         
-        let height = CGRectGetHeight(headerSection.bounds) + contentHeight + CGRectGetHeight(captionLabel.bounds) + 2*verticalMargins + CGRectGetHeight(relatedLabel.bounds)
+        let height = headerSection.bounds.size.height +
+                     contentHeight +
+                     captionLabel.bounds.size.height +
+                     2*verticalMargins +
+                     relatedLabel.bounds.size.height
+        
         return CGSizeMake(screenWidth, height)
     }
     
@@ -193,12 +186,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         guard let title = content.title else {
             return false
         }
-        return title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count > 0
+        return title.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
     
     @objc private func closeUpDismissed() {
         if let videoPlayer = videoPlayer {
-            print(videoPlayer)
             dispatch_async(dispatch_get_main_queue(), {
                 videoPlayer.pause()
             })

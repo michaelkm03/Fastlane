@@ -18,10 +18,11 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     init?( originViewController: UIViewController,
           dependencyManager: VDependencyManager,
-          contentID: String) {
+          contentID: String,
+          animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
-        self.animated = true
+        self.animated = animated
         
         guard let userID = VCurrentUser.user()?.remoteId.integerValue,
             let request = ViewedContentFetchRequest(
