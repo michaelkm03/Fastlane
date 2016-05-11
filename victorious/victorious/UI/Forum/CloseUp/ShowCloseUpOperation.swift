@@ -65,7 +65,6 @@ class ShowCloseUpOperation: MainQueueOperation {
         )
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
     }
-    
 }
 
 private extension VDependencyManager {
