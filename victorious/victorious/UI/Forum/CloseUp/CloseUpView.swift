@@ -161,9 +161,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
         
         if !contentHasTitle(content) {
-            return CGSizeMake(
-                screenWidth,
-                headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
+            return CGSize(
+                width: screenWidth,
+                height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
             )
         }
         
@@ -179,7 +179,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                      2*verticalMargins +
                      relatedLabel.bounds.size.height
         
-        return CGSizeMake(screenWidth, height)
+        return CGSize(
+            width: screenWidth,
+            height: height
+        )
     }
     
     private func contentHasTitle(content: VContent) -> Bool {
