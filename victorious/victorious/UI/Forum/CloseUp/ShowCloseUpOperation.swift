@@ -16,21 +16,23 @@ class ShowCloseUpOperation: MainQueueOperation {
     private var content: VViewedContent?
     var fetcherOperation: ViewedContentFetchOperation
     
-    init( originViewController: UIViewController,
+    init?( originViewController: UIViewController,
           dependencyManager: VDependencyManager,
           contentID: String) {
-        
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = true
+        return nil
         
-        let userID = VCurrentUser.user()!.remoteId.integerValue ?? 0
         
-        let request = ViewedContentFetchRequest(
-            macroURLString: dependencyManager.contentFetchURL,
-            currentUserID: "\(userID)",
-            contentID: contentID
-        )!
+        guard let userID = VCurrentUser.user()?.remoteId.integerValue,
+            let request = ViewedContentFetchRequest(
+                macroURLString: dependencyManager.contentFetchURL,
+                currentUserID: "\(userID)",
+                contentID: contentID
+            ) else {
+                return nil
+        }
         
         fetcherOperation = ViewedContentFetchOperation(request: request)
         super.init()

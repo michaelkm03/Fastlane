@@ -235,7 +235,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             originViewController: self,
             dependencyManager: dependencyManager,
             contentID: seq.remoteId
-        ).queue()
+        )?.queue()
     }
 }
 
