@@ -148,12 +148,14 @@ import VictoriousIOSSDK
             } else {
                 let results = operation.results ?? []
                 let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-                if self.shouldStashNewItems {
-                    self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
-                } else {
-                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
+                if !newResults.isEmpty {
+                    if self.shouldStashNewItems {
+                        self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
+                    } else {
+                        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
+                    }
+                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 }
-                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 completion?( newResults, error, cancelled )
             }
         }
@@ -212,12 +214,17 @@ import VictoriousIOSSDK
                 
             } else {
                 let results = operation.results ?? []
-                if self.visibleItems.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
+                if results.isEmpty {
+                    // Nothing to do here.
+                    
+                } else if results.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
+                    // No conformance to `PaginatedObjectType` in the results, add according to `pageType`
                     self.visibleItems = self.visibleItems.v_orderedSet(
                         byAddingObjects: results,
                         forPageType: pageType
                     )
                 } else {
+                    // Results conform to `PaginatedObjectType`, sort according to `displayOrder`
                     self.visibleItems = self.visibleItems.v_orderedSet(
                         byAddingObjects: results,
                         sortOrder: self.sortOrder

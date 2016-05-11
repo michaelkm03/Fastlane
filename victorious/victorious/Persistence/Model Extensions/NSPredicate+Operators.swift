@@ -11,3 +11,7 @@ import Foundation
 func +(lhs: NSPredicate, rhs: NSPredicate) -> NSCompoundPredicate {
     return NSCompoundPredicate(andPredicateWithSubpredicates: [lhs, rhs])
 }
+
+func ||(lhs: NSPredicate, rhs: NSPredicate) -> NSCompoundPredicate {
+    return NSCompoundPredicate(orPredicateWithSubpredicates: [lhs, rhs])
+}
