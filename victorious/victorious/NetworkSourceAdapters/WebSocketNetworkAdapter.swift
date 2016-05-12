@@ -51,6 +51,10 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     func addChildReceiver(receiver: ForumEventReceiver) {
         webSocketController.addChildReceiver(receiver)
     }
+
+    func removeChildReceiver(receiver: ForumEventReceiver) {
+        webSocketController.removeChildReceiver(receiver)
+    }
     
     // MARK: NetworkSourceWebSocket
     

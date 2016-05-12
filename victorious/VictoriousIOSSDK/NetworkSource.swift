@@ -9,21 +9,26 @@
 import Foundation
 
 public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
-    /**
-     Allows for adding child receivers from an external source.
-     
-     - parameter receiver: The receiver of `ForumEvent`.
-     */
+    ///
+    /// Allows for adding child receivers from an external source.
+    ///
+    /// - parameter receiver: The receiver of `ForumEvent`.
+    ///
     func addChildReceiver(receiver: ForumEventReceiver)
-    
-    /**
-     The receiver will prepare any connections and make sure it is ready to be used.
-     */
+
+    ///
+    /// Removal of specific child receiver. Holds a strong reference to receiver.
+    ///
+    func removeChildReceiver(receiver: ForumEventReceiver)
+
+    ///
+    /// The receiver will prepare any connections and make sure it is ready to be used.
+    ///
     func setUp()
     
-    /**
-     The receiver will close any connections open and clean up after itself.
-     */
+    ///
+    /// The receiver will close any connections open and clean up after itself.
+    ///
     func tearDown()
 }
 

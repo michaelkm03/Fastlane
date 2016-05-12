@@ -14,10 +14,21 @@ import Foundation
  - URLInvalid:           An invalid URL is used for connecting.
  - ConnectionTerminated: Connection closed, could contain a code and an error.
  */
-public enum WebSocketError: ErrorType, Equatable {
+public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
     case URLInvalid
     case AuthenticationTokenNotValid
     case ConnectionTerminated(code: Int?, error: NSError?)
+
+    public var description: String {
+        switch self {
+        case .URLInvalid:
+            return "URL invalid."
+        case .AuthenticationTokenNotValid:
+            return "Authentication token not valid."
+        case .ConnectionTerminated(let code, let error):
+            return "Connection terminated. Code: \(code) Error: \(error)"
+        }
+    }
 }
 
 public func ==(lhs: WebSocketError, rhs: WebSocketError) -> Bool {

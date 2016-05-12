@@ -93,13 +93,21 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
     
     public func addChildReceiver(receiver: ForumEventReceiver) {
-        childEventReceivers.append(receiver)
+        if (!childEventReceivers.contains { $0 === receiver }) {
+            childEventReceivers.append(receiver)
+        }
+    }
+
+    public func removeChildReceiver(receiver: ForumEventReceiver) {
+        if let index = childEventReceivers.indexOf( { $0 === receiver } ) {
+            childEventReceivers.removeAtIndex(index)
+        }
     }
     
     // MARK: - ForumEventReceiver
-    
-    public var childEventReceivers: [ForumEventReceiver] = []
-    
+
+    public private(set) var childEventReceivers: [ForumEventReceiver] = []
+
     // MARK: - ForumEventSender
 
     /// The `WebSocketController` has no `nextSender` since it's the last link in the chain.

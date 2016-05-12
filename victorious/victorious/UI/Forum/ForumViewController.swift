@@ -12,6 +12,8 @@ import UIKit
 /// between the Foumr's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable {
 
+    private let webSocketReconnectTimeout: NSTimeInterval = 5
+
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
             stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
@@ -54,16 +56,25 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         if let event = event as? WebSocketEvent {
             switch event.type {
-            case .Disconnected(webSocketError: _):
-                connectToNetworkSource()
-            default: break
+            case .Disconnected(let webSocketError):
+                guard isViewLoaded() else {
+                    return
+                }
+
+                self.v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting in \(webSocketReconnectTimeout)s. \n (error: \(webSocketError))", completion: nil)
+
+                dispatch_after(webSocketReconnectTimeout, {
+                    self.connectToNetworkSourceIfNeeded()
+                })
+            default:
+                break
             }
         }
     }
 
     // MARK: - ForumEventSender
     
-    var nextSender: ForumEventSender? //< Calling code just needs to set this to get messages propagated from composer.
+    var nextSender: ForumEventSender?
     
     // MARK: - Forum protocol requirements
     
@@ -72,6 +83,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     var chatFeed: ChatFeed?
     var dependencyManager: VDependencyManager!
     var networkSource: NetworkSource?
+
     func creationFlowPresenter() -> VCreationFlowPresenter? {
         return composer?.creationFlowPresenter
     }
@@ -103,6 +115,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         //Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
+
+        // Reconnect if the WebSocket is not connected.
+        connectToNetworkSourceIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -115,9 +130,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // debug_startGeneratingMessages(interval: 1.0)
-        
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,
@@ -126,9 +139,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         )
         updateStyle()
         
-        networkSource = dependencyManager.networkSource
-        setupNetworkSource(networkSource!)
-        connectToNetworkSource()
+        if let networkSource = dependencyManager.networkSource {
+            setupNetworkSource(networkSource)
+            self.networkSource = networkSource
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -157,18 +171,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    // MARK: Network Source
-    
-    func connectToNetworkSource() {
-        if let socketNetworkAdapter = networkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
-            socketNetworkAdapter.setUp()
-        }
-    }
-    
     // MARK: - Actions
     
     func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
+
+        // Close connection to network source when we close the forum.
+        networkSource?.tearDown()
+
+        networkSource?.removeChildReceiver(self)
     }
     
     private func updateStyle() {
@@ -201,8 +212,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private func setupNetworkSource(networkSource: NetworkSource) {
         // Add the network source as the next responder in the FEC.
         nextSender = networkSource
+
         // Inject ourselves into the child receiver list in order to link the chain together.
         networkSource.addChildReceiver(self)
+    }
+
+    /// Will connect over the WebSocket if the connection is down.
+    private func connectToNetworkSourceIfNeeded() {
+        if let socketNetworkAdapter = networkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
+            socketNetworkAdapter.setUp()
+        }
     }
 }
 
@@ -224,7 +243,7 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var networkSource: WebSocketNetworkAdapter {
-        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as! WebSocketNetworkAdapter
+    var networkSource: WebSocketNetworkAdapter? {
+        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
     }
 }
