@@ -8,32 +8,27 @@
 
 import Foundation
 
-public struct ViewedContentFetchRequest : RequestType {
-    private let urlMacroExpander = VSDKURLMacroReplacement()
-
-    private let url: NSURL
-
-    public init?(macroURLString: String, currentUserID: String, contentID: String) {
-        let replacementDictionary: [NSObject : AnyObject] = ["%%CONTENT_ID%%": contentID, "%%USER_ID%%": currentUserID]
-        let urlString = urlMacroExpander.urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: macroURLString)
-        
-        guard let url = NSURL(string: urlString) else {
-            return nil
-        }
-        
-        self.url = url
-    }
-
-    public var baseUrl: NSURL? {
-        return url.baseURL
+public struct ViewedContentFetchRequest : TemplateDrivenRequestType {
+    
+    public private(set) var urlString: String
+    
+    public var macroReplacementDictionary: [String : String]? {
+        return ["%%SEQUENCE_ID%%": contentID, "%%USER_ID%%": currentUserID]
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSMutableURLRequest(URL: url)
-    }
+    private let currentUserID: String
+    private let contentID: String
     
+    public init(macroURLString: String, currentUserID: String, contentID: String) {
+        self.urlString = macroURLString
+        self.currentUserID = currentUserID
+        self.contentID = contentID
+    }
+
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ViewedContent {
-        guard let contentView = ViewedContent(json: responseJSON) else {
+        
+        let json = responseJSON["payload"]
+        guard let contentView = ViewedContent(json: json) else {
             throw ResponseParsingError()
         }
         return contentView

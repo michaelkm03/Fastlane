@@ -16,8 +16,7 @@ final class CreatorListOperation: FetcherOperation {
         super.init()
         
         if let url = urlString where !localFetch {
-            let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.integerValue
-            CreatorListRemoteOperation(urlString: url, appID: appID)?.before(self).queue()
+            CreatorListRemoteOperation(urlString: url).before(self).queue()
         }
     }
     

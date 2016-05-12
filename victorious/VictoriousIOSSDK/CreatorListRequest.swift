@@ -10,24 +10,12 @@ import Foundation
 
 /// A network request to retrive the list of creators (API Owners)
 /// Response of this request should be `[User]`
-public struct CreatorListRequest: RequestType {
+public struct CreatorListRequest: TemplateDrivenRequestType {
     
-    private let url: NSURL
+    public private(set) var urlString: String
     
-    public init?(urlString: String, appID: Int) {
-        guard let url = NSURL(string: urlString) else {
-            return nil
-        }
-        
-        self.url = url
-    }
-    
-    public var baseURL: NSURL? {
-        return url.baseURL
-    }
-    
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public init(urlString: String) {
+        self.urlString = urlString
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
