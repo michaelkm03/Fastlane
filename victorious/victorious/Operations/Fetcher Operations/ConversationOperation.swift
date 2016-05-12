@@ -21,7 +21,7 @@ final class ConversationOperation: FetcherOperation, PaginatedOperation {
         self.init(conversationID: conversationID?.integerValue, userID: conversationID?.integerValue)
     }
     
-    required init( conversationID: Int?, userID: Int?, paginator: StandardPaginator = StandardPaginator() ) {
+    required init( conversationID: Int?, userID: Int?, localFetch: Bool = false, paginator: StandardPaginator = StandardPaginator() ) {
         self.conversationID = conversationID
         self.userID = userID
         self.paginator = paginator
