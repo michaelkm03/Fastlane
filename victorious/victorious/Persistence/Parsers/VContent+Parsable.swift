@@ -31,7 +31,7 @@ extension VContent: PersistenceParsable {
         
         if let contentData = sourceModel.contentData {
             let persistentAssets: [VContentData] = contentData.flatMap {
-                let data: VContentData = self.v_managedObjectContext.v_findOrCreateObject([ "remoteSource" :  $0.url.absoluteString])
+                let data: VContentData = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
                 data.populate( fromSourceModel: $0 )
                 data.content = self
                 return data

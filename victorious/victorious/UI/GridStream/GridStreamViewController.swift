@@ -20,9 +20,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
-    let collectionView = UICollectionView(frame: CGRectZero,
-                                          collectionViewLayout: UICollectionViewFlowLayout())
-    let dataSource: GridStreamDataSource<HeaderType>
+    private let collectionView = UICollectionView(
+        frame: CGRectZero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    )
+    private let dataSource: GridStreamDataSource<HeaderType>
     var content: HeaderType.ContentType? {
         didSet {
             dataSource.content = content
