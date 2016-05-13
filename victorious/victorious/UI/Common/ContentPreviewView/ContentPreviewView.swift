@@ -40,7 +40,7 @@ class ContentPreviewView: UIView {
         previewImageView.hidden = false
     }
     
-    class func reusableIdentifier() -> String {
+    class func reuseIdentifier() -> String {
         return NSStringFromClass(ContentPreviewView.self)
     }
 }
