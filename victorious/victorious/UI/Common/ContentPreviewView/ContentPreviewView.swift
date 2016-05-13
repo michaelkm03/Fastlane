@@ -21,7 +21,8 @@ class ContentPreviewView: UIView {
     var content: VContent? {
         didSet {
             guard let content = content else {
-                fatalError("Content cannot be nil")
+                assertionFailure("Content cannot be nil")
+                return
             }
             if let preview = content.largestPreviewAsset(),
                 let previewRemoteURL = preview.imageURL,
@@ -36,18 +37,10 @@ class ContentPreviewView: UIView {
         // VIP blur, lock
         // Video play button
         
-        guard let contentType = content.contentType() else {
-            // default to image type
-            previewImageView.hidden = false
-            return
-        }
-        switch contentType {
-        case .image:
-            previewImageView.hidden = false
-        case .video:
-            previewImageView.hidden = false
-        case .gif:
-            previewImageView.hidden = false
-        }
+        previewImageView.hidden = false
+    }
+    
+    class func reusableIdentifier() -> String {
+        return NSStringFromClass(ContentPreviewView.self)
     }
 }
