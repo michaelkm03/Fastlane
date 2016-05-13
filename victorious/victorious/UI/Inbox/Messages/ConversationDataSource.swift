@@ -47,9 +47,7 @@ class ConversationDataSource: PaginatedDataSource, UITableViewDataSource {
         
         self.loadNewItems(
             createOperation: {
-                let operation = ConversationOperation(conversationID: conversationID, userID: userID)
-                operation.localFetch = local
-                return operation
+                return ConversationOperation(conversationID: conversationID, userID: userID, localFetch: local)
             },
             completion: completion
         )

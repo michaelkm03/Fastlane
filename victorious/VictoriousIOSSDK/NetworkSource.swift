@@ -9,21 +9,26 @@
 import Foundation
 
 public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
-    /**
-     Allows for adding child receivers from an external source.
-     
-     - parameter receiver: The receiver of `ForumEvent`.
-     */
+    ///
+    /// Allows for adding child receivers from an external source.
+    ///
+    /// - parameter receiver: The receiver of `ForumEvent`.
+    ///
     func addChildReceiver(receiver: ForumEventReceiver)
-    
-    /**
-     The receiver will prepare any connections and make sure it is ready to be used.
-     */
+
+    ///
+    /// Removal of specific child receiver. Holds a strong reference to receiver.
+    ///
+    func removeChildReceiver(receiver: ForumEventReceiver)
+
+    ///
+    /// The receiver will prepare any connections and make sure it is ready to be used.
+    ///
     func setUp()
     
-    /**
-     The receiver will close any connections open and clean up after itself.
-     */
+    ///
+    /// The receiver will close any connections open and clean up after itself.
+    ///
     func tearDown()
 }
 
@@ -32,8 +37,11 @@ public protocol NetworkSourceWebSocket: NetworkSource {
     /// A flag that tells if the connection is open and ready to use.
     var isConnected: Bool { get }
     
+    /// Used for tracking trafic over the websocket to a particular device. Should be set before messages are sent.
+    func setDeviceID(deviceID: String)
+    
     /// Replaces the endPoint used for opening a WebSocket connection. This URL has the use once token baked into it.
-    ///- parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
+    /// - parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
     ///
     func replaceEndPoint(endPoint: NSURL)
 }

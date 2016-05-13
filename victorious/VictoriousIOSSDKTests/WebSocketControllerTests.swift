@@ -89,15 +89,15 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         
         let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
         let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
-        
-        let dictionaryConvertible = chatMessageOutbound as DictionaryConvertible
-        let toServerDictionary = [
-            "to_server": [
-                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
-            ]
-        ]
-        
-        webSocket.chatMessageOutboundString = JSON(toServerDictionary).rawString()
+        let identificationMessage = controller.uniqueIdentificationMessage
+
+        var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
+        toServerDictionary[chatMessageOutbound.rootKey] = chatMessageOutbound.toDictionary()
+        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER"]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
+        rootDictionary["to_server"] = toServerDictionary
+
+        webSocket.chatMessageOutboundString = JSON(rootDictionary).rawString()
         webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
         webSocket.connect()
         
@@ -109,13 +109,15 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         nextSender = controller
         
         let blockUser = BlockUser(serverTime: NSDate(timeIntervalSince1970: 1234567890), userID: "1337")
-        let dictionaryConvertible = blockUser as DictionaryConvertible
-        let toServerDictionary = [
-            "to_server": [
-                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
-            ]
-        ]
-        webSocket.blockUserString = JSON(toServerDictionary).rawString()
+        let identificationMessage = controller.uniqueIdentificationMessage
+
+        var toServerDictionary: [String: AnyObject] = [blockUser.rootTypeKey!: blockUser.rootTypeValue!]
+        toServerDictionary[blockUser.rootKey] = blockUser.toDictionary()
+        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER"]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
+        rootDictionary["to_server"] = toServerDictionary
+
+        webSocket.blockUserString = JSON(rootDictionary).rawString()
         webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
         webSocket.connect()
 

@@ -34,27 +34,37 @@ final class ConversationRemoteOperation: RemoteFetcherOperation, PaginatedReques
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : conversationID ])
-            var displayOrder = self.request.paginator.displayOrderCounterStart
-            var messagesLoaded = [VMessage]()
+            
+            let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
+            let conversationPredicate = NSPredicate(format: "conversation.remoteId = %i", conversationID)
+            let optimisticMessagePredicate = NSPredicate(format: "conversation.remoteId = nil")
+            let combinedConversationPredicate = conversationPredicate + optimisticMessagePredicate
+            fetchRequest.predicate = combinedConversationPredicate || self.request.paginator.paginatorPredicate
+            let existingMessages: [VMessage] = context.v_executeFetchRequest(fetchRequest)
+            
+            var messagesLoaded: [VMessage] = []
             for result in results {
-                let uniqueElements = [ "remoteId": result.messageID ]
-                let newMessage: VMessage
-                if let message: VMessage = context.v_findObjects( uniqueElements ).first {
-                    newMessage = message
-                } else {
-                    newMessage = context.v_createObject()
-                    newMessage.populate( fromSourceModel: result )
+                guard !existingMessages.contains({ $0.remoteId?.integerValue == result.messageID }) else {
+                    continue
                 }
+                let newMessage: VMessage = context.v_createObject()
+                newMessage.populate( fromSourceModel: result )
                 if conversation.user == nil {
                     conversation.user = newMessage.sender
                 }
                 if conversation.postedAt == nil {
                     conversation.postedAt = newMessage.postedAt
                 }
-                newMessage.displayOrder = displayOrder
-                displayOrder += 1
                 messagesLoaded.append( newMessage )
             }
+            
+            let allMessages = existingMessages + messagesLoaded
+            var displayOrder = self.request.paginator.displayOrderCounterStart
+            for message in allMessages.sort({ $0.postedAt > $1.postedAt }) {
+                message.displayOrder = displayOrder
+                displayOrder += 1
+            }
+            
             conversation.v_addObjects( messagesLoaded, to: "messages" )
             conversation.lastMessageText = messagesLoaded.first?.text ?? conversation.lastMessageText
             

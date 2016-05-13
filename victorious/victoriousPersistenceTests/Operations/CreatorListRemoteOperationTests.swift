@@ -17,7 +17,7 @@ class CreatorListRemoteOperationTests: BaseFetcherOperationTestCase {
         let user = User(userID: userID)
         testRequestExecutor = TestRequestExecutor(result: [user])
         
-        let operation = CreatorListRemoteOperation(urlString: "http://google.com", appID: 1)!
+        let operation = CreatorListRemoteOperation(urlString: "http://google.com")
         operation.requestExecutor = testRequestExecutor
         
         operation.main()

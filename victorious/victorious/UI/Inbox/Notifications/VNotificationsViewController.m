@@ -200,8 +200,6 @@ static CGFloat const kNotificationAddedVerticalInset = 5.0f;
         NotificationCell *notificationCell = (NotificationCell *)cell;
         notificationCell.delegate = self;
     }
-    
-    cell.backgroundColor = nil;
 }
 
 - (void)redecorateVisibleCells

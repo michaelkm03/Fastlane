@@ -261,6 +261,8 @@ static inline BOOL isSessionQueue()
         
         NSMutableURLRequest *request = [uploadTask.request mutableCopy];
         [request v_setAuthorizationHeaderWithPersistentStore:self.persistentStore];
+        [request v_setOSVersionHeader];
+        [request v_setPlatformHeader];
         
         NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadBodyFileURL];
         

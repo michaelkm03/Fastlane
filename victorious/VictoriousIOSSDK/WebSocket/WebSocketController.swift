@@ -6,7 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-
 /// The WebSocketController is the one stop shop for talking and listening over a WebSocket.
 ///
 /// It features are:
@@ -35,6 +34,9 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     /// The interval to send of ping messages.
     private let pingTimerInterval: NSTimeInterval = 15
 
+    /// Keeps record of the information needed in order to identify each message.
+    internal let uniqueIdentificationMessage: UniqueIdentificationMessage = UniqueIdentificationMessage()
+
     /// The designated way of getting a reference to the singleton instance with the default configuration.
     public static let sharedInstance: WebSocketController = WebSocketController()
 
@@ -57,7 +59,7 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         return true
     }
     
-    // MARK: - TemplateNetworkSource
+    // MARK: - NetworkSource
     
     public func replaceEndPoint(endPoint: NSURL) {
         print("replaceEndPoint -> ", endPoint)
@@ -68,6 +70,11 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         
         webSocket = nil
         webSocket = WebSocket(url: endPoint, socketListenerQueue: socketListenerQueue, delegate: self, pongDelegate: self)
+    }
+
+    public func setDeviceID(deviceID: String) {
+        print("setDeviceID -> \(deviceID)")
+        uniqueIdentificationMessage.deviceID = deviceID
     }
     
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
@@ -93,13 +100,21 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
     
     public func addChildReceiver(receiver: ForumEventReceiver) {
-        childEventReceivers.append(receiver)
+        if (!childEventReceivers.contains { $0 === receiver }) {
+            childEventReceivers.append(receiver)
+        }
+    }
+
+    public func removeChildReceiver(receiver: ForumEventReceiver) {
+        if let index = childEventReceivers.indexOf( { $0 === receiver } ) {
+            childEventReceivers.removeAtIndex(index)
+        }
     }
     
     // MARK: - ForumEventReceiver
-    
-    public var childEventReceivers: [ForumEventReceiver] = []
-    
+
+    public private(set) var childEventReceivers: [ForumEventReceiver] = []
+
     // MARK: - ForumEventSender
 
     /// The `WebSocketController` has no `nextSender` since it's the last link in the chain.
@@ -127,6 +142,7 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
         webSocket = nil
+        pingTimer?.invalidate()
         
         let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         let disconnectEvent = WebSocketEvent(type: WebSocketEventType.Disconnected(webSocketError: webSocketError))
@@ -168,21 +184,18 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         }
         
         guard let dictionaryConvertible = event as? DictionaryConvertible else {
-            assertionFailure("Failed to convert DictionaryConvertible ForumEvent to JSON string. event -> \(event)")
+            NSLog("Failed to convert DictionaryConvertible ForumEvent to JSON string. event -> \(event)")
             return
         }
-        
-        let toServerDictionary = [
-            "to_server": [
-                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
-            ]
-        ]
+
+        let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
+
         if let jsonString = JSON(toServerDictionary).rawString() {
             NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
             receiveEvent(event)
         } else {
-            assertionFailure("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
+            NSLog("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
         }
     }
 
@@ -203,5 +216,38 @@ private extension WebSocket {
         self.queue = socketListenerQueue
         self.delegate = delegate
         self.pongDelegate = pongDelegate
+    }
+}
+
+private extension DictionaryConvertible {
+
+    private var toServerRootKey: String {
+        return "to_server"
+    }
+
+    private var toServerTypeKey: String {
+        return "type"
+    }
+
+    private var toServerTypeValue: String {
+        return "TO_SERVER"
+    }
+
+    /// A dictionary representation of the WebSocket JSON protocol. The `identificationMessage` is passed in to identify each outgoing message.
+    private func toServerDictionaryWithIdentificationMessage(identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
+        var toServerDictionary: [String: AnyObject] = [:]
+
+        if let rootTypeKey = rootTypeKey, let rootTypeValue = rootTypeValue {
+            toServerDictionary[rootTypeKey] = rootTypeValue
+        }
+        toServerDictionary[rootKey] = toDictionary()
+
+        var rootDictionary: [String: AnyObject] = [toServerTypeKey: toServerTypeValue]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
+        identificationMessage.incrementSequenceCounter()
+
+        rootDictionary[toServerRootKey] = toServerDictionary
+
+        return rootDictionary
     }
 }
