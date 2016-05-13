@@ -21,13 +21,8 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         self.request = request
     }
 
-    convenience init?(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
-        guard let request = ViewedContentFetchRequest(macroURLString: macroURLString,
-                                                    currentUserID: currentUserID,
-                                                    contentID: refreshStageEvent.contentID) else {
-                                                        v_log("Failed to create StageContentFetchOperation since request failed to initialize. Using macro URL string -> \(macroURLString)")
-                                                        return nil
-        }
+    convenience init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
+        let request = ViewedContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
         
         self.init(request: request)
         self.refreshStageEvent = refreshStageEvent

@@ -47,6 +47,8 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
         let message = notification.subject
         
         if dependencyManager.festivalIsEnabled() {
+            backgroundColor = nil
+            
             dependencyManager.addBackgroundToBackgroundHost(self, forKey: VDependencyManagerCellBackgroundKey)
             
             dateLabel.textColor = dependencyManager.dateTextColor

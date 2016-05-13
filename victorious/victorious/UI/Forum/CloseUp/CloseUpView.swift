@@ -30,6 +30,69 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     private let verticalMargins: CGFloat = 18
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     
+    @IBOutlet weak var lightOverlayView: UIView!
+    @IBOutlet weak var blurredImageView: UIImageView!
+    
+    var delegate: CloseUpViewDelegate?
+    
+    /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
+    var maxContentHeight: CGFloat = CGFloat.max
+    
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            configureFontsAndColors()
+        }
+    }
+    
+    private var contentHeight: CGFloat {
+        guard let content = viewedContent?.content else {
+            return 0
+        }
+        let contentAspectRatio = content.aspectRatio
+        return min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
+    }
+    
+    var viewedContent: VViewedContent? {
+        didSet {
+            guard let viewedContent = viewedContent,
+                let author = viewedContent.author,
+                let content = viewedContent.content else {
+                    return
+            }
+            
+            
+            // Header
+            userNameButton.setTitle(author.name, forState: .Normal)
+            if let picturePath = author.pictureUrl, pictureURL = NSURL(string: picturePath) {
+                profileImageView.sd_setImageWithURL(pictureURL,
+                                                    placeholderImage: placeholderImage)
+            }
+            else {
+                profileImageView.image = placeholderImage
+            }
+            let minWidth = UIScreen.mainScreen().bounds.size.width
+            
+            if let preview = content.previewImageWithMinimumWidth(minWidth),
+                let remoteSource = preview.imageURL,
+                let remoteURL = NSURL(string: remoteSource) {
+                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
+                    self?.blurredImageView.alpha = blurredImageAlpha
+                }
+            }
+            
+            createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            captionLabel.text = content.title
+            mediaContentView.content = content
+            
+            // Update size
+            self.frame.size = sizeForContent(viewedContent)
+        }
+    }
+    
+    @IBAction func selectedProfile(sender: AnyObject) {
+        delegate?.didSelectProfile()
+    }
+    
     class func newWithDependencyManager(dependencyManager: VDependencyManager,
                                         delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
         let view : CloseUpView = CloseUpView.v_fromNib()
@@ -48,19 +111,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                                                          name: "closeUpDismissed",
                                                          object: nil)
         blurredImageView.alpha = blurredImageAlpha
-    }
-    
-    @IBOutlet weak var lightOverlayView: UIView!
-    @IBOutlet weak var blurredImageView: UIImageView!
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            configureFontsAndColors()
-        }
-    }
-    var delegate: CloseUpViewDelegate?
-    
-    @IBAction func selectedProfile(sender: AnyObject) {
-        delegate?.didSelectProfile()
     }
     
     func configureFontsAndColors() {
@@ -82,46 +132,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         createdAtLabel.text = ""
     }
     
-    /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
-    var maxContentHeight: CGFloat = CGFloat.max
-    
-    var viewedContent: VViewedContent? {
-        didSet {
-            guard let viewedContent = viewedContent,
-                let author = viewedContent.author,
-                let content = viewedContent.content else {
-                return
-            }
-            
-            
-            // Header
-            userNameButton.setTitle(author.name, forState: .Normal)
-            if let picturePath = author.pictureUrl, pictureURL = NSURL(string: picturePath) {
-                profileImageView.sd_setImageWithURL(pictureURL,
-                                                    placeholderImage: placeholderImage)
-            }
-            else {
-                profileImageView.image = placeholderImage
-            }
-            let minWidth = UIScreen.mainScreen().bounds.size.width
-
-            if let preview = content.previewImageWithMinimumWidth(minWidth),
-                let remoteSource = preview.imageURL,
-                let remoteURL = NSURL(string: remoteSource) {
-                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
-                    self?.blurredImageView.alpha = blurredImageAlpha
-                }
-            }
-            
-            createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-            captionLabel.text = content.title
-            mediaContentView.content = content
-            
-            // Update size
-            self.frame.size = sizeForContent(viewedContent)
-        }
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         guard let content = viewedContent?.content else {
@@ -129,10 +139,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
         
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
-        
-        let contentAspectRatio = content.aspectRatio
-        let contentHeight: CGFloat =
-            min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -153,12 +159,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func sizeForContent(viewedContent: VViewedContent) -> CGSize {
         guard let content = viewedContent.content else {
-                return CGSizeZero
+            return CGSizeZero
         }
-        
-        let contentAspectRatio = content.aspectRatio
-        let contentHeight: CGFloat =
-            min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
         
         if !contentHasTitle(content) {
             return CGSize(

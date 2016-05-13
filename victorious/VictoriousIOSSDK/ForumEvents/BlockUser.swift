@@ -19,8 +19,16 @@ public struct BlockUser: ForumEvent, DictionaryConvertible {
 
     // MARK: DictionaryConvertible
     
-    public var defaultKey: String {
+    public var rootKey: String {
         return "mute"
+    }
+
+    public var rootTypeKey: String? {
+        return "type"
+    }
+
+    public var rootTypeValue: String? {
+        return "MUTE"
     }
     
     public func toDictionary() -> [String: AnyObject] {

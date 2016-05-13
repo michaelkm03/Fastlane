@@ -13,7 +13,7 @@ import VictoriousIOSSDK
 /// Any operations that don't need this abstract need not conform, for example if
 /// they return only one result and the operation's API is consumed in a way where
 /// abstract of type isn't necessary.
-protocol ResultsOperation {
+protocol ResultsOperation: class {
     
     /// A place to store the results so that they are available to calling code that is
     /// consuming this delegate (most likely an NSOperation).  This is why the protocol

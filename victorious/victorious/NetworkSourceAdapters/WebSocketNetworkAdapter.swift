@@ -30,8 +30,12 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
         super.init()
         
-        // Connect this link in the chain
+        // Connect this link in the event chain.
         nextSender = webSocketController
+
+        // Device ID is needed for tracking calls on the backend.
+        let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
+        webSocketController.setDeviceID(deviceID)
     }
     
     // MARK: ForumEventSender
@@ -51,11 +55,20 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     func addChildReceiver(receiver: ForumEventReceiver) {
         webSocketController.addChildReceiver(receiver)
     }
+
+    func removeChildReceiver(receiver: ForumEventReceiver) {
+        webSocketController.removeChildReceiver(receiver)
+    }
     
     // MARK: NetworkSourceWebSocket
     
     var isConnected: Bool {
         return webSocketController.isConnected
+    }
+
+    /// Don't call this function, the adapter will handle setting of the device ID.
+    func setDeviceID(deviceID: String) {
+        assertionFailure("Don't call this function, the adapter will handle setting of the device ID.")
     }
     
     /// Don't call this function direcly, use `refreshToken()` instead.

@@ -13,8 +13,8 @@ public class ViewedContent {
     public let author: User
     
     public init?(json: JSON) {
-        guard let content = Content(json: json["payload", "content"]),
-            let author = User(json: json["payload", "author"]) else {
+        guard let content = Content(json: json["content"]),
+            let author = User(json: json["author"]) else {
                 return nil
         }
         

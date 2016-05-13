@@ -13,7 +13,7 @@ public protocol ForumEvent {
     var serverTime: NSDate { get }
 }
 
-public protocol ForumEventReceiver {
+public protocol ForumEventReceiver: class {
     var childEventReceivers: [ForumEventReceiver] { get }
     func receiveEvent(event: ForumEvent)
 }

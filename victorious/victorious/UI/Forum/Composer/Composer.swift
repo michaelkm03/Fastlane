@@ -54,7 +54,11 @@ extension Composer {
         guard let currentUser = VCurrentUser.user() else {
             return nil
         }
-        return ChatMessageUser(id: currentUser.remoteId.integerValue, name: currentUser.name, profileURL: NSURL(string: currentUser.pictureUrl)!)
+        var profileURL: NSURL?
+        if let profileUrlString = currentUser.pictureUrl {
+            profileURL = NSURL(string: profileUrlString)
+        }
+        return ChatMessageUser(id: currentUser.remoteId.integerValue, name: currentUser.name, profileURL: profileURL)
     }
 }
 

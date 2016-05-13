@@ -43,18 +43,17 @@ class StageDataSource: ForumEventReceiver {
         currentContentFetchOperation?.cancel()
         
         let contentFetchURL = dependencyManager.contentFetchURL
-        if let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent) {
-            currentContentFetchOperation = stageContentFetchOperation
-            stageContentFetchOperation.queue() { [weak self] results, error, canceled in
-                guard let strongSelf = self,
-                    let delegate = strongSelf.delegate
-                    where canceled != true else {
-                        return
-                }
-                if let content = results?.first as? Content,
+        let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
+        currentContentFetchOperation = stageContentFetchOperation
+        stageContentFetchOperation.queue() { [weak self] results, error, canceled in
+            guard let strongSelf = self,
+                let delegate = strongSelf.delegate
+                where canceled != true else {
+                    return
+            }
+            if let content = results?.first as? Content,
                 let stageContent = content.stageContent {
-                    delegate.addContent(stageContent)
-                }
+                delegate.addContent(stageContent)
             }
         }
     }
