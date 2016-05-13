@@ -11,16 +11,16 @@ import VictoriousIOSSDK
 
 class MediaUploadCreateRequestTests: XCTestCase {
     
-    let mockBaseURLString = "http://www.google.com"
+    let mockURLString = "http://www.google.com/api/mediaupload/create"
 
     func testRequest() {
-        let request = MediaUploadCreateRequest(baseURL: NSURL(string: mockBaseURLString)!)
+        let request = MediaUploadCreateRequest(url: NSURL(string: mockURLString)!)
         
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "\(mockBaseURLString)/api/mediaupload/create")
+        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "\(mockURLString)")
     }
     
     func testResponse() {
-        let request = MediaUploadCreateRequest(baseURL: NSURL(string: mockBaseURLString)!)
+        let request = MediaUploadCreateRequest(url: NSURL(string: mockURLString)!)
         let mockSequenceID = "mockSequenceID"
         let mockJSON = JSON( [ "payload": ["sequence_id": mockSequenceID] ] )
         
