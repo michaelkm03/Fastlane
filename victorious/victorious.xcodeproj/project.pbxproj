@@ -483,6 +483,7 @@
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
 		0E0615091CA35D6800236D4A /* ForumEventSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0615081CA35D6800236D4A /* ForumEventSender.swift */; };
 		0E06150B1CA35DDC00236D4A /* ForumEventReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */; };
+		0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */; };
 		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
 		0E242F451C9C834A008A7286 /* StageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E242F441C9C834A008A7286 /* StageContent.swift */; };
 		0E279B641CB854A80023156F /* CreateChatServiceTokenOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */; };
@@ -2864,6 +2865,7 @@
 		0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.qa.xcconfig"; sourceTree = "<group>"; };
 		0E0615081CA35D6800236D4A /* ForumEventSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumEventSender.swift; path = WebSocket/ForumEventSender.swift; sourceTree = "<group>"; };
 		0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumEventReceiver.swift; path = WebSocket/ForumEventReceiver.swift; sourceTree = "<group>"; };
+		0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UniqueIdentificationMessage.swift; path = WebSocket/UniqueIdentificationMessage.swift; sourceTree = "<group>"; };
 		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		0E242F441C9C834A008A7286 /* StageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContent.swift; sourceTree = "<group>"; };
 		0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperationTests.swift; sourceTree = "<group>"; };
@@ -7052,6 +7054,7 @@
 				0EF716901C9904D20005CF86 /* WebSocketError.swift */,
 				0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */,
 				0E06150C1CA36FFD00236D4A /* WebSocketEvents */,
+				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 			);
 			name = WebSocket;
 			sourceTree = "<group>";
@@ -11735,6 +11738,7 @@
 				7992DF671C17ACCF004007A1 /* DeviceExperimentsRequest.swift in Sources */,
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0E5F7E401CA1E42000B3AF14 /* NetworkSource.swift in Sources */,
+				0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */,
 				A748BCC91C87D9FB003D5F5F /* Dictionary+Union.swift in Sources */,
 				670C658D1C52AC6200BD7F3F /* HashtagShelf.swift in Sources */,
 				A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */,

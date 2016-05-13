@@ -37,8 +37,11 @@ public protocol NetworkSourceWebSocket: NetworkSource {
     /// A flag that tells if the connection is open and ready to use.
     var isConnected: Bool { get }
     
+    /// Used for tracking trafic over the websocket to a particular device. Should be set before messages are sent.
+    func setDeviceID(deviceID: String)
+    
     /// Replaces the endPoint used for opening a WebSocket connection. This URL has the use once token baked into it.
-    ///- parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
+    /// - parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
     ///
     func replaceEndPoint(endPoint: NSURL)
 }

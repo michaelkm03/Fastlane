@@ -13,7 +13,7 @@ public struct ViewedContentFetchRequest : TemplateDrivenRequestType {
     public private(set) var urlString: String
     
     public var macroReplacementDictionary: [String : String]? {
-        return ["%%SEQUENCE_ID%%": contentID, "%%USER_ID%%": currentUserID]
+        return ["%%CONTENT_ID%%": contentID, "%%USER_ID%%": currentUserID]
     }
     
     private let currentUserID: String

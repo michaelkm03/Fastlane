@@ -49,12 +49,21 @@ public struct ChatMessage: ForumEvent, DictionaryConvertible {
     
     // MARK: DictionaryConvertible
     
-    public var defaultKey: String {
+    public var rootKey: String {
         return "chat"
     }
-    
+
+    public var rootTypeKey: String? {
+        return "type"
+    }
+
+    public var rootTypeValue: String? {
+        return "CHAT"
+    }
+
     public func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
+        dictionary["type"] = "TEXT"
         dictionary["text"] = text
         dictionary["user"] = fromUser.toDictionary()
         dictionary["media"] = mediaAttachment?.toDictionary()
