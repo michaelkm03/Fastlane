@@ -43,7 +43,6 @@ public struct User {
     public let numberOfFollowing: Int?
     public let likesGiven: Int?
     public let likesReceived: Int?
-    public let profileImageURL: String?
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]?
     public let maxVideoUploadDuration: Int?
@@ -75,11 +74,10 @@ extension User {
         numberOfFollowing         = Int(json["number_of_following"].stringValue)
         likesGiven                = json["engagements"]["likes_given"].int
         likesReceived             = json["engagements"]["likes_received"].int
-        profileImageURL           = json["profile_image"].string
         maxVideoUploadDuration    = Int(json["max_video_duration"].stringValue)
         tokenUpdatedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
         
-        if let previewImageAssets = json["preview"]["assets"].array {
+        if let previewImageAssets = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].array {
             self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }
         } else {
             self.previewImageAssets = nil

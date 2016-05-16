@@ -26,6 +26,10 @@ class UserSearchResultTableViewCell: UITableViewCell {
         }
     }
     
+    var preferredPictureSize: CGSize {
+        return profileButton.frame.size
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

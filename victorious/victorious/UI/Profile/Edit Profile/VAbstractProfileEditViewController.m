@@ -19,6 +19,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VEditProfilePicturePresenter.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kTextColor = 0.355f;
 static const CGFloat kPlaceholderAlpha = 0.3f;
@@ -174,8 +175,9 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     self.edgesForExtendedLayout = UIRectEdgeAll;
     
     // Set profile images
-    NSURL *profileImageURL = [NSURL URLWithString:profile.pictureUrl];
-    if ( profileImageURL != nil && profile.pictureUrl.length > 0 )
+    NSURL *profileImageURL = [profile pictureURLOfMinimumSize:self.profileImageView.frame.size];
+    
+    if (profileImageURL != nil)
     {
         [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
                                               withTintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];

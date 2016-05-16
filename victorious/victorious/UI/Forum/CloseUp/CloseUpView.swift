@@ -63,6 +63,27 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             setBackground(for: content)
             setHeader(for: content, author: author)
             
+            // Header
+            userNameButton.setTitle(author.name, forState: .Normal)
+            if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
+                profileImageView.sd_setImageWithURL(pictureURL,
+                                                    placeholderImage: placeholderImage)
+            }
+            else {
+                profileImageView.image = placeholderImage
+            }
+            let minWidth = UIScreen.mainScreen().bounds.size.width
+            
+            if let preview = content.previewImageWithMinimumWidth(minWidth),
+                let remoteSource = preview.imageURL,
+                let remoteURL = NSURL(string: remoteSource) {
+                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
+                    self?.blurredImageView.alpha = blurredImageAlpha
+                }
+            }
+            
+            createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            captionLabel.text = content.title
             mediaContentView.updateContent(content)
             
             // Update size
@@ -72,7 +93,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func setHeader(for content: VContent, author: VUser ) {
         userNameButton.setTitle(author.name, forState: .Normal)
-        if let picturePath = author.pictureUrl, pictureURL = NSURL(string: picturePath) {
+        if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
             profileImageView.sd_setImageWithURL(pictureURL,
                                                 placeholderImage: placeholderImage)
         }

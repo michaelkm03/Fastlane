@@ -163,7 +163,8 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
     
     _user = user;
     
-    [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
+    NSURL *pictureURL = [user pictureURLOfMinimumSize:self.frame.size];
+    [self setProfileImageURL:pictureURL forState:UIControlStateNormal];
     [self updateBadgeViewContent];
     [self.KVOController observe:_user
                         keyPath:NSStringFromSelector(@selector(level))

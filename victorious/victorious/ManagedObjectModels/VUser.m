@@ -33,7 +33,6 @@
 @dynamic numberOfFollowing;
 @dynamic likesGiven;
 @dynamic likesReceived;
-@dynamic pictureUrl;
 @dynamic remoteId;
 @dynamic completedProfile;
 @dynamic tagline;

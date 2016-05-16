@@ -8,6 +8,7 @@
 
 #import "VRegistrationModel.h"
 #import "VUser.h"
+#import "victorious-Swift.h"
 
 @implementation VRegistrationModel
 
@@ -18,7 +19,7 @@
     registrationModel.email = user.email;
     registrationModel.username = user.name;
     registrationModel.locationText = user.location;
-    registrationModel.profileImageURL = [NSURL URLWithString:user.pictureUrl];
+    registrationModel.profileImageURL = [user pictureURLOfMinimumSize:VUser.defaultSmallMinimumPictureSize];
     
     return registrationModel;
 }

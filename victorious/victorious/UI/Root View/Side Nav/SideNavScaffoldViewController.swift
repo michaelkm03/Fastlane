@@ -68,7 +68,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         navigationBar.backIndicatorImage = backArrowImage
         navigationBar.backIndicatorTransitionMaskImage = backArrowImage
         
-        VCurrentUser.user()?.addObserver(self, forKeyPath: "pictureUrl", options: [], context: nil)
+        VCurrentUser.user()?.addObserver(self, forKeyPath: "previewAssets", options: [], context: nil)
+        updateNavButtonWithUserPicture()
     }
     
     required init(coder: NSCoder) {
@@ -197,7 +198,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - KVO
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if keyPath == "pictureUrl" {
+        if keyPath == "previewAssets" {
             updateNavButtonWithUserPicture()
         }
     }

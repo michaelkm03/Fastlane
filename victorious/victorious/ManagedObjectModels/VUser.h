@@ -28,7 +28,6 @@
 @property (nonatomic, retain) NSNumber * numberOfFollowing;
 @property (nonatomic, retain) NSNumber * likesGiven;
 @property (nonatomic, retain) NSNumber * likesReceived;
-@property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * completedProfile;
 @property (nonatomic, retain) NSString * tagline;
