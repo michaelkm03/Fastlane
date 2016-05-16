@@ -63,7 +63,8 @@ class ShowCloseUpOperation: MainQueueOperation {
             sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
             interItemSpacing: CGFloat(3),
             cellsPerRow: 3,
-            allowsForRefresh: false
+            allowsForRefresh: false,
+            managesBackground: true
         )
         
         let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
