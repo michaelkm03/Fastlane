@@ -36,6 +36,7 @@ NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarA
     
     UIColor *backgroundColor = [[baseBackgroundColor v_colorDarkenedBy:1.0 - alpha] colorWithAlphaComponent:1.0];
     
+    [navigationBar setBarTintColor:backgroundColor];
     [navigationBar setBackgroundImage:[UIImage v_imageWithColor:backgroundColor]
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];

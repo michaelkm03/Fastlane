@@ -13,6 +13,7 @@ struct GridStreamConfiguration {
     var interItemSpacing = CGFloat(3)
     var cellsPerRow = 3
     var allowsForRefresh = true
+    var managesBackground = true
 }
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
@@ -74,8 +75,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         super.init(nibName: nil, bundle: nil)
         
-        self.dependencyManager.addBackgroundToBackgroundHost(self)
-        
         dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
         
@@ -96,7 +95,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        if self.configuration.managesBackground {
+            dependencyManager.addBackgroundToBackgroundHost(self)
+        }
         
         view.addSubview(collectionView)
         view.v_addFitToParentConstraintsToSubview(collectionView)

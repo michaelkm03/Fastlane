@@ -817,6 +817,7 @@
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
+		7A53C15F1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
 		7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */; };
 		7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */; };
@@ -3222,6 +3223,7 @@
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
+		7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowVIPGateOperation.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
 		7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCell.swift; sourceTree = "<group>"; };
 		7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCellFactory.swift; sourceTree = "<group>"; };
@@ -7931,6 +7933,7 @@
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
 				A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */,
 				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
+				7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */,
 				7AB14CAD1CBEF96B006E674B /* ShowWebContentOperation.swift */,
 				A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
@@ -12923,6 +12926,7 @@
 				66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */,
 				C3E47F7D1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift in Sources */,
 				678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */,
+				7A53C15F1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A6E104D91B56C88D0062392A /* VShareItemCollectionViewCell.m in Sources */,
 				67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */,
