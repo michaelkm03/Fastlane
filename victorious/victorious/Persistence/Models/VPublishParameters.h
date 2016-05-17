@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The name or caption of the sequence.
  */
-@property (nonatomic, strong) NSString *caption;
+@property (nonatomic, strong, nullable) NSString *caption;
 
 /**
  *  A preview image to use in UI such as the upload bar/publish screen.

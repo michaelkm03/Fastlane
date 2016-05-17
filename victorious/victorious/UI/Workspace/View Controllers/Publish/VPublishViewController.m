@@ -302,9 +302,10 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     [self trackPublishWithPublishParameters:self.publishParameters];
     
     __weak typeof(self) welf = self;
-    BackgroundOperation *operation = [[CreateMediaUploadOperation alloc] initWithPublishParameters:self.publishParameters
-                                                                           uploadManager:[VUploadManager sharedManager]
-                                                                        uploadCompletion:^(NSError *_Nullable error)
+    CreateMediaUploadOperation *operation = [[CreateMediaUploadOperation alloc] initWithPublishParameters:self.publishParameters
+                                                                                            uploadManager:[VUploadManager sharedManager]
+                                                                                         mediaCreationURL:nil
+                                                                                         uploadCompletion:^(NSError *_Nullable error)
     {
         __strong typeof(welf) strongSelf = welf;
         strongSelf.publishing = NO;
@@ -334,18 +335,18 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     }];
     
     [operation queueWithCompletion:^(NSError *_Nullable error, BOOL cancelled)
-    {
-        if (self.publishParameters.shouldSaveToCameraRoll)
-        {
-            // Temp files will be removed after saving to camera roll finishes
-            [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
-        }
-        else
-        {
-            // If we do not need to save to camera roll, remove temp files right away
-            [self removeUploadedTempFiles];
-        }
-    }];
+     {
+         if (self.publishParameters.shouldSaveToCameraRoll)
+         {
+             // Temp files will be removed after saving to camera roll finishes
+             [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
+         }
+         else
+         {
+             // If we do not need to save to camera roll, remove temp files right away
+             [self removeUploadedTempFiles];
+         }
+     }];
 }
 
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters

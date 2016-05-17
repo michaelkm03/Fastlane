@@ -29,9 +29,10 @@ extern const CGFloat VUploadProgressViewControllerIdealHeight; ///< The ideal he
 @property (nonatomic, weak) id<VUploadProgressViewControllerDelegate> delegate; ///< The progress view controller's delegate
 
 /**
- Returns a new instance of VUploadProgressViewController
+ Returns a new instance of VUploadProgressViewController if one does not already exist
+ for the provided upload manager. If one does exist, it returns that VUploadProgressViewController.
  
- @param uploadManager the upload manager whose uploads will be displayed
+ @param uploadManager the upload manager whose uploads will be displayed.
  */
 + (instancetype)viewControllerForUploadManager:(VUploadManager *)uploadManager;
 

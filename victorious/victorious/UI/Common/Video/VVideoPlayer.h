@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VVideoPlayerItem : NSObject
 
-- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithURL:(nonnull NSURL *)url;
+- (instancetype)initWithExternalID:(nonnull NSString *)externalID;
 
 @property (nonatomic, strong, nullable) NSString *remoteContentId;
 @property (nonatomic, strong) NSURL *url;

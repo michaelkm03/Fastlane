@@ -139,7 +139,8 @@ static const NSUInteger kCharacterLimit = 1024;
 {
     if ( self.conversation.user != nil )
     {
-        [self.backgroundImageView applyExtraLightBlurAndAnimateImageWithURLToVisible:[NSURL URLWithString:self.conversation.user.pictureUrl]];
+        NSURL *pictureURL = [self.conversation.user pictureURLOfMinimumSize:self.backgroundImageView.frame.size];
+        [self.backgroundImageView applyExtraLightBlurAndAnimateImageWithURLToVisible:pictureURL];
     }
     else
     {

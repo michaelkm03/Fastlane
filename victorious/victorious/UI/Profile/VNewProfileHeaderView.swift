@@ -14,17 +14,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     private static let shadowRadius: CGFloat = 2.0
     private static let shadowOpacity: Float = 0.5
+    private static let userProfilePictureWidth: CGFloat = 80.0
+    private static let creatorProfilePictureWidth: CGFloat = 90.0
     
     // MARK: - Initializing
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
-        guard let view = NSBundle.mainBundle().loadNibNamed(
-                "VNewProfileHeaderView",
-                owner: self,
-                options: nil
-            ).first as? VNewProfileHeaderView else {
-                fatalError("Could not load a VNewProfileHeaderView.")
-        }
+        let view: VNewProfileHeaderView = VNewProfileHeaderView.v_fromNib()
         view.dependencyManager = dependencyManager
         return view
     }
@@ -65,8 +61,10 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var contentContainerView: UIView!
     @IBOutlet private var loadingContainerView: UIView!
     @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet private var backgroundImageView: UIImageView!
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var vipIconImageView: UIImageView!
+    @IBOutlet private var statsContainerView: UIView!
     @IBOutlet private var likesGivenValueLabel: UILabel!
     @IBOutlet private var likesGivenTitleLabel: UILabel!
     @IBOutlet private var likesReceivedValueLabel: UILabel!
@@ -77,6 +75,11 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var taglineLabel: UILabel!
     @IBOutlet private var profilePictureView: UIImageView!
     @IBOutlet private var profilePictureShadowView: UIView!
+    
+    // MARK: - Constraints
+    
+    @IBOutlet private var profilePictureWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var profilePictureBottomSpacingConstraint: NSLayoutConstraint!
     
     // MARK: - Dependency manager
     
@@ -89,36 +92,50 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     }
     
     private func applyDependencyManagerStyles() {
-        tintColor = dependencyManager?.accentColor
-
-        nameLabel.textColor = dependencyManager?.headerTextColor
-        likesGivenValueLabel.textColor = dependencyManager?.statValueTextColor
-        likesGivenTitleLabel.textColor = dependencyManager?.statLabelTextColor
-        likesReceivedValueLabel.textColor = dependencyManager?.statValueTextColor
-        likesReceivedTitleLabel.textColor = dependencyManager?.statLabelTextColor
-        tierValueLabel.textColor = dependencyManager?.statValueTextColor
-        tierTitleLabel.textColor = dependencyManager?.statLabelTextColor
-        locationLabel.textColor = dependencyManager?.subcontentTextColor
-        taglineLabel.textColor = dependencyManager?.subcontentTextColor
+        let appearanceKey = user?.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
+        let appearanceDependencyManager = dependencyManager?.childDependencyForKey(appearanceKey)
         
-        nameLabel.font = dependencyManager?.headerFont
-        likesGivenValueLabel.font = dependencyManager?.statValueFont
-        likesGivenTitleLabel.font = dependencyManager?.statLabelFont
-        likesReceivedValueLabel.font = dependencyManager?.statValueFont
-        likesReceivedTitleLabel.font = dependencyManager?.statLabelFont
-        tierValueLabel.font = dependencyManager?.statValueFont
-        tierTitleLabel.font = dependencyManager?.statLabelFont
-        locationLabel.font = dependencyManager?.subcontentFont
-        taglineLabel.font = dependencyManager?.subcontentFont
+        tintColor = appearanceDependencyManager?.accentColor
         
-        vipIconImageView.image = dependencyManager?.vipIcon
+        nameLabel.textColor = appearanceDependencyManager?.headerTextColor
+        likesGivenValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
+        likesGivenTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
+        likesReceivedValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
+        likesReceivedTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
+        tierValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
+        tierTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
+        locationLabel.textColor = appearanceDependencyManager?.infoTextColor
+        taglineLabel.textColor = appearanceDependencyManager?.infoTextColor
         
-        loadingSpinner.color = dependencyManager?.loadingSpinnerColor
+        nameLabel.font = appearanceDependencyManager?.headerFont
+        likesGivenValueLabel.font = appearanceDependencyManager?.statValueFont
+        likesGivenTitleLabel.font = appearanceDependencyManager?.statLabelFont
+        likesReceivedValueLabel.font = appearanceDependencyManager?.statValueFont
+        likesReceivedTitleLabel.font = appearanceDependencyManager?.statLabelFont
+        tierValueLabel.font = appearanceDependencyManager?.statValueFont
+        tierTitleLabel.font = appearanceDependencyManager?.statLabelFont
+        locationLabel.font = appearanceDependencyManager?.infoFont
+        taglineLabel.font = appearanceDependencyManager?.infoFont
+        
+        vipIconImageView.image = appearanceDependencyManager?.vipIcon
+        
+        loadingSpinner.color = appearanceDependencyManager?.loadingSpinnerColor
     }
     
     // MARK: - Populating content
     
     private func populateUserContent() {
+        let userIsCreator = user?.isCreator == true
+        
+        if userIsCreator {
+            profilePictureWidthConstraint.constant = VNewProfileHeaderView.creatorProfilePictureWidth
+        } else {
+            profilePictureWidthConstraint.constant = VNewProfileHeaderView.userProfilePictureWidth
+        }
+        
+        profilePictureBottomSpacingConstraint.active = userIsCreator
+        statsContainerView.hidden = userIsCreator
+        
         nameLabel.text = user?.name
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
@@ -133,12 +150,11 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tierValueLabel.hidden = !shouldDisplayTier
         
         let placeholderImage = UIImage(named: "profile_full")
+        let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size)
+        profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
         
-        if let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size) {
-            profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
-        } else {
-            profilePictureView.image = placeholderImage
-        }
+        let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size)
+        backgroundImageView.sd_setImageWithURL(backgroundPictureURL)
         
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
@@ -216,8 +232,8 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerSecondaryTextColorKey)
     }
     
-    var subcontentTextColor: UIColor? {
-        return colorForKey("color.text.subcontent")
+    var infoTextColor: UIColor? {
+        return colorForKey("color.text.paragraph")
     }
     
     var headerFont: UIFont? {
@@ -232,7 +248,7 @@ private extension VDependencyManager {
         return fontForKey(VDependencyManagerLabel2FontKey)
     }
     
-    var subcontentFont: UIFont? {
+    var infoFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
     

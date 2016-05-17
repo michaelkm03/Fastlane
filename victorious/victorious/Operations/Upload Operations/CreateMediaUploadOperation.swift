@@ -18,11 +18,16 @@ class CreateMediaUploadOperation: BackgroundOperation {
     let mediaURL: NSURL?
     let uploadCompletion: (NSError?) -> Void
     
-    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, uploadCompletion: (NSError?) -> Void) {
-        let baseURL = VEnvironmentManager.sharedInstance().currentEnvironment.baseURL
+    private static let defaultCreationURL: NSURL = {
+        return NSURL(fileURLWithPath: "api/mediaupload/create", relativeToURL: VEnvironmentManager.sharedInstance().currentEnvironment.baseURL)
+    }()
+    private var currentUploadTask: VUploadTaskInformation?
+    
+    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, mediaCreationURL: NSURL? = nil, uploadCompletion: (NSError?) -> Void) {
         
+        let url = mediaCreationURL ?? CreateMediaUploadOperation.defaultCreationURL
         self.mediaURL = publishParameters.mediaToUploadURL
-        self.request = MediaUploadCreateRequest(baseURL: baseURL)
+        self.request = MediaUploadCreateRequest(url: url)
         self.publishParameters = publishParameters
         self.uploadManager = uploadManager
         self.uploadCompletion = uploadCompletion
@@ -32,6 +37,14 @@ class CreateMediaUploadOperation: BackgroundOperation {
         super.start()
         self.beganExecuting()
         upload(uploadManager)
+    }
+    
+    override func cancel() {
+        super.cancel()
+        guard let currentUploadTask = currentUploadTask else {
+            return
+        }
+        uploadManager.cancelUploadTask(currentUploadTask)
     }
     
     private func completionError(error: NSError?) {
@@ -53,8 +66,8 @@ class CreateMediaUploadOperation: BackgroundOperation {
         taskCreator.previewImage = publishParameters.previewImage
         
         do {
-            let task = try taskCreator.createUploadTask()
-            uploadManager.enqueueUploadTask(task) { _ in }
+            currentUploadTask = try taskCreator.createUploadTask()
+            uploadManager.enqueueUploadTask(currentUploadTask) { _ in }
         } catch {
             completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
             return
@@ -65,7 +78,7 @@ class CreateMediaUploadOperation: BackgroundOperation {
     
     private var formFields: [NSObject : AnyObject] {
         var dict: [NSObject : AnyObject] = [
-            "name": publishParameters.caption,
+            "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",
             "did_crop": publishParameters.didCrop ? "true" : "false",
             "did_trim": publishParameters.didTrim ? "true" : "false",

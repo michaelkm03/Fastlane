@@ -289,11 +289,6 @@
     return nil;
 }
 
-- (NSURL *)avatarForAuthor
-{
-    return [NSURL URLWithString:self.sequence.user.pictureUrl];
-}
-
 - (NSString *)memeCountText
 {
     return [NSString stringWithFormat:@"%@", self.sequence.memeCount];
@@ -472,6 +467,11 @@
         default:
             return [NSString stringWithFormat:NSLocalizedString(@"%@ Voters", @""), countText];
     }
+}
+
+- (NSURL *)avatarForAuthorWithSize:(CGSize)size
+{
+    return [self.sequence.user pictureURLOfMinimumSize:size];
 }
 
 @end

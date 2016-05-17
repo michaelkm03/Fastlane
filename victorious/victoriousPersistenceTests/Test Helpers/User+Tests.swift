@@ -27,7 +27,6 @@ extension User {
         self.numberOfFollowing = nil
         self.likesReceived = nil
         self.likesGiven = nil
-        self.profileImageURL = nil
         self.tokenUpdatedAt = nil
         self.previewImageAssets = nil
         self.maxVideoUploadDuration = nil

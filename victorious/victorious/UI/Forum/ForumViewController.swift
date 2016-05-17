@@ -9,8 +9,8 @@
 import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
-/// between the Foumr's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable {
+/// between the Forum's required concrete implementations and abstract dependencies.
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
 
     private let webSocketReconnectTimeout: NSTimeInterval = 5
 
@@ -69,6 +69,23 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:
                 break
             }
+        } else if let event = event as? ChatMessage where
+            event.mediaAttachment != nil {
+            
+            //Create a persistent piece of content so long as we're not a normal user on the socket
+            guard let networkResourcesDependency = dependencyManager.networkResourcesDependency else {
+                let logMessage = "Didn't find a valid network resources dependency inside the forum!"
+                assertionFailure(logMessage)
+                v_log(logMessage)
+                return
+            }
+            
+            createPersistentContent(event, networkResourcesDependency: networkResourcesDependency) { [weak self] error in
+                if let _ = error,
+                    let strongSelf = self {
+                    strongSelf.v_showDefaultErrorAlert()
+                }
+            }
         }
     }
 
@@ -97,6 +114,28 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         view.layoutIfNeeded()
     }
     
+    // MARK: - UploadManagerHost
+    
+    var uploadProgressViewController: VUploadProgressViewController?
+    
+    func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat) {
+        UploadManagerHelper.addUploadManagerToViewController(viewController, topInset: topInset)
+    }
+    
+    func uploadProgressViewController(upvc: VUploadProgressViewController!, isNowDisplayingThisManyUploads uploadCount: Int) {
+        updateUploadProgressViewControllerVisibility()
+    }
+    
+    private func updateUploadProgressViewControllerVisibility() {
+        guard let uploadProgressViewController = uploadProgressViewController else {
+            return
+        }
+        
+        if uploadProgressViewController.numberOfUploads > 0 {
+            uploadProgressViewController.view.hidden = false
+        }
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
@@ -112,6 +151,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
+        updateUploadProgressViewControllerVisibility()
         
         //Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -243,6 +284,10 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
+    var networkResourcesDependency: VDependencyManager? {
+        return childDependencyForKey("networkResources")
+    }
+
     var networkSource: WebSocketNetworkAdapter? {
         return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
     }

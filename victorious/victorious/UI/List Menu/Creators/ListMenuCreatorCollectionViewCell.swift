@@ -43,7 +43,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
         creatorNameLabel.text = user.name
         
         let placeholderImage = UIImage(named: "profile_full")
-        let imageURL = NSURL(v_string: user.pictureUrl ?? "")
+        let imageURL = user.pictureURL(ofMinimumSize: profileImageView.frame.size)
         profileImageView.sd_setImageWithURL(imageURL, placeholderImage: placeholderImage)
     }
     

@@ -79,14 +79,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate, VUploadManagerHost>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (nonatomic, strong) id<VStreamCellFactory> streamCellFactory;
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeCellController;
 
-@property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
 @property (readwrite, nonatomic) VSequenceActionController *sequenceActionController;
@@ -286,6 +285,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     // Clear reference to the selected cell after returning to this view from content view.
     // Must be done on `viewDidAppear:` to play well with autoplay focus.
     self.focusHelper.selectedCell = nil;
+    
+    [self addUploadProgressView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -311,6 +312,13 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - VUploadManagerHost
+
+- (void)addUploadManagerToViewController:(UIViewController *)viewController topInset:(CGFloat)topInset
+{
+    [VUploadManagerHelper addUploadManagerToViewController:viewController topInset:topInset];
 }
 
 #pragma mark - Navigation
@@ -922,50 +930,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)addUploadProgressView
 {
-    if ( self.uploadProgressViewController == nil )
-    {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[VUploadManager sharedManager]];
-        self.uploadProgressViewController.delegate = self;
-        [self addChildViewController:self.uploadProgressViewController];
-        self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:self.uploadProgressViewController.view];
-        [self.uploadProgressViewController didMoveToParentViewController:self];
-        
-        UIView *upvc = self.uploadProgressViewController.view;
-        upvc.hidden = YES;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
-                                                              attribute:NSLayoutAttributeHeight
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:nil
-                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                             multiplier:1.0f
-                                                               constant:VUploadProgressViewControllerIdealHeight]];
-        self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTop
-                                                                         multiplier:1.0f
-                                                                           constant:self.topInset];
-        [self.view addConstraint:self.uploadProgressViewYconstraint];
-    }
-    
+    [self addUploadManagerToViewController:self topInset:self.topInset];
     if (self.uploadProgressViewController.numberOfUploads > 0)
     {
         [self setUploadsHidden:NO];
     }
-}
-
-- (void)setUploadProgressViewController:(VUploadProgressViewController *)uploadProgressViewController
-{
-    [self.uploadProgressViewController willMoveToParentViewController:nil];
-    [self.uploadProgressViewController.view removeFromSuperview];
-    [self.uploadProgressViewController removeFromParentViewController];
-    [self addChildViewController:uploadProgressViewController];
-    [self.view addSubview:uploadProgressViewController.view];
-    [uploadProgressViewController didMoveToParentViewController:self];
-    _uploadProgressViewController = uploadProgressViewController;
 }
 
 - (void)setUploadsHidden:(BOOL)hidden

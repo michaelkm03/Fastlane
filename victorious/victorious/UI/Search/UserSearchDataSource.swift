@@ -73,13 +73,15 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         let identifier = UserSearchResultTableViewCell.defaultReuseIdentifier
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! UserSearchResultTableViewCell
         let visibleItem = visibleItems[indexPath.row] as! UserSearchResultObject
-        let userNetworkStruct = visibleItem.sourceResult
-        let username = userNetworkStruct.name ?? ""
+        let user = VUser()
+        
+        user.populate(fromSourceModel: visibleItem.sourceResult)
+        
+        let username = user.name ?? ""
         let userID = visibleItem.sourceResult.userID
-        let profileURLString = userNetworkStruct.profileImageURL ?? ""
-        let profileURL = NSURL(string: profileURLString) ?? NSURL()
+        let pictureURL = user.pictureURL(ofMinimumSize: cell.preferredPictureSize) ?? NSURL()
         self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
-        cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:profileURL)
+        cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:pictureURL)
         cell.dependencyManager = dependencyManager
         cell.followControl?.onToggleFollow = { [weak self] in
             guard let strongSelf = self, let currentUser = VCurrentUser.user() else {

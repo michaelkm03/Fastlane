@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VObjectManager, VUploadTaskInformation, VUploadTaskSerializer;
+@class VObjectManager, VUploadTaskInformation, VUploadTaskSerializer, VUploadProgressViewController;
 
 /**
  A block to be called when an upload task is completed.
@@ -66,6 +66,12 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  method URLSessionDidFinishEventsForBackgroundURLSession:
  */
 @property (nonatomic, copy) void (^backgroundSessionEventsCompleteHandler)(void);
+
+/**
+ The latest progress view controller to display the progress of uploads
+ handled by this manager.
+ */
+@property (nonatomic, weak) VUploadProgressViewController *associatedProgressViewController;
 
 /**
  Returns the upload manager singleton that should be used across the app

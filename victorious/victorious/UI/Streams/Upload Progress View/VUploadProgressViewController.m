@@ -10,6 +10,7 @@
 #import "VUploadProgressView.h"
 #import "VUploadProgressViewController.h"
 #import "VUploadTaskInformation.h"
+#import "objc/runtime.h"
 
 const CGFloat VUploadProgressViewControllerIdealHeight = 44.0f;
 static const NSTimeInterval kFinishedTaskDisplayTime = 5.0; ///< Amount of time to keep finished tasks in view
@@ -25,6 +26,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 @implementation VUploadProgressViewController
 
+static NSMutableDictionary *associatedUploadManagers;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -37,9 +40,21 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 + (instancetype)viewControllerForUploadManager:(VUploadManager *)uploadManager
 {
+    VUploadProgressViewController *existingViewController = uploadManager.associatedProgressViewController;
+    if (existingViewController != nil)
+    {
+        return existingViewController;
+    }
+    
     VUploadProgressViewController *viewController = [[self alloc] initWithNibName:nil bundle:nil];
     viewController.uploadManager = uploadManager;
     return viewController;
+}
+
+- (void)setUploadManager:(VUploadManager *)uploadManager
+{
+    _uploadManager = uploadManager;
+    uploadManager.associatedProgressViewController = self;
 }
 
 - (void)dealloc

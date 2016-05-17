@@ -46,7 +46,6 @@ extension VContent {
     }
     
     func previewImageWithMinimumWidth(minimumWidth: CGFloat) -> VContentPreview? {
-        
         guard let previewImages = previewImages as? Set<VContentPreview> else {
             return nil
         }

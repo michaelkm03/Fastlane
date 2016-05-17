@@ -22,7 +22,7 @@ extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A 
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height of the "create content" button
 
-@class VStreamCollectionViewDataSource, VCollectionViewStreamFocusHelper;
+@class VStreamCollectionViewDataSource, VCollectionViewStreamFocusHelper, VUploadProgressViewController;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuContainedViewControllerNavigation, VContentViewOriginViewController>
 
@@ -60,5 +60,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @property (nonatomic, strong, readwrite) NSString *sourceScreenName;
+
+@property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 
 @end

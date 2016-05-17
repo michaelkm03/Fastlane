@@ -197,7 +197,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     [self.KVOController unobserve:sequence.user
                           keyPath:NSStringFromSelector(@selector(name))];
     [self.KVOController unobserve:sequence.user
-                          keyPath:NSStringFromSelector(@selector(pictureUrl))];
+                          keyPath:NSStringFromSelector(@selector(previewAssets))];
     [self.KVOController unobserve:sequence.user
                           keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
 }
@@ -222,7 +222,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
      }];
     
     [self.KVOController observe:sequence.user
-                       keyPaths:@[NSStringFromSelector(@selector(pictureUrl))]
+                       keyPaths:@[NSStringFromSelector(@selector(previewAssets))]
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
