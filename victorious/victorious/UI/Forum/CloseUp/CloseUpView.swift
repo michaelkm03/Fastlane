@@ -160,6 +160,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        if viewedContent == nil {
+            return
+        }
+        
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
         
         // Content

@@ -29,6 +29,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     var content: HeaderType.ContentType? {
         didSet {
             dataSource.content = content
+            collectionView.reloadSections(NSIndexSet(index: 0))
         }
     }
     
@@ -44,23 +45,24 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     static func newWithDependencyManager(
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
-        content: HeaderType.ContentType,
+        content: HeaderType.ContentType?,
         configuration: GridStreamConfiguration? = nil,
-        streamAPIPath: String) -> GridStreamViewController {
+        streamAPIPath: String?) -> GridStreamViewController {
         
         return GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
-            streamAPIPath: streamAPIPath)
+            streamAPIPath: streamAPIPath
+        )
     }
     
     init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType?,
                  configuration: GridStreamConfiguration? = nil,
-                 streamAPIPath: String) {
+                 streamAPIPath: String?) {
         
         self.dependencyManager = dependencyManager
         self.header = header
@@ -239,6 +241,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             dependencyManager: dependencyManager,
             contentID: seq.remoteId
         )?.queue()
+    }
+    
+    func updateStreamAPIPath(streamAPIPath: String?) {
+        dataSource.streamAPIPath = streamAPIPath
     }
 }
 

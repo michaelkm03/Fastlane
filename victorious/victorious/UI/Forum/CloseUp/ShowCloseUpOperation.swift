@@ -13,8 +13,7 @@ class ShowCloseUpOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
-    private var viewedContent: VViewedContent?
-    var fetcherOperation: ViewedContentFetchOperation
+    private var contentID: String
     
     init?( originViewController: UIViewController,
           dependencyManager: VDependencyManager,
@@ -23,23 +22,13 @@ class ShowCloseUpOperation: MainQueueOperation {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
-        
-        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
-            return nil
-        }
-        fetcherOperation = ViewedContentFetchOperation(macroURLString: dependencyManager.contentFetchURL, currentUserID: String(userID), contentID: contentID)
+        self.contentID = contentID
         super.init()
-        fetcherOperation.before(self).queue() { results, error, cancelled in
-            if let viewedContent = results?.first as? VViewedContent {
-                self.viewedContent = viewedContent
-            }
-        }
     }
     
     override func start() {
         
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView"),
-            viewedContent = viewedContent
+        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView")
             where !self.cancelled else {
                 finishedExecuting()
                 return
@@ -49,15 +38,6 @@ class ShowCloseUpOperation: MainQueueOperation {
         }
         
         let header = CloseUpView.newWithDependencyManager(childDependencyManager)
-        
-        let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : viewedContent.contentID,
-            "%%CONTEXT%%" : childDependencyManager.context
-        ]
-        let apiPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
-            replacementDictionary,
-            inURLString: childDependencyManager.relatedContentURL
-        )
 
         let config = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
@@ -66,15 +46,39 @@ class ShowCloseUpOperation: MainQueueOperation {
             allowsForRefresh: false,
             managesBackground: true
         )
-        
+
         let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
             childDependencyManager,
             header: header,
-            content: viewedContent,
+            content: nil,
             configuration: config,
-            streamAPIPath: apiPath
+            streamAPIPath: nil
         )
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        
+        /// CloseUpHeader loading
+        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
+                return
+        }
+        ViewedContentFetchOperation(
+            macroURLString: dependencyManager.contentFetchURL,
+            currentUserID: String(userID),
+            contentID: contentID
+        ).after(self).queue() { results, error, cancelled in
+            if let viewedContent = results?.first as? VViewedContent {
+                let replacementDictionary: [String:String] = [
+                    "%%CONTENT_ID%%" : viewedContent.contentID,
+                    "%%CONTEXT%%" : childDependencyManager.context
+                ]
+                let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
+                    replacementDictionary,
+                    inURLString: childDependencyManager.relatedContentURL
+                )
+
+                closeUpViewController.content = viewedContent
+                closeUpViewController.updateStreamAPIPath(apiPath)
+            }
+        }
     }
 }
 
