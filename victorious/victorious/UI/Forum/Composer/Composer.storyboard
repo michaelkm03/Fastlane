@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KY2-Hn-7We">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KY2-Hn-7We">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Composer View Controller-->
@@ -19,7 +20,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKf-rE-KkT">
                                 <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                                 <subviews>
-                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmy-Vi-14p">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" id="R7y-FD-pPE"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="Voh-Ha-Wvx" kind="embed" id="BSO-R3-oK5"/>
+                                        </connections>
+                                    </containerView>
+                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb" userLabel="Input Options Container">
                                         <rect key="frame" x="0.0" y="0.0" width="539" height="80"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MN-kC-AjT">
@@ -104,12 +114,15 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" id="3dR-yA-V1B"/>
-                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" secondItem="nKf-rE-KkT" secondAttribute="top" id="8K4-Xs-Hs9"/>
-                                    <constraint firstItem="6XI-Cd-FZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nKf-rE-KkT" secondAttribute="top" id="9tq-Vc-sKA"/>
+                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" secondItem="xmy-Vi-14p" secondAttribute="bottom" id="8nO-QE-QQv"/>
+                                    <constraint firstAttribute="trailing" secondItem="xmy-Vi-14p" secondAttribute="trailing" id="RlA-Wd-sqJ"/>
                                     <constraint firstAttribute="trailing" secondItem="6XI-Cd-FZ6" secondAttribute="trailing" id="S4E-vm-gwK"/>
+                                    <constraint firstItem="xmy-Vi-14p" firstAttribute="top" secondItem="nKf-rE-KkT" secondAttribute="top" id="X9Y-48-wJQ"/>
                                     <constraint firstAttribute="bottom" secondItem="Koq-m5-Wlb" secondAttribute="bottom" id="XKD-kw-XpC"/>
+                                    <constraint firstItem="xmy-Vi-14p" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" id="dPb-he-B9q"/>
                                     <constraint firstItem="6XI-Cd-FZ6" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="trailing" id="oBZ-lP-J7Q"/>
                                     <constraint firstAttribute="bottom" secondItem="6XI-Cd-FZ6" secondAttribute="bottom" id="qWH-4U-d06"/>
+                                    <constraint firstItem="6XI-Cd-FZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xmy-Vi-14p" secondAttribute="bottom" id="xbL-DV-5RU"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -128,6 +141,7 @@
                         <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="confirmButtonContainer" destination="6XI-Cd-FZ6" id="vAw-BD-CQI"/>
                         <outlet property="confirmButtonContainerHeightConstraint" destination="jHC-no-EqS" id="Ire-Pl-V7k"/>
+                        <outlet property="hashtagBarContainerHeightConstraint" destination="R7y-FD-pPE" id="MR8-GL-dDY"/>
                         <outlet property="inputViewToBottomConstraint" destination="AER-2e-8Qh" id="rAl-Fw-eVY"/>
                         <outlet property="interactiveContainerView" destination="nKf-rE-KkT" id="avV-p4-Yra"/>
                         <outlet property="passthroughContainerView" destination="DkO-lo-gQh" id="mrt-w4-ef1"/>
@@ -139,6 +153,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pv6-ay-D6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="503" y="379"/>
+        </scene>
+        <!--Hashtag Bar View Controller-->
+        <scene sceneID="X5C-wZ-gaf">
+            <objects>
+                <viewController id="Voh-Ha-Wvx" customClass="HashtagBarViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="v0e-0z-qTY"/>
+                        <viewControllerLayoutGuide type="bottom" id="qpE-7g-ADP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7J8-80-xR3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qpj-bR-1bq">
+                                <rect key="frame" x="20" y="0.0" width="560" height="0.0"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dJP-MX-c7D">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qpj-bR-1bq" firstAttribute="leading" secondItem="7J8-80-xR3" secondAttribute="leadingMargin" id="Tbo-KV-YoH"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="qpj-bR-1bq" secondAttribute="bottom" id="U6d-PC-QCu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qpj-bR-1bq" secondAttribute="trailing" id="dEX-KM-MXL"/>
+                            <constraint firstItem="qpj-bR-1bq" firstAttribute="top" secondItem="7J8-80-xR3" secondAttribute="topMargin" id="uVj-hJ-MTr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="qpj-bR-1bq" id="e79-ZD-dT8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vdh-oz-MSJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="504" y="854"/>
         </scene>
     </scenes>
 </document>

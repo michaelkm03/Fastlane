@@ -37,6 +37,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView! {
         didSet {
@@ -196,6 +197,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return interactiveContainerView.layer.animationKeys() == nil
     }
     
+    var textViewCursorIsInHashtag: Bool {
+        didSet {
+            if oldValue != textViewCursorIsInHashtag {
+                //TODO: update search text on hashtag
+            }
+        }
+    }
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -293,13 +302,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         super.updateViewConstraints()
     }
     
-    // MARK: - ComposerAttachmentTabBarDelegate
-
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
-        let creationType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(navigationItem.identifier)
-        delegate?.composer(self, didSelectCreationFlowType: creationType)
-    }
-    
     // MARK: - Subview setup
     
     private func setupTextView() {
@@ -348,7 +350,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {

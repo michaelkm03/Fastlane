@@ -63,4 +63,9 @@
 @dynamic avatarBadgeType;
 @dynamic viewedContent;
 
+-(NSNumber *)isCreator
+{
+    return @YES;
+}
+
 @end
