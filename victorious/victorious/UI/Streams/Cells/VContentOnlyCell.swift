@@ -38,19 +38,24 @@ class VContentOnlyCell: UICollectionViewCell {
     
     // MARK: - Sequence/ViewedContent
     
-    var streamItem: VStreamItem? {
-        didSet {
-            viewedContent = nil
-            updatePreviewView()
+    func setStreamItem(streamItem: VStreamItem?) {
+        if let streamItem = streamItem {
+            self.streamItem = streamItem
+            self.viewedContent = nil
         }
+        updatePreviewView()
     }
     
-    var viewedContent: VViewedContent? {
-        didSet {
-            streamItem = nil
-            updatePreviewView()
+    func setViewedContent(viewedContent: VViewedContent?) {
+        if let viewedContent = viewedContent {
+            self.viewedContent = viewedContent
+            self.streamItem = nil
         }
+        updatePreviewView()
     }
+    
+    private var streamItem: VStreamItem?
+    private var viewedContent: VViewedContent?
     
     // MARK: - Dependency manager
     
@@ -87,7 +92,7 @@ class VContentOnlyCell: UICollectionViewCell {
                 setNeedsLayout()
             }
         }
-        else if let viewedContent = viewedContent {
+        else if viewedContent != nil {
             streamItemPreviewView?.removeFromSuperview()
             
         }

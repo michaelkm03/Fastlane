@@ -39,7 +39,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
-        cell.streamItem = streamItem
+        cell.setStreamItem(streamItem)
         return cell
     }
     
@@ -53,7 +53,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
-        cell.viewedContent = viewedContent
+        cell.setViewedContent(viewedContent)
         return cell
     }
     
