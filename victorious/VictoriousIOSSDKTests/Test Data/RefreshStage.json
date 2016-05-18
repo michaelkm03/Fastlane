@@ -1,6 +1,6 @@
 {
     "to_client": {
-        "epoch_time": 1459178708,
+        "server_time": 1459178708,
         "refresh": {
             "section": "VIP_STAGE",
             "content_id": "BB7670057"

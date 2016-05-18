@@ -12,7 +12,7 @@ private struct Keys {
     static let root             = "to_client"
     static let chat             = "chat"
     static let refreshStage     = "refresh"
-    static let epochTime        = "epoch_time"
+    static let epochTime        = "server_time"
 }
 
 protocol WebSocketEventDecoder {
