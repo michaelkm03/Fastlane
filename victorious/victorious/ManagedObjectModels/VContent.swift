@@ -21,5 +21,6 @@ class VContent: NSManagedObject {
     @NSManaged var assets: NSSet?
     @NSManaged var previewImages: NSSet?
     @NSManaged var viewedContent: VViewedContent?
+    @NSManaged var isVIP: NSNumber?
 
 }

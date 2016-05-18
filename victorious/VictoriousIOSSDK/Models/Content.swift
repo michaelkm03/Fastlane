@@ -19,6 +19,7 @@ public class Content {
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentDataAsset]?
     public let type: String?
+    public let isVIP: Bool?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -32,6 +33,7 @@ public class Content {
             return nil
         }
 
+        self.isVIP = json["is_vip"].bool
         self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string

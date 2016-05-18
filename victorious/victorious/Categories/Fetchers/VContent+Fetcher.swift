@@ -16,6 +16,10 @@ extension VContent {
         return ContentType(rawValue: type)
     }
     
+    func isVIPContent() -> Bool {
+        return isVIP == 1
+    }
+    
     // Width to height aspect ratio of the content
     var aspectRatio: CGFloat {
         guard let preview = previewImages?.allObjects.first as? VContentPreview,
