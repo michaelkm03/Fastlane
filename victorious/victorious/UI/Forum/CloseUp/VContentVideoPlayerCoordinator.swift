@@ -23,6 +23,7 @@ enum VideoState {
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
     private var videoPlayer: VVideoPlayer = VVideoView()
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
+    private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
@@ -49,6 +50,16 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             videoPlayer = YouTubeVideoPlayer()
         }
         
+        videoPlayer.view.backgroundColor = .clearColor()
+        
+        previewView = UIImageView()
+        let minWidth = UIScreen.mainScreen().bounds.size.width
+        
+        if let preview = content.previewImageWithMinimumWidth(minWidth),
+            let remoteSource = preview.imageURL,
+            let remoteURL = NSURL(string: remoteSource) {
+            previewView.sd_setImageWithURL(remoteURL)
+        }
         super.init()
         videoPlayer.delegate = self
         videoPlayer.view.backgroundColor = UIColor.clearColor()
@@ -57,6 +68,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func setupVideoPlayer(in superview: UIView) {
+        superview.addSubview(previewView)
+        superview.v_addFitToParentConstraintsToSubview(previewView)
         superview.addSubview(videoPlayer.view)
         superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
     }
@@ -111,6 +124,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
         state = .Playing
+        previewView.hidden = true
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {

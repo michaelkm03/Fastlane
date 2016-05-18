@@ -64,17 +64,17 @@ class VContentOnlyCell: UICollectionViewCell {
     // MARK: - Views
     
     private var streamItemPreviewView: VStreamItemPreviewView?
-    private var viewedContentPreviewView: UIView?
+    private var viewedContentPreviewView = ContentPreviewView()
     
     private func updatePreviewView() {
         if streamItem == nil && viewedContent == nil {
             streamItemPreviewView?.removeFromSuperview()
-            viewedContentPreviewView?.removeFromSuperview()
+            viewedContentPreviewView.removeFromSuperview()
             return
         }
         
         if let streamItem = streamItem {
-            viewedContentPreviewView?.removeFromSuperview()
+            viewedContentPreviewView.removeFromSuperview()
             if streamItemPreviewView?.canHandleStreamItem(streamItem) == true {
                 streamItemPreviewView?.streamItem = streamItem
             }
@@ -94,18 +94,13 @@ class VContentOnlyCell: UICollectionViewCell {
         }
         else if viewedContent != nil {
             streamItemPreviewView?.removeFromSuperview()
-            viewedContentPreviewView?.removeFromSuperview()
-            viewedContentPreviewView = UIImageView()
-            addSubview(viewedContentPreviewView!)
-            v_addFitToParentConstraintsToSubview(viewedContentPreviewView!)
-            
-            let minWidth = UIScreen.mainScreen().bounds.size.width
-            
-            if let preview = viewedContent?.content?.previewImageWithMinimumWidth(minWidth),
-                let previewRemoteURL = preview.imageURL,
-                let previewImageURL = NSURL(string: previewRemoteURL) {
-                (viewedContentPreviewView as! UIImageView).sd_setImageWithURL(previewImageURL)
+            addSubview(viewedContentPreviewView)
+            v_addFitToParentConstraintsToSubview(viewedContentPreviewView)
+            viewedContentPreviewView.backgroundColor = .blueColor()
+            guard let content = viewedContent?.content else {                assertionFailure("content should not be nil")
+                return
             }
+            viewedContentPreviewView.content = content
         }
         
     }
