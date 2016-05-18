@@ -652,10 +652,10 @@
 		676C891D1CAB367F00B606ED /* InterstitialAlertAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */; };
 		676C891E1CAB367F00B606ED /* InterstitialAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */; };
 		6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6775E75A1C17C318007765B9 /* AgeGate.swift */; };
-		67787BAB1CE115C200439EAE /* ChatMessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BAA1CE115C200439EAE /* ChatMessageType.swift */; };
-		67787BAD1CE13FF000439EAE /* ViewedContent+ChatMessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BAC1CE13FF000439EAE /* ViewedContent+ChatMessageType.swift */; };
 		67787BA81CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */; };
 		67787BA91CE1034600439EAE /* ViewedContentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67A7000C1CDD631B001E718E /* ViewedContentsResponse.json */; };
+		67787BAB1CE115C200439EAE /* DisplayableChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BAA1CE115C200439EAE /* DisplayableChatMessage.swift */; };
+		67787BAD1CE13FF000439EAE /* ViewedContent+DisplayableChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BAC1CE13FF000439EAE /* ViewedContent+DisplayableChatMessage.swift */; };
 		677AF6431C44A80E00B178EE /* TextPostCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */; };
 		677AF6451C44A82A00B178EE /* TextPostCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */; };
 		677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677DCFE41CB47A3B00FC4394 /* InterstitialToastViewController.swift */; };
@@ -733,6 +733,7 @@
 		67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */; };
 		67D3DBAE1CCA95AB00D9D374 /* CreatorListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3DBAD1CCA95AB00D9D374 /* CreatorListRequest.swift */; };
 		67D3DBB01CCA9AB300D9D374 /* CreatorListRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3DBAF1CCA9AB300D9D374 /* CreatorListRequestTests.swift */; };
+		67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
 		67F2310A1CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */; };
 		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
@@ -3066,9 +3067,9 @@
 		676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertAnimator.swift; path = "Custom Alert Views/InterstitialAlertAnimator.swift"; sourceTree = "<group>"; };
 		676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertPresentationController.swift; path = "Custom Alert Views/InterstitialAlertPresentationController.swift"; sourceTree = "<group>"; };
 		6775E75A1C17C318007765B9 /* AgeGate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGate.swift; sourceTree = "<group>"; };
-		67787BAA1CE115C200439EAE /* ChatMessageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageType.swift; sourceTree = "<group>"; };
-		67787BAC1CE13FF000439EAE /* ViewedContent+ChatMessageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewedContent+ChatMessageType.swift"; sourceTree = "<group>"; };
 		67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRemoteOperationTests.swift; sourceTree = "<group>"; };
+		67787BAA1CE115C200439EAE /* DisplayableChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayableChatMessage.swift; sourceTree = "<group>"; };
+		67787BAC1CE13FF000439EAE /* ViewedContent+DisplayableChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewedContent+DisplayableChatMessage.swift"; sourceTree = "<group>"; };
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
 		677AF6421C44A80E00B178EE /* TextPostCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequest.swift; sourceTree = "<group>"; };
 		677AF6441C44A82A00B178EE /* TextPostCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCreateRequestTests.swift; sourceTree = "<group>"; };
@@ -3136,6 +3137,7 @@
 		67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperationTests.swift; sourceTree = "<group>"; };
 		67D3DBAD1CCA95AB00D9D374 /* CreatorListRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorListRequest.swift; sourceTree = "<group>"; };
 		67D3DBAF1CCA9AB300D9D374 /* CreatorListRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorListRequestTests.swift; sourceTree = "<group>"; };
+		67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTutorialsOperation.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
 		67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseDeepLinkHandler.swift; path = "Trophy Case/TrophyCaseDeepLinkHandler.swift"; sourceTree = "<group>"; };
@@ -6940,7 +6942,7 @@
 			isa = PBXGroup;
 			children = (
 				67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */,
-				67787BAA1CE115C200439EAE /* ChatMessageType.swift */,
+				67787BAA1CE115C200439EAE /* DisplayableChatMessage.swift */,
 				6725A9FD1CDBE6E8003E9168 /* NetworkDataSource.swift */,
 				A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */,
 				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
@@ -7058,7 +7060,7 @@
 		0EDED5D71CBD783300FAF77E /* NetworkSourceAdapters */ = {
 			isa = PBXGroup;
 			children = (
-				67787BAC1CE13FF000439EAE /* ViewedContent+ChatMessageType.swift */,
+				67787BAC1CE13FF000439EAE /* ViewedContent+DisplayableChatMessage.swift */,
 				0EDED5D81CBD78A300FAF77E /* WebSocketNetworkAdapter.swift */,
 				7AC3F0201CECE8100064BF68 /* MainFeedNetworkSource.swift */,
 			);
@@ -7950,6 +7952,7 @@
 				A72C85AB1C977FF500E97D4F /* AnonymousLoginOperation.swift */,
 				A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */,
 				67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */,
+				67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */,
 				BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */,
 				BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */,
 			);
@@ -12520,7 +12523,7 @@
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				A719B3DF1C64397100537B45 /* VStreamItem+Pointer.swift in Sources */,
 				A7F711FD1AE1D5A00086F729 /* VHashtagFollowingTableViewController.m in Sources */,
-				67787BAD1CE13FF000439EAE /* ViewedContent+ChatMessageType.swift in Sources */,
+				67787BAD1CE13FF000439EAE /* ViewedContent+DisplayableChatMessage.swift in Sources */,
 				A72C86801C977FF600E97D4F /* StreamRemoteOperation.swift in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
 				A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */,
@@ -12560,6 +12563,7 @@
 				A7250A311CA090BF00B5EAE6 /* Forum.swift in Sources */,
 				A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */,
 				A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */,
+				67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */,
 				BF1769C41CE10E0D00211FBA /* VContentData+Parsable.swift in Sources */,
 				A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */,
 				F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */,
@@ -13119,7 +13123,7 @@
 				A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				A72C863B1C977FF500E97D4F /* TrendingUsersOperation.swift in Sources */,
-				67787BAB1CE115C200439EAE /* ChatMessageType.swift in Sources */,
+				67787BAB1CE115C200439EAE /* DisplayableChatMessage.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,

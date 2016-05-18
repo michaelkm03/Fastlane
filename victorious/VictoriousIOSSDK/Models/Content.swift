@@ -63,4 +63,18 @@ public class Content {
             }
         }
     }
+    
+    public init(id: String, title: String, releasedAt: NSDate) {
+        self.id = id
+        self.title = title
+        self.releasedAt = releasedAt
+        
+        self.status = nil
+        self.tags = nil
+        self.shareURL = nil
+        self.isUGC = nil
+        self.previewImages = nil
+        self.contentData = nil
+        self.type = nil
+    }
 }
