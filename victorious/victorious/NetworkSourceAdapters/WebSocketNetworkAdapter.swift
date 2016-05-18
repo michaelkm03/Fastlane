@@ -40,7 +40,7 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     
     // MARK: ForumEventSender
     
-    var nextSender: ForumEventSender?
+    weak var nextSender: ForumEventSender?
     
     // MARK: NetworkSource
     

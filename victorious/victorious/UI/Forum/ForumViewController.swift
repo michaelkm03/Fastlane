@@ -91,7 +91,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
     // MARK: - ForumEventSender
     
-    var nextSender: ForumEventSender?
+    weak var nextSender: ForumEventSender?
     
     // MARK: - Forum protocol requirements
     

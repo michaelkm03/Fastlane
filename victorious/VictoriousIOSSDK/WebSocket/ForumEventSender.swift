@@ -10,10 +10,10 @@ import Foundation
 
 /// Defines an object that as node in a ForumEvent tree can propagate messages
 /// up stream, i.e. from leaf to root.
-public protocol ForumEventSender {
+public protocol ForumEventSender: class {
     
     /// Events can be propagated up to the next sender (chain of responsibility)
-    var nextSender: ForumEventSender? { get }
+    weak var nextSender: ForumEventSender? { get }
     
     func sendEvent(event: ForumEvent)
 }
