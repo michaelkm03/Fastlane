@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 protocol ChatCellType {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
-    var cellContent: ChatMessageType? { get set }
+    var cellContent: DisplayableChatMessage? { get set }
 }
 
 protocol ChatFeedMessageCellDelegate: class {
@@ -49,7 +49,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     
     var dependencyManager: VDependencyManager!
     
-    var cellContent: ChatMessageType? {
+    var cellContent: DisplayableChatMessage? {
         didSet {
             populateData()
             updateStyle()

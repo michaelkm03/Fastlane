@@ -37,6 +37,12 @@ extension Scaffold where Self: UIViewController {
     func performFirstLaunchSetup(onReady: (() -> Void)? = nil) {
         let pushNotificationOperation = RequestPushNotificationPermissionOperation()
         
+        if dependencyManager.festivalIsEnabled() {
+            let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
+            tutorialOperation.queue()
+            pushNotificationOperation.addDependency(tutorialOperation)
+        }
+        
         if let rootViewController = VRootViewController.sharedRootViewController() {
             let deepLinkOperation = ShowQueuedDeeplinkOperation(deepLinkReceiver: rootViewController.deepLinkReceiver)
             deepLinkOperation.addDependency(pushNotificationOperation)

@@ -21,4 +21,9 @@ public class ViewedContent {
         self.content = content
         self.author = author
     }
+    
+    public init(content: Content, author: User) {
+        self.content = content
+        self.author = author
+    }
 }

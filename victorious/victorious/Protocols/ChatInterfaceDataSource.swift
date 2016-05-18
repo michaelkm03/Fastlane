@@ -19,33 +19,62 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// The network data source that's in charge of fetching data from the network
     var networkDataSource: NetworkDataSource { get }
     
-    func registerCells(with collectionView: UICollectionView)
+    func registerCells(for collectionView: UICollectionView)
     
     /// Calculated desired cell size for a given indexPath. 
     /// The size is based on the data object being displayed by the cell.
-    func desiredCellSize(collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
+    func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
     /// Decorates and configures a cell with its data object
-    func decorateCell(cell: ChatFeedMessageCell, item: ChatMessageType)
+    func decorate(cell: ChatFeedMessageCell, item: DisplayableChatMessage)
 }
 
 extension ChatInterfaceDataSource {
     
-    func numberOfItems(collectionView: UICollectionView, in section: Int) -> Int {
+    var sizingCell: ChatFeedMessageCell {
+        return ChatFeedMessageCell.v_fromNib()
+    }
+    
+    func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
         return networkDataSource.visibleItems.count
     }
     
-    func cellForItem(collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
+    func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
         let identifier = ChatFeedMessageCell.defaultReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         let item = networkDataSource.visibleItems[indexPath.row]
-        decorateCell(cell, item: item)
+        decorate(cell, item: item)
         return cell
     }
     
-    func desiredCellSize(collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
+    func registerCells(for collectionView: UICollectionView) {
+        let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
+        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ChatFeedMessageCell.self) )
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+    }
+    
+    func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
         let item = networkDataSource.visibleItems[ indexPath.row ]
-        decorateCell(sizingCell, item: item)
+        decorate(sizingCell, item: item)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+    }
+    
+    func decorate(cell: ChatFeedMessageCell, item: DisplayableChatMessage) {
+        if VCurrentUser.user()?.remoteId.integerValue == item.userID {
+            cell.layout = RightAlignmentCellLayout()
+        } else {
+            cell.layout = LeftAlignmentCellLayout()
+        }
+        
+        cell.dependencyManager = dependencyManager
+        cell.cellContent = item
+    }
+    
+    func updateTimeStamps(in collectionView: UICollectionView) {
+        for indexPath in collectionView.indexPathsForVisibleItems() {
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
+            let item = networkDataSource.visibleItems[ indexPath.row ]
+            decorate(cell, item: item)
+        }
     }
 }

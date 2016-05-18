@@ -1,5 +1,5 @@
 //
-//  ViewedContent+ChatMessageType.swift
+//  ViewedContent+DisplayableChatMessage.swift
 //  victorious
 //
 //  Created by Tian Lan on 5/9/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ViewedContent: ChatMessageType {
+extension ViewedContent: DisplayableChatMessage {
     
     var mediaAttachment: MediaAttachment? {
         return nil
@@ -30,8 +30,8 @@ extension ViewedContent: ChatMessageType {
         return author.name ?? ""
     }
     
-    var profileURL: NSURL {
-        return author.previewImageAssets?.first?.mediaMetaData.url ?? NSURL(string: "")!
+    var profileURL: NSURL? {
+        return nil
     }
     
     var timeLabel: String {
