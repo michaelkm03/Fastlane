@@ -18,6 +18,7 @@ extension VContent: PersistenceParsable {
         status = sourceModel.status ?? status
         title = sourceModel.title ?? title
         type = sourceModel.type ?? type
+        isVIP = sourceModel.isVIP ?? isVIP
         
         if let previewAssets = sourceModel.previewImages {
             let persistentAssets: [VContentPreview] = previewAssets.flatMap {
