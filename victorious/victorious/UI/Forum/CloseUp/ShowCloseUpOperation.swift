@@ -13,16 +13,28 @@ class ShowCloseUpOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
-    private var contentID: String
+    private var contentID: String?
+    private var viewedContent: VViewedContent?
     
     init?( originViewController: UIViewController,
-          dependencyManager: VDependencyManager,
-          contentID: String,
-          animated: Bool = true) {
+           dependencyManager: VDependencyManager,
+           contentID: String,
+           animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
         self.contentID = contentID
+        super.init()
+    }
+    
+    init?( originViewController: UIViewController,
+           dependencyManager: VDependencyManager,
+           viewedContent: VViewedContent,
+           animated: Bool = true) {
+        self.dependencyManager = dependencyManager
+        self.originViewController = originViewController
+        self.animated = animated
+        self.viewedContent = viewedContent
         super.init()
     }
     
@@ -37,6 +49,15 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
+        let replacementDictionary: [String:String] = [
+            "%%CONTENT_ID%%" : contentID ?? viewedContent?.contentID ?? "",
+            "%%CONTEXT%%" : childDependencyManager.context
+        ]
+        let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
+            replacementDictionary,
+            inURLString: childDependencyManager.relatedContentURL
+        )
+        
         let header = CloseUpView.newWithDependencyManager(childDependencyManager)
 
         let config = GridStreamConfiguration(
@@ -50,33 +71,29 @@ class ShowCloseUpOperation: MainQueueOperation {
         let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
             childDependencyManager,
             header: header,
-            content: nil,
+            content: viewedContent,
             configuration: config,
-            streamAPIPath: nil
+            streamAPIPath: apiPath
         )
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
         
-        /// CloseUpHeader loading
-        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
+        if viewedContent == nil {
+            guard let contentID = contentID else {
+                assertionFailure("contentID should not be nil if content is nil")
                 return
-        }
-        ViewedContentFetchOperation(
-            macroURLString: dependencyManager.contentFetchURL,
-            currentUserID: String(userID),
-            contentID: contentID
-        ).after(self).queue() { results, error, cancelled in
-            if let viewedContent = results?.first as? VViewedContent {
-                let replacementDictionary: [String:String] = [
-                    "%%CONTENT_ID%%" : viewedContent.contentID,
-                    "%%CONTEXT%%" : childDependencyManager.context
-                ]
-                let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
-                    replacementDictionary,
-                    inURLString: childDependencyManager.relatedContentURL
-                )
-
-                closeUpViewController.content = viewedContent
-                closeUpViewController.updateStreamAPIPath(apiPath)
+            }
+            /// CloseUpHeader loading
+            guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
+                return
+            }
+            ViewedContentFetchOperation(
+                macroURLString: dependencyManager.contentFetchURL,
+                currentUserID: String(userID),
+                contentID: contentID
+                ).after(self).queue() { results, error, cancelled in
+                    if let viewedContent = results?.first as? VViewedContent {
+                        closeUpViewController.content = viewedContent
+                    }
             }
         }
     }

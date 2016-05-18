@@ -235,12 +235,20 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let seq = dataSource.visibleItems[indexPath.row] as! VSequence
-        ShowCloseUpOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            contentID: seq.remoteId
-        )?.queue()
+        if let seq = dataSource.visibleItems[indexPath.row] as? VSequence {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                contentID: seq.remoteId
+                )?.queue()
+        }
+        else if let viewedContent = dataSource.visibleItems[indexPath.row] as? VViewedContent {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                viewedContent: viewedContent
+            )?.queue()
+        }
     }
     
     func updateStreamAPIPath(streamAPIPath: String?) {

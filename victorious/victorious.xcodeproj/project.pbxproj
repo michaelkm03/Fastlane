@@ -1697,6 +1697,9 @@
 		BF79C7721C98D3D100222C8A /* LoadingCancellableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */; };
 		BF8237EA1C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */; };
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
+		BF8F57A11CEBD63F00188C0E /* ViewedContentFeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A01CEBD63F00188C0E /* ViewedContentFeedOperation.swift */; };
+		BF8F57A31CEBE22F00188C0E /* ViewedContentFeedRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A21CEBE22F00188C0E /* ViewedContentFeedRemoteOperation.swift */; };
+		BF8F57A51CEBE47400188C0E /* ViewedContentFeedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A41CEBE47400188C0E /* ViewedContentFeedRequest.swift */; };
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
 		BFA4C9081CDD4AD500E496FD /* ViewedContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA4C9071CDD4AD500E496FD /* ViewedContentFetchOperation.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
@@ -4409,6 +4412,9 @@
 		BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
 		BF79C7701C98D3D100222C8A /* LoadingCancellableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCancellableView.xib; sourceTree = "<group>"; };
 		BF8237E91C84E87E007F64D6 /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		BF8F57A01CEBD63F00188C0E /* ViewedContentFeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFeedOperation.swift; sourceTree = "<group>"; };
+		BF8F57A21CEBE22F00188C0E /* ViewedContentFeedRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFeedRemoteOperation.swift; sourceTree = "<group>"; };
+		BF8F57A41CEBE47400188C0E /* ViewedContentFeedRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFeedRequest.swift; sourceTree = "<group>"; };
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
 		BFA4C9071CDD4AD500E496FD /* ViewedContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewedContentFetchOperation.swift; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
@@ -5921,6 +5927,7 @@
 				0EF716851C98F89B0005CF86 /* Starscream */,
 				A702C84A1C12130C001EE1D5 /* StreamPaginator.swift */,
 				A7EF1BD11BF2757B00D429DE /* StreamRequest.swift */,
+				BF8F57A41CEBE47400188C0E /* ViewedContentFeedRequest.swift */,
 				A7D618ED1C2A7E5A007F46EA /* SubscribedToListRequest.swift */,
 				6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */,
 				0372BE721C84FADD004950CF /* Supporting Files */,
@@ -7869,6 +7876,7 @@
 				A72C858F1C977FF500E97D4F /* SequenceUnlikeOperation.swift */,
 				A72C85901C977FF500E97D4F /* StreamItemRemoveOperation.swift */,
 				A72C85911C977FF500E97D4F /* StreamOperation.swift */,
+				BF8F57A01CEBD63F00188C0E /* ViewedContentFeedOperation.swift */,
 				A72C85921C977FF500E97D4F /* SuggestedUsersOperation.swift */,
 				A72C85931C977FF500E97D4F /* TermsOfServiceOperation.swift */,
 				A72C85941C977FF500E97D4F /* TrendingHashtagOperation.swift */,
@@ -8005,6 +8013,7 @@
 				A72C85E31C977FF500E97D4F /* SequenceUnlikeRemoteOperation.swift */,
 				0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */,
 				A72C85E41C977FF500E97D4F /* StreamRemoteOperation.swift */,
+				BF8F57A21CEBE22F00188C0E /* ViewedContentFeedRemoteOperation.swift */,
 				67A7000E1CDD6DEA001E718E /* TutorialContentsRemoteOperation.swift */,
 				A72C85E51C977FF500E97D4F /* UnfollowUsersRemoteOperation.swift */,
 				A72C85E61C977FF500E97D4F /* UsersFollowedByUserRemoteOperation.swift */,
@@ -11809,6 +11818,7 @@
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				0E8EB2D11CCF0BCB0087D815 /* ViewedContentFetchRequest.swift in Sources */,
 				A716F3EC1C05110D003068A2 /* PollResultSummaryRequest.swift in Sources */,
+				BF8F57A51CEBE47400188C0E /* ViewedContentFeedRequest.swift in Sources */,
 				A7EF1BCD1BF2754D00D429DE /* Sequence.Category.swift in Sources */,
 				0E8F131A1CA4CB92004AF0B0 /* WebSocketEvent.swift in Sources */,
 				A7EF1BCB1BF2754D00D429DE /* Interaction.swift in Sources */,
@@ -12408,6 +12418,7 @@
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
+				BF8F57A11CEBD63F00188C0E /* ViewedContentFeedOperation.swift in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A72C86021C977FF500E97D4F /* CommentFlagOperation.swift in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
@@ -12969,6 +12980,7 @@
 				F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */,
 				A7BB6C991CAEDF1A007FDD17 /* VIPSubscribeOperation.swift in Sources */,
 				C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */,
+				BF8F57A31CEBE22F00188C0E /* ViewedContentFeedRemoteOperation.swift in Sources */,
 				A72C86881C977FF600E97D4F /* RequestErrorHandler.swift in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,

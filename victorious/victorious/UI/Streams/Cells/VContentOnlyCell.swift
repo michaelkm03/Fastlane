@@ -94,7 +94,18 @@ class VContentOnlyCell: UICollectionViewCell {
         }
         else if viewedContent != nil {
             streamItemPreviewView?.removeFromSuperview()
+            viewedContentPreviewView?.removeFromSuperview()
+            viewedContentPreviewView = UIImageView()
+            addSubview(viewedContentPreviewView!)
+            v_addFitToParentConstraintsToSubview(viewedContentPreviewView!)
             
+            let minWidth = UIScreen.mainScreen().bounds.size.width
+            
+            if let preview = viewedContent?.content?.previewImageWithMinimumWidth(minWidth),
+                let previewRemoteURL = preview.imageURL,
+                let previewImageURL = NSURL(string: previewRemoteURL) {
+                (viewedContentPreviewView as! UIImageView).sd_setImageWithURL(previewImageURL)
+            }
         }
         
     }
