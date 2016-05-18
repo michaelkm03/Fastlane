@@ -60,20 +60,8 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         webSocketController.removeChildReceiver(receiver)
     }
     
-    // MARK: NetworkSourceWebSocket
-    
-    var isConnected: Bool {
-        return webSocketController.isConnected
-    }
-
-    /// Don't call this function, the adapter will handle setting of the device ID.
-    func setDeviceID(deviceID: String) {
-        assertionFailure("Don't call this function, the adapter will handle setting of the device ID.")
-    }
-    
-    /// Don't call this function direcly, use `refreshToken()` instead.
-    func replaceToken(token: String) {
-        assertionFailure("Don't call this function direcly, use `refreshToken()` instead.")
+    var isSetUp: Bool {
+        return webSocketController.isSetUp
     }
     
     // MARK: Private

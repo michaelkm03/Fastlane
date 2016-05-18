@@ -37,6 +37,11 @@ class MainFeedNetworkSource: NetworkSource {
         }
     }
     
+    var isSetUp: Bool {
+        // We're always set-up.
+        return true
+    }
+    
     // MARK: - ForumEventSender
     
     private(set) weak var nextSender: ForumEventSender?

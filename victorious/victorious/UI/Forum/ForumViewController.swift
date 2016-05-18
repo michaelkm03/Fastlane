@@ -63,8 +63,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
                 self.v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting in \(webSocketReconnectTimeout)s. \n (error: \(webSocketError))", completion: nil)
 
-                dispatch_after(webSocketReconnectTimeout, {
-                    self.connectToNetworkSourceIfNeeded()
+                dispatch_after(webSocketReconnectTimeout, { [weak self] in
+                    self?.networkSource?.setUpIfNeeded()
                 })
             default:
                 break
@@ -154,11 +154,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
-        //Remove this once the way to animate the workspace in and out from forum has been figured out
+        // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         // Reconnect if the WebSocket is not connected.
-        connectToNetworkSourceIfNeeded()
+        networkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -256,13 +256,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         // Inject ourselves into the child receiver list in order to link the chain together.
         networkSource.addChildReceiver(self)
-    }
-
-    /// Will connect over the WebSocket if the connection is down.
-    private func connectToNetworkSourceIfNeeded() {
-        if let socketNetworkAdapter = networkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
-            socketNetworkAdapter.setUp()
-        }
     }
 }
 

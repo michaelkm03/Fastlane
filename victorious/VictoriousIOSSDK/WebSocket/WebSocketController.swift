@@ -49,16 +49,6 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         self.webSocket = webSocket
     }
 
-    // MARK: - NetworkSourceWebSocket
-    
-    /// Is the WebSocket connection open at the moment.
-    public var isConnected: Bool {
-        guard let webSocket = webSocket where webSocket.isConnected else {
-            return false
-        }
-        return true
-    }
-    
     // MARK: - NetworkSource
     
     public func replaceEndPoint(endPoint: NSURL) {
@@ -109,6 +99,11 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         if let index = childEventReceivers.indexOf( { $0 === receiver } ) {
             childEventReceivers.removeAtIndex(index)
         }
+    }
+    
+    /// Is the WebSocket connection open at the moment?
+    public var isSetUp: Bool {
+        return webSocket?.isConnected == true
     }
     
     // MARK: - ForumEventReceiver
