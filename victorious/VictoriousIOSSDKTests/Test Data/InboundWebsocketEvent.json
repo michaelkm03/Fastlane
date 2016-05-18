@@ -1,6 +1,6 @@
 {
   "to_client": {
-    "epoch_time": 1459178708,
+    "server_time": 1459178708,
     "chat": {
       "text": "Test incoming chat message",
       "giphy_url": "http://giphy.url",
