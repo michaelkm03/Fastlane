@@ -71,8 +71,7 @@ class ContentPreviewView: UIView {
             let previewRemoteURL = preview.imageURL,
             let previewImageURL = NSURL(string: previewRemoteURL) {
             
-            if content.isVIPContent() && VCurrentUser.user()?.isVIPSubscriber != 1 {
-                
+            if content.isVIPContent() && VCurrentUser.user()?.isVIPSubscriber != 1 && VCurrentUser.user()?.vipEndDate.compare(NSDate()) == .OrderedAscending {
                 vipImageView.hidden = false
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
                     self?.previewImageView.alpha = 1
