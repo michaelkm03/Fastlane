@@ -32,6 +32,7 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         
         // Connect this link in the event chain.
         nextSender = webSocketController
+        webSocketController.addChildReceiver(self)
 
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
@@ -45,6 +46,8 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     
     // MARK: - ForumEventReceiver
     
+    private(set) var childEventReceivers = [ForumEventReceiver]()
+    
     func receive(event: ForumEvent) {
         guard let webSocketEvent = event as? WebSocketEvent else {
             return
@@ -56,9 +59,9 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
                 return
             }
             
-            dispatch_after(reconnectTimeout, { [weak self] in
+            dispatch_after(reconnectTimeout) { [weak self] in
                 self?.setUpIfNeeded()
-            })
+            }
         default: break
         }
     }
@@ -78,11 +81,15 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     }
     
     func addChildReceiver(receiver: ForumEventReceiver) {
-        webSocketController.addChildReceiver(receiver)
+        if !childEventReceivers.contains({ $0 === receiver }) {
+            childEventReceivers.append(receiver)
+        }
     }
 
     func removeChildReceiver(receiver: ForumEventReceiver) {
-        webSocketController.removeChildReceiver(receiver)
+        if let index = childEventReceivers.indexOf({ $0 === receiver }) {
+            childEventReceivers.removeAtIndex(index)
+        }
     }
     
     var isSetUp: Bool {

@@ -144,7 +144,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        // Reconnect if the WebSocket is not connected.
+        // Set up the network source if needed.
         networkSource?.setUpIfNeeded()
     }
     
@@ -168,7 +168,12 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         updateStyle()
         
         if let networkSource = dependencyManager.networkSource {
-            setupNetworkSource(networkSource)
+            // Add the network source as the next responder in the FEC.
+            nextSender = networkSource
+            
+            // Inject ourselves into the child receiver list in order to link the chain together.
+            networkSource.addChildReceiver(self)
+            
             self.networkSource = networkSource
         }
     }
@@ -233,16 +238,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func screenIdentifier() -> String! {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
-    }
-    
-    // MARK: Private
-    
-    private func setupNetworkSource(networkSource: NetworkSource) {
-        // Add the network source as the next responder in the FEC.
-        nextSender = networkSource
-
-        // Inject ourselves into the child receiver list in order to link the chain together.
-        networkSource.addChildReceiver(self)
     }
 }
 
