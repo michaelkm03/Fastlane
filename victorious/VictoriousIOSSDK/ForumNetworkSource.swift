@@ -1,5 +1,5 @@
 //
-//  TemplateNetworkSource.swift
+//  ForumNetworkSource.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 22/3/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
+public protocol ForumNetworkSource: ForumEventReceiver, ForumEventSender {
     ///
     /// Allows for adding child receivers from an external source.
     ///
@@ -32,7 +32,7 @@ public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
     func tearDown()
 }
 
-public protocol NetworkSourceWebSocket: NetworkSource {
+public protocol ForumNetworkSourceWebSocket: ForumNetworkSource {
     
     /// A flag that tells if the connection is open and ready to use.
     var isConnected: Bool { get }
@@ -44,4 +44,7 @@ public protocol NetworkSourceWebSocket: NetworkSource {
     /// - parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
     ///
     func replaceEndPoint(endPoint: NSURL)
+
+    /// Will contain all incoming and outgoing messages over the WebSocket.
+    var webSocketMessageContainer: WebSocketRawMessageContainer { get }
 }

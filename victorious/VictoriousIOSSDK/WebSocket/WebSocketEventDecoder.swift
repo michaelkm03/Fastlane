@@ -16,27 +16,28 @@ private struct Keys {
 }
 
 protocol WebSocketEventDecoder {
-    func decodeEventsFromJson(jon: JSON) -> [ForumEvent]
+    func decodeEventFromJSON(json: JSON) -> ForumEvent?
 }
 
 extension WebSocketEventDecoder {
     
-    func decodeEventsFromJson(json: JSON) -> [ForumEvent] {
-        var messages: [ForumEvent] = []
-        
+    func decodeEventFromJSON(json: JSON) -> ForumEvent? {
+        var forumEvent: ForumEvent?
+
         if let epochTime = json[Keys.root][Keys.epochTime].double where json[Keys.root].isExists() {
             let serverTime = NSDate(millisecondsSince1970: epochTime)
             
             let chatJson = json[Keys.root][Keys.chat]
             if let chatMessage = ChatMessage(json: chatJson, serverTime: serverTime) {
-                messages.append(chatMessage)
+                forumEvent = chatMessage
             }
             
             let refreshJson = json[Keys.root][Keys.refreshStage]
             if let refresh = RefreshStage(json: refreshJson, serverTime: serverTime) {
-                messages.append(refresh)
+                forumEvent = refresh
             }
         }
-        return messages
+        
+        return forumEvent
     }
 }
