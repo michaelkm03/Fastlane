@@ -43,7 +43,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, cellForViewedContent viewedContent: VViewedContent, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForContent content: VContent, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let reuseIdentifier = ContentPreviewView.reuseIdentifier()
         
         if !registeredReuseIdentifiers.contains(reuseIdentifier) {
@@ -53,7 +53,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
-        cell.setViewedContent(viewedContent)
+        cell.setContent(content)
         return cell
     }
     

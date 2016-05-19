@@ -1,5 +1,5 @@
 //
-//  ViewedContentStreamOperation.swift
+//  ContentFeedOperation.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/17/16.
@@ -9,10 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ViewedContentFeedOperation: FetcherOperation, PaginatedOperation {
+final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StreamPaginator
-    var viewedContentIDs: [NSManagedObjectID]?
+    var contentIDs: [NSManagedObjectID]?
     
     required init(paginator: StreamPaginator) {
         self.paginator = paginator
@@ -26,23 +26,23 @@ final class ViewedContentFeedOperation: FetcherOperation, PaginatedOperation {
                 sequenceID: paginator.sequenceID,
                 paginator: paginator
             )
-            ViewedContentFeedRemoteOperation(request: request).before(self).queue(){ [weak self] results, error, completed in
-                self?.viewedContentIDs = results as? [NSManagedObjectID]
+            ContentFeedRemoteOperation(request: request).before(self).queue(){ [weak self] results, error, completed in
+                self?.contentIDs = results as? [NSManagedObjectID]
             }
         }
     }
     
-    required convenience init(operation: ViewedContentFeedOperation, paginator: StreamPaginator) {
+    required convenience init(operation: ContentFeedOperation, paginator: StreamPaginator) {
         self.init(paginator: paginator)
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil) {
-        self.init( paginator: StreamPaginator(apiPath: apiPath, sequenceID: sequenceID)!)
+    convenience init( apiPath: String) {
+        self.init( paginator: StreamPaginator(apiPath: apiPath)!)
     }
     
     override func main() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
-            self.results = self.viewedContentIDs?.flatMap({
+            self.results = self.contentIDs?.flatMap({
                 return context.objectWithID($0)
             })
         }

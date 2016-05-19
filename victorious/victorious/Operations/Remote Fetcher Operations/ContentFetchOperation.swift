@@ -36,10 +36,10 @@ class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
 
             content.populate(fromSourceModel: result)
             context.v_save()
-            let viewedContentID = content.objectID
+            let contentID = content.objectID
 
             self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                self.results = [ context.objectWithID(viewedContentID) ]
+                self.results = [ context.objectWithID(contentID) ]
             }
         }
     }

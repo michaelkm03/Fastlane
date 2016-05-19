@@ -242,11 +242,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
                 contentID: seq.remoteId
                 )?.queue()
         }
-        else if let viewedContent = dataSource.visibleItems[indexPath.row] as? VViewedContent {
+        else if let content = dataSource.visibleItems[indexPath.row] as? VContent {
             ShowCloseUpOperation(
                 originViewController: self,
                 dependencyManager: dependencyManager,
-                viewedContent: viewedContent
+                content: content
             )?.queue()
         }
     }

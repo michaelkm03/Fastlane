@@ -41,21 +41,21 @@ class VContentOnlyCell: UICollectionViewCell {
     func setStreamItem(streamItem: VStreamItem?) {
         if let streamItem = streamItem {
             self.streamItem = streamItem
-            self.viewedContent = nil
+            self.content = nil
         }
         updatePreviewView()
     }
     
-    func setViewedContent(viewedContent: VViewedContent?) {
-        if let viewedContent = viewedContent {
-            self.viewedContent = viewedContent
+    func setContent(content: VContent?) {
+        if let content = content {
+            self.content = content
             self.streamItem = nil
         }
         updatePreviewView()
     }
     
     private var streamItem: VStreamItem?
-    private var viewedContent: VViewedContent?
+    private var content: VContent?
     
     // MARK: - Dependency manager
     
@@ -64,17 +64,17 @@ class VContentOnlyCell: UICollectionViewCell {
     // MARK: - Views
     
     private var streamItemPreviewView: VStreamItemPreviewView?
-    private var viewedContentPreviewView = ContentPreviewView()
+    private var contentPreviewView = ContentPreviewView()
     
     private func updatePreviewView() {
-        if streamItem == nil && viewedContent == nil {
+        if streamItem == nil && content == nil {
             streamItemPreviewView?.removeFromSuperview()
-            viewedContentPreviewView.removeFromSuperview()
+            contentPreviewView.removeFromSuperview()
             return
         }
         
         if let streamItem = streamItem {
-            viewedContentPreviewView.removeFromSuperview()
+            contentPreviewView.removeFromSuperview()
             if streamItemPreviewView?.canHandleStreamItem(streamItem) == true {
                 streamItemPreviewView?.streamItem = streamItem
             }
@@ -92,15 +92,12 @@ class VContentOnlyCell: UICollectionViewCell {
                 setNeedsLayout()
             }
         }
-        else if viewedContent != nil {
+        else if let content = content {
             streamItemPreviewView?.removeFromSuperview()
-            addSubview(viewedContentPreviewView)
-            v_addFitToParentConstraintsToSubview(viewedContentPreviewView)
-            viewedContentPreviewView.backgroundColor = .blueColor()
-            guard let content = viewedContent?.content else {                assertionFailure("content should not be nil")
-                return
-            }
-            viewedContentPreviewView.content = content
+            addSubview(contentPreviewView)
+            v_addFitToParentConstraintsToSubview(contentPreviewView)
+            contentPreviewView.backgroundColor = .blueColor()
+            contentPreviewView.content = content
         }
         
     }

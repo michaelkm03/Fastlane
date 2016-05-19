@@ -1,5 +1,5 @@
 //
-//  ViewedContentStreamRemoteOperation.swift
+//  ContentFeedRemoteOperation.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/17/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ViewedContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
     let request: ViewedContentFeedRequest
     
@@ -31,9 +31,9 @@ final class ViewedContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedR
         // Make changes on background queue
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
             self.results = sourceFeed.flatMap({
-                let viewedContent: VViewedContent = context.v_findOrCreateObject( [ "author.remoteId" : $0.author.userID, "content.remoteID" : $0.content.id ] )
-                viewedContent.populate(fromSourceModel: $0)
-                return viewedContent.objectID
+                let content: VContent = context.v_findOrCreateObject( [ "author.remoteId" : $0.author.userID, "content.remoteID" : $0.content.id ] )
+                content.populate(fromSourceModel: $0)
+                return content.objectID
             })
             context.v_save()
         }
