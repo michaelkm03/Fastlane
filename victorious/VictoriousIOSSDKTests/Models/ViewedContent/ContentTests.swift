@@ -32,6 +32,9 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.previewImages?.count, 4)
         XCTAssertEqual(content.contentData?.count, 1)
         XCTAssertEqual(content.type, "video")
+        
+        /// Preview assets are covered by ImageAssetTests
+        /// Content assets are covered by ContentMediaAssetTests
     }
     
     func testInvalidID() {

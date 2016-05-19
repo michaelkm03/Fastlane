@@ -33,6 +33,9 @@ class VContentTests: BasePersistentStoreTestCase {
         XCTAssertEqual(content.contentPreviewAssets?.count, 4)
         XCTAssertEqual(content.contentMediaAssets?.count, 1)
         XCTAssertEqual(content.type, "video")
+        
+        /// ContentPreviewAssets testing is handled in VContentPreviewAssetTests
+        /// ContentMediaAsset testing is handled in VContentMediaAssetTests
     }
 
     private func createContentFromJSON(fileName fileName: String) -> VContent? {

@@ -22,10 +22,10 @@ class ViewedContentTests: XCTestCase {
             return
         }
         
-        /// Further testing is done on User and Content.
-        
         XCTAssertNotNil(viewedContent.content, "Content should not be nil")
         XCTAssertNotNil(viewedContent.author, "Author should not be nil")
+        
+        /// Content testing is handled in ContentTests
     }
     
     func testInvalid() {
