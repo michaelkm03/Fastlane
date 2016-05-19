@@ -93,6 +93,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return [stageDataSource].flatMap { $0 }
     }
     
+    func receive(event: ForumEvent) {}
+    
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {

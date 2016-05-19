@@ -15,7 +15,7 @@ public protocol ForumEvent {
 
 public protocol ForumEventReceiver: class {
     var childEventReceivers: [ForumEventReceiver] { get }
-    func receiveEvent(event: ForumEvent)
+    func receive(event: ForumEvent)
 }
 
 public extension ForumEventReceiver {
@@ -24,9 +24,13 @@ public extension ForumEventReceiver {
         return []
     }
     
-    func receiveEvent(event: ForumEvent) {
+    func broadcast(event: ForumEvent) {
         for receiver in childEventReceivers {
-            receiver.receiveEvent(event)
+            receiver.receive(event)
+        }
+        
+        for receiver in childEventReceivers {
+            receiver.broadcast(event)
         }
     }
 }

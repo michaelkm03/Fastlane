@@ -38,11 +38,36 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         webSocketController.setDeviceID(deviceID)
     }
     
-    // MARK: ForumEventSender
+    // MARK: - Configuration
+    
+    /// The amount of time to wait before reconnecting upon disconnection. Set to nil to disable automatic reconnection.
+    var reconnectTimeout: NSTimeInterval? = 5.0
+    
+    // MARK: - ForumEventReceiver
+    
+    func receive(event: ForumEvent) {
+        guard let webSocketEvent = event as? WebSocketEvent else {
+            return
+        }
+        
+        switch webSocketEvent.type {
+        case .Disconnected(_):
+            guard let reconnectTimeout = reconnectTimeout else {
+                return
+            }
+            
+            dispatch_after(reconnectTimeout, { [weak self] in
+                self?.setUpIfNeeded()
+            })
+        default: break
+        }
+    }
+    
+    // MARK: - ForumEventSender
     
     weak var nextSender: ForumEventSender?
     
-    // MARK: NetworkSource
+    // MARK: - NetworkSource
     
     func setUp() {
         refreshToken()

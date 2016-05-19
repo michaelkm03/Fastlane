@@ -49,4 +49,8 @@ class MainFeedNetworkSource: NetworkSource {
     // MARK: - ForumEventReceiver
     
     private(set) var childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(event: ForumEvent) {
+        // Nothing yet.
+    }
 }

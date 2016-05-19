@@ -35,10 +35,10 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     private let pingTimerInterval: NSTimeInterval = 15
 
     /// Keeps record of the information needed in order to identify each message.
-    internal let uniqueIdentificationMessage: UniqueIdentificationMessage = UniqueIdentificationMessage()
+    internal let uniqueIdentificationMessage = UniqueIdentificationMessage()
 
     /// The designated way of getting a reference to the singleton instance with the default configuration.
-    public static let sharedInstance: WebSocketController = WebSocketController()
+    public static let sharedInstance = WebSocketController()
 
     // MARK: Initialization
 
@@ -109,6 +109,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     // MARK: - ForumEventReceiver
 
     public private(set) var childEventReceivers: [ForumEventReceiver] = []
+    
+    public func receive(event: ForumEvent) {}
 
     // MARK: - ForumEventSender
 
@@ -126,8 +128,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         NSLog("websocketDidConnect")
         
         let connectEvent = WebSocketEvent(type: .Connected)
-        dispatch_async(dispatch_get_main_queue()) {
-            self.receiveEvent(connectEvent)
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            self?.broadcast(connectEvent)
         }
     }
 
@@ -142,8 +144,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         let disconnectEvent = WebSocketEvent(type: WebSocketEventType.Disconnected(webSocketError: webSocketError))
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.receiveEvent(disconnectEvent)
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            self?.broadcast(disconnectEvent)
         }
     }
 
@@ -154,8 +156,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
             let json = JSON(data: dataFromString)
             let events = decodeEventsFromJson(json)
             for event in events {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.receiveEvent(event)
+                dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                    self?.broadcast(event)
                 }
             }
         }
@@ -188,7 +190,7 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         if let jsonString = JSON(toServerDictionary).rawString() {
             NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
-            receiveEvent(event)
+            broadcast(event)
         } else {
             NSLog("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
         }

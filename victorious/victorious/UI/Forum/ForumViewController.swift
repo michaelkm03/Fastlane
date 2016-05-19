@@ -12,8 +12,6 @@ import UIKit
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
 
-    private let webSocketReconnectTimeout: NSTimeInterval = 5
-
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
             stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
@@ -48,24 +46,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return children.flatMap { $0 }
     }
     
-    func receiveEvent(event: ForumEvent) {
-        let r = childEventReceivers
-        for receiver in r {
-            receiver.receiveEvent(event)
-        }
-        
+    func receive(event: ForumEvent) {
         if let event = event as? WebSocketEvent {
             switch event.type {
             case .Disconnected(let webSocketError):
-                guard isViewLoaded() else {
-                    return
+                if isViewLoaded() {
+                    v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting soon. \n (error: \(webSocketError))", completion: nil)
                 }
-
-                self.v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting in \(webSocketReconnectTimeout)s. \n (error: \(webSocketError))", completion: nil)
-
-                dispatch_after(webSocketReconnectTimeout, { [weak self] in
-                    self?.networkSource?.setUpIfNeeded()
-                })
             default:
                 break
             }
@@ -281,7 +268,7 @@ private extension VDependencyManager {
         return childDependencyForKey("networkResources")
     }
 
-    var networkSource: WebSocketNetworkAdapter? {
+    var networkSource: NetworkSource? {
         return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
     }
 }
