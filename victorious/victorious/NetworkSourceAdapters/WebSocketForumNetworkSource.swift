@@ -1,5 +1,5 @@
 //
-//  WebSocketNetworkAdapter.swift
+//  WebSocketForumNetworkSource.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 12/4/16.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousCommon
 
-class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
+class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
     private struct Constants {
         static let appIdExpander = "%%APP_ID%%"

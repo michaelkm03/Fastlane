@@ -1,12 +1,12 @@
 //
-//  MainFeedNetworkSource.swift
+//  MainFeedForumNetworkSource.swift
 //  victorious
 //
 //  Created by Jarod Long on 5/18/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class MainFeedNetworkSource: ForumNetworkSource {
+class MainFeedForumNetworkSource: ForumNetworkSource {
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager) {

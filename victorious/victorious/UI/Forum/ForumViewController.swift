@@ -142,9 +142,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
-            if let forumNetworkSourceWebSocket = forumNetworkSource as? WebSocketNetworkAdapter,
+            if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
-                let type = DebugMenuType.webSocket(messageContainer: forumNetworkSourceWebSocket.webSocketMessageContainer)
+                let type = DebugMenuType.webSocket(messageContainer: webSocketForumNetworkSource.webSocketMessageContainer)
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
@@ -278,6 +278,6 @@ private extension VDependencyManager {
     }
 
     var forumNetworkSource: ForumNetworkSource? {
-        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
+        return singletonObjectOfType(WebSocketForumNetworkSource.self, forKey: "networkLayerSource") as? WebSocketForumNetworkSource
     }
 }
