@@ -17,8 +17,7 @@ Associated Spec: N/A
 - [ ] Addresses everything mentioned in the ticket and product spec
 - [ ] CI Tests are passing with the green check mark
 - [ ] All user-facing strings are localized, and the keys used are added in Localizable.strings (base) file
+- [ ] If you map a local template for testing, make sure the app still functions correctly without the local template
 
 ### Known Issues
 N/A
-
-@reviewer Check me out!
