@@ -14,7 +14,7 @@
 /// 3. Send messages over the websocket.
 /// 4. Forward messages using the (FEC) Forum Event Chain™.
 /// 5. It complies to the TemplateNetworkSource protocol so it can be instanciated through the template.
-public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
+public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
         static let forceDisconnectTimeout: NSTimeInterval = 5
@@ -49,15 +49,15 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         self.webSocket = webSocket
     }
 
-    // MARK: - NetworkSource
-    
+    // MARK: - ForumNetworkSourceWebSocket
+
     public func replaceEndPoint(endPoint: NSURL) {
         print("replaceEndPoint -> ", endPoint)
-        
+
         if let webSocket = webSocket {
             webSocket.disconnect()
         }
-        
+
         webSocket = nil
         webSocket = WebSocket(url: endPoint, socketListenerQueue: socketListenerQueue, delegate: self, pongDelegate: self)
     }
@@ -66,14 +66,18 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         print("setDeviceID -> \(deviceID)")
         uniqueIdentificationMessage.deviceID = deviceID
     }
-    
+
+    public private(set) var webSocketMessageContainer = WebSocketRawMessageContainer()
+
+    // MARK: - NetworkSource
+
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.
     public func setUp() {
         guard let webSocket = webSocket where !webSocket.isConnected else {
             return
         }
-        
+
         pingTimer?.invalidate()
         pingTimer = NSTimer.scheduledTimerWithTimeInterval(pingTimerInterval, target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: true)
         
@@ -125,7 +129,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     // MARK: - WebSocketDelegate
     
     public func websocketDidConnect(socket: WebSocket) {
-        NSLog("websocketDidConnect")
+        let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
+        webSocketMessageContainer.addMessage(rawMessage)
         
         let connectEvent = WebSocketEvent(type: .Connected)
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
@@ -134,7 +139,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        NSLog("DidDisconnect -> \(socket)    error -> \(error)")
+        let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
+        webSocketMessageContainer.addMessage(rawMessage)
         
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
@@ -150,17 +156,20 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        NSLog("websocketDidReceiveMessage -> \(text)")
-        
+        var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
+
         if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
             let json = JSON(data: dataFromString)
-            let events = decodeEventsFromJson(json)
-            for event in events {
+            rawMessage.json = json
+
+            if let event = decodeEventFromJSON(json) {
                 dispatch_async(dispatch_get_main_queue()) { [weak self] in
                     self?.broadcast(event)
                 }
             }
         }
+
+        webSocketMessageContainer.addMessage(rawMessage)
     }
 
     public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
@@ -170,7 +179,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     // MARK: WebSocketPongDelegate
     
     public func websocketDidReceivePong(socket: WebSocket) {
-        NSLog("websocketDidReceivePong")
+        let rawMessage = WebSocketRawMessage(messageString: "Did receive pong message.")
+        webSocketMessageContainer.addMessage(rawMessage)
     }
 
     // MARK: Private

@@ -59,7 +59,7 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
             
-            performFirstLaunchSetup { [weak self] in
+            performSetup { [weak self] in
                 self?.configureTabBar()
             }
         }

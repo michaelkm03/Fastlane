@@ -26,10 +26,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             stageContainerHeight.constant = 0.0
         }
     }
-    
+
+    #if V_ENABLE_WEBSOCKET_DEBUG_MENU
+        private lazy var debugMenuHandler: DebugMenuHandler = {
+            return DebugMenuHandler(targetViewController: self)
+        }()
+    #endif
+
     // MARK: - Initialization
     
-    class func newWithDependencyManager( dependencyManager: VDependencyManager ) -> ForumViewController {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
         return forumVC
@@ -86,7 +92,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     var composer: Composer?
     var chatFeed: ChatFeed?
     var dependencyManager: VDependencyManager!
-    var networkSource: NetworkSource?
+    var forumNetworkSource: ForumNetworkSource?
 
     func creationFlowPresenter() -> VCreationFlowPresenter? {
         return composer?.creationFlowPresenter
@@ -129,13 +135,21 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return view
     }
     
-    // MARK: - UIViewController overrides
+    // MARK: - UIViewController
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+
+        #if V_ENABLE_WEBSOCKET_DEBUG_MENU
+            if let forumNetworkSourceWebSocket = forumNetworkSource as? WebSocketNetworkAdapter,
+                let navigationController = navigationController {
+                let type = DebugMenuType.webSocket(messageContainer: forumNetworkSourceWebSocket.webSocketMessageContainer)
+                debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
+            }
+        #endif
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
@@ -145,7 +159,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         // Set up the network source if needed.
-        networkSource?.setUpIfNeeded()
+        forumNetworkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -167,17 +181,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         )
         updateStyle()
         
-        if let networkSource = dependencyManager.networkSource {
+        if let forumNetworkSource = dependencyManager.forumNetworkSource {
             // Add the network source as the next responder in the FEC.
-            nextSender = networkSource
+            nextSender = forumNetworkSource
             
             // Inject ourselves into the child receiver list in order to link the chain together.
-            networkSource.addChildReceiver(self)
+            forumNetworkSource.addChildReceiver(self)
             
-            self.networkSource = networkSource
+            self.forumNetworkSource = forumNetworkSource
         }
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         
@@ -210,9 +224,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 
         // Close connection to network source when we close the forum.
-        networkSource?.tearDown()
+        forumNetworkSource?.tearDown()
 
-        networkSource?.removeChildReceiver(self)
+        forumNetworkSource?.removeChildReceiver(self)
     }
     
     private func updateStyle() {
@@ -225,7 +239,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
-    
+
     // MARK: - VFocusable
     
     var focusType: VFocusType = .None {
@@ -263,7 +277,7 @@ private extension VDependencyManager {
         return childDependencyForKey("networkResources")
     }
 
-    var networkSource: NetworkSource? {
+    var forumNetworkSource: ForumNetworkSource? {
         return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
     }
 }

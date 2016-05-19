@@ -41,8 +41,9 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         
         let operation = TutorialContentsRemoteOperation(urlString: urlString)
         operation.queue { [weak self] results, error, cancelled in
-            self?.queuedTutorialMessages = results?.flatMap { $0 as? ViewedContent } ?? []
+            self?.queuedTutorialMessages = results?.flatMap { $0 as? DisplayableChatMessage } ?? []
             
+            self?.dequeueTutorialMessage()
             self?.timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)
         }
     }

@@ -1,5 +1,5 @@
 //
-//  TemplateNetworkSource.swift
+//  ForumNetworkSource.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 22/3/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
+public protocol ForumNetworkSource: ForumEventReceiver, ForumEventSender {
     ///
     /// Allows for adding child receivers from an external source.
     ///
@@ -35,7 +35,7 @@ public protocol NetworkSource: ForumEventReceiver, ForumEventSender {
     var isSetUp: Bool { get }
 }
 
-extension NetworkSource {
+extension ForumNetworkSource {
     /// Calls `setUp` if `isSetUp` returns false.
     public func setUpIfNeeded() {
         if !isSetUp {
@@ -44,7 +44,7 @@ extension NetworkSource {
     }
 }
 
-public protocol NetworkSourceWebSocket: NetworkSource {
+public protocol ForumNetworkSourceWebSocket: ForumNetworkSource {
     /// Used for tracking trafic over the websocket to a particular device. Should be set before messages are sent.
     func setDeviceID(deviceID: String)
     
@@ -52,4 +52,7 @@ public protocol NetworkSourceWebSocket: NetworkSource {
     /// - parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
     ///
     func replaceEndPoint(endPoint: NSURL)
+
+    /// Will contain all incoming and outgoing messages over the WebSocket.
+    var webSocketMessageContainer: WebSocketRawMessageContainer { get }
 }

@@ -119,7 +119,6 @@
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
 #import "VFacebookActivity.h"
 #import "VFindContactsTableViewController.h"
-#import "VFirstTimeInstallHelper.h"
 #import "VFlaggedContent.h"
 #import "VFlexBar.h"
 #import "VFocusable.h"
