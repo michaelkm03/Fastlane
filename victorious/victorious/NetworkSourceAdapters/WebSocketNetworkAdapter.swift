@@ -22,10 +22,6 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> WebSocketNetworkAdapter {
-        return WebSocketNetworkAdapter(dependencyManager: dependencyManager)
-    }
-    
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
         super.init()
