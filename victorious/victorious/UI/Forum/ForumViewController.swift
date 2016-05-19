@@ -278,6 +278,6 @@ private extension VDependencyManager {
     }
 
     var forumNetworkSource: ForumNetworkSource? {
-        return singletonObjectOfType(WebSocketForumNetworkSource.self, forKey: "networkLayerSource") as? WebSocketForumNetworkSource
+        return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class MainFeedForumNetworkSource: ForumNetworkSource {
+class MainFeedForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager) {
