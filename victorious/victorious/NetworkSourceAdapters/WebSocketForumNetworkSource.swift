@@ -76,6 +76,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         webSocketController.tearDown()
     }
     
+    var isSetUp: Bool {
+        return webSocketController.isSetUp
+    }
+    
     func addChildReceiver(receiver: ForumEventReceiver) {
         if !childEventReceivers.contains({ $0 === receiver }) {
             childEventReceivers.append(receiver)
@@ -92,10 +96,6 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     var webSocketMessageContainer: WebSocketRawMessageContainer {
         return webSocketController.webSocketMessageContainer
-    }
-
-    var isSetUp: Bool {
-        return webSocketController.isSetUp
     }
 
     // MARK: Private
