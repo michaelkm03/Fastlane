@@ -10,12 +10,7 @@ import XCTest
 @testable import VictoriousIOSSDK
 @testable import victorious
 
-class VContentPreviewAssetTests: BasePersistentStoreTestCase {
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
+class VContentPreviewAssetTests: BasePersistentStoreTestCase {    
     func testValid() {
         guard let asset: VContentPreviewAsset = createContentMediaAssetFromJSON(
             fileName: "ContentPreviewAsset",

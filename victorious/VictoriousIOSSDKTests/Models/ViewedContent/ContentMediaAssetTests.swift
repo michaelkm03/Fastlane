@@ -11,11 +11,6 @@ import XCTest
 
 class ContentMediaAssetTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
     // MARK: - Video
     
     func testValidVideo() {

@@ -11,11 +11,6 @@ import XCTest
 
 class ContentTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
     func testValid() {
         guard let content: Content = createContentFromJSON(fileName: "Content") else {
             XCTFail("Failed to create a Content")
@@ -32,9 +27,6 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.previewImages?.count, 4)
         XCTAssertEqual(content.contentData?.count, 1)
         XCTAssertEqual(content.type, "video")
-        
-        /// Preview assets are covered by ImageAssetTests
-        /// Content assets are covered by ContentMediaAssetTests
     }
     
     func testInvalidID() {

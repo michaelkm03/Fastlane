@@ -11,11 +11,6 @@ import XCTest
 
 class ViewedContentTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
     func testValid() {
         guard let viewedContent: ViewedContent = createViewedContentFromJSON(fileName: "ViewedContent") else {
             XCTFail("Failed to create a ViewedContent")
@@ -24,8 +19,6 @@ class ViewedContentTests: XCTestCase {
         
         XCTAssertNotNil(viewedContent.content, "Content should not be nil")
         XCTAssertNotNil(viewedContent.author, "Author should not be nil")
-        
-        /// Content testing is handled in ContentTests
     }
     
     func testInvalid() {
