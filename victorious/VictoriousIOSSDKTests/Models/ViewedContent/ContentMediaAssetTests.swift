@@ -13,24 +13,162 @@ class ContentMediaAssetTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        continueAfterFailure = false
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+    // MARK: - Video
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    func testValidVideo() {
+        guard let asset: ContentMediaAsset = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidVideo",
+            contentType: "video",
+            sourceType: "video_assets"
+            ) else {
+                XCTFail("Failed to create a ContentMediaAsset")
+                return
         }
+        
+        XCTAssertNil(asset.externalID)
+        XCTAssertNil(asset.source)
+        XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
+        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
+    }
+    
+    func testInvalidVideoSourceType() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidVideo",
+            contentType: "video",
+            sourceType: "invalid_source_type"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    func testInvalidVideoNoIdentifier() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_InvalidVideoNoIdentifier",
+            contentType: "video",
+            sourceType: "video_assets"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    // MARK: - Images
+    
+    func testValidImage() {
+        guard let asset: ContentMediaAsset = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidImage",
+            contentType: "image",
+            sourceType: "doesnt_matter"
+            ) else {
+                XCTFail("Failed to create a ContentMediaAsset")
+                return
+        }
+        
+        XCTAssertNil(asset.externalID)
+        XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
+        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
+    }
+    
+    func testInvalidImage() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_InvalidVideoNoIdentifier",
+            contentType: "image",
+            sourceType: "doesnt_matter"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    // MARK: - GIFs
+    
+    func testValidGIF() {
+        guard let asset: ContentMediaAsset = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidVideo",
+            contentType: "gif",
+            sourceType: "video_assets"
+            ) else {
+                XCTFail("Failed to create a ContentMediaAsset")
+                return
+        }
+        
+        XCTAssertNil(asset.externalID)
+        XCTAssertNil(asset.source)
+        XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
+        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
+    }
+    
+    func testInvalidGIFSourceType() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidVideo",
+            contentType: "gif",
+            sourceType: "invalid_source_type"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    func testInvalidGIFNoIdentifier() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_InvalidVideoNoIdentifier",
+            contentType: "gif",
+            sourceType: "video_assets"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    // MARK: - Youtube
+    
+    func testValidYoutube() {
+        guard let asset: ContentMediaAsset = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_ValidYoutube",
+            contentType: "video",
+            sourceType: "remote_assets"
+            ) else {
+                XCTFail("Failed to create a ContentMediaAsset")
+                return
+        }
+        
+        XCTAssertNil(asset.url)
+        XCTAssertEqual(asset.source, "youtube")
+        XCTAssertEqual(asset.externalID, "VALID_ID")
+        XCTAssertEqual(asset.uniqueID, asset.externalID)
+    }
+    
+    func testInvalidVideoNoIdentifierYoutube() {
+        let asset: ContentMediaAsset? = createMediaAssetFromJSON(
+            fileName: "ContentMediaAsset_InvalidVideoNoIdentifierYoutube",
+            contentType: "video",
+            sourceType: "remote_assets"
+        )
+        
+        XCTAssertNil(asset, "ContentMediaAsset should not have been created with an invalid JSON")
+        
+    }
+    
+    // MARK: - Setup
+    
+    private func createMediaAssetFromJSON(fileName fileName: String,
+                                          contentType: String,
+                                          sourceType: String) -> ContentMediaAsset? {
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+                XCTFail("Error reading mock json data")
+                return nil
+        }
+        
+        return ContentMediaAsset(
+            contentType: contentType,
+            sourceType: sourceType,
+            json: JSON(data: mockData)
+        )
     }
     
 }
