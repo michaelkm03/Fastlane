@@ -63,8 +63,11 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     @IBAction private func didTapContinueButton(sender: UIButton) {
-        dismissViewControllerAnimated(true) { [weak self] in
-            self?.onContinue
+        // We want the closure to be called after dismissing self, so we capture the closure locally first
+        // and then call it in the completion block.
+        let onContinue = self.onContinue
+        dismissViewControllerAnimated(true) {
+            onContinue?()
         }
     }
 

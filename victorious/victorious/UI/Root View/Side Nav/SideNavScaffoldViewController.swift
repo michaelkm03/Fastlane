@@ -91,7 +91,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
-            performFirstLaunchSetup()
+            performSetup()
             setupNavigationButtons()
         }
     }
