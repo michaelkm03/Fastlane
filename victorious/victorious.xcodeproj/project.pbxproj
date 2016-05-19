@@ -1748,6 +1748,7 @@
 		BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */; };
 		BFC673601CE3B81E004F9D3C /* VContentPreviewAsset+Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6735F1CE3B81E004F9D3C /* VContentPreviewAsset+Fetcher.swift */; };
 		BFC673621CE3C9C4004F9D3C /* ContentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */; };
+		BFCFFFED1CEE807600F512B1 /* User_non_VIP.json in Resources */ = {isa = PBXBuildFile; fileRef = BFCFFFEC1CEE807600F512B1 /* User_non_VIP.json */; };
 		BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */; };
 		BFE31A801CD2968100585155 /* ShowCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE31A7F1CD2968100585155 /* ShowCloseUpOperation.swift */; };
 		BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE31A811CD2969200585155 /* CloseUpView.swift */; };
@@ -4489,6 +4490,7 @@
 		BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentVideoPlayerCoordinator.swift; sourceTree = "<group>"; };
 		BFC6735F1CE3B81E004F9D3C /* VContentPreviewAsset+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContentPreviewAsset+Fetcher.swift"; sourceTree = "<group>"; };
 		BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentPreviewView.swift; path = ContentPreviewView/ContentPreviewView.swift; sourceTree = "<group>"; };
+		BFCFFFEC1CEE807600F512B1 /* User_non_VIP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User_non_VIP.json; sourceTree = "<group>"; };
 		BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceActionController.swift; sourceTree = "<group>"; };
 		BFDC0B021C7F9CA400E5421B /* VSequenceActionControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceActionControllerDelegate.h; sourceTree = "<group>"; };
 		BFE31A7F1CD2968100585155 /* ShowCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCloseUpOperation.swift; sourceTree = "<group>"; };
@@ -6215,6 +6217,7 @@
 				C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */,
 				C323C3B41BF55D8300681059 /* UpdateCommentResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
+				BFCFFFEC1CEE807600F512B1 /* User_non_VIP.json */,
 				A746799A1BF6DA360026FD2E /* UserInfoResponse.json */,
 				797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */,
 				670C65911C52BA1800BD7F3F /* UserShelfResponse.json */,
@@ -11116,6 +11119,7 @@
 				62575EC51C54BDB700B49CB0 /* AdBreakWithEverything.json in Resources */,
 				BF3777D91CEE4D5800AEF7F2 /* ContentInvalidType.json in Resources */,
 				672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */,
+				BFCFFFED1CEE807600F512B1 /* User_non_VIP.json in Resources */,
 				62575EF81C54CB2000B49CB0 /* SequenceSimple.json in Resources */,
 				7938F0991C3CD055009CE091 /* FriendFindByEmailResponse.json in Resources */,
 				79D081A61BF15B9E00E8A0C5 /* ConversationListResponse.json in Resources */,
@@ -12580,7 +12584,6 @@
 				F06B418F1B7C30BC008709E8 /* HashtagShelf.swift in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */,
-				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				BF8F57A11CEBD63F00188C0E /* ContentFeedOperation.swift in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A72C86021C977FF500E97D4F /* CommentFlagOperation.swift in Sources */,
