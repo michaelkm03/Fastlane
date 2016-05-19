@@ -37,7 +37,6 @@
                        ]
         }
     },
-    "type": "video",
     "video": {
         "type": "video_assets",
         "is_remix": false,

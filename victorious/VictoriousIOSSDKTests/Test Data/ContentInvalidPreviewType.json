@@ -38,7 +38,7 @@
         }
     },
     "type": "video",
-    "video": {
+    "oops": {
         "type": "video_assets",
         "is_remix": false,
         "video_assets": [
