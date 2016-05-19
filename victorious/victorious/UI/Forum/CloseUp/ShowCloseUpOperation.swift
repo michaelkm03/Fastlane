@@ -14,7 +14,7 @@ class ShowCloseUpOperation: MainQueueOperation {
     private let animated: Bool
     private weak var originViewController: UIViewController?
     private var contentID: String?
-    private var viewedContent: VViewedContent?
+    private var content: VContent?
     
     init?( originViewController: UIViewController,
            dependencyManager: VDependencyManager,
@@ -29,12 +29,12 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     init?( originViewController: UIViewController,
            dependencyManager: VDependencyManager,
-           viewedContent: VViewedContent,
+           content: VContent,
            animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
-        self.viewedContent = viewedContent
+        self.content = content
         super.init()
     }
     
@@ -50,7 +50,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         }
         
         let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : contentID ?? viewedContent?.contentID ?? "",
+            "%%CONTENT_ID%%" : contentID ?? content?.remoteID ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
         ]
         let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
@@ -59,7 +59,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         )
         
         let header = CloseUpView.newWithDependencyManager(childDependencyManager)
-
+        
         let config = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
             interItemSpacing: CGFloat(3),
@@ -67,17 +67,17 @@ class ShowCloseUpOperation: MainQueueOperation {
             allowsForRefresh: false,
             managesBackground: true
         )
-
+        
         let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
             childDependencyManager,
             header: header,
-            content: viewedContent,
+            content: content,
             configuration: config,
             streamAPIPath: apiPath
         )
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
         
-        if viewedContent == nil {
+        if content == nil {
             guard let contentID = contentID else {
                 assertionFailure("contentID should not be nil if content is nil")
                 return
@@ -86,13 +86,13 @@ class ShowCloseUpOperation: MainQueueOperation {
             guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
                 return
             }
-            ViewedContentFetchOperation(
+            ContentFetchOperation(
                 macroURLString: dependencyManager.contentFetchURL,
                 currentUserID: String(userID),
                 contentID: contentID
                 ).after(self).queue() { results, error, cancelled in
-                    if let viewedContent = results?.first as? VViewedContent {
-                        closeUpViewController.content = viewedContent
+                    if let content = results?.first as? VContent {
+                        closeUpViewController.content = content
                     }
             }
         }

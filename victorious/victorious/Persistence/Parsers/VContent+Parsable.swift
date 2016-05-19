@@ -10,34 +10,43 @@ import UIKit
 
 extension VContent: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: Content ) {
-        isUGC = sourceModel.isUGC ?? isUGC
-        releasedAt = sourceModel.releasedAt ?? releasedAt
-        remoteID = sourceModel.id ?? remoteID
-        shareURL = sourceModel.shareURL?.absoluteString ?? shareURL
-        status = sourceModel.status ?? status
-        title = sourceModel.title ?? title
-        type = sourceModel.type ?? type
-        isVIP = sourceModel.isVIP ?? isVIP
+    func populate( fromSourceModel viewedContent: ViewedContent ) {
         
-        if let previewAssets = sourceModel.previewImages {
-            let persistentAssets: [VContentPreview] = previewAssets.flatMap {
-                let previewAsset: VContentPreview = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
+        let content = viewedContent.content
+        let author = viewedContent.author
+        
+        isVIP = content.isVIP ?? isVIP
+        isUGC = content.isUGC ?? isUGC
+        releasedAt = content.releasedAt ?? releasedAt
+        remoteID = content.id ?? remoteID
+        shareURL = content.shareURL?.absoluteString ?? shareURL
+        status = content.status ?? status
+        title = content.title ?? title
+        type = content.type ?? type
+        
+        if self.author == nil {
+            self.author = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : author.userID ] ) as VUser
+        }
+        self.author?.populate(fromSourceModel: author)
+        
+        if let previewAssets = content.previewImages {
+            let persistentAssets: [VContentPreviewAsset] = previewAssets.flatMap {
+                let previewAsset: VContentPreviewAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 previewAsset.populate( fromSourceModel: $0 )
                 previewAsset.content = self
                 return previewAsset
             }
-            self.previewImages = Set<VContentPreview>(persistentAssets)
+            self.contentPreviewAssets = Set<VContentPreviewAsset>(persistentAssets)
         }
         
-        if let contentData = sourceModel.contentData {
-            let persistentAssets: [VContentData] = contentData.flatMap {
-                let data: VContentData = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
+        if let contentData = content.contentData {
+            let persistentAssets: [VContentMediaAsset] = contentData.flatMap {
+                let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
                 data.populate( fromSourceModel: $0 )
                 data.content = self
                 return data
             }
-            self.assets = Set<VContentData>(persistentAssets)
+            self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
         }
     }
 }

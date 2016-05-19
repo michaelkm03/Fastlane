@@ -1,5 +1,5 @@
 //
-//  VContentPreview+Parsable.swift
+//  VContentPreviewAsset+Parsable.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/9/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension VContentPreview: PersistenceParsable {
+extension VContentPreviewAsset: PersistenceParsable {
     
     func populate( fromSourceModel sourceModel: ImageAsset ) {
         width = sourceModel.mediaMetaData.size?.width ?? width

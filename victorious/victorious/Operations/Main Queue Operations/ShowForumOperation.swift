@@ -27,6 +27,8 @@ class ShowForumOperation: MainQueueOperation {
             return
         }
         
+        beganExecuting()
+        
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: "forum")
         guard let viewController = templateValue as? ForumViewController else {
             finishedExecuting()

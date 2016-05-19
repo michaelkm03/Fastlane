@@ -42,7 +42,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     init?(content: VContent) {
         self.content = content
-        guard let firstAsset = content.assets?.allObjects.first as? VContentData else {
+        guard let firstAsset = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
             return nil
         }
         if let contentType = content.contentType()
@@ -88,7 +88,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func loadVideo() {
-        guard let contentData = content.assets?.allObjects.first as? VContentData else {
+        guard let contentData = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }

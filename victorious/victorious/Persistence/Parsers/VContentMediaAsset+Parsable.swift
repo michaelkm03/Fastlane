@@ -1,5 +1,5 @@
 //
-//  VContentData+Parsable.swift
+//  VContentMediaAsset+Parsable.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/9/16.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-extension VContentData: PersistenceParsable {
+extension VContentMediaAsset: PersistenceParsable {
     
-    func populate( fromSourceModel sourceModel: ContentDataAsset ) {
+    func populate( fromSourceModel sourceModel: ContentMediaAsset ) {
         remoteSource = sourceModel.url?.absoluteString ?? remoteSource
         source = sourceModel.source ?? source
         externalID = sourceModel.externalID ?? externalID

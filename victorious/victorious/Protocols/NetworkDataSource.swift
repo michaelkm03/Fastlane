@@ -12,5 +12,5 @@ import Foundation
 protocol NetworkDataSource: class {
     
     /// The results fetched from network that should be visible to users
-    var visibleItems: [ChatMessageType] { get }
+    var visibleItems: [DisplayableChatMessage] { get }
 }
