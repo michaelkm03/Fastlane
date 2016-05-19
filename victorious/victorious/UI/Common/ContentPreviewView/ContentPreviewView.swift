@@ -21,7 +21,8 @@ class ContentPreviewView: UIView {
     init() {
         
         /// Play Button
-        playButton = UIImageView(image: UIImage.init(named: kPlayButtonPlayImageName))
+        playButton = UIImageView(image: UIImage(named: kPlayButtonPlayImageName))
+        playButton.contentMode = UIViewContentMode.ScaleAspectFill
         
         /// VIP icon
         let label = UILabel()
@@ -47,6 +48,8 @@ class ContentPreviewView: UIView {
         
         addSubview(playButton)
         v_addCenterToParentContraintsToSubview(playButton)
+        playButton.v_addWidthConstraint(playButtonSize)
+        playButton.v_addHeightConstraint(playButtonSize)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,6 +93,7 @@ class ContentPreviewView: UIView {
             case .gif, .image:
                 playButton.hidden = true
             }
+            print(playButton.frame)
         }
     }
     

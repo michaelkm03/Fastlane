@@ -31,7 +31,7 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequest
         // Make changes on background queue
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
             self.results = sourceFeed.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "author.remoteId" : $0.author.userID, "content.remoteID" : $0.content.id ] )
+                let content: VContent = context.v_findOrCreateObject( [ "author.remoteId" : $0.author.userID, "remoteID" : $0.content.id ] )
                 content.populate(fromSourceModel: $0)
                 return content.objectID
             })
