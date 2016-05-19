@@ -18,7 +18,7 @@ extension VContent {
     
     // Width to height aspect ratio of the content
     var aspectRatio: CGFloat {
-        guard let preview = previewImages?.allObjects.first as? VContentPreview,
+        guard let preview = contentPreviewAssets?.allObjects.first as? VContentPreviewAsset,
             let height = preview.height?.integerValue,
             let width = preview.width?.integerValue
             where height > 0 && width > 0 else {
@@ -27,8 +27,8 @@ extension VContent {
         return CGFloat(width) / CGFloat(height)
     }
     
-    func previewImageWithMinimumSize(minimumSize: CGSize) -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func previewImageWithMinimumSize(minimumSize: CGSize) -> VContentPreviewAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VContentPreviewAsset> else {
             return nil
         }
         
@@ -45,8 +45,8 @@ extension VContent {
         return assetsByAscendingArea.last
     }
     
-    func previewImageWithMinimumWidth(minimumWidth: CGFloat) -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func previewImageWithMinimumWidth(minimumWidth: CGFloat) -> VContentPreviewAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VContentPreviewAsset> else {
             return nil
         }
         
@@ -58,8 +58,8 @@ extension VContent {
         return assetsByAscendingArea.last
     }
     
-    func largestPreviewAsset() -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func largestPreviewAsset() -> VContentPreviewAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VContentPreviewAsset> else {
             return nil
         }
         

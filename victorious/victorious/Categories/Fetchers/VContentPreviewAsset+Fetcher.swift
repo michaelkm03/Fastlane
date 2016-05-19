@@ -1,5 +1,5 @@
 //
-//  VContentPreview+Fetcher.swift
+//  VContentPreviewAsset+Fetcher.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/11/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension VContentPreview {
+extension VContentPreviewAsset {
     var area: CGFloat {
         guard let width = width,
             height = height else {

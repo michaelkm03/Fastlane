@@ -1,5 +1,5 @@
 //
-//  ContentDataAsset.swift
+//  ContentMediaAsset.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/10/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ContentDataAsset {
+public enum ContentMediaAsset {
     case video(url: NSURL, source: String?)
     case youtube(remoteID: String, source: String?)
     case gif(url: NSURL, source: String?)
