@@ -6148,7 +6148,6 @@
 				A7A191741CC7F7CA00E37F3C /* ChatMessage.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
 				A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */,
-				BF2D256C1CED3FCC0001A2AF /* ViewedContent */,
 				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
 				79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */,
 				79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */,
@@ -6210,6 +6209,7 @@
 				A746799A1BF6DA360026FD2E /* UserInfoResponse.json */,
 				797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */,
 				670C65911C52BA1800BD7F3F /* UserShelfResponse.json */,
+				BF2D256C1CED3FCC0001A2AF /* ViewedContent */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -7298,10 +7298,10 @@
 		62575EFE1C54CD3D00B49CB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				62575EFF1C54CD9400B49CB0 /* VSequenceTests.swift */,
-				BF8F8BCB1CED55EF00D44952 /* VContentTests.swift */,
 				BFC3713F1CED588A000849CA /* VContentMediaAssetTests.swift */,
 				BFC371411CED58A0000849CA /* VContentPreviewAssetTests.swift */,
+				BF8F8BCB1CED55EF00D44952 /* VContentTests.swift */,
+				62575EFF1C54CD9400B49CB0 /* VSequenceTests.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -9636,9 +9636,9 @@
 		BF2D25791CED40980001A2AF /* ViewedContent */ = {
 			isa = PBXGroup;
 			children = (
+				BF2D257E1CED40E60001A2AF /* ContentMediaAssetTests.swift */,
 				BF2D257A1CED40CC0001A2AF /* ContentTests.swift */,
 				BF2D257C1CED40DA0001A2AF /* ViewedContentTests.swift */,
-				BF2D257E1CED40E60001A2AF /* ContentMediaAssetTests.swift */,
 			);
 			name = ViewedContent;
 			sourceTree = "<group>";
