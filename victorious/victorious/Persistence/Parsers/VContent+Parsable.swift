@@ -45,7 +45,7 @@ extension VContent: PersistenceParsable {
                 data.content = self
                 return data
             }
-            self.contentPreviewAssets = Set<VContentMediaAsset>(persistentAssets)
+            self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
         }
     }
 }
