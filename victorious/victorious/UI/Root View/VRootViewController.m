@@ -222,6 +222,29 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [self showViewController:self.loadingViewController animated:NO completion:nil];
 }
 
+/** This function assumes `self.dependencyManager` has been set. So make sure
+ we call it after loading finishes
+ */
+- (void)initialSetupAfterLoading
+{
+    NSAssert(self.dependencyManager != nil, @"We need a valid dependency manager to perform initial setup");
+    self.sessionTimer.dependencyManager = self.dependencyManager;
+    [self.sessionTimer start];
+    [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
+    
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    NSURL *appStoreURL = appInfo.appURL;
+    if ( appStoreURL != nil )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL.absoluteString forKey:VConstantAppStoreURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
+    
+    [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
+}
+
 - (void)showAgeGateViewController
 {
     self.launchState = VAppLaunchStateWaiting;
@@ -252,22 +275,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSDictionary *scaffoldConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
     VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
     self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager;
-    
-    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
-    self.sessionTimer.dependencyManager = self.dependencyManager;
-    [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
-    [self.sessionTimer start];
-    
-    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
-
-    [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
-    
-    NSURL *appStoreURL = appInfo.appURL;
-    if ( appStoreURL != nil )
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL.absoluteString forKey:VConstantAppStoreURL];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
     
     [self showViewController:scaffold animated:YES completion:^(void)
     {
@@ -504,6 +511,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
             [self showLogin];
         }
     }
+    
+    [self initialSetupAfterLoading];
 }
 
 #pragma mark - AgeGateViewControllerDelegate
