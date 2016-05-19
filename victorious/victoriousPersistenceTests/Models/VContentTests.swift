@@ -10,12 +10,7 @@ import XCTest
 @testable import VictoriousIOSSDK
 @testable import victorious
 
-class VContentTests: BasePersistentStoreTestCase {
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
+class VContentTests: BasePersistentStoreTestCase {    
     func testValid() {
         guard let content: VContent = createContentFromJSON(fileName: "ViewedContent") else {
             XCTFail("Failed to create a VContent")
@@ -33,9 +28,6 @@ class VContentTests: BasePersistentStoreTestCase {
         XCTAssertEqual(content.contentPreviewAssets?.count, 4)
         XCTAssertEqual(content.contentMediaAssets?.count, 1)
         XCTAssertEqual(content.type, "video")
-        
-        /// ContentPreviewAssets testing is handled in VContentPreviewAssetTests
-        /// ContentMediaAsset testing is handled in VContentMediaAssetTests
     }
 
     private func createContentFromJSON(fileName fileName: String) -> VContent? {

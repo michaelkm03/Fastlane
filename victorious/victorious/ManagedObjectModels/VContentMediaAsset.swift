@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class VContentMediaAsset: NSManagedObject {
     
     @NSManaged var externalID: String?

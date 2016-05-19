@@ -11,11 +11,6 @@ import XCTest
 @testable import victorious
 
 class VContentMediaAssetTests: BasePersistentStoreTestCase {
-    override func setUp() {
-        super.setUp()
-        continueAfterFailure = false
-    }
-    
     func testValidVideo() {
         guard let asset: VContentMediaAsset = createContentMediaAssetFromJSON(
             fileName: "ContentMediaAsset_ValidVideo",
