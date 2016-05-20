@@ -18,6 +18,7 @@ public class Content {
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentMediaAsset]?
+    public let text: String?
     public let type: String?
 
     /// Payload describing what will be put on the stage.
@@ -47,6 +48,7 @@ public class Content {
         self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) /// <backend returns in milliseconds
         self.isUGC = json["is_ugc"].bool
         self.tags = nil
+        self.text = json["text"]["data"].string
         self.type = type
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
@@ -81,6 +83,7 @@ public class Content {
         self.isUGC = nil
         self.previewImages = nil
         self.contentData = nil
+        self.text = nil
         self.type = nil
     }
 }

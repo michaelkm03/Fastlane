@@ -21,6 +21,7 @@ extension VContent: PersistenceParsable {
         shareURL = content.shareURL?.absoluteString ?? shareURL
         status = content.status ?? status
         title = content.title ?? title
+        text = content.text ?? text
         type = content.type ?? type
         
         if self.author == nil {

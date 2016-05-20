@@ -22,14 +22,23 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     func setUp() {
         isSetUp = true
         
-        ContentListFetchOperation(urlString: dependencyManager.mainFeedURLString, fromTime: NSDate()).queue { result, error, cancelled in
-//            for content in result ?? [] {
-//                guard let content = content as? VViewedContent else {
-//                    continue
-//                }
-//                
-//                print(content.content?.type)
-//            }
+        ContentListFetchOperation(urlString: dependencyManager.mainFeedURLString, fromTime: NSDate()).queue { [weak self] result, error, cancelled in
+            for content in result ?? [] {
+                guard let content = content as? VContent, author = content.author else {
+                    continue
+                }
+                
+                guard let chatMessage = ChatMessage(
+                    serverTime: content.releasedAt,
+                    fromUser: ChatMessageUser(id: author.remoteId.integerValue, name: author.name, profileURL: nil),
+                    text: content.text,
+                    mediaAttachment: nil
+                ) else {
+                    continue
+                }
+                
+                self?.broadcast(chatMessage)
+            }
         }
     }
     
