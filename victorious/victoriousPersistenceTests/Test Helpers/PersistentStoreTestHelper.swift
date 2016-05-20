@@ -22,6 +22,36 @@ struct PersistentStoreTestHelper {
         }
     }
     
+    func createContent(remoteID: String) -> VContent {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let author = self.createUser(remoteId: 1)
+            return context.v_createObjectAndSave { content in
+                content.remoteID = remoteID
+                content.author = author
+                content.releasedAt = NSDate()
+            }
+        }
+    }
+    
+    func createContentMediaAsset(uniqueID: String) -> VContentMediaAsset {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let content = self.createContent("1")
+            return context.v_createObjectAndSave { asset in
+                asset.uniqueID = uniqueID
+                asset.content = content
+            }
+        }
+    }
+    
+    func createImageAsset(imageURL: String, type: String = "image") -> VImageAsset {
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            return context.v_createObjectAndSave { asset in
+                asset.imageURL = imageURL
+                asset.type = type
+            }
+        }
+    }
+    
     func createSequence(remoteId remoteId: String, category: String = kVOwnerVideoCategory) -> VSequence {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { sequence in

@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VImageAsset+Fetcher.h"
 #import "VAbstractUserProfileHeaderViewController.h"
 #import "VUser.h"
 #import "VDependencyManager.h"

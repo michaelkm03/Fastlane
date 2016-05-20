@@ -17,7 +17,6 @@
 #import "VAsset+Fetcher.h"
 #import "VSequencePermissions.h"
 #import "NSURL+MediaType.h"
-#import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
 #import "victorious-Swift.h"
