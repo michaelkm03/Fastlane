@@ -11,9 +11,13 @@ import UIKit
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     private let gridStreamController: GridStreamViewController<CloseUpView>
-
-    init(dependencyManager: VDependencyManager, content: VContent? = nil, streamAPIPath: String?) {
-
+    private var dependencyManager: VDependencyManager
+    
+    init(dependencyManager: VDependencyManager,
+         content: VContent? = nil,
+         streamAPIPath: String?) {
+        self.dependencyManager = dependencyManager
+        
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
                 
         let configuration = GridStreamConfiguration(
@@ -52,7 +56,19 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     // MARK: - CloseUpViewDelegate
     
-    func didSelectProfile() {
+    func didSelectProfileForUserID(userID: Int) {
+        ShowProfileOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            userId: userID
+        ).queue()
+    }
+    
+    func didSelectFlagContentForContentID(contentID: Int) {
+        
+    }
+    
+    func didToggleUpvoteForContentID(contentID: Int) {
         
     }
 

@@ -40,7 +40,8 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     override func start() {
         
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView")
+        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView"),
+            let originViewController = originViewController
             where !self.cancelled else {
                 finishedExecuting()
                 return
@@ -58,14 +59,12 @@ class ShowCloseUpOperation: MainQueueOperation {
             inURLString: childDependencyManager.relatedContentURL
         )
         
-        
-        
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,
             content: content,
             streamAPIPath: apiPath
         )
-        originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
         
         if content == nil {
             guard let contentID = contentID else {
