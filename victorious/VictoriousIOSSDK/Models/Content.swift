@@ -24,11 +24,18 @@ public class Content {
     public var stageContent: StageContent?
 
     public init?(json: JSON, refreshStageEvent: RefreshStage? = nil) {
-        guard let id = json["id"].string,
-            let type = json["type"].string,
-            let previewType = json["preview"]["type"].string,
-            let sourceType = json[type]["type"].string else {
-            NSLog("ID misssing in content json -> \(json)")
+        guard let id = json["id"].string else {
+            NSLog("ID missing in content json -> \(json)")
+            return nil
+        }
+        
+        guard let type = json["type"].string else {
+            NSLog("Type missing in content json -> \(json)")
+            return nil
+        }
+        
+        guard let previewType = json["preview"]["type"].string else {
+            NSLog("Preview type missing in content json -> \(json)")
             return nil
         }
 
@@ -43,21 +50,20 @@ public class Content {
         self.type = type
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
+        
         if type == "image" {
-            if let asset = ContentDataAsset(
+            self.contentData = [ContentDataAsset(
                 contentType: type,
-                sourceType: sourceType,
+                sourceType: "",
                 json: json[type]
-                ) {
-                self.contentData = [asset]
-            } else {
-                self.contentData = []
-            }
+            )].flatMap { $0 }
         } else {
-            self.contentData = (json[type][sourceType].array ?? []).flatMap {
+            let sourceType = json[type]["type"].string
+            
+            self.contentData = (json[type][""].array ?? []).flatMap {
                 ContentDataAsset(
                     contentType: type,
-                    sourceType: sourceType,
+                    sourceType: sourceType ?? "",
                     json: $0
                 )
             }
