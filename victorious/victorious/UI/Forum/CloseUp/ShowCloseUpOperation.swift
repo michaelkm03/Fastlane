@@ -58,21 +58,11 @@ class ShowCloseUpOperation: MainQueueOperation {
             inURLString: childDependencyManager.relatedContentURL
         )
         
-        let header = CloseUpView.newWithDependencyManager(childDependencyManager)
         
-        let config = GridStreamConfiguration(
-            sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
-            interItemSpacing: CGFloat(3),
-            cellsPerRow: 3,
-            allowsForRefresh: false,
-            managesBackground: true
-        )
         
-        let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            childDependencyManager,
-            header: header,
+        let closeUpViewController = CloseUpContainerViewController(
+            dependencyManager: childDependencyManager,
             content: content,
-            configuration: config,
             streamAPIPath: apiPath
         )
         originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
@@ -92,7 +82,7 @@ class ShowCloseUpOperation: MainQueueOperation {
                 contentID: contentID
                 ).after(self).queue() { results, error, cancelled in
                     if let content = results?.first as? VContent {
-                        closeUpViewController.content = content
+                        closeUpViewController.updateContent(content)
                     }
             }
         }
