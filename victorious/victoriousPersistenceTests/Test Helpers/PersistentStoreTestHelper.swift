@@ -40,12 +40,10 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createContentPreviewAsset(imageURL: String) -> VContentPreviewAsset {
+    func createImageAsset(imageURL: String) -> VImageAsset {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let content = self.createContent("1")
             return context.v_createObjectAndSave { asset in
                 asset.imageURL = imageURL
-                asset.content = content
             }
         }
     }

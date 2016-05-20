@@ -10,7 +10,6 @@
 
 #import "VInsetStreamCollectionCell.h"
 #import "VSequence+Fetcher.h"
-#import "VImageAsset+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VSequencePreviewView.h"
@@ -25,6 +24,7 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;

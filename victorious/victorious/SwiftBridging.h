@@ -138,7 +138,6 @@
 #import "VHashtagFollowingTableViewController.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VImageAsset.h"
 #import "VImageAssetDownloader.h"
 #import "VImageAssetFinder+PollAssets.h"
 #import "VImageAssetFinder.h"

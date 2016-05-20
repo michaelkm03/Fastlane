@@ -1,5 +1,5 @@
 //
-//  VContentPreviewAssetTests.swift
+//  VImageAssetTests.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/18/16.
@@ -10,14 +10,14 @@ import XCTest
 @testable import VictoriousIOSSDK
 @testable import victorious
 
-class VContentPreviewAssetTests: BasePersistentStoreTestCase {    
+class VImageAssetTests: BasePersistentStoreTestCase {
     func testValid() {
-        guard let asset: VContentPreviewAsset = createContentMediaAssetFromJSON(
-            fileName: "ContentPreviewAsset",
+        guard let asset: VImageAsset = createImageAssetFromJSON(
+            fileName: "ImageAsset",
             contentType: "video",
             sourceType: "video_assets"
             ) else {
-                XCTFail("Failed to create a VContentPreviewAsset")
+                XCTFail("Failed to create a VImageAsset")
                 return
         }
         
@@ -27,9 +27,9 @@ class VContentPreviewAssetTests: BasePersistentStoreTestCase {
         XCTAssertEqual(asset.imageURL, "VALID_URL")
     }
     
-    private func createContentMediaAssetFromJSON(fileName fileName: String,
+    private func createImageAssetFromJSON(fileName fileName: String,
                                                           contentType: String,
-                                                          sourceType: String) -> VContentPreviewAsset? {
+                                                          sourceType: String) -> VImageAsset? {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
@@ -41,7 +41,7 @@ class VContentPreviewAssetTests: BasePersistentStoreTestCase {
             return nil
         }
         
-        let persistentSequenceModel: VContentPreviewAsset = persistentStoreHelper.createContentPreviewAsset("")
+        let persistentSequenceModel: VImageAsset = persistentStoreHelper.createImageAsset("")
         persistentSequenceModel.populate(fromSourceModel: contentPreviewAsset)
         return persistentSequenceModel
     }
