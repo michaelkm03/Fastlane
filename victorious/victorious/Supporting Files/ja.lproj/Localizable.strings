@@ -6,6 +6,17 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+"Back"                  =   "戻る";
+"ImageCaptureFailed"    =   "写真を撮ることができません";
+"MixedMediaCoachMessage" =  "ロングタップでビデオ録画、タップで写真撮影";
+"SettingsManageSubscriptions"           = "サブスクリプションを管理";
+"SettingsSubscriptionSettingsPrompt"    = "アプリストアでサブスクリプションの設定を管理するには、[サブスクリプションを管理]をタップします。";
+"SettingsNoSubcriptionPrompt"           = "このデバイスにはアクティブなサブスクリプションがありません。\n別のデバイスで購入した場合は、[購入を復元]をタップして復元してください。";
+"SubscriptionDescriptionFormat"         = "月額%@。サブスクリプション期間は%@で終了します。";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "月額%@。";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "アプリ内購入";
+"SubscriptionsSettingsTitle"            = "サブスクリプション";
+
 "OK"                    =   "OK";
 "DeleteButton"          =   "削除";
 "ResetButton"           =   "リセット";
@@ -28,7 +39,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "始め方";
+"Get Started" = "始め方";
 "SetupButton"           =   "初期設定";
 "EmailValidation"       =   "無効なメールアドレスです";
 "Minimum 8 characters"  =   "最小８文字";
@@ -174,6 +185,8 @@
 "Retry"                 =   "再試行";
 
 "Now"                   =   "今";
+"SecondAgo"             =   "1秒";
+"SecondsAgo"            =   "%d秒";
 "MinuteAgo"             =   "1分間";
 "MinutesAgo"            =   "%d分間";
 "HourAgo"               =   "1時間";
@@ -186,6 +199,21 @@
 "MonthsAgo"             =   "%dヶ月間";
 "LastYear"              =   "1年間";
 "YearsAgo"              =   "%d年間";
+
+"SecondAgo Verbose"  	= "1秒前";
+"SecondsAgo Verbose" 	= "%d秒前";
+"MinuteAgo Verbose"  	= "1分前";
+"MinutesAgo Verbose" 	= "%d分前";
+"HourAgo Verbose"    	= "1時間前";
+"HoursAgo Verbose"   	= "%d時間前";
+"Yesterday Verbose"     = "1日前";
+"DaysAgo Verbose"    	= "%d日前";
+"LastWeek Verbose"   	= "1週間前";
+"WeeksAgo Verbose"   	= "%d週間前";
+"LastMonth Verbose"  	= "1ヶ月前";
+"MonthsAgo Verbose"  	= "%dヶ月前";
+"LastYear Verbose"   	= "1年前";
+"YearsAgo Verbose"   	= "%d年前";
 
 "JustAMoment"           =   "少々お待ちください";
 
@@ -211,7 +239,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "新しいパスワードが無効";
 "ResetPasswordNewEqualsCurrentMessage" = "現在のパスワードとは異なるパスワードを新たに入力してください。";
 
-"Resend Email"           =   "メールを再送信する";
+"Resend Email"          =   "メールを再送信する";
 
 "EmailNotFound"         =   "入力されたメールアドレスが見つかりませんでした。このアカウント作成時に使用されたメールアドレスを入力してください。";
 "EmailNotValid"         =   "このアカウント作成時に使用されたメールアドレスを入力してください。";
@@ -245,10 +273,6 @@
 "Login"                 =   "ログイン";
 
 "Version"               =   "バージョン %@";
-
-"ToSText"               =   "利用規約";
-
-"Privacy Policy"        =   "プライバシーポリシー";
 
 "NoFriends"             =   "一致する結果なし";
 "NoFriendsDetail"       =   "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
@@ -336,20 +360,28 @@
 "SettingsRestorePurchases"              = "購入を復元";
 "SettingsRestorePurchasesPrompt"        = "このデバイスで購入されたものはありません。\n別のデバイスで購入されている場合は、[購入を復元]ボタンをタップして復元してください。";
 "Reset Purchases"                       = "購入をリセットする";
+"SubscriptionRestoreFailed"             = "サブスクリプションの復元に失敗しました。";
+"SubscriptionSucceeded"                 = "サブスクリプションが完了しました！";
+"SubscriptionLegalPrompt"               = "サブスクライブすることで、次に同意したものとみなされます: 当社の";
+"SubscriptionActivityRestoring"         = "サブスクリプションを確認中…";
+"SubscriptionRestorePrompt"             = "すでにサブスクライブ済みですか？";
+"SubscriptionRestoreSucceeded"          = "サブスクリプションが復元されました！";
+"SubscriptionFailed"                    = "サブスクリプションに失敗しました。";
 
 "This will discard any content added to your post" = "これによりあなたの投稿に追加された全コンテンツが破棄されます";
 
 "No Color"  = "色なし";    // No color selected
 "Standard"  = "通常";   // The default color before a selection is made
 
-"Failed to fetch products" = "商品の取得に失敗";
 
+"Failed to fetch products" = "商品の取得に失敗";
 "This will discard any content from the camera" = "これによりカメラからのあらゆるコンテンツが破棄されます";
 "Video failed to load" = "動画が読み込めませんでした";
 "We encountered an error trying to edit this video." = "この動画の編集開始時にエラーが発生しました。";
 
 "No Photos" = "写真がありません";
 "No Videos" = "動画がありません";
+"No Media" = "メディアがありません";
 
 "#nofilter" = "#フィルターなし";
 "Create a meme" = "ミームを作成";
@@ -369,8 +401,8 @@
 
 "By continuing you are agreeing to our" = "続行することで、次に同意したものとみなされます: 当社の";
 "By signing up you are agreeing to our" = "サインアップすることで、次に同意したものとみなされます: 当社の";
-"terms of service"      =   "利用規約";
-"privacy policy"        =   "プライバシーポリシー";
+"Terms of Service" = "利用規約";
+"Privacy Policy" = "プライバシーポリシー";
 "Enter Email" = "メールアドレスを入力";
 "Enter name" = "名前を入力";
 "You must enter a name." = "名前を入力してください。";
@@ -421,14 +453,7 @@
 
 "Enter birthday before continuing" = "先に進む前に、あなたの誕生日を入力してください";
 
-"Dismiss Alert" = "了解";
+"NewMessagesFormatPlural" = "新しいメッセージ：%@件"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "新しいメッセージ：%@件"; // i.e. "1 New Message"
 
-"What do you think..." = "どう思いますか…";
-
-"Subscription complete!" = "登録完了！";
-"Failed to restore subcription." = "登録を復元できませんでした。";
-"Checking for subscription..." = "登録を確認中…";
-"Already subscribed?" = "すでに登録済みですか？";
-"Subscription restored!" = "登録が復元されました！";
-"Subscription failed." = "登録できませんでした。";
-"Validation Failed" = "認証できませんでした";
+"Exit" = "終了";

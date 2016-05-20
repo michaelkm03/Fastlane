@@ -6,6 +6,17 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+"Back"                  =   "Atrás";
+"ImageCaptureFailed"    =   "No se puede tomar la foto";
+"MixedMediaCoachMessage" =  "Pulsa y mantén para grabar un video, toca para tomar una foto";
+"SettingsManageSubscriptions"           = "Administrar suscripciones";
+"SettingsSubscriptionSettingsPrompt"    = "Toca Administrar suscripción para administrar la configuración de tu suscripción en la App Store.";
+"SettingsNoSubcriptionPrompt"           = "No tienes ninguna suscripción activa en este dispositivo.\nSi te suscribiste en otro dispositivo, toca Restaurar compras para restaurarlas.";
+"SubscriptionDescriptionFormat"         = "%@ por mes. El periodo de la suscripción termina el %@.";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "%@ por mes.";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "Compras en la app";
+"SubscriptionsSettingsTitle"            = "Suscripciones";
+
 "OK"                    =   "Bien";
 "DeleteButton"          =   "Eliminar";
 "ResetButton"           =   "Reiniciar";
@@ -28,7 +39,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "¡Empieza!";
+"Get Started" = "¡Empieza!";
 "SetupButton"           =   "Configurar";
 "EmailValidation"       =   "Email inválido";
 "Minimum 8 characters"  =   "Mínimo 8 caracteres";
@@ -174,6 +185,8 @@
 "Retry"                 =   "Vuelve a intentarlo";
 
 "Now"                   =   "Ahora";
+"SecondAgo"             =   "1 s";
+"SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1 min";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
@@ -186,6 +199,21 @@
 "MonthsAgo"             =   "%d meses";
 "LastYear"              =   "1a";
 "YearsAgo"              =   "%da";
+
+"SecondAgo Verbose"  	= "Hace 1 segundo";
+"SecondsAgo Verbose" 	= "Hace %d segundos";
+"MinuteAgo Verbose"  	= "Hace 1 minuto";
+"MinutesAgo Verbose" 	= "Hace %d minutos";
+"HourAgo Verbose"    	= "Hace 1 hora";
+"HoursAgo Verbose"   	= "Hace %d horas";
+"Yesterday Verbose"     = "Hace 1 día";
+"DaysAgo Verbose"    	= "Hace %d días";
+"LastWeek Verbose"   	= "Hace 1 semana";
+"WeeksAgo Verbose"   	= "Hace %d semanas";
+"LastMonth Verbose"  	= "Hace 1 mes";
+"MonthsAgo Verbose"  	= "Hace %d meses";
+"LastYear Verbose"   	= "Hace 1 año";
+"YearsAgo Verbose"   	= "Hace %d años";
 
 "JustAMoment"           =   "Un momento";
 
@@ -211,7 +239,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Nueva contraseña inválida";
 "ResetPasswordNewEqualsCurrentMessage" = "Por favor, introduce una contraseña que es diferente a la actual.";
 
-"Resend Email"           =   "Reenviar email";
+"Resend Email"          =   "Reenviar email";
 
 "EmailNotFound"         =   "No se encontró el email proporcionado; por favor, ponga el correo que usó para crear la cuenta.";
 "EmailNotValid"         =   "Por favor, ponga el email que usó para crear la cuenta.";
@@ -245,10 +273,6 @@
 "Login"                 =   "Iniciar sesión";
 
 "Version"               =   "Versión %@";
-
-"ToSText"               =   "Términos de servicio";
-
-"Privacy Policy"        =   "Política de privacidad";
 
 "NoFriends"             =   "No hay amigos";
 "NoFriendsDetail"       =   "No pudimos encontrar amigos tuyos que usen nuestra app. ¡Invítalos!";
@@ -336,20 +360,28 @@
 "SettingsRestorePurchases"              = "Restaurar compras";
 "SettingsRestorePurchasesPrompt"        = "No has comprado nada en este dispositivo.\nSi has hecho compras en otro dispositivo, haz clic en Restaurar compras para reiniciarlas.";
 "Reset Purchases"                       = "Restablecer compras";
+"SubscriptionRestoreFailed"             = "No se pudo restaurar la suscripción.";
+"SubscriptionSucceeded"                 = "¡Suscripción completa!";
+"SubscriptionLegalPrompt"               = "Al suscribirte aceptas nuestros";
+"SubscriptionActivityRestoring"         = "Verificando la suscripción...";
+"SubscriptionRestorePrompt"             = "¿Ya te suscribiste?";
+"SubscriptionRestoreSucceeded"          = "¡Suscripción restaurada!";
+"SubscriptionFailed"                    = "Error al suscribirte.";
 
 "This will discard any content added to your post" = "Esto eliminará cualquier contenido que hayas añadido a tu publicación";
 
 "No Color"  = "Sin Color";    // No color selected
 "Standard"  = "Normal";   // The default color before a selection is made
 
-"Failed to fetch products" = "Error al cargar los productos";
 
+"Failed to fetch products" = "Error al cargar los productos";
 "This will discard any content from the camera" = "Esto desechtará todo el contenido de la cámara";
 "Video failed to load" = "Error al cargar el vídeo";
 "We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este vídeo.";
 
 "No Photos" = "No hay fotos";
 "No Videos" = "No hay vídeos";
+"No Media" = "No hay medios";
 
 "#nofilter" = "#nohayfiltro";
 "Create a meme" = "Crea un meme";
@@ -369,8 +401,8 @@
 
 "By continuing you are agreeing to our" = "Si continuas, aceptas nuestros";
 "By signing up you are agreeing to our" = "Al firmar aceptas nuestros";
-"terms of service"      =   "términos de servicio";
-"privacy policy"        =   "política de privacidad";
+"Terms of Service" = "Términos del Servicio";
+"Privacy Policy" = "Política de privacidad";
 "Enter Email" = "Ingresa tu email";
 "Enter name" = "Ingresa tu nombre";
 "You must enter a name." = "Debes ingresar un nombre.";
@@ -422,14 +454,7 @@
 "Enter birthday before continuing" = "Por favor, introduce tu cumpleaños antes de continuar:
 ";
 
-"Dismiss Alert" = "Entendido";
+"NewMessagesFormatPlural" = "%@ mensajes nuevos"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "%@ mensaje nuevo"; // i.e. "1 New Message"
 
-"What do you think..." = "Qué opinas...";
-
-"Subscription complete!" = "¡Suscprición completa!";
-"Failed to restore subcription." = "Error al restaurar la suscripción.";
-"Checking for subscription..." = "Verificando la suscripción...";
-"Already subscribed?" = "¿Ya te suscribiste?";
-"Subscription restored!" = "¡Suscripción restaurada!";
-"Subscription failed." = "Error al suscribirse.";
-"Validation Failed" = "Error al validar";
+"Exit" = "Salir";

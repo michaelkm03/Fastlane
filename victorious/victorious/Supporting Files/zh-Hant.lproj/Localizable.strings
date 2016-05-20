@@ -6,6 +6,17 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+"Back"                  =   "返回";
+"ImageCaptureFailed"    =   "無法拍照";
+"MixedMediaCoachMessage" =  "長按以錄影，點一下以拍照";
+"SettingsManageSubscriptions"           = "管理訂閱";
+"SettingsSubscriptionSettingsPrompt"    = "要在 App Store 中管理您的訂閱設定，請點選「管理訂閱」。";
+"SettingsNoSubcriptionPrompt"           = "此裝置目前並無任何訂閱。若您使用另一個裝置進行訂閱，請點選「恢復購買」以進行恢復。";
+"SubscriptionDescriptionFormat"         = "月繳 %@，訂閱結束日期：%@。";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "月繳 %@";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "應用程式內購買";
+"SubscriptionsSettingsTitle"            = "訂閱";
+
 "OK"                    =   "確定";
 "DeleteButton"          =   "刪除";
 "ResetButton"           =   "重設";
@@ -28,7 +39,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "開始！";
+"Get Started" = "開始！";
 "SetupButton"           =   "設定";
 "EmailValidation"       =   "電子郵件地址無效";
 "Minimum 8 characters"  =   "至少 8 個字元";
@@ -174,6 +185,8 @@
 "Retry"                 =   "重試";
 
 "Now"                   =   "現在";
+"SecondAgo"             =   "1 秒";
+"SecondsAgo"            =   "%d 秒";
 "MinuteAgo"             =   "1 分鐘";
 "MinutesAgo"            =   "%d 分鐘";
 "HourAgo"               =   "1 小時";
@@ -186,6 +199,21 @@
 "MonthsAgo"             =   "%d 個月";
 "LastYear"              =   "1 年";
 "YearsAgo"              =   "%d 年";
+
+"SecondAgo Verbose"  	= "1 秒前";
+"SecondsAgo Verbose" 	= "%d 秒前";
+"MinuteAgo Verbose"  	= "1 分鐘前";
+"MinutesAgo Verbose" 	= "%d 分鐘前";
+"HourAgo Verbose"    	= "1 小時前";
+"HoursAgo Verbose"   	= "%d 小時前";
+"Yesterday Verbose"     = "1 天前";
+"DaysAgo Verbose"    	= "%d 天前";
+"LastWeek Verbose"   	= "1 週前";
+"WeeksAgo Verbose"   	= "%d 週前";
+"LastMonth Verbose"  	= "1 個月前";
+"MonthsAgo Verbose"  	= "%d 個月前";
+"LastYear Verbose"   	= "1 年前";
+"YearsAgo Verbose"   	= "%d 年前";
 
 "JustAMoment"           =   "請稍候";
 
@@ -211,7 +239,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "新密碼無效";
 "ResetPasswordNewEqualsCurrentMessage" = "請輸入與目前不同的密碼。";
 
-"Resend Email"           =   "重新傳送電子郵件";
+"Resend Email"          =   "重新傳送電子郵件";
 
 "EmailNotFound"         =   "未找到你提供的電子郵件地址。請輸入建立此帳號時使用的電子郵件。";
 "EmailNotValid"         =   "請輸入建立此帳號時使用的電子郵件。";
@@ -245,10 +273,6 @@
 "Login"                 =   "登入";
 
 "Version"               =   "版本 %@";
-
-"ToSText"               =   "服務條款";
-
-"Privacy Policy"        =   "隱私權政策";
 
 "NoFriends"             =   "無相符結果";
 "NoFriendsDetail"       =   "我們找不到有使用我們應用程式的好友。快去邀請他們吧！";
@@ -336,20 +360,28 @@
 "SettingsRestorePurchases"              = "還原購買項目";
 "SettingsRestorePurchasesPrompt"        = "你尚未在此裝置上買過任何東西。\n如果你曾在另一個裝置上購買，請點選 [還原購買項目] 進行還原。";
 "Reset Purchases"                       = "重設購買";
+"SubscriptionRestoreFailed"             = "無法恢復訂閱";
+"SubscriptionSucceeded"                 = "訂閱完成！";
+"SubscriptionLegalPrompt"               = "當您訂閱時，即表示您同意接受我們的";
+"SubscriptionActivityRestoring"         = "正在檢查訂單…";
+"SubscriptionRestorePrompt"             = "已訂閱？";
+"SubscriptionRestoreSucceeded"          = "已恢復訂閱！";
+"SubscriptionFailed"                    = "訂閱失敗";
 
 "This will discard any content added to your post" = "你將捨棄貼文中所有新增內容";
 
 "No Color"  = "尚未選色";    // No color selected
 "Standard"  = "標準色";   // The default color before a selection is made
 
-"Failed to fetch products" = "無法取得產品";
 
+"Failed to fetch products" = "無法取得產品";
 "This will discard any content from the camera" = "你將捨棄相機裡的所有內容";
 "Video failed to load" = "無法載入影片";
 "We encountered an error trying to edit this video." = "這支影片在編輯時發生了錯誤。";
 
 "No Photos" = "沒有任何照片";
 "No Videos" = "沒有任何影片";
+"No Media" = "無媒體";
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "创建一个MEME";
@@ -369,8 +401,8 @@
 
 "By continuing you are agreeing to our" = "繼續下去即表示您同意我們的";
 "By signing up you are agreeing to our" = "註冊即表示你同意我們的";
-"terms of service"      =   "服務條款";
-"privacy policy"        =   "隱私權政策";
+"Terms of Service" = "服務條款";
+"Privacy Policy" = "隱私權政策";
 "Enter Email" = "輸入電子郵件";
 "Enter name" = "輸入名稱";
 "You must enter a name." = "必須輸入名稱。";
@@ -421,14 +453,7 @@
 
 "Enter birthday before continuing" = "請先輸入您的生日再繼續使用：";
 
-"Dismiss Alert" = "我明白了";
+"NewMessagesFormatPlural" = "有 %@ 則新訊息"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "有 %@ 則新訊息"; // i.e. "1 New Message"
 
-"What do you think..." = "您覺得怎麼樣…";
-
-"Subscription complete!" = "訂閱完成！";
-"Failed to restore subcription." = "無法恢復訂閱。";
-"Checking for subscription..." = "訂閱驗證中...";
-"Already subscribed?" = "已經訂閱過？";
-"Subscription restored!" = "恢復訂閱！";
-"Subscription failed." = "訂閱失敗。";
-"Validation Failed" = "驗證失敗";
+"Exit" = "離開";

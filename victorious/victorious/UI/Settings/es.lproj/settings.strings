@@ -4,15 +4,6 @@
 /* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
 "2cC-vU-QEc.title" = "Sacar publicaciones";
 
-/* Class = "UINavigationItem"; title = "Terms of Service"; ObjectID = "4Bo-2y-3qa"; */
-"4Bo-2y-3qa.title" = "Términos de servicio";
-
-/* Class = "UILabel"; text = "Chromecast"; ObjectID = "4KJ-ZF-Avs"; */
-"4KJ-ZF-Avs.text" = "Chromecast";
-
-/* Class = "UINavigationItem"; title = "In-App Purchases"; ObjectID = "5FP-jo-7Mh"; */
-"5FP-jo-7Mh.title" = "Compras en la app";
-
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Entorno de servidor";
 
@@ -22,11 +13,8 @@
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "TÍTULO";
 
-/* Class = "UILabel"; text = "In-App Purchases"; ObjectID = "16U-jQ-75p"; */
-"16U-jQ-75p.text" = "Compras en la app";
-
-/* Class = "UITableViewSection"; headerTitle = "Video"; ObjectID = "32G-4D-L9h"; */
-"32G-4D-L9h.headerTitle" = "Vídeo";
+/* Class = "UILabel"; text = "Register Test Toast Alert"; ObjectID = "A07-FV-K6D"; */
+"A07-FV-K6D.text" = "Alerta tipo Toast de la prueba de registro";
 
 /* Class = "UILabel"; text = "Tracking"; ObjectID = "A70-cw-6uE"; */
 "A70-cw-6uE.text" = "Rastreando";
@@ -49,9 +37,6 @@
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Confirmar contraseña";
 
-/* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
-"IJf-ZD-6J8.text" = "Producto";
-
 /* Class = "UITextField"; placeholder = "App ID"; ObjectID = "J9J-EQ-egU"; */
 "J9J-EQ-egU.placeholder" = "ID de la app";
 
@@ -63,9 +48,6 @@
 
 /* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
 "LgC-0q-Axl.placeholder" = "Tu contraseña actual";
-
-/* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
-"MMO-h3-iOL.title" = "Auto-reproducción";
 
 /* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
 "N5S-6f-jb6.normalTitle" = "Acción";
@@ -103,23 +85,14 @@
 /* Class = "UINavigationItem"; title = "New Environment"; ObjectID = "ab7-E6-f3T"; */
 "ab7-E6-f3T.title" = "Entorno nuevo";
 
-/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
-"bDt-FM-3G4.title" = "Entorno de servidor";
-
 /* Class = "UILabel"; text = "Push Notifications"; ObjectID = "c84-Tn-JWi"; */
 "c84-Tn-JWi.text" = "Sacar notificaciones";
-
-/* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
-"dAg-zH-vd2.title" = "Política de privacidad";
 
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "Experimentos";
 
 /* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
 "gY1-3u-QH1.text" = "Registrar alerta de prueba de nivel superior";
-
-/* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
-"iA5-m7-nZ8.text" = "Siempre";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "Guardar";
@@ -133,17 +106,14 @@
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "kYh-dZ-t7J"; */
 "kYh-dZ-t7J.title" = "Configuración";
 
-/* Class = "UILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
-"krN-Xu-bYv.text" = "No estás conectado";
-
-/* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
-"lSu-os-HMa.title" = "Política de privacidad";
-
 /* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
 "lcI-nH-BVd.text" = "Registrar alerta de logro de prueba";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Términos del servicio";
+
+/* Class = "UILabel"; text = "Register Test Status Update Alert"; ObjectID = "nj8-1d-PvS"; */
+"nj8-1d-PvS.text" = "Alerta de actualización del estado de la prueba de registro";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "p5c-fI-FBT"; */
 "p5c-fI-FBT.title" = "Entorno de servidor";
@@ -165,9 +135,6 @@
 
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Cambiar contraseña";
-
-/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Reproducir videos automáticamente";
 
 /* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
 "zvz-SG-J7d.text" = "MENSAJE";

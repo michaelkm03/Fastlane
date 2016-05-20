@@ -2,7 +2,7 @@
 "YXm-O2-nI2.text" = "Poser une question...";
 
 /* Class = "UILabel"; text = "Vote that"; ObjectID = "bEL-Dg-FBP"; */
-"bEL-Dg-FBP.text" = "Voter pour cela";
+"bEL-Dg-FBP.text" = "Vote pour cela";
 
 /* Class = "UILabel"; text = "Vote this"; ObjectID = "kIg-QZ-oeo"; */
 "kIg-QZ-oeo.text" = "Réponse 1";

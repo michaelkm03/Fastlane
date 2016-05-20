@@ -4,15 +4,6 @@
 /* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
 "2cC-vU-QEc.title" = "푸시 알림";
 
-/* Class = "UINavigationItem"; title = "Terms of Service"; ObjectID = "4Bo-2y-3qa"; */
-"4Bo-2y-3qa.title" = "서비스 약관";
-
-/* Class = "UILabel"; text = "Chromecast"; ObjectID = "4KJ-ZF-Avs"; */
-"4KJ-ZF-Avs.text" = "크롬캐스트";
-
-/* Class = "UINavigationItem"; title = "In-App Purchases"; ObjectID = "5FP-jo-7Mh"; */
-"5FP-jo-7Mh.title" = "인앱 구매";
-
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "서버 환경";
 
@@ -22,11 +13,8 @@
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "제목";
 
-/* Class = "UILabel"; text = "In-App Purchases"; ObjectID = "16U-jQ-75p"; */
-"16U-jQ-75p.text" = "인앱 구매";
-
-/* Class = "UITableViewSection"; headerTitle = "Video"; ObjectID = "32G-4D-L9h"; */
-"32G-4D-L9h.headerTitle" = "영상";
+/* Class = "UILabel"; text = "Register Test Toast Alert"; ObjectID = "A07-FV-K6D"; */
+"A07-FV-K6D.text" = "테스트 토스트 알림 등록";
 
 /* Class = "UILabel"; text = "Tracking"; ObjectID = "A70-cw-6uE"; */
 "A70-cw-6uE.text" = "추적";
@@ -49,9 +37,6 @@
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "비밀번호 확인";
 
-/* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
-"IJf-ZD-6J8.text" = "제품";
-
 /* Class = "UITextField"; placeholder = "App ID"; ObjectID = "J9J-EQ-egU"; */
 "J9J-EQ-egU.placeholder" = "앱 ID";
 
@@ -63,9 +48,6 @@
 
 /* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
 "LgC-0q-Axl.placeholder" = "현재 비밀번호";
-
-/* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
-"MMO-h3-iOL.title" = "자동 재생";
 
 /* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
 "N5S-6f-jb6.normalTitle" = "액션";
@@ -100,23 +82,14 @@
 /* Class = "UINavigationItem"; title = "New Environment"; ObjectID = "ab7-E6-f3T"; */
 "ab7-E6-f3T.title" = "새 환경";
 
-/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
-"bDt-FM-3G4.title" = "서버 환경";
-
 /* Class = "UILabel"; text = "Push Notifications"; ObjectID = "c84-Tn-JWi"; */
 "c84-Tn-JWi.text" = "푸시 알림";
-
-/* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
-"dAg-zH-vd2.title" = "개인정보 보호 정책";
 
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "실험";
 
 /* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
 "gY1-3u-QH1.text" = "테스트 레벨 업 알림 등록";
-
-/* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
-"iA5-m7-nZ8.text" = "항상";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "저장";
@@ -130,17 +103,14 @@
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "kYh-dZ-t7J"; */
 "kYh-dZ-t7J.title" = "설정";
 
-/* Class = "UILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
-"krN-Xu-bYv.text" = "연결 안 됨";
-
-/* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
-"lSu-os-HMa.title" = "개인정보 보호 정책";
-
 /* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
 "lcI-nH-BVd.text" = "테스트 성취 알림 등록";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "서비스 약관";
+
+/* Class = "UILabel"; text = "Register Test Status Update Alert"; ObjectID = "nj8-1d-PvS"; */
+"nj8-1d-PvS.text" = "테스트 상태 업데이트 알림 등록";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "p5c-fI-FBT"; */
 "p5c-fI-FBT.title" = "서버 환경";
@@ -162,9 +132,6 @@
 
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "비밀번호 변경";
-
-/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "동영상 자동 재생";
 
 /* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
 "zvz-SG-J7d.text" = "메시지";
