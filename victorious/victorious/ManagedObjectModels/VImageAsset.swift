@@ -13,8 +13,8 @@ import CoreData
 class VImageAsset: NSManagedObject {
     
     @NSManaged var height: NSNumber?
-    @NSManaged var imageURL: String?
-    @NSManaged var type: String?
+    @NSManaged var imageURL: String
+    @NSManaged var type: String
     @NSManaged var width: NSNumber?
     @NSManaged var streamItems: NSSet?
     @NSManaged var user: VUser?

@@ -15,13 +15,11 @@ extension VUser {
         let assetFinder = VImageAssetFinder()
         
         if let assets = previewAssets where assets.count > 0 {
-            if let smallestAsset = assetFinder.assetWithPreferredMinimumSize(minimumSize, fromAssets: assets),
-                let smallestAssetURL = smallestAsset.imageURL {
-                return NSURL(string: smallestAssetURL)
+            if let smallestAsset = assetFinder.assetWithPreferredMinimumSize(minimumSize, fromAssets: assets) {
+                return NSURL(string: smallestAsset.imageURL)
             }
-            else if let fallbackAsset = assetFinder.largestAssetFromAssets(assets) ,
-                let fallbackAssetURL = fallbackAsset.imageURL {
-                return NSURL(string: fallbackAssetURL)
+            else if let fallbackAsset = assetFinder.largestAssetFromAssets(assets) {
+                return NSURL(string: fallbackAsset.imageURL)
             }
         }
         

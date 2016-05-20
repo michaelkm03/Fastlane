@@ -56,8 +56,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         let minWidth = UIScreen.mainScreen().bounds.size.width
         
         if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteSource = preview.imageURL,
-            let remoteURL = NSURL(string: remoteSource) {
+            let remoteURL = NSURL(string: preview.imageURL) {
             previewView.sd_setImageWithURL(remoteURL)
         }
         super.init()

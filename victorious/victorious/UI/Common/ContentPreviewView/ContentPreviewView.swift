@@ -68,8 +68,7 @@ class ContentPreviewView: UIView {
     
     private func setupForContent(content: VContent) {
         if let preview = content.largestPreviewAsset(),
-            let previewRemoteURL = preview.imageURL,
-            let previewImageURL = NSURL(string: previewRemoteURL) {
+            let previewImageURL = NSURL(string: preview.imageURL) {
             
             if content.isVIPContent() && VCurrentUser.user()?.isVIPSubscriber != 1 && VCurrentUser.user()?.vipEndDate.compare(NSDate()) == .OrderedAscending {
                 vipImageView.hidden = false
