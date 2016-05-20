@@ -43,10 +43,11 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createImageAsset(imageURL: String) -> VImageAsset {
+    func createImageAsset(imageURL: String, type: String = "image") -> VImageAsset {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { asset in
                 asset.imageURL = imageURL
+                asset.type = type
             }
         }
     }

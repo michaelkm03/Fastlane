@@ -12,8 +12,8 @@ import CoreData
 class VContent: NSManagedObject {
     
     @NSManaged var isUGC: NSNumber?
-    @NSManaged var releasedAt: NSDate?
-    @NSManaged var remoteID: String?
+    @NSManaged var releasedAt: NSDate
+    @NSManaged var remoteID: String
     @NSManaged var shareURL: String?
     @NSManaged var status: String?
     @NSManaged var title: String?

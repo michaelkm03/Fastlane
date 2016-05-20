@@ -74,14 +74,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
             if let preview = content.previewImageWithMinimumWidth(minWidth),
-                let remoteSource = preview.imageURL,
-                let remoteURL = NSURL(string: remoteSource) {
+                let remoteURL = NSURL(string: preview.imageURL) {
                 blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
                     self?.blurredImageView.alpha = blurredImageAlpha
                 }
             }
             
-            createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.title
             mediaContentView.updateContent(content)
             
@@ -99,15 +98,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         else {
             profileImageView.image = placeholderImage
         }
-        createdAtLabel.text = content.releasedAt?.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
         captionLabel.text = content.title
     }
     
     func setBackground(for content: VContent) {
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteSource = preview.imageURL,
-            let remoteURL = NSURL(string: remoteSource) {
+            let remoteURL = NSURL(string: preview.imageURL) {
             blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
                 self?.blurredImageView.alpha = blurredImageAlpha
             }
