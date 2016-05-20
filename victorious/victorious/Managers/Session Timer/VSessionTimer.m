@@ -11,7 +11,6 @@
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "VTracking.h"
-#import "VFirstInstallManager.h"
 #import "victorious-Swift.h"
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
@@ -155,7 +154,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 - (void)trackApplicationLaunch
 {
     // Track first install
-    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingInstallKey]];
+    [[[FirstInstallManager alloc] init] reportFirstInstallIfNeededWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingInstallKey]];
     
     // Tracking init (cold start)
     NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingInitKey] ?: @[];

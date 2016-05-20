@@ -34,7 +34,7 @@ extension Scaffold where Self: UIViewController {
     }
     
     /// Performs first-launch setup. Expected to be called only once from the first invocation of `viewDidAppear`.
-    func performFirstLaunchSetup(onReady: (() -> Void)? = nil) {
+    func performSetup(onReady: (() -> Void)? = nil) {
         let pushNotificationOperation = RequestPushNotificationPermissionOperation()
         
         if dependencyManager.festivalIsEnabled() {

@@ -1,5 +1,5 @@
 //
-//  FirstInstallDeviceIDManager.swift
+//  FirstInstallManager.swift
 //  victorious
 //
 //  Created by Tian Lan on 10/5/15.
@@ -9,7 +9,44 @@
 import Foundation
 import UIKit
 
-@objc class FirstInstallDeviceIDManager: NSObject {
+@objc class FirstInstallManager: NSObject {
+    
+    // MARK: - First Install Reporting
+    
+    let appFirstInstallDefaultsKey = "com.victorious.VAppDelegate.AppInstallEventTracked"
+    
+    let appFirstLaunchDefaultsKey = "com.victorious.FirstInstallManager.AppLaunchingForTheFirstTime"
+    
+    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+
+    func reportFirstInstallIfNeeded(withTrackingURLs urls: [String]) {
+        // If first install tracking already fired, we should return early
+        guard isFirstInstall else {
+            // We record `App has launched for the first time` after the second time launch
+            if isFirstLaunch {
+                NSUserDefaults.standardUserDefaults().setValue(true, forKey: appFirstLaunchDefaultsKey)
+            }
+            
+            return
+        }
+        
+        let installDate = NSDate()
+        let trackingParameters = [VTrackingKeyTimeStamp: installDate, VTrackingKeyUrls: urls]
+        trackingManager.trackEvent(VTrackingEventApplicationFirstInstall, parameters: trackingParameters)
+        NSUserDefaults.standardUserDefaults().setValue(true, forKey: appFirstInstallDefaultsKey)
+    }
+    
+    // Tracks whether the `app_install` tracking call is already fired
+    var isFirstInstall: Bool {
+        return NSUserDefaults.standardUserDefaults().valueForKey(appFirstInstallDefaultsKey) == nil
+    }
+    
+    // Tracks whether the app is running for the first time
+    var isFirstLaunch: Bool {
+        return NSUserDefaults.standardUserDefaults().valueForKey(appFirstLaunchDefaultsKey) == nil
+    }
+    
+    // MARK: - Device ID
     
     static let defaultDeviceIDFileName = "FirstInstallDeviceID.txt"
     private let fileManager = NSFileManager()

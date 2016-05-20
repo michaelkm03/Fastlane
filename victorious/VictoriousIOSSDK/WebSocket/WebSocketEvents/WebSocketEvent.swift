@@ -8,14 +8,22 @@
 
 import Foundation
 
-/**
- *  The container for WebSocket related messages.
- */
-public struct WebSocketEvent: ForumEvent {
+///
+/// The container for WebSocket related messages.
+///
+public struct WebSocketEvent: ForumEvent, CustomStringConvertible {
+
     // MARK: ForumEvent
+
     public let serverTime: NSDate
     
     public let type: WebSocketEventType
+
+    // MARK: CustomStringConvertible
+
+    public var description: String {
+        return "WSEvent type: \(type) serverTime: \(serverTime)"
+    }
     
     public init(type: WebSocketEventType, serverTime: NSDate = NSDate()) {
         self.type = type
