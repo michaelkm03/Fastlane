@@ -21,6 +21,6 @@ class VContent: NSManagedObject {
     @NSManaged var isVIP: NSNumber?
     @NSManaged var contentMediaAssets: NSSet? /// <NSSet of VContentMediaAsset objects
     @NSManaged var author: VUser?
-    @NSManaged var contentPreviewAssets: NSSet?  /// <NSSet of VContentPreviewAsset objects
+    @NSManaged var contentPreviewAssets: NSSet?  /// <NSSet of VImageAsset objects
 
 }

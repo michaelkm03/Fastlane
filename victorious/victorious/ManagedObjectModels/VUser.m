@@ -10,11 +10,11 @@
 #import "VComment.h"
 #import "VConversation.h"
 #import "VHashtag.h"
-#import "VImageAsset.h"
 #import "VMessage.h"
 #import "VNotification.h"
 #import "VPollResult.h"
 #import "VSequence.h"
+#import "victorious-Swift.h"
 
 @implementation VUser
 

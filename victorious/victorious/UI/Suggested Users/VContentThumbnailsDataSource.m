@@ -9,11 +9,11 @@
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence+Fetcher.h"
 #import "VContentThumbnailCell.h"
-#import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "UIImage+Resize.h"
 #import "VStreamItem+Fetcher.h"
 #import "VTextSequencePreviewView.h"
+#import "victorious-Swift.h"
 
 typedef void (^ResizingCompletion)(UIImage *image, BOOL didDownload, NSInteger index);
 typedef UIImage* (^ImageLoading)();

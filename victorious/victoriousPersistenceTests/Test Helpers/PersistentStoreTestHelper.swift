@@ -24,8 +24,11 @@ struct PersistentStoreTestHelper {
     
     func createContent(remoteID: String) -> VContent {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let author = self.createUser(remoteId: 1)
             return context.v_createObjectAndSave { content in
                 content.remoteID = remoteID
+                content.author = author
+                content.releasedAt = NSDate()
             }
         }
     }
@@ -40,12 +43,10 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createContentPreviewAsset(imageURL: String) -> VContentPreviewAsset {
+    func createImageAsset(imageURL: String) -> VImageAsset {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let content = self.createContent("1")
             return context.v_createObjectAndSave { asset in
                 asset.imageURL = imageURL
-                asset.content = content
             }
         }
     }

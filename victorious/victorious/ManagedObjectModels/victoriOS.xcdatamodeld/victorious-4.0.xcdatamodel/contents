@@ -67,15 +67,15 @@
     <entity name="Content" representedClassName=".VContent" syncable="YES">
         <attribute name="isUGC" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="remoteID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releasedAt" attributeType="Date" syncable="YES"/>
+        <attribute name="remoteID" attributeType="String" syncable="YES"/>
         <attribute name="shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
         <relationship name="contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="content" inverseEntity="ContentMediaAsset" syncable="YES"/>
-        <relationship name="contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentPreviewAsset" inverseName="content" inverseEntity="ContentPreviewAsset" syncable="YES"/>
+        <relationship name="contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="externalID" optional="YES" attributeType="String" syncable="YES"/>
@@ -83,13 +83,6 @@
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="contentMediaAssets" inverseEntity="Content" syncable="YES"/>
-    </entity>
-    <entity name="ContentPreviewAsset" representedClassName=".VContentPreviewAsset" syncable="YES">
-        <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="imageURL" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="contentPreviewAssets" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -135,6 +128,7 @@
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="content" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="contentPreviewAssets" inverseEntity="Content" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="previewImageAssets" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="previewAssets" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -382,14 +376,13 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Content" positionX="81" positionY="153" width="128" height="195"/>
         <element name="ContentMediaAsset" positionX="108" positionY="180" width="128" height="120"/>
-        <element name="ContentPreviewAsset" positionX="99" positionY="171" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="FollowedHashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="FollowedUser" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="ImageAsset" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
         <element name="ListShelf" positionX="0" positionY="0" width="128" height="60"/>

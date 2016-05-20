@@ -12,8 +12,8 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VAsset+Fetcher.h"
-#import "VImageAsset.h"
 #import "VImageAssetFinder.h"
+#import "victorious-Swift.h"
 
 // Views + Helpers
 #import "VTextPostViewController.h"

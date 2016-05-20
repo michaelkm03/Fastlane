@@ -201,7 +201,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         let totalHeight = headerSection.bounds.size.height +
             contentHeight +
             captionLabel.bounds.size.height +
-            2*verticalMargins +
+            2 * verticalMargins +
             relatedLabel.bounds.size.height
         
         return CGSize(

@@ -30,13 +30,13 @@ extension VContent: PersistenceParsable {
         self.author?.populate(fromSourceModel: author)
         
         if let previewAssets = content.previewImages {
-            let persistentAssets: [VContentPreviewAsset] = previewAssets.flatMap {
-                let previewAsset: VContentPreviewAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
+            let persistentAssets: [VImageAsset] = previewAssets.flatMap {
+                let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 previewAsset.populate( fromSourceModel: $0 )
                 previewAsset.content = self
                 return previewAsset
             }
-            self.contentPreviewAssets = Set<VContentPreviewAsset>(persistentAssets)
+            self.contentPreviewAssets = Set<VImageAsset>(persistentAssets)
         }
         
         if let contentData = content.contentData {
