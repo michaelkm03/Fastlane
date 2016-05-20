@@ -46,6 +46,44 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         gridStreamController.didMoveToParentViewController(self)
     }
     
+    func share() {
+        
+    }
+    
+    func toggleUpvote() {
+        
+    }
+    
+    func overflow() {
+        
+    }
+    
+    override func viewDidLoad() {
+        /// Set up nav bar
+        let shareButton = UIBarButtonItem(
+            image: dependencyManager.shareIcon,
+            style: .Done,
+            target: self,
+            action: #selector(share)
+        )
+        let overflowButton = UIBarButtonItem(
+            image: dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+        let upvoteButton = UIBarButtonItem(
+            image: dependencyManager.upvoteIconSelected,
+            style: .Done,
+            target: self,
+            action: #selector(toggleUpvote)
+        )
+        
+        navigationItem.leftItemsSupplementBackButton = true
+        navigationItem.leftBarButtonItems = [shareButton, overflowButton]
+        navigationItem.rightBarButtonItem = upvoteButton
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("NSCoding not supported.")
     }
@@ -73,3 +111,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
 
 }
+
+private extension VDependencyManager {
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote_icon_selected")
+    }
+    
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote_icon_unselected")
+    }
+    
+    var overflowIcon: UIImage? {
+        return imageForKey("more_icon")
+    }
+    
+    var shareIcon: UIImage? {
+        return imageForKey("share_icon")
+    }
+}
+
