@@ -20,11 +20,10 @@ class VImageAssetTests: BasePersistentStoreTestCase {
                 XCTFail("Failed to create a VImageAsset")
                 return
         }
-        
-        XCTAssertEqual(asset.height?.integerValue, 100)
-        XCTAssertEqual(asset.width?.integerValue, 200)
-        XCTAssertEqual(asset.type, "image")
-        XCTAssertEqual(asset.imageURL, "VALID_URL")
+
+        XCTAssertEqual(asset.height?.integerValue, 180)
+        XCTAssertEqual(asset.width?.integerValue, 320)
+        XCTAssertEqual(asset.imageURL, "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg")
     }
     
     private func createImageAssetFromJSON(fileName fileName: String,
