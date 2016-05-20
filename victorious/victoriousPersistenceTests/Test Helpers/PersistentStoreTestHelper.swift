@@ -24,8 +24,11 @@ struct PersistentStoreTestHelper {
     
     func createContent(remoteID: String) -> VContent {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let author = self.createUser(remoteId: 1)
             return context.v_createObjectAndSave { content in
                 content.remoteID = remoteID
+                content.author = author
+                content.releasedAt = NSDate()
             }
         }
     }
