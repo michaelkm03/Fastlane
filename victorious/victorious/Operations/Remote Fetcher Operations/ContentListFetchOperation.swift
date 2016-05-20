@@ -32,9 +32,9 @@ class ContentListFetchOperation: RemoteFetcherOperation, RequestOperation {
     func onComplete(contents: ContentListFetchRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { [weak self] context in
             let managedContentIDs: [NSManagedObjectID] = contents.map { content in
-                let managedContent: VViewedContent = context.v_findOrCreateObject([
-                    "author.remoteId": content.author.userID,
-                    "content.remoteID": content.content.id
+                let managedContent: VContent = context.v_findOrCreateObject([
+                    "remoteID": content.content.id,
+                    "author.remoteId": content.author.userID
                 ])
                 
                 managedContent.populate(fromSourceModel: content)

@@ -18,7 +18,7 @@ extension VContent {
     
     // Width to height aspect ratio of the content
     var aspectRatio: CGFloat {
-        guard let preview = previewImages?.allObjects.first as? VContentPreview,
+        guard let preview = contentPreviewAssets?.allObjects.first as? VImageAsset,
             let height = preview.height?.integerValue,
             let width = preview.width?.integerValue
             where height > 0 && width > 0 else {
@@ -27,12 +27,12 @@ extension VContent {
         return CGFloat(width) / CGFloat(height)
     }
     
-    func previewImageWithMinimumSize(minimumSize: CGSize) -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func previewImageWithMinimumSize(minimumSize: CGSize) -> VImageAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VImageAsset> else {
             return nil
         }
         
-        let assetsByAscendingArea = previewImages.sort { $0.area < $1.area }
+        let assetsByAscendingArea = previewImages.sort { $0.area() < $1.area() }
         
         for asset in assetsByAscendingArea {
             let assetWidth = CGFloat(asset.width ?? 0)
@@ -45,8 +45,8 @@ extension VContent {
         return assetsByAscendingArea.last
     }
     
-    func previewImageWithMinimumWidth(minimumWidth: CGFloat) -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func previewImageWithMinimumWidth(minimumWidth: CGFloat) -> VImageAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VImageAsset> else {
             return nil
         }
         
@@ -58,12 +58,12 @@ extension VContent {
         return assetsByAscendingArea.last
     }
     
-    func largestPreviewAsset() -> VContentPreview? {
-        guard let previewImages = previewImages as? Set<VContentPreview> else {
+    func largestPreviewAsset() -> VImageAsset? {
+        guard let previewImages = contentPreviewAssets as? Set<VImageAsset> else {
             return nil
         }
         
-        let assetsByAscendingArea = previewImages.sort { $0.area < $1.area }
+        let assetsByAscendingArea = previewImages.sort { $0.area() < $1.area() }
         return assetsByAscendingArea.last
     }
 }

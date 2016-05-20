@@ -6,6 +6,17 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+"Back"                  =   "Retour";
+"ImageCaptureFailed"    =   "La prise de photo a échoué";
+"MixedMediaCoachMessage" =  "Maintenez appuyé pour enregistrer une vidéo, tapez pour prendre une photo";
+"SettingsManageSubscriptions"           = "Gérer les abonnements";
+"SettingsSubscriptionSettingsPrompt"    = "Pour gérer vos paramètres d'abonnement dans l'App Store, tapez Gérer l'abonnement.";
+"SettingsNoSubcriptionPrompt"           = "Vous n'avez aucun abonnement actif sur cet appareil. Si vous avez pris votre abonnement sur un autre appareil, tapez Restaurer les achats.";
+"SubscriptionDescriptionFormat"         = "%@ par mois. La période d'abonnement se termine le %@.";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "%@ par mois.";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "Achats intégrés";
+"SubscriptionsSettingsTitle"            = "Abonnements";
+
 "OK"                    =   "OK";
 "DeleteButton"          =   "Supprimer";
 "ResetButton"           =   "Réinitialiser";
@@ -28,7 +39,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "A vous de jouer !";
+"Get Started" = "A vous de jouer !";
 "SetupButton"           =   "Installer";
 "EmailValidation"       =   "Adresse e-mail non valide";
 "Minimum 8 characters"  =   "Minimum 8 caractères";
@@ -174,6 +185,8 @@
 "Retry"                 =   "Réessayer";
 
 "Now"                   =   "0s";
+"SecondAgo"             =   "1s";
+"SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1min";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
@@ -186,6 +199,21 @@
 "MonthsAgo"             =   "%dmo";
 "LastYear"              =   "1an";
 "YearsAgo"              =   "%dy";
+
+"SecondAgo Verbose"  	= "Il y 1 seconde";
+"SecondsAgo Verbose" 	= "Il y a %d secondes";
+"MinuteAgo Verbose"  	= "Il y a 1 minute";
+"MinutesAgo Verbose" 	= "Il y a %d minutes";
+"HourAgo Verbose"    	= "Il y a 1 heure";
+"HoursAgo Verbose"   	= "Il y a %d heures";
+"Yesterday Verbose"     = "Il y a 1 jour";
+"DaysAgo Verbose"    	= "Il y a %d jours";
+"LastWeek Verbose"   	= "Il y a 1 semaine";
+"WeeksAgo Verbose"   	= "Il y a %d semaines";
+"LastMonth Verbose"  	= "Il y a 1 mois";
+"MonthsAgo Verbose"  	= "Il y %d mois";
+"LastYear Verbose"   	= "Il y a 1 ans";
+"YearsAgo Verbose"   	= "Il y a %d ans";
 
 "JustAMoment"           =   "Un instant";
 
@@ -211,7 +239,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Nouveau mot de passe non valide.";
 "ResetPasswordNewEqualsCurrentMessage" = "Veuillez saisir un mot de passe différent de votre mot de passe actuel.";
 
-"Resend Email"           =   "Renvoyer l'e-mail";
+"Resend Email"          =   "Renvoyer l'e-mail";
 
 "EmailNotFound"         =   "L'e-mail fourni n'a pas pu être trouvé. Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
 "EmailNotValid"         =   "Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
@@ -245,10 +273,6 @@
 "Login"                 =   "Se connecter";
 
 "Version"               =   "Version %@";
-
-"ToSText"               =   "Conditions d'utilisation";
-
-"Privacy Policy"        =   "Politique de confidentialité";
 
 "NoFriends"             =   "Aucune correspondance";
 "NoFriendsDetail"       =   "Nous n\'avons trouvé aucun de vos amis dans l'application. A vous de les inviter !";
@@ -336,20 +360,28 @@
 "SettingsRestorePurchases"              = "Restaurer les achats";
 "SettingsRestorePurchasesPrompt"        = "Vous n'avez effectué aucun achat sur cet appareil.\nSi vous avez effectué des achats sur un autre appareil, cliquez sur « Restaurer les achats » pour les restaurer.";
 "Reset Purchases"                       = "Réinitialiser les achats";
+"SubscriptionRestoreFailed"             = "La restauration de l'inscription a échoué.";
+"SubscriptionSucceeded"                 = "Inscription complétée !";
+"SubscriptionLegalPrompt"               = "En vous inscrivant, vous acceptez nos";
+"SubscriptionActivityRestoring"         = "Recherche de l'inscription...";
+"SubscriptionRestorePrompt"             = "Déjà inscrit ?";
+"SubscriptionRestoreSucceeded"          = "Inscription restaurée !";
+"SubscriptionFailed"                    = "L'inscription a échoué.";
 
 "This will discard any content added to your post" = "Cette action va supprimer le contenu que vous avez ajouté à votre publication";
 
 "No Color"  = "Aucune couleur";    // No color selected
 "Standard"  = "Normal";   // The default color before a selection is made
 
-"Failed to fetch products" = "La récupération des produits a échoué";
 
+"Failed to fetch products" = "La récupération des produits a échoué";
 "This will discard any content from the camera" = "Cette action ignorera tout contenu de l'appareil photo";
 "Video failed to load" = "Impossible de charger la vidéo";
 "We encountered an error trying to edit this video." = "Une erreur est survenue lors de la modification de cette vidéo.";
 
 "No Photos" = "Aucune photo";
 "No Videos" = "Aucune vidéo";
+"No Media" = "Aucun média";
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Créer un mème";
@@ -369,8 +401,8 @@
 
 "By continuing you are agreeing to our" = "En continuant, vous acceptez nos";
 "By signing up you are agreeing to our" = "En vous inscrivant, vous acceptez nos";
-"terms of service"      =   "conditions d'utilisation";
-"privacy policy"        =   "politique de confidentialité";
+"Terms of Service" = "Les conditions d'utilisation";
+"Privacy Policy" = "Politique de confidentialité";
 "Enter Email" = "Saisir votre e-mail";
 "Enter name" = "Saisir votre nom";
 "You must enter a name." = "Vous devez saisir un nom.";
@@ -421,14 +453,7 @@
 
 "Enter birthday before continuing" = "Veuillez saisir votre date de naissance avant de continuer : ";
 
-"Dismiss Alert" = "Compris";
+"NewMessagesFormatPlural" = "%@ nouveaux messages"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "%@ nouveau message"; // i.e. "1 New Message"
 
-"What do you think..." = "Que pensez-vous...";
-
-"Subscription complete!" = "Inscription complétée !";
-"Failed to restore subcription." = "La restauration de l'inscription a échouée.";
-"Checking for subscription..." = "Recherche de l'inscription...";
-"Already subscribed?" = "Déjà inscrit ?";
-"Subscription restored!" = "Inscription restaurée !";
-"Subscription failed." = "L'inscription a échouée.";
-"Validation Failed" = "La validation a échouée.";
+"Exit" = "Quitter";

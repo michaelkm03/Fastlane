@@ -5,7 +5,7 @@
 "AIv-0V-2Ca.title" = "Modifier";
 
 /* Class = "UILabel"; text = "Tell us about yourself..."; ObjectID = "Trt-Yx-Qae"; */
-"Trt-Yx-Qae.text" = "Parlez-nous de vous...";
+"Trt-Yx-Qae.text" = "Parle-nous de toi...";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "bcg-p6-c76"; */
 "bcg-p6-c76.placeholder" = "Ville";

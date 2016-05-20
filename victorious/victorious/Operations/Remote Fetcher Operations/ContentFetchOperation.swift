@@ -1,5 +1,5 @@
 //
-//  ViewedContentFetchOperation.swift
+//  ContentFetchOperation.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/6/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
+class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
     internal let request: ViewedContentFetchRequest!
     
@@ -21,8 +21,8 @@ class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
                       contentID: String) {
         
         let request = ViewedContentFetchRequest(macroURLString: macroURLString,
-                                                      currentUserID: currentUserID,
-                                                      contentID: contentID)
+                                          currentUserID: currentUserID,
+                                          contentID: contentID)
         self.init(request: request)
     }
     
@@ -32,11 +32,11 @@ class ViewedContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
     func onComplete(result: ViewedContentFetchRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let viewedContent: VViewedContent = context.v_findOrCreateObject( [ "author.remoteId" : result.author.userID, "content.remoteID" : result.content.id ] )
+            let content: VContent = context.v_findOrCreateObject( [ "remoteID" : result.content.id ] )
 
-            viewedContent.populate(fromSourceModel: result)
+            content.populate(fromSourceModel: result)
             context.v_save()
-            let viewedContentID = viewedContent.objectID
+            let viewedContentID = content.objectID
 
             self.persistentStore.mainContext.v_performBlockAndWait() { context in
                 self.results = [ context.objectWithID(viewedContentID) ]

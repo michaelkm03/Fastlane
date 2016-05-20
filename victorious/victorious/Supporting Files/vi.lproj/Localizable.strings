@@ -6,6 +6,17 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+"Back"                  =   "Quay lại";
+"ImageCaptureFailed"    =   "Không thể chụp ảnh";
+"MixedMediaCoachMessage" =  "Nhấn và giữ để ghi video, chạm để chụp ảnh";
+"SettingsManageSubscriptions"           = "Quản lý đăng ký";
+"SettingsSubscriptionSettingsPrompt"    = "Để quản lý cài đặt đăng ký trong App Store, chạm Quản lý đăng ký.";
+"SettingsNoSubcriptionPrompt"           = "Bạn chưa có bất cứ đăng ký hoạt động nào trên thiết bị này.\nNếu bạn đã đăng ký trên một thiết bị khác, hãy chạm vào Khôi phục lại Thanh toán để khôi phục chúng.";
+"SubscriptionDescriptionFormat"         = "%@ mỗi tháng. Thời gian đăng ký kết thúc vào %@.";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+"SubscriptionDescriptionNoDateFormat"   = "%@ mỗi tháng.";  // e.g. "$2.99 per month"
+"PurchasesSettingsTitle"                = "Thanh toán Trong ứng dụng";
+"SubscriptionsSettingsTitle"            = "Đăng ký";
+
 "OK"                    =   "OK";
 "DeleteButton"          =   "Xóa";
 "ResetButton"           =   "Đặt lại";
@@ -28,7 +39,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "Bắt đầu!";
+"Get Started" = "Bắt đầu!";
 "SetupButton"           =   "Cài đặt";
 "EmailValidation"       =   "Địa chỉ Email Không Hợp lệ";
 "Minimum 8 characters"  =   "Tối thiểu 8 kí tự";
@@ -174,6 +185,8 @@
 "Retry"                 =   "Thử lại";
 
 "Now"                   =   "Ngay";
+"SecondAgo"             =   "1 giây";
+"SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
@@ -186,6 +199,21 @@
 "MonthsAgo"             =   "%dmo";
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
+
+"SecondAgo Verbose"  	= "1 giây trước";
+"SecondsAgo Verbose" 	= "%d giây trước";
+"MinuteAgo Verbose"  	= "1 phút trước";
+"MinutesAgo Verbose" 	= "%d phút trước";
+"HourAgo Verbose"    	= "1 giờ trước";
+"HoursAgo Verbose"   	= "%d giờ trước";
+"Yesterday Verbose"     = "1 ngày trước";
+"DaysAgo Verbose"    	= "%d ngày trước";
+"LastWeek Verbose"   	= "1 tuần trước";
+"WeeksAgo Verbose"   	= "%d tuần trước";
+"LastMonth Verbose"  	= "1 tháng trước";
+"MonthsAgo Verbose"  	= "%d tháng trước";
+"LastYear Verbose"   	= "1 năm trước";
+"YearsAgo Verbose"   	= "%d năm trước";
 
 "JustAMoment"           =   "Đợi một chút";
 
@@ -211,7 +239,7 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Mật khẩu Mới Không hợp lệ";
 "ResetPasswordNewEqualsCurrentMessage" = "Vui lòng nhập một mật khẩu khác với mật khẩu hiện tại của bạn.";
 
-"Resend Email"           =   "Gửi lại Email";
+"Resend Email"          =   "Gửi lại Email";
 
 "EmailNotFound"         =   "Không tìm thấy email đã cung cấp. Vui lòng nhập email đã dùng để tạo ra tài khoản này. ";
 "EmailNotValid"         =   "Vui lòng nhập email đã dùng để tạo ra tài khoản này.";
@@ -245,10 +273,6 @@
 "Login"                 =   "Đăng nhập";
 
 "Version"               =   "Phiên bản %@";
-
-"ToSText"               =   "Điều khoản Dịch vụ";
-
-"Privacy Policy"        =   "Chính sách Bảo mật";
 
 "NoFriends"             =   "Không khớp";
 "NoFriendsDetail"       =   "Chúng tôi không tìm thấy bất kỳ bạn bè nào của bạn sử dụng ứng dụng của chúng tôi. Hãy tiếp tục và mời họ!";
@@ -336,20 +360,28 @@
 "SettingsRestorePurchases"              = "Khôi phục lại Thanh toán";
 "SettingsRestorePurchasesPrompt"        = "Bạn chưa thanh toán bất kỳ thứ gì trên thiết bị này.\nNếu bạn đã thực hiện thanh toán trên một thiết bị khác, hãy chạm vào Khôi phục lại Thanh toán để khôi phục chúng.";
 "Reset Purchases"                       = "Đặt lại Thanh toán";
+"SubscriptionRestoreFailed"             = "Không thể khôi phục đăng ký.";
+"SubscriptionSucceeded"                 = "Đăng ký hoàn thành!";
+"SubscriptionLegalPrompt"               = "Bằng việc đăng ký, bạn đồng ý với";
+"SubscriptionActivityRestoring"         = "Đang kiểm tra đăng ký...";
+"SubscriptionRestorePrompt"             = "Đã đăng ký?";
+"SubscriptionRestoreSucceeded"          = "Đăng ký được khôi phục!";
+"SubscriptionFailed"                    = "Không đăng ký được.";
 
 "This will discard any content added to your post" = "Điều này sẽ loại bỏ bất kỳ nội dung nào được thêm vào bài đăng của bạn";
 
 "No Color"  = "Không có Màu sắc";    // No color selected
 "Standard"  = "Tiêu chuẩn";   // The default color before a selection is made
 
-"Failed to fetch products" = "Lấy sản phẩm không thành công.";
 
+"Failed to fetch products" = "Lấy sản phẩm không thành công.";
 "This will discard any content from the camera" = "Điều này sẽ huỷ bỏ bất kỳ nội dung nào từ máy ảnh";
 "Video failed to load" = "Tải video không thành công";
 "We encountered an error trying to edit this video." = "Chúng tôi đã gặp một lỗi khi đang cố chỉnh sửa video này.";
 
 "No Photos" = "Không có Ảnh";
 "No Videos" = "Không có Video";
+"No Media" = "Không có phương tiện";
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Tạo ra một meme";
@@ -369,8 +401,8 @@
 
 "By continuing you are agreeing to our" = "Bằng việc tiếp tục, bạn đồng ý với";
 "By signing up you are agreeing to our" = "Qua việc đăng ký, bạn đã đồng ý với";
-"terms of service"      =   "điều khoản dịch vụ";
-"privacy policy"        =   "chính sách quyền riêng tư";
+"Terms of Service" = "Điều khoản Dịch vụ";
+"Privacy Policy" = "Chính sách Bảo mật";
 "Enter Email" = "Nhập Email";
 "Enter name" = "Nhập tên";
 "You must enter a name." = "Bạn phải nhập một tên.";
@@ -421,14 +453,7 @@
 
 "Enter birthday before continuing" = "Vui lòng nhập ngày sinh của bạn trước khi tiếp tục: ";
 
-"Dismiss Alert" = "Đã hiểu";
+"NewMessagesFormatPlural" = "%@ tin nhắn mới"; // i.e. "20 New Messages"
+"NewMessagesFormatSingular" = "%@ tin nhắn mới"; // i.e. "1 New Message"
 
-"What do you think..." = "Bạn nghĩ sao về...";
-
-"Subscription complete!" = "Đăng ký hoàn thành!";
-"Failed to restore subcription." = "Không thể khôi phục đăng ký.";
-"Checking for subscription..." = "Đang kiểm tra đăng ký...";
-"Already subscribed?" = "Đã đăng ký?";
-"Subscription restored!" = "Đăng ký được khôi phục!";
-"Subscription failed." = "Không đăng ký được.";
-"Validation Failed" = "Không xác thực được";
+"Exit" = "Thoát";

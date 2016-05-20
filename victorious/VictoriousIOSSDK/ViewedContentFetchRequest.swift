@@ -1,5 +1,5 @@
 //
-//  ContentViewFetchRequest.swift
+//  ViewedContentFetchRequest.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 25/4/16.
@@ -28,9 +28,9 @@ public struct ViewedContentFetchRequest : TemplateDrivenRequestType {
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ViewedContent {
         
         let json = responseJSON["payload"]
-        guard let contentView = ViewedContent(json: json) else {
+        guard let viewedContent = ViewedContent(json: json) else {
             throw ResponseParsingError()
         }
-        return contentView
+        return viewedContent
     }
 }

@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "VDummyModels.h"
 #import "NSArray+VMap.h"
+#import "victorious-Swift.h"
 
 @interface VImageAssetFetcherTests : XCTestCase
 

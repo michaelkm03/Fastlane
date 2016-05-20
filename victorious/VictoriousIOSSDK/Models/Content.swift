@@ -17,7 +17,7 @@ public class Content {
     public let releasedAt: NSDate
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
-    public let contentData: [ContentDataAsset]?
+    public let contentData: [ContentMediaAsset]?
     public let type: String?
 
     /// Payload describing what will be put on the stage.
@@ -52,18 +52,18 @@ public class Content {
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
         if type == "image" {
-            self.contentData = [ContentDataAsset(
+            self.contentData = [ContentMediaAsset(
                 contentType: type,
                 sourceType: "",
                 json: json[type]
             )].flatMap { $0 }
         } else {
-            let sourceType = json[type]["type"].string
+            let sourceType = json[type]["type"].string ?? ""
             
-            self.contentData = (json[type][""].array ?? []).flatMap {
-                ContentDataAsset(
+            self.contentData = (json[type][sourceType].array ?? []).flatMap {
+                ContentMediaAsset(
                     contentType: type,
-                    sourceType: sourceType ?? "",
+                    sourceType: sourceType,
                     json: $0
                 )
             }
