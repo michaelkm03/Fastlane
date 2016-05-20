@@ -10,7 +10,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
+        self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
     }
     
     // MARK: - Dependency manager
@@ -20,7 +20,17 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - ForumNetworkSource
     
     func setUp() {
-        // Nothing to set up.
+        isSetUp = true
+        
+        ContentListFetchOperation(urlString: dependencyManager.mainFeedURLString, fromTime: NSDate()).queue { result, error, cancelled in
+//            for content in result ?? [] {
+//                guard let content = content as? VViewedContent else {
+//                    continue
+//                }
+//                
+//                print(content.content?.type)
+//            }
+        }
     }
     
     func tearDown() {
@@ -37,10 +47,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    var isSetUp: Bool {
-        // We're always set-up.
-        return true
-    }
+    private(set) var isSetUp = false
     
     // MARK: - ForumEventSender
     
@@ -52,5 +59,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     func receive(event: ForumEvent) {
         // Nothing yet.
+    }
+}
+
+private extension VDependencyManager {
+    var mainFeedURLString: String {
+        return stringForKey("mainFeedUrl")
     }
 }
