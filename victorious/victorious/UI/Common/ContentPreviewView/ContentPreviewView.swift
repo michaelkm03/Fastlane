@@ -70,7 +70,9 @@ class ContentPreviewView: UIView {
         if let preview = content.largestPreviewAsset(),
             let previewImageURL = NSURL(string: preview.imageURL) {
             
-            if content.isVIPContent() && VCurrentUser.user()?.isVIPSubscriber != 1 && VCurrentUser.user()?.vipEndDate.compare(NSDate()) == .OrderedAscending {
+            if let isVIP = VCurrentUser.user()?.isVIPSubscriber,
+                let vipEnd = VCurrentUser.user()?.vipEndDate
+                where content.isVIPContent() && (isVIP != 1 || vipEnd.compare(NSDate()) == .OrderedAscending) {
                 vipImageView.hidden = false
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
                     self?.previewImageView.alpha = 1
