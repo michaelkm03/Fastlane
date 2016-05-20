@@ -70,9 +70,9 @@ class ContentPreviewView: UIView {
         if let preview = content.largestPreviewAsset(),
             let previewImageURL = NSURL(string: preview.imageURL) {
             
-            if let isVIP = VCurrentUser.user()?.isVIPSubscriber,
-                let vipEnd = VCurrentUser.user()?.vipEndDate
-                where content.isVIPContent() && (isVIP != 1 || vipEnd.compare(NSDate()) == .OrderedAscending) {
+            let validVIP = VCurrentUser.user()?.isVIPValid() ?? false
+            let contentVIP = content.isVIP?.boolValue ?? false
+            if !validVIP && contentVIP {
                 vipImageView.hidden = false
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
                     self?.previewImageView.alpha = 1
@@ -93,7 +93,6 @@ class ContentPreviewView: UIView {
             case .gif, .image:
                 playButton.hidden = true
             }
-            print(playButton.frame)
         }
     }
     
