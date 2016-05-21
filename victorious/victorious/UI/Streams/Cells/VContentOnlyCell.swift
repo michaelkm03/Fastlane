@@ -36,13 +36,26 @@ class VContentOnlyCell: UICollectionViewCell {
         layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
     
-    // MARK: - Sequence
+    // MARK: - Sequence/ViewedContent
     
-    var streamItem: VStreamItem? {
-        didSet {
-            updatePreviewView()
+    func setStreamItem(streamItem: VStreamItem?) {
+        if let streamItem = streamItem {
+            self.streamItem = streamItem
+            self.content = nil
         }
+        updatePreviewView()
     }
+    
+    func setContent(content: VContent?) {
+        if let content = content {
+            self.content = content
+            self.streamItem = nil
+        }
+        updatePreviewView()
+    }
+    
+    private var streamItem: VStreamItem?
+    private var content: VContent?
     
     // MARK: - Dependency manager
     
@@ -50,30 +63,43 @@ class VContentOnlyCell: UICollectionViewCell {
     
     // MARK: - Views
     
-    private var previewView: VStreamItemPreviewView?
+    private var streamItemPreviewView: VStreamItemPreviewView?
+    private var contentPreviewView = ContentPreviewView()
     
     private func updatePreviewView() {
-        guard let streamItem = streamItem else {
-            previewView?.removeFromSuperview()
+        if streamItem == nil && content == nil {
+            streamItemPreviewView?.removeFromSuperview()
+            contentPreviewView.removeFromSuperview()
             return
         }
         
-        if previewView?.canHandleStreamItem(streamItem) == true {
-            previewView?.streamItem = streamItem
+        if let streamItem = streamItem {
+            contentPreviewView.removeFromSuperview()
+            if streamItemPreviewView?.canHandleStreamItem(streamItem) == true {
+                streamItemPreviewView?.streamItem = streamItem
+            }
+            else {
+                streamItemPreviewView?.removeFromSuperview()
+                
+                let newPreviewView = VStreamItemPreviewView(streamItem: streamItem)
+                newPreviewView.onlyShowPreview = true
+                newPreviewView.dependencyManager = dependencyManager
+                newPreviewView.streamItem = streamItem
+                contentView.addSubview(newPreviewView)
+                
+                streamItemPreviewView = newPreviewView
+                
+                setNeedsLayout()
+            }
         }
-        else {
-            previewView?.removeFromSuperview()
-            
-            let newPreviewView = VStreamItemPreviewView(streamItem: streamItem)
-            newPreviewView.onlyShowPreview = true
-            newPreviewView.dependencyManager = dependencyManager
-            newPreviewView.streamItem = streamItem
-            contentView.addSubview(newPreviewView)
-            
-            previewView = newPreviewView
-            
-            setNeedsLayout()
+        else if let content = content {
+            streamItemPreviewView?.removeFromSuperview()
+            addSubview(contentPreviewView)
+            v_addFitToParentConstraintsToSubview(contentPreviewView)
+            contentPreviewView.backgroundColor = .blackColor()
+            contentPreviewView.content = content
         }
+        
     }
     
     // MARK: Layout
@@ -81,6 +107,6 @@ class VContentOnlyCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = bounds
-        previewView?.frame = contentView.bounds
+        streamItemPreviewView?.frame = contentView.bounds
     }
 }

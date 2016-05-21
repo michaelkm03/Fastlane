@@ -15,6 +15,7 @@ extension VContent: PersistenceParsable {
         let content = viewedContent.content
         let author = viewedContent.author
         
+        isVIP = content.isVIP ?? isVIP
         isUGC = content.isUGC ?? isUGC
         releasedAt = content.releasedAt ?? releasedAt
         remoteID = content.id ?? remoteID

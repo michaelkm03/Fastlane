@@ -61,7 +61,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
         
         loadPage(pageType,
                  createOperation: {
-                    return StreamOperation(apiPath: streamAPIPath)
+                    return ContentFeedOperation(apiPath: streamAPIPath)
             },
                  completion: { results, error, cancelled in
                     completion?(error: error)
@@ -103,7 +103,13 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = cellFactory.collectionView(collectionView, cellForStreamItem: visibleItems[indexPath.row] as! VStreamItem, atIndexPath: indexPath)
+        let content = visibleItems[indexPath.row] as! VContent
+        let cell = cellFactory.collectionView(
+            collectionView,
+            cellForContent: content,
+            atIndexPath: indexPath
+        )
+        
         cell.layer.cornerRadius = 6
         cell.backgroundColor = .clearColor()
         cell.contentView.backgroundColor = .clearColor()
