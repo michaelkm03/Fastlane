@@ -69,7 +69,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     public private(set) var webSocketMessageContainer = WebSocketRawMessageContainer()
 
-    // MARK: - NetworkSource
+    // MARK: - ForumNetworkSource
 
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.

@@ -66,7 +66,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     weak var nextSender: ForumEventSender?
     
-    // MARK: - NetworkSource
+    // MARK: - ForumNetworkSource
     
     func setUp() {
         refreshToken()
