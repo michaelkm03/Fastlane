@@ -24,6 +24,8 @@ public extension ForumEventReceiver {
         return []
     }
     
+    func receive(event: ForumEvent) {}
+    
     func broadcast(event: ForumEvent) {
         for receiver in childEventReceivers {
             receiver.receive(event)

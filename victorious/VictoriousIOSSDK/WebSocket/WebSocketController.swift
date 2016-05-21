@@ -113,8 +113,6 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: - ForumEventReceiver
 
     public private(set) var childEventReceivers: [ForumEventReceiver] = []
-    
-    public func receive(event: ForumEvent) {}
 
     // MARK: - ForumEventSender
 

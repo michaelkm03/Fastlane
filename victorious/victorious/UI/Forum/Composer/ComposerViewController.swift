@@ -340,10 +340,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         view.layoutIfNeeded()
     }
     
-    // MARK: - ForumEventReceiver
-    
-    func receive(event: ForumEvent) {}
-    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {

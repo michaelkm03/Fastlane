@@ -28,7 +28,9 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func addChildReceiver(receiver: ForumEventReceiver) {
-        childEventReceivers.append(receiver)
+        if !childEventReceivers.contains({ $0 === receiver }) {
+            childEventReceivers.append(receiver)
+        }
     }
     
     func removeChildReceiver(receiver: ForumEventReceiver) {
