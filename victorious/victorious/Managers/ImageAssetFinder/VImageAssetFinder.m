@@ -7,10 +7,10 @@
 //
 
 #import "VImageAssetFinder.h"
-#import "VImageAsset+Fetcher.h"
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VNode.h"
+#import "victorious-Swift.h"
 
 static NSString * const kTextAsset = @"text";
 

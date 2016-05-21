@@ -12,14 +12,14 @@ import CoreData
 class VContent: NSManagedObject {
     
     @NSManaged var isUGC: NSNumber?
-    @NSManaged var releasedAt: NSDate?
-    @NSManaged var remoteID: String?
+    @NSManaged var releasedAt: NSDate
+    @NSManaged var remoteID: String
     @NSManaged var shareURL: String?
     @NSManaged var status: String?
     @NSManaged var title: String?
-    @NSManaged var type: String? /// < "image", "video", "gif"
-    @NSManaged var assets: NSSet?
-    @NSManaged var previewImages: NSSet?
-    @NSManaged var viewedContent: VViewedContent?
+    @NSManaged var type: String? /// < "image", "video", "gif", "text"
+    @NSManaged var contentMediaAssets: NSSet? /// <NSSet of VContentMediaAsset objects
+    @NSManaged var author: VUser?
+    @NSManaged var contentPreviewAssets: NSSet?  /// <NSSet of VImageAsset objects
 
 }

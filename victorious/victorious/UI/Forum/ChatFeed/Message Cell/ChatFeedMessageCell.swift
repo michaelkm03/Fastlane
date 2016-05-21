@@ -116,7 +116,11 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
             detailTextView.text = "\(name) (\(timeStamp))"
         }
         
-        avatarView.setProfileImageURL(cellContent?.profileURL)
+        if let imageURL = cellContent?.profileURL {
+            avatarView.setProfileImageURL(imageURL)
+        } else {
+            avatarView.image = nil
+        }
     }
     
     // MARK: - ChatCellType

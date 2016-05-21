@@ -60,14 +60,14 @@ class ShowCloseUpOperation: MainQueueOperation {
         guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
                 return
         }
-        ViewedContentFetchOperation(
+        ContentFetchOperation(
             macroURLString: dependencyManager.contentFetchURL,
             currentUserID: String(userID),
             contentID: contentID
         ).after(self).queue() { results, error, cancelled in
-            if let viewedContent = results?.first as? VViewedContent {
+            if let content = results?.first as? VContent {
                 let replacementDictionary: [String:String] = [
-                    "%%CONTENT_ID%%" : viewedContent.contentID,
+                    "%%CONTENT_ID%%" : content.remoteID ?? "",
                     "%%CONTEXT%%" : childDependencyManager.context
                 ]
                 let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
@@ -75,7 +75,7 @@ class ShowCloseUpOperation: MainQueueOperation {
                     inURLString: childDependencyManager.relatedContentURL
                 )
 
-                closeUpViewController.content = viewedContent
+                closeUpViewController.content = content
                 closeUpViewController.updateStreamAPIPath(apiPath)
             }
         }
