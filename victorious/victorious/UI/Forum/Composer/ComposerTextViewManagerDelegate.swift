@@ -20,5 +20,5 @@ protocol ComposerTextViewManagerDelegate: class {
     
     var textViewCanDismiss: Bool { get }
     
-    var activeHashtagTag: String { get set }
+    var textViewCurrentHashtag: (String, NSRange)? { get set }
 }

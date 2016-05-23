@@ -10,5 +10,5 @@ import Foundation
 
 protocol HashtagBarControllerDelegate: NSObjectProtocol {
     
-    func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: VHashtag)
+    func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String)
 }

@@ -13,5 +13,6 @@ struct HashtagBarCellPopulator {
     static func populateCell(cell: HashtagBarCell, withTag tag: String) {
         
         cell.label.text = "#\(tag)"
+        cell.label.numberOfLines = 1
     }
 }

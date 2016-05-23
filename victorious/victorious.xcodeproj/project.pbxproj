@@ -1992,6 +1992,7 @@
 		F009BD0F1CE6550900F81CAA /* HashtagBarCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */; };
 		F009BD171CE6AFBE00F81CAA /* HashtagBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */; };
 		F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */; };
+		F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */; };
 		F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */; };
 		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
 		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
@@ -2089,6 +2090,7 @@
 		F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */; };
 		F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */; };
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
+		F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
@@ -4900,6 +4902,7 @@
 		F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellPopulator.swift; sourceTree = "<group>"; };
 		F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HashtagBarCell.xib; sourceTree = "<group>"; };
 		F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpers.swift"; sourceTree = "<group>"; };
+		F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HashtagBarViewController.storyboard; sourceTree = "<group>"; };
 		F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeCameraCreationFlowController.swift; sourceTree = "<group>"; };
 		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
 		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
@@ -5043,6 +5046,7 @@
 		F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		F08CDB9A1AC4D3C6006763B1 /* VFullscreenMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
+		F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpersTests.swift"; sourceTree = "<group>"; };
 		F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextView.h; sourceTree = "<group>"; };
 		F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextView.m; sourceTree = "<group>"; };
 		F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextViewDelegate.h; sourceTree = "<group>"; };
@@ -9271,6 +9275,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */,
+				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
@@ -10177,6 +10182,7 @@
 			isa = PBXGroup;
 			children = (
 				F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */,
+				F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */,
 				F009BD061CE654C900F81CAA /* HashtagBarControllerDelegate.swift */,
 				F009BD081CE654D200F81CAA /* HashtagBarController.swift */,
 				F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */,
@@ -11186,6 +11192,7 @@
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				A748BD181C8A7302003D5F5F /* VIPGate.storyboard in Resources */,
+				F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
@@ -13434,6 +13441,7 @@
 				A7DCA4ED1C128A78004E35B4 /* VHashTagsTest.m in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
+				F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */,
 				A7DCA5071C128A78004E35B4 /* VTagSensitiveTextViewTests.m in Sources */,
 				A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */,
 				A7DCA4D51C128A78004E35B4 /* VAbstractMediaLinkViewControllerTests.m in Sources */,

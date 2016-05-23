@@ -146,6 +146,8 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
+        var textViewCurrentHashtag: (String, NSRange)?
+        
         var textViewCanDismiss: Bool = true
     }
 }

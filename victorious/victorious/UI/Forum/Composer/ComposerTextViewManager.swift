@@ -36,6 +36,19 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     //MARK: - Updating logic
     
+    func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
+        
+        var updatedText = textView.text
+        guard range.location + range.length <= updatedText.characters.count &&
+            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+            return false
+        }
+        
+        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        textView.text = updatedText
+        return true
+    }
+    
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
@@ -129,9 +142,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         if textView.selectedRange.length == 0 {
-            delegate.textViewCursorIsInHashtag = hasHashtagAtLocation(textView.selectedRange.location, inTextView: textView)
+            delegate.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
         } else {
-            delegate.textViewCursorIsInHashtag = false
+            delegate.textViewCurrentHashtag = nil
         }
     }
     
@@ -147,27 +160,22 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
     }
     
-    private func hashtagStringPrecedingLocation(location: Int, inTextView textView: UITextView) -> String? {
+    private func hashtagStringAroundLocation(location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
         
-        let substring = (textView.text as NSString).substringToIndex(location)
-        guard substring.characters.count > location && substring.containsString("#") else {
+        let hashtagCharacter = Character("#")
+        let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
+
+        let text = textView.text
+        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location, afterCharacters: hashtagBoundaryCharacters) where
+            preceedingCharacter == hashtagCharacter else {
             return nil
         }
         
-        let hashtagCharacter = Character("#")
-        let hashtagBoundaryCharacters = [hashtagCharacter, Character(" ")]
-        
-        var currentLocation = location
-        var currentCharacter = Character("")
-        repeat {
-            currentLocation -= 1
-            currentCharacter = Character(UnicodeScalar((substring as NSString).characterAtIndex(currentLocation)))
-        } while currentLocation > 0 && (!hashtagBoundaryCharacters.contains(currentCharacter))
-        
-        if currentCharacter == hashtagCharacter {
-            return (substring as NSString).substringWithRange(NSMakeRange(currentLocation, location - currentLocation))
+        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location - 1, beforeCharacters: hashtagBoundaryCharacters) else {
+            return (preceedingString, preceedingRange)
         }
-        return nil
+        
+        return (preceedingString + proceedingString, NSMakeRange(preceedingRange.location, preceedingRange.length + proceedingRange.length))
     }
     
     //MARK: - Image management
@@ -225,34 +233,5 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
-    }
-}
-
-private extension String {
-    
-    func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String?, preceedingCharacter: Character?) {
-    
-        guard self.characters.count > location else {
-            return (nil, nil)
-        }
-        
-        let substring = (self as NSString).substringToIndex(location)
-        
-        var currentLocation = location
-        var currentCharacter = Character("")
-        var foundMatch = false
-        
-        repeat {
-            currentLocation -= 1
-            currentCharacter = Character(UnicodeScalar((substring as NSString).characterAtIndex(currentLocation)))
-            foundMatch = characters.contains(currentCharacter)
-        } while currentLocation > 0 && !foundMatch
-        
-        if foundMatch {
-            let matchStartLocation = currentLocation + 1
-            let matchedSubstring = (self as NSString).substringWithRange(NSMakeRange(matchStartLocation, location - matchStartLocation))
-            return (matchedSubstring, currentCharacter)
-        }
-        return (nil, nil)
     }
 }

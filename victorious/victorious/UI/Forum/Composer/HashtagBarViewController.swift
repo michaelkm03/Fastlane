@@ -10,35 +10,38 @@ import UIKit
 
 class HashtagBarViewController: UIViewController {
     
-    private var hashtagBarController: HashtagBarController?
-    
-    var dependencyManager: VDependencyManager? {
-        didSet {
-            updateHashtagBarController()
-        }
+    static func new(dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
+        
+        let hashtagBar = v_initialViewControllerFromStoryboard() as HashtagBarViewController
+        hashtagBar.dependencyManager = dependencyManager
+        hashtagBar.barContainerHeightConstraint = containerHeightConstraint
+        return hashtagBar
     }
     
-    @IBOutlet weak var collectionView: UICollectionView! {
-        didSet {
-            updateHashtagBarController()
-        }
-    }
+    @IBOutlet weak private var collectionView: UICollectionView!
     
-    weak private var barContainerHeightConstraint: NSLayoutConstraint?
+    private(set) var dependencyManager: VDependencyManager!
+    
+    private(set) var hashtagBarController: HashtagBarController!
+    
+    weak private var barContainerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
     
     var searchText: String? {
         didSet {
-            hashtagBarController?.searchText = searchText
-            if searchText == nil {
-                barContainerHeightConstraint?.constant = 0
+            hashtagBarController.searchText = searchText
+            if searchText != nil {
+                barContainerHeightConstraint.constant = hashtagBarController.preferredHeight
+                collectionViewHeightConstraint.constant = hashtagBarController.preferredCollectionViewHeight
+            } else {
+                barContainerHeightConstraint.constant = 0
             }
         }
     }
     
-    private func updateHashtagBarController() {
-        
-        if let dependencyManager = dependencyManager where isViewLoaded() {
-            hashtagBarController = HashtagBarController(dependencyManager: dependencyManager, collectionView: collectionView)
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hashtagBarController = HashtagBarController(dependencyManager: dependencyManager, collectionView: collectionView)
     }
 }

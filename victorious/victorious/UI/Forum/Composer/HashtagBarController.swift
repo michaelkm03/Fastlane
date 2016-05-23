@@ -8,17 +8,21 @@
 
 import UIKit
 
-class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
+class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    private static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
+        
+    private var cachedSizes = NSCache()
     
     private let cellDecorator: HashtagBarCellDecorator?
     
     private let collectionView: UICollectionView
     
-    private var currentTrendingTags: [VHashtag]? {
+    private var currentTrendingTags: [String]? {
         didSet {
             guard let trendingTags = currentTrendingTags else {
                 if !searchResults.isEmpty {
-                    searchResults = [VHashtag]()
+                    searchResults = [String]()
                 }
                 return
             }
@@ -34,7 +38,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    private var searchResults = [VHashtag]() {
+    private var searchResults = [String]() {
         didSet {
             collectionView.reloadData()
         }
@@ -50,26 +54,45 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     let dependencyManager: VDependencyManager
     
+    private var hasValidSearchText: Bool {
+        return searchText?.characters.count >= 1
+    }
+    
     var searchText: String? {
         didSet {
-            if let searchText = searchText {
+            guard let searchText = searchText else {
+                searchResults = []
+                return
+            }
+            
+            if searchText.characters.count > 0 {
                 currentFetchOperation = HashtagSearchOperation(searchTerm: searchText)
                 currentFetchOperation?.queue() { [weak self] results, error, success in
-                    guard let results = results as? [VHashtag] where success else {
+                    guard let results = results as? [HashtagSearchResultObject] else {
                         return
                     }
-                    self?.searchResults = results.filter() { hashtag -> Bool in
-                        return hashtag.tag != searchText
+                    let tags = results.map({ return $0.tag })
+                    self?.searchResults = tags.filter() { tag -> Bool in
+                        let matchRange = (tag as NSString).rangeOfString(searchText)
+                        guard matchRange.location == 0 else {
+                            return false
+                        }
+                        return tag != searchText
                     }
                 }
             } else {
+                if let oldTrending = self.currentTrendingTags {
+                    searchResults = oldTrending
+                }
+                
                 //Nil search, get trending tags
                 currentFetchOperation = TrendingHashtagOperation()
                 currentFetchOperation?.queue() { [weak self] results, error, success in
-                    guard let results = results as? [VHashtag] where success else {
+                    guard let results = results as? [HashtagSearchResultObject] else {
                         return
                     }
-                    self?.currentTrendingTags = results
+                    let tags = results.map({ return $0.tag })
+                    self?.currentTrendingTags = tags
                 }
             }
         }
@@ -83,11 +106,52 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         self.collectionView = collectionView
         super.init()
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.registerNib(HashtagBarCell.nibForCell(), forCellWithReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier())
+        collectionView.contentInset = HashtagBarController.collectionViewInset
     }
     
     deinit {
         currentFetchOperation?.cancel()
+    }
+    
+    // MARK: - Height determination
+    
+    var preferredHeight: CGFloat {
+        return ceil(preferredCellSize().height * 1.5)
+    }
+    
+    var preferredCollectionViewHeight: CGFloat {
+        return preferredCellSize().height
+    }
+    
+    private func preferredCellSize(searchText: String = "#") -> CGSize {
+        
+        guard let cellDecorator = cellDecorator else {
+            return .zero
+        }
+        
+        if let cachedValue = cachedSizes.objectForKey(searchText) as? NSValue {
+            return cachedValue.CGSizeValue()
+        }
+        
+        let boundingRect = (searchText as NSString).boundingRectWithSize(CGSizeMake(CGFloat.max, UIScreen.mainScreen().bounds.height), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName : cellDecorator.font], context: nil)
+        let size = CGSize(width: ceil(boundingRect.width) + 10, height: ceil(boundingRect.height) + 10)
+        cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText)
+        return size
+    }
+    
+    // MARK: - Helpers
+    
+    private func hashtagAtIndex(index: Int) -> String? {
+        
+        var hashtag: String?
+        if hasValidSearchText, let searchText = self.searchText {
+            hashtag = index == 0 ? searchText : searchResults[index - 1]
+        } else if index < searchResults.count {
+            hashtag = searchResults[index]
+        }
+        return hashtag
     }
     
     // MARK: - UICollectionViewDataSource
@@ -95,32 +159,16 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(HashtagBarCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as! HashtagBarCell
-        var index = indexPath.row
-        var tag: String?
-        
-        if let searchText = searchText {
-            if index == 0 {
-                tag = searchText
-            } else {
-                index -= 1
-            }
-        }
-        
-        if tag == nil {
-            let currentSearchResults = searchResults
-            guard index < currentSearchResults.count else {
-                cell.hidden = true
-                return cell
-            }
-            cell.hidden = false
-            tag = currentSearchResults[index].tag
-        }
+        let tag = hashtagAtIndex(indexPath.row)
         
         guard let unwrappedTag = tag else {
-            fatalError("Found nil tag when trying to populate hashtag cell")
+            cell.hidden = true
+            return cell
         }
+
+        cell.hidden = false
         
-        cellDecorator?.decorateCell(cell, selected: false)
+        cellDecorator?.decorateCell(cell)
         HashtagBarCellPopulator.populateCell(cell, withTag: unwrappedTag)
         return cell
     }
@@ -128,12 +176,27 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         let resultsCount = searchResults.count
-        return searchText != nil ? resultsCount + 1 : resultsCount
+        return hasValidSearchText ? resultsCount + 1 : resultsCount
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let sizingString = hashtagAtIndex(indexPath.row) ?? "#"
+        return preferredCellSize(sizingString)
     }
     
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        delegate?.hashtagBarController(self, selectedHashtag: searchResults[indexPath.row])
+        
+        let text = hashtagAtIndex(indexPath.row)
+        guard let selectedText = text else {
+            assertionFailure("Selected nil text during hashtag search")
+            return
+        }
+        
+        delegate?.hashtagBarController(self, selectedHashtag: selectedText)
     }
 }

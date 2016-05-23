@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(HashtagBarCell)
 class HashtagBarCell: VBaseCollectionViewCell {
     
     private var awokeFromNib = false
