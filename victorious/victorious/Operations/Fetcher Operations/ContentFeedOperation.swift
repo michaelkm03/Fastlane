@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StreamPaginator
-    var contentIDs: [NSManagedObjectID]?
+    var contentRemoteIDs: [String]?
     
     required init(paginator: StreamPaginator) {
         self.paginator = paginator
@@ -23,11 +23,10 @@ final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
         if !localFetch {
             let request = ViewedContentFeedRequest(
                 apiPath: paginator.apiPath,
-                sequenceID: paginator.sequenceID,
                 paginator: paginator
             )
             ContentFeedRemoteOperation(request: request).before(self).queue(){ [weak self] results, error, completed in
-                self?.contentIDs = results as? [NSManagedObjectID]
+                self?.contentRemoteIDs = results as? [String]
             }
         }
     }
@@ -42,8 +41,9 @@ final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
     
     override func main() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
-            self.results = self.contentIDs?.flatMap({
-                return context.objectWithID($0)
+            self.results = self.contentRemoteIDs?.flatMap({
+                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0 ] )
+                return content
             })
         }
     }

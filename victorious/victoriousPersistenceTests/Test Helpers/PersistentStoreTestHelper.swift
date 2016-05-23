@@ -29,6 +29,7 @@ struct PersistentStoreTestHelper {
                 content.remoteID = remoteID
                 content.author = author
                 content.releasedAt = NSDate()
+                content.type = "image"
             }
         }
     }

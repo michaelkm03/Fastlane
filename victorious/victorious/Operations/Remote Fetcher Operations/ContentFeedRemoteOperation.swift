@@ -12,14 +12,12 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequest
     
     let request: ViewedContentFeedRequest
     
-    private var persistentStreamItemIDs: [NSManagedObjectID]?
-    
     required init( request: ViewedContentFeedRequest ) {
         self.request = request
     }
     
     convenience init( apiPath: String, sequenceID: String? = nil) {
-        self.init( request: ViewedContentFeedRequest(apiPath: apiPath, sequenceID: sequenceID)! )
+        self.init( request: ViewedContentFeedRequest(apiPath: apiPath) )
     }
     
     override func main() {
@@ -31,9 +29,9 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequest
         // Make changes on background queue
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
             self.results = sourceFeed.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "author.remoteId" : $0.author.userID, "remoteID" : $0.content.id ] )
+                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0.content.id ] )
                 content.populate(fromSourceModel: $0)
-                return content.objectID
+                return content.remoteID
             })
             context.v_save()
         }

@@ -17,7 +17,7 @@ extension VUser {
                 return false
         }
         
-        return vipEndDate.compare(NSDate()) == .OrderedDescending && isVIPSubscriber
+        return vipEndDate > NSDate() && isVIPSubscriber
     }
 
 }

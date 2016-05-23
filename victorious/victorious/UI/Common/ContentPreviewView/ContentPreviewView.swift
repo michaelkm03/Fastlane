@@ -9,7 +9,7 @@
 import UIKit
 
 class ContentPreviewView: UIView {
-    // TODO: Change to actual assets
+    // Change to actual assets
     private let kPlayButtonPlayImageName = "directory_play_btn"
     private let playButtonSize: CGFloat = 30
     private let vipMargins: CGFloat = 6
@@ -67,36 +67,33 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: VContent) {
-        if let preview = content.largestPreviewAsset(),
-            let previewImageURL = NSURL(string: preview.imageURL) {
-            
-            let validVIP = VCurrentUser.user()?.isVIPValid() ?? false
-            let contentVIP = content.isVIP?.boolValue ?? false
-            if !validVIP && contentVIP {
-                vipImageView.hidden = false
-                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
-                    self?.previewImageView.alpha = 1
-                }
-            }
-            else {
-                vipImageView.hidden = true
-                previewImageView.sd_setImageWithURL(previewImageURL)
-            }
-            guard let contentType = content.contentType() else {
-                playButton.hidden = true
-                assertionFailure("Content should have a contentType")
+        guard let preview = content.largestPreviewAsset(),
+            let previewImageURL = NSURL(string: preview.imageURL) else {
                 return
-            }
-            switch contentType {
-            case .video:
-                playButton.hidden = false
-            case .gif, .image:
-                playButton.hidden = true
-            }
         }
-    }
-    
-    static func reuseIdentifier() -> String {
-        return NSStringFromClass(ContentPreviewView.self)
+        
+        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
+        let contentIsForVIPOnly = content.isVIP?.boolValue ?? false
+        if !userIsVIP && contentIsForVIPOnly {
+            vipImageView.hidden = false
+            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
+                self?.previewImageView.alpha = 1
+            }
+        } else {
+            vipImageView.hidden = true
+            previewImageView.sd_setImageWithURL(previewImageURL)
+        }
+        
+        guard let contentType = content.contentType() else {
+            playButton.hidden = true
+            return
+        }
+        
+        switch contentType {
+        case .video:
+            playButton.hidden = false
+        case .gif, .image:
+            playButton.hidden = true
+        }
     }
 }

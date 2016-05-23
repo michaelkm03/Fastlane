@@ -44,7 +44,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
     }
     
     func collectionView(collectionView: UICollectionView, cellForContent content: VContent, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let reuseIdentifier = ContentPreviewView.reuseIdentifier()
+        let reuseIdentifier = ContentPreviewView.defaultReuseIdentifier
         
         if !registeredReuseIdentifiers.contains(reuseIdentifier) {
             collectionView.registerClass(VContentOnlyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
