@@ -10,6 +10,12 @@ import Foundation
 
 extension String {
     
+    /// Finds the first occurrence of the provided substring after a character from the `afterCharacters` array and before `location`.
+    ///
+    /// - parameter location: The maximum end index of the returned substring
+    /// - parameter afterCharacters: An array of characters
+    ///
+    /// - returns: Returns nil iff the provided location is larger than the length of the string or less than 0
     func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: NSRange)? {
         
         guard self.characters.count >= location &&
@@ -38,10 +44,17 @@ extension String {
         return (substring as String, nil, NSMakeRange(0, substring.length))
     }
     
+    /// Finds the last occurrence of the provided substring before a character from the `beforeCharacters` array and after `location`.
+    ///
+    /// - parameter location: The minimum start index of the returned substring
+    /// - parameter beforeCharacters: An array of characters
+    ///
+    /// - returns: Returns nil iff the provided location is larger than the length of the string
     func substringAfterLocation(location: Int, beforeCharacters characters: [Character]) -> (substring: String, proceedingCharacter: Character?, range: NSRange)? {
         
         let startLocation = location + 1
-        guard self.characters.count > startLocation else {
+        guard self.characters.count > startLocation &&
+            startLocation >= 0 else {
                 return nil
         }
         

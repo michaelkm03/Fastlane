@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Conforms receive messages when a hashtag is selected.
 protocol HashtagBarControllerDelegate: NSObjectProtocol {
     
     func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String)

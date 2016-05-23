@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Manages the display of and responds to delegate methods related to a collection view populated with hashtags.
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
@@ -66,34 +67,9 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             }
             
             if searchText.characters.count > 0 {
-                currentFetchOperation = HashtagSearchOperation(searchTerm: searchText)
-                currentFetchOperation?.queue() { [weak self] results, error, success in
-                    guard let results = results as? [HashtagSearchResultObject] else {
-                        return
-                    }
-                    let tags = results.map({ return $0.tag })
-                    self?.searchResults = tags.filter() { tag -> Bool in
-                        let matchRange = (tag as NSString).rangeOfString(searchText)
-                        guard matchRange.location == 0 else {
-                            return false
-                        }
-                        return tag != searchText
-                    }
-                }
+                searchForText(searchText)
             } else {
-                if let oldTrending = self.currentTrendingTags {
-                    searchResults = oldTrending
-                }
-                
-                //Nil search, get trending tags
-                currentFetchOperation = TrendingHashtagOperation()
-                currentFetchOperation?.queue() { [weak self] results, error, success in
-                    guard let results = results as? [HashtagSearchResultObject] else {
-                        return
-                    }
-                    let tags = results.map({ return $0.tag })
-                    self?.currentTrendingTags = tags
-                }
+                getTrendingHashtags()
             }
         }
     }
@@ -140,6 +116,41 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText)
         return size
     }
+    
+    // MARK: - Hashtag updating
+    
+    private func searchForText(text: String) {
+        currentFetchOperation = HashtagSearchOperation(searchTerm: text)
+        currentFetchOperation?.queue() { [weak self] results, error, success in
+            guard let results = results as? [HashtagSearchResultObject] else {
+                return
+            }
+            let tags = results.map({ return $0.tag })
+            self?.searchResults = tags.filter() { tag -> Bool in
+                let matchRange = (tag as NSString).rangeOfString(text)
+                guard matchRange.location == 0 else {
+                    return false
+                }
+                return tag != text
+            }
+        }
+    }
+    
+    private func getTrendingHashtags() {
+        if let oldTrending = self.currentTrendingTags {
+            searchResults = oldTrending
+        }
+        
+        currentFetchOperation = TrendingHashtagOperation()
+        currentFetchOperation?.queue() { [weak self] results, error, success in
+            guard let results = results as? [HashtagSearchResultObject] else {
+                return
+            }
+            let tags = results.map({ return $0.tag })
+            self?.currentTrendingTags = tags
+        }
+    }
+
     
     // MARK: - Helpers
     

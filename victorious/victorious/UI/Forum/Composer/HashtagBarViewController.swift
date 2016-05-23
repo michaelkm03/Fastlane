@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Displays and manages a collection view populated with hashtags.
 class HashtagBarViewController: UIViewController {
     
     static func new(dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
@@ -24,18 +25,19 @@ class HashtagBarViewController: UIViewController {
     
     private(set) var hashtagBarController: HashtagBarController!
     
-    weak private var barContainerHeightConstraint: NSLayoutConstraint!
+    weak private var barContainerHeightConstraint: NSLayoutConstraint?
     
-    @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var collectionViewHeightConstraint: NSLayoutConstraint!
     
+    /// The current text that should be used to search for hashtags.
+    /// Can cause constraint values to change.
     var searchText: String? {
         didSet {
             hashtagBarController.searchText = searchText
             if searchText != nil {
-                barContainerHeightConstraint.constant = hashtagBarController.preferredHeight
-                collectionViewHeightConstraint.constant = hashtagBarController.preferredCollectionViewHeight
+                barContainerHeightConstraint?.constant = hashtagBarController.preferredHeight
             } else {
-                barContainerHeightConstraint.constant = 0
+                barContainerHeightConstraint?.constant = 0
             }
         }
     }
@@ -43,5 +45,6 @@ class HashtagBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hashtagBarController = HashtagBarController(dependencyManager: dependencyManager, collectionView: collectionView)
+        collectionViewHeightConstraint.constant = hashtagBarController.preferredCollectionViewHeight
     }
 }

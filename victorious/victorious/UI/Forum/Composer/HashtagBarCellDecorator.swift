@@ -8,11 +8,13 @@
 
 import Foundation
 
+/// Styles a `HashtagBarCell`
 struct HashtagBarCellDecorator {
     
     let font: UIFont
     let textColor: UIColor
     
+    /// Returns nil iff required font or color values are not present in the provided dependencyManager
     init?(dependencyManager: VDependencyManager) {
         guard let font = dependencyManager.font,
             let textColor = dependencyManager.textColor else {
@@ -24,6 +26,7 @@ struct HashtagBarCellDecorator {
         self.textColor = textColor
     }
     
+    /// Applies text styling to a `HashtagBarCell`'s label
     func decorateCell(cell: HashtagBarCell) {
         
         cell.label.font = font

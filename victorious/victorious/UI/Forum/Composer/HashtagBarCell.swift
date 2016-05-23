@@ -8,26 +8,9 @@
 
 import Foundation
 
+/// A cell containing a single, fit-to-bounds label.
 @objc(HashtagBarCell)
 class HashtagBarCell: VBaseCollectionViewCell {
     
-    private var awokeFromNib = false
-    
     @IBOutlet weak var label: UILabel!
-    
-    override var bounds: CGRect {
-        didSet {
-            updateCornerRadius()
-        }
-    }
-    
-    override func awakeFromNib() {
-        awokeFromNib = true
-        label.clipsToBounds = true
-        updateCornerRadius()
-    }
-    
-    private func updateCornerRadius() {
-        label.layer.cornerRadius = bounds.height / 2
-    }
 }
