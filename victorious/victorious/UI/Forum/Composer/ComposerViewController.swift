@@ -75,6 +75,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return fabs(inputViewToBottomConstraint.constant)
             + textViewContainerHeightConstraint.constant
             + attachmentContainerHeightConstraint.constant
+            + hashtagBarContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
