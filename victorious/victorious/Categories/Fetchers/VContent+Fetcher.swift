@@ -10,10 +10,11 @@ import Foundation
 
 extension VContent {
     func contentType() -> ContentType? {
-        guard let type = type else {
-            return nil
-        }
         return ContentType(rawValue: type)
+    }
+    
+    func isVIPContent() -> Bool {
+        return isVIP == true
     }
     
     // Width to height aspect ratio of the content
