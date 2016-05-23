@@ -81,9 +81,12 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 {
     self.user = suggestedUser.user;
     self.usernameTextView.text = self.user.name;
-    if ( self.user.pictureUrl != nil )
+    
+    NSURL *pictureURL = [self.user pictureURLOfMinimumSize:self.userProfileImage.frame.size];
+    
+    if (pictureURL != nil)
     {
-        [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
+        [self.userProfileImage setProfileImageURL:pictureURL];
     }
     
     self.recentSequences = suggestedUser.recentSequences;

@@ -23,7 +23,7 @@ public extension MediaAttachment {
         self.size = CGSize(width: CGFloat(width), height: CGFloat(height))
         self.thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string)
 
-        // Not needed for forum
+        // Not needed for forum.
         self.isGIFStyle = nil
         self.shouldAutoplay = nil
         self.formats = nil
@@ -32,10 +32,18 @@ public extension MediaAttachment {
 
 extension MediaAttachment: DictionaryConvertible {
     
-    public var defaultKey: String {
+    public var rootKey: String {
         return "media"
     }
-    
+
+    public var rootTypeKey: String? {
+        return nil
+    }
+
+    public var rootTypeValue: String? {
+        return nil
+    }
+
     public func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
         if let width = size?.width {
@@ -51,7 +59,7 @@ extension MediaAttachment: DictionaryConvertible {
     }
 }
 
-/// Defines an alternate set of raw values to adapt to `MediaAttachmentType`
+/// Defines an alternate set of raw values to adapt to `MediaAttachmentType`.
 private enum ForumMediaAttachmentType: String {
     case Image      = "IMAGE"
     case Video      = "VIDEO"

@@ -29,7 +29,6 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Get Started"           =   "Get Started!";
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "Minimum 8 characters"  =   "Minimum 8 characters";
@@ -372,8 +371,6 @@
 
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
-
-"Failed to fetch products" = "Failed to fetch products";
 
 "This will discard any content from the camera" = "This will discard any content from the camera";
 "Video failed to load" = "Video failed to load";

@@ -83,8 +83,8 @@ class ConversationDataSource: PaginatedDataSource, UITableViewDataSource {
         cell.profileImageOnRight = message.sender.isCurrentUser() ?? false
         cell.selectionStyle = .None
         
-        if let urlString = message.sender.pictureUrl, let imageURL = NSURL(string: urlString) {
-            cell.profileImageView?.setProfileImageURL(imageURL)
+        if let profileImageView = cell.profileImageView, imageURL = message.sender.pictureURL(ofMinimumSize: profileImageView.frame.size) {
+            profileImageView.setProfileImageURL(imageURL)
         }
     }
 }

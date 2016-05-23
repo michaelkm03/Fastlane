@@ -24,7 +24,6 @@ extension VUser: PersistenceParsable {
         isCreator                   = user.accessLevel?.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
-        pictureUrl                  = user.profileImageURL ?? pictureUrl
         tokenUpdatedAt              = user.tokenUpdatedAt ?? tokenUpdatedAt
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers

@@ -20,4 +20,14 @@
     return self;
 }
 
+- (instancetype)initWithExternalID:(NSString *)externalID
+{
+    self = [super init];
+    if (self != nil)
+    {
+        _remoteContentId = externalID;
+    }
+    return self;
+}
+
 @end

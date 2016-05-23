@@ -10,18 +10,14 @@ import Foundation
 
 public struct MediaUploadCreateRequest: RequestType {
     
-    public let injectedBaseURL: NSURL
-    
-    public init(baseURL: NSURL) {
-        self.injectedBaseURL = baseURL
+    public init(url: NSURL) {
+        baseURL = url
     }
     
-    public var baseURL: NSURL? {
-        return injectedBaseURL
-    }
+    public private(set) var baseURL: NSURL?
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/mediaupload/create", relativeToURL: baseURL)!)
+        let request = NSMutableURLRequest(URL: baseURL!)
         request.HTTPMethod = "POST"
         
         return request

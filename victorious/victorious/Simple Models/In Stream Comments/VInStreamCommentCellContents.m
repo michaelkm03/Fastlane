@@ -14,6 +14,7 @@
 #import "VTagStringFormatter.h"
 #import "VCommentMediaTypeHelper.h"
 #import "VMediaAttachment.h"
+#import "victorious-Swift.h"
 
 @implementation VInStreamCommentCellContents
 
@@ -95,7 +96,7 @@
                                                                                  commentTextAttributes:commentTextAttributes
                                                                              highlightedTextAttributes:highlightTextAttributes
                                                                                      inStreamMediaLink:mediaLink
-                                                                                 profileImageUrlString:comment.user.pictureUrl
+                                                                                 profileImageUrlString:[comment.user pictureURLOfMinimumSize:VUser.defaultSmallMinimumPictureSize].absoluteString
                                                                                                comment:comment];
         [contents addObject:content];
     }

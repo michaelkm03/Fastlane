@@ -518,6 +518,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.displayedViewController v_setNavigationController:nil];
         self.displayedViewController = viewController;
     }
+    
+    [self.delegate navigationController:self didShowViewController:viewController animated:animated];
 }
 
 #pragma mark - VTabMenuContainedViewControllerNavigation

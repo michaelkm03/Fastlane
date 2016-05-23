@@ -13,6 +13,7 @@ struct GridStreamConfiguration {
     var interItemSpacing = CGFloat(3)
     var cellsPerRow = 3
     var allowsForRefresh = true
+    var managesBackground = true
 }
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
@@ -20,12 +21,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
-    let collectionView = UICollectionView(frame: CGRectZero,
-                                          collectionViewLayout: UICollectionViewFlowLayout())
-    let dataSource: GridStreamDataSource<HeaderType>
+    private let collectionView = UICollectionView(
+        frame: CGRectZero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    )
+    private let dataSource: GridStreamDataSource<HeaderType>
     var content: HeaderType.ContentType? {
         didSet {
             dataSource.content = content
+            collectionView.reloadSections(NSIndexSet(index: 0))
         }
     }
     
@@ -41,23 +45,24 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     static func newWithDependencyManager(
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
-        content: HeaderType.ContentType,
+        content: HeaderType.ContentType?,
         configuration: GridStreamConfiguration? = nil,
-        streamAPIPath: String) -> GridStreamViewController {
+        streamAPIPath: String?) -> GridStreamViewController {
         
         return GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
-            streamAPIPath: streamAPIPath)
+            streamAPIPath: streamAPIPath
+        )
     }
     
     init(dependencyManager: VDependencyManager,
                  header: HeaderType? = nil,
                  content: HeaderType.ContentType?,
                  configuration: GridStreamConfiguration? = nil,
-                 streamAPIPath: String) {
+                 streamAPIPath: String?) {
         
         self.dependencyManager = dependencyManager
         self.header = header
@@ -71,8 +76,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             streamAPIPath: streamAPIPath)
         
         super.init(nibName: nil, bundle: nil)
-        
-        self.dependencyManager.addBackgroundToBackgroundHost(self)
         
         dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
@@ -94,7 +97,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        if self.configuration.managesBackground {
+            dependencyManager.addBackgroundToBackgroundHost(self)
+        }
         
         view.addSubview(collectionView)
         view.v_addFitToParentConstraintsToSubview(collectionView)
@@ -230,12 +235,24 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let seq = dataSource.visibleItems[indexPath.row] as! VSequence
-        ShowCloseUpOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            contentID: seq.remoteId
-        )?.queue()
+        if let seq = dataSource.visibleItems[indexPath.row] as? VSequence {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                contentID: seq.remoteId
+                )?.queue()
+        }
+        else if let content = dataSource.visibleItems[indexPath.row] as? VContent {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                content: content
+            )?.queue()
+        }
+    }
+    
+    func updateStreamAPIPath(streamAPIPath: String?) {
+        dataSource.streamAPIPath = streamAPIPath
     }
 }
 

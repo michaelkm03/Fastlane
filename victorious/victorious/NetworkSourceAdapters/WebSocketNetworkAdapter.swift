@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousCommon
 
-class WebSocketNetworkAdapter: NSObject, NetworkSource {
+class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
 
     private struct Constants {
         static let appIdExpander = "%%APP_ID%%"
@@ -30,8 +30,12 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
         super.init()
         
-        // Connect this link in the chain
+        // Connect this link in the event chain.
         nextSender = webSocketController
+
+        // Device ID is needed for tracking calls on the backend.
+        let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
+        webSocketController.setDeviceID(deviceID)
     }
     
     // MARK: ForumEventSender
@@ -56,17 +60,26 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
         webSocketController.removeChildReceiver(receiver)
     }
     
-    // MARK: NetworkSourceWebSocket
+    // MARK: ForumNetworkSourceWebSocket
     
     var isConnected: Bool {
         return webSocketController.isConnected
+    }
+
+    var webSocketMessageContainer: WebSocketRawMessageContainer {
+        return webSocketController.webSocketMessageContainer
+    }
+
+    /// Don't call this function, the adapter will handle setting of the device ID.
+    func setDeviceID(deviceID: String) {
+        assertionFailure("Don't call this function, the adapter will handle setting of the device ID.")
     }
     
     /// Don't call this function direcly, use `refreshToken()` instead.
     func replaceToken(token: String) {
         assertionFailure("Don't call this function direcly, use `refreshToken()` instead.")
     }
-    
+
     // MARK: Private
     
     private func expandWebSocketURLString(url: String, withToken token: String, applicationID: String) -> NSURL? {
@@ -91,7 +104,7 @@ class WebSocketNetworkAdapter: NSObject, NetworkSource {
                 }
 
                 let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
-                print("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
+                v_log("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
                 guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
                     v_log("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
                     return

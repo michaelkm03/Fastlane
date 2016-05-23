@@ -8,9 +8,9 @@
 
 #import "VFacebookActivity.h"
 #import "victorious-Swift.h"
-#import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "VSequence+Fetcher.h"
+#import "victorious-Swift.h"
 
 static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 

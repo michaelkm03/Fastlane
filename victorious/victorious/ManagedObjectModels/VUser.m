@@ -10,11 +10,11 @@
 #import "VComment.h"
 #import "VConversation.h"
 #import "VHashtag.h"
-#import "VImageAsset.h"
 #import "VMessage.h"
 #import "VNotification.h"
 #import "VPollResult.h"
 #import "VSequence.h"
+#import "victorious-Swift.h"
 
 @implementation VUser
 
@@ -33,7 +33,6 @@
 @dynamic numberOfFollowing;
 @dynamic likesGiven;
 @dynamic likesReceived;
-@dynamic pictureUrl;
 @dynamic remoteId;
 @dynamic completedProfile;
 @dynamic tagline;
@@ -61,7 +60,7 @@
 @dynamic vipEndDate;
 @dynamic achievementsUnlocked;
 @dynamic avatarBadgeType;
-@dynamic viewedContent;
+@dynamic content;
 
 -(NSNumber *)isCreator
 {

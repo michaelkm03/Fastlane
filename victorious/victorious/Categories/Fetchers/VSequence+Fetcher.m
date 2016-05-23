@@ -17,7 +17,6 @@
 #import "VAsset+Fetcher.h"
 #import "VSequencePermissions.h"
 #import "NSURL+MediaType.h"
-#import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
 #import "victorious-Swift.h"
@@ -234,9 +233,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         [urls addObject:[NSURL URLWithString:[self.previewImagePaths firstObject]]];
     }
     
-    if (self.user && self.user.pictureUrl)
+    NSURL *pictureURL = [self.user pictureURLOfMinimumSize:VUser.defaultSmallMinimumPictureSize];
+    
+    if (pictureURL != nil)
     {
-        [urls addObject:[NSURL URLWithString:self.user.pictureUrl]];
+        [urls addObject:pictureURL];
     }
     
     return [urls copy];

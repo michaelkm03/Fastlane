@@ -44,15 +44,15 @@ class ChatFeedCollectionDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    private func decorateCell(cell: ChatFeedMessageCell, message: ChatFeedMessage, dependencyManager: VDependencyManager) {
-        if VCurrentUser.user()?.remoteId.integerValue == message.sender.id {
+    private func decorateCell(cell: ChatFeedMessageCell, message: DisplayableChatMessage, dependencyManager: VDependencyManager) {
+        if VCurrentUser.user()?.remoteId.integerValue == message.userID {
             cell.layout = RightAlignmentCellLayout()
         } else {
             cell.layout = LeftAlignmentCellLayout()
         }
         
         cell.dependencyManager = dependencyManager
-        cell.chatFeedMessage = message
+        cell.cellContent = message
     }
     
     func registerCellsWithCollectionView( collectionView: UICollectionView ) {

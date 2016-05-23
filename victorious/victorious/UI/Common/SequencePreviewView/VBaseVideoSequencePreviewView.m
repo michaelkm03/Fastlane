@@ -15,7 +15,6 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 #import "VImageAssetFinder.h"
-#import "VImageAsset.h"
 #import "victorious-Swift.h"
 #import "UIImageView+WebCache.h"
 

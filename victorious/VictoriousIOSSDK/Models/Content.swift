@@ -17,8 +17,9 @@ public class Content {
     public let releasedAt: NSDate
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
-    public let contentData: [ContentDataAsset]?
-    public let type: String?
+    public let contentData: [ContentMediaAsset]?
+    public let type: String
+    public let isVIP: Bool?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -32,6 +33,7 @@ public class Content {
             return nil
         }
 
+        self.isVIP = json["is_vip"].bool
         self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
@@ -44,7 +46,7 @@ public class Content {
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         if type == "image" {
-            if let asset = ContentDataAsset(
+            if let asset = ContentMediaAsset(
                 contentType: type,
                 sourceType: sourceType,
                 json: json[type]
@@ -55,12 +57,27 @@ public class Content {
             }
         } else {
             self.contentData = (json[type][sourceType].array ?? []).flatMap {
-                ContentDataAsset(
+                ContentMediaAsset(
                     contentType: type,
                     sourceType: sourceType,
                     json: $0
                 )
             }
         }
+    }
+    
+    public init(id: String, title: String, releasedAt: NSDate, type: String) {
+        self.id = id
+        self.title = title
+        self.releasedAt = releasedAt
+        
+        self.status = nil
+        self.tags = nil
+        self.shareURL = nil
+        self.isUGC = nil
+        self.previewImages = nil
+        self.contentData = nil
+        self.type = type
+        self.isVIP = nil
     }
 }

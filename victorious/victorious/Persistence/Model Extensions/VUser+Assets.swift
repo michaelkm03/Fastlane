@@ -7,6 +7,10 @@
 //
 
 extension VUser {
+    static var defaultSmallMinimumPictureSize: CGSize {
+        return CGSize(width: 30.0, height: 30.0)
+    }
+    
     func pictureURL(ofMinimumSize minimumSize: CGSize) -> NSURL? {
         let assetFinder = VImageAssetFinder()
         
@@ -17,10 +21,6 @@ extension VUser {
             else if let fallbackAsset = assetFinder.largestAssetFromAssets(assets) {
                 return NSURL(string: fallbackAsset.imageURL)
             }
-        }
-        
-        if let picturePath = pictureUrl {
-            return NSURL(string: picturePath)
         }
         
         return nil

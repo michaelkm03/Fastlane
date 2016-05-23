@@ -25,7 +25,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     var chatFeed: ChatFeed? { get }
     
     /// The abstract network layer used for feeding the Forum events and for sending events out.
-    var networkSource: NetworkSource? { get }
+    var forumNetworkSource: ForumNetworkSource? { get }
     
     // MARK: - Behaviors
 

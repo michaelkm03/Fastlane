@@ -9,8 +9,9 @@
 import UIKit
 import VictoriousIOSSDK
 
-@objc protocol SelfSizingCell {
+protocol ChatCellType {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
+    var cellContent: DisplayableChatMessage? { get set }
 }
 
 protocol ChatFeedMessageCellDelegate: class {
@@ -18,7 +19,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
+class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
@@ -48,7 +49,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     
     var dependencyManager: VDependencyManager!
     
-    var chatFeedMessage: ChatFeedMessage! {
+    var cellContent: DisplayableChatMessage? {
         didSet {
             populateData()
             updateStyle()
@@ -98,7 +99,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     
     private func populateData() {
         textView.attributedText = attributedText
-        if let mediaAttachment = chatFeedMessage?.mediaAttachment {
+        if let mediaAttachment = cellContent?.mediaAttachment {
             if mediaAttachment.type == .GIF || mediaAttachment.type == .Video {
                 mediaView.previewURL = mediaAttachment.thumbnailURL
                 mediaView.mediaURL = mediaAttachment.url
@@ -110,11 +111,19 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
         } else {
             mediaView.hidden = true
         }
-        detailTextView.text = "\(chatFeedMessage.sender.name) (\(chatFeedMessage.timeLabel))"
-        avatarView.setProfileImageURL(chatFeedMessage.sender.profileURL)
+        
+        if let name = cellContent?.username, timeStamp = cellContent?.timeLabel {
+            detailTextView.text = "\(name) (\(timeStamp))"
+        }
+        
+        if let imageURL = cellContent?.profileURL {
+            avatarView.setProfileImageURL(imageURL)
+        } else {
+            avatarView.image = nil
+        }
     }
     
-    // MARK: - SelfSizingCell
+    // MARK: - ChatCellType
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
         let mediaSize = calculateMediaSizeWithinBounds(bounds)
@@ -151,7 +160,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let mediaAttachment = chatFeedMessage?.mediaAttachment else {
+        guard let mediaAttachment = cellContent?.mediaAttachment else {
             return CGSize.zero
         }
         let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
@@ -163,7 +172,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable {
     }
     
     private var attributedText: NSAttributedString? {
-        guard let text = chatFeedMessage?.text where text != "" else {
+        guard let text = cellContent?.text where text != "" else {
             return nil
         }
         let paragraphStyle = NSMutableParagraphStyle()

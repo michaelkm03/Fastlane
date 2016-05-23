@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VImageAsset+Fetcher.h"
 #import "VAbstractUserProfileHeaderViewController.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
@@ -238,11 +237,11 @@
          [welf setFollowingCount:user.numberOfFollowing];
      }];
     
-    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(pictureUrl))
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(previewAssets))
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+         [welf.profileImageView setProfileImageURL:[user pictureURLOfMinimumSize:welf.profileImageView.frame.size]];
          [welf updateProfileImage];
      }];
     

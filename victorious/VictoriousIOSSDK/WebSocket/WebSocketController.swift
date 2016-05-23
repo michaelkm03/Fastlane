@@ -6,7 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-
 /// The WebSocketController is the one stop shop for talking and listening over a WebSocket.
 ///
 /// It features are:
@@ -15,7 +14,7 @@
 /// 3. Send messages over the websocket.
 /// 4. Forward messages using the (FEC) Forum Event Chain™.
 /// 5. It complies to the TemplateNetworkSource protocol so it can be instanciated through the template.
-public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
+public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
         static let forceDisconnectTimeout: NSTimeInterval = 5
@@ -35,6 +34,9 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     /// The interval to send of ping messages.
     private let pingTimerInterval: NSTimeInterval = 15
 
+    /// Keeps record of the information needed in order to identify each message.
+    internal let uniqueIdentificationMessage: UniqueIdentificationMessage = UniqueIdentificationMessage()
+
     /// The designated way of getting a reference to the singleton instance with the default configuration.
     public static let sharedInstance: WebSocketController = WebSocketController()
 
@@ -47,7 +49,7 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         self.webSocket = webSocket
     }
 
-    // MARK: - NetworkSourceWebSocket
+    // MARK: - ForumNetworkSourceWebSocket
     
     /// Is the WebSocket connection open at the moment.
     public var isConnected: Bool {
@@ -57,26 +59,33 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         return true
     }
     
-    // MARK: - TemplateNetworkSource
-    
     public func replaceEndPoint(endPoint: NSURL) {
         print("replaceEndPoint -> ", endPoint)
-        
+
         if let webSocket = webSocket {
             webSocket.disconnect()
         }
-        
+
         webSocket = nil
         webSocket = WebSocket(url: endPoint, socketListenerQueue: socketListenerQueue, delegate: self, pongDelegate: self)
     }
-    
+
+    public func setDeviceID(deviceID: String) {
+        print("setDeviceID -> \(deviceID)")
+        uniqueIdentificationMessage.deviceID = deviceID
+    }
+
+    public private(set) var webSocketMessageContainer = WebSocketRawMessageContainer()
+
+    // MARK: - NetworkSource
+
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.
     public func setUp() {
         guard let webSocket = webSocket where !webSocket.isConnected else {
             return
         }
-        
+
         pingTimer?.invalidate()
         pingTimer = NSTimer.scheduledTimerWithTimeInterval(pingTimerInterval, target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: true)
         
@@ -121,7 +130,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     // MARK: - WebSocketDelegate
     
     public func websocketDidConnect(socket: WebSocket) {
-        NSLog("websocketDidConnect")
+        let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
+        webSocketMessageContainer.addMessage(rawMessage)
         
         let connectEvent = WebSocketEvent(type: .Connected)
         dispatch_async(dispatch_get_main_queue()) {
@@ -130,11 +140,13 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        NSLog("DidDisconnect -> \(socket)    error -> \(error)")
+        let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
+        webSocketMessageContainer.addMessage(rawMessage)
         
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
         webSocket = nil
+        pingTimer?.invalidate()
         
         let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         let disconnectEvent = WebSocketEvent(type: WebSocketEventType.Disconnected(webSocketError: webSocketError))
@@ -145,17 +157,20 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        NSLog("websocketDidReceiveMessage -> \(text)")
-        
+        var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
+
         if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
             let json = JSON(data: dataFromString)
-            let events = decodeEventsFromJson(json)
-            for event in events {
+            rawMessage.json = json
+
+            if let event = decodeEventFromJSON(json) {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.receiveEvent(event)
                 }
             }
         }
+
+        webSocketMessageContainer.addMessage(rawMessage)
     }
 
     public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
@@ -165,7 +180,8 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
     // MARK: WebSocketPongDelegate
     
     public func websocketDidReceivePong(socket: WebSocket) {
-        NSLog("websocketDidReceivePong")
+        let rawMessage = WebSocketRawMessage(messageString: "Did receive pong message.")
+        webSocketMessageContainer.addMessage(rawMessage)
     }
 
     // MARK: Private
@@ -176,21 +192,18 @@ public class WebSocketController: WebSocketDelegate, NetworkSourceWebSocket, Web
         }
         
         guard let dictionaryConvertible = event as? DictionaryConvertible else {
-            assertionFailure("Failed to convert DictionaryConvertible ForumEvent to JSON string. event -> \(event)")
+            NSLog("Failed to convert DictionaryConvertible ForumEvent to JSON string. event -> \(event)")
             return
         }
-        
-        let toServerDictionary = [
-            "to_server": [
-                dictionaryConvertible.defaultKey: dictionaryConvertible.toDictionary()
-            ]
-        ]
+
+        let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
+
         if let jsonString = JSON(toServerDictionary).rawString() {
             NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
             receiveEvent(event)
         } else {
-            assertionFailure("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
+            NSLog("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
         }
     }
 
@@ -211,5 +224,38 @@ private extension WebSocket {
         self.queue = socketListenerQueue
         self.delegate = delegate
         self.pongDelegate = pongDelegate
+    }
+}
+
+private extension DictionaryConvertible {
+
+    private var toServerRootKey: String {
+        return "to_server"
+    }
+
+    private var toServerTypeKey: String {
+        return "type"
+    }
+
+    private var toServerTypeValue: String {
+        return "TO_SERVER"
+    }
+
+    /// A dictionary representation of the WebSocket JSON protocol. The `identificationMessage` is passed in to identify each outgoing message.
+    private func toServerDictionaryWithIdentificationMessage(identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
+        var toServerDictionary: [String: AnyObject] = [:]
+
+        if let rootTypeKey = rootTypeKey, let rootTypeValue = rootTypeValue {
+            toServerDictionary[rootTypeKey] = rootTypeValue
+        }
+        toServerDictionary[rootKey] = toDictionary()
+
+        var rootDictionary: [String: AnyObject] = [toServerTypeKey: toServerTypeValue]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
+        identificationMessage.incrementSequenceCounter()
+
+        rootDictionary[toServerRootKey] = toServerDictionary
+
+        return rootDictionary
     }
 }

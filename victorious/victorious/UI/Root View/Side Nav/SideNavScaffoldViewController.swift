@@ -68,7 +68,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         navigationBar.backIndicatorImage = backArrowImage
         navigationBar.backIndicatorTransitionMaskImage = backArrowImage
         
-        VCurrentUser.user()?.addObserver(self, forKeyPath: "pictureUrl", options: [], context: nil)
+        VCurrentUser.user()?.addObserver(self, forKeyPath: "previewAssets", options: [], context: nil)
+        updateNavButtonWithUserPicture()
     }
     
     required init(coder: NSCoder) {
@@ -90,7 +91,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
-            performFirstLaunchSetup()
+            performSetup()
             setupNavigationButtons()
         }
     }
@@ -171,8 +172,14 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         sideMenuController.toggleSideViewController(on: .left, animated: true)
     }
     
+    /// A flag we use to prevent crashes due to pushing the right nav multiple times. Tapping the right nav button
+    /// repeatedly during a navigation controller pop transition queues up multiple pushes of the same right-nav view
+    /// controller. The navigation controller doesn't list the right nav view controller in its `viewControllers`
+    /// property, so we can't check that it's already been pushed that way. Thus, this flag is born.
+    private var allowsRightNavigation = true
+    
     @objc private func rightNavButtonWasPressed() {
-        if let rightNavViewController = rightNavViewController {
+        if let rightNavViewController = rightNavViewController where allowsRightNavigation {
             mainNavigationController.innerNavigationController.pushViewController(rightNavViewController, animated: true)
         }
     }
@@ -197,7 +204,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - KVO
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if keyPath == "pictureUrl" {
+        if keyPath == "previewAssets" {
             updateNavButtonWithUserPicture()
         }
     }
@@ -316,5 +323,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     func navigationController(navigationController: VNavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         sideMenuController.panningIsEnabled = navigationController.innerNavigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        allowsRightNavigation = false
+    }
+    
+    func navigationController(navigationController: VNavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        allowsRightNavigation = navigationController.innerNavigationController.viewControllers.count <= 1
     }
 }

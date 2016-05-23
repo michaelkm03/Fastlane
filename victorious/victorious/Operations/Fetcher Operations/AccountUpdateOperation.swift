@@ -49,7 +49,6 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
                 
                 // Update profile image
                 if let imageURL = profileUpdate.profileImageURL {
-                    user.pictureUrl = imageURL.absoluteString
                     if let data = NSData(contentsOfURL: imageURL),
                         let image = UIImage(data: data) {
                             let imageAsset: VImageAsset = context.v_createObject()
