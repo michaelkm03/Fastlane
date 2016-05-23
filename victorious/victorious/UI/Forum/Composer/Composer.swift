@@ -36,7 +36,7 @@ extension Composer {
                 assertionFailure("Unable to construct message from Composer.")
                 return
         }
-        sendEvent(event)
+        send(event)
     }
     
     func sendMessage(mediaAttachment mediaAttachment: MediaAttachment, text: String?) {
@@ -45,7 +45,7 @@ extension Composer {
                 assertionFailure("Unable to construct message from Composer.")
                 return
         }
-        sendEvent(event)
+        send(event)
     }
 
     // MARK: - Private

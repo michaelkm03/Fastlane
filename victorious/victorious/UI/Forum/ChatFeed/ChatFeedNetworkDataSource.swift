@@ -10,9 +10,11 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-protocol ChatFeedNetworkDataSourceType: VScrollPaginatorDelegate, ForumEventReceiver {
+protocol ChatFeedNetworkDataSourceType: VScrollPaginatorDelegate, ForumEventReceiver, ForumEventSender {
     func startCheckingForNewItems()
     func stopCheckingForNewItems()
+    
+    weak var nextSender: ForumEventSender? { get set }
 }
 
 class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
@@ -72,6 +74,10 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
             }
         }
     }
+    
+    // MARK: - ForumEventSender
+    
+    var nextSender: ForumEventSender?
     
     // MARK: - ChatFeedNetworkDataSource
     

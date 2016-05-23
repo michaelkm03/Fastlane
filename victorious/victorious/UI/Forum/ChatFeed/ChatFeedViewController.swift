@@ -70,7 +70,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var childEventReceivers: [ForumEventReceiver] {
         return [ networkDataSource ]
     }
-   
+    
+    // MARK: - ForumEventSender
+    
+    var nextSender: ForumEventSender?
+    
     // MARK: - NewItemsControllerDelegate
         
     func onNewItemsSelected() {
@@ -97,6 +101,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         collectionView.delegate = self
         
         scrollPaginator.delegate = networkDataSource
+        
+        networkDataSource.nextSender = self
         
         newItemsController.depedencyManager = dependencyManager
         newItemsController.delegate = self
