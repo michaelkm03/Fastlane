@@ -39,7 +39,21 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
-        cell.streamItem = streamItem
+        cell.setStreamItem(streamItem)
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForContent content: VContent, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let reuseIdentifier = ContentPreviewView.defaultReuseIdentifier
+        
+        if !registeredReuseIdentifiers.contains(reuseIdentifier) {
+            collectionView.registerClass(VContentOnlyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            registeredReuseIdentifiers.insert(reuseIdentifier)
+        }
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
+        cell.dependencyManager = dependencyManager
+        cell.setContent(content)
         return cell
     }
     
