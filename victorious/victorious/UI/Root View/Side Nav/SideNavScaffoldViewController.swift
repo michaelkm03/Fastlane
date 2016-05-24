@@ -94,6 +94,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
             performSetup()
             setupNavigationButtons()
         }
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -179,7 +180,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     private var allowsRightNavigation = true
     
     @objc private func rightNavButtonWasPressed() {
-        if let rightNavViewController = rightNavViewController where allowsRightNavigation {
+        
+        guard self.allowsRightNavigation else {
+            return
+        }
+        
+        if let rightNavViewController = rightNavViewController {
+            self.allowsRightNavigation = false
             mainNavigationController.innerNavigationController.pushViewController(rightNavViewController, animated: true)
         }
     }
