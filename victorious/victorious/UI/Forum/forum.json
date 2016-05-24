@@ -303,11 +303,5 @@
 	},
     "networkLayerSource": {
         "name": "webSocket.networkLayer"
-    },
-    "networkResources" : {
-        "authURL": "https://vapi-staging.getvictorious.com/v1/users/%%USER_ID%%/chat/token",
-        "socketURL" : "wss://crapi-staging.getvictorious.com:443/v1/%%USER_ID%%/%%AUTH_TOKEN%%",
-        "streamURL" : "http://dev.getvictorious.com/feed/explore/%%PAGE_NUM%%/%%PER_PAGE%%",
-        "contentFetchURL": "http://dev.getvictorious.com/sequence/fetch/%%SEQUENCE_ID%%",
     }
 }

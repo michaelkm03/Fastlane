@@ -101,8 +101,7 @@ class ShowCloseUpOperation: MainQueueOperation {
 
 private extension VDependencyManager {
     var contentFetchURL: String {
-        let centerScreen = childDependencyForKey("centerScreen")
-        let networkResources = centerScreen?.childDependencyForKey("networkResources")
+        let networkResources = childDependencyForKey("networkResources")
         return networkResources?.stringForKey("contentFetchURL") ?? ""
     }
     
