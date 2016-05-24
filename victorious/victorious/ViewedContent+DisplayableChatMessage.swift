@@ -19,7 +19,7 @@ extension ViewedContent: DisplayableChatMessage {
     }
     
     var text: String? {
-        return content.title
+        return content.text
     }
     
     var userID: Int {

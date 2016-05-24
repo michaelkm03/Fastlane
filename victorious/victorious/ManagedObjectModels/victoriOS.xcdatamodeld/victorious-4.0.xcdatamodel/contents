@@ -71,7 +71,7 @@
         <attribute name="remoteID" attributeType="String" syncable="YES"/>
         <attribute name="shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
         <relationship name="contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="content" inverseEntity="ContentMediaAsset" syncable="YES"/>

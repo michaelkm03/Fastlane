@@ -9,6 +9,7 @@
 import Foundation
 
 public enum ContentType: String {
+    case text = "text"
     case video = "video"
     case gif = "gif"
     case image = "image"
@@ -19,7 +20,7 @@ extension ContentType {
         switch self {
         case .gif, .video:
             return true
-        case .image:
+        case .text, .image:
             return false
         }
     }
@@ -28,7 +29,7 @@ extension ContentType {
         switch self {
         case .image:
             return true
-        case .gif, .video:
+        case .text, .gif, .video:
             return false
         }
     }
