@@ -1745,6 +1745,9 @@
 		BFC371421CED58A0000849CA /* VImageAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC371411CED58A0000849CA /* VImageAssetTests.swift */; };
 		BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */; };
 		BFC673621CE3C9C4004F9D3C /* ContentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */; };
+		BFC7FAE41CF4F0C90061489B /* ContentFlagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7FAE31CF4F0C90061489B /* ContentFlagOperation.swift */; };
+		BFC7FAE61CF4FB540061489B /* ContentFlagRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7FAE51CF4FB540061489B /* ContentFlagRemoteOperation.swift */; };
+		BFC7FAE81CF4FBAD0061489B /* ContentFlagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7FAE71CF4FBAD0061489B /* ContentFlagRequest.swift */; };
 		BFCFFFEF1CEE835C00F512B1 /* VUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFEE1CEE835C00F512B1 /* VUserTests.swift */; };
 		BFCFFFFB1CEE909F00F512B1 /* VImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */; };
 		BFCFFFFD1CEE912100F512B1 /* VImageAsset+Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFFC1CEE912100F512B1 /* VImageAsset+Fetcher.swift */; };
@@ -4488,6 +4491,9 @@
 		BFC371411CED58A0000849CA /* VImageAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VImageAssetTests.swift; path = Models/VImageAssetTests.swift; sourceTree = "<group>"; };
 		BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentVideoPlayerCoordinator.swift; sourceTree = "<group>"; };
 		BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentPreviewView.swift; path = ContentPreviewView/ContentPreviewView.swift; sourceTree = "<group>"; };
+		BFC7FAE31CF4F0C90061489B /* ContentFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagOperation.swift; sourceTree = "<group>"; };
+		BFC7FAE51CF4FB540061489B /* ContentFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRemoteOperation.swift; sourceTree = "<group>"; };
+		BFC7FAE71CF4FBAD0061489B /* ContentFlagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentFlagRequest.swift; path = Models/ContentFlagRequest.swift; sourceTree = "<group>"; };
 		BFCFFFEE1CEE835C00F512B1 /* VUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VUserTests.swift; path = Models/VUserTests.swift; sourceTree = "<group>"; };
 		BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAsset.swift; sourceTree = "<group>"; };
 		BFCFFFFC1CEE912100F512B1 /* VImageAsset+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Fetcher.swift"; sourceTree = "<group>"; };
@@ -5942,6 +5948,7 @@
 				A7D920471C063682002A6503 /* Errors */,
 				A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */,
 				A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */,
+				BFC7FAE71CF4FBAD0061489B /* ContentFlagRequest.swift */,
 				67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */,
 				A7D618EA1C2A7E49007F46EA /* FollowersListRequest.swift */,
 				C32D8BD71BF2D45500AB5085 /* FollowHashtagRequest.swift */,
@@ -7978,6 +7985,7 @@
 				A72C858B1C977FF500E97D4F /* SequenceLikersOperation.swift */,
 				A72C858C1C977FF500E97D4F /* SequenceLikeToggleOperation.swift */,
 				BF0C12D91CF3D91C007C7CE6 /* ContentUpvoteToggleOperation.swift */,
+				BFC7FAE31CF4F0C90061489B /* ContentFlagOperation.swift */,
 				BF0C12DB1CF3D929007C7CE6 /* ContentUpvoteOperation.swift */,
 				BF0C12DD1CF3D934007C7CE6 /* ContentUnupvoteOperation.swift */,
 				A72C858D1C977FF500E97D4F /* SequenceRepostersOperation.swift */,
@@ -8117,6 +8125,7 @@
 				A72C85DC1C977FF500E97D4F /* SequenceCommentsOperation.swift */,
 				A72C85DD1C977FF500E97D4F /* SequenceDeleteRemoteOperation.swift */,
 				A72C85DE1C977FF500E97D4F /* SequenceFlagRemoteOperation.swift */,
+				BFC7FAE51CF4FB540061489B /* ContentFlagRemoteOperation.swift */,
 				A72C85DF1C977FF500E97D4F /* SequenceLikeRemoteOperation.swift */,
 				A72C85E01C977FF500E97D4F /* SequenceLikersRemoteOperation.swift */,
 				A72C85E11C977FF500E97D4F /* SequenceRepostersRemoteOperation.swift */,
@@ -11990,6 +11999,7 @@
 				A7AF87371C46D2F100B49478 /* NSURL+Failable.swift in Sources */,
 				C3348B211BF53EEE004183A1 /* Bool+Initializers.swift in Sources */,
 				0E8EB2C91CCF0B350087D815 /* ContentType.swift in Sources */,
+				BFC7FAE81CF4FBAD0061489B /* ContentFlagRequest.swift in Sources */,
 				A7EF1BD01BF2754D00D429DE /* StreamItemType.swift in Sources */,
 				6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */,
 				A7B844E91CBC25F700CE02DE /* MediaAttachment+Forum.swift in Sources */,
@@ -12654,6 +12664,7 @@
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
 				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
+				BFC7FAE41CF4F0C90061489B /* ContentFlagOperation.swift in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
 				5A75EADF1C57653200B08056 /* VPublishParameters.swift in Sources */,
@@ -13377,6 +13388,7 @@
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A72C861B1C977FF500E97D4F /* LoginOperation.swift in Sources */,
+				BFC7FAE61CF4FB540061489B /* ContentFlagRemoteOperation.swift in Sources */,
 				A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */,
 				F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,

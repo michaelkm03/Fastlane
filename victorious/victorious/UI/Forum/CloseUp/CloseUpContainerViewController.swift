@@ -123,7 +123,17 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func didSelectFlagContentForContentID(contentID: Int) {
+        let flag = ContentFlagOperation(contentID: "\(contentID)")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
         
+        confirm.before(flag)
+        confirm.queue()
+        flag.queue()
+
     }
     
     func didToggleUpvoteForContentID(contentID: Int) {
