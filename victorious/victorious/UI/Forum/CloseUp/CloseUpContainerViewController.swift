@@ -13,6 +13,33 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     
+    private lazy var shareButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.shareIcon,
+            style: .Done,
+            target: self,
+            action: #selector(share)
+        )
+    }()
+    
+    private lazy var overflowButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+    }()
+    
+    private lazy var upvoteButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.upvoteIconSelected,
+            style: .Done,
+            target: self,
+            action: #selector(toggleUpvote)
+        )
+    }()
+    
     init(dependencyManager: VDependencyManager,
          content: VContent? = nil,
          streamAPIPath: String?) {
@@ -39,6 +66,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         super.init(nibName: nil, bundle: nil)
         
         header.delegate = self
+        
+        updateHeaderForContent(content)
                 
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
@@ -51,33 +80,23 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        
+        // ToggleUpvoteRequest
     }
     
     func overflow() {
         
     }
     
+    private func updateHeaderForContent(content: VContent?) {
+        guard let content = content else {
+            return
+        }
+        
+//        upvoteButton.image = content.islike
+    }
+    
     override func viewDidLoad() {
         /// Set up nav bar
-        let shareButton = UIBarButtonItem(
-            image: dependencyManager.shareIcon,
-            style: .Done,
-            target: self,
-            action: #selector(share)
-        )
-        let overflowButton = UIBarButtonItem(
-            image: dependencyManager.overflowIcon,
-            style: .Done,
-            target: self,
-            action: #selector(overflow)
-        )
-        let upvoteButton = UIBarButtonItem(
-            image: dependencyManager.upvoteIconSelected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
         
         navigationItem.leftItemsSupplementBackButton = true
         navigationItem.leftBarButtonItems = [shareButton, overflowButton]
@@ -89,6 +108,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func updateContent(content: VContent) {
+        updateHeaderForContent(content)
         gridStreamController.content = content
     }
     
