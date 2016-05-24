@@ -9,15 +9,17 @@
 import Foundation
 
 protocol ContentModel {
-    var id: String { get }
-    var title: String? { get }
-    var tags: [Hashtag]? { get }
-    var shareURL: NSURL? { get }
     var releasedAt: NSDate { get }
-    var previewImages: [ImageAssetModel]? { get }
-    var contentData: [ContentMediaAssetModel]? { get }
     var type: ContentType { get }
+    
+    var id: String? { get }
+    var text: String? { get }
+    var tags: [Hashtag] { get }
+    var shareURL: NSURL? { get }
     var isVIP: Bool? { get }
+    
+    var previewImages: [ImageAssetModel] { get }
+    var contentData: [ContentMediaAssetModel] { get }
     
     // Take the following property out later
     var stageContent: StageContent? { get }
