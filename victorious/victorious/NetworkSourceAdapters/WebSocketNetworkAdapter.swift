@@ -27,7 +27,7 @@ class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
     }
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
+        self.dependencyManager = dependencyManager.networkResources!
         super.init()
         
         // Connect this link in the event chain.

@@ -1742,6 +1742,7 @@
 		BFC371421CED58A0000849CA /* VImageAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC371411CED58A0000849CA /* VImageAssetTests.swift */; };
 		BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */; };
 		BFC673621CE3C9C4004F9D3C /* ContentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */; };
+		BFC7FAEA1CF515390061489B /* VDependencyManager+NetworkResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7FAE91CF515390061489B /* VDependencyManager+NetworkResources.swift */; };
 		BFCFFFEF1CEE835C00F512B1 /* VUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFEE1CEE835C00F512B1 /* VUserTests.swift */; };
 		BFCFFFFB1CEE909F00F512B1 /* VImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */; };
 		BFCFFFFD1CEE912100F512B1 /* VImageAsset+Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFFFFC1CEE912100F512B1 /* VImageAsset+Fetcher.swift */; };
@@ -4481,6 +4482,7 @@
 		BFC371411CED58A0000849CA /* VImageAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VImageAssetTests.swift; path = Models/VImageAssetTests.swift; sourceTree = "<group>"; };
 		BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentVideoPlayerCoordinator.swift; sourceTree = "<group>"; };
 		BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentPreviewView.swift; path = ContentPreviewView/ContentPreviewView.swift; sourceTree = "<group>"; };
+		BFC7FAE91CF515390061489B /* VDependencyManager+NetworkResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+NetworkResources.swift"; sourceTree = "<group>"; };
 		BFCFFFEE1CEE835C00F512B1 /* VUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VUserTests.swift; path = Models/VUserTests.swift; sourceTree = "<group>"; };
 		BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VImageAsset.swift; sourceTree = "<group>"; };
 		BFCFFFFC1CEE912100F512B1 /* VImageAsset+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Fetcher.swift"; sourceTree = "<group>"; };
@@ -6805,6 +6807,7 @@
 				D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.h */,
 				D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */,
 				7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */,
+				BFC7FAE91CF515390061489B /* VDependencyManager+NetworkResources.swift */,
 				035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */,
 				035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */,
 				C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */,
@@ -13498,6 +13501,7 @@
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
+				BFC7FAEA1CF515390061489B /* VDependencyManager+NetworkResources.swift in Sources */,
 				A72C863C1C977FF500E97D4F /* UnblockUserOperation.swift in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,

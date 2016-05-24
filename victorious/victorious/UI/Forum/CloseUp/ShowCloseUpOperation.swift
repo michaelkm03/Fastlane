@@ -101,7 +101,6 @@ class ShowCloseUpOperation: MainQueueOperation {
 
 private extension VDependencyManager {
     var contentFetchURL: String {
-        let networkResources = childDependencyForKey("networkResources")
         return networkResources?.stringForKey("contentFetchURL") ?? ""
     }
     
