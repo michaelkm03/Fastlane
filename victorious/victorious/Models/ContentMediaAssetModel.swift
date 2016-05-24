@@ -11,8 +11,13 @@ import Foundation
 protocol ContentMediaAssetModel {
     
     /// Returns either the youtube ID or the remote URL that links to the content
-    var uniqueID: String { get }
+    var resourceID: String { get }
     
     /// Returns "youtube", "giphy", or nil
-    var source: String? { get }
+    var videoSource: ContentVideoAssetSource? { get }
+}
+
+enum ContentVideoAssetSource {
+    case youtube
+    case video
 }
