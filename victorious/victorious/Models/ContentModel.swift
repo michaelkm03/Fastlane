@@ -10,7 +10,6 @@ import Foundation
 
 protocol ContentModel {
     var id: String { get }
-    var status: String? { get } // ?
     var title: String? { get }
     var tags: [Hashtag]? { get }
     var shareURL: NSURL? { get }
