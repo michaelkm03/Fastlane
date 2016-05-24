@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ImageAssetModel {
-    
+    var mediaMetaData: MediaMetaData { get }
 }
