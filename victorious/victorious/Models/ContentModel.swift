@@ -21,6 +21,8 @@ protocol ContentModel {
     var previewImages: [ImageAssetModel] { get }
     var contentData: [ContentMediaAssetModel] { get }
     
+    var author: UserModel? { get }
+    
     // Take the following property out later
     var stageContent: StageContent? { get }
 }

@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 protocol UserModel {
-    var userID: Int { get }
+    var id: Int { get }
     var email: String? { get }
     var name: String? { get }
     var completedProfile: Bool? { get }
