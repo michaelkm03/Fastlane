@@ -19,5 +19,9 @@ extension VUser {
         
         return vipEndDate > NSDate() && isVIPSubscriber
     }
+    
+    var badgeType: AvatarBadgeType {
+        return (avatarBadgeType ?? "") == "verified" ? .Verified : .None
+    }
 
 }

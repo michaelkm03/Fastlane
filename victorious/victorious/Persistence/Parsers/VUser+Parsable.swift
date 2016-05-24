@@ -35,13 +35,11 @@ extension VUser: PersistenceParsable {
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
+        avatarBadgeType             = user.avatarBadgeType.stringRepresentation
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
-        
-        /// If backend does not send us a badgeType, we default to "", which means we show the default level badge
-        avatarBadgeType             = user.avatar?.badgeType ?? ""
         
         if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
             let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {

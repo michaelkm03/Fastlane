@@ -46,7 +46,7 @@ public struct User {
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]?
     public let maxVideoUploadDuration: Int?
-    public let avatar: Avatar?
+    public let avatarBadgeType: AvatarBadgeType
     public let vipStatus: VIPStatus?
 }
 
@@ -58,7 +58,7 @@ extension User {
         }
         
         self.userID               = userID
-        avatar                    = Avatar(json: json["avatar"])
+        avatarBadgeType           = AvatarBadgeType(json: json)
         email                     = json["email"].string
         name                      = json["name"].string
         completedProfile          = json["is_complete"].boolValue || json["status"].string == "complete"
