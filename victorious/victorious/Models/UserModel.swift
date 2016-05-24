@@ -23,6 +23,6 @@ protocol UserModel {
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel]? { get }
-    var avatar: AvatarBadgeType { get }
+    var avatarBadgeType: AvatarBadgeType { get }
     var vipStatus: VIPStatus? { get }
 }
