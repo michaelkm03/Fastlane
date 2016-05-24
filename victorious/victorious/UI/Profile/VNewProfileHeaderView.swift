@@ -153,8 +153,11 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size)
         profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
         
-        let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size)
-        backgroundImageView.sd_setImageWithURL(backgroundPictureURL)
+        if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
+            backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] in
+                self?.backgroundImageView.alpha = 1.0
+            }
+        }
         
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
