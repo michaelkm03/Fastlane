@@ -13,7 +13,6 @@ protocol ContentMediaAssetModel {
     /// Returns either the youtube ID or the remote URL that links to the content
     var resourceID: String { get }
     
-    /// Returns "youtube", "giphy", or nil
     var videoSource: ContentVideoAssetSource? { get }
 }
 

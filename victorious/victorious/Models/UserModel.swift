@@ -17,17 +17,12 @@ protocol UserModel {
     var location: String? { get }
     var tagline: String? { get }
     var fanLoyalty: FanLoyalty? { get }
-    var isBlockedByMainUser: Bool? { get }
+    var isBlockedByCurrentUser: Bool? { get }
     var accessLevel: User.AccessLevel? { get }
-    var isDirectMessagingDisabled: Bool? { get }
-    var isFollowedByMainUser: Bool? { get }
-    var numberOfFollowers: Int? { get }
-    var numberOfFollowing: Int? { get }
+    var isFollowedByCurrentUser: Bool? { get }
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
-    var tokenUpdatedAt: NSDate? { get }
-    var previewImageAssets: [ImageAsset]? { get }
-    var maxVideoUploadDuration: Int? { get }
-    var avatar: Avatar? { get }
+    var previewImages: [ImageAssetModel]? { get }
+    var avatar: AvatarBadgeType { get }
     var vipStatus: VIPStatus? { get }
 }

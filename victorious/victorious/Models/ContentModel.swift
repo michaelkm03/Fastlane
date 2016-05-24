@@ -14,14 +14,13 @@ protocol ContentModel {
     
     var id: String? { get }
     var text: String? { get }
-    var tags: [Hashtag] { get }
+    var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
-    var isVIP: Bool? { get }
+    var isVIPOnly: Bool? { get }
+    var author: UserModel? { get }
     
     var previewImages: [ImageAssetModel] { get }
-    var contentData: [ContentMediaAssetModel] { get }
-    
-    var author: UserModel? { get }
+    var assets: [ContentMediaAssetModel] { get }
     
     // Take the following property out later
     var stageContent: StageContent? { get }
