@@ -16,6 +16,10 @@ extension CGSize {
     }
     
     var aspectRatio: CGFloat {
+        if height == 0.0 {
+            return 0.0
+        }
+        
         return width / height
     }
     
