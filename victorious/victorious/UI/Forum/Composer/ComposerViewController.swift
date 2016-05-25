@@ -102,7 +102,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return !attachmentMenuItems.isEmpty && textViewIsEditing
     }
     
-    var delegate: ComposerDelegate? {
+    weak var delegate: ComposerDelegate? {
         didSet {
             setupAttachmentTabBar()
         }
