@@ -62,7 +62,7 @@ extension VUser: PersistenceParsable {
         // The purposes of this is to allow the user to remain a VIP for the duration of
         // their session even if their subscription expires during the session.
         // Upon the next session, the user will not be a VIP and must re-subscribe.
-        if !isVIPSubscriber.boolValue {
+        if let isVIP = isVIPSubscriber?.boolValue where !isVIP {
             isVIPSubscriber = vipStatus.isVIP
         }
     }

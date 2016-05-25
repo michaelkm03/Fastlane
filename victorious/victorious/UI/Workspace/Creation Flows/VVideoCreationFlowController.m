@@ -13,7 +13,6 @@
 #import "VVideoCameraViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
-#import "VUser.h"
 #import "VPublishParameters.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"

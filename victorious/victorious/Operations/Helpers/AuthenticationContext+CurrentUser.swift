@@ -12,9 +12,10 @@ import VictoriousIOSSDK
 extension AuthenticationContext {
     
     init?( currentUser: VUser? ) {
-        guard let currentUser = currentUser else {
-            return nil
+        guard let currentUser = currentUser,
+            let token = currentUser.token else {
+                return nil
         }
-        self.init( userID: currentUser.remoteId.integerValue, token: currentUser.token)
+        self.init( userID: currentUser.remoteId.integerValue, token: token)
     }
 }

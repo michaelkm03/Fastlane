@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VUser.h"
 #import "VVoteType.h"
 #import "VHashtag.h"
 

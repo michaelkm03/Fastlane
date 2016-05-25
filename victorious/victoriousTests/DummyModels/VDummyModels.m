@@ -7,7 +7,6 @@
 //
 
 #import "VDummyModels.h"
-#import "VUser.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
 #import "VTag.h"

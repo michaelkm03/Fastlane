@@ -9,7 +9,6 @@
 #import "VTag.h"
 #import "VUserTag.h"
 #import "VHashtag.h"
-#import "VUser.h"
 #import "VTagStringFormatter.h"
 
 @implementation VTag

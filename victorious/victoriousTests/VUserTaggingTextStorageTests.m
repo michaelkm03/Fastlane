@@ -10,7 +10,6 @@
 #import <XCTest/XCTest.h>
 #import "VUserTaggingTextStorage.h"
 #import "VDummyModels.h"
-#import "VUser.h"
 #import "VHashtag.h"
 
 @interface VUserTaggingTextStorageTests : XCTestCase

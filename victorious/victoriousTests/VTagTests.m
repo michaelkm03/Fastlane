@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "VDependencyManager.h"
-#import "VUser.h"
 #import "VHashtag.h"
 #import "VTag.h"
 #import "VUserTag.h"

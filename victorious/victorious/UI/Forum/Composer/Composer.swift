@@ -56,7 +56,7 @@ extension Composer {
         }
         
         let profileURL = currentUser.pictureURL(ofMinimumSize: VUser.defaultSmallMinimumPictureSize)
-        return ChatMessageUser(id: currentUser.remoteId.integerValue, name: currentUser.name, profileURL: profileURL)
+        return ChatMessageUser(id: currentUser.remoteId.integerValue, name: currentUser.name ?? "", profileURL: profileURL)
     }
 }
 
