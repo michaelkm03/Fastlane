@@ -35,13 +35,15 @@ public class Content {
     }
     
     private init?(contentJSON json: JSON) {
-        guard let id = json["id"].string,
+        guard
+            let id = json["id"].string,
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string else {
-                NSLog("ID misssing in content json -> \(json)")
-                return nil
+            let sourceType = json[typeString]["type"].string
+        else {
+            NSLog("ID missing in content json -> \(json)")
+            return nil
         }
         
         self.isVIP = json["is_vip"].bool
