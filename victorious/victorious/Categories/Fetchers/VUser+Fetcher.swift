@@ -21,7 +21,7 @@ extension VUser {
     }
     
     var badgeType: AvatarBadgeType {
-        return (avatarBadgeType ?? "") == "verified" ? .Verified : .None
+        return v_avatarBadgeType == AvatarBadgeType.Verified.stringRepresentation ? .Verified : .None
     }
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -312,8 +312,6 @@
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="achievementsUnlocked" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBlockedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -324,8 +322,6 @@
         <attribute name="level" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPercentage" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="levelProgressPoints" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="likesGiven" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="likesReceived" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="loginType" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="maxUploadDuration" attributeType="Integer 32" defaultValueString="15" syncable="YES"/>
@@ -337,6 +333,10 @@
         <attribute name="tier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="v_avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="v_likesGiven" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="v_likesReceived" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="vipEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>

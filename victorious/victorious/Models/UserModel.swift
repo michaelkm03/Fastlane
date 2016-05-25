@@ -34,3 +34,61 @@ extension User: UserModel {
         return previewImages.map { $0 }
     }
 }
+
+extension VUser: UserModel {
+    
+    var id: Int {
+        return remoteId.integerValue
+    }
+    
+    var completedProfile: Bool? {
+        return v_completedProfile?.boolValue
+    }
+    
+    var fanLoyalty: FanLoyalty? {
+        guard let level = self.level?.integerValue,
+            let progress = self.levelProgressPercentage?.integerValue else {
+                return nil
+        }
+        let achievements = achievementsUnlocked as? [String] ?? []
+        return FanLoyalty(level: level, progress: progress, points: levelProgressPoints?.integerValue, tier: self.tier, achievementsUnlocked: achievements)
+    }
+    
+    var isBlockedByCurrentUser: Bool? {
+        return isBlockedByMainUser?.boolValue
+    }
+    
+    var accessLevel: User.AccessLevel? {
+        let isCreator = self.isCreator?.boolValue ?? false
+        return isCreator ? .owner : .user
+    }
+    
+    var isFollowedByCurrentUser: Bool? {
+        return isFollowedByMainUser?.boolValue
+    }
+    
+    var likesGiven: Int? {
+        return v_likesGiven?.integerValue
+    }
+    
+    var likesReceived: Int? {
+        return v_likesReceived?.integerValue
+    }
+    
+    var previewImageModels: [ImageAssetModel] {
+        return previewAssets?.flatMap { $0 } ?? []
+    }
+    
+    var avatarBadgeType: AvatarBadgeType {
+        if v_avatarBadgeType == AvatarBadgeType.Verified.stringRepresentation {
+            return .Verified
+        } else {
+            return .None
+        }
+    }
+    
+    var vipStatus: VIPStatus? {
+        let isVIP = isVIPSubscriber?.boolValue ?? false
+        return VIPStatus(isVIP: isVIP, endDate: vipEndDate)
+    }
+}

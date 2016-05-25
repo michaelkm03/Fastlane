@@ -13,7 +13,7 @@ extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
         remoteId                    = user.id ?? remoteId
-        completedProfile            = user.completedProfile ?? completedProfile
+        v_completedProfile          = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
         name                        = user.name ?? name
         location                    = user.location ?? location
@@ -28,14 +28,14 @@ extension VUser: PersistenceParsable {
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
-        likesGiven                  = user.likesGiven ?? likesGiven
-        likesReceived               = user.likesReceived ?? likesReceived
+        v_likesGiven                = user.likesGiven ?? likesGiven
+        v_likesReceived             = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
-        avatarBadgeType             = user.avatarBadgeType.stringRepresentation
+        v_avatarBadgeType           = user.avatarBadgeType.stringRepresentation
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)

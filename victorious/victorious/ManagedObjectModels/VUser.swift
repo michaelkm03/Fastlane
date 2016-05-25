@@ -23,10 +23,10 @@ class VUser: NSManagedObject {
     @NSManaged var name: String?
     @NSManaged var numberOfFollowers: NSNumber?
     @NSManaged var numberOfFollowing: NSNumber?
-    @NSManaged var likesGiven: NSNumber?
-    @NSManaged var likesReceived: NSNumber?
+    @NSManaged var v_likesGiven: NSNumber?
+    @NSManaged var v_likesReceived: NSNumber?
     @NSManaged var remoteId: NSNumber
-    @NSManaged var completedProfile: NSNumber?
+    @NSManaged var v_completedProfile: NSNumber?
     @NSManaged var tagline: String?
     @NSManaged var token: String?
     @NSManaged var tokenUpdatedAt: NSDate?
@@ -40,7 +40,7 @@ class VUser: NSManagedObject {
     @NSManaged var notifications: Set<NSObject>?
     @NSManaged var pollResults: Set<NSObject>?
     @NSManaged var recentSequences: NSOrderedSet?
-    @NSManaged var previewAssets: Set<NSObject>?
+    @NSManaged var previewAssets: Set<VImageAsset>?
     @NSManaged var repostedSequences: Set<NSObject>?
     @NSManaged var maxUploadDuration: NSNumber
     @NSManaged var loginType: NSNumber
@@ -51,6 +51,6 @@ class VUser: NSManagedObject {
     @NSManaged var isVIPSubscriber: NSNumber? //< Transient (so that validation only comes from the backend and is never read from disk?
     @NSManaged var vipEndDate: NSDate? //< Transien?
     @NSManaged var achievementsUnlocked: AnyObject?
-    @NSManaged var avatarBadgeType: String?
+    @NSManaged var v_avatarBadgeType: String?
     @NSManaged var content: Set<NSObject>?
 }
