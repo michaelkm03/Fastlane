@@ -87,8 +87,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketOutboundChatMessage() {
         nextSender = controller
         
-        let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
-        let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
+        let user = User(id: 1222, name: "username")
+        let chatMessageOutbound = Content(releasedAt: NSDate(timeIntervalSince1970: 1234567890), text: "Test chat message", author: user)
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
@@ -169,7 +169,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
             }
-        case is ChatMessage:
+        case is Content:
             expectationIncomingChatMessage?.fulfill()
         case is RefreshStage:
             expectationRefreshStageMessage?.fulfill()

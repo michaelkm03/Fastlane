@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Content {
+public class Content: DictionaryConvertible {
     public let id: String?
     public let status: String?
     public let text: String?
@@ -111,6 +111,36 @@ public class Content {
         self.previewImages = nil
         self.contentData = assets
         self.isVIP = false
+    }
+    
+    // MARK: - DictionaryConvertible
+    
+    public var rootKey: String {
+        return "chat"
+    }
+    
+    public var rootTypeKey: String? {
+        return "type"
+    }
+    
+    public var rootTypeValue: String? {
+        return "CHAT"
+    }
+    
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+        dictionary["type"] = "TEXT"
+        dictionary["text"] = text
+        dictionary["user"] = author?.toDictionary()
+        
+        if let assetURL = contentData.first?.url  {
+            dictionary["media"] = [
+                "type": type.rawValue.uppercaseString,
+                "url": assetURL
+            ]
+        }
+        
+        return dictionary
     }
 }
 
