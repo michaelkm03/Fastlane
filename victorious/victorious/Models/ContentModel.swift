@@ -10,7 +10,7 @@ import Foundation
 
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol ContentModel {
+protocol ContentModel: PreviewImageContainer {
     var releasedAt: NSDate { get }
     var type: ContentType { get }
     
@@ -21,10 +21,10 @@ protocol ContentModel {
     var author: UserModel? { get }
     
     /// Whether this content is only accessible for VIPs
-    var isVIPOnly: Bool? { get }
+    var isVIPOnly: Bool { get }
     
     /// An array of preview images for the content.
-    var previewImages: [ImageAssetModel] { get }
+    var previewImageModels: [ImageAssetModel] { get }
     
     /// An array of media assets for the content, could be any media type
     var assets: [ContentMediaAssetModel] { get }
@@ -33,9 +33,26 @@ protocol ContentModel {
     var stageContent: StageContent? { get }
 }
 
+extension ContentModel {
+    // MARK: - UI strings
+    
+    var timeLabel: String {
+        return releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+    
+    // MARK: - Assets
+    
+    var aspectRatio: CGFloat {
+        guard let preview = previewImageModels.first,
+            let aspectRatio = preview.mediaMetaData.size?.aspectRatio else {
+            return 0
+        }
+        return aspectRatio
+    }
+}
+
 extension VContent: ContentModel {
     
-    /// TODO: Default case
     var type: ContentType {
         switch v_type {
         case "image":
@@ -47,6 +64,7 @@ extension VContent: ContentModel {
         case "text":
             return .text
         default:
+            assertionFailure("Should always have a valid type")
             return .text
         }
     }
@@ -74,12 +92,12 @@ extension VContent: ContentModel {
     }
     
     /// Whether this content is only accessible for VIPs
-    var isVIPOnly: Bool? {
+    var isVIPOnly: Bool {
         return isVIP == true
     }
     
     /// An array of preview images for the content.
-    var previewImages: [ImageAssetModel] {
+    var previewImageModels: [ImageAssetModel] {
         guard let contentPreviewAssets = contentPreviewAssets else {
             return []
         }
@@ -98,5 +116,4 @@ extension VContent: ContentModel {
     var stageContent: StageContent? {
         return nil
     }
-    
 }

@@ -9,43 +9,17 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// A reference type adaptor for value type `VictoriousIOSSDK.ChatMessage`.
-class ChatFeedMessage: NSObject, DisplayableChatMessage, PaginatedObjectType {
+/// A reference type adaptor for `ContentModel`.
+class ChatFeedMessage: NSObject, PaginatedObjectType {
+    // MARK: - Initializing
     
-    private let source: ChatMessage
-    
-    init(displayOrder: NSNumber, source: ChatMessage) {
-        self.source = source
+    init(content: ContentModel, displayOrder: NSNumber) {
+        self.content = content
         self.displayOrder = displayOrder
-        self.mediaAttachment = source.mediaAttachment
     }
     
-    // MARK: - DisplayableChatMessage
+    // MARK: - Data
     
+    let content: ContentModel
     var displayOrder: NSNumber
-    
-    let mediaAttachment: MediaAttachment?
-    
-    var dateSent: NSDate {
-        return source.serverTime
-    }
-    var text: String? {
-        return source.text
-    }
-    
-    var userID: Int {
-        return source.fromUser.id
-    }
-    
-    var username: String {
-        return source.fromUser.name
-    }
-
-    var profileURL: NSURL? {
-        return source.fromUser.profileURL
-    }
-    
-    var timeLabel: String {
-        return source.serverTime.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
-    }
 }

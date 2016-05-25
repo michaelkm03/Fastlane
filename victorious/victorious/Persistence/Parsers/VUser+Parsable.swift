@@ -41,8 +41,8 @@ extension VUser: PersistenceParsable {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
         
-        if !user.previewImageAssets.isEmpty {
-            let newPreviewAssets: [VImageAsset] = user.previewImageAssets.flatMap {
+        if !user.previewImages.isEmpty {
+            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset

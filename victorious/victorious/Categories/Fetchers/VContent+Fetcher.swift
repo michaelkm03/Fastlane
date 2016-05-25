@@ -9,9 +9,6 @@
 import Foundation
 
 extension VContent {
-    func contentType() -> ContentType? {
-        return ContentType(rawValue: type)
-    }
     
     func isVIPContent() -> Bool {
         return isVIP == true

@@ -11,6 +11,10 @@ import Foundation
 /// A thumbnail, profile picture, or other image asset
 public struct ImageAsset {
     public let mediaMetaData: MediaMetaData
+    
+    public init(mediaMetaData: MediaMetaData) {
+        self.mediaMetaData = mediaMetaData
+    }
 }
 
 extension ImageAsset {
