@@ -14,13 +14,13 @@ class VContent: NSManagedObject {
     @NSManaged var isUGC: NSNumber?
     @NSManaged var releasedAt: NSDate
     @NSManaged var remoteID: String
-    @NSManaged var shareURL: String?
+    @NSManaged var v_shareURL: String?
     @NSManaged var status: String?
     @NSManaged var text: String?
-    @NSManaged var type: String /// < "image", "video", "gif", "text"
+    @NSManaged var v_type: String /// < "image", "video", "gif", "text"
     @NSManaged var isVIP: NSNumber?
     @NSManaged var contentMediaAssets: NSSet? /// <NSSet of VContentMediaAsset objects
-    @NSManaged var author: VUser?
+    @NSManaged var v_author: VUser?
     @NSManaged var contentPreviewAssets: NSSet?  /// <NSSet of VImageAsset objects
 
 }

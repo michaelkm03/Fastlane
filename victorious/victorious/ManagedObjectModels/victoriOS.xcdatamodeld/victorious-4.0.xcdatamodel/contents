@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,13 +69,13 @@
         <attribute name="isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="releasedAt" attributeType="Date" syncable="YES"/>
         <attribute name="remoteID" attributeType="String" syncable="YES"/>
-        <attribute name="shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
-        <relationship name="author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
+        <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_type" attributeType="String" syncable="YES"/>
         <relationship name="contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="content" inverseEntity="ContentMediaAsset" syncable="YES"/>
         <relationship name="contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
+        <relationship name="v_author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="externalID" optional="YES" attributeType="String" syncable="YES"/>
@@ -341,7 +341,7 @@
         <attribute name="vipEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
-        <relationship name="content" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Content" inverseName="author" inverseEntity="Content" syncable="YES"/>
+        <relationship name="content" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Content" inverseName="v_author" inverseEntity="Content" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedHashtag" inverseName="user" inverseEntity="FollowedHashtag" syncable="YES"/>
         <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
