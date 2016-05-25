@@ -2072,7 +2072,6 @@
 		F050D3461CAEF69D007A05ED /* NSPredicate+MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */; };
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
-		F057CB101CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */; };
 		F059A0031B852D1800037BC8 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F059A0021B852D1800037BC8 /* Shelf.swift */; };
 		F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AD66C1B828EF300500CCF /* ListShelf.swift */; };
 		F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */; };
@@ -5024,7 +5023,6 @@
 		F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedUserRetryCell.h; sourceTree = "<group>"; };
 		F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedUserRetryCell.m; sourceTree = "<group>"; };
 		F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedUserRetryCell.xib; sourceTree = "<group>"; };
-		F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachmentType+ConvenienceInit.swift"; sourceTree = "<group>"; };
 		F059A0021B852D1800037BC8 /* Shelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
 		F059A0061B86B98F00037BC8 /* VImagePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VImagePreviewView.h; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
@@ -7572,7 +7570,6 @@
 				F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */,
 				F0BD3A6B1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift */,
 				F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */,
-				F057CB0F1CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift */,
 				A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */,
 				A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */,
 				A601FB4D1B4355A30050536C /* VCreationFlowController.h */,
@@ -12688,7 +12685,6 @@
 				A72C861F1C977FF500E97D4F /* MessageUnreadCountOperation.swift in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VConversationListViewController.m in Sources */,
 				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
-				F057CB101CCFD86B00CA4C0C /* MediaAttachmentType+ConvenienceInit.swift in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,
 				A72C86681C977FF600E97D4F /* Queueable.swift in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
