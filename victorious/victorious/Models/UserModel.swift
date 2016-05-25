@@ -22,7 +22,13 @@ protocol UserModel {
     var isFollowedByCurrentUser: Bool? { get }
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
-    var previewImages: [ImageAssetModel]? { get }
+    var previewImageModels: [ImageAssetModel] { get }
     var avatarBadgeType: AvatarBadgeType { get }
     var vipStatus: VIPStatus? { get }
+}
+
+extension User: UserModel {
+    var previewImageModels: [ImageAssetModel] {
+        return previewImageAssets.map { $0 }
+    }
 }

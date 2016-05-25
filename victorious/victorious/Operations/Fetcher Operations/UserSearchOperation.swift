@@ -17,7 +17,7 @@ import VictoriousIOSSDK
     }
     
     var remoteId: NSNumber {
-        return sourceResult.userID
+        return sourceResult.id
     }
 }
 
@@ -66,7 +66,7 @@ final class UserSearchOperation: RemoteFetcherOperation, PaginatedRequestOperati
             
             // Populate our local users cache based off the new data
             for networkUser in networkResult {
-                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID])
+                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.id])
                 localUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()

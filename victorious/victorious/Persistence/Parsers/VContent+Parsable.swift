@@ -25,7 +25,7 @@ extension VContent: PersistenceParsable {
         type = content.type.rawValue
         
         if self.author == nil {
-            self.author = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : author.userID ] ) as VUser
+            self.author = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : author.id ] ) as VUser
         }
         self.author?.populate(fromSourceModel: author)
         

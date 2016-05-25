@@ -23,7 +23,7 @@ extension ViewedContent: DisplayableChatMessage {
     }
     
     var userID: Int {
-        return author.userID
+        return author.id
     }
     
     var username: String {
