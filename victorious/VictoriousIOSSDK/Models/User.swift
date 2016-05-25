@@ -81,7 +81,7 @@ extension User {
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
     }
     
-    public init(id: Int, name: String, previewImages: [ImageAsset]) {
+    public init(id: Int, name: String, previewImages: [ImageAsset] = []) {
         self.id = id
         self.name = name
         self.previewImages = previewImages
@@ -103,5 +103,15 @@ extension User {
         likesReceived             = nil
         maxVideoUploadDuration    = nil
         tokenUpdatedAt            = nil
+    }
+    
+    // MARK: - DictionaryConvertible
+    
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+        dictionary["id"] = id
+        dictionary["profile_url"] = previewImages.first?.mediaMetaData.url
+        dictionary["name"] = name
+        return dictionary
     }
 }

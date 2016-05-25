@@ -14,7 +14,7 @@ class ReceivedEventQueueTests: XCTestCase {
     var queue: ReceivedEventQueue<ChatFeedMessage>!
     let eventCount = 30
     let maximimEventCount = 20
-    let user = ChatMessageUser(id: 897, name: "Mr. User", profileURL: NSURL(string: "http://google.com")!)
+    let user = User(id: 897, name: "Mr. User", previewImages: [ImageAsset(url: NSURL(string: "http://google.com")!)])
     
     override func setUp() {
         super.setUp()
@@ -26,12 +26,10 @@ class ReceivedEventQueueTests: XCTestCase {
     
     func testAdd() {
         queue = ReceivedEventQueue<ChatFeedMessage>()
+        
         for i in 0..<eventCount {
-            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
-                XCTFail()
-                return
-            }
-            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
+            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
             XCTAssertEqual(queue.count, i+1)
         }
         
@@ -45,11 +43,8 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue(maximimEventCount: maximimEventCount)
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
-                XCTFail()
-                return
-            }
-            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
+            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
             XCTAssertEqual(queue.count, min(i+1, maximimEventCount))
         }
         
@@ -63,19 +58,16 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
-                XCTFail()
-                return
-            }
-            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
+            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         
         let dequeuedEvents = queue.dequeueAll()
         
         XCTAssertEqual(queue.count, 0)
         XCTAssert(queue.isEmpty)
-        XCTAssertEqual(dequeuedEvents.first?.text, "\(0)")
-        XCTAssertEqual(dequeuedEvents.last?.text, "\(eventCount-1)")
+        XCTAssertEqual(dequeuedEvents.first?.content.text, "\(0)")
+        XCTAssertEqual(dequeuedEvents.last?.content.text, "\(eventCount-1)")
         XCTAssertEqual(dequeuedEvents.count, eventCount)
     }
     
@@ -83,11 +75,8 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
-                XCTFail()
-                return
-            }
-            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
+            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         
         let dequeCount = 10
@@ -95,8 +84,8 @@ class ReceivedEventQueueTests: XCTestCase {
         
         XCTAssertEqual(queue.count, eventCount - dequeCount)
         XCTAssertEqual(dequeuedEvents.count, dequeCount)
-        XCTAssertEqual(dequeuedEvents.first?.text, "\(0)")
-        XCTAssertEqual(dequeuedEvents.last?.text, "\(dequeuedEvents.count-1)")
+        XCTAssertEqual(dequeuedEvents.first?.content.text, "\(0)")
+        XCTAssertEqual(dequeuedEvents.last?.content.text, "\(dequeuedEvents.count-1)")
         XCTAssertFalse(queue.isEmpty)
     }
     
@@ -104,11 +93,8 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            guard let source = ChatMessage(serverTime: NSDate(), fromUser: user, text: "\(i)", mediaAttachment: nil) else {
-                XCTFail()
-                return
-            }
-            queue.addEvent( ChatFeedMessage(displayOrder: i, source: source) )
+            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         
         let dequeCount = 40
@@ -116,8 +102,8 @@ class ReceivedEventQueueTests: XCTestCase {
         
         XCTAssertEqual(queue.count, 0)
         XCTAssert(queue.isEmpty)
-        XCTAssertEqual(dequeuedEvents.first?.text, "\(0)")
-        XCTAssertEqual(dequeuedEvents.last?.text, "\(eventCount-1)")
+        XCTAssertEqual(dequeuedEvents.first?.content.text, "\(0)")
+        XCTAssertEqual(dequeuedEvents.last?.content.text, "\(eventCount-1)")
         XCTAssertEqual(dequeuedEvents.count, eventCount)
     }
 }

@@ -27,9 +27,9 @@ struct PersistentStoreTestHelper {
             let author = self.createUser(remoteId: 1)
             return context.v_createObjectAndSave { content in
                 content.remoteID = remoteID
-                content.author = author
+                content.v_author = author
                 content.releasedAt = NSDate()
-                content.type = "image"
+                content.v_type = "image"
             }
         }
     }

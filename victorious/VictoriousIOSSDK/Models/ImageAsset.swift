@@ -15,6 +15,10 @@ public struct ImageAsset {
     public init(mediaMetaData: MediaMetaData) {
         self.mediaMetaData = mediaMetaData
     }
+    
+    public init(url: NSURL) {
+        self.init(mediaMetaData: MediaMetaData(url: url))
+    }
 }
 
 extension ImageAsset {
