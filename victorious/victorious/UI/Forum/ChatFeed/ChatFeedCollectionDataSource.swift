@@ -29,7 +29,7 @@ class ChatFeedCollectionDataSource: NSObject, UICollectionViewDataSource {
     func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
         let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        let content = paginatedDataSource.visibleItems[indexPath.row] as! ContentModel
+        let content = (paginatedDataSource.visibleItems[indexPath.row] as! ChatFeedMessage).content
         decorateCell(cell, content: content, dependencyManager: dependencyManager)
         return cell
     }

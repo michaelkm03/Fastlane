@@ -117,3 +117,32 @@ extension VContent: ContentModel {
         return nil
     }
 }
+
+extension Content: ContentModel {
+    /// TODO: Hashtags are not parsed in Content yet
+    var hashtags: [Hashtag] {
+        return []
+    }
+    
+    /// TODO: User does not yet conform to UserModel
+    var author: UserModel? {
+        //        return v_author
+        return nil
+    }
+    
+    var previewImageModels: [ImageAssetModel] {
+        guard let contentPreviewAssets = previewImages else {
+            return []
+        }
+        return contentPreviewAssets.flatMap({ $0 as ImageAssetModel })
+    }
+    
+    var isVIPOnly: Bool {
+        return isVIP
+    }
+    
+    var assets: [ContentMediaAssetModel] {
+        return contentData.flatMap({ $0 as? ContentMediaAssetModel })
+    }
+
+}
