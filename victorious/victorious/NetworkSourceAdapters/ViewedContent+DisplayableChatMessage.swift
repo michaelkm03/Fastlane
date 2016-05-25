@@ -19,11 +19,11 @@ extension ViewedContent: DisplayableChatMessage {
     }
     
     var text: String? {
-        return content.title
+        return content.text
     }
     
     var userID: Int {
-        return author.userID
+        return author.id
     }
     
     var username: String {

@@ -46,7 +46,7 @@ class CommentEditRequestTests: XCTestCase {
             let response = try updateCommentRequest.parseResponse(NSURLResponse(), toRequest: updateCommentRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.commentID, 28593)
             XCTAssertEqual(response.text, "ttrttefefef")
-            XCTAssertEqual(response.user.userID, 2956)
+            XCTAssertEqual(response.user.id, 2956)
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }

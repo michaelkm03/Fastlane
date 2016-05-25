@@ -40,4 +40,9 @@ public struct MediaMetaData {
             size = nil
         }
     }
+    
+    public init(url: NSURL, size: CGSize? = nil) {
+        self.url = url
+        self.size = size
+    }
 }

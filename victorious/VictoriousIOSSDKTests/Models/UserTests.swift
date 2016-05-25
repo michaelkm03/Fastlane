@@ -21,7 +21,7 @@ class UserTests: XCTestCase {
             XCTFail("User initializer failed")
             return
         }
-        XCTAssertEqual(user.userID, 36179)
+        XCTAssertEqual(user.id, 36179)
         XCTAssertEqual(user.email, "tyt@creator.us")
         XCTAssertEqual(user.name, "The Young Turks")
         XCTAssertEqual(user.accessLevel, .owner)
@@ -41,7 +41,8 @@ class UserTests: XCTestCase {
         let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         XCTAssertEqual(dateFormatter.stringFromDate(vipEndDate), "2016-05-02 18:22:50")
         
-        if let previewImageAssets = user.previewImageAssets where previewImageAssets.count == 2 {
+        let previewImageAssets = user.previewImageAssets
+        if previewImageAssets.count == 2 {
             XCTAssertEqual(previewImageAssets[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
             XCTAssertEqual(previewImageAssets[0].mediaMetaData.size, CGSize(width: 80, height: 80))
             XCTAssertEqual(previewImageAssets[1].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))

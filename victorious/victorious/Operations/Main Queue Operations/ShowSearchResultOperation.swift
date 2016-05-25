@@ -25,7 +25,7 @@ class ShowSearchResultOperation: MainQueueOperation {
         self.beganExecuting()
     
         if let userResult = searchResult as? UserSearchResultObject {
-            if let viewController = self.dependencyManager.userProfileViewController(withRemoteID: userResult.sourceResult.userID) {
+            if let viewController = self.dependencyManager.userProfileViewController(withRemoteID: userResult.sourceResult.id) {
                 navigationController.pushViewController(viewController, animated: true)
             }
             
