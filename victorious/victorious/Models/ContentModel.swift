@@ -18,6 +18,7 @@ protocol ContentModel: PreviewImageContainer {
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
+    // TODO: Make this nonoptional
     var author: UserModel? { get }
     
     /// Whether this content is only accessible for VIPs
