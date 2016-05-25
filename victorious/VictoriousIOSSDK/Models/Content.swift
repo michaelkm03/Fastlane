@@ -15,11 +15,10 @@ public class Content {
     public let tags: [String]?
     public let shareURL: NSURL?
     public let releasedAt: NSDate
-    public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentMediaAsset]
     public let type: ContentType
-    public let isVIP: Bool?
+    public let isVIP: Bool
     public let author: User?
 
     /// Payload describing what will be put on the stage.
@@ -46,13 +45,12 @@ public class Content {
             return nil
         }
         
-        self.isVIP = json["is_vip"].bool
+        self.isVIP = json["is_vip"].bool ?? false
         self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
         self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) /// <backend returns in milliseconds
-        self.isUGC = json["is_ugc"].bool
         self.tags = nil
         self.type = type
         self.text = json["title"].string
@@ -95,10 +93,9 @@ public class Content {
         status = nil
         tags = nil
         shareURL = nil
-        isUGC = nil
         previewImages = nil
         type = .text
-        isVIP = nil
+        isVIP = false
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || contentData.count > 0 else {
@@ -116,10 +113,9 @@ public class Content {
         self.status = nil
         self.tags = nil
         self.shareURL = nil
-        self.isUGC = nil
         self.previewImages = nil
         self.contentData = assets
-        self.isVIP = nil
+        self.isVIP = false
     }
 }
 

@@ -12,17 +12,16 @@ extension VContent: PersistenceParsable {
     
     func populate(fromSourceModel content: Content) {
         isVIP = content.isVIP ?? isVIP
-        isUGC = content.isUGC ?? isUGC
         releasedAt = content.releasedAt ?? releasedAt
         remoteID = content.id ?? remoteID
-        shareURL = content.shareURL?.absoluteString ?? shareURL
+        v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
         status = content.status ?? status
         text = content.text ?? text
-        type = content.type.rawValue
+        v_type = content.type.rawValue
         
-        if let author = content.author where self.author == nil {
-            self.author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id]) as VUser
-            self.author?.populate(fromSourceModel: author)
+        if let author = content.author where v_author == nil {
+            v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id]) as VUser
+            v_author?.populate(fromSourceModel: author)
         }
         
         if let previewAssets = content.previewImages {

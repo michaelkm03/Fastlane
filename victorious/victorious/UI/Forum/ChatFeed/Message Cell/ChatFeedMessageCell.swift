@@ -148,7 +148,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let previewImageSize = content?.previewImages.first?.mediaMetaData.size else {
+        guard let previewImageSize = content?.previewImageModels.first?.mediaMetaData.size else {
             return CGSize.zero
         }
         let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
