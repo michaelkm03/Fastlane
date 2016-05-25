@@ -13,6 +13,7 @@
 #import "VTag.h"
 #import "VUserTag.h"
 #import "VDummyModels.h"
+#import "victorious-Swift.h"
 
 @interface VTagTests : XCTestCase
 

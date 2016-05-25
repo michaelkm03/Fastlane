@@ -11,6 +11,7 @@
 #import "VUserTaggingTextStorage.h"
 #import "VDummyModels.h"
 #import "VHashtag.h"
+#import "victorious-Swift.h"
 
 @interface VUserTaggingTextStorageTests : XCTestCase
 

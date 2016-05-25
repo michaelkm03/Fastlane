@@ -25,11 +25,11 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
         operation.queue() { results, error, cancelled in
             
             XCTAssertNil(error)
-            guard let firstResult = results?.first as? VUser,
-                let remoteId = firstResult.remoteId?.integerValue else {
+            guard let firstResult = results?.first as? VUser else {
                     XCTFail("First result should have a remoteId")
                     return
             }
+            let remoteId = firstResult.remoteId.integerValue
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()
         }

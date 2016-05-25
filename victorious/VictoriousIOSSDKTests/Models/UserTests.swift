@@ -41,7 +41,7 @@ class UserTests: XCTestCase {
         let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         XCTAssertEqual(dateFormatter.stringFromDate(vipEndDate), "2016-05-02 18:22:50")
         
-        let previewImageAssets = user.previewImageAssets
+        let previewImageAssets = user.previewImages
         if previewImageAssets.count == 2 {
             XCTAssertEqual(previewImageAssets[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
             XCTAssertEqual(previewImageAssets[0].mediaMetaData.size, CGSize(width: 80, height: 80))

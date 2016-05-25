@@ -12,6 +12,7 @@
 #import "VDummyModels.h"
 #import "VHashtag.h"
 #import "VTagStringFormatter.h"
+#import "victorious-Swift.h"
 
 @interface VTagSensitiveTextViewTests : XCTestCase <VTagSensitiveTextViewDelegate>
 
