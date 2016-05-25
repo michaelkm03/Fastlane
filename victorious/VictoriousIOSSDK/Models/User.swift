@@ -81,7 +81,10 @@ extension User {
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
     }
     
-    public init(id: Int, name: String, previewImages: [ImageAsset] = []) {
+    public init(id: Int,
+                name: String,
+                previewImages: [ImageAsset] = []
+    ) {
         self.id = id
         self.name = name
         self.previewImages = previewImages

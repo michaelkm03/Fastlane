@@ -19,8 +19,7 @@ public class Content: DictionaryConvertible {
     public let contentData: [ContentMediaAsset]
     public let type: ContentType
     public let isVIP: Bool
-    // TODO: Make this nonoptional
-    public let author: User?
+    public let author: User
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -98,7 +97,7 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, releasedAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User? = nil) {
+    public init(id: String? = nil, releasedAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User) {
         self.id = id
         self.releasedAt = releasedAt
         self.type = type
@@ -131,7 +130,7 @@ public class Content: DictionaryConvertible {
         var dictionary = [String: AnyObject]()
         dictionary["type"] = "TEXT"
         dictionary["text"] = text
-        dictionary["user"] = author?.toDictionary()
+        dictionary["user"] = author.toDictionary()
         
         if let assetURL = contentData.first?.url  {
             dictionary["media"] = [

@@ -57,7 +57,7 @@ extension ChatInterfaceDataSource {
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.author?.id {
+        if VCurrentUser.user()?.remoteId.integerValue == content.authorModel.id {
             cell.layout = RightAlignmentCellLayout()
         } else {
             cell.layout = LeftAlignmentCellLayout()

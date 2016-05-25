@@ -100,7 +100,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
             mediaView.updateContent(content)
         }
         
-        if let name = content?.author?.name, timeStamp = content?.timeLabel {
+        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
             detailTextView.text = "\(name) (\(timeStamp))"
         }
         

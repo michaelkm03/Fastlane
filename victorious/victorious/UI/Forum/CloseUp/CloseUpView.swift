@@ -54,11 +54,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
 
     var content: ContentModel? {
         didSet {
-            guard let content = content,
-                let author = content.author else {
+            guard let content = content else {
                     return
             }
-            
+            let author = content.authorModel
             setBackground(for: content)
             setHeader(for: content, author: author)
             

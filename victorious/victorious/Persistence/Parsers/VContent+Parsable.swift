@@ -19,10 +19,9 @@ extension VContent: PersistenceParsable {
         v_text = content.text ?? v_text
         v_type = content.type.rawValue
         
-        if let author = content.author where v_author == nil {
-            v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id]) as VUser
-            v_author?.populate(fromSourceModel: author)
-        }
+        let author = content.author
+        v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
+        v_author.populate(fromSourceModel: author)
         
         if let previewAssets = content.previewImages {
             let persistentAssets: [VImageAsset] = previewAssets.flatMap {

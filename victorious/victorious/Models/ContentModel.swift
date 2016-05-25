@@ -18,8 +18,7 @@ protocol ContentModel: PreviewImageContainer {
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
-    // TODO: Make this nonoptional
-    var author: UserModel? { get }
+    var authorModel: UserModel { get }
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool { get }
@@ -93,10 +92,8 @@ extension VContent: ContentModel {
         return NSURL(string: v_shareURL)
     }
     
-    /// TODO: User does not yet conform to UserModel
-    var author: UserModel? {
-        //        return v_author
-        return nil
+    var authorModel: UserModel {
+        return v_author
     }
     
     /// Whether this content is only accessible for VIPs
@@ -127,17 +124,16 @@ extension VContent: ContentModel {
 }
 
 extension Content: ContentModel {
+    
+    var authorModel: UserModel {
+        return author
+    }
+    
     /// TODO: Hashtags are not parsed in Content yet
     var hashtags: [Hashtag] {
         return []
     }
-    
-    /// TODO: User does not yet conform to UserModel
-    var author: UserModel? {
-        //        return v_author
-        return nil
-    }
-    
+        
     var previewImageModels: [ImageAssetModel] {
         guard let contentPreviewAssets = previewImages else {
             return []
@@ -150,7 +146,7 @@ extension Content: ContentModel {
     }
     
     var assets: [ContentMediaAssetModel] {
-        return contentData.flatMap({ $0 as? ContentMediaAssetModel })
+        return contentData.flatMap({ $0 as ContentMediaAssetModel })
     }
 
 }

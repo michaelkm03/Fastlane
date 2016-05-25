@@ -45,7 +45,7 @@ class ChatFeedCollectionDataSource: NSObject, UICollectionViewDataSource {
     }
     
     private func decorateCell(cell: ChatFeedMessageCell, content: ContentModel, dependencyManager: VDependencyManager) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.author?.id {
+        if VCurrentUser.user()?.remoteId.integerValue == content.authorModel.id {
             cell.layout = RightAlignmentCellLayout()
         } else {
             cell.layout = LeftAlignmentCellLayout()

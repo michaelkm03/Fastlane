@@ -141,7 +141,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         let newItemsContainsUserMessage = newValue
             .filter { !oldValue.containsObject($0) }
             .flatMap { $0 as? ChatFeedMessage }
-            .contains { $0.content.author?.id == VCurrentUser.user()?.remoteId.integerValue }
+            .contains { $0.content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue }
         
         let allItemsWereUnstashed = newValue.count == 0 && oldValue.count > 0
  
@@ -225,10 +225,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         let message = paginatedDataSource.visibleItems[indexPath.row] as! ChatFeedMessage
         
-        guard let authorID = message.content.author?.id else {
-            return
-        }
-        
+        let authorID = message.content.authorModel.id        
         delegate?.chatFeed(self, didSelectUserWithUserID: authorID)
     }
     
