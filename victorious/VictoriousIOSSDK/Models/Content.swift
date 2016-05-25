@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Content {
+public class Content: DictionaryConvertible {
     public let id: String?
     public let status: String?
     public let text: String?
@@ -19,27 +19,22 @@ public class Content {
     public let contentData: [ContentMediaAsset]
     public let type: ContentType
     public let isVIP: Bool
+    // TODO: Make this nonoptional
     public let author: User?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
-
-    public convenience init?(json: JSON) {
-        // This supports parsing viewed content JSON as well as regular content JSON.
-        if json["content"].isExists() {
-            self.init(contentJSON: json["content"])
-        } else {
-            self.init(contentJSON: json)
-        }
-    }
     
-    private init?(contentJSON json: JSON) {
+    public init?(json viewedContentJSON: JSON) {
+        let json = viewedContentJSON["content"]
+        
         guard
             let id = json["id"].string,
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string
+            let sourceType = json[typeString]["type"].string,
+            let author = User(json: viewedContentJSON["author"])
         else {
             NSLog("ID missing in content json -> \(json)")
             return nil
@@ -50,11 +45,11 @@ public class Content {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) /// <backend returns in milliseconds
+        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
         self.tags = nil
         self.type = type
         self.text = json["title"].string
-        self.author = User(json: json["author"])
+        self.author = author
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
@@ -116,6 +111,36 @@ public class Content {
         self.previewImages = nil
         self.contentData = assets
         self.isVIP = false
+    }
+    
+    // MARK: - DictionaryConvertible
+    
+    public var rootKey: String {
+        return "chat"
+    }
+    
+    public var rootTypeKey: String? {
+        return "type"
+    }
+    
+    public var rootTypeValue: String? {
+        return "CHAT"
+    }
+    
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+        dictionary["type"] = "TEXT"
+        dictionary["text"] = text
+        dictionary["user"] = author?.toDictionary()
+        
+        if let assetURL = contentData.first?.url  {
+            dictionary["media"] = [
+                "type": type.rawValue.uppercaseString,
+                "url": assetURL
+            ]
+        }
+        
+        return dictionary
     }
 }
 

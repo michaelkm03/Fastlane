@@ -33,9 +33,9 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequest
                     return nil
                 }
                 
-                let content: VContent = context.v_findOrCreateObject(["remoteID": id])
+                let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
                 content.populate(fromSourceModel: $0)
-                return content.remoteID
+                return content.id
             })
             context.v_save()
         }

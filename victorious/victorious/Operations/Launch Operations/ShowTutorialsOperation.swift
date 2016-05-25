@@ -21,10 +21,8 @@ class ShowTutorialsOperation: MainQueueOperation {
     }
     
     override func start() {
-        // Remove this variable once template is implemented correctly
-        let isTemplateReadyYet = false
         
-        guard !self.cancelled && FirstInstallManager().isFirstLaunch && isTemplateReadyYet else {
+        guard !self.cancelled && FirstInstallManager().isFirstLaunch else {
             finishedExecuting()
             return
         }

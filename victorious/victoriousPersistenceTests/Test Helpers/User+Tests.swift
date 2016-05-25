@@ -28,7 +28,7 @@ extension User {
         self.likesReceived = nil
         self.likesGiven = nil
         self.tokenUpdatedAt = nil
-        self.previewImageAssets = []
+        self.previewImages = []
         self.maxVideoUploadDuration = nil
         self.avatarBadgeType = .None
         self.vipStatus = vipStatus

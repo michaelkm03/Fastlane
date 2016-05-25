@@ -12,6 +12,7 @@ import Foundation
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     
     /// A standalone cell used to calculate dynamic cell sizes
+    /// - Note: Each concrete implementation should provide a stored sizing cell, because it temporarily stores cell content to size the cell
     var sizingCell: ChatFeedMessageCell { get }
     
     var dependencyManager: VDependencyManager { get }
@@ -30,10 +31,6 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 }
 
 extension ChatInterfaceDataSource {
-    
-    var sizingCell: ChatFeedMessageCell {
-        return ChatFeedMessageCell.v_fromNib()
-    }
     
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
         return networkDataSource.visibleItems.count

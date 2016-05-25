@@ -51,7 +51,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         nextSender = controller
         controller.addChildReceiver(self)
         
-        XCTAssertFalse(controller.isConnected, "Expected controller to NOT be connected after initialization.")
+        XCTAssertFalse(controller.isSetUp, "Expected controller to NOT be set up after initialization.")
         
         expectationConnectEvent = expectationWithDescription("WebSocket-connect-event")
         controller.setUp()
@@ -63,7 +63,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         controller.addChildReceiver(self)
         
         webSocket.connect()
-        XCTAssertTrue(controller.isConnected, "Expected controller to be connected in order to test out the disconnect event.")
+        XCTAssertTrue(controller.isSetUp, "Expected controller to be set up in order to test out the disconnect event.")
 
         expectationDisconnectedEvent = expectationWithDescription("WebSocket-disconnect-event")
         controller.tearDown()
@@ -87,8 +87,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketOutboundChatMessage() {
         nextSender = controller
         
-        let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
-        let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
+        let user = User(id: 1222, name: "username")
+        let chatMessageOutbound = Content(releasedAt: NSDate(timeIntervalSince1970: 1234567890), text: "Test chat message", author: user)
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
@@ -142,7 +142,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
 
     // MARK: ForumEventReceiver
 
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         switch event {
         case let webSocketEvent as WebSocketEvent:
             switch webSocketEvent.type {
@@ -152,7 +152,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
                 guard let expectationConnectEvent = expectationConnectEvent else {
                     return
                 }
-                if controller.isConnected {
+                if controller.isSetUp {
                     expectationConnectEvent.fulfill()
                 } else {
                     XCTFail("Expected WebSocketController to be connected after the .Connected event has been sent out.")
@@ -161,7 +161,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
                 guard let expectationDisconnectedEvent = expectationDisconnectedEvent else {
                     return
                 }
-                if !controller.isConnected {
+                if !controller.isSetUp {
                     expectationDisconnectedEvent.fulfill()
                 } else {
                     XCTFail("Expected WebSocketController to NOT be connected after the .Disconnect event has been sent out.")
@@ -169,7 +169,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
             }
-        case is ChatMessage:
+        case is Content:
             expectationIncomingChatMessage?.fulfill()
         case is RefreshStage:
             expectationRefreshStageMessage?.fulfill()

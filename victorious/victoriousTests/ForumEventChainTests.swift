@@ -15,7 +15,7 @@ class ForumEventChainTests: XCTestCase {
         let parent = MockReceiver()
         
         let event = createEvent()
-        parent.receiveEvent(event)
+        parent.receive(event)
         
         XCTAssertEqual(parent.receivedEvents.count, 1)
     }
@@ -27,7 +27,7 @@ class ForumEventChainTests: XCTestCase {
         
         let parent = MockReceiverWithChildren(children: [childA, childB, childC])
         let event = createEvent()
-        parent.receiveEvent(event)
+        parent.broadcast(event)
         
         XCTAssertEqual(childA.receivedEvents.count, 1)
         XCTAssertEqual(childB.receivedEvents.count, 1)
@@ -66,7 +66,7 @@ class ForumEventChainTests: XCTestCase {
         self.measureBlock() {
             for _ in 1...10000 {
                 let event = self.createEvent()
-                origin.receiveEvent(event)
+                origin.receive(event)
             }
         }
     }
@@ -101,7 +101,7 @@ private class MockLinkSender: ForumEventSender {
 private class MockReceiver: ForumEventReceiver {
     var receivedEvents = [ForumEvent]()
     
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         receivedEvents.append(event)
     }
 }
@@ -112,6 +112,8 @@ private class MockReceiverWithChildren: ForumEventReceiver {
     var childEventReceivers: [ForumEventReceiver] {
         return children
     }
+    
+    private func receive(event: ForumEvent) {}
     
     init(children: [ForumEventReceiver] = []) {
         self.children = children
