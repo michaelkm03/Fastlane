@@ -10,11 +10,7 @@ import UIKit
 
 extension VContent: PersistenceParsable {
     
-    func populate( fromSourceModel viewedContent: ViewedContent ) {
-        
-        let content = viewedContent.content
-        let author = viewedContent.author
-        
+    func populate(fromSourceModel content: Content) {
         isVIP = content.isVIP ?? isVIP
         isUGC = content.isUGC ?? isUGC
         releasedAt = content.releasedAt ?? releasedAt
@@ -24,10 +20,10 @@ extension VContent: PersistenceParsable {
         text = content.text ?? text
         type = content.type.rawValue
         
-        if self.author == nil {
-            self.author = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : author.id ] ) as VUser
+        if let author = content.author where self.author == nil {
+            self.author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id]) as VUser
+            self.author?.populate(fromSourceModel: author)
         }
-        self.author?.populate(fromSourceModel: author)
         
         if let previewAssets = content.previewImages {
             let persistentAssets: [VImageAsset] = previewAssets.flatMap {
@@ -39,14 +35,13 @@ extension VContent: PersistenceParsable {
             self.contentPreviewAssets = Set<VImageAsset>(persistentAssets)
         }
         
-        if let contentData = content.contentData {
-            let persistentAssets: [VContentMediaAsset] = contentData.flatMap {
-                let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
-                data.populate( fromSourceModel: $0 )
-                data.content = self
-                return data
-            }
-            self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
+        let persistentAssets: [VContentMediaAsset] = content.contentData.flatMap {
+            let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
+            data.populate( fromSourceModel: $0 )
+            data.content = self
+            return data
         }
+        
+        self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
     }
 }

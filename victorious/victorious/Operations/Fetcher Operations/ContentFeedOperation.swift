@@ -21,7 +21,7 @@ final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
         self.queuePriority = .VeryHigh
         
         if !localFetch {
-            let request = ViewedContentFeedRequest(
+            let request = ContentFeedRequest(
                 apiPath: paginator.apiPath,
                 paginator: paginator
             )

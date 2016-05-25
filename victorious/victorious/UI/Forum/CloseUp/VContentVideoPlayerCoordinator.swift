@@ -32,21 +32,20 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             toolbar.paused = state != .Playing
         }
     }
-    private var content: VContent
+    private var content: ContentModel
     private var shouldLoop: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     private var shouldMute: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     
-    init?(content: VContent) {
+    init?(content: ContentModel) {
         self.content = content
-        guard let firstAsset = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        guard let firstAsset = content.assets.first as? VContentMediaAsset else {
             return nil
         }
-        if let contentType = content.contentType()
-            where contentType == .video && firstAsset.source == "youtube" {
+        if content.type == .video && firstAsset.source == "youtube" {
             videoPlayer = YouTubeVideoPlayer()
         }
         
@@ -55,9 +54,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         previewView = UIImageView()
         let minWidth = UIScreen.mainScreen().bounds.size.width
         
-        if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteURL = NSURL(string: preview.imageURL) {
-            previewView.sd_setImageWithURL(remoteURL)
+        if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            previewView.sd_setImageWithURL(previewImageURL)
         }
         super.init()
         videoPlayer.delegate = self
@@ -87,19 +85,20 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func loadVideo() {
-        guard let contentData = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        guard let asset = content.assets.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
         
         var item: VVideoPlayerItem?
-        if let remoteSource = contentData.remoteSource,
-            let contentURL = NSURL(string: remoteSource) {
+        
+        if let contentURL = NSURL(string: asset.resourceID) {
             item = VVideoPlayerItem(URL: contentURL)
         }
-        if let externalID = contentData.externalID {
-            item = VVideoPlayerItem(externalID: externalID)
+        else {
+            item = VVideoPlayerItem(externalID: asset.resourceID)
         }
+        
         if let item = item {
             item.muted = shouldMute
             videoPlayer.setItem(item)

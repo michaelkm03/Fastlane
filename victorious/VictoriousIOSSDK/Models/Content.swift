@@ -9,7 +9,7 @@
 import Foundation
 
 public class Content {
-    public let id: String
+    public let id: String?
     public let status: String?
     public let text: String?
     public let tags: [String]?
@@ -17,23 +17,35 @@ public class Content {
     public let releasedAt: NSDate
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
-    public let contentData: [ContentMediaAsset]?
+    public let contentData: [ContentMediaAsset]
     public let type: ContentType
     public let isVIP: Bool?
+    public let author: User?
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
 
-    public init?(json: JSON, refreshStageEvent: RefreshStage? = nil) {
-        guard let id = json["id"].string,
+    public convenience init?(json: JSON) {
+        // This supports parsing viewed content JSON as well as regular content JSON.
+        if json["content"].isExists() {
+            self.init(contentJSON: json["content"])
+        } else {
+            self.init(contentJSON: json)
+        }
+    }
+    
+    private init?(contentJSON json: JSON) {
+        guard
+            let id = json["id"].string,
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string else {
-            NSLog("ID misssing in content json -> \(json)")
+            let sourceType = json[typeString]["type"].string
+        else {
+            NSLog("ID missing in content json -> \(json)")
             return nil
         }
-
+        
         self.isVIP = json["is_vip"].bool
         self.stageContent = StageContent(json: json)
         self.id = id
@@ -44,6 +56,7 @@ public class Content {
         self.tags = nil
         self.type = type
         self.text = json["title"].string
+        self.author = User(json: json["author"])
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
@@ -52,7 +65,7 @@ public class Content {
                 contentType: type,
                 sourceType: sourceType,
                 json: json[typeString]
-            ) {
+                ) {
                 self.contentData = [asset]
             } else {
                 self.contentData = []
@@ -68,18 +81,50 @@ public class Content {
         }
     }
     
-    public init(id: String, text: String, releasedAt: NSDate, type: ContentType) {
+    public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
+        guard let user = User(json: json["user"]) else {
+            return nil
+        }
+        
+        author = user
+        releasedAt = serverTime
+        text = json["text"].string
+        contentData = [ContentMediaAsset(forumJSON: json["media"])].flatMap { $0 }
+        
+        id = nil
+        status = nil
+        tags = nil
+        shareURL = nil
+        isUGC = nil
+        previewImages = nil
+        type = .text
+        isVIP = nil
+        
+        // Either one of these types are required to be counted as a chat message.
+        guard text != nil || contentData.count > 0 else {
+            return nil
+        }
+    }
+    
+    public init(id: String? = nil, releasedAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User? = nil) {
         self.id = id
-        self.text = text
         self.releasedAt = releasedAt
+        self.type = type
+        self.text = text
+        self.author = author
         
         self.status = nil
         self.tags = nil
         self.shareURL = nil
         self.isUGC = nil
         self.previewImages = nil
-        self.contentData = nil
-        self.type = type
+        self.contentData = assets
         self.isVIP = nil
+    }
+}
+
+extension Content: ForumEvent {
+    public var serverTime: NSDate {
+        return releasedAt
     }
 }

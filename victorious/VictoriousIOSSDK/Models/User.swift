@@ -44,7 +44,7 @@ public struct User {
     public let likesGiven: Int?
     public let likesReceived: Int?
     public let tokenUpdatedAt: NSDate?
-    public let previewImageAssets: [ImageAsset]
+    public let previewImages: [ImageAsset]
     public let maxVideoUploadDuration: Int?
     public let avatarBadgeType: AvatarBadgeType
     public let vipStatus: VIPStatus?
@@ -53,11 +53,11 @@ public struct User {
 extension User {
     public init?(json: JSON) {
         // Check for "id" as either a string or a number, because the back-end is inconsistent.
-        guard let userID = Int(json["id"].stringValue) ?? json["id"].int else {
+        guard let id = Int(json["id"].stringValue) ?? json["id"].int else {
             return nil
         }
         
-        self.id               = userID
+        self.id                   = id
         avatarBadgeType           = AvatarBadgeType(json: json)
         email                     = json["email"].string
         name                      = json["name"].string
@@ -65,11 +65,11 @@ extension User {
         location                  = json["profile_location"].string
         tagline                   = json["profile_tagline"].string
         fanLoyalty                = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByCurrentUser       = json["is_blocked"].bool
+        isBlockedByCurrentUser    = json["is_blocked"].bool
         vipStatus                 = VIPStatus(json: json["vip"])
         accessLevel               = AccessLevel(json: json["access_level"])
         isDirectMessagingDisabled = json["is_direct_message_disabled"].bool
-        isFollowedByCurrentUser      = json["am_following"].bool
+        isFollowedByCurrentUser   = json["am_following"].bool
         numberOfFollowers         = Int(json["number_of_followers"].stringValue)
         numberOfFollowing         = Int(json["number_of_following"].stringValue)
         likesGiven                = json["engagements"]["likes_given"].int
@@ -78,6 +78,30 @@ extension User {
         tokenUpdatedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
         
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
-        self.previewImageAssets = previewImages.flatMap { ImageAsset(json: $0) }
+        self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
+    }
+    
+    public init(id: Int, name: String, previewImages: [ImageAsset]) {
+        self.id = id
+        self.name = name
+        self.previewImages = previewImages
+        
+        avatarBadgeType           = .None
+        email                     = nil
+        completedProfile          = nil
+        location                  = nil
+        tagline                   = nil
+        fanLoyalty                = nil
+        isBlockedByCurrentUser    = nil
+        vipStatus                 = nil
+        accessLevel               = nil
+        isDirectMessagingDisabled = nil
+        isFollowedByCurrentUser   = nil
+        numberOfFollowers         = nil
+        numberOfFollowing         = nil
+        likesGiven                = nil
+        likesReceived             = nil
+        maxVideoUploadDuration    = nil
+        tokenUpdatedAt            = nil
     }
 }

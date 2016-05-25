@@ -36,7 +36,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [DisplayableChatMessage], to newValue: [DisplayableChatMessage]) {
+    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel]) {
         delegate?.didUpdateVisibleItems(from: oldValue, to: newValue)
     }
     

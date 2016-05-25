@@ -10,14 +10,26 @@ import Foundation
 
 extension VPublishParameters {
     
-    convenience init?(chatMessage: ChatMessage) {
+    convenience init?(content: Content) {
         self.init()
-        caption = chatMessage.text
-        guard let mediaAttachment = chatMessage.mediaAttachment else {
+        caption = content.text
+        guard let mediaAsset = content.contentData.first else {
             return nil
         }
-        mediaToUploadURL = mediaAttachment.url
-        isGIF = mediaAttachment.type == .GIF
-        isVideo = mediaAttachment.type == .Video        
+        mediaToUploadURL = mediaAsset.url
+        
+        switch mediaAsset {
+        case .youtube(_, _):
+            return nil
+        case .video(_, _):
+            isGIF = false
+            isVideo = true
+        case .gif(_, _):
+            isGIF = true
+            isVideo = false
+        case .image(_):
+            isGIF = false
+            isVideo = false
+        }
     }
 }
