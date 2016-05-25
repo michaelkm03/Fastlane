@@ -45,3 +45,18 @@ extension VContentMediaAsset: ContentMediaAssetModel {
         }
     }
 }
+
+extension ContentMediaAsset: ContentMediaAssetModel {
+    var resourceID: String {
+        return uniqueID
+    }
+    
+    var videoSource: ContentVideoAssetSource? {
+        switch self {
+        case .youtube(_,_):
+            return .youtube
+        default:
+            return .video
+        }
+    }
+}
