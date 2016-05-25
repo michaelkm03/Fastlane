@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Conformers are models that store information about an image asset
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol ImageAssetModel {
     var mediaMetaData: MediaMetaData { get }
 }

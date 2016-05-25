@@ -8,14 +8,20 @@
 
 import Foundation
 
+/// Conformers are models that store information about content media asset.
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol ContentMediaAssetModel {
     
     /// Returns either the youtube ID or the remote URL that links to the content
     var resourceID: String { get }
     
+    /// Returns where the video is hosted remotely
     var videoSource: ContentVideoAssetSource? { get }
 }
 
+/// The source of where the video is hosted.
+/// - note: We currently only need to differenciate Youtube videos from other videos.
+/// (Giphy is indifferent from other videos as of now.)
 enum ContentVideoAssetSource {
     case youtube
     case video

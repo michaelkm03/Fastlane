@@ -9,6 +9,8 @@
 import Foundation
 import VictoriousIOSSDK
 
+/// Conformers are models that store information about a user in the app
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol UserModel {
     var id: Int { get }
     var email: String? { get }
