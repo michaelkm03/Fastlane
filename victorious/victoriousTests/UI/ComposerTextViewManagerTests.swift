@@ -146,6 +146,9 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
+        func textViewDidHitCharacterLimit(textView: UITextView) {
+            //
+        }
         var textViewCanDismiss: Bool = true
     }
 }

@@ -196,6 +196,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return interactiveContainerView.layer.animationKeys() == nil
     }
     
+    func textViewDidHitCharacterLimit(textView: UITextView) {
+        textView.v_performShakeAnimation()
+    }
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
