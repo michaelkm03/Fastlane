@@ -82,7 +82,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.updateContent(content)
+            
+            // TODO: VContent needs to conform to ContentModel.
+//            mediaContentView.updateContent(content)
             
             // Update size
             self.frame.size = sizeForContent(content)

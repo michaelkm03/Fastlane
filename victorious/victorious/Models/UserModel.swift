@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// Conformers are models that store information about a user in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol UserModel {
+protocol UserModel: PreviewImageContainer {
     var id: Int { get }
     var email: String? { get }
     var name: String? { get }
@@ -31,6 +31,6 @@ protocol UserModel {
 
 extension User: UserModel {
     var previewImageModels: [ImageAssetModel] {
-        return previewImageAssets.map { $0 }
+        return previewImages.map { $0 }
     }
 }

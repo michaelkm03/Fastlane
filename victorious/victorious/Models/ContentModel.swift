@@ -10,7 +10,7 @@ import Foundation
 
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol ContentModel {
+protocol ContentModel: PreviewImageContainer {
     var releasedAt: NSDate { get }
     var type: ContentType { get }
     
@@ -31,4 +31,12 @@ protocol ContentModel {
     
     // Future: Take the following property out
     var stageContent: StageContent? { get }
+}
+
+extension ContentModel {
+    // MARK: - UI strings
+    
+    var timeLabel: String {
+        return releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
 }

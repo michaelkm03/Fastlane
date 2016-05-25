@@ -10,26 +10,30 @@ import UIKit
 
 final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
     
-    let request: ViewedContentFeedRequest
+    let request: ContentFeedRequest
     
-    required init( request: ViewedContentFeedRequest ) {
+    required init( request: ContentFeedRequest ) {
         self.request = request
     }
     
     convenience init( apiPath: String, sequenceID: String? = nil) {
-        self.init( request: ViewedContentFeedRequest(apiPath: apiPath) )
+        self.init(request: ContentFeedRequest(apiPath: apiPath))
     }
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
     }
     
-    func onComplete( sourceFeed: ViewedContentFeedRequest.ResultType) {
+    func onComplete(sourceFeed: ContentFeedRequest.ResultType) {
         
         // Make changes on background queue
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
             self.results = sourceFeed.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0.content.id ] )
+                guard let id = $0.id else {
+                    return nil
+                }
+                
+                let content: VContent = context.v_findOrCreateObject(["remoteID": id])
                 content.populate(fromSourceModel: $0)
                 return content.remoteID
             })

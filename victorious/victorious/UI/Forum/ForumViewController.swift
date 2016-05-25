@@ -74,8 +74,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:
                 break
             }
-        } else if let event = event as? ChatMessage where
-            event.mediaAttachment != nil {
+        } else if let event = event as? Content where event.contentData.count > 0 {
             
             //Create a persistent piece of content so long as we're not a normal user on the socket
             guard let networkResourcesDependency = dependencyManager.networkResourcesDependency else {

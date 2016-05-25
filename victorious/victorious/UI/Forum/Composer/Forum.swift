@@ -45,7 +45,7 @@ extension Forum {
             userId: userID).queue()
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: MediaAttachment) {
+    func chatFeed(chatFeed: ChatFeed, didSelectAsset asset: ContentMediaAssetModel) {
         // FUTURE: Show closeup/lightbox
     }
     
