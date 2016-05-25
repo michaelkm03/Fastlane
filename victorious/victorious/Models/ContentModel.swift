@@ -80,7 +80,6 @@ extension VContent: ContentModel {
         return v_remoteID
     }
     
-    /// TODO: Hashtags are not parsed in Content yet
     var hashtags: [Hashtag] {
         return []
     }
@@ -129,7 +128,6 @@ extension Content: ContentModel {
         return author
     }
     
-    /// TODO: Hashtags are not parsed in Content yet
     var hashtags: [Hashtag] {
         return []
     }
