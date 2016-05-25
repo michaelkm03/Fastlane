@@ -29,11 +29,11 @@ enum ContentVideoAssetSource {
 
 extension VContentMediaAsset: ContentMediaAssetModel {
     var resourceID: String {
-        return uniqueID
+        return v_uniqueID
     }
     
     var videoSource: ContentVideoAssetSource? {
-        guard let source = source else {
+        guard let source = v_source else {
             return nil
         }
         
