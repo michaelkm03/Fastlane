@@ -29,7 +29,6 @@ class VUser: NSManagedObject {
     @NSManaged var v_completedProfile: NSNumber?
     @NSManaged var tagline: String?
     @NSManaged var token: String?
-    @NSManaged var tokenUpdatedAt: NSDate?
     @NSManaged var childSequences: Set<NSObject>?
     @NSManaged var comments: Set<NSObject>?
     @NSManaged var conversations: NSOrderedSet?

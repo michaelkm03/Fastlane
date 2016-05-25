@@ -65,6 +65,7 @@ public struct User {
         likesGiven: Int? = nil,
         likesReceived: Int? = nil,
         previewImages: [ImageAsset] = [],
+        maxVideoUploadDuration: Int? = nil,
         avatarBadgeType: AvatarBadgeType = .None,
         vipStatus: VIPStatus? = nil
     ) {
@@ -84,6 +85,7 @@ public struct User {
         self.likesGiven = likesGiven
         self.likesReceived = likesReceived
         self.previewImages = previewImages
+        self.maxVideoUploadDuration = maxVideoUploadDuration
         self.avatarBadgeType = avatarBadgeType
         self.vipStatus = vipStatus
     }

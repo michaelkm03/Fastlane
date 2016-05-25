@@ -115,8 +115,8 @@ extension VUser: UserModel {
             numberOfFollowing: numberOfFollowing?.integerValue,
             likesGiven: likesGiven,
             likesReceived: likesReceived,
-            tokenUpdatedAt: tokenUpdatedAt,
             previewImages: previewImageModels.map { $0.toSDKImageAsset() },
+            maxVideoUploadDuration: maxUploadDuration.integerValue,
             avatarBadgeType: avatarBadgeType,
             vipStatus: vipStatus
         )
