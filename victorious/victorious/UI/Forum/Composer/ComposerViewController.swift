@@ -109,7 +109,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var userIsOwner: Bool {
-        return VCurrentUser.user()?.isCreator.boolValue ?? false
+        return VCurrentUser.user()?.isCreator?.boolValue ?? false
     }
     
     var dependencyManager: VDependencyManager! {

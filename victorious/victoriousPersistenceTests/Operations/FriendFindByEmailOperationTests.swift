@@ -34,11 +34,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
                     return
             }
             
-            guard let remoteId = firstResult.remoteId?.integerValue else {
-                XCTFail("First result should have a remoteId")
-                return
-            }
-            
+            let remoteId = firstResult.remoteId.integerValue
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()
         }
@@ -65,10 +61,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
                     return
             }
             
-            guard let remoteId = firstResult.remoteId?.integerValue else {
-                XCTFail("First result should have a remoteId")
-                return
-            }
+            let remoteId = firstResult.remoteId.integerValue
             
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()

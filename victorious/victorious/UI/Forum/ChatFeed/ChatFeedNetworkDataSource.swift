@@ -67,7 +67,7 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
             
             // Deuque messages right away if from the current user so FetcherOperation
             // So that the sending feels responsive and nothing gets out of order
-            if content.author?.id == VCurrentUser.user()?.remoteId?.integerValue {
+            if content.author?.id == VCurrentUser.user()?.remoteId.integerValue {
                 dequeueMessages()
             }
         }

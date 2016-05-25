@@ -141,7 +141,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         let newItemsContainsUserMessage = newValue
             .filter { !oldValue.containsObject($0) }
             .flatMap { $0 as? ChatFeedMessage }
-            .contains { $0.content.author?.id == VCurrentUser.user()?.remoteId?.integerValue }
+            .contains { $0.content.author?.id == VCurrentUser.user()?.remoteId.integerValue }
         
         let allItemsWereUnstashed = newValue.count == 0 && oldValue.count > 0
  

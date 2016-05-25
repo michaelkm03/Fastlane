@@ -29,8 +29,8 @@ class UnfollowUserOperationTests: BaseFetcherOperationTestCase {
         objectUser.numberOfFollowers = 1
         currentUser.numberOfFollowing = 1
 
-        XCTAssertEqual(0, objectUser.followers.count)
-        XCTAssertEqual(0, currentUser.following.count)
+        XCTAssertEqual(0, objectUser.followers?.count)
+        XCTAssertEqual(0, currentUser.following?.count)
         XCTAssertEqual(true, objectUser.isFollowedByMainUser)
         XCTAssertFalse( currentUser.isFollowingUserID(objectUser.remoteId.integerValue) )
 
@@ -42,9 +42,9 @@ class UnfollowUserOperationTests: BaseFetcherOperationTestCase {
         testStore.mainContext.v_save()
 
         XCTAssertEqual(1, objectUser.numberOfFollowers)
-        XCTAssertEqual(1, objectUser.followers.count)
+        XCTAssertEqual(1, objectUser.followers?.count)
         XCTAssertEqual(1, currentUser.numberOfFollowing)
-        XCTAssertEqual(1, currentUser.following.count)
+        XCTAssertEqual(1, currentUser.following?.count)
         XCTAssertEqual(true, objectUser.isFollowedByMainUser)
         XCTAssert( currentUser.isFollowingUserID(objectUser.remoteId.integerValue) )
         
@@ -60,9 +60,9 @@ class UnfollowUserOperationTests: BaseFetcherOperationTestCase {
         }
 
         XCTAssertEqual(0, updatedUser.numberOfFollowers)
-        XCTAssertEqual(0, updatedUser.followers.count)
+        XCTAssertEqual(0, updatedUser.followers?.count)
         XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
-        XCTAssertEqual(0, updatedCurrentUser.following.count)
+        XCTAssertEqual(0, updatedCurrentUser.following?.count)
         XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
 
         XCTAssertFalse( currentUser.isFollowingUserID(updatedUser.remoteId.integerValue) )
@@ -71,9 +71,9 @@ class UnfollowUserOperationTests: BaseFetcherOperationTestCase {
         XCTAssertEqual(VTrackingEventUserDidUnfollowUser, self.testTrackingManager.trackEventCalls.first?.eventName)
 
         XCTAssertEqual(0, updatedUser.numberOfFollowers)
-        XCTAssertEqual(0, updatedUser.followers.count)
+        XCTAssertEqual(0, updatedUser.followers?.count)
         XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
-        XCTAssertEqual(0, updatedCurrentUser.following.count)
+        XCTAssertEqual(0, updatedCurrentUser.following?.count)
         XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
 
         self.continueAfterFailure = false
