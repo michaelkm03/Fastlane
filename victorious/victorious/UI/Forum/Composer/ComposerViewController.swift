@@ -102,7 +102,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return !attachmentMenuItems.isEmpty && textViewIsEditing
     }
     
-    var delegate: ComposerDelegate? {
+    weak var delegate: ComposerDelegate? {
         didSet {
             setupAttachmentTabBar()
         }
@@ -194,6 +194,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewCanDismiss: Bool {
         return interactiveContainerView.layer.animationKeys() == nil
+    }
+    
+    func textViewDidHitCharacterLimit(textView: UITextView) {
+        textView.v_performShakeAnimation()
     }
     
     // MARK: - View lifecycle

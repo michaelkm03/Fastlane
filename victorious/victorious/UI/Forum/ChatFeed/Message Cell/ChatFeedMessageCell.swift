@@ -197,19 +197,19 @@ private extension VDependencyManager {
     }
     
     var messageTextColor: UIColor {
-        return colorForKey("color.message.text")
+        return colorForKey("color.message.text") ?? .whiteColor()
     }
 
     var messageFont: UIFont {
         return UIFont.boldSystemFontOfSize(16)
     }
 
-    var backgroundColor: UIColor {
-        return colorForKey("color.message.bubble")
+    var backgroundColor: UIColor? {
+        return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
     var borderColor: UIColor {
-        return colorForKey("color.message.border")
+        return colorForKey("color.message.border") ?? .lightGrayColor()
     }
     
     var userLabelFont: UIFont {
@@ -217,6 +217,6 @@ private extension VDependencyManager {
     }
     
     var userLabelColor: UIColor {
-        return colorForKey("color.username.text")
+        return colorForKey("color.username.text") ?? .whiteColor()
     }
 }
