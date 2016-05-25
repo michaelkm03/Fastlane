@@ -11,12 +11,12 @@ import UIKit
 extension VContent: PersistenceParsable {
     
     func populate(fromSourceModel content: Content) {
-        isVIP = content.isVIP ?? isVIP
-        releasedAt = content.releasedAt ?? releasedAt
-        remoteID = content.id ?? remoteID
+        v_isVIP = content.isVIP ?? v_isVIP
+        v_releasedAt = content.releasedAt ?? v_releasedAt
+        v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
-        status = content.status ?? status
-        text = content.text ?? text
+        v_status = content.status ?? v_status
+        v_text = content.text ?? v_text
         v_type = content.type.rawValue
         
         if let author = content.author where v_author == nil {
@@ -31,7 +31,7 @@ extension VContent: PersistenceParsable {
                 previewAsset.content = self
                 return previewAsset
             }
-            self.contentPreviewAssets = Set<VImageAsset>(persistentAssets)
+            v_contentPreviewAssets = Set<VImageAsset>(persistentAssets)
         }
         
         let persistentAssets: [VContentMediaAsset] = content.contentData.flatMap {
@@ -41,6 +41,6 @@ extension VContent: PersistenceParsable {
             return data
         }
         
-        self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
+        v_contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
     }
 }

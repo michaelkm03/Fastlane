@@ -53,6 +53,13 @@ extension ContentModel {
 }
 
 extension VContent: ContentModel {
+    var releasedAt: NSDate {
+        return v_releasedAt
+    }
+    
+    var text: String? {
+        return v_text
+    }
     
     var type: ContentType {
         switch v_type {
@@ -71,7 +78,7 @@ extension VContent: ContentModel {
     }
     
     var id: String? {
-        return remoteID
+        return v_remoteID
     }
     
     /// TODO: Hashtags are not parsed in Content yet
@@ -94,12 +101,12 @@ extension VContent: ContentModel {
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool {
-        return isVIP == true
+        return v_isVIP == true
     }
     
     /// An array of preview images for the content.
     var previewImageModels: [ImageAssetModel] {
-        guard let contentPreviewAssets = contentPreviewAssets else {
+        guard let contentPreviewAssets = v_contentPreviewAssets else {
             return []
         }
         return contentPreviewAssets.flatMap({ $0 as? ImageAssetModel })
@@ -107,7 +114,7 @@ extension VContent: ContentModel {
     
     /// An array of media assets for the content, could be any media type
     var assets: [ContentMediaAssetModel] {
-        guard let contentMediaAssets = contentMediaAssets else {
+        guard let contentMediaAssets = v_contentMediaAssets else {
             return []
         }
         return contentMediaAssets.flatMap({ $0 as? ContentMediaAssetModel })

@@ -65,23 +65,23 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
-        <attribute name="isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="releasedAt" attributeType="Date" syncable="YES"/>
-        <attribute name="remoteID" attributeType="String" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="v_releasedAt" attributeType="Date" syncable="YES"/>
+        <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_type" attributeType="String" syncable="YES"/>
-        <relationship name="contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="content" inverseEntity="ContentMediaAsset" syncable="YES"/>
-        <relationship name="contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="v_author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
+        <relationship name="v_contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="content" inverseEntity="ContentMediaAsset" syncable="YES"/>
+        <relationship name="v_contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="externalID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="contentMediaAssets" inverseEntity="Content" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_contentMediaAssets" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -126,7 +126,7 @@
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imageURL" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="content" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="contentPreviewAssets" inverseEntity="Content" syncable="YES"/>
+        <relationship name="content" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_contentPreviewAssets" inverseEntity="Content" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="previewImageAssets" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="previewAssets" inverseEntity="User" syncable="YES"/>
     </entity>
