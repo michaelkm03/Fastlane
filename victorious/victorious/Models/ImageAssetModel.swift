@@ -12,7 +12,6 @@ import Foundation
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol ImageAssetModel {
     var mediaMetaData: MediaMetaData { get }
-    
     func toSDKImageAsset() -> ImageAsset
 }
 
@@ -27,18 +26,18 @@ extension VImageAsset: ImageAssetModel {
     var mediaMetaData: MediaMetaData {
         var size: CGSize? = nil
         if let width = self.width?.floatValue,
-            let height = self.width?.floatValue{
+            let height = self.width?.floatValue {
             size = CGSize(width: CGFloat(width), height: CGFloat(height))
         }
         
-        // retrivedURL should be valid because it's an non optional property on the network model.
+        // retrievedURL should be valid because it's an non optional property on the network model.
         // But due to Core Data limitations, we lose that information when we store the url as a String in core data
         // So we are doing the following nil coalescing and assertionFailure to catch the programmer error
-        let retrivedURL = NSURL(string: imageURL)
-        if retrivedURL == nil {
-            assertionFailure("Retrived imageURL should not be nil")
+        let retrievedURL = NSURL(string: imageURL)
+        if retrievedURL == nil {
+            assertionFailure("Retrieved imageURL should not be nil")
         }
-        let validURL = retrivedURL ?? NSURL(string: "")!
+        let validURL = retrievedURL ?? NSURL(string: "")!
         
         return MediaMetaData(url: validURL, size: size)
     }

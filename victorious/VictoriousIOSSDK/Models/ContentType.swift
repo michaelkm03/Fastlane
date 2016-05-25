@@ -13,9 +13,7 @@ public enum ContentType: String {
     case video = "video"
     case gif = "gif"
     case image = "image"
-}
-
-extension ContentType {
+    
     public var displaysAsVideo: Bool {
         switch self {
         case .gif, .video:

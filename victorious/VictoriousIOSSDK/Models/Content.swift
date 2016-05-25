@@ -57,7 +57,7 @@ public class Content: DictionaryConvertible {
                 contentType: type,
                 sourceType: sourceType,
                 json: json[typeString]
-                ) {
+            ) {
                 self.contentData = [asset]
             } else {
                 self.contentData = []

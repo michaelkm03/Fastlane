@@ -55,7 +55,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
                             imageAsset.imageURL = imageURL.absoluteString
                             imageAsset.width = image.size.width
                             imageAsset.height = image.size.height
-                            user.previewAssets = Set(arrayLiteral: imageAsset)
+                            user.previewAssets = [imageAsset]
                     }
                 }
                 context.v_save()
