@@ -1,5 +1,5 @@
 //
-//  WebSocketNetworkAdapter.swift
+//  WebSocketForumNetworkSource.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 12/4/16.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousCommon
 
-class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
+class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
     private struct Constants {
         static let appIdExpander = "%%APP_ID%%"
@@ -22,27 +22,51 @@ class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> WebSocketNetworkAdapter {
-        return WebSocketNetworkAdapter(dependencyManager: dependencyManager)
-    }
-    
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
         super.init()
         
         // Connect this link in the event chain.
         nextSender = webSocketController
+        webSocketController.addChildReceiver(self)
 
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         webSocketController.setDeviceID(deviceID)
     }
     
-    // MARK: ForumEventSender
+    // MARK: - Configuration
     
-    var nextSender: ForumEventSender?
+    /// The amount of time to wait before reconnecting upon disconnection. Set to nil to disable automatic reconnection.
+    var reconnectTimeout: NSTimeInterval? = 5.0
     
-    // MARK: NetworkSource
+    // MARK: - ForumEventReceiver
+    
+    private(set) var childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(event: ForumEvent) {
+        guard let webSocketEvent = event as? WebSocketEvent else {
+            return
+        }
+        
+        switch webSocketEvent.type {
+        case .Disconnected(_):
+            guard let reconnectTimeout = reconnectTimeout else {
+                return
+            }
+            
+            dispatch_after(reconnectTimeout) { [weak self] in
+                self?.setUpIfNeeded()
+            }
+        default: break
+        }
+    }
+    
+    // MARK: - ForumEventSender
+    
+    weak var nextSender: ForumEventSender?
+    
+    // MARK: - ForumNetworkSource
     
     func setUp() {
         refreshToken()
@@ -52,32 +76,26 @@ class WebSocketNetworkAdapter: NSObject, ForumNetworkSource {
         webSocketController.tearDown()
     }
     
+    var isSetUp: Bool {
+        return webSocketController.isSetUp
+    }
+    
     func addChildReceiver(receiver: ForumEventReceiver) {
-        webSocketController.addChildReceiver(receiver)
+        if !childEventReceivers.contains({ $0 === receiver }) {
+            childEventReceivers.append(receiver)
+        }
     }
 
     func removeChildReceiver(receiver: ForumEventReceiver) {
-        webSocketController.removeChildReceiver(receiver)
+        if let index = childEventReceivers.indexOf({ $0 === receiver }) {
+            childEventReceivers.removeAtIndex(index)
+        }
     }
     
     // MARK: ForumNetworkSourceWebSocket
     
-    var isConnected: Bool {
-        return webSocketController.isConnected
-    }
-
     var webSocketMessageContainer: WebSocketRawMessageContainer {
         return webSocketController.webSocketMessageContainer
-    }
-
-    /// Don't call this function, the adapter will handle setting of the device ID.
-    func setDeviceID(deviceID: String) {
-        assertionFailure("Don't call this function, the adapter will handle setting of the device ID.")
-    }
-    
-    /// Don't call this function direcly, use `refreshToken()` instead.
-    func replaceToken(token: String) {
-        assertionFailure("Don't call this function direcly, use `refreshToken()` instead.")
     }
 
     // MARK: Private

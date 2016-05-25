@@ -48,7 +48,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        videoPlayer.useAspectFit = false
+        videoPlayer.useAspectFit = true
         videoPlayer.delegate = self
         videoPlayer.backgroundColor = UIColor.clearColor()
         containerView.addSubview(videoPlayer.view)
@@ -64,6 +64,10 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     override func viewWillDisappear(animated: Bool) {
         clearStageMedia()
+    }
+    
+    override func viewDidLoad() {
+        self.imageView.contentMode = .ScaleAspectFit
     }
 
     //MARK: - Stage

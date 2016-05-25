@@ -12,8 +12,6 @@ import UIKit
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
 
-    private let webSocketReconnectTimeout: NSTimeInterval = 5
-
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
             stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
@@ -54,23 +52,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return children.flatMap { $0 }
     }
     
-    func receiveEvent(event: ForumEvent) {
-        for receiver in childEventReceivers {
-            receiver.receiveEvent(event)
-        }
-        
+    func receive(event: ForumEvent) {
         if let event = event as? WebSocketEvent {
             switch event.type {
             case .Disconnected(let webSocketError):
-                guard isViewLoaded() else {
-                    return
+                if isViewLoaded() {
+                    v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                 }
-
-                self.v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting in \(webSocketReconnectTimeout)s. \n (error: \(webSocketError))", completion: nil)
-
-                dispatch_after(webSocketReconnectTimeout, {
-                    self.connectToNetworkSourceIfNeeded()
-                })
             default:
                 break
             }
@@ -96,7 +84,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
     // MARK: - ForumEventSender
     
-    var nextSender: ForumEventSender?
+    weak var nextSender: ForumEventSender?
     
     // MARK: - Forum protocol requirements
     
@@ -154,9 +142,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
-            if let forumNetworkSourceWebSocket = forumNetworkSource as? WebSocketNetworkAdapter,
+            if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
-                let type = DebugMenuType.webSocket(messageContainer: forumNetworkSourceWebSocket.webSocketMessageContainer)
+                let type = DebugMenuType.webSocket(messageContainer: webSocketForumNetworkSource.webSocketMessageContainer)
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
@@ -167,11 +155,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
-        //Remove this once the way to animate the workspace in and out from forum has been figured out
+        // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        // Reconnect if the WebSocket is not connected.
-        connectToNetworkSourceIfNeeded()
+        // Set up the network source if needed.
+        forumNetworkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -192,9 +180,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             action: #selector(onClose)
         )
         updateStyle()
-
+        
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
-            setupNetworkSource(forumNetworkSource)
+            // Add the network source as the next responder in the FEC.
+            nextSender = forumNetworkSource
+            
+            // Inject ourselves into the child receiver list in order to link the chain together.
+            forumNetworkSource.addChildReceiver(self)
+            
             self.forumNetworkSource = forumNetworkSource
         }
     }
@@ -260,23 +253,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func screenIdentifier() -> String! {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
-    
-    // MARK: Private
-    
-    private func setupNetworkSource(networkSource: ForumNetworkSource) {
-        // Add the network source as the next responder in the event chain.
-        nextSender = networkSource
-
-        // Inject ourselves into the child receiver list in order to link the chain together.
-        networkSource.addChildReceiver(self)
-    }
-
-    /// Will connect over the WebSocket if the connection is down.
-    private func connectToNetworkSourceIfNeeded() {
-        if let socketNetworkAdapter = forumNetworkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
-            socketNetworkAdapter.setUp()
-        }
-    }
 }
 
 private extension VDependencyManager {
@@ -301,7 +277,7 @@ private extension VDependencyManager {
         return childDependencyForKey("networkResources")
     }
 
-    var forumNetworkSource: WebSocketNetworkAdapter? {
-        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
+    var forumNetworkSource: ForumNetworkSource? {
+        return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }
 }
