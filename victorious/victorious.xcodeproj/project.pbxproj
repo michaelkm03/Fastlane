@@ -714,7 +714,6 @@
 		67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		67AE49281CF4C79B00E0CC49 /* ContentMediaAssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE49271CF4C79B00E0CC49 /* ContentMediaAssetModel.swift */; };
 		67AE492A1CF4CF5400E0CC49 /* ImageAssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE49291CF4CF5400E0CC49 /* ImageAssetModel.swift */; };
-		67AE492B1CF4CF5400E0CC49 /* ImageAssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE49291CF4CF5400E0CC49 /* ImageAssetModel.swift */; };
 		67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */; };
 		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
 		67BB52D81CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */; };
@@ -13668,7 +13667,6 @@
 				A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */,
 				A7DCA5161C128A78004E35B4 /* VVoteTypeFetcherTests.m in Sources */,
 				0308FCE71C5C2A030023C93A /* VApplicationTrackingTests.m in Sources */,
-				67AE492B1CF4CF5400E0CC49 /* ImageAssetModel.swift in Sources */,
 				BF4D7E1A1C86209000D42852 /* VShowRepostersOperationTests.m in Sources */,
 				6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */,
 				A7DCA4E71C128A78004E35B4 /* VEmailValidatorTests.m in Sources */,

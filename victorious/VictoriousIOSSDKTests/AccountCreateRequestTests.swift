@@ -88,7 +88,7 @@ class AccountCreateRequestTests: XCTestCase {
             let response = try accountCreateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "f08745e841c878da64951f7bb3ceb114df27cfda")
             XCTAssertTrue(response.newUser)
-            XCTAssertEqual(response.user.userID, 1760702)
+            XCTAssertEqual(response.user.id, 1760702)
             XCTAssertEqual(response.user.name, "Joe Victorious")
             XCTAssertEqual(response.user.email, "shsis@sksiis.sndndndh")
         } catch {

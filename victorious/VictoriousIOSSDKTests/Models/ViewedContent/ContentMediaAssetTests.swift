@@ -151,10 +151,11 @@ class ContentMediaAssetTests: XCTestCase {
     // MARK: - Setup
     
     private func createMediaAssetFromJSON(fileName fileName: String,
-                                          contentType: String,
-                                          sourceType: String) -> ContentMediaAsset? {
+                                                   contentType: String,
+                                                   sourceType: String) -> ContentMediaAsset? {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+            let mockData = NSData(contentsOfURL: mockUserDataURL),
+            contentType = ContentType(rawValue: contentType) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }
