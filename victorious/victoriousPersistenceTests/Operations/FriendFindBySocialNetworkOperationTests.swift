@@ -16,7 +16,7 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
     
     func testResults() {
         let operation = FriendFindBySocialNetworkOperation(token: facebookToken)
-        let user = User(userID: testUserID)
+        let user = User(id: testUserID)
         testRequestExecutor = TestRequestExecutor(result: [user])
         operation.requestExecutor = testRequestExecutor
         

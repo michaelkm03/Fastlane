@@ -45,9 +45,50 @@ public struct User {
     public let likesReceived: Int?
     public let tokenUpdatedAt: NSDate?
     public let previewImages: [ImageAsset]
-    public let maxVideoUploadDuration: Int?
     public let avatarBadgeType: AvatarBadgeType
     public let vipStatus: VIPStatus?
+    
+    public init(
+        id: Int,
+        email: String? = nil,
+        name: String? = nil,
+        completedProfile: Bool? = nil,
+        location: String? = nil,
+        tagline: String? = nil,
+        fanLoyalty: FanLoyalty? = nil,
+        isBlockedByCurrentUser: Bool? = nil,
+        accessLevel: AccessLevel? = nil,
+        isDirectMessagingDisabled: Bool? = nil,
+        isFollowedByCurrentUser: Bool? = nil,
+        numberOfFollowers: Int? = nil,
+        numberOfFollowing: Int? = nil,
+        likesGiven: Int? = nil,
+        likesReceived: Int? = nil,
+        tokenUpdatedAt: NSDate? = nil,
+        previewImages: [ImageAsset] = [],
+        avatarBadgeType: AvatarBadgeType = .None,
+        vipStatus: VIPStatus? = nil
+    ) {
+        self.id = id
+        self.email = email
+        self.name = name
+        self.completedProfile = completedProfile
+        self.location = location
+        self.tagline = tagline
+        self.fanLoyalty = fanLoyalty
+        self.isBlockedByCurrentUser = isBlockedByCurrentUser
+        self.accessLevel = accessLevel
+        self.isDirectMessagingDisabled = isDirectMessagingDisabled
+        self.isFollowedByCurrentUser = isFollowedByCurrentUser
+        self.numberOfFollowers = numberOfFollowers
+        self.numberOfFollowing = numberOfFollowing
+        self.likesGiven = likesGiven
+        self.likesReceived = likesReceived
+        self.tokenUpdatedAt = tokenUpdatedAt
+        self.previewImages = previewImages
+        self.avatarBadgeType = avatarBadgeType
+        self.vipStatus = vipStatus
+    }
 }
 
 extension User {
@@ -74,38 +115,10 @@ extension User {
         numberOfFollowing         = Int(json["number_of_following"].stringValue)
         likesGiven                = json["engagements"]["likes_given"].int
         likesReceived             = json["engagements"]["likes_received"].int
-        maxVideoUploadDuration    = Int(json["max_video_duration"].stringValue)
         tokenUpdatedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["token_updated_at"].stringValue)
         
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
-    }
-    
-    public init(id: Int,
-                name: String,
-                previewImages: [ImageAsset] = []
-    ) {
-        self.id = id
-        self.name = name
-        self.previewImages = previewImages
-        
-        avatarBadgeType           = .None
-        email                     = nil
-        completedProfile          = nil
-        location                  = nil
-        tagline                   = nil
-        fanLoyalty                = nil
-        isBlockedByCurrentUser    = nil
-        vipStatus                 = nil
-        accessLevel               = nil
-        isDirectMessagingDisabled = nil
-        isFollowedByCurrentUser   = nil
-        numberOfFollowers         = nil
-        numberOfFollowing         = nil
-        likesGiven                = nil
-        likesReceived             = nil
-        maxVideoUploadDuration    = nil
-        tokenUpdatedAt            = nil
     }
     
     // MARK: - DictionaryConvertible

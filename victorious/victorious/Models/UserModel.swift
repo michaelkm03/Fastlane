@@ -27,11 +27,17 @@ protocol UserModel: PreviewImageContainer {
     var previewImageModels: [ImageAssetModel] { get }
     var avatarBadgeType: AvatarBadgeType { get }
     var vipStatus: VIPStatus? { get }
+    
+    func toSDKUser() -> User
 }
 
 extension User: UserModel {
     var previewImageModels: [ImageAssetModel] {
         return previewImages.map { $0 }
+    }
+    
+    func toSDKUser() -> User {
+        return self
     }
 }
 
@@ -90,5 +96,29 @@ extension VUser: UserModel {
     var vipStatus: VIPStatus? {
         let isVIP = isVIPSubscriber?.boolValue ?? false
         return VIPStatus(isVIP: isVIP, endDate: vipEndDate)
+    }
+    
+    func toSDKUser() -> User {
+        return User(
+            id: id,
+            email: email,
+            name: name,
+            completedProfile: completedProfile,
+            location: location,
+            tagline: tagline,
+            fanLoyalty: fanLoyalty,
+            isBlockedByCurrentUser: isBlockedByCurrentUser,
+            accessLevel: accessLevel,
+            isDirectMessagingDisabled: isDirectMessagingDisabled?.boolValue,
+            isFollowedByCurrentUser: isFollowedByCurrentUser,
+            numberOfFollowers: numberOfFollowers?.integerValue,
+            numberOfFollowing: numberOfFollowing?.integerValue,
+            likesGiven: likesGiven,
+            likesReceived: likesReceived,
+            tokenUpdatedAt: tokenUpdatedAt,
+            previewImages: previewImageModels.map { $0.toSDKImageAsset() },
+            avatarBadgeType: avatarBadgeType,
+            vipStatus: vipStatus
+        )
     }
 }

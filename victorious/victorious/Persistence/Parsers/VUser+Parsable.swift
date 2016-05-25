@@ -25,7 +25,6 @@ extension VUser: PersistenceParsable {
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
         tokenUpdatedAt              = user.tokenUpdatedAt ?? tokenUpdatedAt
-        maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
         v_likesGiven                = user.likesGiven ?? likesGiven

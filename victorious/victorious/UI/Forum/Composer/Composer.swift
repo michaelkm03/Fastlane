@@ -33,7 +33,7 @@ extension Composer {
     func sendMessage(text text: String) {
         guard
             let currentUser = VCurrentUser.user(),
-            let event: ForumEvent = Content(text: text, author: nil) // TODO: Pass in current user when VUser conforms to UserModel.
+            let event: ForumEvent = Content(text: text, author: currentUser.toSDKUser())
         else {
             assertionFailure("Unable to construct message from Composer.")
             return
@@ -44,7 +44,7 @@ extension Composer {
     func sendMessage(asset asset: ContentMediaAsset, text: String?) {
         guard
             let currentUser = VCurrentUser.user(),
-            let event: ForumEvent = Content(text: text, assets: [asset], author: nil) // TODO: Pass in current user when VUser conforms to UserModel.
+            let event: ForumEvent = Content(text: text, assets: [asset], author: currentUser.toSDKUser())
         else {
             assertionFailure("Unable to construct message from Composer.")
             return

@@ -23,7 +23,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
-        let user = User(userID: self.testUserID)
+        let user = User(id: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
@@ -50,7 +50,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
-        let user = User(userID: self.testUserID)
+        let user = User(id: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
