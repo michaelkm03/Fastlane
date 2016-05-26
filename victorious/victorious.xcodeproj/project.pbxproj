@@ -14213,6 +14213,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15377,6 +15378,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15669,7 +15671,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DownloadTemplate = no;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15701,6 +15703,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15866,6 +15869,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
