@@ -135,7 +135,7 @@ public class Content: DictionaryConvertible {
         if let assetURL = contentData.first?.url  {
             dictionary["media"] = [
                 "type": type.rawValue.uppercaseString,
-                "url": assetURL
+                "url": assetURL.absoluteString
             ]
         }
         
