@@ -92,8 +92,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         var item: VVideoPlayerItem?
         
-        if let contentURL = NSURL(string: asset.resourceID) {
-            item = VVideoPlayerItem(URL: contentURL)
+        if let resourceURL = NSURL(string: asset.resourceID) where asset.videoSource == .video {
+            item = VVideoPlayerItem(URL: resourceURL)
         }
         else {
             item = VVideoPlayerItem(externalID: asset.resourceID)
