@@ -29,3 +29,4 @@ class VSystemBlurredImageBackground : VBackground {
         return backgroundImageView
     }
 }
+
