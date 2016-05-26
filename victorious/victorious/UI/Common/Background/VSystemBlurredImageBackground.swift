@@ -25,7 +25,7 @@ class VSystemBlurredImageBackground : VBackground {
         let blurEffect = UIBlurEffect(style: .Light)
         let effectView = UIVisualEffectView(effect: blurEffect)
         effectView.frame = backgroundImageView.frame
-        backgroundImageView.addSubview(backgroundImageView)
+        backgroundImageView.addSubview(effectView)
         return backgroundImageView
     }
 
