@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VSystemBlurredImageBackground : VBackground {
+class SystemBlurredImageBackground : VBackground {
 
     private let backgroundImage: UIImage
     private let VSystemBlurredImageBackgroundImageKey = "image"
