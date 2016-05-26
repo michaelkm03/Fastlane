@@ -19,7 +19,7 @@ class StageDataSource: ForumEventReceiver {
     // MARK: Initialiation
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")
+        self.dependencyManager = dependencyManager.networkResources
     }
     
     // MARK: ForumEventReceiver
