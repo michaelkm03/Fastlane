@@ -88,7 +88,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
             performSetup()
@@ -179,7 +178,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     private var allowsRightNavigation = true
     
     @objc private func rightNavButtonWasPressed() {
-        if let rightNavViewController = rightNavViewController where allowsRightNavigation {
+        
+        guard allowsRightNavigation else {
+            return
+        }
+        
+        if let rightNavViewController = rightNavViewController {
+            allowsRightNavigation = false
             mainNavigationController.innerNavigationController.pushViewController(rightNavViewController, animated: true)
         }
     }
@@ -323,7 +328,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     func navigationController(navigationController: VNavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         sideMenuController.panningIsEnabled = navigationController.innerNavigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        allowsRightNavigation = false
     }
     
     func navigationController(navigationController: VNavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
