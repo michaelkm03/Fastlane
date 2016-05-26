@@ -26,7 +26,7 @@ extension VImageAsset: ImageAssetModel {
     var mediaMetaData: MediaMetaData {
         var size: CGSize? = nil
         if let width = self.width?.floatValue,
-            let height = self.width?.floatValue {
+            let height = self.height?.floatValue {
             size = CGSize(width: CGFloat(width), height: CGFloat(height))
         }
         
