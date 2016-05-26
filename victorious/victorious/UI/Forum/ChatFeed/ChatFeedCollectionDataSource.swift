@@ -39,8 +39,8 @@ class ChatFeedCollectionDataSource: NSObject, UICollectionViewDataSource {
     func updateTimeStamps(collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
-            let content = paginatedDataSource.visibleItems[indexPath.row] as! ContentModel
-            decorateCell(cell, content: content, dependencyManager: dependencyManager)
+            let message = paginatedDataSource.visibleItems[indexPath.row] as! ChatFeedMessage
+            decorateCell(cell, content: message.content, dependencyManager: dependencyManager)
         }
     }
     
