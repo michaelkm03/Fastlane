@@ -42,10 +42,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     init?(content: ContentModel) {
         self.content = content
-        guard let firstAsset = content.assets.first as? VContentMediaAsset else {
+        guard let asset = content.assets.first else {
             return nil
         }
-        if content.type == .video && firstAsset.videoSource == .youtube {
+        if content.type == .video && asset.videoSource == .youtube {
             videoPlayer = YouTubeVideoPlayer()
         }
         
