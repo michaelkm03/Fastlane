@@ -38,7 +38,7 @@
     [VPurchaseManager sharedInstance];
     
 #if V_ENABLE_TESTFAIRY
-    [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8"];
+    [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8" withOptions:@{ TFSDKEnableCrashReporterKey: @NO }];
     [self addLoginListener];
 #else
     if (![AgeGate isAgeGateEnabled])
