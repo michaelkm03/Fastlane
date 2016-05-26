@@ -15,6 +15,5 @@ extension VImageAsset: PersistenceParsable {
         height = imageAsset.mediaMetaData.size?.height ?? height
         width = imageAsset.mediaMetaData.size?.width ?? width
         imageURL = imageAsset.mediaMetaData.url.absoluteString ?? imageURL
-        type = imageAsset.type ?? type
     }
 }

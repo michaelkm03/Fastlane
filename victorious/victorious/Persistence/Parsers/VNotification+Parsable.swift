@@ -21,7 +21,7 @@ extension VNotification: PersistenceParsable {
         isRead          = sourceModel.isRead ?? isRead
         deepLink        = sourceModel.deeplink ?? deepLink
         
-        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.user.userID ] ) as VUser
+        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.user.id ] ) as VUser
         self.user.populate(fromSourceModel: sourceModel.user)
     }
 }

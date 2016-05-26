@@ -35,10 +35,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     private let pingTimerInterval: NSTimeInterval = 15
 
     /// Keeps record of the information needed in order to identify each message.
-    internal let uniqueIdentificationMessage: UniqueIdentificationMessage = UniqueIdentificationMessage()
+    internal let uniqueIdentificationMessage = UniqueIdentificationMessage()
 
     /// The designated way of getting a reference to the singleton instance with the default configuration.
-    public static let sharedInstance: WebSocketController = WebSocketController()
+    public static let sharedInstance = WebSocketController()
 
     // MARK: Initialization
 
@@ -50,15 +50,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     // MARK: - ForumNetworkSourceWebSocket
-    
-    /// Is the WebSocket connection open at the moment.
-    public var isConnected: Bool {
-        guard let webSocket = webSocket where webSocket.isConnected else {
-            return false
-        }
-        return true
-    }
-    
+
     public func replaceEndPoint(endPoint: NSURL) {
         print("replaceEndPoint -> ", endPoint)
 
@@ -77,7 +69,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     public private(set) var webSocketMessageContainer = WebSocketRawMessageContainer()
 
-    // MARK: - NetworkSource
+    // MARK: - ForumNetworkSource
 
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.
@@ -113,6 +105,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         }
     }
     
+    /// Is the WebSocket connection open at the moment?
+    public var isSetUp: Bool {
+        return webSocket?.isConnected == true
+    }
+    
     // MARK: - ForumEventReceiver
 
     public private(set) var childEventReceivers: [ForumEventReceiver] = []
@@ -134,8 +131,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         webSocketMessageContainer.addMessage(rawMessage)
         
         let connectEvent = WebSocketEvent(type: .Connected)
-        dispatch_async(dispatch_get_main_queue()) {
-            self.receiveEvent(connectEvent)
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            self?.broadcast(connectEvent)
         }
     }
 
@@ -151,8 +148,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         let disconnectEvent = WebSocketEvent(type: WebSocketEventType.Disconnected(webSocketError: webSocketError))
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.receiveEvent(disconnectEvent)
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            self?.broadcast(disconnectEvent)
         }
     }
 
@@ -164,8 +161,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             rawMessage.json = json
 
             if let event = decodeEventFromJSON(json) {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.receiveEvent(event)
+                dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                    self?.broadcast(event)
                 }
             }
         }
@@ -201,7 +198,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         if let jsonString = JSON(toServerDictionary).rawString() {
             NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
-            receiveEvent(event)
+            broadcast(event)
         } else {
             NSLog("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
         }

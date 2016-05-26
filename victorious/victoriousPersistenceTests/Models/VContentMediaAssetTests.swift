@@ -83,11 +83,10 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
                 return nil
         }
         
-        guard let contentMediaAsset = ContentMediaAsset(
-            contentType: contentType,
-            sourceType: sourceType,
-            json: JSON(data: mockData)
-            ) else {
+        
+        
+        guard let contentType = ContentType(rawValue: contentType),
+            contentMediaAsset = ContentMediaAsset(contentType: contentType, sourceType: sourceType, json: JSON(data: mockData)) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }

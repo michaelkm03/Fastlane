@@ -45,7 +45,7 @@ extension VComment: PersistenceParsable {
         
         // Set the user based on the comment's user if a User object isn't set
         if user == nil {
-            let parsedUser: VUser = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : comment.user.userID ])
+            let parsedUser: VUser = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : comment.user.id ])
             parsedUser.populate( fromSourceModel: comment.user )
             user = parsedUser
         }

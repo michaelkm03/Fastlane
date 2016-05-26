@@ -24,7 +24,7 @@ class UserShelfTests: XCTestCase {
         XCTAssertEqual(userShelf.followersCount, 22)
         
         let user = userShelf.user
-        XCTAssertEqual(user.userID, 3694)
+        XCTAssertEqual(user.id, 3694)
         XCTAssertEqual(user.name, "Patrick Lynch")
 
         let shelf = userShelf.shelf

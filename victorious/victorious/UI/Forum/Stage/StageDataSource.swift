@@ -24,7 +24,7 @@ class StageDataSource: ForumEventReceiver {
     
     // MARK: ForumEventReceiver
     
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         guard let dependencyManager = dependencyManager else {
             v_log("No dependency manager avaliable in StageDataSource, bailing.")
             return

@@ -34,9 +34,13 @@ class StoredLoginOperation: BackgroundOperation {
                 context.v_save()
                 return user
             }
+            
             user.setAsCurrentUser()
             
-            PreloadUserInfoOperation().after(self).queue()
+            let infoOperation = PreloadUserInfoOperation()
+            infoOperation.after(self).queue() { _ in
+                infoOperation.user?.setAsCurrentUser()
+            }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {

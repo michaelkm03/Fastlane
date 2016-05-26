@@ -10,6 +10,7 @@
 #import "VThemeManager.h"
 #import "VInlineValidationView.h"
 #import "VPasswordValidator.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kInlineValidationHeight = 20.0f;
 static const CGFloat kSideInset = 10.0f;
@@ -186,32 +187,7 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 - (void)showIncorrectTextAnimationAndVibration
 {
-    [UIView animateKeyframesWithDuration:0.35f
-                                   delay:0.0f
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                              animations:^
-     {
-         [UIView addKeyframeWithRelativeStartTime:0.0f
-                                 relativeDuration:0.3f
-                                       animations:^
-          {
-              self.layer.affineTransform = CGAffineTransformMakeTranslation(-5.0f, 0.0f);
-          }];
-         [UIView addKeyframeWithRelativeStartTime:0.3f
-                                 relativeDuration:0.3f
-                                       animations:^
-          {
-              self.layer.affineTransform = CGAffineTransformMakeTranslation(5.0f, 0.0f);
-          }];
-         [UIView addKeyframeWithRelativeStartTime:0.6f
-                                 relativeDuration:0.3f
-                                       animations:^
-          {
-              self.layer.affineTransform = CGAffineTransformMakeTranslation(0.0f, 0.0f);
-          }];
-     }
-                              completion:nil];
-    
+    [self v_performShakeAnimation];
 }
 
 - (void)applyTextFieldStyle:(VTextFieldStyle)textFieldStyle
