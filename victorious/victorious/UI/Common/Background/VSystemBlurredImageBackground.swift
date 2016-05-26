@@ -28,5 +28,4 @@ class VSystemBlurredImageBackground : VBackground {
         backgroundImageView.addSubview(effectView)
         return backgroundImageView
     }
-
 }
