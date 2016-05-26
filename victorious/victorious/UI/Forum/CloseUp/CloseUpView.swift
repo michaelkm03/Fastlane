@@ -81,7 +81,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             }
             
             createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-            captionLabel.text = content.title
+            captionLabel.text = content.text
             mediaContentView.updateContent(content)
             
             // Update size
@@ -99,7 +99,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             profileImageView.image = placeholderImage
         }
         createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-        captionLabel.text = content.title
+        captionLabel.text = content.text
     }
     
     func setBackground(for content: VContent) {
@@ -183,7 +183,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func sizeForContent(content: VContent) -> CGSize {
         let contentHeight = height(for: content)
         
-        if !contentHasTitle(content) {
+        if !contentHasText(content) {
             return CGSize(
                 width: screenWidth,
                 height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
@@ -193,7 +193,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         var frame = captionLabel.frame
         frame.size.width = screenWidth - 2 * horizontalMargins
         captionLabel.frame = frame
-        captionLabel.text = content.title
+        captionLabel.text = content.text
         captionLabel.sizeToFit()
         
         let totalHeight = headerSection.bounds.size.height +
@@ -208,11 +208,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         )
     }
     
-    private func contentHasTitle(content: VContent) -> Bool {
-        guard let title = content.title else {
-            return false
-        }
-        return title.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
+    private func contentHasText(content: VContent) -> Bool {
+        return content.text?.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
     
     @objc private func closeUpDismissed() {

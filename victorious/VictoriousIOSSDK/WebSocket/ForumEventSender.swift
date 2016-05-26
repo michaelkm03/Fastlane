@@ -19,7 +19,6 @@ public protocol ForumEventSender: class {
 }
 
 public extension ForumEventSender {
-    
     func send(event: ForumEvent) {
         // Unless defined by a concrete type, the default behavior passes the event along.
         nextSender?.send(event)

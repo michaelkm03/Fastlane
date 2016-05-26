@@ -114,8 +114,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            maximumTextLength = dependencyManager.maximumTextLengthForOwner(userIsOwner)
-            attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
+            setupUserDependentUI()
             updateAppearanceFromDependencyManager()
             creationFlowPresenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
         }
@@ -196,10 +195,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return interactiveContainerView.layer.animationKeys() == nil
     }
     
+    func textViewDidHitCharacterLimit(textView: UITextView) {
+        textView.v_performShakeAnimation()
+    }
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+        setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: showKeyboardBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: showKeyboardBlock)
@@ -301,6 +307,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     // MARK: - Subview setup
+    
+    @objc private func setupUserDependentUI() {
+        let isOwner = userIsOwner
+        maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
+        attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
+    }
     
     private func setupTextView() {
         textView.text = nil
@@ -415,6 +427,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         composerTextViewManager?.resetTextView(textView)
         selectedMedia = nil
+    }
+    
+    // MARK: - Notification response
+    
+    func userChanged() {
+        guard let user = VCurrentUser.user() else {
+            KVOController.unobserveAll()
+            return
+        }
+        
+        KVOController.observe(user, keyPath: "isCreator", options: [.New, .Initial], action: #selector(setupUserDependentUI))
     }
 }
 

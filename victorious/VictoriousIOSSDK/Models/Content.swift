@@ -11,15 +11,14 @@ import Foundation
 public class Content {
     public let id: String
     public let status: String?
-    public let title: String?
+    public let text: String?
     public let tags: [String]?
     public let shareURL: NSURL?
     public let releasedAt: NSDate
     public let isUGC: Bool?
     public let previewImages: [ImageAsset]?
     public let contentData: [ContentMediaAsset]?
-    public let text: String?
-    public let type: String
+    public let type: ContentType
     public let isVIP: Bool?
 
     /// Payload describing what will be put on the stage.
@@ -31,7 +30,7 @@ public class Content {
             return nil
         }
         
-        guard let type = json["type"].string else {
+        guard let typeString = json["type"].string, type = ContentType(rawValue: typeString) else {
             NSLog("Type missing in content json -> \(json)")
             return nil
         }
@@ -45,26 +44,25 @@ public class Content {
         self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
-        self.title = json["title"].string
         self.shareURL = json["share_url"].URL
-        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) /// <backend returns in milliseconds
+        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
         self.isUGC = json["is_ugc"].bool
         self.tags = nil
-        self.text = json["text"]["data"].string
+        self.text = json["text"]["data"].string ?? json["title"].string
         self.type = type
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
-        if type == "image" {
+        if type == .image {
             self.contentData = [ContentMediaAsset(
                 contentType: type,
                 sourceType: "",
-                json: json[type]
+                json: json[typeString]
             )].flatMap { $0 }
         } else {
-            let sourceType = json[type]["type"].string ?? ""
+            let sourceType = json[typeString]["type"].string ?? ""
             
-            self.contentData = (json[type][sourceType].array ?? []).flatMap {
+            self.contentData = (json[typeString][sourceType].array ?? []).flatMap {
                 ContentMediaAsset(
                     contentType: type,
                     sourceType: sourceType,
@@ -74,9 +72,9 @@ public class Content {
         }
     }
     
-    public init(id: String, title: String, releasedAt: NSDate, type: String) {
+    public init(id: String, text: String, releasedAt: NSDate, type: ContentType) {
         self.id = id
-        self.title = title
+        self.text = text
         self.releasedAt = releasedAt
         
         self.status = nil
@@ -85,7 +83,6 @@ public class Content {
         self.isUGC = nil
         self.previewImages = nil
         self.contentData = nil
-        self.text = nil
         self.type = type
         self.isVIP = nil
     }

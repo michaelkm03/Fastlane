@@ -28,7 +28,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.queue() { results, error, cancelled in
             
-            guard let persistentUser: VUser = self.testStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
+            guard let persistentUser: VUser = self.testStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
                 XCTFail( "Unable to load the user the operation should have parsed." )
                 return
             }

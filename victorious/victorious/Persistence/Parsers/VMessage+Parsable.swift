@@ -32,7 +32,7 @@ extension VMessage: PersistenceParsable {
         }
         
         if let messageSender = message.sender {
-            self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : messageSender.userID ] ) as VUser
+            self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : messageSender.id ] ) as VUser
             self.sender.populate(fromSourceModel: messageSender)
         }
     }

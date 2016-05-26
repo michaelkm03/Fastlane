@@ -38,7 +38,7 @@ class SuggestedUsersOperationTests: BaseFetcherOperationTestCase {
             if let fetchedUsers = self.operation.results as? [VSuggestedUser] {
                 XCTAssertEqual(1, fetchedUsers.count)
                 XCTAssertEqual(1, fetchedUsers[0].recentSequences.count)
-                XCTAssertEqual(suggestedUser.user.userID, fetchedUsers[0].user.remoteId)
+                XCTAssertEqual(suggestedUser.user.id, fetchedUsers[0].user.remoteId)
             } else {
                 XCTFail("operation didn't fetch any suggested users")
             }

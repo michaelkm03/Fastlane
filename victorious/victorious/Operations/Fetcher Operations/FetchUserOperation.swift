@@ -24,7 +24,7 @@ class FetchUserOperation: BackgroundOperation {
     }
     
     convenience init( sourceUser: VictoriousIOSSDK.User) {
-        self.init( userID: sourceUser.userID, sourceUser: sourceUser )
+        self.init( userID: sourceUser.id, sourceUser: sourceUser )
     }
     
     convenience init( userID: Int) {

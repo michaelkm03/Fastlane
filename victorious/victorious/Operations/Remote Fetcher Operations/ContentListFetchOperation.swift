@@ -34,7 +34,7 @@ class ContentListFetchOperation: RemoteFetcherOperation, RequestOperation {
             let managedContentIDs: [NSManagedObjectID] = contents.map { content in
                 let managedContent: VContent = context.v_findOrCreateObject([
                     "remoteID": content.content.id,
-                    "author.remoteId": content.author.userID
+                    "author.remoteId": content.author.id
                 ])
                 
                 managedContent.populate(fromSourceModel: content)
