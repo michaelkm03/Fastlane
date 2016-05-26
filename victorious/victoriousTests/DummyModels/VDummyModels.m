@@ -31,6 +31,10 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return context;
 }
 
+// Suppress a warning we get from importing victorious-Swift.h. Can remove once we convert more of our tests to Swift.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-selector-match"
+
 + (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
     NSManagedObjectContext *context = [VDummyModels context];
@@ -39,6 +43,8 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     
     return nil;
 }
+
+#pragma GCC diagnostic pop
 
 + (NSArray *)objectsWithEntityName:(NSString *)entityName subclass:(Class)subclass count:(NSInteger)count
 {
