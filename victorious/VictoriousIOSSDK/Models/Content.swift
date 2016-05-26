@@ -35,7 +35,7 @@ public class Content: DictionaryConvertible {
             let sourceType = json[typeString]["type"].string,
             let author = User(json: viewedContentJSON["author"])
         else {
-            NSLog("ID missing in content json -> \(json)")
+            NSLog("Required field missing in content json -> \(json)")
             return nil
         }
         
