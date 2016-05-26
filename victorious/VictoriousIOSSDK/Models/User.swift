@@ -13,9 +13,9 @@ public struct User {
         case owner, user
         
         public init?(json: JSON) {
-            switch json.stringValue {
-                case "API_OWNER": self = .owner
-                case "API_USER": self = .user
+            switch json.stringValue.lowercaseString {
+                case "api_owner": self = .owner
+                case "api_user": self = .user
                 default: return nil
             }
         }
