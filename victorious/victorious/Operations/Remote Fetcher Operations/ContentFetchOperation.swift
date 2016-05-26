@@ -37,7 +37,7 @@ class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
                 return
             }
             
-            let content: VContent = context.v_findOrCreateObject(["remoteID": id])
+            let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
 
             content.populate(fromSourceModel: result)
             context.v_save()
