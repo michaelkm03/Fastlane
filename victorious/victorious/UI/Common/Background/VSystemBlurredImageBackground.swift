@@ -15,7 +15,7 @@ class VSystemBlurredImageBackground : VBackground {
     private let VSystemBlurredImageBackgroundImageKey = "image"
 
     required init (dependencyManager: VDependencyManager) {
-        self.backgroundImage = dependencyManager.imageForKey(VSystemBlurredImageBackgroundImageKey)
+        backgroundImage = dependencyManager.imageForKey(VSystemBlurredImageBackgroundImageKey)
         self.dependencyManager = dependencyManager
         super.init()
     }
