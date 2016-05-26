@@ -126,7 +126,7 @@ extension User {
     public func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
         dictionary["id"] = id
-        dictionary["profile_url"] = previewImages.first?.mediaMetaData.url
+        dictionary["profile_url"] = previewImages.first?.mediaMetaData.url.absoluteString
         dictionary["name"] = name
         return dictionary
     }
