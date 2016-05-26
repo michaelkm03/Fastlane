@@ -58,7 +58,7 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     
     // MARK: - ForumEventReceiver
     
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         // Stash events in the queue when received and wait to dequeue on our timer cycle
         if let message =  event as? ChatMessage {
             let chatFeedMessage = ChatFeedMessage(displayOrder: eventCounter, source: message)

@@ -21,7 +21,7 @@ class VContentTests: BasePersistentStoreTestCase {
 
         XCTAssertEqual(content.remoteID, "31415926535")
         XCTAssertEqual(content.status, "public")
-        XCTAssertEqual(content.title, "We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
+        XCTAssertEqual(content.text, "We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
         XCTAssertEqual(content.shareURL, "test_share_url")
         XCTAssertEqual(Int(content.releasedAt.timeIntervalSince1970), 123456/1000)
         XCTAssertEqual(content.isUGC, true)

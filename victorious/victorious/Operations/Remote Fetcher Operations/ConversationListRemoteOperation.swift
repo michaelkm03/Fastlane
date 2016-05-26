@@ -28,7 +28,7 @@ final class ConversationListRemoteOperation: RemoteFetcherOperation, PaginatedRe
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {
-                let uniqueElements = [ "user.remoteId": result.otherUser.userID ]
+                let uniqueElements = [ "user.remoteId": result.otherUser.id ]
                 let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 conversation.populate( fromSourceModel: result )
                 conversation.displayOrder = displayOrder

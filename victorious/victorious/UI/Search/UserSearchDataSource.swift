@@ -78,7 +78,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         user.populate(fromSourceModel: visibleItem.sourceResult)
         
         let username = user.name ?? ""
-        let userID = visibleItem.sourceResult.userID
+        let userID = visibleItem.sourceResult.id
         let pictureURL = user.pictureURL(ofMinimumSize: cell.preferredPictureSize) ?? NSURL()
         self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
         cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:pictureURL)

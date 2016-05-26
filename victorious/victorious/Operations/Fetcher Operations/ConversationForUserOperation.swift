@@ -18,7 +18,7 @@ class ConversationForUserOperation: FetcherOperation {
     var loadedUser: VUser?
     
     required init(sourceUser: VictoriousIOSSDK.User) {
-        self.userID = sourceUser.userID
+        self.userID = sourceUser.id
         self.sourceUser = sourceUser
     }
     

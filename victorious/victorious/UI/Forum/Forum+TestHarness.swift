@@ -91,7 +91,7 @@ extension ForumViewController {
             return
         }
         totalCount += 1
-        receiveEvent(event)
+        receive(event)
     }
 }
 
