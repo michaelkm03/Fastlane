@@ -49,12 +49,12 @@ extension VSequence: PersistenceParsable {
             self.adBreak = persistentAdBreak
         }
 
-        self.user = context.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
+        self.user = context.v_findOrCreateObject( [ "remoteId" : sequence.user.id ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         
         if let parentUser = sequence.parentUser {
-            self.parentUserId = NSNumber(integer: parentUser.userID)
-            let persistentParentUser = context.v_findOrCreateObject([ "remoteId": parentUser.userID ]) as VUser
+            self.parentUserId = NSNumber(integer: parentUser.id)
+            let persistentParentUser = context.v_findOrCreateObject([ "remoteId": parentUser.id ]) as VUser
             persistentParentUser.populate(fromSourceModel: parentUser)
             self.parentUser = persistentParentUser
         }

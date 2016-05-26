@@ -12,19 +12,18 @@ import VictoriousIOSSDK
 extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
-        remoteId                    = user.userID ?? remoteId
+        remoteId                    = user.id ?? remoteId
         completedProfile            = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
         name                        = user.name ?? name
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
-        isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
+        isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
         isCreator                   = user.accessLevel?.isCreator ?? isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
-        isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
-        tokenUpdatedAt              = user.tokenUpdatedAt ?? tokenUpdatedAt
+        isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
@@ -35,16 +34,14 @@ extension VUser: PersistenceParsable {
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
+        avatarBadgeType             = user.avatarBadgeType.stringRepresentation
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
         
-        /// If backend does not send us a badgeType, we default to "", which means we show the default level badge
-        avatarBadgeType             = user.avatar?.badgeType ?? ""
-        
-        if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
-            let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
+        if !user.previewImageAssets.isEmpty {
+            let newPreviewAssets: [VImageAsset] = user.previewImageAssets.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset

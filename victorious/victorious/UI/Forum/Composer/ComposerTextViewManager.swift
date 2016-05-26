@@ -55,6 +55,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         if canAppendText {
             textView.text = textView.text + text
         }
+        else {
+            delegate?.textViewDidHitCharacterLimit(textView)
+        }
         return canAppendText
     }
     
@@ -64,7 +67,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         if additionalTextLength <= 0 {
             return true
         }
-        
+                
         if shouldDismissForText(text) {
             if let delegate = delegate where delegate.textViewCanDismiss {
                 textView.resignFirstResponder()
@@ -81,6 +84,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         return additionalTextLength + textView.text.characters.count <= maximumTextLength
+        
     }
     
     func updateDelegateOfTextViewStatus(textView: UITextView) {
@@ -104,6 +108,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+            delegate?.textViewDidHitCharacterLimit(textView)
             return false
         }
         

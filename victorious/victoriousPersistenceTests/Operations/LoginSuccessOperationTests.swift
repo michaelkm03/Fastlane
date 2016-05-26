@@ -28,7 +28,7 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
         
-        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
+        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
             XCTFail( "Unable to load the user the operation should have parsed." )
             return
         }

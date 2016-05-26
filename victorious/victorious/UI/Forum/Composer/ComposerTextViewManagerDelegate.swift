@@ -21,4 +21,6 @@ protocol ComposerTextViewManagerDelegate: class {
     var textViewCanDismiss: Bool { get }
     
     var textViewCurrentHashtag: (String, NSRange)? { get set }
+
+    func textViewDidHitCharacterLimit(textView: UITextView)
 }

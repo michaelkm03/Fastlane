@@ -37,7 +37,6 @@
 @dynamic completedProfile;
 @dynamic tagline;
 @dynamic token;
-@dynamic tokenUpdatedAt;
 @dynamic childSequences;
 @dynamic conversations;
 @dynamic comments;

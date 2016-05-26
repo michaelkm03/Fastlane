@@ -16,7 +16,7 @@ class VContent: NSManagedObject {
     @NSManaged var remoteID: String
     @NSManaged var shareURL: String?
     @NSManaged var status: String?
-    @NSManaged var title: String?
+    @NSManaged var text: String?
     @NSManaged var type: String /// < "image", "video", "gif", "text"
     @NSManaged var isVIP: NSNumber?
     @NSManaged var contentMediaAssets: NSSet? /// <NSSet of VContentMediaAsset objects

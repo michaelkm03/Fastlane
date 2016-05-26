@@ -143,10 +143,14 @@ private extension VDependencyManager {
 
 private extension VDependencyManager {
     func streamAPIPath(forUserID userID: Int) -> String? {
-        let timeInterval = "\(Int(NSDate().timeIntervalSince1970*1000))"
-        guard let apiPath = stringForKey("streamURL")?.stringByReplacingOccurrencesOfString("%%FROM_TIME%%", withString: timeInterval) else {
+        guard var apiPath = stringForKey("streamURL") else {
             return nil
         }
+        
+        apiPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
+            "%%FROM_TIME%%": "\(Int(NSDate().timeIntervalSince1970*1000))",
+            "%%TO_TIME%%": "0"
+        ], inURLString: apiPath)
         
         let urlComponents = NSURLComponents(string: apiPath)
         let queryItem = NSURLQueryItem(name: "user_id", value: "\(userID)" )

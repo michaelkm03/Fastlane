@@ -42,6 +42,6 @@ class UserInfoRequestTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual( user.userID, id )
+        XCTAssertEqual( user.id, id )
     }
 }
