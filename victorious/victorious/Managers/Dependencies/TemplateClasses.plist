@@ -216,5 +216,7 @@
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>
+	<key>systemBlurredImage.background</key>
+	<string>victorious.VSystemBlurredImageBackground</string>
 </dict>
 </plist>
