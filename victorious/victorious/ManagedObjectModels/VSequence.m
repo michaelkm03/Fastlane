@@ -11,7 +11,6 @@
 #import "VNode.h"
 #import "VPollResult.h"
 #import "VTracking.h"
-#import "VUser.h"
 #import "VVoteResult.h"
 #import "victorious-Swift.h"
 

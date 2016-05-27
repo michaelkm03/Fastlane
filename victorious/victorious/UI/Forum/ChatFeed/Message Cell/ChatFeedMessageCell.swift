@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 protocol ChatCellType {
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize
-    var cellContent: DisplayableChatMessage? { get set }
+    var content: ContentModel? { get set }
 }
 
 protocol ChatFeedMessageCellDelegate: class {
@@ -19,7 +19,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
+class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
@@ -29,7 +29,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     @IBOutlet private(set) weak var contentContainer: UIView!
     @IBOutlet private(set) weak var detailTextView: UITextView!
     @IBOutlet private(set) weak var messageContainer: UIView!
-    @IBOutlet private(set) weak var mediaView: ChatFeedMessageMediaView!
+    @IBOutlet private(set) weak var mediaView: MediaContentView!
     @IBOutlet private(set) weak var textView: UITextView!
     
     let horizontalSpacing: CGFloat = 10.0
@@ -43,13 +43,9 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
-    var preloadedImage: UIImage? {
-        return mediaView.preloadedImage
-    }
-    
     var dependencyManager: VDependencyManager!
     
-    var cellContent: DisplayableChatMessage? {
+    var content: ContentModel? {
         didSet {
             populateData()
             updateStyle()
@@ -99,17 +95,9 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     
     private func populateData() {
         textView.attributedText = attributedText
-        if let mediaAttachment = cellContent?.mediaAttachment {
-            if mediaAttachment.type == .GIF || mediaAttachment.type == .Video {
-                mediaView.previewURL = mediaAttachment.thumbnailURL
-                mediaView.mediaURL = mediaAttachment.url
-            } else if mediaAttachment.type == .Image {
-                mediaView.previewURL = mediaAttachment.url
-                mediaView.mediaURL = nil
-            }
-            mediaView.hidden = false
-        } else {
-            mediaView.hidden = true
+        
+        if let content = content {
+            mediaView.updateContent(content)
         }
         
         detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == cellContent?.userID
@@ -120,7 +108,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
             detailTextView.text = "" 
         }
         
-        if let imageURL = cellContent?.profileURL {
+        if let imageURL = content?.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
         } else {
             avatarView.image = nil
@@ -164,11 +152,13 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let mediaAttachment = cellContent?.mediaAttachment else {
+        guard let unclampedAspectRatio = content?.aspectRatio where content?.assetModels.isEmpty == false else {
             return CGSize.zero
         }
+        
         let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: mediaAttachment.aspectRatio)
+        let aspectRatio = dependencyManager.clampedAspectRatio(from: unclampedAspectRatio)
+        
         return CGSize(
             width: maxContentWidth,
             height: maxContentWidth / aspectRatio
@@ -176,7 +166,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     }
     
     private var attributedText: NSAttributedString? {
-        guard let text = cellContent?.text where text != "" else {
+        guard let text = content?.text where text != "" else {
             return nil
         }
         let paragraphStyle = NSMutableParagraphStyle()
@@ -187,18 +177,6 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
             NSFontAttributeName: dependencyManager.messageFont
         ]
         return NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    // MARK: - VFocusable
-    
-    var focusType: VFocusType = .None {
-        didSet {
-            mediaView?.focusType = focusType
-        }
-    }
-    
-    func contentArea() -> CGRect {
-        return mediaView.frame
     }
 }
 

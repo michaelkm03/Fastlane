@@ -7,7 +7,7 @@
 //
 
 #import "VActionItem.h"
-#import "VUser.h"
+#import "victorious-Swift.h"
 
 @interface VActionItem ()
 

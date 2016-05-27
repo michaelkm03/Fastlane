@@ -48,8 +48,8 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
         }
         
         XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
-        XCTAssertEqual(1, updatedUserToFollow.followers.count)
-        if updatedUserToFollow.followers.count == 1, let followedUsers = Array(updatedUserToFollow.followers) as? [VFollowedUser] {
+        XCTAssertEqual(1, updatedUserToFollow.followers?.count)
+        if updatedUserToFollow.followers?.count == 1, let followedUsers = updatedUserToFollow.followers?.array as? [VFollowedUser] {
             XCTAssertEqual(1, followedUsers.count)
             XCTAssertEqual( updatedUserToFollow, followedUsers[0].objectUser )
             XCTAssertEqual( currentUser, followedUsers[0].subjectUser )
@@ -58,8 +58,8 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
         }
         
         XCTAssertEqual(1, currentUser.numberOfFollowing)
-        XCTAssertEqual(1, currentUser.following.count)
-        if currentUser.following.count == 1, let followedUsers = Array(currentUser.following) as? [VFollowedUser] {
+        XCTAssertEqual(1, currentUser.following?.count)
+        if currentUser.following?.count == 1, let followedUsers = currentUser.following?.array as? [VFollowedUser] {
             XCTAssertEqual(1, followedUsers.count)
             XCTAssertEqual(updatedUserToFollow, followedUsers[0].objectUser)
             XCTAssertEqual(currentUser, followedUsers[0].subjectUser)
@@ -68,7 +68,7 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
         }
         
         XCTAssert( currentUser.isFollowingUserID(userIDOne) )
-        XCTAssert( updatedUserToFollow.isFollowedByMainUser.boolValue )
+        XCTAssertTrue( updatedUserToFollow.isFollowedByMainUser?.boolValue ?? false )
         
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
         if self.testTrackingManager.trackEventCalls.count >= 1 {
@@ -137,8 +137,8 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
         }
 
         XCTAssertEqual(2, currentUser.numberOfFollowing)
-        XCTAssertEqual(2, currentUser.following.count)
-        if let followedUsers = Array(currentUser.following) as? [VFollowedUser] {
+        XCTAssertEqual(2, currentUser.following?.count)
+        if let followedUsers = currentUser.following?.array as? [VFollowedUser] {
             let objectUsersObjectIDs = followedUsers.map { $0.objectUser.objectID }
             let subjectUserIDs = followedUsers.map { $0.subjectUser.objectID }
             XCTAssert(objectUsersObjectIDs.contains(userOne.objectID))
@@ -153,8 +153,8 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
 
         XCTAssertEqual(1, userOne.numberOfFollowers)
         XCTAssertEqual(true, userOne.isFollowedByMainUser)
-        XCTAssertEqual(1, userOne.followers.count)
-        if let followedUser = Array(userOne.followers)[0] as? VFollowedUser {
+        XCTAssertEqual(1, userOne.followers?.count)
+        if let followedUser = userOne.followers?.array[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, userOne)
             XCTAssertEqual(followedUser.subjectUser, currentUser)
         } else {
@@ -163,7 +163,7 @@ class FollowUsersOperationTests: BaseFetcherOperationTestCase {
 
         XCTAssertEqual(true, userTwo.isFollowedByMainUser)
         XCTAssertEqual(1, userTwo.numberOfFollowers)
-        if let followedUser = Array(userTwo.followers)[0] as? VFollowedUser {
+        if let followedUser = userTwo.followers?.array[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, userTwo)
             XCTAssertEqual(followedUser.subjectUser, currentUser)
         } else {

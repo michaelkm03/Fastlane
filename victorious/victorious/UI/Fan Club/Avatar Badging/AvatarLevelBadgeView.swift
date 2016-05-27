@@ -229,11 +229,10 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
 
     /// Updates the badge view's visibility and level based on the passed in user.
     func updateBadge(forUser user: VUser?) {
-        guard let user = user else {
+        guard let userLevel = user?.level?.integerValue else {
             hidden = true
             return
         }
-        let userLevel = user.level.integerValue
         hidden = (userLevel < badgeDependencyManager?.minimumLevel() || userLevel == 0) && !verified
         
         level = userLevel

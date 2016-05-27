@@ -10,18 +10,18 @@ import Foundation
 
 /// Conformers can respond to the results fetched by this network data source
 protocol TutorialNetworkDataSourceDelegate: class {
-    func didUpdateVisibleItems(from oldValue: [DisplayableChatMessage], to newValue: [DisplayableChatMessage])
+    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel])
     func didFinishFetchingAllItems()
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
-    private(set) var visibleItems: [DisplayableChatMessage] = [] {
+    private(set) var visibleItems: [ContentModel] = [] {
         didSet {
             delegate?.didUpdateVisibleItems(from: oldValue, to: visibleItems)
         }
     }
     
-    private var queuedTutorialMessages: [DisplayableChatMessage] = []
+    private var queuedTutorialMessages: [ContentModel] = []
     
     private var timerManager: VTimerManager? = nil
     
@@ -41,7 +41,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         
         let operation = TutorialContentsRemoteOperation(urlString: urlString)
         operation.queue { [weak self] results, error, cancelled in
-            self?.queuedTutorialMessages = results?.flatMap { $0 as? DisplayableChatMessage } ?? []
+            self?.queuedTutorialMessages = results?.flatMap { $0 as? ContentModel } ?? []
             
             self?.dequeueTutorialMessage()
             self?.timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)
