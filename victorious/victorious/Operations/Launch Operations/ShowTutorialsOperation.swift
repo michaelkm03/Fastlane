@@ -13,7 +13,9 @@ class ShowTutorialsOperation: MainQueueOperation {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let animated: Bool
-    private let lastShownVersion = "com.victorious.tutorials.lastShownVersion"
+    
+    private let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
+    private let newVersionWithMajorFeatures = "5.0"
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = false) {
         self.originViewController = originViewController
@@ -43,15 +45,21 @@ class ShowTutorialsOperation: MainQueueOperation {
     }
     
     private var shouldShowTutorials: Bool {
+        // Grab current app version
         guard let currentAppVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
             assertionFailure("the key `CFBundleShortVersionString` has changed.")
             return false
         }
         
-        let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersion) as? String
+        // If the current app version does not contain major features
+        guard currentAppVersion == newVersionWithMajorFeatures else {
+            return false
+        }
+        
+        let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersionDefaultsKey) as? String
         
         if (currentAppVersion != tutorialsLastShownForVersion) {
-            NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersion)
+            NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersionDefaultsKey)
         }
         
         return currentAppVersion != tutorialsLastShownForVersion
