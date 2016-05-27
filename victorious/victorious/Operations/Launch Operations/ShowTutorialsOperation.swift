@@ -22,13 +22,12 @@ class ShowTutorialsOperation: MainQueueOperation {
     }
     
     override func start() {
+        beganExecuting()
         
         guard !self.cancelled && shouldShowTutorials else {
             finishedExecuting()
             return
         }
-        
-        beganExecuting()
         
         guard let tutorialViewController = dependencyManager.templateValueOfType(TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
             finishedExecuting()
@@ -44,18 +43,17 @@ class ShowTutorialsOperation: MainQueueOperation {
     }
     
     private var shouldShowTutorials: Bool {
-        guard
-            let currentAppVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String,
-            let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersion) as? String
-        else {
+        guard let currentAppVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
             assertionFailure("the key `CFBundleShortVersionString` has changed.")
             return false
         }
+        
+        let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersion) as? String
         
         if (currentAppVersion != tutorialsLastShownForVersion) {
             NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersion)
         }
         
-        return currentAppVersion == tutorialsLastShownForVersion
+        return currentAppVersion != tutorialsLastShownForVersion
     }
 }
