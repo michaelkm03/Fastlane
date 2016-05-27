@@ -51,13 +51,14 @@ class ShowTutorialsOperation: MainQueueOperation {
             return false
         }
         
-        // If the current app version does not contain major features
+        // If the current app version does not contain major features, we don't show tutorials screen
         guard currentAppVersion == newVersionWithMajorFeatures else {
             return false
         }
         
         let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersionDefaultsKey) as? String
         
+        // If the current app version is different than what we saved last time, udpate it
         if (currentAppVersion != tutorialsLastShownForVersion) {
             NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersionDefaultsKey)
         }
