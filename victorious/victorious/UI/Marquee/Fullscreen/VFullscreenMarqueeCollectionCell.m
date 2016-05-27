@@ -16,7 +16,6 @@
 #import "VFullscreenMarqueeController.h"
 
 #import "VStreamItem.h"
-#import "VUser.h"
 
 #import "VTimerManager.h"
 

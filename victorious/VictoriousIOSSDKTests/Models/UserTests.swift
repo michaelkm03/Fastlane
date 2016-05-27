@@ -41,12 +41,12 @@ class UserTests: XCTestCase {
         let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         XCTAssertEqual(dateFormatter.stringFromDate(vipEndDate), "2016-05-02 18:22:50")
         
-        let previewImageAssets = user.previewImageAssets
-        if previewImageAssets.count == 2 {
-            XCTAssertEqual(previewImageAssets[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
-            XCTAssertEqual(previewImageAssets[0].mediaMetaData.size, CGSize(width: 80, height: 80))
-            XCTAssertEqual(previewImageAssets[1].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
-            XCTAssertEqual(previewImageAssets[1].mediaMetaData.size, CGSize(width: 100, height: 100))
+        let previewImages = user.previewImages
+        if previewImages.count == 2 {
+            XCTAssertEqual(previewImages[0].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
+            XCTAssertEqual(previewImages[0].mediaMetaData.size, CGSize(width: 80, height: 80))
+            XCTAssertEqual(previewImages[1].mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
+            XCTAssertEqual(previewImages[1].mediaMetaData.size, CGSize(width: 100, height: 100))
         } else {
             XCTFail("Expected 2 image assets in the avatar property")
         }

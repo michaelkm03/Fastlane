@@ -10,7 +10,6 @@
 #import "VContentCommentsCell.h"
 #import "VComment+Fetcher.h"
 #import "VCommentsUtilityButtonConfiguration.h"
-#import "VUser.h"
 #import "VConstants.h"
 #import "VSequence.h"
 #import "VSequencePermissions.h"

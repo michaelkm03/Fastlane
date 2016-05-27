@@ -30,11 +30,11 @@ class MediaContentView: UIView {
         v_addFitToParentConstraintsToSubview(previewImageView)
     }
     
-    func updateContent(content: VContent) {
+    func updateContent(content: ContentModel) {
         self.content = content
     }
     
-    private(set) var content: VContent? {
+    private(set) var content: ContentModel? {
         didSet {
             guard let content = content else {
                 assertionFailure("Content cannot be nil")
@@ -47,12 +47,11 @@ class MediaContentView: UIView {
             
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
-            if let preview = content.previewImageWithMinimumWidth(minWidth),
-                let previewImageURL = NSURL(string: preview.imageURL) {
+            if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
                 previewImageView.sd_setImageWithURL(previewImageURL)
             }
             setupForContent(content)
-            if content.contentType()?.displaysAsVideo == true {
+            if content.type.displaysAsVideo {
                 setupVideoContainer()
                 videoCoordinator.setupVideoPlayer(in: videoContainerView)
                 videoCoordinator.setupToolbar(in: self, initallyVisible: false)
@@ -61,10 +60,9 @@ class MediaContentView: UIView {
         }
     }
     
-    private func setupForContent(content: VContent) {
-        let contentType = content.contentType()
-        videoContainerView.hidden = contentType?.displaysAsVideo != true
-        previewImageView.hidden = contentType?.displaysAsImage != true
+    private func setupForContent(content: ContentModel) {
+        videoContainerView.hidden = content.type.displaysAsVideo != true
+        previewImageView.hidden = content.type.displaysAsImage != true
     }
     
     private func setupVideoContainer() {
@@ -74,7 +72,7 @@ class MediaContentView: UIView {
     }
     
     private func shouldShowToolbar() -> Bool {
-        return content?.contentType() == .video
+        return content?.type == .video
     }
     
     // MARK: - Actions

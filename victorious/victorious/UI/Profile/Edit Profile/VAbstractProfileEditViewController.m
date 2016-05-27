@@ -7,7 +7,6 @@
 //
 
 #import "VAbstractProfileEditViewController.h"
-#import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 #import "VContentInputAccessoryView.h"

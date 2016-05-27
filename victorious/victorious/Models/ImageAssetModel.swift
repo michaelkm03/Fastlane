@@ -12,16 +12,21 @@ import Foundation
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol ImageAssetModel {
     var mediaMetaData: MediaMetaData { get }
+    func toSDKImageAsset() -> ImageAsset
 }
 
-extension ImageAsset: ImageAssetModel { }
+extension ImageAsset: ImageAssetModel {
+    func toSDKImageAsset() -> ImageAsset {
+        return self
+    }
+}
 
 extension VImageAsset: ImageAssetModel {
     
     var mediaMetaData: MediaMetaData {
         var size: CGSize? = nil
         if let width = self.width?.floatValue,
-            let height = self.width?.floatValue {
+            let height = self.height?.floatValue {
             size = CGSize(width: CGFloat(width), height: CGFloat(height))
         }
         
@@ -35,5 +40,9 @@ extension VImageAsset: ImageAssetModel {
         let validURL = retrievedURL ?? NSURL(string: "")!
         
         return MediaMetaData(url: validURL, size: size)
+    }
+    
+    func toSDKImageAsset() -> ImageAsset {
+        return ImageAsset(mediaMetaData: mediaMetaData)
     }
 }

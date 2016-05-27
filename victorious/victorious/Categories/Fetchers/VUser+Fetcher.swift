@@ -9,9 +9,7 @@
 import UIKit
 
 extension VUser {
-    
     func isVIPValid() -> Bool {
-        
         guard let vipEndDate = vipEndDate,
             let isVIPSubscriber = isVIPSubscriber?.boolValue else {
                 return false
@@ -19,9 +17,4 @@ extension VUser {
         
         return vipEndDate > NSDate() && isVIPSubscriber
     }
-    
-    var badgeType: AvatarBadgeType {
-        return (avatarBadgeType ?? "") == "verified" ? .Verified : .None
-    }
-
 }

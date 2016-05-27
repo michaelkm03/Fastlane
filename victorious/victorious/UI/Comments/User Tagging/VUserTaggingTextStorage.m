@@ -7,7 +7,6 @@
 //
 
 #import "VUserTaggingTextStorage.h"
-#import "VUser.h"
 #import "VTag.h"
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"

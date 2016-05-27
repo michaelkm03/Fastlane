@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
 #import "VNotificationSettingsViewController.h"

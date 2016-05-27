@@ -11,7 +11,6 @@
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
-#import "VUser.h"
 #import "VReachability.h"
 #import "VSessionTimer.h"
 #import "VTemplateDecorator.h"
