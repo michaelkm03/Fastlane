@@ -13,6 +13,7 @@ class ShowTutorialsOperation: MainQueueOperation {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let animated: Bool
+    private let lastShownVersion = "com.victorious.tutorials.lastShownVersion"
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = false) {
         self.originViewController = originViewController
@@ -22,7 +23,7 @@ class ShowTutorialsOperation: MainQueueOperation {
     
     override func start() {
         
-        guard !self.cancelled && FirstInstallManager().isFirstLaunch else {
+        guard !self.cancelled && shouldShowTutorials else {
             finishedExecuting()
             return
         }
@@ -40,5 +41,21 @@ class ShowTutorialsOperation: MainQueueOperation {
         
         let tutorialNavigationController = UINavigationController(rootViewController: tutorialViewController)
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
+    }
+    
+    private var shouldShowTutorials: Bool {
+        guard
+            let currentAppVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String,
+            let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersion) as? String
+        else {
+            assertionFailure("the key `CFBundleShortVersionString` has changed.")
+            return false
+        }
+        
+        if (currentAppVersion != tutorialsLastShownForVersion) {
+            NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersion)
+        }
+        
+        return currentAppVersion == tutorialsLastShownForVersion
     }
 }
