@@ -10,7 +10,7 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView, VFocusable {
+class MediaContentView: UIView {
     let previewImageView = UIImageView()
     let videoContainerView = VPassthroughContainerView()
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -82,13 +82,5 @@ class MediaContentView: UIView, VFocusable {
             return
         }
         videoCoordinator?.toggleToolbarVisibility(true)
-    }
-    
-    // MARK: - VFocusable
-    
-    var focusType: VFocusType = .None {
-        didSet {
-            // Play / pause video.
-        }
     }
 }

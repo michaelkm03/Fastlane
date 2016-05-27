@@ -19,7 +19,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
+class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
@@ -148,11 +148,13 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let previewImageSize = content?.previewImageModels.first?.mediaMetaData.size else {
+        guard let unclampedAspectRatio = content?.aspectRatio else {
             return CGSize.zero
         }
+        
         let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: previewImageSize.aspectRatio)
+        let aspectRatio = dependencyManager.clampedAspectRatio(from: unclampedAspectRatio)
+        
         return CGSize(
             width: maxContentWidth,
             height: maxContentWidth / aspectRatio
@@ -171,18 +173,6 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
             NSFontAttributeName: dependencyManager.messageFont
         ]
         return NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    // MARK: - VFocusable
-    
-    var focusType: VFocusType = .None {
-        didSet {
-            mediaView?.focusType = focusType
-        }
-    }
-    
-    func contentArea() -> CGRect {
-        return mediaView.frame
     }
 }
 
