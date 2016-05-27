@@ -11,7 +11,7 @@ import Foundation
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 protocol ContentModel: PreviewImageContainer {
-    var releasedAt: NSDate { get }
+    var createdAt: NSDate { get }
     var type: ContentType { get }
     
     var id: String? { get }
@@ -37,7 +37,7 @@ extension ContentModel {
     // MARK: - UI strings
     
     var timeLabel: String {
-        return releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
     
     // MARK: - Assets
@@ -52,8 +52,8 @@ extension ContentModel {
 }
 
 extension VContent: ContentModel {
-    var releasedAt: NSDate {
-        return v_releasedAt
+    var createdAt: NSDate {
+        return v_createdAt
     }
     
     var text: String? {

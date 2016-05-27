@@ -62,7 +62,7 @@ extension ForumViewController {
         }
         
         guard let event: ForumEvent = Content(
-            releasedAt: NSDate(),
+            createdAt: NSDate(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             assets: [asset].flatMap { $0 },
             author: User(

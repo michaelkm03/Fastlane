@@ -11,7 +11,7 @@ import CoreData
 
 class VContent: NSManagedObject {
     
-    @NSManaged var v_releasedAt: NSDate
+    @NSManaged var v_createdAt: NSDate
     @NSManaged var v_remoteID: String
     @NSManaged var v_shareURL: String?
     @NSManaged var v_status: String?

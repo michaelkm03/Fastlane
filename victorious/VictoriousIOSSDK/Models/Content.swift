@@ -14,7 +14,7 @@ public class Content: DictionaryConvertible {
     public let text: String?
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
-    public let releasedAt: NSDate
+    public let createdAt: NSDate
     public let previewImages: [ImageAsset]?
     public let assets: [ContentMediaAsset]
     public let type: ContentType
@@ -44,7 +44,7 @@ public class Content: DictionaryConvertible {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
+        self.createdAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
         self.hashtags = []
         self.type = type
         self.text = json["title"].string
@@ -79,7 +79,7 @@ public class Content: DictionaryConvertible {
         }
         
         author = user
-        releasedAt = serverTime
+        createdAt = serverTime
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["media"])].flatMap { $0 }
         
@@ -97,9 +97,9 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, releasedAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User) {
+    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User) {
         self.id = id
-        self.releasedAt = releasedAt
+        self.createdAt = createdAt
         self.type = type
         self.text = text
         self.author = author
@@ -145,6 +145,6 @@ public class Content: DictionaryConvertible {
 
 extension Content: ForumEvent {
     public var serverTime: NSDate {
-        return releasedAt
+        return createdAt
     }
 }

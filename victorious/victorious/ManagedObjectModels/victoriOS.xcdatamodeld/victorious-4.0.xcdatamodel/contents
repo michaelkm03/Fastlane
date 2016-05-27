@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -65,8 +65,8 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
+        <attribute name="v_createdAt" attributeType="Date" syncable="YES"/>
         <attribute name="v_isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="v_releasedAt" attributeType="Date" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_status" optional="YES" attributeType="String" syncable="YES"/>

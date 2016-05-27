@@ -28,7 +28,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue<ChatFeedMessage>()
         
         for i in 0..<eventCount {
-            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            let content = Content(createdAt: NSDate(), text: "\(i)", author: user)
             queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
             XCTAssertEqual(queue.count, i+1)
         }
@@ -43,7 +43,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue(maximimEventCount: maximimEventCount)
         
         for i in 0..<eventCount {
-            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            let content = Content(createdAt: NSDate(), text: "\(i)", author: user)
             queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
             XCTAssertEqual(queue.count, min(i+1, maximimEventCount))
         }
@@ -58,7 +58,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            let content = Content(createdAt: NSDate(), text: "\(i)", author: user)
             queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         
@@ -75,7 +75,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            let content = Content(createdAt: NSDate(), text: "\(i)", author: user)
             queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         
@@ -93,7 +93,7 @@ class ReceivedEventQueueTests: XCTestCase {
         queue = ReceivedEventQueue()
         
         for i in 0..<eventCount {
-            let content = Content(releasedAt: NSDate(), text: "\(i)", author: user)
+            let content = Content(createdAt: NSDate(), text: "\(i)", author: user)
             queue.addEvent(ChatFeedMessage(content: content, displayOrder: i))
         }
         

@@ -78,7 +78,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 }
             }
             
-            createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
             mediaContentView.updateContent(content)
             
@@ -96,7 +96,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         else {
             profileImageView.image = placeholderImage
         }
-        createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
         captionLabel.text = content.text
     }
     
