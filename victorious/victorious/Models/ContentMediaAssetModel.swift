@@ -26,3 +26,41 @@ enum ContentVideoAssetSource {
     case youtube
     case video
 }
+
+extension VContentMediaAsset: ContentMediaAssetModel {
+    var resourceID: String {
+        return v_uniqueID
+    }
+    
+    var videoSource: ContentVideoAssetSource? {
+        guard let source = v_source else {
+            return nil
+        }
+        
+        switch source {
+        case "youtube":
+            return .youtube
+        case "video", "gif":
+            return .video
+        default:
+            return nil
+        }
+    }
+}
+
+extension ContentMediaAsset: ContentMediaAssetModel {
+    var resourceID: String {
+        return uniqueID
+    }
+    
+    var videoSource: ContentVideoAssetSource? {
+        switch self {
+        case .video(_, _), .gif(_, _):
+            return .video
+        case .youtube(_, _):
+            return .youtube
+        case .image(_):
+            return nil
+        }
+    }
+}

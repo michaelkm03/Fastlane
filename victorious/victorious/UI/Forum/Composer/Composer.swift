@@ -23,7 +23,7 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func dismissKeyboard(animated: Bool)
     
-    func sendMessage(mediaAttachment mediaAttachment: MediaAttachment, text: String?)
+    func sendMessage(asset asset: ContentMediaAsset, text: String?)
     
     func sendMessage(text text: String)    
 }
@@ -31,32 +31,21 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
 extension Composer {
     
     func sendMessage(text text: String) {
-        guard let currentUser = self.currentUser,
-            let event: ForumEvent = ChatMessage(fromUser: currentUser, text: text) else {
-                assertionFailure("Unable to construct message from Composer.")
-                return
-        }
-        send(event)
-    }
-    
-    func sendMessage(mediaAttachment mediaAttachment: MediaAttachment, text: String?) {
-        guard let currentUser = self.currentUser,
-            let event: ForumEvent = ChatMessage(fromUser: currentUser, text: text, mediaAttachment: mediaAttachment) else {
-                assertionFailure("Unable to construct message from Composer.")
-                return
-        }
-        send(event)
-    }
-
-    // MARK: - Private
-    
-    private var currentUser: ChatMessageUser? {
-        guard let currentUser = VCurrentUser.user() else {
-            return nil
+        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
+            assertionFailure("Unable to construct message from Composer.")
+            return
         }
         
-        let profileURL = currentUser.pictureURL(ofMinimumSize: VUser.defaultSmallMinimumPictureSize)
-        return ChatMessageUser(id: currentUser.remoteId.integerValue, name: currentUser.name, profileURL: profileURL)
+        send(Content(text: text, author: currentUser))
+    }
+    
+    func sendMessage(asset asset: ContentMediaAsset, text: String?) {
+        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
+            assertionFailure("Unable to construct message from Composer.")
+            return
+        }
+        
+        send(Content(text: text, assets: [asset], author: currentUser))
     }
 }
 

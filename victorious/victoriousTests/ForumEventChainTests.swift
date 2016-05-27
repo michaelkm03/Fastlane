@@ -45,7 +45,7 @@ class ForumEventChainTests: XCTestCase {
         senderLinkC.nextSender = senderDestination
         
         let event = createEvent()
-        senderLinkA.sendEvent(event)
+        senderLinkA.send(event)
         
         XCTAssertEqual(senderDestination.sentEvents.count, 1)
     }

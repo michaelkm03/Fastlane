@@ -8,7 +8,6 @@
 
 #import "VContentCommentsCell.h"
 
-#import "VUser.h"
 
 // Subviews
 #import "VDefaultProfileButton.h"

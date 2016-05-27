@@ -147,7 +147,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         let newItemsContainsUserMessage = newValue
             .filter { !oldValue.containsObject($0) }
             .flatMap { $0 as? ChatFeedMessage }
-            .contains { $0.userID == VCurrentUser.user()?.remoteId?.integerValue }
+            .contains { $0.content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue }
         
         let allItemsWereUnstashed = newValue.count == 0 && oldValue.count > 0
  
@@ -228,15 +228,18 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         guard let indexPath = collectionView.indexPathForCell(messageCell) else {
             return
         }
-        let message = paginatedDataSource.visibleItems[ indexPath.row ] as! ChatFeedMessage
-        delegate?.chatFeed(self, didSelectUserWithUserID: message.userID)
+        
+        let message = paginatedDataSource.visibleItems[indexPath.row] as! ChatFeedMessage
+        
+        let authorID = message.content.authorModel.id        
+        delegate?.chatFeed(self, didSelectUserWithUserID: authorID)
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let media = messageCell.cellContent?.mediaAttachment else {
+        guard let asset = messageCell.content?.assetModels.first else {
             return
         }
-        delegate?.chatFeed(self, didSelectMedia: media)
+        delegate?.chatFeed(self, didSelectAsset: asset)
     }
     
     // MARK: - UIScrollViewDelegate

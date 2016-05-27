@@ -10,7 +10,6 @@
 
 // Stream Support
 #import "VSequence+Fetcher.h"
-#import "VUser.h"
 
 // Views + Helpers
 #import "VDefaultProfileButton.h"

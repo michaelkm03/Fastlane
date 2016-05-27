@@ -13,7 +13,7 @@ extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
         remoteId                    = user.id ?? remoteId
-        completedProfile            = user.completedProfile ?? completedProfile
+        v_completedProfile          = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
         name                        = user.name ?? name
         location                    = user.location ?? location
@@ -27,21 +27,21 @@ extension VUser: PersistenceParsable {
         maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
         numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
         numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
-        likesGiven                  = user.likesGiven ?? likesGiven
-        likesReceived               = user.likesReceived ?? likesReceived
+        v_likesGiven                = user.likesGiven ?? likesGiven
+        v_likesReceived             = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
-        avatarBadgeType             = user.avatarBadgeType.stringRepresentation
+        v_avatarBadgeType           = user.avatarBadgeType.stringRepresentation
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
         
-        if !user.previewImageAssets.isEmpty {
-            let newPreviewAssets: [VImageAsset] = user.previewImageAssets.flatMap {
+        if !user.previewImages.isEmpty {
+            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
                 let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
                 imageAsset.populate( fromSourceModel: $0 )
                 return imageAsset
@@ -61,7 +61,7 @@ extension VUser: PersistenceParsable {
         // The purposes of this is to allow the user to remain a VIP for the duration of
         // their session even if their subscription expires during the session.
         // Upon the next session, the user will not be a VIP and must re-subscribe.
-        if !isVIPSubscriber.boolValue {
+        if isVIPSubscriber == false {
             isVIPSubscriber = vipStatus.isVIP
         }
     }
