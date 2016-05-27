@@ -43,11 +43,7 @@ extension ContentModel {
     // MARK: - Assets
     
     var aspectRatio: CGFloat {
-        guard let preview = previewImageModels.first,
-            let aspectRatio = preview.mediaMetaData.size?.aspectRatio else {
-            return 0
-        }
-        return aspectRatio
+        return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
     }
 }
 

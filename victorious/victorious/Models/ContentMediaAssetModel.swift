@@ -37,11 +37,13 @@ extension VContentMediaAsset: ContentMediaAssetModel {
             return nil
         }
         
-        if source == "youtube" {
+        switch source {
+        case "youtube":
             return .youtube
-        }
-        else {
+        case "video", "gif":
             return .video
+        default:
+            return nil
         }
     }
 }
@@ -53,10 +55,12 @@ extension ContentMediaAsset: ContentMediaAssetModel {
     
     var videoSource: ContentVideoAssetSource? {
         switch self {
-        case .youtube(_,_):
-            return .youtube
-        default:
+        case .video(_, _), .gif(_, _):
             return .video
+        case .youtube(_, _):
+            return .youtube
+        case .image(_):
+            return nil
         }
     }
 }
