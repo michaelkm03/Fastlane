@@ -42,7 +42,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     init?(content: ContentModel) {
         self.content = content
-        guard let asset = content.assets.first else {
+        guard let asset = content.assetModels.first else {
             return nil
         }
         if content.type == .video && asset.videoSource == .youtube {
@@ -76,16 +76,16 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.v_addHeightConstraint(41.0)
         superview.v_addPinToLeadingTrailingToSubview(toolbar)
         superview.v_addPinToBottomToSubview(toolbar)
+        
         if visible {
             toolbar.show()
-        }
-        else {
+        } else {
             toolbar.hide()
         }
     }
     
     func loadVideo() {
-        guard let asset = content.assets.first else {
+        guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
@@ -94,8 +94,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         if let resourceURL = NSURL(string: asset.resourceID) where asset.videoSource == .video {
             item = VVideoPlayerItem(URL: resourceURL)
-        }
-        else {
+        } else {
             item = VVideoPlayerItem(externalID: asset.resourceID)
         }
         

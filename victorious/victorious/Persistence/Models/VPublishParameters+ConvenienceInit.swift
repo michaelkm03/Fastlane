@@ -12,10 +12,13 @@ extension VPublishParameters {
     
     convenience init?(content: Content) {
         self.init()
+        
         caption = content.text
-        guard let mediaAsset = content.contentData.first else {
+        
+        guard let mediaAsset = content.assets.first else {
             return nil
         }
+        
         mediaToUploadURL = mediaAsset.url
         
         switch mediaAsset {

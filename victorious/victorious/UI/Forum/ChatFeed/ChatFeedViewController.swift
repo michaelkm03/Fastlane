@@ -230,7 +230,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let asset = messageCell.content?.assets.first else {
+        guard let asset = messageCell.content?.assetModels.first else {
             return
         }
         delegate?.chatFeed(self, didSelectAsset: asset)

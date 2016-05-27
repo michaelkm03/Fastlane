@@ -33,7 +33,7 @@ extension VContent: PersistenceParsable {
             v_contentPreviewAssets = Set(persistentAssets)
         }
         
-        let persistentAssets: [VContentMediaAsset] = content.contentData.flatMap { asset in
+        let persistentAssets: [VContentMediaAsset] = content.assets.flatMap { asset in
             let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_uniqueID": asset.uniqueID])
             data.populate(fromSourceModel: asset)
             data.v_content = self

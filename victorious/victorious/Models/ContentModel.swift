@@ -27,7 +27,7 @@ protocol ContentModel: PreviewImageContainer {
     var previewImageModels: [ImageAssetModel] { get }
     
     /// An array of media assets for the content, could be any media type
-    var assets: [ContentMediaAssetModel] { get }
+    var assetModels: [ContentMediaAssetModel] { get }
     
     // Future: Take the following property out
     var stageContent: StageContent? { get }
@@ -109,7 +109,7 @@ extension VContent: ContentModel {
     }
     
     /// An array of media assets for the content, could be any media type
-    var assets: [ContentMediaAssetModel] {
+    var assetModels: [ContentMediaAssetModel] {
         guard let contentMediaAssets = v_contentMediaAssets else {
             return []
         }
@@ -139,8 +139,8 @@ extension Content: ContentModel {
         return isVIP
     }
     
-    var assets: [ContentMediaAssetModel] {
-        return contentData.flatMap({ $0 as ContentMediaAssetModel })
+    var assetModels: [ContentMediaAssetModel] {
+        return assets.map { $0 as ContentMediaAssetModel }
     }
 
 }

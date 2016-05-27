@@ -20,11 +20,11 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.id, "1")
         XCTAssertEqual(content.status, "public")
         XCTAssertEqual(content.text, "TEST_TITLE")
-        XCTAssertNil(content.tags)
+        XCTAssertNil(content.hashtags)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
         XCTAssertEqual(Int(content.releasedAt.timeIntervalSince1970), 314159/1000)
         XCTAssertEqual(content.previewImages?.count, 4)
-        XCTAssertEqual(content.contentData.count, 1)
+        XCTAssertEqual(content.assets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)
     }
     

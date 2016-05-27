@@ -16,7 +16,7 @@ public class Content: DictionaryConvertible {
     public let shareURL: NSURL?
     public let releasedAt: NSDate
     public let previewImages: [ImageAsset]?
-    public let contentData: [ContentMediaAsset]
+    public let assets: [ContentMediaAsset]
     public let type: ContentType
     public let isVIP: Bool
     public let author: User
@@ -58,12 +58,12 @@ public class Content: DictionaryConvertible {
                 sourceType: sourceType,
                 json: json[typeString]
             ) {
-                self.contentData = [asset]
+                self.assets = [asset]
             } else {
-                self.contentData = []
+                self.assets = []
             }
         } else {
-            self.contentData = (json[typeString][sourceType].array ?? []).flatMap {
+            self.assets = (json[typeString][sourceType].array ?? []).flatMap {
                 ContentMediaAsset(
                     contentType: type,
                     sourceType: sourceType,
@@ -81,7 +81,7 @@ public class Content: DictionaryConvertible {
         author = user
         releasedAt = serverTime
         text = json["text"].string
-        contentData = [ContentMediaAsset(forumJSON: json["media"])].flatMap { $0 }
+        assets = [ContentMediaAsset(forumJSON: json["media"])].flatMap { $0 }
         
         id = nil
         status = nil
@@ -92,7 +92,7 @@ public class Content: DictionaryConvertible {
         isVIP = false
         
         // Either one of these types are required to be counted as a chat message.
-        guard text != nil || contentData.count > 0 else {
+        guard text != nil || assets.count > 0 else {
             return nil
         }
     }
@@ -108,7 +108,7 @@ public class Content: DictionaryConvertible {
         self.hashtags = []
         self.shareURL = nil
         self.previewImages = nil
-        self.contentData = assets
+        self.assets = assets
         self.isVIP = false
     }
     
@@ -132,7 +132,7 @@ public class Content: DictionaryConvertible {
         dictionary["text"] = text
         dictionary["user"] = author.toDictionary()
         
-        if let assetURL = contentData.first?.url  {
+        if let assetURL = assets.first?.url  {
             dictionary["media"] = [
                 "type": type.rawValue.uppercaseString,
                 "url": assetURL.absoluteString
