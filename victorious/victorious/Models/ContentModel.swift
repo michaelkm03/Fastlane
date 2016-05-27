@@ -127,10 +127,6 @@ extension Content: ContentModel {
     var authorModel: UserModel {
         return author
     }
-    
-    var hashtags: [Hashtag] {
-        return []
-    }
         
     var previewImageModels: [ImageAssetModel] {
         guard let contentPreviewAssets = previewImages else {

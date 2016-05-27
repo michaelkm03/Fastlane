@@ -12,7 +12,7 @@ public class Content: DictionaryConvertible {
     public let id: String?
     public let status: String?
     public let text: String?
-    public let tags: [String]?
+    public let hashtags: [Hashtag]
     public let shareURL: NSURL?
     public let releasedAt: NSDate
     public let previewImages: [ImageAsset]?
@@ -45,7 +45,7 @@ public class Content: DictionaryConvertible {
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
         self.releasedAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
-        self.tags = nil
+        self.hashtags = []
         self.type = type
         self.text = json["title"].string
         self.author = author
@@ -85,7 +85,7 @@ public class Content: DictionaryConvertible {
         
         id = nil
         status = nil
-        tags = nil
+        hashtags = []
         shareURL = nil
         previewImages = nil
         type = .text
@@ -105,7 +105,7 @@ public class Content: DictionaryConvertible {
         self.author = author
         
         self.status = nil
-        self.tags = nil
+        self.hashtags = []
         self.shareURL = nil
         self.previewImages = nil
         self.contentData = assets
