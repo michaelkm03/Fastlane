@@ -102,18 +102,12 @@ extension VContent: ContentModel {
     
     /// An array of preview images for the content.
     var previewImageModels: [ImageAssetModel] {
-        guard let contentPreviewAssets = v_contentPreviewAssets else {
-            return []
-        }
-        return contentPreviewAssets.flatMap({ $0 as? ImageAssetModel })
+        return v_contentPreviewAssets.map { $0 }
     }
     
     /// An array of media assets for the content, could be any media type
     var assetModels: [ContentMediaAssetModel] {
-        guard let contentMediaAssets = v_contentMediaAssets else {
-            return []
-        }
-        return contentMediaAssets.flatMap({ $0 as? ContentMediaAssetModel })
+        return v_contentMediaAssets.map { $0 }
     }
     
     // Future: Take the following property out
@@ -129,10 +123,7 @@ extension Content: ContentModel {
     }
         
     var previewImageModels: [ImageAssetModel] {
-        guard let contentPreviewAssets = previewImages else {
-            return []
-        }
-        return contentPreviewAssets.flatMap({ $0 as ImageAssetModel })
+        return previewImages?.map { $0 } ?? []
     }
     
     var isVIPOnly: Bool {
