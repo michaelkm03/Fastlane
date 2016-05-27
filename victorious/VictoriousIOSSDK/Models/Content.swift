@@ -18,7 +18,7 @@ public class Content: DictionaryConvertible {
     public let previewImages: [ImageAsset]?
     public let assets: [ContentMediaAsset]
     public let type: ContentType
-    public let isVIP: Bool
+    public let isVIPOnly: Bool
     public let author: User
 
     /// Payload describing what will be put on the stage.
@@ -39,7 +39,7 @@ public class Content: DictionaryConvertible {
             return nil
         }
         
-        self.isVIP = json["is_vip"].bool ?? false
+        self.isVIPOnly = json["is_vip"].bool ?? false
         self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
@@ -89,7 +89,7 @@ public class Content: DictionaryConvertible {
         shareURL = nil
         previewImages = nil
         type = .text
-        isVIP = false
+        isVIPOnly = false
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || assets.count > 0 else {
@@ -109,7 +109,7 @@ public class Content: DictionaryConvertible {
         self.shareURL = nil
         self.previewImages = nil
         self.assets = assets
-        self.isVIP = false
+        self.isVIPOnly = false
     }
     
     // MARK: - DictionaryConvertible

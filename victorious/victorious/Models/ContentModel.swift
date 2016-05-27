@@ -93,7 +93,7 @@ extension VContent: ContentModel {
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool {
-        return v_isVIP == true
+        return v_isVIPOnly == true
     }
     
     /// An array of preview images for the content.
@@ -120,10 +120,6 @@ extension Content: ContentModel {
         
     var previewImageModels: [ImageAssetModel] {
         return previewImages?.map { $0 } ?? []
-    }
-    
-    var isVIPOnly: Bool {
-        return isVIP
     }
     
     var assetModels: [ContentMediaAssetModel] {

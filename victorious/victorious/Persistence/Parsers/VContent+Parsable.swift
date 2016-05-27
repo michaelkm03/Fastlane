@@ -11,7 +11,7 @@ import UIKit
 extension VContent: PersistenceParsable {
     
     func populate(fromSourceModel content: Content) {
-        v_isVIP = content.isVIP ?? v_isVIP
+        v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
         v_createdAt = content.createdAt ?? v_createdAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL

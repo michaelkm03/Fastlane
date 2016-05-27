@@ -66,7 +66,7 @@
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
         <attribute name="v_createdAt" attributeType="Date" syncable="YES"/>
-        <attribute name="v_isVIP" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="v_isVIPOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_status" optional="YES" attributeType="String" syncable="YES"/>

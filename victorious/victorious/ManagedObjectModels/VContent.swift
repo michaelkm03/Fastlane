@@ -17,7 +17,7 @@ class VContent: NSManagedObject {
     @NSManaged var v_status: String?
     @NSManaged var v_text: String?
     @NSManaged var v_type: String
-    @NSManaged var v_isVIP: NSNumber?
+    @NSManaged var v_isVIPOnly: NSNumber?
     @NSManaged var v_contentMediaAssets: Set<VContentMediaAsset>
     @NSManaged var v_author: VUser
     @NSManaged var v_contentPreviewAssets: Set<VImageAsset>
