@@ -17,6 +17,12 @@ protocol ContentMediaAssetModel {
     
     /// Returns where the video is hosted remotely
     var videoSource: ContentVideoAssetSource? { get }
+    
+    /// The asset's content type.
+    var contentType: ContentType { get }
+    
+    /// The URL to the asset's content.
+    var url: NSURL? { get }
 }
 
 /// The source of where the video is hosted.
@@ -45,6 +51,23 @@ extension VContentMediaAsset: ContentMediaAssetModel {
         default:
             return nil
         }
+    }
+    
+    var contentType: ContentType {
+        switch v_source ?? "" {
+        case "youtube", "video":
+            return .video
+        case "gif":
+            return .gif
+        case "image":
+            return .image
+        default:
+            return .image
+        }
+    }
+    
+    var url: NSURL? {
+        return NSURL(v_string: v_remoteSource)
     }
 }
 

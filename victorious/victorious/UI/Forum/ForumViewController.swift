@@ -62,7 +62,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:
                 break
             }
-        } else if let event = event as? Content where event.assets.count > 0 {
+        } else if let event = event as? ContentModel where event.assetModels.count > 0 {
             
             //Create a persistent piece of content so long as we're not a normal user on the socket
             guard let networkResources = dependencyManager.networkResources else {
