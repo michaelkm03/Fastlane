@@ -1,5 +1,5 @@
 //
-//  ChatFeedModelAdapters.swift
+//  ChatFeedMessage.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/19/16.

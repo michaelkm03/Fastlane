@@ -1369,7 +1369,7 @@
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
-		A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */; };
+		A79E533C1CC08A85001C1F55 /* ChatFeedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */; };
 		A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */; };
 		A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
@@ -4048,7 +4048,7 @@
 		A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E91AD7124D00F2564A /* VProfileDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
-		A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedModelAdapters.swift; sourceTree = "<group>"; };
+		A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessage.swift; sourceTree = "<group>"; };
 		A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollResultReceiver.h; sourceTree = "<group>"; };
 		A7A1CF5D1C62BE6400B08F07 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
@@ -8217,7 +8217,7 @@
 				A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */,
 				A73BA2B21C9393ED008168B5 /* ChatFeed.swift */,
 				A73548621CA0DB2400A7106C /* ChatFeedCollectionDataSource.swift */,
-				A79E533B1CC08A85001C1F55 /* ChatFeedModelAdapters.swift */,
+				A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */,
 				A73BA2B31C9393ED008168B5 /* ChatFeedNetworkDataSource.swift */,
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
@@ -12708,7 +12708,7 @@
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
-				A79E533C1CC08A85001C1F55 /* ChatFeedModelAdapters.swift in Sources */,
+				A79E533C1CC08A85001C1F55 /* ChatFeedMessage.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
 				7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
