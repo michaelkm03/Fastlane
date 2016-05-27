@@ -55,21 +55,22 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     var content: ContentModel? {
         didSet {
             guard let content = content else {
-                    return
+                return
             }
+            
             let author = content.authorModel
-            setBackground(for: content)
+            
             setHeader(for: content, author: author)
             
             // Header
             userNameButton.setTitle(author.name, forState: .Normal)
+            
             if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
-                profileImageView.sd_setImageWithURL(pictureURL,
-                                                    placeholderImage: placeholderImage)
-            }
-            else {
+                profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+            } else {
                 profileImageView.image = placeholderImage
             }
+            
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
             if let previewURL = content.previewImageURL(ofMinimumWidth: minWidth) {
@@ -89,32 +90,22 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func setHeader(for content: ContentModel, author: UserModel ) {
         userNameButton.setTitle(author.name, forState: .Normal)
+        
         if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
-            profileImageView.sd_setImageWithURL(pictureURL,
-                                                placeholderImage: placeholderImage)
-        }
-        else {
+            profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+        } else {
             profileImageView.image = placeholderImage
         }
+        
         createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
         captionLabel.text = content.text
-    }
-    
-    func setBackground(for content: ContentModel) {
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-            blurredImageView.applyBlurToImageURL(previewImageURL, withRadius: 12.0) { [weak self] in
-                self?.blurredImageView.alpha = blurredImageAlpha
-            }
-        }
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
         delegate?.didSelectProfile()
     }
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager,
-                                        delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
         let view : CloseUpView = CloseUpView.v_fromNib()
         view.dependencyManager = dependencyManager
         view.delegate = delegate
