@@ -81,7 +81,7 @@ public class Content: DictionaryConvertible {
         author = user
         createdAt = serverTime
         text = json["text"].string
-        assets = [ContentMediaAsset(forumJSON: json["media"])].flatMap { $0 }
+        assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
         
         id = nil
         status = nil
@@ -130,7 +130,6 @@ public class Content: DictionaryConvertible {
         var dictionary = [String: AnyObject]()
         dictionary["type"] = "TEXT"
         dictionary["text"] = text
-        dictionary["user"] = author.toDictionary()
         
         if let assetURL = assets.first?.url  {
             dictionary["media"] = [

@@ -122,14 +122,4 @@ extension User {
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
     }
-    
-    // MARK: - DictionaryConvertible
-    
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        dictionary["id"] = id
-        dictionary["profile_url"] = previewImages.first?.mediaMetaData.url.absoluteString
-        dictionary["name"] = name
-        return dictionary
-    }
 }
