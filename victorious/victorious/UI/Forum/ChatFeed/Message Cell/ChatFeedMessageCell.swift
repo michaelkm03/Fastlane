@@ -35,7 +35,7 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
     let horizontalSpacing: CGFloat = 10.0
     let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     
-    var layout: ChatFeedMessageCellLayout! {
+    var layout: ChatFeedMessageCellLayout! {    
         didSet {
             layout.updateWithCell(self)
         }
@@ -113,7 +113,12 @@ class ChatFeedMessageCell: UICollectionViewCell, VFocusable, ChatCellType {
         }
         
         if let name = cellContent?.username, timeStamp = cellContent?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
+            if VCurrentUser.user()?.remoteId.integerValue == cellContent?.userID {
+                detailTextView.hidden = true 
+            }
+            else {
+                detailTextView.text = "\(name) (\(timeStamp))"
+            }
         }
         
         if let imageURL = cellContent?.profileURL {

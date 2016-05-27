@@ -125,14 +125,17 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
                 + cell.avatarContainer.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        cell.detailTextView.frame = CGRect(
-            x: cell.contentContainer.frame.maxX
-                - cell.avatarContainer.frame.width
-                - cell.horizontalSpacing
-                - cell.detailTextView.frame.width,
-            y: 0,
-            width: cell.detailTextView.frame.width,
-            height: cell.contentMargin.top
-        )
+        
+        cell.detailTextView.frame = CGRectZero
+            
+//            CGRect(
+//            x: cell.contentContainer.frame.maxX
+//                - cell.avatarContainer.frame.width
+//                - cell.horizontalSpacing
+//                - cell.detailTextView.frame.width,
+//            y: 0,
+//            width: cell.detailTextView.frame.width,
+//            height: cell.contentMargin.top
+//        )
     }
 }
