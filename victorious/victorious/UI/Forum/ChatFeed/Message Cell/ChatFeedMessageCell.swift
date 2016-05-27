@@ -148,7 +148,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let unclampedAspectRatio = content?.aspectRatio else {
+        guard let unclampedAspectRatio = content?.aspectRatio where content?.assetModels.isEmpty == false else {
             return CGSize.zero
         }
         
