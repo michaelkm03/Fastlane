@@ -45,10 +45,10 @@ class VUser: NSManagedObject {
     @NSManaged var loginType: NSNumber
     @NSManaged var notificationSettings: VNotificationSettings?
     @NSManaged var likedSequences: NSOrderedSet?
-    @NSManaged var accountIdentifier: String? //< Transien?
-    @NSManaged var isNewUser: NSNumber? //< Transien?
-    @NSManaged var isVIPSubscriber: NSNumber? //< Transient (so that validation only comes from the backend and is never read from disk?
-    @NSManaged var vipEndDate: NSDate? //< Transien?
+    @NSManaged var accountIdentifier: String?
+    @NSManaged var isNewUser: NSNumber?
+    @NSManaged var isVIPSubscriber: NSNumber?
+    @NSManaged var vipEndDate: NSDate?
     @NSManaged var achievementsUnlocked: AnyObject?
     @NSManaged var v_avatarBadgeType: String?
     @NSManaged var content: Set<NSObject>?
