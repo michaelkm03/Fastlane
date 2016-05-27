@@ -48,6 +48,8 @@ public struct User {
     public let avatarBadgeType: AvatarBadgeType
     public let vipStatus: VIPStatus?
     
+    // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
+    // comprehensive, such as the call in `UserModel`'s `toSDKUser`.
     public init(
         id: Int,
         email: String? = nil,
