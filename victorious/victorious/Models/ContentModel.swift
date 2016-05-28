@@ -10,7 +10,7 @@ import Foundation
 
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol ContentModel: PreviewImageContainer, ForumEvent {
+protocol ContentModel: PreviewImageContainer, ForumEvent, PaginatableItem {
     var createdAt: NSDate { get }
     var type: ContentType { get }
     
