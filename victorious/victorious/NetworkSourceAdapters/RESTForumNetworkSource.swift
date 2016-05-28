@@ -6,40 +6,71 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class RESTForumNetworkSource: NSObject, ForumNetworkSource {
+class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDelegate {
+    // MARK: - Configuration
+    
+    private static let pollingInterval = NSTimeInterval(5.0)
+    
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")!
+        self.dependencyManager = dependencyManager.networkResources ?? dependencyManager
+        
+        dataSource = TimePaginatedDataSource(apiPath: self.dependencyManager.mainFeedAPIPath) {
+            ContentFeedOperation(url: $0)
+        }
     }
     
     // MARK: - Dependency manager
     
     private let dependencyManager: VDependencyManager
     
+    // MARK: - Data source
+    
+    let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    
+    let paginator = VScrollPaginator()
+    
+    private func broadcastContents(contents: [ContentModel]) {
+        for content in contents {
+            broadcast(content)
+        }
+    }
+    
+    // MARK: - Polling
+    
+    private var pollingTimer: NSTimer?
+    
+    private func startPolling() {
+        pollingTimer?.invalidate()
+        
+        pollingTimer = NSTimer.scheduledTimerWithTimeInterval(
+            RESTForumNetworkSource.pollingInterval,
+            target: self,
+            selector: #selector(pollForNewContent),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    @objc private func pollForNewContent() {
+        dataSource.loadPage(.Next) { [weak self] contents, error in
+            // TODO: Needs to be broadcasted to append.
+            self?.broadcastContents(contents)
+        }
+    }
+    
     // MARK: - ForumNetworkSource
     
     func setUp() {
         isSetUp = true
         
-//        ContentListFetchOperation(urlString: dependencyManager.mainFeedURLString, fromTime: NSDate()).queue { [weak self] result, error, cancelled in
-//            for content in result ?? [] {
-//                guard let content = content as? VContent, author = content.author else {
-//                    continue
-//                }
-//                
-//                guard let chatMessage = ChatMessage(
-//                    serverTime: content.releasedAt,
-//                    fromUser: ChatMessageUser(id: author.remoteId.integerValue, name: author.name, profileURL: nil),
-//                    text: content.text,
-//                    mediaAttachment: nil
-//                ) else {
-//                    continue
-//                }
-//                
-//                self?.broadcast(chatMessage)
-//            }
-//        }
+        dataSource.loadPage(.First) { [weak self] contents, error in
+            // TODO: Needs to be broadcasted to replace.
+            self?.broadcastContents(contents)
+        }
+        
+        startPolling()
     }
     
     func tearDown() {
@@ -71,10 +102,28 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     func receive(event: ForumEvent) {
         // Nothing yet.
     }
+    
+    // MARK: - VScrollPaginatorDelegate
+    
+    func shouldLoadPreviousPage() {
+        dataSource.loadPage(.Previous) { [weak self] contents, error in
+            // TODO: Needs to be broadcasted to prepend.
+            self?.broadcastContents(contents)
+        }
+    }
+    
+    func shouldLoadNextPage() {
+        // We load the next page via polling, not scrolling.
+    }
 }
 
 private extension VDependencyManager {
-    var mainFeedURLString: String {
-        return stringForKey("mainFeedUrl")
+    var mainFeedAPIPath: String {
+        guard let apiPath = stringForKey("mainFeedUrl") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return ""
+        }
+        
+        return apiPath
     }
 }

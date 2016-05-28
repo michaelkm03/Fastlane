@@ -8,27 +8,31 @@
 
 import UIKit
 
-final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class ContentFeedRemoteOperation: RemoteFetcherOperation {
+    // MARK: - Initializing
     
-    let request: ContentFeedRequest
-    
-    required init( request: ContentFeedRequest ) {
+    init(request: ContentFeedRequest) {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil) {
-        self.init(request: ContentFeedRequest(apiPath: apiPath))
+    convenience init(url: NSURL) {
+        self.init(request: ContentFeedRequest(url: url))
     }
+    
+    // MARK: - Executing
+    
+    let request: ContentFeedRequest
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: { [weak self] contents in
+            self?.onComplete(contents)
+        }, onError: nil)
     }
     
-    func onComplete(sourceFeed: ContentFeedRequest.ResultType) {
-        
+    func onComplete(contents: [Content]) {
         // Make changes on background queue
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
-            self.results = sourceFeed.flatMap { sdkContent in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            self.results = contents.flatMap { sdkContent in
                 guard let id = sdkContent.id else {
                     return nil
                 }

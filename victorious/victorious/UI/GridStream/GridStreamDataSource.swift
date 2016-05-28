@@ -59,14 +59,15 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
             return
         }
         
-        loadPage(pageType,
-                 createOperation: {
-                    return ContentFeedOperation(apiPath: streamAPIPath)
-            },
-                 completion: { results, error, cancelled in
-                    completion?(error: error)
-            }
-        )
+        // TODO: Fix me.
+//        loadPage(pageType,
+//                 createOperation: {
+//                    return ContentFeedOperation(apiPath: streamAPIPath)
+//            },
+//                 completion: { results, error, cancelled in
+//                    completion?(error: error)
+//            }
+//        )
     }
     
     // MARK: - UICollectionViewDataSource

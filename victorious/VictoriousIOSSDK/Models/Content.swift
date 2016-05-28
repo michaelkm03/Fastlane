@@ -32,10 +32,9 @@ public class Content: DictionaryConvertible {
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string,
             let author = User(json: viewedContentJSON["author"])
         else {
-            NSLog("Required field missing in content json -> \(json)")
+            NSLog("Required field missing in content json -> \(viewedContentJSON)")
             return nil
         }
         
@@ -58,7 +57,7 @@ public class Content: DictionaryConvertible {
                 sourceType: "",
                 json: json[typeString]
             )].flatMap { $0 }
-        } else {
+        } else if let sourceType = json[typeString]["type"].string {
             self.assets = (json[typeString][sourceType].array ?? []).flatMap {
                 ContentMediaAsset(
                     contentType: type,
@@ -66,6 +65,8 @@ public class Content: DictionaryConvertible {
                     json: $0
                 )
             }
+        } else {
+            self.assets = []
         }
     }
     
