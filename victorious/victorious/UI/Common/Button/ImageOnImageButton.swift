@@ -15,25 +15,17 @@ class ImageOnImageButton: UIButton, TrackableButton {
     var dependencyManager: VDependencyManager! {
         didSet {
             
-            var backgroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
+            var backgroundImage: UIImage? = templateAppearanceValue(.backgroundImage)
             if let backgroundColor: UIColor = templateAppearanceValue(.backgroundColor) {
-                //Assume that foreground color will be nil, use tintColor
-                //to color the background image
-                tintColor = backgroundColor
-                backgroundRenderingMode = .AlwaysTemplate
+                backgroundImage = backgroundImage?.v_tintedTemplateImageWithColor(backgroundColor)
             }
-            let backgroundImage: UIImage? = templateAppearanceValue(.backgroundImage)
-            setBackgroundImage(backgroundImage?.imageWithRenderingMode(backgroundRenderingMode), forState: .Normal)
+            setBackgroundImage(backgroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             
-            var foregroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
+            var foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
             if let foregroundColor: UIColor = templateAppearanceValue(.foregroundColor) {
-                //Assume that background color was nil, use tintColor
-                //to color the foreground image
-                tintColor = foregroundColor
-                foregroundRenderingMode = .AlwaysTemplate
+                foregroundImage = foregroundImage?.v_tintedTemplateImageWithColor(foregroundColor)
             }
-            let foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
-            setBackgroundImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
+            setBackgroundImage(foregroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             
             backgroundColor = .clearColor()
         }
