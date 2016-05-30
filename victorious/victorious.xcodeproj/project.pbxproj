@@ -2034,18 +2034,17 @@
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
+		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
 		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
-		F009BD071CE654C900F81CAA /* HashtagBarControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD061CE654C900F81CAA /* HashtagBarControllerDelegate.swift */; };
 		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
 		F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */; };
 		F009BD0D1CE654FD00F81CAA /* HashtagBarCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */; };
 		F009BD0F1CE6550900F81CAA /* HashtagBarCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */; };
+		F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */; };
+		F009BD151CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */; };
 		F009BD171CE6AFBE00F81CAA /* HashtagBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */; };
 		F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */; };
 		F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */; };
-		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
-		F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */; };
-		F009BD151CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */; };
 		F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */; };
 		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
 		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
@@ -4981,18 +4980,17 @@
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
+		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
 		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
-		F009BD061CE654C900F81CAA /* HashtagBarControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarControllerDelegate.swift; sourceTree = "<group>"; };
 		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
 		F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCell.swift; sourceTree = "<group>"; };
 		F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellDecorator.swift; sourceTree = "<group>"; };
 		F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellPopulator.swift; sourceTree = "<group>"; };
+		F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketMessageDetailViewController.swift; path = Debugging/WebSocketMessageDetailViewController.swift; sourceTree = "<group>"; };
+		F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketMessageDetailViewController.storyboard; path = Debugging/WebSocketMessageDetailViewController.storyboard; sourceTree = "<group>"; };
 		F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HashtagBarCell.xib; sourceTree = "<group>"; };
 		F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpers.swift"; sourceTree = "<group>"; };
 		F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HashtagBarViewController.storyboard; sourceTree = "<group>"; };
-		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
-		F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketMessageDetailViewController.swift; path = Debugging/WebSocketMessageDetailViewController.swift; sourceTree = "<group>"; };
-		F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketMessageDetailViewController.storyboard; path = Debugging/WebSocketMessageDetailViewController.storyboard; sourceTree = "<group>"; };
 		F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeCameraCreationFlowController.swift; sourceTree = "<group>"; };
 		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
 		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
@@ -10368,7 +10366,6 @@
 			children = (
 				F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */,
 				F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */,
-				F009BD061CE654C900F81CAA /* HashtagBarControllerDelegate.swift */,
 				F009BD081CE654D200F81CAA /* HashtagBarController.swift */,
 				F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */,
 				F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */,
@@ -12582,7 +12579,6 @@
 				67F9EAA91CCE9BA80005A2EF /* CreatorListOperation.swift in Sources */,
 				A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
-				BF1769C21CE10A4F00211FBA /* VViewedContent+Parsable.swift in Sources */,
 				F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */,
 				7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
@@ -13172,7 +13168,6 @@
 				F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
-				F009BD071CE654C900F81CAA /* HashtagBarControllerDelegate.swift in Sources */,
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,

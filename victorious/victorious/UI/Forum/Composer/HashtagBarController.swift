@@ -8,6 +8,18 @@
 
 import UIKit
 
+/// Conformers receive messages when a hashtag is selected.
+protocol HashtagBarControllerSelectionDelegate: NSObjectProtocol {
+    
+    func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String)
+}
+
+/// Conformers receive messages when a hashtag is selected.
+protocol HashtagBarControllerSearchDelegate: NSObjectProtocol {
+    
+    func hashtagBarController(hashtagBarController: HashtagBarController, populatedWithHashtags hashtags: [String])
+}
+
 /// Manages the display of and responds to delegate methods related to a collection view populated with hashtags.
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -21,34 +33,36 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     private var currentTrendingTags: [String]? {
         didSet {
-            guard let trendingTags = currentTrendingTags else {
+            guard let trendingTags = currentTrendingTags where trendingTags.count > 0 else {
                 if !searchResults.isEmpty {
                     searchResults = [String]()
                 }
                 return
             }
             
-            guard let oldTrendingTags = oldValue else {
-                searchResults = trendingTags
+            if let oldTrendingTags = oldValue where trendingTags == oldTrendingTags {
                 return
             }
             
-            if trendingTags != oldTrendingTags {
-                searchResults = trendingTags
-            }
+            searchResults = trendingTags
         }
     }
     
     private var searchResults = [String]() {
         didSet {
+            var hashtags = searchResults
+            if let searchText = searchText where searchText.characters.count > 0 {
+                hashtags.append(searchText)
+            }
+            searchDelegate?.hashtagBarController(self, populatedWithHashtags: hashtags)
             collectionView.reloadData()
         }
     }
     
     private var currentFetchOperation: RemoteFetcherOperation? {
         didSet {
-            if let oldOperation = oldValue {
-                oldOperation.cancel()
+            if oldValue != currentFetchOperation {
+                oldValue?.cancel()
             }
         }
     }
@@ -74,7 +88,9 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    weak var delegate: HashtagBarControllerDelegate?
+    weak var selectionDelegate: HashtagBarControllerSelectionDelegate?
+    
+    weak var searchDelegate: HashtagBarControllerSearchDelegate?
     
     init(dependencyManager: VDependencyManager, collectionView: UICollectionView) {
         self.dependencyManager = dependencyManager
@@ -208,6 +224,6 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             return
         }
         
-        delegate?.hashtagBarController(self, selectedHashtag: selectedText)
+        selectionDelegate?.hashtagBarController(self, selectedHashtag: selectedText)
     }
 }

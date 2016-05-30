@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -165,9 +165,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - HashtagBar
     
-    private var hashtagBarViewController: HashtagBarViewController!
+    private var hashtagBarController: HashtagBarController! {
+        didSet {
+            hashtagBarController.selectionDelegate = self
+        }
+    }
     
-    // MARK: - HashtagBarControllerDelegate
+    // MARK: - HashtagBarControllerSearchDelegate
     
     func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String) {
         
@@ -177,8 +181,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let replacementText = hashtag + " "
         if composerTextViewManager?.replaceTextInRange(range, withText: replacementText, inTextView: textView) == true {
-            hashtagBarViewController.searchText = nil
+            hashtagBarController.searchText = nil
         }
+    }
+    
+    // MARK: - HashtagBarControllerAnimationDelegate
+    
+    func hashtagBarViewController(hashtagBarViewController: HashtagBarViewController, isUpdatingConstraints updateBlock: Void -> ()) {
+        updateBlock()
+        searchTextChanged = true
+        view.setNeedsUpdateConstraints()
     }
     
     // MARK: - ComposerTextViewManagerDelegate
@@ -223,21 +235,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var textViewCurrentHashtag: (String, NSRange)? {
         didSet {
             guard let (hashtag, _) = textViewCurrentHashtag else {
-                hashtagBarViewController.searchText = nil
-                searchTextChanged = true
-                view.setNeedsUpdateConstraints()
+                hashtagBarController.searchText = nil
                 return
             }
             if let (oldHashtag, _) = oldValue {
                 if hashtag != oldHashtag {
-                    hashtagBarViewController.searchText = hashtag
-                    searchTextChanged = true
-                    view.setNeedsUpdateConstraints()
+                    hashtagBarController.searchText = hashtag
                 }
             } else {
-                hashtagBarViewController.searchText = hashtag
-                searchTextChanged = true
-                view.setNeedsUpdateConstraints()
+                hashtagBarController.searchText = hashtag
             }
         }
     }
@@ -366,11 +372,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func setupHashtagBar() {
-        hashtagBarViewController = HashtagBarViewController.new(dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
+        let hashtagBarViewController = HashtagBarViewController.new(dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
         addChildViewController(hashtagBarViewController)
         hashtagBarContainerView.addSubview(hashtagBarViewController.view)
         hashtagBarContainerView.v_addFitToParentConstraintsToSubview(hashtagBarViewController.view)
-        hashtagBarViewController.hashtagBarController.delegate = self
+        hashtagBarViewController.animationDelegate = self
+        hashtagBarController = hashtagBarViewController.hashtagBarController
     }
 
     private func updateAppearanceFromDependencyManager() {

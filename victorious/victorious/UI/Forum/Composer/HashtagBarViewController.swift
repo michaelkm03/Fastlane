@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol HashtagBarViewControllerAnimationDelegate: class {
+    
+    func hashtagBarViewController(hashtagBarViewController: HashtagBarViewController, isUpdatingConstraints updateBlock: Void -> ())
+}
+
 /// Displays and manages a collection view populated with hashtags.
-class HashtagBarViewController: UIViewController {
+class HashtagBarViewController: UIViewController, HashtagBarControllerSearchDelegate {
     
     static func new(dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
         
@@ -29,15 +34,17 @@ class HashtagBarViewController: UIViewController {
     
     @IBOutlet weak private var collectionViewHeightConstraint: NSLayoutConstraint!
     
-    /// The current text that should be used to search for hashtags.
-    /// Can cause constraint values to change.
-    var searchText: String? {
-        didSet {
-            hashtagBarController.searchText = searchText
-            if searchText != nil {
-                barContainerHeightConstraint?.constant = hashtagBarController.preferredHeight
+    weak var animationDelegate: HashtagBarViewControllerAnimationDelegate?
+    
+    func hashtagBarController(hashtagBarController: HashtagBarController, populatedWithHashtags hashtags: [String]) {
+        let barHeight = hashtags.isEmpty ? 0 : hashtagBarController.preferredHeight
+        if barContainerHeightConstraint?.constant != barHeight {
+            if let delegate = animationDelegate {
+                delegate.hashtagBarViewController(self, isUpdatingConstraints: { [weak self] in
+                    self?.barContainerHeightConstraint?.constant = barHeight
+                })
             } else {
-                barContainerHeightConstraint?.constant = 0
+                barContainerHeightConstraint?.constant = barHeight
             }
         }
     }
@@ -45,6 +52,7 @@ class HashtagBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hashtagBarController = HashtagBarController(dependencyManager: dependencyManager, collectionView: collectionView)
+        hashtagBarController.searchDelegate = self
         collectionViewHeightConstraint.constant = hashtagBarController.preferredCollectionViewHeight
     }
 }
