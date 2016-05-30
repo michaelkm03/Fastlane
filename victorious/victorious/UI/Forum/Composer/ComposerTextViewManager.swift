@@ -176,11 +176,14 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return nil
         }
         
-        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location - 1, beforeCharacters: hashtagBoundaryCharacters) else {
-            return (preceedingString, preceedingRange)
+        var foundRange = text.NSRangeFromRange(preceedingRange)
+        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location, beforeCharacters: hashtagBoundaryCharacters) else {
+            return (preceedingString, foundRange)
         }
         
-        return (preceedingString + proceedingString, NSMakeRange(preceedingRange.location, preceedingRange.length + proceedingRange.length))
+        let foundEndRange = text.NSRangeFromRange(proceedingRange)
+        foundRange = NSMakeRange(foundRange.location, foundRange.length + foundEndRange.length)
+        return (preceedingString + proceedingString, foundRange)
     }
     
     //MARK: - Image management

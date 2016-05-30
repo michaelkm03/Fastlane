@@ -13,71 +13,75 @@ extension String {
     /// Finds the first occurrence of the provided substring after a character from the `afterCharacters` array and before `location`.
     ///
     /// - parameter location: The maximum end index of the returned substring
-    /// - parameter afterCharacters: An array of characters
+    /// - parameter afterCharacters: Characters that, if one is encountered, mark the start of the desired substring. A character from this array will NOT be present in the returned substring.
     ///
     /// - returns: Returns nil iff the provided location is larger than the length of the string or less than 0
-    func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: NSRange)? {
+    func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: Range<Index>)? {
         
-        guard self.characters.count >= location &&
-            location > 0 else {
+        guard location >= 0 && self.characters.count >= location else {
             return nil
         }
         
-        let substring: NSString = (self as NSString).substringToIndex(location)
+        var matchStartIndex = startIndex.advancedBy(location)
+        let matchEndIndex = matchStartIndex
         
-        var currentLocation = location
         var currentCharacter = Character(" ")
         var foundMatch = false
         
-        repeat {
-            currentLocation -= 1
-            currentCharacter = Character(UnicodeScalar(substring.characterAtIndex(currentLocation)))
+        while matchStartIndex != startIndex && !foundMatch {
+            matchStartIndex = matchStartIndex.predecessor()
+            currentCharacter = self[matchStartIndex]
             foundMatch = characters.contains(currentCharacter)
-        } while currentLocation > 0 && !foundMatch
+        }
         
         if foundMatch {
-            let matchStartLocation = currentLocation + 1
-            let foundRange = NSMakeRange(matchStartLocation, location - matchStartLocation)
-            let matchedSubstring = substring.substringWithRange(foundRange)
-            return (matchedSubstring, currentCharacter, foundRange)
+            matchStartIndex = matchStartIndex.successor()
         }
-        return (substring as String, nil, NSMakeRange(0, substring.length))
+        let matchedCharacter: Character? = foundMatch ? currentCharacter : nil
+        
+        let foundRange = matchStartIndex..<matchEndIndex
+        let substring = substringWithRange(foundRange)
+        return (substring, matchedCharacter, foundRange)
     }
     
     /// Finds the last occurrence of the provided substring before a character from the `beforeCharacters` array and after `location`.
     ///
     /// - parameter location: The minimum start index of the returned substring
-    /// - parameter beforeCharacters: An array of characters
+    /// - parameter beforeCharacters: Characters that, if one is encountered, mark the end of the desired substring. A character from this array will NOT be present in the returned substring.
     ///
     /// - returns: Returns nil iff the provided location is larger than the length of the string
-    func substringAfterLocation(location: Int, beforeCharacters characters: [Character]) -> (substring: String, proceedingCharacter: Character?, range: NSRange)? {
+    func substringAfterLocation(location: Int, beforeCharacters characters: [Character]) -> (substring: String, proceedingCharacter: Character?, range: Range<Index>)? {
         
-        let startLocation = location + 1
-        guard self.characters.count > startLocation &&
-            startLocation >= 0 else {
-                return nil
+        guard location >= 0 && self.characters.count > location else {
+            return nil
         }
         
-        let substring: NSString =
-            (self as NSString).substringFromIndex(startLocation)
+        var matchEndIndex = startIndex.advancedBy(location)
+        let matchStartIndex = matchEndIndex
         
-        var currentLocation = -1
         var currentCharacter = Character(" ")
         var foundMatch = false
         
         repeat {
-            currentLocation += 1
-            currentCharacter = Character(UnicodeScalar(substring.characterAtIndex(currentLocation)))
+            currentCharacter = self[matchEndIndex]
             foundMatch = characters.contains(currentCharacter)
-        } while currentLocation < substring.length - 1 && !foundMatch
+            matchEndIndex = matchEndIndex.successor()
+        } while matchEndIndex != endIndex && !foundMatch
         
         if foundMatch {
-            let matchFinishLocation = currentLocation
-            let foundRange = NSMakeRange(0, matchFinishLocation)
-            let matchedSubstring = substring.substringWithRange(foundRange)
-            let range = NSMakeRange(startLocation + foundRange.location, foundRange.length)
-            return (matchedSubstring, currentCharacter, range)
+            matchEndIndex = matchEndIndex.predecessor()
         }
-        return (substring as String, nil, NSMakeRange(self.characters.count - substring.length, substring.length))
+        let matchedCharacter: Character? = foundMatch ? currentCharacter : nil
+        
+        let foundRange = matchStartIndex..<matchEndIndex
+        let substring = substringWithRange(foundRange)
+        return (substring, matchedCharacter, foundRange)
+    }
+    
+    func NSRangeFromRange(range : Range<String.Index>) -> NSRange {
+        
+        let from = String.UTF16View.Index(range.startIndex, within: utf16)
+        let to = String.UTF16View.Index(range.endIndex, within: utf16)
+        return NSMakeRange(utf16.startIndex.distanceTo(from), from.distanceTo(to))
     }
 }

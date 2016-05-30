@@ -146,7 +146,7 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        var textViewCurrentHashtag: (String, NSRange)?
+        var textViewCurrentHashtag: (String, Range<String.Index>)?
         
         func textViewDidHitCharacterLimit(textView: UITextView) {}
         
