@@ -25,34 +25,34 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     private static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
         
-    private var cachedSizes = NSCache()
+    private let cachedSizes = NSCache()
     
     private let cellDecorator: HashtagBarCellDecorator?
     
     private let collectionView: UICollectionView
     
-    private var currentTrendingTags: [String]? {
+    private var currentTrendingTags = [String]() {
         didSet {
-            guard let trendingTags = currentTrendingTags where trendingTags.count > 0 else {
+            guard !currentTrendingTags.isEmpty else {
                 if !searchResults.isEmpty {
                     searchResults = [String]()
                 }
                 return
             }
             
-            if let oldTrendingTags = oldValue where trendingTags == oldTrendingTags {
+            guard currentTrendingTags != oldValue else {
                 return
             }
             
-            searchResults = trendingTags
+            searchResults = currentTrendingTags
         }
     }
     
     private var searchResults = [String]() {
         didSet {
             var hashtags = searchResults
-            if let searchText = searchText where searchText.characters.count > 0 {
-                hashtags.append(searchText)
+            if let searchText = searchText where !searchText.isEmpty {
+                hashtags = [searchText] + hashtags
             }
             searchDelegate?.hashtagBarController(self, populatedWithHashtags: hashtags)
             collectionView.reloadData()
@@ -70,7 +70,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     let dependencyManager: VDependencyManager
     
     private var hasValidSearchText: Bool {
-        return searchText?.characters.count >= 1
+        return !(searchText?.isEmpty ?? true)
     }
     
     var searchText: String? {
@@ -80,7 +80,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
                 return
             }
             
-            if searchText.characters.count > 0 {
+            if !searchText.isEmpty {
                 searchForText(searchText)
             } else {
                 getTrendingHashtags()
@@ -153,9 +153,8 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     }
     
     private func getTrendingHashtags() {
-        if let oldTrending = self.currentTrendingTags {
-            searchResults = oldTrending
-        }
+        
+        searchResults = currentTrendingTags
         
         currentFetchOperation = TrendingHashtagOperation()
         currentFetchOperation?.queue() { [weak self] results, error, success in

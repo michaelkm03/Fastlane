@@ -2039,7 +2039,6 @@
 		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
 		F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */; };
 		F009BD0D1CE654FD00F81CAA /* HashtagBarCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */; };
-		F009BD0F1CE6550900F81CAA /* HashtagBarCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */; };
 		F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */; };
 		F009BD151CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */; };
 		F009BD171CE6AFBE00F81CAA /* HashtagBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */; };
@@ -2134,6 +2133,7 @@
 		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
 		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
 		F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */; };
+		F07DDE2B1CFCB77300C7FC8D /* HashtagBarCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DDE2A1CFCB77300C7FC8D /* HashtagBarCellPopulator.swift */; };
 		F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */; };
 		F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */; };
 		F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */; };
@@ -4985,7 +4985,6 @@
 		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
 		F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCell.swift; sourceTree = "<group>"; };
 		F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellDecorator.swift; sourceTree = "<group>"; };
-		F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellPopulator.swift; sourceTree = "<group>"; };
 		F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketMessageDetailViewController.swift; path = Debugging/WebSocketMessageDetailViewController.swift; sourceTree = "<group>"; };
 		F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketMessageDetailViewController.storyboard; path = Debugging/WebSocketMessageDetailViewController.storyboard; sourceTree = "<group>"; };
 		F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HashtagBarCell.xib; sourceTree = "<group>"; };
@@ -5118,6 +5117,7 @@
 		F07557F11B756E7600BB2648 /* VDirectoryCellUpdateableFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellUpdateableFactory.h; sourceTree = "<group>"; };
 		F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamItemPreviewView.m; sourceTree = "<group>"; };
 		F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamItemPreviewView.h; sourceTree = "<group>"; };
+		F07DDE2A1CFCB77300C7FC8D /* HashtagBarCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellPopulator.swift; sourceTree = "<group>"; };
 		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
 		F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverHeaderView.m; sourceTree = "<group>"; };
 		F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverHeaderView.xib; sourceTree = "<group>"; };
@@ -10370,7 +10370,7 @@
 				F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */,
 				F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */,
 				F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */,
-				F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */,
+				F07DDE2A1CFCB77300C7FC8D /* HashtagBarCellPopulator.swift */,
 			);
 			name = HashtagBar;
 			sourceTree = "<group>";
@@ -12671,6 +12671,7 @@
 				A7F3F8061C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				F07DDE2B1CFCB77300C7FC8D /* HashtagBarCellPopulator.swift in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
@@ -12965,7 +12966,6 @@
 				A7C565E81C4438AF00E4DF6A /* NotificationsDataSource.swift in Sources */,
 				A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */,
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
-				F009BD0F1CE6550900F81CAA /* HashtagBarCellPopulator.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,

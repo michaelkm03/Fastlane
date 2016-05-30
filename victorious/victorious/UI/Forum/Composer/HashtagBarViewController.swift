@@ -28,31 +28,33 @@ class HashtagBarViewController: UIViewController, HashtagBarControllerSearchDele
     
     private(set) var dependencyManager: VDependencyManager!
     
-    private(set) var hashtagBarController: HashtagBarController!
+    private(set) lazy var hashtagBarController: HashtagBarController = {
+        let hashtagBarController = HashtagBarController(dependencyManager: self.dependencyManager, collectionView: self.collectionView)
+        hashtagBarController.searchDelegate = self
+        return hashtagBarController
+    }()
     
-    weak private var barContainerHeightConstraint: NSLayoutConstraint?
+    private var barContainerHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak private var collectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var collectionViewHeightConstraint: NSLayoutConstraint!
     
     weak var animationDelegate: HashtagBarViewControllerAnimationDelegate?
     
     func hashtagBarController(hashtagBarController: HashtagBarController, populatedWithHashtags hashtags: [String]) {
         let barHeight = hashtags.isEmpty ? 0 : hashtagBarController.preferredHeight
-        if barContainerHeightConstraint?.constant != barHeight {
+        if barContainerHeightConstraint.constant != barHeight {
             if let delegate = animationDelegate {
                 delegate.hashtagBarViewController(self, isUpdatingConstraints: { [weak self] in
-                    self?.barContainerHeightConstraint?.constant = barHeight
+                    self?.barContainerHeightConstraint.constant = barHeight
                 })
             } else {
-                barContainerHeightConstraint?.constant = barHeight
+                barContainerHeightConstraint.constant = barHeight
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hashtagBarController = HashtagBarController(dependencyManager: dependencyManager, collectionView: collectionView)
-        hashtagBarController.searchDelegate = self
         collectionViewHeightConstraint.constant = hashtagBarController.preferredCollectionViewHeight
     }
 }
