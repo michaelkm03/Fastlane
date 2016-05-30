@@ -17,8 +17,6 @@ class TextOnImageButton: UIButton, TrackableButton {
             
             var backgroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
             if let backgroundColor: UIColor = templateAppearanceValue(.backgroundColor) {
-                //Assume that foreground color will be nil, use tintColor
-                //to color the background image
                 tintColor = backgroundColor
                 backgroundRenderingMode = .AlwaysTemplate
             }
@@ -27,6 +25,8 @@ class TextOnImageButton: UIButton, TrackableButton {
             
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)
+            
+            backgroundColor = .clearColor()
         }
     }
 }
