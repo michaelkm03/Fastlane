@@ -7,7 +7,6 @@
 //
 
 #import "VUserProfileViewController.h"
-#import "VUser.h"
 #import "VProfileEditViewController.h"
 #import "VConversationContainerViewController.h"
 #import "VStreamItem+Fetcher.h"

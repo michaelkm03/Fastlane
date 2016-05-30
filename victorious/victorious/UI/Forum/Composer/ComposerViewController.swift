@@ -62,8 +62,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
     private var searchTextChanged = false
-    
-    private var selectedMedia: MediaAttachment?
+
+    private var selectedAsset: ContentMediaAsset?
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -115,13 +115,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var userIsOwner: Bool {
-        return VCurrentUser.user()?.isCreator.boolValue ?? false
+        return VCurrentUser.user()?.isCreator?.boolValue ?? false
     }
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            maximumTextLength = dependencyManager.maximumTextLengthForOwner(userIsOwner)
-            attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
+            setupUserDependentUI()
             updateAppearanceFromDependencyManager()
             creationFlowPresenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
         }
@@ -197,7 +196,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedMedia != nil
+            confirmButton.enabled = textViewHasText || selectedAsset != nil
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -256,6 +255,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+        setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: showKeyboardBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: showKeyboardBlock)
@@ -355,6 +357,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - Subview setup
     
+    @objc private func setupUserDependentUI() {
+        let isOwner = userIsOwner
+        maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
+        attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
+    }
+    
     private func setupTextView() {
         textView.text = nil
         textView.lineFragmentPadding = 0
@@ -423,20 +431,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - VCreationFlowControllerDelegate
     
     func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
-        
-        guard let mediaType = MediaAttachmentType(creationFlowController: creationFlowController) else {
+        guard let contentType = contentType(for: creationFlowController) else {
             creationFlowController.v_showErrorDefaultError()
             return
         }
         
         var preview = previewImage
-        if mediaType == .GIF,
+        if contentType == .gif,
             let image = capturedMediaURL.v_videoPreviewImage {
             
             preview = image
         }
         
-        selectedMedia = MediaAttachment(url: capturedMediaURL, type: mediaType, thumbnailURL: nil, size: nil)
+        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -450,6 +457,22 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             let textView = strongSelf.textView
             textView.becomeFirstResponder()
             textView.selectedRange = NSMakeRange(textView.text.characters.count, 0)
+        }
+    }
+    
+    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+        switch creationFlowController.mediaType() {
+        case .Image:
+            return .image
+        case .Video:
+            if creationFlowController.dynamicType == VGIFCreationFlowController.self {
+                return .gif
+            } else {
+                return .video
+            }
+        case .Unknown:
+            assertionFailure("Creation flow controller returned an invalid media type.")
+            return nil
         }
     }
     
@@ -470,13 +493,24 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
-        if let media = selectedMedia {
-            sendMessage(mediaAttachment: media, text: textView.text)
+        if let asset = selectedAsset {
+            sendMessage(asset: asset, text: textView.text)
         } else {
             sendMessage(text: textView.text)
         }
         composerTextViewManager?.resetTextView(textView)
-        selectedMedia = nil
+        selectedAsset = nil
+    }
+    
+    // MARK: - Notification response
+    
+    func userChanged() {
+        guard let user = VCurrentUser.user() else {
+            KVOController.unobserveAll()
+            return
+        }
+        
+        KVOController.observe(user, keyPath: "isCreator", options: [.New, .Initial], action: #selector(setupUserDependentUI))
     }
 }
 

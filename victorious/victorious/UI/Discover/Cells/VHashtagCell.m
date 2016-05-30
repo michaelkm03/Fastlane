@@ -7,7 +7,6 @@
 //
 
 #import "VHashtagCell.h"
-#import "VUser.h"
 #import "VHashTags.h"
 #import "VConstants.h"
 #import "VHashtag.h"

@@ -14,7 +14,7 @@ class CreatorListRemoteOperationTests: BaseFetcherOperationTestCase {
     
     func testResults() {
         let userID = 20160445
-        let user = User(userID: userID)
+        let user = User(id: userID)
         testRequestExecutor = TestRequestExecutor(result: [user])
         
         let operation = CreatorListRemoteOperation(urlString: "http://google.com")

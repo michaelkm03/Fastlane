@@ -74,7 +74,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         var sequences = [VSequence]()
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         
-        XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertFalse(objectUser.isBlockedByMainUser?.boolValue ?? true)
         XCTAssertNotEqual(sequences.count, 0)
         
         let expectation = expectationWithDescription("BlockUserOperation")
@@ -88,7 +88,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)
-        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertTrue(objectUser.isBlockedByMainUser?.boolValue ?? false)
     }
     
     func testWithConversationID() {
@@ -98,7 +98,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         var sequences = [VSequence]()
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         
-        XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertFalse(objectUser.isBlockedByMainUser?.boolValue ?? true)
         XCTAssertNotEqual(sequences.count, 0)
         
         let expectation = expectationWithDescription("BlockUserOperation")
@@ -112,7 +112,7 @@ class BlockUserOperationTests: BaseFetcherOperationTestCase {
         
         sequences = context.v_findObjects(["user.remoteId" : objectUser.remoteId.integerValue])
         XCTAssertEqual(sequences.count, 0)
-        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertTrue(objectUser.isBlockedByMainUser?.boolValue ?? false)
         
         XCTAssert(conversation.hasBeenDeleted)
     }

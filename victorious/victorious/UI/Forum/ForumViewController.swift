@@ -62,18 +62,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:
                 break
             }
-        } else if let event = event as? ChatMessage where
-            event.mediaAttachment != nil {
+        } else if let event = event as? Content where event.assets.count > 0 {
             
             //Create a persistent piece of content so long as we're not a normal user on the socket
-            guard let networkResourcesDependency = dependencyManager.networkResourcesDependency else {
+            guard let networkResources = dependencyManager.networkResources else {
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
                 v_log(logMessage)
                 return
             }
             
-            createPersistentContent(event, networkResourcesDependency: networkResourcesDependency) { [weak self] error in
+            createPersistentContent(event, networkResourcesDependency: networkResources) { [weak self] error in
                 if let _ = error,
                     let strongSelf = self {
                     strongSelf.v_showDefaultErrorAlert()
@@ -273,10 +272,6 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var networkResourcesDependency: VDependencyManager? {
-        return childDependencyForKey("networkResources")
-    }
-
     var forumNetworkSource: ForumNetworkSource? {
         return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }

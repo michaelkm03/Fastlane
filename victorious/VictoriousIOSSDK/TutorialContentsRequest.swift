@@ -17,11 +17,11 @@ public struct TutorialContentsRequest: TemplateDrivenRequestType {
         self.urlString = urlString
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ViewedContent] {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {
         guard let json = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
         
-        return json.flatMap { ViewedContent(json: $0) }
+        return json.flatMap { Content(json: $0) }
     }
 }

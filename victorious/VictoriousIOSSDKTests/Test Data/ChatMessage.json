@@ -1,10 +1,14 @@
 {
     "text": "Test message",
-    "giphy_url": "http://a.url.to.giphy",
-    "content_url": "http://a.url.to.content",
     "user": {
         "id": "1337",
         "name": "Leetzor",
-        "profile_url": "http://a.link.to.profile"
+    },
+    "asset": {
+        "type": "GIF",
+        "width": 150,
+        "height": 200,
+        "url": "http://www.giphy.com/videos/42139874893.mp4",
+        "thumbnail_url": "http://www.giphy.com/stills/42139874893.jpg"
     }
 }

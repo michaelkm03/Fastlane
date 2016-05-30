@@ -12,14 +12,14 @@ import XCTest
 
 class TutorialContentsRemoteOperationTests: BaseFetcherOperationTestCase {
     
-    private lazy var networkResults: [ViewedContent] = {
+    private lazy var networkResults: [Content] = {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ViewedContentsResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return []
         }
         let json = JSON(data: mockData)["payload", "viewed_contents"].arrayValue
-        let results = json.flatMap { ViewedContent(json: $0) }
+        let results = json.flatMap { Content(json: $0) }
         
         return results
     }()
@@ -29,10 +29,10 @@ class TutorialContentsRemoteOperationTests: BaseFetcherOperationTestCase {
         operation.requestExecutor = TestRequestExecutor(result: networkResults)
         operation.main()
         
-        let fetchedContents = operation.results as? [ViewedContent]
+        let fetchedContents = operation.results as? [Content]
         
         XCTAssertEqual(fetchedContents?.count, 2)
-        XCTAssertEqual(fetchedContents?.first?.content.id, "20711")
-        XCTAssertEqual(fetchedContents?.last?.content.id, "20712")
+        XCTAssertEqual(fetchedContents?.first?.id, "20711")
+        XCTAssertEqual(fetchedContents?.last?.id, "20712")
     }
 }

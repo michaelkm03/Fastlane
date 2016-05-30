@@ -7,7 +7,6 @@
 //
 
 #import "VAbstractUserProfileHeaderViewController.h"
-#import "VUser.h"
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
