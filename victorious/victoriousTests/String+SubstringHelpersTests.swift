@@ -22,15 +22,15 @@ class String_SubstringHelpersTests: XCTestCase {
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(stringLength, afterCharacters: []) {
             XCTAssertEqual(foundString, string)
             XCTAssertNil(foundCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(0, stringLength)))
+            XCTAssertEqual(foundRange, string.startIndex..<string.endIndex)
         } else {
             XCTFail()
         }
         
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(stringLength - 1, afterCharacters: [characters.last!]) {
-            XCTAssertEqual(foundString, (string as NSString).substringToIndex(stringLength - 1))
+            XCTAssertEqual(foundString, string.substringToIndex(string.endIndex.predecessor()))
             XCTAssertNil(foundCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(0, stringLength - 1)))
+            XCTAssertEqual(foundRange, string.startIndex..<string.endIndex.predecessor())
         } else {
             XCTFail()
         }
@@ -40,9 +40,9 @@ class String_SubstringHelpersTests: XCTestCase {
         
         var matchCharacter = characters.first!
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(stringLength, afterCharacters: [matchCharacter]) {
-            XCTAssertEqual(foundString, (string as NSString).substringFromIndex(1))
+            XCTAssertEqual(foundString, string.substringFromIndex(string.startIndex.successor()))
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, (string as NSString).rangeOfString(foundString)))
+            XCTAssertEqual(foundRange, string.rangeOfString(foundString))
         } else {
             XCTFail()
         }
@@ -50,7 +50,8 @@ class String_SubstringHelpersTests: XCTestCase {
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(1, afterCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(1, 0)))
+            let secondIndex = string.startIndex.successor()
+            XCTAssertEqual(foundRange, secondIndex..<secondIndex)
         } else {
             XCTFail()
         }
@@ -59,7 +60,8 @@ class String_SubstringHelpersTests: XCTestCase {
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(stringLength, afterCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(stringLength, 0)))
+            let endIndex = string.endIndex
+            XCTAssertEqual(foundRange, endIndex..<endIndex)
         } else {
             XCTFail()
         }
@@ -69,18 +71,18 @@ class String_SubstringHelpersTests: XCTestCase {
         
         XCTAssertNil(string.substringAfterLocation(stringLength, beforeCharacters: []))
         
-        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(-1, beforeCharacters: []) {
+        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(0, beforeCharacters: []) {
             XCTAssertEqual(foundString, string)
             XCTAssertNil(foundCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(0, stringLength)))
+            XCTAssertEqual(foundRange, string.startIndex..<string.endIndex)
         } else {
             XCTFail()
         }
         
-        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(0, beforeCharacters: [characters.first!]) {
-            XCTAssertEqual(foundString, (string as NSString).substringFromIndex(1))
+        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(1, beforeCharacters: [characters.first!]) {
+            XCTAssertEqual(foundString, string.substringFromIndex(string.startIndex.successor()))
             XCTAssertNil(foundCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(1, stringLength - 1)))
+            XCTAssertEqual(foundRange, string.startIndex.successor()..<string.endIndex)
         } else {
             XCTFail()
         }
@@ -89,27 +91,29 @@ class String_SubstringHelpersTests: XCTestCase {
     func testSubstringAfterLocationMatchSuccess() {
         
         var matchCharacter = characters.last!
-        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(-1, beforeCharacters: [matchCharacter]) {
-            XCTAssertEqual(foundString, (string as NSString).substringToIndex(stringLength - 1))
+        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(0, beforeCharacters: [matchCharacter]) {
+            XCTAssertEqual(foundString, string.substringToIndex(string.endIndex.predecessor()))
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, (string as NSString).rangeOfString(foundString)))
+            XCTAssertEqual(foundRange, string.rangeOfString(foundString))
         } else {
             XCTFail()
         }
         
-        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(stringLength - 2, beforeCharacters: [matchCharacter]) {
+        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(stringLength - 1, beforeCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(stringLength - 1, 0)))
+            let secondToLastIndex = string.endIndex.predecessor()
+            XCTAssertEqual(foundRange, secondToLastIndex..<secondToLastIndex)
         } else {
             XCTFail()
         }
         
         matchCharacter = characters.first!
-        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(-1, beforeCharacters: [matchCharacter]) {
+        if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(0, beforeCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            XCTAssertTrue(NSEqualRanges(foundRange, NSMakeRange(0, 0)))
+            let firstIndex = string.startIndex
+            XCTAssertEqual(foundRange, firstIndex..<firstIndex)
         } else {
             XCTFail()
         }

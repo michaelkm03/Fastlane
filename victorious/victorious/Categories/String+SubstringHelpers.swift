@@ -18,7 +18,7 @@ extension String {
     /// - returns: Returns nil iff the provided location is larger than the length of the string or less than 0
     func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: Range<Index>)? {
         
-        guard location >= 0 && self.characters.count >= location else {
+        guard location > 0 && self.characters.count >= location else {
             return nil
         }
         
