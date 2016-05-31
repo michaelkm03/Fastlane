@@ -40,7 +40,7 @@ extension VContentMediaAsset: ContentMediaAssetModel {
         switch source {
         case "youtube":
             return .youtube
-        case "video", "gif":
+        case "video", "giphy":
             return .video
         default:
             return nil
