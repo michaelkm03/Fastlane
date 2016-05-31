@@ -3689,7 +3689,6 @@
 		A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D71C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
@@ -8102,7 +8101,6 @@
 				A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */,
 				0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */,
 				67F9EAA61CCE93030005A2EF /* CreatorListRemoteOperation.swift */,
-				A72C85D71C977FF500E97D4F /* FetcherOperation.swift */,
 				A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */,
 				A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */,
 				A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */,
