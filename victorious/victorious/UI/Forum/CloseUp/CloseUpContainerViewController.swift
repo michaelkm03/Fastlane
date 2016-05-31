@@ -12,6 +12,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
+    private var content: ContentModel?
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -33,7 +34,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     private lazy var upvoteButton: UIBarButtonItem = {
         return UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconSelected,
+            image: self.dependencyManager.upvoteIconUnselected,
             style: .Done,
             target: self,
             action: #selector(toggleUpvote)
@@ -62,12 +63,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             configuration: configuration,
             streamAPIPath: streamAPIPath
         )
+        self.content = content
         
         super.init(nibName: nil, bundle: nil)
         
         header.delegate = self
         
-        updateHeaderForContent(content)
+        updateHeader()
                 
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
@@ -75,24 +77,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         gridStreamController.didMoveToParentViewController(self)
     }
     
-    func share() {
-        
-    }
-    
-    func toggleUpvote() {
-        // ToggleUpvoteRequest
-    }
-    
-    func overflow() {
-        
-    }
-    
-    private func updateHeaderForContent(content: ContentModel?) {
+    private func updateHeader() {
         guard let content = content else {
             return
         }
         
-//        upvoteButton.image = content.islike
+        upvoteButton.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
     }
     
     override func viewDidLoad() {
@@ -108,7 +98,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func updateContent(content: ContentModel) {
-        updateHeaderForContent(content)
+        self.content = content
+        updateHeader()
         gridStreamController.content = content
     }
     
@@ -122,8 +113,26 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         ).queue()
     }
     
-    func didSelectFlagContentForContentID(contentID: Int) {
-        let flag = ContentFlagOperation(contentID: "\(contentID)")
+    func share() {
+        
+    }
+    
+    func toggleUpvote() {
+        guard let contentID = content?.id else {
+            return
+        }
+        ContentUpvoteToggleOperation(
+            contentID: contentID,
+            upvoteURL: dependencyManager.contentUpvoteURL,
+            unupvoteURL: dependencyManager.contentUnupvoteURL
+        ).queue()
+    }
+    
+    func overflow() {
+        guard let contentID = content?.id else {
+            return
+        }
+        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: NSLocalizedString("Report/Flag", comment: ""),
             originViewController: self,
@@ -132,12 +141,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         
         confirm.before(flag)
         confirm.queue()
-        flag.queue()
-
-    }
-    
-    func didToggleUpvoteForContentID(contentID: Int) {
-        
+        flag.queue() { [weak self] results, error, cancelled in
+            /// Future: Update parent view controller to remove content
+            if !cancelled {
+                self?.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
 
 }
@@ -157,6 +166,18 @@ private extension VDependencyManager {
     
     var shareIcon: UIImage? {
         return imageForKey("share_icon")
+    }
+    
+    var contentFlagURL: String {
+        return networkResources?.stringForKey("contentFlagURL") ?? ""
+    }
+    
+    var contentUpvoteURL: String {
+        return networkResources?.stringForKey("contentUpvoteURL") ?? ""
+    }
+    
+    var contentUnupvoteURL: String {
+        return networkResources?.stringForKey("contentUnupvoteURL") ?? ""
     }
 }
 

@@ -10,11 +10,13 @@ import UIKit
 
 class ContentFlagOperation: FetcherOperation {
     
+    private let contentFlagURL: String
     private let contentID: String
     private let flaggedContent = VFlaggedContent()
 
-    init(contentID: String) {
+    init(contentID: String, contentFlagURL: String) {
         self.contentID = contentID
+        self.contentFlagURL = contentFlagURL
     }
     
     override func main() {
@@ -27,12 +29,12 @@ class ContentFlagOperation: FetcherOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            guard let content: VContent = context.v_findObjects( [ "remoteId" : self.contentID] ).first else {
+            guard let content: VContent = context.v_findObjects( [ "v_remoteID" : self.contentID] ).first else {
                 return
             }
             context.deleteObject(content)
         }
-        ContentFlagRemoteOperation(contentID: contentID).after(self).queue()
+        ContentFlagRemoteOperation(contentID: contentID, contentFlagURL: contentFlagURL).after(self).queue()
     }
 
 }

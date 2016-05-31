@@ -10,8 +10,6 @@ import UIKit
 
 protocol CloseUpViewDelegate: class {
     func didSelectProfileForUserID(userID: Int)
-    func didSelectFlagContentForContentID(contentID: Int)
-    func didToggleUpvoteForContentID(contentID: Int)
 }
 
 private let blurredImageAlpha: CGFloat = 0.5

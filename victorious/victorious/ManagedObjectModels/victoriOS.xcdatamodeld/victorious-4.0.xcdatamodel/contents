@@ -66,6 +66,7 @@
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
         <attribute name="v_createdAt" attributeType="Date" syncable="YES"/>
+        <attribute name="v_isLikedByCurrentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_isVIPOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -371,7 +372,7 @@
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="Content" positionX="81" positionY="153" width="128" height="195"/>
+        <element name="Content" positionX="81" positionY="153" width="128" height="210"/>
         <element name="ContentMediaAsset" positionX="108" positionY="180" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>

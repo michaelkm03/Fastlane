@@ -12,8 +12,8 @@ class ContentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: ContentFlagRequest!
     
-    init( contentID: String ) {
-        self.request = ContentFlagRequest(contentID: contentID)
+    init( contentID: String, contentFlagURL: String ) {
+        self.request = ContentFlagRequest(contentID: contentID, contentFlagURL: contentFlagURL)
     }
     
     override func main() {
