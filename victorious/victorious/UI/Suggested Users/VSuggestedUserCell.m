@@ -9,7 +9,6 @@
 #import "VSuggestedUserCell.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VFollowControl.h"
-#import "VUser.h"
 #import "UIView+AutoLayout.h"
 #import "UIResponder+VResponderChain.h"
 #import "VDefaultProfileImageView.h"

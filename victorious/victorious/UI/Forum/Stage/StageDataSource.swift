@@ -19,12 +19,12 @@ class StageDataSource: ForumEventReceiver {
     // MARK: Initialiation
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager.childDependencyForKey("networkResources")
+        self.dependencyManager = dependencyManager.networkResources
     }
     
     // MARK: ForumEventReceiver
     
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         guard let dependencyManager = dependencyManager else {
             v_log("No dependency manager avaliable in StageDataSource, bailing.")
             return

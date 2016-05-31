@@ -18,7 +18,7 @@ class ConversationForUserOperation: FetcherOperation {
     var loadedUser: VUser?
     
     required init(sourceUser: VictoriousIOSSDK.User) {
-        self.userID = sourceUser.userID
+        self.userID = sourceUser.id
         self.sourceUser = sourceUser
     }
     
@@ -36,8 +36,8 @@ class ConversationForUserOperation: FetcherOperation {
             }
             self.loadedUser = user
             
-            let filteredConversations = user.conversations.filter { ($0 as? VConversation)?.user?.remoteId == self.userID }
-            if let conversation = filteredConversations.first as? VConversation {
+            let filteredConversations = user.conversations?.filter { ($0 as? VConversation)?.user?.remoteId == self.userID }
+            if let conversation = filteredConversations?.first as? VConversation {
                 self.loadedConversation = conversation
             
             } else {

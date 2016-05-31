@@ -14,7 +14,7 @@ class ShowCloseUpOperation: MainQueueOperation {
     private let animated: Bool
     private weak var originViewController: UIViewController?
     private var contentID: String?
-    private var content: VContent?
+    private var content: ContentModel?
     
     init?( originViewController: UIViewController,
            dependencyManager: VDependencyManager,
@@ -29,7 +29,7 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     init?( originViewController: UIViewController,
            dependencyManager: VDependencyManager,
-           content: VContent,
+           content: ContentModel,
            animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
@@ -52,7 +52,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         }
         
         let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : contentID ?? content?.remoteID ?? "",
+            "%%CONTENT_ID%%" : contentID ?? content?.id ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
         ]
         let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
@@ -92,8 +92,6 @@ class ShowCloseUpOperation: MainQueueOperation {
 
 private extension VDependencyManager {
     var contentFetchURL: String {
-        let centerScreen = childDependencyForKey("centerScreen")
-        let networkResources = centerScreen?.childDependencyForKey("networkResources")
         return networkResources?.stringForKey("contentFetchURL") ?? ""
     }
     

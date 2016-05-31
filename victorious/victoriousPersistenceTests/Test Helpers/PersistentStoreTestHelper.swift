@@ -26,10 +26,10 @@ struct PersistentStoreTestHelper {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let author = self.createUser(remoteId: 1)
             return context.v_createObjectAndSave { content in
-                content.remoteID = remoteID
-                content.author = author
-                content.releasedAt = NSDate()
-                content.type = "image"
+                content.v_remoteID = remoteID
+                content.v_author = author
+                content.v_createdAt = NSDate()
+                content.v_type = "image"
             }
         }
     }
@@ -38,8 +38,8 @@ struct PersistentStoreTestHelper {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let content = self.createContent("1")
             return context.v_createObjectAndSave { asset in
-                asset.uniqueID = uniqueID
-                asset.content = content
+                asset.v_uniqueID = uniqueID
+                asset.v_content = content
             }
         }
     }
@@ -48,7 +48,6 @@ struct PersistentStoreTestHelper {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             return context.v_createObjectAndSave { asset in
                 asset.imageURL = imageURL
-                asset.type = type
             }
         }
     }

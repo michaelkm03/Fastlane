@@ -8,7 +8,6 @@
 
 #import "VInStreamCommentCellContents.h"
 #import "VComment.h"
-#import "VUser.h"
 #import "VDependencyManager.h"
 #import "VInStreamMediaLink.h"
 #import "VTagStringFormatter.h"

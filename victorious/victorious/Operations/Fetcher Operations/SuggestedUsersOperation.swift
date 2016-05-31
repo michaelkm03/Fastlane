@@ -23,7 +23,7 @@ class SuggestedUsersOperation: RemoteFetcherOperation, RequestOperation {
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
-                let user: VUser = context.v_findOrCreateObject(["remoteId": sourceModel.user.userID])
+                let user: VUser = context.v_findOrCreateObject(["remoteId": sourceModel.user.id])
                 user.populate(fromSourceModel: sourceModel.user)
                 let recentSequences: [VSequence] = sourceModel.recentSequences.flatMap {
                     let sequence: VSequence = context.v_findOrCreateObject(["remoteId": $0.sequenceID])

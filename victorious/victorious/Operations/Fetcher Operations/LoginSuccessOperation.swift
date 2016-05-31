@@ -28,7 +28,7 @@ class LoginSuccessOperation: FetcherOperation {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
             // First, find or create the new user who just logged in
-            let user: VUser = context.v_findOrCreateObject([ "remoteId" : self.response.user.userID ])
+            let user: VUser = context.v_findOrCreateObject([ "remoteId" : self.response.user.id ])
             user.populate(fromSourceModel: self.response.user)
             user.loginType = self.parameters.loginType.rawValue
             user.token = self.response.token
@@ -52,7 +52,7 @@ class LoginSuccessOperation: FetcherOperation {
             
             user.setAsCurrentUser()
             self.updateStoredCredentials( user )
-            VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( user.isNewUser.boolValue )
+            VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( user.isNewUser?.boolValue ?? false )
         }
     }
     

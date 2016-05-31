@@ -14,15 +14,15 @@ public enum ContentMediaAsset {
     case gif(url: NSURL, source: String?)
     case image(url: NSURL)
     
-    init?(contentType: String, sourceType: String, json: JSON) {
+    public init?(contentType: ContentType, sourceType: String, json: JSON) {
         
         switch contentType {
-        case "image":
+        case .image:
             guard let url = json["data"].URL else {
                 return nil
             }
             self = .image(url: url)
-        case "video", "gif":
+        case .video, .gif:
             var url: NSURL?
             
             switch sourceType {
@@ -37,7 +37,7 @@ public enum ContentMediaAsset {
             let source = json["source"].string
             let externalID = json["external_id"].string
             
-            if contentType == "video" {
+            if contentType == .video {
                 if let source = source,
                     let externalID = externalID where source == "youtube" {
                     self = .youtube(remoteID: externalID, source: source)
@@ -46,7 +46,7 @@ public enum ContentMediaAsset {
                 } else {
                     return nil
                 }
-            } else if contentType == "gif" {
+            } else if contentType == .gif {
                 guard let url = url else {
                     return nil
                 }
@@ -54,6 +54,36 @@ public enum ContentMediaAsset {
             } else {
                 return nil
             }
+        case .text:
+            return nil
+        }
+    }
+    
+    public init?(contentType: ContentType, url: NSURL) {
+        switch contentType {
+        case .text:
+            return nil
+        case .video:
+            self = .video(url: url, source: nil)
+        case .gif:
+            self = .gif(url: url, source: nil)
+        case .image:
+            self = .image(url: url)
+        }
+    }
+    
+    public init?(forumJSON json: JSON) {
+        guard let url = NSURL(vsdk_string: json["url"].string) else {
+            return nil
+        }
+        
+        switch json["type"].stringValue.lowercaseString {
+        case "image":
+            self = .image(url: url)
+        case "video":
+            self = .video(url: url, source: nil)
+        case "gif":
+            self = .gif(url: url, source: nil)
         default:
             return nil
         }

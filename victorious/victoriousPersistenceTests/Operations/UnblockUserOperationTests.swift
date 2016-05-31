@@ -30,10 +30,10 @@ class UnblockUserOperationTests: BaseFetcherOperationTestCase {
     
     func testUnblockingUser() {
         
-        XCTAssertTrue(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertTrue(objectUser.isBlockedByMainUser?.boolValue == true)
         
         operation.main()
         
-        XCTAssertFalse(objectUser.isBlockedByMainUser.boolValue)
+        XCTAssertFalse(objectUser.isBlockedByMainUser?.boolValue == true)
     }
 }

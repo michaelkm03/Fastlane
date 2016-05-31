@@ -48,7 +48,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func setupVideoView(containerView: UIView) -> VVideoView {
         let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        videoPlayer.useAspectFit = false
+        videoPlayer.useAspectFit = true
         videoPlayer.delegate = self
         videoPlayer.backgroundColor = UIColor.clearColor()
         containerView.addSubview(videoPlayer.view)
@@ -62,8 +62,22 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return dataSource
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Coming back to the stage where a video was playing will resume the video.
+        if let currentStagedContent = currentStagedContent,
+            case .video(_, _) = currentStagedContent {
+            videoPlayer.play()
+        }
+    }
+
     override func viewWillDisappear(animated: Bool) {
         clearStageMedia()
+    }
+    
+    override func viewDidLoad() {
+        self.imageView.contentMode = .ScaleAspectFit
     }
 
     //MARK: - Stage
@@ -84,6 +98,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     func removeContent() {
+        currentStagedContent = nil
         clearStageMedia()
     }
 
@@ -163,6 +178,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func clearStageMedia(animated: Bool = false) {
+        videoPlayer.pause()
         mainContentViewBottomConstraint.constant = 0
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {

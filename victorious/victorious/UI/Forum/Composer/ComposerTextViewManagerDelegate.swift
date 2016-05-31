@@ -19,4 +19,6 @@ protocol ComposerTextViewManagerDelegate: class {
     var textViewHasPrependedImage: Bool { get set }
     
     var textViewCanDismiss: Bool { get }
+    
+    func textViewDidHitCharacterLimit(textView: UITextView) -> Void
 }

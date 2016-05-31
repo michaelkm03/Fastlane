@@ -16,14 +16,21 @@ class PreloadUserInfoOperation: BackgroundOperation {
         super.init()
     }
     
+    private(set) var user: VUser?
+    
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     override func start() {
         super.start()
         beganExecuting()
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { [weak self] context in
+            guard let strongSelf = self else {
+                return
+            }
+            
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                strongSelf.finishedExecuting()
                 return
             }
             
@@ -32,7 +39,11 @@ class PreloadUserInfoOperation: BackgroundOperation {
             
             StreamOperation(apiPath: apiPath).queue()
             
-            UserInfoOperation(userID: userID).queue()
+            let infoOperation = UserInfoOperation(userID: userID)
+            infoOperation.queue() { _ in
+                strongSelf.user = infoOperation.user
+                strongSelf.finishedExecuting()
+            }
             
             PollResultSummaryByUserOperation(userID: userID).queue()
             
@@ -47,7 +58,5 @@ class PreloadUserInfoOperation: BackgroundOperation {
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
             FollowedHashtagsRemoteOperation(request: request).queue()
         }
-        
-        finishedExecuting()
     }
 }

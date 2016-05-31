@@ -46,7 +46,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    func height(for content: VContent?) -> CGFloat {
+    func height(for content: ContentModel?) -> CGFloat {
         guard let content = content else {
             return 0
         }
@@ -54,36 +54,35 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         return min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
 
-    var content: VContent? {
+    var content: ContentModel? {
         didSet {
-            guard let content = content,
-                let author = content.author else {
-                    return
+            guard let content = content else {
+                return
             }
             
-            setBackground(for: content)
+            let author = content.authorModel
+            
             setHeader(for: content, author: author)
             
             // Header
             userNameButton.setTitle(author.name, forState: .Normal)
-            if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
-                profileImageView.sd_setImageWithURL(pictureURL,
-                                                    placeholderImage: placeholderImage)
-            }
-            else {
+            
+            if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
+                profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+            } else {
                 profileImageView.image = placeholderImage
             }
+            
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
-            if let preview = content.previewImageWithMinimumWidth(minWidth),
-                let remoteURL = NSURL(string: preview.imageURL) {
-                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
+            if let previewURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+                blurredImageView.applyBlurToImageURL(previewURL, withRadius: 12.0) { [weak self] in
                     self?.blurredImageView.alpha = blurredImageAlpha
                 }
             }
             
-            createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-            captionLabel.text = content.title
+            createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            captionLabel.text = content.text
             mediaContentView.updateContent(content)
             
             // Update size
@@ -91,27 +90,17 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    func setHeader(for content: VContent, author: VUser ) {
+    func setHeader(for content: ContentModel, author: UserModel ) {
         userNameButton.setTitle(author.name, forState: .Normal)
-        if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
-            profileImageView.sd_setImageWithURL(pictureURL,
-                                                placeholderImage: placeholderImage)
-        }
-        else {
+        
+        if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
+            profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+        } else {
             profileImageView.image = placeholderImage
         }
-        createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-        captionLabel.text = content.title
-    }
-    
-    func setBackground(for content: VContent) {
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteURL = NSURL(string: preview.imageURL) {
-            blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
-                self?.blurredImageView.alpha = blurredImageAlpha
-            }
-        }
+        
+        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        captionLabel.text = content.text
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
@@ -121,8 +110,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         delegate?.didSelectProfileForUserID(userID)
     }
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager,
-                                        delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
         let view : CloseUpView = CloseUpView.v_fromNib()
         view.dependencyManager = dependencyManager
         view.delegate = delegate
@@ -185,10 +173,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
     }
     
-    func sizeForContent(content: VContent) -> CGSize {
+    func sizeForContent(content: ContentModel) -> CGSize {
         let contentHeight = height(for: content)
         
-        if !contentHasTitle(content) {
+        if !contentHasText(content) {
             return CGSize(
                 width: screenWidth,
                 height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
@@ -198,7 +186,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         var frame = captionLabel.frame
         frame.size.width = screenWidth - 2 * horizontalMargins
         captionLabel.frame = frame
-        captionLabel.text = content.title
+        captionLabel.text = content.text
         captionLabel.sizeToFit()
         
         let totalHeight = headerSection.bounds.size.height +
@@ -213,11 +201,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         )
     }
     
-    private func contentHasTitle(content: VContent) -> Bool {
-        guard let title = content.title else {
-            return false
-        }
-        return title.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
+    private func contentHasText(content: ContentModel) -> Bool {
+        return content.text?.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
     
     @objc private func closeUpDismissed() {
@@ -232,13 +217,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func decorateHeader(dependencyManager: VDependencyManager,
                         maxHeight: CGFloat,
-                        content: VContent?) {
+                        content: ContentModel?) {
         self.content = content
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
-                       content: VContent?) -> CGSize {
+                       content: ContentModel?) -> CGSize {
         guard let content = content else {
             return CGSizeZero
         }

@@ -33,7 +33,7 @@ class UserSearchOperationTests: BaseFetcherOperationTestCase {
             return
         }
 
-        let user = User(userID: testUserID)
+        let user = User(id: testUserID)
         testRequestExecutor = TestRequestExecutor(result:[user])
         operation.requestExecutor = testRequestExecutor
         
@@ -47,7 +47,7 @@ class UserSearchOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual(1, results.count)
             if let firstResultsObject = results.first as? UserSearchResultObject {
                 let sourceResult = firstResultsObject.sourceResult
-                XCTAssertEqual(sourceResult.userID, self.testUserID)
+                XCTAssertEqual(sourceResult.id, self.testUserID)
             } else {
                 XCTFail("should have at least one results object")
             }

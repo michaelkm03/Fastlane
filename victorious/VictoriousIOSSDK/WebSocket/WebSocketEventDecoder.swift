@@ -27,12 +27,14 @@ extension WebSocketEventDecoder {
         if let epochTime = json[Keys.root][Keys.epochTime].double where json[Keys.root].isExists() {
             let serverTime = NSDate(millisecondsSince1970: epochTime)
             
-            let chatJson = json[Keys.root][Keys.chat]
-            if let chatMessage = ChatMessage(json: chatJson, serverTime: serverTime) {
-                forumEvent = chatMessage
+            let chatJSON = json[Keys.root][Keys.chat]
+            
+            if let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) {
+                forumEvent = content
             }
             
             let refreshJson = json[Keys.root][Keys.refreshStage]
+            
             if let refresh = RefreshStage(json: refreshJson, serverTime: serverTime) {
                 forumEvent = refresh
             }

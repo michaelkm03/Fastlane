@@ -1,5 +1,5 @@
 //
-//  ViewedContentFeedRequest.swift
+//  ContentFeedRequest.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/17/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct ViewedContentFeedRequest: PaginatorPageable, ResultBasedPageable {
+public struct ContentFeedRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StreamPaginator
     public let apiPath: String
@@ -23,7 +23,7 @@ public struct ViewedContentFeedRequest: PaginatorPageable, ResultBasedPageable {
         self.apiPath = apiPath
     }
     
-    public init(request: ViewedContentFeedRequest, paginator: StreamPaginator) {
+    public init(request: ContentFeedRequest, paginator: StreamPaginator) {
         self.init(apiPath: request.apiPath, paginator: paginator)
     }
     
@@ -34,12 +34,12 @@ public struct ViewedContentFeedRequest: PaginatorPageable, ResultBasedPageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ViewedContent] {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {
         
-        guard let viewedContents = responseJSON["payload"]["viewed_contents"].array else {
+        guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
         
-        return viewedContents.flatMap { ViewedContent(json: $0) }
+        return contents.flatMap { Content(json: $0) }
     }
 }

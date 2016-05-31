@@ -45,6 +45,8 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 @property (nonatomic, strong) IBOutlet UIButton *privacyPolicyButton;
 @property (nonatomic, strong) IBOutlet UIView *legalButtonContainer;
 
+@property (nonatomic, strong) UIBarButtonItem *loginButton;
+
 @end
 
 @implementation VModernLandingViewController
@@ -53,10 +55,10 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VModernLandingViewController *landingViewContorller = [[UIStoryboard storyboardWithName:NSStringFromClass(self)
+    VModernLandingViewController *landingViewController = [[UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                                      bundle:[NSBundle bundleForClass:self]] instantiateInitialViewController];
-    landingViewContorller.dependencyManager = dependencyManager;
-    return landingViewContorller;
+    landingViewController.dependencyManager = dependencyManager;
+    return landingViewController;
 }
 
 #pragma mark - View Lifecycle
@@ -64,7 +66,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.loginButton.enabled = YES; 
     [self.dependencyManager trackViewWillAppear:self];
 }
 
@@ -85,11 +87,11 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     UIImageView *headerImageView = [[UIImageView alloc] initWithImage:headerImage];
     self.navigationItem.titleView = headerImageView;
     
-    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Login", @"")
+    self.loginButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Login", @"")
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(login)];
-    self.navigationItem.rightBarButtonItem = loginButton;
+    self.navigationItem.rightBarButtonItem = self.loginButton;
     
     NSDictionary *legalAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
@@ -137,6 +139,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (void)login
 {
+    self.loginButton.enabled = NO;
     [self.delegate selectedLogin];
 }
 

@@ -8,7 +8,6 @@
 
 #import "VSequenceLiker.h"
 #import "VSequence.h"
-#import "VUser.h"
 
 @implementation VSequenceLiker
 

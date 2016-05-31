@@ -12,7 +12,6 @@
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VAnswer.h"
-#import "VUser.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
 #import "VSequencePermissions.h"
