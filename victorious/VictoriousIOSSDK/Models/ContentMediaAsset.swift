@@ -14,7 +14,7 @@ public enum ContentMediaAsset {
     case gif(url: NSURL, source: String?)
     case image(url: NSURL)
     
-    init?(contentType: ContentType, sourceType: String, json: JSON) {
+    public init?(contentType: ContentType, sourceType: String, json: JSON) {
         
         switch contentType {
         case .image:
@@ -55,6 +55,36 @@ public enum ContentMediaAsset {
                 return nil
             }
         case .text:
+            return nil
+        }
+    }
+    
+    public init?(contentType: ContentType, url: NSURL) {
+        switch contentType {
+        case .text:
+            return nil
+        case .video:
+            self = .video(url: url, source: nil)
+        case .gif:
+            self = .gif(url: url, source: nil)
+        case .image:
+            self = .image(url: url)
+        }
+    }
+    
+    public init?(forumJSON json: JSON) {
+        guard let url = NSURL(vsdk_string: json["url"].string) else {
+            return nil
+        }
+        
+        switch json["type"].stringValue.lowercaseString {
+        case "image":
+            self = .image(url: url)
+        case "video":
+            self = .video(url: url, source: nil)
+        case "gif":
+            self = .gif(url: url, source: nil)
+        default:
             return nil
         }
     }

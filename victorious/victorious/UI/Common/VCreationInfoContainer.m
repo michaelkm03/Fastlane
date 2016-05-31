@@ -17,7 +17,6 @@
 
 // Models
 #import "VSequence+Fetcher.h"
-#import "VUser.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 
@@ -31,6 +30,8 @@
 
 // Respdoner Chain
 #import "VSequenceActionsDelegate.h"
+
+#import "victorious-Swift.h"
 
 static const CGFloat kDefaultHeight = 44.0f;
 static const CGFloat kVerticalPaddingToCenterLabels = 0.0f;

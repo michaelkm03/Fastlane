@@ -8,10 +8,8 @@
 
 #import "VDiscoverContainerViewController.h"
 #import "VDiscoverConstants.h"
-#import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDiscoverViewControllerProtocol.h"
-#import "VUser.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"

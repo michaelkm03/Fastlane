@@ -60,14 +60,14 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
     
     func receive(event: ForumEvent) {
         // Stash events in the queue when received and wait to dequeue on our timer cycle
-        if let message =  event as? ChatMessage {
-            let chatFeedMessage = ChatFeedMessage(displayOrder: eventCounter, source: message)
+        if let content =  event as? ContentModel {
+            let chatFeedMessage = ChatFeedMessage(content: content, displayOrder: eventCounter)
             eventQueue.addEvent(chatFeedMessage)
             eventCounter -= 1
             
             // Deuque messages right away if from the current user so FetcherOperation
             // So that the sending feels responsive and nothing gets out of order
-            if chatFeedMessage.userID == VCurrentUser.user()?.remoteId?.integerValue {
+            if content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue {
                 dequeueMessages()
             }
         }

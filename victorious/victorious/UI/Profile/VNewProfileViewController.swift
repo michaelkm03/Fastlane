@@ -109,7 +109,7 @@ class VNewProfileViewController: UIViewController {
         
         gridStreamController.content = user
         
-        let appearanceKey = user.isCreator.boolValue ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
+        let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
