@@ -1726,6 +1726,7 @@
 		BF5C8DA81CFE4F7000767E66 /* ContentUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C8DA71CFE4F7000767E66 /* ContentUpvoteRequest.swift */; };
 		BF5C8DAA1CFE4F7900767E66 /* ContentUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C8DA91CFE4F7900767E66 /* ContentUnupvoteRequest.swift */; };
 		BF5C8DAC1CFE50D800767E66 /* ContentUnupvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C8DAB1CFE50D800767E66 /* ContentUnupvoteRemoteOperation.swift */; };
+		BF5C8DAE1CFE560500767E66 /* ShowShareContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C8DAD1CFE560500767E66 /* ShowShareContentOperation.swift */; };
 		BF5FA32B1CEEB8810027D9CF /* VUser+Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5FA32A1CEEB8810027D9CF /* VUser+Fetcher.swift */; };
 		BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */; };
@@ -4474,6 +4475,7 @@
 		BF5C8DA71CFE4F7000767E66 /* ContentUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequest.swift; sourceTree = "<group>"; };
 		BF5C8DA91CFE4F7900767E66 /* ContentUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequest.swift; sourceTree = "<group>"; };
 		BF5C8DAB1CFE50D800767E66 /* ContentUnupvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRemoteOperation.swift; sourceTree = "<group>"; };
+		BF5C8DAD1CFE560500767E66 /* ShowShareContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareContentOperation.swift; sourceTree = "<group>"; };
 		BF5FA32A1CEEB8810027D9CF /* VUser+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Fetcher.swift"; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarBadgeType.swift; sourceTree = "<group>"; };
 		BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaAsset.swift; sourceTree = "<group>"; };
@@ -8059,6 +8061,7 @@
 			children = (
 				A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */,
 				A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */,
+				A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */,
 				A72C85B11C977FF500E97D4F /* ShowCommentsOperation.swift */,
 				A72C85B21C977FF500E97D4F /* ShowCreateSheetOperation.swift */,
 				A72C85B31C977FF500E97D4F /* ShowForumOperation.swift */,
@@ -8071,12 +8074,12 @@
 				A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */,
 				A72C85BA1C977FF500E97D4F /* ShowRepostersOperation.swift */,
 				A72C85BB1C977FF500E97D4F /* ShowSearchResultOperation.swift */,
+				BF5C8DAD1CFE560500767E66 /* ShowShareContentOperation.swift */,
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
 				A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */,
 				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
 				7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */,
 				7AB14CAD1CBEF96B006E674B /* ShowWebContentOperation.swift */,
-				A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
 			);
 			path = "Main Queue Operations";
@@ -13587,6 +13590,7 @@
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
+				BF5C8DAE1CFE560500767E66 /* ShowShareContentOperation.swift in Sources */,
 				A72C86511C977FF500E97D4F /* ShowCommentsOperation.swift in Sources */,
 				7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
