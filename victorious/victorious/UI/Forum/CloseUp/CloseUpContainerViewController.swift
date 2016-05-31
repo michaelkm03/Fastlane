@@ -125,7 +125,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             contentID: contentID,
             upvoteURL: dependencyManager.contentUpvoteURL,
             unupvoteURL: dependencyManager.contentUnupvoteURL
-        ).queue()
+        ).queue() { [weak self] _ in
+            self?.updateHeader()
+        }
     }
     
     func overflow() {
