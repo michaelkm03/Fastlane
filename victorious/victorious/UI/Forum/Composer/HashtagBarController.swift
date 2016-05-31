@@ -9,13 +9,13 @@
 import UIKit
 
 /// Conformers receive messages when a hashtag is selected.
-protocol HashtagBarControllerSelectionDelegate: NSObjectProtocol {
+protocol HashtagBarControllerSelectionDelegate: class {
     
     func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String)
 }
 
 /// Conformers receive messages when a hashtag is selected.
-protocol HashtagBarControllerSearchDelegate: NSObjectProtocol {
+protocol HashtagBarControllerSearchDelegate: class {
     
     func hashtagBarController(hashtagBarController: HashtagBarController, populatedWithHashtags hashtags: [String])
 }
@@ -33,13 +33,6 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     private var currentTrendingTags = [String]() {
         didSet {
-            guard !currentTrendingTags.isEmpty else {
-                if !searchResults.isEmpty {
-                    searchResults = [String]()
-                }
-                return
-            }
-            
             guard currentTrendingTags != oldValue else {
                 return
             }
