@@ -9,7 +9,7 @@
 class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDelegate {
     // MARK: - Configuration
     
-    private static let pollingInterval = NSTimeInterval(5.0)
+    private static let pollingInterval = NSTimeInterval(10.0)
     
     // MARK: - Initialization
     
@@ -32,7 +32,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     let paginator = VScrollPaginator()
     
     private func broadcastContents(contents: [ContentModel]) {
-        for content in contents {
+        // Content comes back oldest to newest, but we need it to be oldest to newest.
+        for content in contents.reverse() {
             broadcast(content)
         }
     }

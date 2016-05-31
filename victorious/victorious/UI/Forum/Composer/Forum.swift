@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import VictoriousIOSSDK
 
 /// Defines an object that requires these few properties in order to execute
 /// the highest-level, abstract Forum business logic.  Plug and play :)

@@ -9,6 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
+// TODO: Make this a FetcherOperation (requires refactor of FetcherOperation to not use AnyObject array).
 final class ContentFeedOperation: NSOperation, Queueable {
     // MARK: - Initializing
     
@@ -46,6 +47,8 @@ final class ContentFeedOperation: NSOperation, Queueable {
     }
     
     func executeCompletionBlock(completionBlock: (newItems: [ContentModel], error: NSError?) -> Void) {
-        completionBlock(newItems: items, error: error)
+        dispatch_async(dispatch_get_main_queue()) {
+            completionBlock(newItems: self.items, error: self.error)
+        }
     }
 }
