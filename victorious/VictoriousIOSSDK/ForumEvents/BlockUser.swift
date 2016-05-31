@@ -10,7 +10,7 @@ import Foundation
 
 /// The block command can be sent from the client to the server over the WebSocket and basically
 /// blocks any messages from the specified user from reaching this client again.
-public struct BlockUser: ForumEvent, DictionaryConvertible {
+public struct BlockUser: DictionaryConvertible {
     
     // MARK: ForumEvent
     

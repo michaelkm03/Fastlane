@@ -9,7 +9,7 @@
 import Foundation
 
 /// Indicates to client to update either one of its stages.
-public struct RefreshStage: ForumEvent {
+public struct RefreshStage {
     
     // MARK: ForumEvent
     public let serverTime: NSDate
