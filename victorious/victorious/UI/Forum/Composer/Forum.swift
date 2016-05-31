@@ -35,7 +35,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 
 /// The default implementation of the highest-level, abstract Forum business logic,
 /// intended as a concise and flexible mini-architecture and defines the
-/// most fundamental interation between parent and subcomponents.
+/// most fundamental interaction between parent and subcomponents.
 extension Forum {
     
     // MARK: - ChatFeedDelegate

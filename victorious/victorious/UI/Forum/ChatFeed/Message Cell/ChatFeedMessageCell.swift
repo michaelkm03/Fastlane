@@ -100,8 +100,12 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
             mediaView.updateContent(content)
         }
         
+        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
+        
         if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
             detailTextView.text = "\(name) (\(timeStamp))"
+        } else {
+            detailTextView.text = "" 
         }
         
         if let imageURL = content?.previewImageURL(ofMinimumSize: avatarView.frame.size) {
