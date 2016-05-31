@@ -104,7 +104,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
-        guard let userID = content?.author?.remoteId.integerValue else {
+        guard let userID = content?.authorModel.id else {
             return
         }
         delegate?.didSelectProfileForUserID(userID)

@@ -41,7 +41,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }()
     
     init(dependencyManager: VDependencyManager,
-         content: VContent? = nil,
+         content: ContentModel? = nil,
          streamAPIPath: String?) {
         self.dependencyManager = dependencyManager
         
@@ -87,7 +87,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         
     }
     
-    private func updateHeaderForContent(content: VContent?) {
+    private func updateHeaderForContent(content: ContentModel?) {
         guard let content = content else {
             return
         }
@@ -107,7 +107,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         fatalError("NSCoding not supported.")
     }
     
-    func updateContent(content: VContent) {
+    func updateContent(content: ContentModel) {
         updateHeaderForContent(content)
         gridStreamController.content = content
     }

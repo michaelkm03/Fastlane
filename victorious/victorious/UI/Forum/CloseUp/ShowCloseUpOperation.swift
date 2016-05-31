@@ -34,8 +34,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
-//        self.content = content
-        self.contentID = content.remoteID
+        self.content = content
         super.init()
     }
     
