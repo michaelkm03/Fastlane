@@ -12,9 +12,6 @@ import Foundation
 /// blocks any messages from the specified user from reaching this client again.
 public struct BlockUser: DictionaryConvertible {
     
-    // MARK: ForumEvent
-    
-    public let serverTime: NSDate
     public let userID: String
 
     // MARK: DictionaryConvertible
