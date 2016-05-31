@@ -1,8 +1,8 @@
 //
-//  WebSocketEventType.swift
+//  WebSocketEvent.swift
 //  victorious
 //
-//  Created by Sebastian Nystorm on 25/3/16.
+//  Created by Sebastian Nystorm on 24/3/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
