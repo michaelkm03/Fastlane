@@ -74,8 +74,13 @@
         if ([menuItem.destination isKindOfClass:[UIViewController class]])
         {
             UIViewController *viewController = (UIViewController *)menuItem.destination;
-            VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-            [containedNavigationController.innerNavigationController pushViewController:viewController animated:NO];
+            UIViewController *containedNavigationController = viewController;
+            if (![containedNavigationController isKindOfClass:[UINavigationController class]])
+            {
+                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+                [navigationController.innerNavigationController pushViewController:viewController animated:NO];
+                containedNavigationController = navigationController;
+            }
             shimViewController.containedViewController = containedNavigationController;
         }
         
