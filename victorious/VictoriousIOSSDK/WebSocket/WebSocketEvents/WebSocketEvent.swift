@@ -8,13 +8,13 @@
 
 import Foundation
 
-/**
- The Forum Event Chain is used to transport control messages regarding the state of the WebSocket connection.
- 
- - Authenticated: The authentication handshake has been performed.
- - Connected:     The WebSocket connection is open.
- - Disconnected:  The WebSocket connection is closed with potentially an error message.
- */
+///
+/// The Forum Event Chain is used to transport control messages regarding the state of the WebSocket connection.
+///
+/// - Authenticated: The authentication handshake has been performed.
+/// - AuthenticationFailed: The authentication handshake has failed with an error message
+/// - Connected: The WebSocket connection is open.
+/// - Disconnected: The WebSocket connection is closed with potentially an error message.
 public enum WebSocketEvent: Equatable {
     case Authenticated
     case AuthenticationFailed(webSocketError: WebSocketError)
