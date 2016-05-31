@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KY2-Hn-7We">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KY2-Hn-7We">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -19,7 +19,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKf-rE-KkT">
                                 <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                                 <subviews>
-                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb">
+                                    <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmy-Vi-14p">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" id="R7y-FD-pPE"/>
+                                        </constraints>
+                                    </containerView>
+                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb" userLabel="Input Options Container">
                                         <rect key="frame" x="0.0" y="0.0" width="539" height="80"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MN-kC-AjT">
@@ -104,12 +111,15 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" id="3dR-yA-V1B"/>
-                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" secondItem="nKf-rE-KkT" secondAttribute="top" id="8K4-Xs-Hs9"/>
-                                    <constraint firstItem="6XI-Cd-FZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nKf-rE-KkT" secondAttribute="top" id="9tq-Vc-sKA"/>
+                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" secondItem="xmy-Vi-14p" secondAttribute="bottom" id="8nO-QE-QQv"/>
+                                    <constraint firstAttribute="trailing" secondItem="xmy-Vi-14p" secondAttribute="trailing" id="RlA-Wd-sqJ"/>
                                     <constraint firstAttribute="trailing" secondItem="6XI-Cd-FZ6" secondAttribute="trailing" id="S4E-vm-gwK"/>
+                                    <constraint firstItem="xmy-Vi-14p" firstAttribute="top" secondItem="nKf-rE-KkT" secondAttribute="top" id="X9Y-48-wJQ"/>
                                     <constraint firstAttribute="bottom" secondItem="Koq-m5-Wlb" secondAttribute="bottom" id="XKD-kw-XpC"/>
+                                    <constraint firstItem="xmy-Vi-14p" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" id="dPb-he-B9q"/>
                                     <constraint firstItem="6XI-Cd-FZ6" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="trailing" id="oBZ-lP-J7Q"/>
                                     <constraint firstAttribute="bottom" secondItem="6XI-Cd-FZ6" secondAttribute="bottom" id="qWH-4U-d06"/>
+                                    <constraint firstItem="6XI-Cd-FZ6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xmy-Vi-14p" secondAttribute="bottom" id="xbL-DV-5RU"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -128,6 +138,8 @@
                         <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="confirmButtonContainer" destination="6XI-Cd-FZ6" id="vAw-BD-CQI"/>
                         <outlet property="confirmButtonContainerHeightConstraint" destination="jHC-no-EqS" id="Ire-Pl-V7k"/>
+                        <outlet property="hashtagBarContainerHeightConstraint" destination="R7y-FD-pPE" id="MR8-GL-dDY"/>
+                        <outlet property="hashtagBarContainerView" destination="xmy-Vi-14p" id="cTJ-sD-xk7"/>
                         <outlet property="inputViewToBottomConstraint" destination="AER-2e-8Qh" id="rAl-Fw-eVY"/>
                         <outlet property="interactiveContainerView" destination="nKf-rE-KkT" id="avV-p4-Yra"/>
                         <outlet property="passthroughContainerView" destination="DkO-lo-gQh" id="mrt-w4-ef1"/>
