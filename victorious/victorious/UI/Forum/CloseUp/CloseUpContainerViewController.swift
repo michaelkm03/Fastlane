@@ -114,50 +114,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func share() {
-        guard let content = content else {
-            return
-        }
-        ShowShareContentOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            content: content
-        ).queue()
+
     }
     
     func toggleUpvote() {
-        guard let contentID = content?.id else {
-            return
-        }
-        ContentUpvoteToggleOperation(
-            contentID: contentID,
-            upvoteURL: dependencyManager.contentUpvoteURL,
-            unupvoteURL: dependencyManager.contentUnupvoteURL
-        ).queue() { [weak self] _ in
-            self?.updateHeader()
-        }
+
     }
     
     func overflow() {
-        guard let contentID = content?.id else {
-            return
-        }
-        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
-        let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
-            originViewController: self,
-            dependencyManager: dependencyManager
-        )
-        
-        confirm.before(flag)
-        confirm.queue()
-        flag.queue() { [weak self] results, error, cancelled in
-            /// Future: Update parent view controller to remove content
-            if !cancelled {
-                self?.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
 
+    }
 }
 
 private extension VDependencyManager {
