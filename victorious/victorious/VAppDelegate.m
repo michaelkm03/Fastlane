@@ -11,7 +11,6 @@
 #import "VReachability.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
-#import "VUser.h"
 #import "VConstants.h"
 #import "VRootViewController.h"
 #import "VStoredLogin.h"

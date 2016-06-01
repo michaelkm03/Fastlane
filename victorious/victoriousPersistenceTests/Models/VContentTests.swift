@@ -17,17 +17,16 @@ class VContentTests: BasePersistentStoreTestCase {
             return
         }
         
-        XCTAssertNotNil(content.author, "Author should not be nil")
+        XCTAssertNotNil(content.v_author, "Author should not be nil")
 
-        XCTAssertEqual(content.remoteID, "31415926535")
-        XCTAssertEqual(content.status, "public")
+        XCTAssertEqual(content.v_remoteID, "31415926535")
+        XCTAssertEqual(content.v_status, "public")
         XCTAssertEqual(content.text, "We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
-        XCTAssertEqual(content.shareURL, "test_share_url")
-        XCTAssertEqual(Int(content.releasedAt.timeIntervalSince1970), 123456/1000)
-        XCTAssertEqual(content.isUGC, true)
-        XCTAssertEqual(content.contentPreviewAssets?.count, 4)
-        XCTAssertEqual(content.contentMediaAssets?.count, 1)
-        XCTAssertEqual(content.type, "video")
+        XCTAssertEqual(content.shareURL?.absoluteString, "test_share_url")
+        XCTAssertEqual(Int(content.createdAt.timeIntervalSince1970), 123456/1000)
+        XCTAssertEqual(content.v_contentPreviewAssets.count, 4)
+        XCTAssertEqual(content.v_contentMediaAssets.count, 1)
+        XCTAssertEqual(content.type, ContentType.video)
     }
 
     private func createContentFromJSON(fileName fileName: String) -> VContent? {
@@ -37,12 +36,12 @@ class VContentTests: BasePersistentStoreTestCase {
                 return nil
         }
         
-        guard let viewedContent = ViewedContent(json: JSON(data: mockData)) else {
+        guard let content = Content(json: JSON(data: mockData)) else {
             XCTFail("Error reading mock json data")
             return nil
         }
         let persistentSequenceModel: VContent = persistentStoreHelper.createContent("1")
-        persistentSequenceModel.populate(fromSourceModel: viewedContent)
+        persistentSequenceModel.populate(fromSourceModel: content)
         return persistentSequenceModel
     }
 

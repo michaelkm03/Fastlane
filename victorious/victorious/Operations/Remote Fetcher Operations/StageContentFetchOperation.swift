@@ -10,19 +10,19 @@ import Foundation
 
 class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
-    internal let request: ViewedContentFetchRequest!
+    internal let request: ContentFetchRequest!
     
     // Used to calculated the offset in videos.
     private var operationStartTime: NSDate?
     
     private var refreshStageEvent: RefreshStage?
 
-    required init(request: ViewedContentFetchRequest) {
+    required init(request: ContentFetchRequest) {
         self.request = request
     }
 
     convenience init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
-        let request = ViewedContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
+        let request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
         
         self.init(request: request)
         self.refreshStageEvent = refreshStageEvent
@@ -34,9 +34,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
 
-    func onComplete(result: ViewedContentFetchRequest.ResultType) {
-        let content = result.content
-        
+    func onComplete(content: ContentFetchRequest.ResultType) {
         // Calculated time diff, used to sync users in the video.
         // startTime = serverTime - startTime + workTime
         if let refreshStageEvent = refreshStageEvent,

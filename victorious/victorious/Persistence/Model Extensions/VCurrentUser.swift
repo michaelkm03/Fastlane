@@ -19,7 +19,7 @@ class VCurrentUser: NSObject {
     static var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     /// Returns a `VUser` object from the provided managed object context's user info dictionary
-    /// (for performance and conveninece reasons).  This method is thread safe, and will handle loading
+    /// (for performance and convenience reasons).  This method is thread safe, and will handle loading
     /// the user from the proper context depending on which thread it is invoked.
     static func user( inManagedObjectContext managedObjectContext: NSManagedObjectContext ) -> VUser? {
         

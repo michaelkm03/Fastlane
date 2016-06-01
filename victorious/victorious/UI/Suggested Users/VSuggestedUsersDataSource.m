@@ -9,7 +9,6 @@
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUserCell.h"
 #import "VDependencyManager.h"
-#import "VUser.h"
 #import "VSuggestedUserRetryCell.h"
 #import "victorious-Swift.h"
 

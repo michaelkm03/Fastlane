@@ -87,8 +87,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketOutboundChatMessage() {
         nextSender = controller
         
-        let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
-        let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
+        let user = User(id: 1222, name: "username")
+        let chatMessageOutbound = Content(createdAt: NSDate(timeIntervalSince1970: 1234567890), text: "Test chat message", author: user)
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
@@ -101,14 +101,14 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
         webSocket.connect()
         
-        sendEvent(chatMessageOutbound)
+        sendEvent(.sendContent(chatMessageOutbound))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testWebSocketBlockUserMessage() {
         nextSender = controller
         
-        let blockUser = BlockUser(serverTime: NSDate(timeIntervalSince1970: 1234567890), userID: "1337")
+        let blockUser = BlockUser(userID: "1337")
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [blockUser.rootTypeKey!: blockUser.rootTypeValue!]
@@ -121,7 +121,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
         webSocket.connect()
 
-        sendEvent(blockUser)
+        sendEvent(.blockUser(blockUser))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
@@ -144,8 +144,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
 
     func receive(event: ForumEvent) {
         switch event {
-        case let webSocketEvent as WebSocketEvent:
-            switch webSocketEvent.type {
+        case .websocket(let websocketEvent):
+            switch websocketEvent {
             case .Authenticated:
                 expectationAuthenticationEvent?.fulfill()
             case .Connected:
@@ -167,11 +167,11 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
                     XCTFail("Expected WebSocketController to NOT be connected after the .Disconnect event has been sent out.")
                 }
             default:
-                XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
+                XCTFail("Unexpected WebSocketEventType received. Type -> \(websocketEvent)")
             }
-        case is ChatMessage:
+        case .appendContent(_):
             expectationIncomingChatMessage?.fulfill()
-        case is RefreshStage:
+        case .refreshStage(_):
             expectationRefreshStageMessage?.fulfill()
         default:
             XCTFail("Unexpected ForumEvent type received. Event -> \(event)")

@@ -255,7 +255,6 @@
 #import "VUploadTaskCreator.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadProgressViewController.h"
-#import "VUser.h"
 #import "VUserCell.h"
 #import "VUserProfileHeader.h"
 #import "VUserProfileViewController.h"

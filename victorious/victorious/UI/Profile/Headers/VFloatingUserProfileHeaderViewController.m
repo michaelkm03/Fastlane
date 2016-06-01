@@ -12,7 +12,6 @@
 #import "VLinearGradientView.h"
 #import "VButton.h"
 #import "UIView+AutoLayout.h"
-#import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "VLaunchScreenProvider.h"
 #import "victorious-Swift.h"

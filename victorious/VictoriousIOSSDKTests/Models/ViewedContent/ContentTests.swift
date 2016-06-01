@@ -13,19 +13,18 @@ class ContentTests: XCTestCase {
     
     func testValid() {
         guard let content: Content = createContentFromJSON(fileName: "Content") else {
-            XCTFail("Failed to create a Content")
+            XCTFail("Failed to create Content from file.")
             return
         }
         
         XCTAssertEqual(content.id, "1")
         XCTAssertEqual(content.status, "public")
         XCTAssertEqual(content.text, "TEST_TITLE")
-        XCTAssertNil(content.tags)
+        XCTAssertTrue(content.hashtags.isEmpty)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
-        XCTAssertEqual(Int(content.releasedAt.timeIntervalSince1970), 314159/1000)
-        XCTAssertEqual(content.isUGC, true)
+        XCTAssertEqual(Int(content.createdAt.timeIntervalSince1970), 314159/1000)
         XCTAssertEqual(content.previewImages?.count, 4)
-        XCTAssertEqual(content.contentData?.count, 1)
+        XCTAssertEqual(content.assets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)
     }
     
@@ -56,7 +55,30 @@ class ContentTests: XCTestCase {
         XCTAssertNil(viewedContent, "Viewed content should not have been created with an invalid JSON")
         
     }
-    
+
+    func testValidChatMessage() {
+        guard let chatMessage = createChatMessageFromJSON(fileName: "ChatMessage") else {
+            XCTFail("Failed to create ChatMessage content from file.")
+            return
+        }
+
+        XCTAssertEqual(chatMessage.text, "Test message")
+        XCTAssertEqual(chatMessage.assets.count, 1)
+        // FUTURE: Switch User.id to a String and enable this assertion.
+//        XCTAssertEqual(chatMessage.author.id, "1")
+        XCTAssertEqual(chatMessage.author.name, "Leetzor")
+    }
+
+    private func createChatMessageFromJSON(fileName fileName: String) -> Content? {
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+                XCTFail("Error reading mock json data")
+                return nil
+        }
+
+        return Content(chatMessageJSON: JSON(data: mockData), serverTime: NSDate(millisecondsSince1970: 1234567890))
+    }
+
     private func createContentFromJSON(fileName fileName: String) -> Content? {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
@@ -66,5 +88,4 @@ class ContentTests: XCTestCase {
         
         return Content(json: JSON(data: mockData))
     }
-    
 }

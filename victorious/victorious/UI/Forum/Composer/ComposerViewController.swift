@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -37,6 +37,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak private var hashtagBarContainerView: UIView!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView! {
         didSet {
@@ -58,7 +61,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
-    private var selectedMedia: MediaAttachment?
+    private var searchTextChanged = false
+
+    private var selectedAsset: ContentMediaAsset?
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -70,6 +75,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return fabs(inputViewToBottomConstraint.constant)
             + textViewContainerHeightConstraint.constant
             + attachmentContainerHeightConstraint.constant
+            + hashtagBarContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
@@ -109,7 +115,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var userIsOwner: Bool {
-        return VCurrentUser.user()?.isCreator.boolValue ?? false
+        return VCurrentUser.user()?.isCreator?.boolValue ?? false
     }
     
     var dependencyManager: VDependencyManager! {
@@ -156,11 +162,41 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    // MARK: - HashtagBar
+    
+    private var hashtagBarController: HashtagBarController! {
+        didSet {
+            hashtagBarController.selectionDelegate = self
+        }
+    }
+    
+    // MARK: - HashtagBarControllerSearchDelegate
+    
+    func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String) {
+        
+        guard let (_, range) = textViewCurrentHashtag else {
+            return
+        }
+        
+        let replacementText = hashtag + " "
+        if composerTextViewManager?.replaceTextInRange(range, withText: replacementText, inTextView: textView) == true {
+            hashtagBarController.searchText = nil
+        }
+    }
+    
+    // MARK: - HashtagBarControllerAnimationDelegate
+    
+    func hashtagBarViewController(hashtagBarViewController: HashtagBarViewController, isUpdatingConstraints updateBlock: Void -> ()) {
+        updateBlock()
+        searchTextChanged = true
+        view.setNeedsUpdateConstraints()
+    }
+    
     // MARK: - ComposerTextViewManagerDelegate
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedMedia != nil
+            confirmButton.enabled = textViewHasText || selectedAsset != nil
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -195,6 +231,22 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return interactiveContainerView.layer.animationKeys() == nil
     }
     
+    var textViewCurrentHashtag: (String, NSRange)? {
+        didSet {
+            guard let (hashtag, _) = textViewCurrentHashtag else {
+                hashtagBarController.searchText = nil
+                return
+            }
+            if let (oldHashtag, _) = oldValue {
+                if hashtag != oldHashtag {
+                    hashtagBarController.searchText = hashtag
+                }
+            } else {
+                hashtagBarController.searchText = hashtag
+            }
+        }
+    }
+    
     func textViewDidHitCharacterLimit(textView: UITextView) {
         textView.v_performShakeAnimation()
     }
@@ -217,6 +269,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         setupTextView()
         updateAppearanceFromDependencyManager()
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
+        setupHashtagBar()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -279,11 +332,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         guard attachmentContainerHeightNeedsUpdate ||
             textViewContainerHeightNeedsUpdate ||
-            textViewHeightNeedsUpdate else {
+            textViewHeightNeedsUpdate ||
+            searchTextChanged else {
             // No reason to lay out views again
             super.updateViewConstraints()
             return
         }
+        
+        searchTextChanged = false
         
         let previousContentOffset = textView.contentOffset
         UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
@@ -297,13 +353,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }, completion: nil)
         
         super.updateViewConstraints()
-    }
-    
-    // MARK: - ComposerAttachmentTabBarDelegate
-
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
-        let creationType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(navigationItem.identifier)
-        delegate?.composer(self, didSelectCreationFlowType: creationType)
     }
     
     // MARK: - Subview setup
@@ -328,6 +377,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             )
             attachmentTabBar.delegate = self
         }
+    }
+    
+    private func setupHashtagBar() {
+        let hashtagBarViewController = HashtagBarViewController.new(dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
+        addChildViewController(hashtagBarViewController)
+        hashtagBarContainerView.addSubview(hashtagBarViewController.view)
+        hashtagBarContainerView.v_addFitToParentConstraintsToSubview(hashtagBarViewController.view)
+        hashtagBarViewController.animationDelegate = self
+        hashtagBarController = hashtagBarViewController.hashtagBarController
     }
 
     private func updateAppearanceFromDependencyManager() {
@@ -360,7 +418,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
@@ -373,20 +431,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - VCreationFlowControllerDelegate
     
     func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
-        
-        guard let mediaType = MediaAttachmentType(creationFlowController: creationFlowController) else {
+        guard let contentType = contentType(for: creationFlowController) else {
             creationFlowController.v_showErrorDefaultError()
             return
         }
         
         var preview = previewImage
-        if mediaType == .GIF,
+        if contentType == .gif,
             let image = capturedMediaURL.v_videoPreviewImage {
             
             preview = image
         }
         
-        selectedMedia = MediaAttachment(url: capturedMediaURL, type: mediaType, thumbnailURL: nil, size: nil)
+        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -400,6 +457,22 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             let textView = strongSelf.textView
             textView.becomeFirstResponder()
             textView.selectedRange = NSMakeRange(textView.text.characters.count, 0)
+        }
+    }
+    
+    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+        switch creationFlowController.mediaType() {
+        case .Image:
+            return .image
+        case .Video:
+            if creationFlowController.dynamicType == VGIFCreationFlowController.self {
+                return .gif
+            } else {
+                return .video
+            }
+        case .Unknown:
+            assertionFailure("Creation flow controller returned an invalid media type.")
+            return nil
         }
     }
     
@@ -420,13 +493,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
-        if let media = selectedMedia {
-            sendMessage(mediaAttachment: media, text: textView.text)
+        if let asset = selectedAsset {
+            sendMessage(asset: asset, text: textView.text)
         } else {
             sendMessage(text: textView.text)
         }
         composerTextViewManager?.resetTextView(textView)
-        selectedMedia = nil
+        selectedAsset = nil
     }
     
     // MARK: - Notification response
