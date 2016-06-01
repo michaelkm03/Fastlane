@@ -62,7 +62,7 @@ public class Content: DictionaryConvertible {
             }
             
         case .gif, .video:
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0)}
+            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
         case .text:
             self.assets = []
         }
