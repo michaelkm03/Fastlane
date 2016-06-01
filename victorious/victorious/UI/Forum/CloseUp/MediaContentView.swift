@@ -24,7 +24,7 @@ class MediaContentView: UIView {
         
         videoContainerView.backgroundColor = .blackColor()
         
-        backgroundColor = .clearColor()
+        backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.15)
         previewImageView.contentMode = .ScaleAspectFill
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)

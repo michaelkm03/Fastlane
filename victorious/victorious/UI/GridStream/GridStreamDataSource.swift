@@ -43,8 +43,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     // MARK: - Registering views
     
     func registerViewsFor(collectionView: UICollectionView) {
-        cellFactory.registerCellsWithCollectionView(collectionView)
-        
         let headerNib = UINib(nibName: headerName, bundle: nil)
         collectionView.registerNib(headerNib,
                                    forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,

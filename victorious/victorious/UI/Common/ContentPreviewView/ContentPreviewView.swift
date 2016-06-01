@@ -31,7 +31,7 @@ class ContentPreviewView: UIView {
         vipImageView = label
         
         super.init(frame: CGRectZero)
-        backgroundColor = .darkGrayColor()
+        backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
@@ -57,7 +57,7 @@ class ContentPreviewView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var content: VContent? {
+    var content: ContentModel? {
         didSet {
             guard let content = content else {
                 assertionFailure("Content cannot be nil")
@@ -68,6 +68,7 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
+        print(frame)
         guard let previewImageURL = content.largestPreviewImageURL else {
                 return
         }
