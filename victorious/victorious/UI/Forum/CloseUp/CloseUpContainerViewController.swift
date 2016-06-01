@@ -8,6 +8,11 @@
 
 import UIKit
 
+private let leftRightSectionInset = CGFloat(0)
+private let topBottomSectionInset = CGFloat(3)
+private let interItemSpacing = CGFloat(3)
+private let cellsPerRow = 3
+
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     private let gridStreamController: GridStreamViewController<CloseUpView>
@@ -49,9 +54,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
                 
         let configuration = GridStreamConfiguration(
-            sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
-            interItemSpacing: CGFloat(3),
-            cellsPerRow: 3,
+            sectionInset: UIEdgeInsets(
+                top: topBottomSectionInset,
+                left: leftRightSectionInset,
+                bottom: topBottomSectionInset,
+                right: leftRightSectionInset
+            ),
+            interItemSpacing: interItemSpacing,
+            cellsPerRow: cellsPerRow,
             allowsForRefresh: false,
             managesBackground: true
         )
@@ -114,15 +124,15 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func share() {
-
+        /// Future: Implement this
     }
     
     func toggleUpvote() {
-
+        /// Future: Implement this
     }
     
     func overflow() {
-
+        /// Future: Implement this
     }
 }
 
