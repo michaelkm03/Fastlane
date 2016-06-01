@@ -8,7 +8,7 @@
 
 import Foundation
 
-// A struct that provides comparable protocol conformance for app versions.
+/// A struct that provides comparable protocol conformance for app versions.
 struct AppVersion: Comparable {
     private let components: [Int]
     
@@ -16,7 +16,7 @@ struct AppVersion: Comparable {
         components = versionNumber.componentsSeparatedByString(".").map{Int($0) ?? 0}
     }
     
-    // The string value of an app version ex: "1.0.1"
+    /// The string value of an app version ex: "1.0.1"
     var string: String {
         return components.map{String($0)}.joinWithSeparator(".")
     }
