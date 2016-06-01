@@ -1671,6 +1671,7 @@
 		BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF7D1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m */; };
 		BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
+		BF0B35341CFE756900CE5DBB /* ShowShareContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */; };
 		BF0F4B4B1C84B27700016647 /* VShowProfileOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */; };
 		BF1769BC1CE109C000211FBA /* VContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769B61CE109C000211FBA /* VContent.swift */; };
 		BF1769C01CE10A2600211FBA /* VContent+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */; };
@@ -4429,6 +4430,7 @@
 		BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializerTests.m; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareContentOperation.swift; sourceTree = "<group>"; };
 		BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowProfileOperationTests.m; sourceTree = "<group>"; };
 		BF1769B61CE109C000211FBA /* VContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContent.swift; sourceTree = "<group>"; };
 		BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContent+Parsable.swift"; sourceTree = "<group>"; };
@@ -8064,6 +8066,7 @@
 				A72C85B91C977FF500E97D4F /* ShowProfileOperation.swift */,
 				A72C85BA1C977FF500E97D4F /* ShowRepostersOperation.swift */,
 				A72C85BB1C977FF500E97D4F /* ShowSearchResultOperation.swift */,
+				BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */,
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
 				A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */,
 				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
@@ -12795,6 +12798,7 @@
 				67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				67A20A231CC6A20900629487 /* ListMenuSectionCell.swift in Sources */,
+				BF0B35341CFE756900CE5DBB /* ShowShareContentOperation.swift in Sources */,
 				A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */,
 				A73BA5751C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
