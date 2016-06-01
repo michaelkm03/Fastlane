@@ -29,13 +29,6 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
     
-    let paginator = VScrollPaginator()
-    
-    private func broadcastContents(contents: [ContentModel]) {
-        // Content comes back newest to oldest, but we need it to be oldest to newest.
-        broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
-    }
-    
     // MARK: - Polling
     
     private var pollingTimer: NSTimer?
@@ -54,8 +47,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     @objc private func pollForNewContent() {
         dataSource.loadItems(.newer) { [weak self] contents, error in
-            // TODO: Needs to be broadcasted to append.
-            self?.broadcastContents(contents)
+            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
         }
     }
     
@@ -65,8 +57,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         
         dataSource.loadItems(.refresh) { [weak self] contents, error in
-            // TODO: Needs to be broadcasted to replace.
-            self?.broadcastContents(contents)
+            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
         }
         
         startPolling()
@@ -100,8 +91,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .loadOldContent:
             dataSource.loadItems(.older) { [weak self] contents, error in
-                // TODO: Needs to be broadcasted to prepend.
-                self?.broadcastContents(contents)
+                self?.broadcast(.prependContent(contents.reverse().map { $0.toSDKContent() }))
             }
         default:
             break

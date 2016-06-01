@@ -65,6 +65,12 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
                     dequeueMessages()
                 }
             }
+        case .prependContent(_):
+            // Not implemented yet.
+            break
+        case .replaceContent(_):
+            // Not implemented yet.
+            break
         default:
             break
         }

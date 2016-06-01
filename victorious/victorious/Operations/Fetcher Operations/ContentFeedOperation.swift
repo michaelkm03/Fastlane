@@ -9,7 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-// TODO: Make this a FetcherOperation (requires refactor of FetcherOperation to not use AnyObject array).
 final class ContentFeedOperation: NSOperation, Queueable {
     // MARK: - Initializing
     

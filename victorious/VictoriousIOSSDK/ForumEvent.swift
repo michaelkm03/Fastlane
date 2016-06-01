@@ -11,6 +11,12 @@ public enum ForumEvent {
     /// Requests that the given content is appended to the chat feed.
     case appendContent([Content])
     
+    /// Requests that the given content is prepended to the chat feed.
+    case prependContent([Content])
+    
+    /// Requests that the current chat feed content is replaced with the given content.
+    case replaceContent([Content])
+    
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)
     
