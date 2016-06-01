@@ -29,8 +29,8 @@ protocol ContentModel: PreviewImageContainer {
     /// An array of media assets for the content, could be any media type
     var assetModels: [ContentMediaAssetModel] { get }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? { get }
+    /// seekAheadTime to keep videos in sync for videos on VIP stage
+    var seekAheadTime: NSTimeInterval? { get set }
 }
 
 extension ContentModel {
@@ -106,9 +106,15 @@ extension VContent: ContentModel {
         return v_contentMediaAssets.map { $0 }
     }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? {
-        return nil
+    /// VContent does not provide seekAheadTime
+    var seekAheadTime: NSTimeInterval? {
+        get {
+            return nil
+        }
+        
+        set {
+            return
+        }
     }
 }
 
