@@ -32,7 +32,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     let paginator = VScrollPaginator()
     
     private func broadcastContents(contents: [ContentModel]) {
-        // Content comes back oldest to newest, but we need it to be oldest to newest.
+        // Content comes back newest to oldest, but we need it to be oldest to newest.
         for content in contents.reverse() {
             broadcast(content)
         }
@@ -55,7 +55,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     }
     
     @objc private func pollForNewContent() {
-        dataSource.loadPage(.Next) { [weak self] contents, error in
+        dataSource.loadItems(.newer) { [weak self] contents, error in
             // TODO: Needs to be broadcasted to append.
             self?.broadcastContents(contents)
         }
@@ -66,7 +66,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     func setUp() {
         isSetUp = true
         
-        dataSource.loadPage(.First) { [weak self] contents, error in
+        dataSource.loadItems(.refresh) { [weak self] contents, error in
             // TODO: Needs to be broadcasted to replace.
             self?.broadcastContents(contents)
         }
@@ -106,8 +106,10 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     
     // MARK: - VScrollPaginatorDelegate
     
+    // TODO: Rename these methods to `shouldLoadItemsBelow` and `shouldLoadItemsAbove`.
+    
     func shouldLoadPreviousPage() {
-        dataSource.loadPage(.Previous) { [weak self] contents, error in
+        dataSource.loadItems(.older) { [weak self] contents, error in
             // TODO: Needs to be broadcasted to prepend.
             self?.broadcastContents(contents)
         }
