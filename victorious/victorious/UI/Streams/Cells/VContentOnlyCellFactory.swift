@@ -29,6 +29,7 @@ class VContentOnlyCellFactory: NSObject, VStreamCellFactory {
         // Cells are registered dynamically when dequeuing based on their stream item type.
     }
     
+    /// Future: Remove this
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let reuseIdentifier = VSequencePreviewView.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
         

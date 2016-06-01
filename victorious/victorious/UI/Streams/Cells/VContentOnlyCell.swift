@@ -96,7 +96,6 @@ class VContentOnlyCell: UICollectionViewCell {
             streamItemPreviewView?.removeFromSuperview()
             addSubview(contentPreviewView)
             v_addFitToParentConstraintsToSubview(contentPreviewView)
-            contentPreviewView.backgroundColor = .blackColor()
             contentPreviewView.content = content
         }
         

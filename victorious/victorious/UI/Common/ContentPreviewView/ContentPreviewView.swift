@@ -31,7 +31,8 @@ class ContentPreviewView: UIView {
         vipImageView = label
         
         super.init(frame: CGRectZero)
-        backgroundColor = .clearColor()
+        backgroundColor = .darkGrayColor()
+        previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
         previewImageView.contentMode = UIViewContentMode.ScaleAspectFill
