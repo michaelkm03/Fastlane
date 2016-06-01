@@ -55,6 +55,7 @@ class ShowTutorialsOperation: MainQueueOperation {
     internal func shouldShowTutorials(userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
                              currentVersion: AppVersion) -> Bool {
         defer {
+            // Always set the current version as the last seen
             userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
         }
         
@@ -69,11 +70,8 @@ class ShowTutorialsOperation: MainQueueOperation {
         }
         
         let lastShownVersion = AppVersion(versionNumber: lastShownVersionString)
-        // If the current app version is different than what we saved last time, udpate it
-
-        if lastShownVersion >= newVersionWithMajorFeatures {
-            return false
-        } else if currentVersion >= newVersionWithMajorFeatures {
+        // If the last time we saw a tutorial was before this new version, show the tutorial
+        if lastShownVersion < newVersionWithMajorFeatures {
             return true
         } else {
             return false

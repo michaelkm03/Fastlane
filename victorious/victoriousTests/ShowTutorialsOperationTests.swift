@@ -1,5 +1,5 @@
 //
-//  VShowTutorialsOperationTests.swift
+//  ShowTutorialsOperationTests.swift
 //  victorious
 //
 //  Created by Michael Sena on 5/31/16.
@@ -10,20 +10,19 @@ import XCTest
 
 @testable import victorious
 
-class VShowTutorialsOperationTests: XCTestCase {
+class ShowTutorialsOperationTests: XCTestCase {
     
     func test() {
+
         let viewController = UIViewController()
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
-        
         let showTutorialOperation = ShowTutorialsOperation(originViewController: viewController, dependencyManager: dependencyManager)
-
         var userDefaults = NSUserDefaults(suiteName: NSUUID().UUIDString)!
         
-        // We should only begin showing in a post 5.X world
+        // We should only show the turorial post 5.0
         XCTAssertFalse(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "4.0")))
         
-        // We should show the first time and not the second time
+        // We should show the first time a 5.0 user enters but not the second time
         XCTAssertTrue(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.0")))
         XCTAssertFalse(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.0")))
 
