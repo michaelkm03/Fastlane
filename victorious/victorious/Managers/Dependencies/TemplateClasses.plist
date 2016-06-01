@@ -216,5 +216,13 @@
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>
+	<key>imageOnImage.button</key>
+	<string>VImageOnImageButton</string>
+	<key>imageOnColor.button</key>
+	<string>VImageOnColorButton</string>
+	<key>textOnImage.button</key>
+	<string>VTextOnImageButton</string>
+	<key>textOnColor.button</key>
+	<string>VTextOnColorButton</string>
 </dict>
 </plist>
