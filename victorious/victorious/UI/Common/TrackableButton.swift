@@ -21,7 +21,7 @@ protocol TrackableButton {
 
 extension TrackableButton {
     
-    var trackingId: String {
+    var trackingID: String {
         return dependencyManager.stringForKey("id")
     }
     
