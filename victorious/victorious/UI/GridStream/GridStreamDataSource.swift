@@ -36,8 +36,14 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
-        self.streamAPIPath = streamAPIPath
         cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
+        
+        
+        let urlComponents = NSURLComponents(string: streamAPIPath ?? "")
+        let queryItem = NSURLQueryItem(name: "filter_text", value: "true" )
+        urlComponents?.queryItems = (urlComponents?.queryItems ?? []) + [queryItem]
+        
+        self.streamAPIPath = urlComponents?.string
     }
     
     // MARK: - Registering views
