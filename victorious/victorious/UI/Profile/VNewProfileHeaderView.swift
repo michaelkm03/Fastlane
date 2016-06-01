@@ -143,8 +143,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
-        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven?.integerValue ?? 0)
-        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived?.integerValue ?? 0)
+        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
+        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
         
         let tier = user?.tier
         let shouldDisplayTier = tier?.isEmpty == false

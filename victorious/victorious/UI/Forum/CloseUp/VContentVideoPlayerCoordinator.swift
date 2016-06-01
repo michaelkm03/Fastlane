@@ -32,21 +32,20 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             toolbar.paused = state != .Playing
         }
     }
-    private var content: VContent
+    private var content: ContentModel
     private var shouldLoop: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     private var shouldMute: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     
-    init?(content: VContent) {
+    init?(content: ContentModel) {
         self.content = content
-        guard let firstAsset = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        guard let asset = content.assetModels.first else {
             return nil
         }
-        if let contentType = content.contentType()
-            where contentType == .video && firstAsset.source == "youtube" {
+        if content.type == .video && asset.videoSource == .youtube {
             videoPlayer = YouTubeVideoPlayer()
         }
         
@@ -55,9 +54,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         previewView = UIImageView()
         let minWidth = UIScreen.mainScreen().bounds.size.width
         
-        if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteURL = NSURL(string: preview.imageURL) {
-            previewView.sd_setImageWithURL(remoteURL)
+        if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            previewView.sd_setImageWithURL(previewImageURL)
         }
         super.init()
         videoPlayer.delegate = self
@@ -78,28 +76,30 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.v_addHeightConstraint(41.0)
         superview.v_addPinToLeadingTrailingToSubview(toolbar)
         superview.v_addPinToBottomToSubview(toolbar)
+        
         if visible {
             toolbar.show()
-        }
-        else {
+        } else {
             toolbar.hide()
         }
     }
     
     func loadVideo() {
-        guard let contentData = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
         
         var item: VVideoPlayerItem?
-        if let remoteSource = contentData.remoteSource,
-            let contentURL = NSURL(string: remoteSource) {
-            item = VVideoPlayerItem(URL: contentURL)
+        
+        if asset.videoSource == .youtube {
+            item = VVideoPlayerItem(externalID: asset.resourceID)
+        } else if let resourceURL = NSURL(string: asset.resourceID) {
+            item = VVideoPlayerItem(URL: resourceURL)
+        } else {
+            return
         }
-        if let externalID = contentData.externalID {
-            item = VVideoPlayerItem(externalID: externalID)
-        }
+        
         if let item = item {
             item.muted = shouldMute
             videoPlayer.setItem(item)

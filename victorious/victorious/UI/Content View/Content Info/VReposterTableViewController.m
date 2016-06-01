@@ -10,7 +10,6 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "VSequence.h"
-#import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VScrollPaginator.h"
 #import "victorious-Swift.h"

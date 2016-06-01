@@ -21,7 +21,6 @@
 
 // API
 #import "VTwitterAccountsHelper.h"
-#import "VUser.h"
 #import "VConstants.h"
 
 // Validation

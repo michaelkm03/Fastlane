@@ -14,10 +14,9 @@ class ShowTutorialsOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     
-    let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
-
+    internal let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
     // Update this string to force show the tutorial again for all users that receive this update
-    let newVersionWithMajorFeatures = AppVersion(versionNumber: "5.0")
+    internal let newVersionWithMajorFeatures = AppVersion(versionNumber: "5.0")
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = false) {
         self.originViewController = originViewController
@@ -53,27 +52,26 @@ class ShowTutorialsOperation: MainQueueOperation {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    func shouldShowTutorials(userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(), currentVersion: AppVersion) -> Bool {
+    internal func shouldShowTutorials(userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
+                             currentVersion: AppVersion) -> Bool {
         defer {
+            // Always set the current version as the last seen
             userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
         }
         
-        // If the current app version does not contain major features, we don't show tutorials screen.
+        // If the current app version does not contain major features, we don't show tutorials screen
         guard currentVersion >= newVersionWithMajorFeatures else {
             return false
         }
         
-        // If this fails we have never seen a tutorial before so we should show.
+        // If this fails we have never seen a tutorial before so we should show
         guard let lastShownVersionString = userDefaults.valueForKey(lastShownVersionDefaultsKey) as? String else {
             return true
         }
         
         let lastShownVersion = AppVersion(versionNumber: lastShownVersionString)
-
-        // If the current app version is different than what we saved last time, update it.
-        if lastShownVersion >= newVersionWithMajorFeatures {
-            return false
-        } else if currentVersion >= newVersionWithMajorFeatures {
+        // If the last time we saw a tutorial was before this new version, show the tutorial
+        if lastShownVersion < newVersionWithMajorFeatures {
             return true
         } else {
             return false

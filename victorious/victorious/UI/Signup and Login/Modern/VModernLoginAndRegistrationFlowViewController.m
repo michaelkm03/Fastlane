@@ -525,7 +525,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
             if ( error == nil )
             {
-                BOOL completeProfile = [VCurrentUser user].completedProfile.boolValue;
+                BOOL completeProfile = [VCurrentUser user].v_completedProfile.boolValue;
                 completion(YES, completeProfile, nil);
                 if (completeProfile)
                 {

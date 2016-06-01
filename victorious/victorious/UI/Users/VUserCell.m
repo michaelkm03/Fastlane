@@ -7,7 +7,6 @@
 //
 
 #import "VUserCell.h"
-#import "VUser.h"
 #import "VDependencyManager.h"
 #import "VFollowControl.h"
 #import "VDefaultProfileButton.h"

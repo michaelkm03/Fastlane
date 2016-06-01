@@ -33,7 +33,7 @@ class UserSearchOperationTests: BaseFetcherOperationTestCase {
             return
         }
 
-        let user = User(userID: testUserID)
+        let user = User(id: testUserID)
         testRequestExecutor = TestRequestExecutor(result:[user])
         operation.requestExecutor = testRequestExecutor
         
