@@ -51,8 +51,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// The data source's list of items ordered from oldest to newest.
     private(set) var items: [Item] = []
     
-    /// Keeps track of whether we're loading a page so that we don't accidentally load the same stuff a bunch of times.
-    private var isLoadingPage = false
+    /// Whether the data source is currently loading a page of items or not.
+    private(set) var isLoading = false
     
     /// Loads a new page of items.
     ///
@@ -60,8 +60,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     ///
     /// This method does nothing if a page is already being loaded.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: (newItems: [Item], error: NSError?) -> Void) {
-        guard !isLoadingPage else {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], error: NSError?) -> Void)? = nil) {
+        guard !isLoading else {
             return
         }
         
@@ -70,7 +70,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return
         }
         
-        isLoadingPage = true
+        isLoading = true
         
         if loadingType == .refresh {
             items = []
@@ -83,9 +83,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                 case .older:   self?.items.appendContentsOf(newItems)
             }
             
-            self?.isLoadingPage = false
+            self?.isLoading = false
             
-            completion(newItems: newItems, error: error)
+            completion?(newItems: newItems, error: error)
         }
     }
     
@@ -106,7 +106,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         return NSURL(string: processedPath)
     }
     
-    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int, toTime: Int) {
+    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int64, toTime: Int64) {
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
@@ -120,9 +120,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     // NOTE: Pagination timestamps are inclusive, so to avoid retrieving multiple copies of the same item, we adjust
     // the timestamps by 1ms to make them exclusive.
     
-    private var oldestTimestamp: Int? {
+    private var oldestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Int.max, (item as! PaginatableItem).createdAt.paginationTimestamp)
+            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.paginationTimestamp)
         }) {
             return timestamp - 1
         }
@@ -130,7 +130,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         return nil
     }
     
-    private var newestTimestamp: Int? {
+    private var newestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
             max(timestamp ?? 0, (item as! PaginatableItem).createdAt.paginationTimestamp)
         }) {
@@ -142,7 +142,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
 }
 
 private extension NSDate {
-    var paginationTimestamp: Int {
-        return Int(timeIntervalSince1970 * 1000.0)
+    var paginationTimestamp: Int64 {
+        // Must use Int64 to avoid overflow issues with 32 bit ints.
+        return Int64(timeIntervalSince1970 * 1000.0)
     }
 }

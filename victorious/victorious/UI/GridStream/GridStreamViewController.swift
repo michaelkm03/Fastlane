@@ -16,7 +16,7 @@ struct GridStreamConfiguration {
     var managesBackground = true
 }
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VPaginatedDataSourceDelegate, VScrollPaginatorDelegate, VBackgroundContainer {
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VBackgroundContainer {
     
     // MARK: Variables
     
@@ -77,7 +77,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         super.init(nibName: nil, bundle: nil)
         
-        dataSource.delegate = self
         dataSource.registerViewsFor(collectionView)
         
         collectionView.delegate = self
@@ -120,8 +119,16 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             collectionView.insertSubview(refreshControl, atIndex: 0)
         }
         
-        dataSource.loadStreamItems(.First)
+        dataSource.loadContent(.refresh) { [weak self] _, error in
+            self?.finishLoading(error: error)
+        }
     }
+    
+    required init(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - View events
     
     override func viewWillAppear(animated: Bool) {
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
@@ -130,13 +137,21 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - Refreshing
     
     func refresh() {
-        dataSource.loadStreamItems(.First) { [weak self] _ in
-            self?.refreshControl.endRefreshing()
+        dataSource.loadContent(.refresh) { [weak self] _, error in
+            self?.finishLoading(error: error)
         }
     }
     
-    required init(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
+    func finishLoading(error error: NSError?) {
+        refreshControl.endRefreshing()
+        collectionView.collectionViewLayout.invalidateLayout()
+        
+        if error != nil {
+            (navigationController ?? self).v_showErrorDefaultError()
+        }
+        
+        // TODO: Get rid of this.
+        collectionView.reloadData()
     }
     
     // MARK: - Configuration
@@ -150,30 +165,16 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
                              didUpdateVisibleItemsFrom oldValue: NSOrderedSet,
                              to newValue: NSOrderedSet) {
+        // TODO: Replace me.
         collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
-    }
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
-                             didChangeStateFrom oldState: VDataSourceState,
-                             to newState: VDataSourceState) {
-        if oldState == .Loading {
-            refreshControl.endRefreshing()
-        }
-        
-        if newState == .Loading || oldState == .Loading {
-            collectionView.collectionViewLayout.invalidateLayout()
-        }
-    }
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
-                             didReceiveError error: NSError) {
-        (navigationController ?? self).v_showErrorDefaultError()
     }
     
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        dataSource.loadStreamItems(.Next)
+        dataSource.loadContent(.older) { [weak self] _, error in
+            self?.finishLoading(error: error)
+        }
     }
     
     // MARK: - UIScrollViewDelegate
@@ -224,35 +225,22 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
                         atIndexPath indexPath: NSIndexPath) {
         if let footerView = view as? VFooterActivityIndicatorView {
             footerView.activityIndicator.color = dependencyManager.refreshControlColor
-            footerView.setActivityIndicatorVisible(dataSource.isLoading(), animated: true)
+            footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: true)
         }
     }
     
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        return dataSource.isLoading() ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
+        return dataSource.isLoading ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let seq = dataSource.visibleItems[indexPath.row] as? VSequence {
-            ShowCloseUpOperation(
-                originViewController: self,
-                dependencyManager: dependencyManager,
-                contentID: seq.remoteId
-                )?.queue()
-        }
-        else if let content = dataSource.visibleItems[indexPath.row] as? VContent {
-            ShowCloseUpOperation(
-                originViewController: self,
-                dependencyManager: dependencyManager,
-                content: content
-            )?.queue()
-        }
-    }
-    
-    func updateStreamAPIPath(streamAPIPath: String?) {
-        dataSource.streamAPIPath = streamAPIPath
+        ShowCloseUpOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            content: dataSource.items[indexPath.row]
+        )?.queue()
     }
 }
 
