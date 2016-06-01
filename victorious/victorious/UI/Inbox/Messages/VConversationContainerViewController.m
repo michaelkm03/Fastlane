@@ -12,7 +12,6 @@
 #import "VConversationContainerViewController.h"
 #import "VConversationViewController.h"
 #import "VConversation.h"
-#import "VUser.h"
 #import "VUserTaggingTextStorage.h"
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"

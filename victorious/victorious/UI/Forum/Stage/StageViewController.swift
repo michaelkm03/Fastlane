@@ -62,6 +62,16 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return dataSource
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Coming back to the stage where a video was playing will resume the video.
+        if let currentStagedContent = currentStagedContent,
+            case .video(_, _) = currentStagedContent {
+            videoPlayer.play()
+        }
+    }
+
     override func viewWillDisappear(animated: Bool) {
         clearStageMedia()
     }
@@ -88,6 +98,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     func removeContent() {
+        currentStagedContent = nil
         clearStageMedia()
     }
 
@@ -167,6 +178,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func clearStageMedia(animated: Bool = false) {
+        videoPlayer.pause()
         mainContentViewBottomConstraint.constant = 0
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {

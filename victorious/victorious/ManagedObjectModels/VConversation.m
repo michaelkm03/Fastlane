@@ -8,7 +8,6 @@
 
 #import "VConversation.h"
 #import "VMessage.h"
-#import "VUser.h"
 
 
 @implementation VConversation

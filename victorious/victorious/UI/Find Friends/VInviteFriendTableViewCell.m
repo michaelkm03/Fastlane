@@ -7,7 +7,6 @@
 //
 
 #import "VInviteFriendTableViewCell.h"
-#import "VUser.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VDependencyManager.h"

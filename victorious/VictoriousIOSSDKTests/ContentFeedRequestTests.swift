@@ -1,5 +1,5 @@
 //
-//  ViewedContentFeedRequestTests.swift
+//  ContentFeedRequestTests.swift
 //  victorious
 //
 //  Created by Vincent Ho on 5/20/16.
@@ -9,11 +9,11 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class ViewedContentFeedRequestTests: XCTestCase {
+class ContentFeedRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
         let apiPath: String = "API_PATH"
-        let request =  ViewedContentFeedRequest(apiPath: apiPath)
+        let request = ContentFeedRequest(apiPath: apiPath)
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, apiPath)
         XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
     }
@@ -27,12 +27,12 @@ class ViewedContentFeedRequestTests: XCTestCase {
         }
         
         let apiPath: String = "API_PATH"
-        let request =  ViewedContentFeedRequest(apiPath: apiPath)
+        let request = ContentFeedRequest(apiPath: apiPath)
         do {
             let response = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.count, 2)
-            XCTAssertEqual(response.first?.content.id, "20711")
-            XCTAssertEqual(response.last?.content.id, "20712")
+            XCTAssertEqual(response.first?.id, "20711")
+            XCTAssertEqual(response.last?.id, "20712")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
             return

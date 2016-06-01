@@ -13,7 +13,6 @@
 #import "VNavigationDestination.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VUser.h"
 #import "victorious-Swift.h"
 
 #define FORCE_DEEPLINK 0

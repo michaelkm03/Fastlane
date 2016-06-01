@@ -9,7 +9,6 @@
 #import "VConversationCell.h"
 #import "VUserProfileViewController.h"
 #import "VDefaultProfileButton.h"
-#import "VUser.h"
 #import "VConversation.h"
 #import "victorious-Swift.h"
 

@@ -11,9 +11,9 @@ import UIKit
 extension VContentMediaAsset: PersistenceParsable {
     
     func populate( fromSourceModel sourceModel: ContentMediaAsset ) {
-        remoteSource = sourceModel.url?.absoluteString ?? remoteSource
-        source = sourceModel.source ?? source
-        externalID = sourceModel.externalID ?? externalID
-        uniqueID = sourceModel.uniqueID ?? uniqueID
+        v_remoteSource = sourceModel.url?.absoluteString ?? v_remoteSource
+        v_source = sourceModel.source ?? v_source
+        v_externalID = sourceModel.externalID ?? v_externalID
+        v_uniqueID = sourceModel.uniqueID ?? v_uniqueID
     }
 }

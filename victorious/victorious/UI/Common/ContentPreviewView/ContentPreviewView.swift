@@ -66,14 +66,13 @@ class ContentPreviewView: UIView {
         }
     }
     
-    private func setupForContent(content: VContent) {
-        guard let preview = content.largestPreviewAsset(),
-            let previewImageURL = NSURL(string: preview.imageURL) else {
+    private func setupForContent(content: ContentModel) {
+        guard let previewImageURL = content.largestPreviewImageURL else {
                 return
         }
         
         let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
-        let contentIsForVIPOnly = content.isVIP?.boolValue ?? false
+        let contentIsForVIPOnly = content.isVIPOnly
         if !userIsVIP && contentIsForVIPOnly {
             vipImageView.hidden = false
             previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
@@ -84,12 +83,7 @@ class ContentPreviewView: UIView {
             previewImageView.sd_setImageWithURL(previewImageURL)
         }
         
-        guard let contentType = content.contentType() else {
-            playButton.hidden = true
-            return
-        }
-        
-        switch contentType {
+        switch content.type {
         case .video:
             playButton.hidden = false
         case .text, .gif, .image:

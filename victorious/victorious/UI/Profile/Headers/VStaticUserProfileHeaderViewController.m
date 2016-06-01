@@ -106,7 +106,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         return nil;
     }
     
-    if ([self.user badgeType] == AvatarBadgeTypeVerified)
+    if (self.user.avatarBadgeType == AvatarBadgeTypeVerified)
     {
         // Created another container view since we are automatically scaling the size of the returned
         // view to be the size of the container.

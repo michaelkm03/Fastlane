@@ -16,7 +16,7 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
     
     func testResults() {
         let operation = FriendFindBySocialNetworkOperation(token: facebookToken)
-        let user = User(userID: testUserID)
+        let user = User(id: testUserID)
         testRequestExecutor = TestRequestExecutor(result: [user])
         operation.requestExecutor = testRequestExecutor
         
@@ -25,11 +25,11 @@ class FriendFindBySocialNetworkOperationTests: BaseFetcherOperationTestCase {
         operation.queue() { results, error, cancelled in
             
             XCTAssertNil(error)
-            guard let firstResult = results?.first as? VUser,
-                let remoteId = firstResult.remoteId?.integerValue else {
+            guard let firstResult = results?.first as? VUser else {
                     XCTFail("First result should have a remoteId")
                     return
             }
+            let remoteId = firstResult.remoteId.integerValue
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()
         }
