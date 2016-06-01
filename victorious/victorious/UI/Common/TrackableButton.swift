@@ -14,9 +14,9 @@ protocol TrackableButton {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    var trackingId: String { get }
+    var trackingID: String { get }
     
-    func templateAppearanceValue<T>(appearance: TrackableButtonAppearance) -> T?
+    func templateAppearanceValue<AppearanceValueType>(appearance: TrackableButtonAppearance) -> AppearanceValueType?
 }
 
 extension TrackableButton {
@@ -25,16 +25,16 @@ extension TrackableButton {
         return dependencyManager.stringForKey("id")
     }
     
-    func templateAppearanceValue<T>(appearance: TrackableButtonAppearance) -> T? {
+    func templateAppearanceValue<AppearanceValueType>(appearance: TrackableButtonAppearance) -> AppearanceValueType? {
         switch appearance {
         case .backgroundColor, .foregroundColor:
-            return dependencyManager.colorForKey(appearance.rawValue) as? T
+            return dependencyManager.colorForKey(appearance.rawValue) as? AppearanceValueType
         case .backgroundImage, .foregroundImage:
-            return dependencyManager.imageForKey(appearance.rawValue) as? T
+            return dependencyManager.imageForKey(appearance.rawValue) as? AppearanceValueType
         case .text:
-            return dependencyManager.stringForKey(appearance.rawValue) as? T
+            return dependencyManager.stringForKey(appearance.rawValue) as? AppearanceValueType
         case .font:
-            return dependencyManager.fontForKey(appearance.rawValue) as? T
+            return dependencyManager.fontForKey(appearance.rawValue) as? AppearanceValueType
         }
     }
 }
@@ -48,12 +48,4 @@ enum TrackableButtonAppearance: String {
     case foregroundImage = "image.foreground"
     case text = "text"
     case font = "font"
-}
-
-/// Public dependency manager extension for getting a button from the template.
-extension VDependencyManager {
-    
-    func buttonForKey(key: String) -> UIButton? {
-        return templateValueOfType(UIButton.self, forKey: key) as? UIButton
-    }
 }

@@ -2048,6 +2048,7 @@
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
+		F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */; };
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
@@ -4998,6 +4999,7 @@
 		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
+		F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Buttons.swift"; sourceTree = "<group>"; };
 		F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Addition.swift"; sourceTree = "<group>"; };
 		F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.m"; sourceTree = "<group>"; };
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
@@ -6824,6 +6826,7 @@
 				D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */,
 				D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.h */,
 				D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */,
+				F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */,
 				7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */,
 				BFC7FAE91CF515390061489B /* VDependencyManager+NetworkResources.swift */,
 				035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */,
@@ -13205,6 +13208,7 @@
 				A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */,
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
+				F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */,
