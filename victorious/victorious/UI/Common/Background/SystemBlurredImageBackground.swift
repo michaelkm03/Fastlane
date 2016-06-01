@@ -21,9 +21,13 @@ class SystemBlurredImageBackground : VBackground {
     override func viewForBackground() -> UIView! {
         let backgroundImageView = UIImageView(image: backgroundImage)
         let blurEffect = UIBlurEffect(style: .Light)
+        
+        //Create effect view and add constraints so that it stays on top of the image view even if the image view moves/resizes
         let effectView = UIVisualEffectView(effect: blurEffect)
         effectView.frame = backgroundImageView.frame
+        backgroundImageView.v_addFitToParentConstraintsToSubview(effectView)
         backgroundImageView.addSubview(effectView)
+        
         return backgroundImageView
     }
 }
