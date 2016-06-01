@@ -45,20 +45,25 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     private(set) var childEventReceivers = [ForumEventReceiver]()
     
     func receive(event: ForumEvent) {
-        guard let webSocketEvent = event as? WebSocketEvent else {
+        switch event {
+        case .websocket(let websocketEvent):
+            switch websocketEvent {
+                case .Disconnected(_):
+                    receiveDisconnectEvent()
+                default: break
+            }
+        default:
+            break
+        }
+    }
+    
+    private func receiveDisconnectEvent() {
+        guard let reconnectTimeout = reconnectTimeout else {
             return
         }
         
-        switch webSocketEvent.type {
-        case .Disconnected(_):
-            guard let reconnectTimeout = reconnectTimeout else {
-                return
-            }
-            
-            dispatch_after(reconnectTimeout) { [weak self] in
-                self?.setUpIfNeeded()
-            }
-        default: break
+        dispatch_after(reconnectTimeout) { [weak self] in
+            self?.setUpIfNeeded()
         }
     }
     

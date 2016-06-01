@@ -30,13 +30,13 @@ extension WebSocketEventDecoder {
             let chatJSON = json[Keys.root][Keys.chat]
             
             if let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) {
-                forumEvent = content
+                forumEvent = .appendContent([content])
             }
             
             let refreshJson = json[Keys.root][Keys.refreshStage]
             
             if let refresh = RefreshStage(json: refreshJson, serverTime: serverTime) {
-                forumEvent = refresh
+                forumEvent = .refreshStage(refresh)
             }
         }
         

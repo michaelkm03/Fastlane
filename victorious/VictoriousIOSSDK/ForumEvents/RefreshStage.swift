@@ -9,9 +9,8 @@
 import Foundation
 
 /// Indicates to client to update either one of its stages.
-public struct RefreshStage: ForumEvent {
+public struct RefreshStage {
     
-    // MARK: ForumEvent
     public let serverTime: NSDate
     
     /// Points to the different instaces of Stage.
@@ -20,7 +19,7 @@ public struct RefreshStage: ForumEvent {
     /// The new content to be fetched and played on stage.
     public let contentID: String
     
-    /// May be set in order to sync cliets to the same spot.
+    /// May be set in order to sync clients to the same spot.
     public let startTime: NSDate?
     
     public init?(json: JSON, serverTime: NSDate) {
