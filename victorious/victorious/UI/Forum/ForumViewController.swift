@@ -62,9 +62,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:
                 break
             }
-        } else if let event = event as? Content where event.assets.count > 0 {
+        }
+    }
+    
+    func sendEvent(event: ForumEvent) {
+        
+        if let event = event as? Content {
             
-            //Create a persistent piece of content so long as we're not a normal user on the socket
             guard let networkResources = dependencyManager.networkResources else {
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
@@ -73,12 +77,21 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             }
             
             createPersistentContent(event, networkResourcesDependency: networkResources) { [weak self] error in
-                if let _ = error,
+                
+                if let validError = error,
                     let strongSelf = self {
-                    strongSelf.v_showDefaultErrorAlert()
+                    
+                    if let persistenceError = validError as? PersistentContentCreatorError where
+                        persistenceError.isInvalidNetworkResourcesError {
+                        //Encountered an error where the network resources were inadequate. This does NOT
+                        //represent an error state, do not display an alert to the user.
+                    } else {
+                        strongSelf.v_showDefaultErrorAlert()
+                    }
                 }
             }
         }
+        nextSender?.sendEvent(event)
     }
 
     // MARK: - ForumEventSender
