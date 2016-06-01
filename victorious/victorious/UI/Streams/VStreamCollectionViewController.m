@@ -52,7 +52,6 @@
 #import "VTracking.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
-#import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VSleekStreamCollectionCell.h"
 #import "VActionSheetViewController.h"

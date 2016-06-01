@@ -113,7 +113,7 @@ import Foundation
         
         let blockOrUnblock: FetcherOperation
         let actionTitle: String
-        if user.isBlockedByMainUser.boolValue {
+        if user.isBlockedByMainUser?.boolValue == true {
             actionTitle = NSLocalizedString("UnblockUser", comment: "")
             blockOrUnblock = UnblockUserOperation(userID: user.remoteId.integerValue)
         } else {
@@ -132,8 +132,8 @@ import Foundation
             guard !blockOrUnblock.cancelled else {
                 return
             }
-            let didBlockUser = user.isBlockedByMainUser.boolValue
-            if didBlockUser {
+            let didBlockUser = user.isBlockedByMainUser?.boolValue
+            if didBlockUser == true {
                 self.originViewController.v_showBlockedUserAlert() {
                     completion?(true)
                 }
@@ -272,7 +272,7 @@ import Foundation
     }
     
     private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let title = sequence.user.isBlockedByMainUser.boolValue ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let title = sequence.user.isBlockedByMainUser?.boolValue ?? false ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         let blockItem = VActionItem.defaultActionItemWithTitle(title,
             actionIcon: UIImage(named: "action_sheet_block"),
             detailText: "")

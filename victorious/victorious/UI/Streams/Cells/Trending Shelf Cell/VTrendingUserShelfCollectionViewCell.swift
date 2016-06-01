@@ -180,8 +180,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     //MARK: - View updating
     
     override func updateFollowControlState() {
-        if let shelf = shelf as? UserShelf {
-            let isFollowed = shelf.user.isFollowedByMainUser.boolValue
+        if let shelf = shelf as? UserShelf,
+            let isFollowed = shelf.user.isFollowedByMainUser?.boolValue {
+            
             let controlState: VFollowControlState = isFollowed ? .Followed : .Unfollowed
             followControl?.setControlState(controlState, animated: true)
         }

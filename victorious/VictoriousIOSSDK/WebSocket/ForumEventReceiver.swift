@@ -6,13 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
-
-public protocol ForumEvent {
-    /// Server time sent as a Unix timestamp in milliseconds.
-    var serverTime: NSDate { get }
-}
-
 public protocol ForumEventReceiver: class {
     var childEventReceivers: [ForumEventReceiver] { get }
     func receive(event: ForumEvent)

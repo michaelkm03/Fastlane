@@ -46,7 +46,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     func shouldNavigate() -> Bool {
         // Don't allow this tab to be selected if already validated as a VIP subscriber,
         // skip ahead to presenting the VIP Forum section
-        if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber.boolValue {
+        if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber?.boolValue == true {
             openGate()
             return false
         }

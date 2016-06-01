@@ -21,7 +21,7 @@ final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
         self.queuePriority = .VeryHigh
         
         if !localFetch {
-            let request = ViewedContentFeedRequest(
+            let request = ContentFeedRequest(
                 apiPath: paginator.apiPath,
                 paginator: paginator
             )
@@ -42,7 +42,7 @@ final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
     override func main() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             self.results = self.contentRemoteIDs?.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0 ] )
+                let content: VContent = context.v_findOrCreateObject( [ "v_remoteID" : $0 ] )
                 return content
             })
         }

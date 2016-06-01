@@ -18,7 +18,6 @@
 #import "VTimeSinceWidget.h"
 #import "VFollowControl.h"
 #import "VSequence+Fetcher.h"
-#import "VUser.h"
 #import "victorious-Swift.h"
 
 @import KVOController;

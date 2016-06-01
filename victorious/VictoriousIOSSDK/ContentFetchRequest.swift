@@ -1,5 +1,5 @@
 //
-//  ViewedContentFetchRequest.swift
+//  ContentFetchRequest.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 25/4/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ViewedContentFetchRequest : TemplateDrivenRequestType {
+public struct ContentFetchRequest : TemplateDrivenRequestType {
     
     public private(set) var urlString: String
     
@@ -25,12 +25,12 @@ public struct ViewedContentFetchRequest : TemplateDrivenRequestType {
         self.contentID = contentID
     }
 
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ViewedContent {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Content {
         
         let json = responseJSON["payload"]
-        guard let viewedContent = ViewedContent(json: json) else {
+        guard let content = Content(json: json) else {
             throw ResponseParsingError()
         }
-        return viewedContent
+        return content
     }
 }

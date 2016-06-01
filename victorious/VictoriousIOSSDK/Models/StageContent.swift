@@ -16,7 +16,7 @@ public enum StageContent {
     
     init?(json: JSON) {
         guard let contentTypeString = json["type"].string else {
-            NSLog("Content type misssing in content json -> \(json)")
+            NSLog("Content type missing in content json -> \(json)")
             return nil
         }
 

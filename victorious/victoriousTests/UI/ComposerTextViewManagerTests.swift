@@ -146,9 +146,10 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        func textViewDidHitCharacterLimit(textView: UITextView) {
-            //
-        }
+        var textViewCurrentHashtag: (String, NSRange)?
+        
+        func textViewDidHitCharacterLimit(textView: UITextView) {}
+        
         var textViewCanDismiss: Bool = true
     }
 }

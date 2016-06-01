@@ -52,7 +52,7 @@ class LoginSuccessOperation: FetcherOperation {
             
             user.setAsCurrentUser()
             self.updateStoredCredentials( user )
-            VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( user.isNewUser.boolValue )
+            VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( user.isNewUser?.boolValue ?? false )
         }
     }
     
