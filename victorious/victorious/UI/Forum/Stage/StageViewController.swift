@@ -31,7 +31,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentContentView: UIView?
     
-    private var currentStagedContent: StageContent?
+    private var currentStagedContent: ContentModel?
     
     private var stageDataSource: StageDataSource?
     
@@ -66,8 +66,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         super.viewDidAppear(animated)
 
         // Coming back to the stage where a video was playing will resume the video.
-        if let currentStagedContent = currentStagedContent,
-            case .video(_, _) = currentStagedContent {
+        if currentStagedContent?.type == .video {
             videoPlayer.play()
         }
     }
@@ -82,18 +81,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     //MARK: - Stage
     
-    func addContent(stageContent: StageContent) {
+    func addContent(stageContent: ContentModel) {
         videoPlayer.pause()
         currentStagedContent = stageContent
-
-        switch stageContent {
-        case .video:
-            addVideoAsset(stageContent)
-        case .image:
-            addImageAsset(stageContent)
-        case .gif:
-            addGifAsset(stageContent)
-        }
+        
+        //TODO: Add content to the stage
+        
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
 
@@ -124,38 +117,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
         currentStagedContent = nil
-    }
-
-    // MARK: Video Asset
-
-    private func addVideoAsset(videoContent: StageContent) {
-        let videoItem = VVideoPlayerItem(URL: videoContent.url)
-        videoPlayer.setItem(videoItem)
-    }
-
-    // MARK: Image Asset
-    
-    private func addImageAsset(imageContent: StageContent) {
-        imageView.sd_setImageWithURL(imageContent.url) { [weak self] (image, error, cacheType, url) in
-            guard let strongSelf = self else {
-                return
-            }
-
-            guard let stageImageURL = strongSelf.currentStagedContent?.url where stageImageURL == url else {
-                return
-            }
-            
-            strongSelf.switchToContentView(strongSelf.imageView, fromContentView: strongSelf.currentContentView)
-        }
-    }
-
-    // MARK: Gif Playback
-    
-    private func addGifAsset(gifContent: StageContent) {
-        let videoItem = VVideoPlayerItem(URL: gifContent.url)
-        videoItem.loop = true
-        videoPlayer.setItem(videoItem)
-        videoPlayer.seekToTimeSeconds(0)
     }
 
     // MARK: Clear Media
