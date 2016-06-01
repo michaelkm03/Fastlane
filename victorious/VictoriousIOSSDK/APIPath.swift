@@ -12,7 +12,7 @@ import Foundation
 public struct APIPath {
     // MARK: - Initializing
     
-    public init(templatePath: String, macroReplacements: [String:String] = [:], queryParameters: [String:String] = [:]) {
+    public init(templatePath: String, macroReplacements: [String: String] = [:], queryParameters: [String: String] = [:]) {
         self.templatePath = templatePath
         self.macroReplacements = macroReplacements
         self.queryParameters = queryParameters
@@ -27,10 +27,10 @@ public struct APIPath {
     ///
     /// This must be set before accessing `url` to replace macros properly.
     ///
-    public var macroReplacements: [String:String]
+    public var macroReplacements: [String: String]
     
     /// A set of query parameters to add to the processed URL.
-    public var queryParameters: [String:String]
+    public var queryParameters: [String: String]
     
     // MARK: - Getting the processed URL
     
@@ -46,6 +46,12 @@ public struct APIPath {
             if let components = NSURLComponents(string: processedPath) {
                 components.queryItems = (components.queryItems ?? []) + queryParameters.map {
                     NSURLQueryItem(name: $0, value: $1)
+                }
+                
+                if let pathWithQueryParameters = components.string {
+                    processedPath = pathWithQueryParameters
+                } else {
+                    assertionFailure("Failed to add query parameters to URL.")
                 }
             } else {
                 assertionFailure("Failed to construct URL components from template URL to add query parameters.")
