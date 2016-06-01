@@ -25,7 +25,7 @@ class ImageOnColorButton: UIButton, TrackableButton {
                 foregroundRenderingMode = .AlwaysTemplate
             }
             let foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
-            setBackgroundImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
+            setImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
         }
     }
 }

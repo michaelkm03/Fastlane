@@ -46,6 +46,6 @@ enum TrackableButtonAppearance: String {
     case backgroundImage = "image.background"
     case foregroundColor = "color.foreground"
     case foregroundImage = "image.foreground"
-    case text = "text"
-    case font = "font"
+    case text = "text.button"
+    case font = "font.text.button"
 }
