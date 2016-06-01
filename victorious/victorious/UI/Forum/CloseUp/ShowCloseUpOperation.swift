@@ -49,14 +49,10 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
-        let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : contentID ?? content?.id ?? "",
+        let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
+            "%%CONTENT_ID%%": contentID ?? content?.id ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
-        ]
-        let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
-            replacementDictionary,
-            inURLString: childDependencyManager.relatedContentURL
-        )
+        ])
         
         let header = CloseUpView.newWithDependencyManager(childDependencyManager)
         
@@ -68,8 +64,8 @@ class ShowCloseUpOperation: MainQueueOperation {
             managesBackground: true
         )
         
-        let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            childDependencyManager,
+        let closeUpViewController = GridStreamViewController<CloseUpView>(
+            dependencyManager: childDependencyManager,
             header: header,
             content: content,
             configuration: config,

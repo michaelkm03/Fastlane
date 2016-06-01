@@ -13,13 +13,13 @@ private let headerName = "ConfigurableGridStreamHeaderView"
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDataSource {
     // MARK: - Initializing
     
-    init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: String?) {
+    init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
         self.cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
         
-        paginatedDataSource = TimePaginatedDataSource(apiPath: streamAPIPath ?? "") {
+        paginatedDataSource = TimePaginatedDataSource(apiPath: streamAPIPath) {
             ContentFeedOperation(url: $0)
         }
     }

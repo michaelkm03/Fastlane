@@ -36,14 +36,15 @@ enum PaginatedLoadingType {
 class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], error: NSError?) -> Void> {
     // MARK: - Initializing
     
-    init(apiPath: String, createOperation: (url: NSURL) -> Operation) {
+    init(apiPath: APIPath, createOperation: (url: NSURL) -> Operation) {
         self.apiPath = apiPath
         self.createOperation = createOperation
     }
     
     // MARK: - Configuration
     
-    let apiPath: String
+    private(set) var apiPath: APIPath
+    
     let createOperation: (url: NSURL) -> Operation
     
     // MARK: - Managing content
@@ -98,12 +99,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return nil
         }
         
-        let processedPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
-            "%%FROM_TIME%%": "\(fromTime)",
-            "%%TO_TIME%%": "\(toTime)"
-        ], inURLString: apiPath)
+        apiPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
+        apiPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
         
-        return NSURL(string: processedPath)
+        return apiPath.url
     }
     
     private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int64, toTime: Int64) {

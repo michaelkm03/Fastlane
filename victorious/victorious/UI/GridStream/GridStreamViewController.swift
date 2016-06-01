@@ -42,28 +42,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - Initializing
     
-    static func newWithDependencyManager(
+    init(
         dependencyManager: VDependencyManager,
         header: HeaderType? = nil,
         content: HeaderType.ContentType?,
         configuration: GridStreamConfiguration? = nil,
-        streamAPIPath: String?) -> GridStreamViewController {
-        
-        return GridStreamViewController(
-            dependencyManager: dependencyManager,
-            header: header,
-            content: content,
-            configuration: configuration,
-            streamAPIPath: streamAPIPath
-        )
-    }
-    
-    init(dependencyManager: VDependencyManager,
-                 header: HeaderType? = nil,
-                 content: HeaderType.ContentType?,
-                 configuration: GridStreamConfiguration? = nil,
-                 streamAPIPath: String?) {
-        
+        streamAPIPath: APIPath
+    ) {
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
@@ -73,7 +58,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             dependencyManager: dependencyManager,
             header: header,
             content: content,
-            streamAPIPath: streamAPIPath)
+            streamAPIPath: streamAPIPath
+        )
         
         super.init(nibName: nil, bundle: nil)
         
