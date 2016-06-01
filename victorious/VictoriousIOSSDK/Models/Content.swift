@@ -32,7 +32,6 @@ public class Content: DictionaryConvertible {
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string,
             let author = User(json: viewedContentJSON["author"])
         else {
             NSLog("Required field missing in content json -> \(json)")
@@ -52,24 +51,20 @@ public class Content: DictionaryConvertible {
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
-        if type == .image {
-            if let asset = ContentMediaAsset(
-                contentType: type,
-                sourceType: sourceType,
-                json: json[typeString]
-            ) {
+        let sourceType = json[typeString]["type"].string ?? typeString
+        
+        switch type {
+        case .image:
+            if let asset = ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString]) {
                 self.assets = [asset]
             } else {
                 self.assets = []
             }
-        } else {
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap {
-                ContentMediaAsset(
-                    contentType: type,
-                    sourceType: sourceType,
-                    json: $0
-                )
-            }
+            
+        case .gif, .video:
+            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+        case .text:
+            self.assets = []
         }
     }
     
@@ -139,11 +134,5 @@ public class Content: DictionaryConvertible {
         }
         
         return dictionary
-    }
-}
-
-extension Content: ForumEvent {
-    public var serverTime: NSDate {
-        return createdAt
     }
 }

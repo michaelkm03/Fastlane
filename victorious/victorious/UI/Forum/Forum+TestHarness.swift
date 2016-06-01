@@ -61,7 +61,7 @@ extension ForumViewController {
             asset = randAsset()
         }
         
-        guard let event: ForumEvent = Content(
+        let content = Content(
             createdAt: NSDate(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             assets: [asset].flatMap { $0 },
@@ -70,11 +70,10 @@ extension ForumViewController {
                 name: randName(),
                 previewImages: [randPreviewImage()]
             )
-        ) else {
-            return
-        }
+        )
+        
         totalCount += 1
-        receive(event)
+        receive(.appendContent([content]))
     }
 }
 
