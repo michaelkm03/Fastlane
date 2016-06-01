@@ -488,7 +488,7 @@
 		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
 		0E242F451C9C834A008A7286 /* StageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E242F441C9C834A008A7286 /* StageContent.swift */; };
 		0E279B641CB854A80023156F /* CreateChatServiceTokenOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */; };
-		0E4BF6B31CA60B5400B8A456 /* WebSocketEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEventType.swift */; };
+		0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */; };
 		0E5991671CD84D8700ED7E6D /* NSDate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */; };
 		0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */; };
 		0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */; };
@@ -501,7 +501,6 @@
 		0E8EB2CB1CCF0B570087D815 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2CA1CCF0B570087D815 /* Content.swift */; };
 		0E8EB2D11CCF0BCB0087D815 /* ContentFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2D01CCF0BCB0087D815 /* ContentFetchRequest.swift */; };
 		0E8EB2D31CCF0C130087D815 /* StageContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */; };
-		0E8F131A1CA4CB92004AF0B0 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F13191CA4CB92004AF0B0 /* WebSocketEvent.swift */; };
 		0E8F131B1CA4DC6B004AF0B0 /* WebSocketControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168E1C99010F0005CF86 /* WebSocketControllerTests.swift */; };
 		0E96809F1CD03E130094ADF4 /* Stage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E96809E1CD03E130094ADF4 /* Stage.storyboard */; };
 		0E9911CE1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9911CD1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift */; };
@@ -832,6 +831,7 @@
 		7A47849F1CF374FD00894233 /* WebSocketForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */; };
 		7A53C15F1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
+		7A67EC801CFE41CC00D022D1 /* ForumEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */; };
 		7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */; };
 		7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */; };
 		7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */; };
@@ -2029,8 +2029,15 @@
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
 		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
+		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
+		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
+		F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */; };
+		F009BD0D1CE654FD00F81CAA /* HashtagBarCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */; };
 		F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */; };
 		F009BD151CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */; };
+		F009BD171CE6AFBE00F81CAA /* HashtagBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */; };
+		F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */; };
+		F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */; };
 		F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */; };
 		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
 		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
@@ -2118,6 +2125,7 @@
 		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
 		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
 		F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */; };
+		F07DDE2C1CFCB93B00C7FC8D /* HashtagBarCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */; };
 		F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */; };
 		F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */; };
 		F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */; };
@@ -2126,6 +2134,7 @@
 		F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */; };
 		F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */; };
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
+		F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E8C651C88CBAA00437ACD /* AssetTests.swift */; };
@@ -2916,7 +2925,7 @@
 		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		0E242F441C9C834A008A7286 /* StageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContent.swift; sourceTree = "<group>"; };
 		0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperationTests.swift; sourceTree = "<group>"; };
-		0E4BF6B21CA60B5400B8A456 /* WebSocketEventType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEventType.swift; path = WebSocket/WebSocketEvents/WebSocketEventType.swift; sourceTree = "<group>"; };
+		0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Initializers.swift"; sourceTree = "<group>"; };
 		0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumNetworkSource.swift; sourceTree = "<group>"; };
 		0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEventDecoder.swift; path = WebSocket/WebSocketEventDecoder.swift; sourceTree = "<group>"; };
@@ -2929,7 +2938,6 @@
 		0E8EB2CA1CCF0B570087D815 /* Content.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		0E8EB2D01CCF0BCB0087D815 /* ContentFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchRequest.swift; sourceTree = "<group>"; };
 		0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContentFetchOperation.swift; sourceTree = "<group>"; };
-		0E8F13191CA4CB92004AF0B0 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E96809E1CD03E130094ADF4 /* Stage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Stage.storyboard; sourceTree = "<group>"; };
 		0E9911CD1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketRawMessageContainer.swift; path = WebSocket/WebSocketRawMessageContainer.swift; sourceTree = "<group>"; };
 		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
@@ -3279,6 +3287,7 @@
 		7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketForumNetworkSource.swift; sourceTree = "<group>"; };
 		7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowVIPGateOperation.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
+		7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumEvent.swift; sourceTree = "<group>"; };
 		7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCell.swift; sourceTree = "<group>"; };
 		7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCellFactory.swift; sourceTree = "<group>"; };
 		7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -3689,7 +3698,6 @@
 		A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D71C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
@@ -4959,8 +4967,16 @@
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
 		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
+		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
+		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
+		F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCell.swift; sourceTree = "<group>"; };
+		F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellDecorator.swift; sourceTree = "<group>"; };
+		F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarCellPopulator.swift; sourceTree = "<group>"; };
 		F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketMessageDetailViewController.swift; path = Debugging/WebSocketMessageDetailViewController.swift; sourceTree = "<group>"; };
 		F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketMessageDetailViewController.storyboard; path = Debugging/WebSocketMessageDetailViewController.storyboard; sourceTree = "<group>"; };
+		F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HashtagBarCell.xib; sourceTree = "<group>"; };
+		F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpers.swift"; sourceTree = "<group>"; };
+		F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HashtagBarViewController.storyboard; sourceTree = "<group>"; };
 		F00BBAB41CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeCameraCreationFlowController.swift; sourceTree = "<group>"; };
 		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
 		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
@@ -5101,6 +5117,7 @@
 		F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		F08CDB9A1AC4D3C6006763B1 /* VFullscreenMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
+		F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpersTests.swift"; sourceTree = "<group>"; };
 		F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextView.h; sourceTree = "<group>"; };
 		F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextView.m; sourceTree = "<group>"; };
 		F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextViewDelegate.h; sourceTree = "<group>"; };
@@ -7081,8 +7098,7 @@
 		0E06150C1CA36FFD00236D4A /* WebSocketEvents */ = {
 			isa = PBXGroup;
 			children = (
-				0E8F13191CA4CB92004AF0B0 /* WebSocketEvent.swift */,
-				0E4BF6B21CA60B5400B8A456 /* WebSocketEventType.swift */,
+				0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */,
 			);
 			name = WebSocketEvents;
 			sourceTree = "<group>";
@@ -7139,6 +7155,7 @@
 		0EF7168B1C98FD770005CF86 /* WebSocket */ = {
 			isa = PBXGroup;
 			children = (
+				7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */,
 				0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */,
 				0E0615081CA35D6800236D4A /* ForumEventSender.swift */,
 				0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */,
@@ -7780,6 +7797,7 @@
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 				F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */,
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
+				F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */,
 				A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */,
 				A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */,
 				A721E8D21B572453000B7901 /* UIAlertController+VSimpleAlert.h */,
@@ -8102,7 +8120,6 @@
 				A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */,
 				0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */,
 				67F9EAA61CCE93030005A2EF /* CreatorListRemoteOperation.swift */,
-				A72C85D71C977FF500E97D4F /* FetcherOperation.swift */,
 				A72C85D81C977FF500E97D4F /* FollowedHashtagsRemoteOperation.swift */,
 				A72C85D91C977FF500E97D4F /* MessageSendRemoteOperation.swift */,
 				A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */,
@@ -8202,6 +8219,7 @@
 				F06FC1F81C97437900A014C7 /* ComposerTextViewManager.swift */,
 				F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */,
 				A73BA29A1C938B68008168B5 /* ComposerViewController.swift */,
+				F009BD051CE6547B00F81CAA /* HashtagBar */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -8211,8 +8229,8 @@
 			children = (
 				0E96809E1CD03E130094ADF4 /* Stage.storyboard */,
 				A73BA29D1C938B68008168B5 /* Stage.swift */,
-				A73BA2A01C938B68008168B5 /* StageViewController.swift */,
 				0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */,
+				A73BA2A01C938B68008168B5 /* StageViewController.swift */,
 			);
 			path = Stage;
 			sourceTree = "<group>";
@@ -9383,6 +9401,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */,
+				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
@@ -10314,6 +10333,20 @@
 				C30546B61BD9B9DC005F6712 /* Supporting Files */,
 			);
 			path = victoriousUITests;
+			sourceTree = "<group>";
+		};
+		F009BD051CE6547B00F81CAA /* HashtagBar */ = {
+			isa = PBXGroup;
+			children = (
+				F009BD0A1CE654EE00F81CAA /* HashtagBarCell.swift */,
+				F009BD161CE6AFBE00F81CAA /* HashtagBarCell.xib */,
+				F009BD0C1CE654FD00F81CAA /* HashtagBarCellDecorator.swift */,
+				F009BD0E1CE6550900F81CAA /* HashtagBarCellPopulator.swift */,
+				F009BD081CE654D200F81CAA /* HashtagBarController.swift */,
+				F009BD1C1CEBF73500F81CAA /* HashtagBarViewController.storyboard */,
+				F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */,
+			);
+			name = HashtagBar;
 			sourceTree = "<group>";
 		};
 		F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */ = {
@@ -11252,6 +11285,7 @@
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
+				F009BD171CE6AFBE00F81CAA /* HashtagBarCell.xib in Resources */,
 				D825B8821B20B9A8004179B4 /* VModernResetTokenViewController.storyboard in Resources */,
 				03848F951B0A41090092C660 /* InfoPlist.strings in Resources */,
 				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
@@ -11339,6 +11373,7 @@
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				A748BD181C8A7302003D5F5F /* VIPGate.storyboard in Resources */,
+				F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
@@ -11954,6 +11989,7 @@
 				67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */,
 				A71F41F31C0409C400131BE6 /* SequenceRepostersRequest.swift in Sources */,
 				A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */,
+				7A67EC801CFE41CC00D022D1 /* ForumEvent.swift in Sources */,
 				A7D69C161C0E49D300B462C3 /* PollResult.swift in Sources */,
 				03F9A8361C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift in Sources */,
 				5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */,
@@ -11965,7 +12001,6 @@
 				A716F3EC1C05110D003068A2 /* PollResultSummaryRequest.swift in Sources */,
 				BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */,
 				A7EF1BCD1BF2754D00D429DE /* Sequence.Category.swift in Sources */,
-				0E8F131A1CA4CB92004AF0B0 /* WebSocketEvent.swift in Sources */,
 				A7EF1BCB1BF2754D00D429DE /* Interaction.swift in Sources */,
 				A7EF1BC91BF2754D00D429DE /* Answer.swift in Sources */,
 				795B75981BFA80E000227647 /* PrivacyPolicyRequest.swift in Sources */,
@@ -12001,7 +12036,7 @@
 				A7245F091C04E66E00187825 /* FlagSequenceRequest.swift in Sources */,
 				A7D9204B1C0636B3002A6503 /* ResponseParsingError.swift in Sources */,
 				C3E7C0FB1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift in Sources */,
-				0E4BF6B31CA60B5400B8A456 /* WebSocketEventType.swift in Sources */,
+				0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */,
 				6761E6C51C4DC8D600B97BF1 /* TrendingUsersRequest.swift in Sources */,
 				BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */,
 				C3D956171BF4368F00069FD6 /* Comment.swift in Sources */,
@@ -12511,6 +12546,7 @@
 				67F9EAA91CCE9BA80005A2EF /* CreatorListOperation.swift in Sources */,
 				A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
+				F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */,
 				7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
 				A6E104D51B56C88D0062392A /* VPublishShareCollectionViewCell.m in Sources */,
@@ -12603,6 +12639,7 @@
 				A7F3F8061C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				F07DDE2C1CFCB93B00C7FC8D /* HashtagBarCellPopulator.swift in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
@@ -12675,6 +12712,7 @@
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
+				F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */,
 				7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */,
 				A72C861F1C977FF500E97D4F /* MessageUnreadCountOperation.swift in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VConversationListViewController.m in Sources */,
@@ -12719,6 +12757,7 @@
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
 				7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
+				F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */,
 				A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */,
 				7AB14CAE1CBEF96B006E674B /* ShowWebContentOperation.swift in Sources */,
 				A75DF5291C3E0B3F00A4C82A /* HashtagSearchDataSource.swift in Sources */,
@@ -12726,6 +12765,7 @@
 				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				A7F843721BFD5A0B004C3D55 /* CoreDataManager.swift in Sources */,
 				A7EBF53E1C2B9BDD0080C7CF /* VLikersDataSource.swift in Sources */,
+				F009BD0D1CE654FD00F81CAA /* HashtagBarCellDecorator.swift in Sources */,
 				D89367501ADDE1B9001D2426 /* VActionButtonAnimationController.m in Sources */,
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				F03C135A1B698F6F00287F4C /* VAsset.m in Sources */,
@@ -13205,6 +13245,7 @@
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				A72C86501C977FF500E97D4F /* PreloadUserInfoOperation.swift in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
+				F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				A72C86051C977FF500E97D4F /* ConversationForUserOperation.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
@@ -13603,6 +13644,7 @@
 				A7DCA4ED1C128A78004E35B4 /* VHashTagsTest.m in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
+				F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */,
 				A7DCA5071C128A78004E35B4 /* VTagSensitiveTextViewTests.m in Sources */,
 				A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */,
 				A7DCA4D51C128A78004E35B4 /* VAbstractMediaLinkViewControllerTests.m in Sources */,
