@@ -27,8 +27,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var currentContentView: UIView?
     
-    private var currentStagedContent: ContentModel?
-    
     private var stageDataSource: StageDataSource?
     
     weak var delegate: StageDelegate?
@@ -48,15 +46,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return dataSource
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // Coming back to the stage where a video was playing will resume the video.
-        if currentStagedContent?.type == .video {
-            mediaContentView.videoCoordinator?.playVideo()
-        }
-    }
-
     override func viewWillDisappear(animated: Bool) {
         clearStageMedia()
     }
@@ -65,15 +54,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
-        currentStagedContent = stageContent
-        
-        //TODO: Add content to the stage
-        
+        mediaContentView.updateContent(stageContent)
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
 
     func removeContent() {
-        currentStagedContent = nil
         clearStageMedia()
     }
 
