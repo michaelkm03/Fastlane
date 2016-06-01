@@ -51,8 +51,7 @@ class ForumEventChainTests: XCTestCase {
     }
     
     func createEvent() -> ForumEvent {
-        eventIdCounter += 1
-        return ForumEventTestable(serverTime: NSDate(timeIntervalSince1970: 1234567890), internalIdentifier: eventIdCounter)
+        return .websocket(.Connected)
     }
     
     func testPerformance() {
@@ -70,18 +69,6 @@ class ForumEventChainTests: XCTestCase {
             }
         }
     }
-}
-
-private var eventIdCounter = 0
-
-// Internal struct made for testing the FEC (Forum Event Chain™).
-private struct ForumEventTestable: ForumEvent, Equatable {
-    let serverTime: NSDate
-    let internalIdentifier: Int
-}
-
-private func ==(lhs: ForumEventTestable, rhs: ForumEventTestable) -> Bool {
-    return lhs.internalIdentifier == rhs.internalIdentifier
 }
 
 private class MockTerminusSender: ForumEventSender {

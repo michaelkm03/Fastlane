@@ -36,7 +36,8 @@ extension Composer {
             return
         }
         
-        send(Content(text: text, author: currentUser))
+        let content = Content(text: text, author: currentUser)
+        send(.sendContent(content))
     }
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?) {
@@ -45,7 +46,8 @@ extension Composer {
             return
         }
         
-        send(Content(text: text, assets: [asset], author: currentUser))
+        let content = Content(text: text, assets: [asset], author: currentUser)
+        send(.sendContent(content))
     }
 }
 

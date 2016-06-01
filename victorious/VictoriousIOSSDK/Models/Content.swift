@@ -138,9 +138,3 @@ public class Content: DictionaryConvertible {
         return dictionary
     }
 }
-
-extension Content: ForumEvent {
-    public var serverTime: NSDate {
-        return createdAt
-    }
-}

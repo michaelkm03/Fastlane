@@ -130,9 +130,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
         webSocketMessageContainer.addMessage(rawMessage)
         
-        let connectEvent = WebSocketEvent(type: .Connected)
+        let connectEvent = WebSocketEvent.Connected
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(connectEvent)
+            self?.broadcast(.websocket(connectEvent))
         }
     }
 
@@ -146,10 +146,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         pingTimer?.invalidate()
         
         let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
-        let disconnectEvent = WebSocketEvent(type: WebSocketEventType.Disconnected(webSocketError: webSocketError))
+        let disconnectEvent = WebSocketEvent.Disconnected(webSocketError: webSocketError)
         
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(disconnectEvent)
+            self?.broadcast(.websocket(disconnectEvent))
         }
     }
 
@@ -184,23 +184,30 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: Private
 
     private func sendOutboundForumEvent(event: ForumEvent) {
+        switch event {
+        case .sendContent(let content):
+            sendJSON(from: content)
+        case .blockUser(let blockUser):
+            sendJSON(from: blockUser)
+        default:
+            break
+        }
+        
+        broadcast(event)
+    }
+    
+    private func sendJSON(from dictionaryConvertible: DictionaryConvertible) {
         guard let webSocket = webSocket where webSocket.isConnected else {
             return
         }
         
-        guard let dictionaryConvertible = event as? DictionaryConvertible else {
-            NSLog("Failed to convert DictionaryConvertible ForumEvent to JSON string. event -> \(event)")
-            return
-        }
-
         let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
-
+        
         if let jsonString = JSON(toServerDictionary).rawString() {
             NSLog("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
-            broadcast(event)
         } else {
-            NSLog("Failed to convert JSONConvertable ForumEvent to JSON string. event -> \(event)")
+            NSLog("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
         }
     }
 

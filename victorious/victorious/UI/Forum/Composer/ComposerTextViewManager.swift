@@ -36,6 +36,19 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     //MARK: - Updating logic
     
+    func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
+        
+        var updatedText = textView.text
+        guard range.location + range.length <= updatedText.characters.count &&
+            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+            return false
+        }
+        
+        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        textView.text = updatedText
+        return true
+    }
+    
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
@@ -132,6 +145,12 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             updatingSelection = true
             textView.selectedRange = NSMakeRange(attachmentStringLength, length)
         }
+        
+        if textView.selectedRange.length == 0 {
+            delegate.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
+        } else {
+            delegate.textViewCurrentHashtag = nil
+        }
     }
     
     //MARK: - Helpers
@@ -144,6 +163,27 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         return [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
+    }
+    
+    private func hashtagStringAroundLocation(location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
+        
+        let hashtagCharacter = Character("#")
+        let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
+
+        let text = textView.text
+        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location, afterCharacters: hashtagBoundaryCharacters) where
+            preceedingCharacter == hashtagCharacter else {
+            return nil
+        }
+        
+        var foundRange = text.NSRangeFromRange(preceedingRange)
+        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location, beforeCharacters: hashtagBoundaryCharacters) else {
+            return (preceedingString, foundRange)
+        }
+        
+        let foundEndRange = text.NSRangeFromRange(proceedingRange)
+        foundRange = NSMakeRange(foundRange.location, foundRange.length + foundEndRange.length)
+        return (preceedingString + proceedingString, foundRange)
     }
     
     //MARK: - Image management

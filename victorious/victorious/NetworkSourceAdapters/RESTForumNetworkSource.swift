@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDelegate {
+class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - Configuration
     
     private static let pollingInterval = NSTimeInterval(10.0)
@@ -33,9 +33,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     
     private func broadcastContents(contents: [ContentModel]) {
         // Content comes back newest to oldest, but we need it to be oldest to newest.
-        for content in contents.reverse() {
-            broadcast(content)
-        }
+        broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
     }
     
     // MARK: - Polling
@@ -96,27 +94,26 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource, VScrollPaginatorDele
     
     private(set) weak var nextSender: ForumEventSender?
     
+    func send(event: ForumEvent) {
+        nextSender?.send(event)
+        
+        switch event {
+        case .loadOldContent:
+            dataSource.loadItems(.older) { [weak self] contents, error in
+                // TODO: Needs to be broadcasted to prepend.
+                self?.broadcastContents(contents)
+            }
+        default:
+            break
+        }
+    }
+    
     // MARK: - ForumEventReceiver
     
     private(set) var childEventReceivers = [ForumEventReceiver]()
     
     func receive(event: ForumEvent) {
         // Nothing yet.
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    // TODO: Rename these methods to `shouldLoadItemsBelow` and `shouldLoadItemsAbove`.
-    
-    func shouldLoadPreviousPage() {
-        dataSource.loadItems(.older) { [weak self] contents, error in
-            // TODO: Needs to be broadcasted to prepend.
-            self?.broadcastContents(contents)
-        }
-    }
-    
-    func shouldLoadNextPage() {
-        // We load the next page via polling, not scrolling.
     }
 }
 

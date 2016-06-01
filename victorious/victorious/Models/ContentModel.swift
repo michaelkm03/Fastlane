@@ -10,7 +10,7 @@ import Foundation
 
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol ContentModel: PreviewImageContainer, ForumEvent, PaginatableItem {
+protocol ContentModel: PreviewImageContainer, PaginatableItem {
     var createdAt: NSDate { get }
     var type: ContentType { get }
     
@@ -31,6 +31,8 @@ protocol ContentModel: PreviewImageContainer, ForumEvent, PaginatableItem {
     
     // Future: Take the following property out
     var stageContent: StageContent? { get }
+    
+    func toSDKContent() -> Content
 }
 
 extension ContentModel {
@@ -44,12 +46,6 @@ extension ContentModel {
     
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
-    
-    // MARK: - ForumEvent
-    
-    var serverTime: NSDate {
-        return createdAt
     }
 }
 
@@ -116,6 +112,17 @@ extension VContent: ContentModel {
     var stageContent: StageContent? {
         return nil
     }
+    
+    func toSDKContent() -> Content {
+        return Content(
+            id: id,
+            createdAt: createdAt,
+            type: type,
+            text: text,
+            assets: assetModels.map { $0.toSDKAsset() },
+            author: authorModel.toSDKUser()
+        )
+    }
 }
 
 extension Content: ContentModel {
@@ -132,4 +139,7 @@ extension Content: ContentModel {
         return assets.map { $0 as ContentMediaAssetModel }
     }
 
+    func toSDKContent() -> Content {
+        return self
+    }
 }

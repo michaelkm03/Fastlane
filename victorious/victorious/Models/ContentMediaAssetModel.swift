@@ -23,6 +23,8 @@ protocol ContentMediaAssetModel {
     
     /// The URL to the asset's content.
     var url: NSURL? { get }
+    
+    func toSDKAsset() -> ContentMediaAsset
 }
 
 /// The source of where the video is hosted.
@@ -46,7 +48,7 @@ extension VContentMediaAsset: ContentMediaAssetModel {
         switch source {
         case "youtube":
             return .youtube
-        case "video", "gif":
+        case "video", "giphy":
             return .video
         default:
             return nil
@@ -69,6 +71,21 @@ extension VContentMediaAsset: ContentMediaAssetModel {
     var url: NSURL? {
         return NSURL(v_string: v_remoteSource)
     }
+    
+    func toSDKAsset() -> ContentMediaAsset {
+        switch v_source ?? "" {
+        case "video":
+            return .video(url: url ?? NSURL(), source: v_source)
+        case "youtube":
+            return .youtube(remoteID: resourceID, source: v_source)
+        case "gif":
+            return .gif(url: url ?? NSURL(), source: v_source)
+        case "image":
+            return .image(url: url ?? NSURL())
+        default:
+            return .image(url: url ?? NSURL())
+        }
+    }
 }
 
 extension ContentMediaAsset: ContentMediaAssetModel {
@@ -85,5 +102,9 @@ extension ContentMediaAsset: ContentMediaAssetModel {
         case .image(_):
             return nil
         }
+    }
+    
+    func toSDKAsset() -> ContentMediaAsset {
+        return self
     }
 }

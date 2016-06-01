@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-protocol ChatFeedNetworkDataSourceType: VScrollPaginatorDelegate, ForumEventReceiver, ForumEventSender {
+protocol ChatFeedNetworkDataSourceType: ForumEventReceiver, ForumEventSender {
     func startCheckingForNewItems()
     func stopCheckingForNewItems()
     
@@ -48,30 +48,25 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
         stopCheckingForNewItems()
     }
     
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() {
-        // Pagination not supported in this implementation
-    }
-    
-    func shouldLoadPreviousPage() {
-        // Pagination not supported in this implementation
-    }
-    
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {
         // Stash events in the queue when received and wait to dequeue on our timer cycle
-        if let content =  event as? ContentModel {
-            let chatFeedMessage = ChatFeedMessage(content: content, displayOrder: eventCounter)
-            eventQueue.addEvent(chatFeedMessage)
-            eventCounter -= 1
-            
-            // Deuque messages right away if from the current user so FetcherOperation
-            // So that the sending feels responsive and nothing gets out of order
-            if content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue {
-                dequeueMessages()
+        switch event {
+        case .appendContent(let contents):
+            for content in contents {
+                let chatFeedMessage = ChatFeedMessage(content: content, displayOrder: eventCounter)
+                eventQueue.addEvent(chatFeedMessage)
+                eventCounter -= 1
+                
+                // Dequeue messages right away if from the current user so FetcherOperation
+                // So that the sending feels responsive and nothing gets out of order
+                if content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue {
+                    dequeueMessages()
+                }
             }
+        default:
+            break
         }
     }
     
