@@ -53,8 +53,7 @@ class ShowTutorialsOperation: MainQueueOperation {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    func shouldShowTutorials(currentVersion: AppVersion,
-                                      userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) -> Bool {
+    func shouldShowTutorials(currentVersion: AppVersion, userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) -> Bool {
         defer {
             // Always set the current version as the last seen
             userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
