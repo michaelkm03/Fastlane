@@ -118,10 +118,22 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
+    func playVideo() {
+        videoPlayer.play()
+    }
+    
+    func pauseVideo() {
+        videoPlayer.pause()
+    }
+    
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        videoPlayer.playFromStart()
+        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        } else {
+            videoPlayer.playFromStart()
+        }
         state = .Playing
         previewView.hidden = true
     }

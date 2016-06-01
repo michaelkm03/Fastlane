@@ -23,11 +23,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     @IBOutlet private weak var mainContentView: UIView!
     @IBOutlet private weak var mainContentViewBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet private weak var imageView: UIImageView!
-    
-    @IBOutlet private weak var videoContentView: UIView!
-    
-    private lazy var videoPlayer: VVideoView = self.setupVideoView(self.videoContentView)
+    @IBOutlet private weak var mediaContentView: MediaContentView!
     
     private var currentContentView: UIView?
     
@@ -46,16 +42,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     // MARK: Life cycle
     
-    private func setupVideoView(containerView: UIView) -> VVideoView {
-        let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        videoPlayer.useAspectFit = true
-        videoPlayer.delegate = self
-        videoPlayer.backgroundColor = UIColor.clearColor()
-        containerView.addSubview(videoPlayer.view)
-        containerView.v_addFitToParentConstraintsToSubview(videoPlayer.view)
-        return videoPlayer
-    }
-    
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
         let dataSource = StageDataSource(dependencyManager: dependencyManager)
         dataSource.delegate = self
@@ -67,22 +53,18 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
         // Coming back to the stage where a video was playing will resume the video.
         if currentStagedContent?.type == .video {
-            videoPlayer.play()
+            mediaContentView.videoCoordinator?.playVideo()
         }
     }
 
     override func viewWillDisappear(animated: Bool) {
         clearStageMedia()
     }
-    
-    override func viewDidLoad() {
-        self.imageView.contentMode = .ScaleAspectFit
-    }
 
     //MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
-        videoPlayer.pause()
+        mediaContentView.videoCoordinator?.pauseVideo()
         currentStagedContent = stageContent
         
         //TODO: Add content to the stage
@@ -100,46 +82,13 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     var childEventReceivers: [ForumEventReceiver] {
         return [stageDataSource].flatMap { $0 }
     }
-    
-    // MARK: - VVideoPlayerDelegate
-    
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        switchToContentView(videoContentView, fromContentView: currentContentView)
-        videoPlayer.play()
-    }
-    
-    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
-        // This callback could happen multiple times so we don't want to queue up multiple seeks, therefore we need to compare the current time of the video to the actual seek.
-        if let seekAheadTime = currentStagedContent?.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
-        }
-    }
-    
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        currentStagedContent = nil
-    }
 
     // MARK: Clear Media
 
-    private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
-        if newContentView != oldContentView {
-            UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
-                newContentView.alpha = 1.0
-                oldContentView?.alpha = 0.0
-            }
-        }
-        currentContentView = newContentView
-        mainContentViewBottomConstraint.constant = Constants.fixedStageHeight
-        
-        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
-            self.view.layoutIfNeeded()
-        }
-
-        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
-    }
+    //TODO: Implement transition on media content view and call `delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)`
     
     private func clearStageMedia(animated: Bool = false) {
-        videoPlayer.pause()
+        mediaContentView.videoCoordinator?.pauseVideo()
         mainContentViewBottomConstraint.constant = 0
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
