@@ -30,31 +30,31 @@ class StageDataSource: ForumEventReceiver {
             return
         }
         
-        guard let stageEvent = event as? RefreshStage where stageEvent.section == RefreshSection.VIPStage else {
-            return
-        }
-        
-        guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue
-            where VCurrentUser.isLoggedIn() else {
+        switch event {
+        case .refreshStage(let stageEvent) where stageEvent.section == .VIPStage:
+            guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
                 v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
                 return
-        }
-
-        currentContentFetchOperation?.cancel()
-        
-        let contentFetchURL = dependencyManager.contentFetchURL
-        let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
-        currentContentFetchOperation = stageContentFetchOperation
-        stageContentFetchOperation.queue() { [weak self] results, error, canceled in
-            guard let strongSelf = self,
-                let delegate = strongSelf.delegate
-                where canceled != true else {
-                    return
             }
-            if let content = results?.first as? Content,
-                let stageContent = content.stageContent {
-                delegate.addContent(stageContent)
+            
+            currentContentFetchOperation?.cancel()
+            
+            let contentFetchURL = dependencyManager.contentFetchURL
+            let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
+            currentContentFetchOperation = stageContentFetchOperation
+            stageContentFetchOperation.queue() { [weak self] results, error, canceled in
+                guard let strongSelf = self,
+                    let delegate = strongSelf.delegate
+                    where canceled != true else {
+                        return
+                }
+                if let content = results?.first as? Content,
+                    let stageContent = content.stageContent {
+                    delegate.addContent(stageContent)
+                }
             }
+        default:
+            break
         }
     }
 }

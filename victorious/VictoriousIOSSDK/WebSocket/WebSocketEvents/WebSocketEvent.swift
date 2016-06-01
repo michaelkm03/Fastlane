@@ -9,24 +9,30 @@
 import Foundation
 
 ///
-/// The container for WebSocket related messages.
+/// The Forum Event Chain is used to transport control messages regarding the state of the WebSocket connection.
 ///
-public struct WebSocketEvent: ForumEvent, CustomStringConvertible {
+/// - Authenticated: The authentication handshake has been performed.
+/// - AuthenticationFailed: The authentication handshake has failed with an error message
+/// - Connected: The WebSocket connection is open.
+/// - Disconnected: The WebSocket connection is closed with potentially an error message.
+public enum WebSocketEvent: Equatable {
+    case Authenticated
+    case AuthenticationFailed(webSocketError: WebSocketError)
+    case Connected
+    case Disconnected(webSocketError: WebSocketError)
+}
 
-    // MARK: ForumEvent
-
-    public let serverTime: NSDate
-    
-    public let type: WebSocketEventType
-
-    // MARK: CustomStringConvertible
-
-    public var description: String {
-        return "WSEvent type: \(type) serverTime: \(serverTime)"
-    }
-    
-    public init(type: WebSocketEventType, serverTime: NSDate = NSDate()) {
-        self.type = type
-        self.serverTime = serverTime
+public func ==(lhs: WebSocketEvent, rhs: WebSocketEvent) -> Bool {
+    switch (lhs, rhs) {
+    case (.Authenticated, .Authenticated):
+        return true
+    case (let .AuthenticationFailed(error1), let .AuthenticationFailed(error2)):
+        return error1 == error2
+    case (.Connected, .Connected):
+        return true
+    case (let .Disconnected(error1), let .Disconnected(error2)):
+        return error1 == error2
+    default:
+        return false
     }
 }
