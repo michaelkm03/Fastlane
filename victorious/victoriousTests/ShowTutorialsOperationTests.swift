@@ -19,18 +19,18 @@ class ShowTutorialsOperationTests: XCTestCase {
         let showTutorialOperation = ShowTutorialsOperation(originViewController: viewController, dependencyManager: dependencyManager)
         var userDefaults = NSUserDefaults(suiteName: NSUUID().UUIDString)!
         
-        // We should only show the turorial post 5.0
-        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "4.0")))
+        // We should only show the turorial post 5.0.
+        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "4.0"), userDefaults: userDefaults))
         
-        // We should show the first time a 5.0 user enters but not the second time
-        XCTAssertTrue(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.0")))
-        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.0")))
+        // We should show the first time a 5.0 user enters but not the second time.
+        XCTAssertTrue(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.0"), userDefaults: userDefaults))
+        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.0"), userDefaults: userDefaults))
 
         userDefaults = NSUserDefaults(suiteName: NSUUID().UUIDString)!
-        // For users that start in a 5.X world We should show if they have never seen it
-        XCTAssertTrue(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.1")))
+        // For users that start in a 5.X world We should show if they have never seen it.
+        XCTAssertTrue(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.1"), userDefaults: userDefaults))
         
-        // But not from release to release (unless this changes in the future)
-        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(userDefaults, currentVersion: AppVersion(versionNumber: "5.2")))
+        // But not from release to release (unless this changes in the future).
+        XCTAssertFalse(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.2"), userDefaults: userDefaults))
     }
 }

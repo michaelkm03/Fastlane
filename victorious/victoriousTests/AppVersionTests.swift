@@ -35,7 +35,9 @@ class AppVersionTests: XCTestCase {
         let appVersion101 = AppVersion(versionNumber: "1.0.1")
         let appVersion102 = AppVersion(versionNumber: "1.0.2")
         XCTAssertLessThan(appVersion101, appVersion102)
-        XCTAssertGreaterThan(appVersion102, appVersion101)   
+        XCTAssertGreaterThan(appVersion102, appVersion101)
+        
+        XCTAssertEqual(appVersion101.string, "1.0.1")
     }
 
 }

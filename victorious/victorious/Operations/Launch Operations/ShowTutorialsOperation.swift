@@ -34,7 +34,7 @@ class ShowTutorialsOperation: MainQueueOperation {
         
         let currentVersion = AppVersion(versionNumber: currentVersionString)
         
-        guard !self.cancelled && shouldShowTutorials(currentVersion: currentVersion) else {
+        guard !self.cancelled && shouldShowTutorials(currentVersion) else {
             finishedExecuting()
             return
         }
@@ -52,8 +52,8 @@ class ShowTutorialsOperation: MainQueueOperation {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    internal func shouldShowTutorials(userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
-                             currentVersion: AppVersion) -> Bool {
+    internal func shouldShowTutorials(currentVersion: AppVersion,
+                                      userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) -> Bool {
         defer {
             // Always set the current version as the last seen
             userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
