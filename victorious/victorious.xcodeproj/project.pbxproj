@@ -2048,6 +2048,8 @@
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
+		F022CFDA1CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */; };
+		F022CFDC1CFE535500F040BB /* ChatMessageCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */; };
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
@@ -4993,6 +4995,8 @@
 		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
+		F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCreateRemoteOperation.swift; sourceTree = "<group>"; };
+		F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCreateRequest.swift; sourceTree = "<group>"; };
 		F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Addition.swift"; sourceTree = "<group>"; };
 		F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.m"; sourceTree = "<group>"; };
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
@@ -5924,6 +5928,7 @@
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
 				F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
+				F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */,
 				C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */,
 				C323C3B61BF55F6600681059 /* CommentEditRequest.swift */,
 				A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */,
@@ -8109,6 +8114,7 @@
 			isa = PBXGroup;
 			children = (
 				A72C85CD1C977FF500E97D4F /* BlockUserRemoteOperation.swift */,
+				F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */,
 				A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */,
 				A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */,
 				A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */,
@@ -12041,6 +12047,7 @@
 				BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */,
 				C3D956171BF4368F00069FD6 /* Comment.swift in Sources */,
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
+				F022CFDC1CFE535500F040BB /* ChatMessageCreateRequest.swift in Sources */,
 				67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */,
 				67A952421C443526001234B4 /* RegisterPushNotificationRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
@@ -12724,6 +12731,7 @@
 				A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */,
 				A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */,
 				67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */,
+				F022CFDA1CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift in Sources */,
 				BF1769C41CE10E0D00211FBA /* VContentMediaAsset+Parsable.swift in Sources */,
 				A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */,
 				F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */,
