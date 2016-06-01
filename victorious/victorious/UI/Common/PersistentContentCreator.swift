@@ -29,7 +29,7 @@ extension PersistentContentCreator {
     
         if !content.assets.isEmpty {
             
-            guard let publishParamters = VPublishParameters(content: content) else {
+            guard let publishParameters = VPublishParameters(content: content) else {
                 completion(PersistentContentCreatorError(code: .invalidChatMessage))
                 return
             }
@@ -41,7 +41,7 @@ extension PersistentContentCreator {
                     return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParamters, uploadManager: VUploadManager.sharedManager(), mediaCreationURL: creationURL, uploadCompletion: completion).queue()
+            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), mediaCreationURL: creationURL, uploadCompletion: completion).queue()
         } else if let text = content.text {
             
             //Create text

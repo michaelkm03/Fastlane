@@ -19,20 +19,20 @@ class ChatMessageCreateRemoteOperation: RemoteFetcherOperation, RequestOperation
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    init( textCreationURL: NSURL?, text: String ) {
+    init(textCreationURL: NSURL?, text: String ) {
         let url = textCreationURL ?? ChatMessageCreateRemoteOperation.defaultCreationURL
         request = ChatMessageCreateRequest(textCreationURL: url, text: text)
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError )
     }
     
-    private func onComplete( sequence: ChatMessageCreateRequest.ResultType) {
+    private func onComplete(sequence: ChatMessageCreateRequest.ResultType) {
         //FUTURE: Add tracking call once spec'd
     }
     
-    private func onError( error: NSError) {
+    private func onError(error: NSError) {
         //FUTURE: Add tracking call once spec'd
     }
 }
