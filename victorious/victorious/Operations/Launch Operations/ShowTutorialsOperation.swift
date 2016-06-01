@@ -14,8 +14,9 @@ class ShowTutorialsOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     
-    private let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
-    private let newVersionWithMajorFeatures = "5.0"
+    internal let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
+    // Update this string to force show the tutorial again for all users that receive this update
+    internal let newVersionWithMajorFeatures = AppVersion(versionNumber: "5.0")
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = false) {
         self.originViewController = originViewController
@@ -26,7 +27,14 @@ class ShowTutorialsOperation: MainQueueOperation {
     override func start() {
         beganExecuting()
         
-        guard !self.cancelled && shouldShowTutorials else {
+        guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
+            finishedExecuting()
+            return
+        }
+        
+        let currentVersion = AppVersion(versionNumber: currentVersionString)
+        
+        guard !self.cancelled && shouldShowTutorials(currentVersion: currentVersion) else {
             finishedExecuting()
             return
         }
@@ -44,25 +52,31 @@ class ShowTutorialsOperation: MainQueueOperation {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    private var shouldShowTutorials: Bool {
-        // Grab current app version
-        guard let currentAppVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
-            assertionFailure("the key `CFBundleShortVersionString` has changed.")
-            return false
+    internal func shouldShowTutorials(userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
+                             currentVersion: AppVersion) -> Bool {
+        defer {
+            userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
         }
         
         // If the current app version does not contain major features, we don't show tutorials screen
-        guard currentAppVersion == newVersionWithMajorFeatures else {
+        guard currentVersion >= newVersionWithMajorFeatures else {
             return false
         }
         
-        let tutorialsLastShownForVersion = NSUserDefaults.standardUserDefaults().valueForKey(lastShownVersionDefaultsKey) as? String
-        
-        // If the current app version is different than what we saved last time, udpate it
-        if (currentAppVersion != tutorialsLastShownForVersion) {
-            NSUserDefaults.standardUserDefaults().setValue(currentAppVersion, forKey: lastShownVersionDefaultsKey)
+        // If this fails we have never seen a tutorial before so we should show
+        guard let lastShownVersionString = userDefaults.valueForKey(lastShownVersionDefaultsKey) as? String else {
+            return true
         }
         
-        return currentAppVersion != tutorialsLastShownForVersion
+        let lastShownVersion = AppVersion(versionNumber: lastShownVersionString)
+        // If the current app version is different than what we saved last time, udpate it
+
+        if lastShownVersion >= newVersionWithMajorFeatures {
+            return false
+        } else if currentVersion >= newVersionWithMajorFeatures {
+            return true
+        } else {
+            return false
+        }
     }
 }

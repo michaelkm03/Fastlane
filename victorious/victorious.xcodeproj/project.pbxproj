@@ -763,6 +763,9 @@
 		67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */; };
 		79004DB81BF53A050027E344 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79004DB71BF53A050027E344 /* DateFormat.swift */; };
 		790254751BF293E200D20AFE /* Hashtag.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6C01BF13E3F00FB9591 /* Hashtag.json */; };
+		79070A2B1CFE73570049CFC3 /* VShowTutorialsOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2A1CFE73570049CFC3 /* VShowTutorialsOperationTests.swift */; };
+		79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2C1CFE88590049CFC3 /* AppVersion.swift */; };
+		79070A2F1CFE92B50049CFC3 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */; };
 		79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */; };
 		79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
@@ -3211,6 +3214,9 @@
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
 		7464A6F93EDF3FF8C98A2CD5 /* Pods-victoriousPersistenceTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.qa.xcconfig"; sourceTree = "<group>"; };
 		79004DB71BF53A050027E344 /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
+		79070A2A1CFE73570049CFC3 /* VShowTutorialsOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VShowTutorialsOperationTests.swift; sourceTree = "<group>"; };
+		79070A2C1CFE88590049CFC3 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertRequestTests.swift; sourceTree = "<group>"; };
 		79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertRequest.swift; sourceTree = "<group>"; };
 		7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Victorious.swift"; sourceTree = "<group>"; };
@@ -7440,6 +7446,7 @@
 				673C3A8B1CF3E8EF008E477C /* ContentModel.swift */,
 				67AE49291CF4CF5400E0CC49 /* ImageAssetModel.swift */,
 				673C3A8D1CF3E909008E477C /* UserModel.swift */,
+				79070A2C1CFE88590049CFC3 /* AppVersion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9460,6 +9467,7 @@
 				BF4D7E171C861ABE00D42852 /* VShowMemersOperationTests.m */,
 				BF0F4B4A1C84B27700016647 /* VShowProfileOperationTests.m */,
 				BF4D7E191C86209000D42852 /* VShowRepostersOperationTests.m */,
+				79070A2A1CFE73570049CFC3 /* VShowTutorialsOperationTests.swift */,
 				7AB14CAF1CC04380006E674B /* VShowWebContentOperationTests.swift */,
 				A7D378621AF2F368007FF197 /* VStoredLoginTests.m */,
 				0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */,
@@ -9481,6 +9489,7 @@
 				F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
+				79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -13156,6 +13165,7 @@
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
 				F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */,
 				A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */,
+				79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
 				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
@@ -13658,6 +13668,7 @@
 				A7DCA4FC1C128A78004E35B4 /* VPhotoFilterSerializationTests.m in Sources */,
 				A7DCA4D41C128A78004E35B4 /* VAbstractMarqueeControllerTests.m in Sources */,
 				A7DE62F91C9B5B8C00F4838C /* ForumEventChainTests.swift in Sources */,
+				79070A2B1CFE73570049CFC3 /* VShowTutorialsOperationTests.swift in Sources */,
 				A7DCA4F91C128A78004E35B4 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				BF4D7E181C861ABE00D42852 /* VShowMemersOperationTests.m in Sources */,
 				BF4D7E161C8502DA00D42852 /* VShowLikersOperationTests.m in Sources */,
@@ -13684,6 +13695,7 @@
 				A7DCA4E71C128A78004E35B4 /* VEmailValidatorTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				6701FE1D1C8E7545009B262D /* AchievementTests.swift in Sources */,
+				79070A2F1CFE92B50049CFC3 /* AppVersionTests.swift in Sources */,
 				A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */,
 				A73BA5661C93B8BC008168B5 /* VMockPurchaseManager.m in Sources */,
 				A7C192B41C92425800E5EB00 /* PersistentStoreTestHelper.swift in Sources */,
