@@ -14,9 +14,10 @@ class ShowTutorialsOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     
-    internal let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
+    let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
+    
     // Update this string to force show the tutorial again for all users that receive this update
-    internal let newVersionWithMajorFeatures = AppVersion(versionNumber: "5.0")
+    let newVersionWithMajorFeatures = AppVersion(versionNumber: "5.0")
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = false) {
         self.originViewController = originViewController
@@ -52,7 +53,7 @@ class ShowTutorialsOperation: MainQueueOperation {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    internal func shouldShowTutorials(currentVersion: AppVersion,
+    func shouldShowTutorials(currentVersion: AppVersion,
                                       userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) -> Bool {
         defer {
             // Always set the current version as the last seen
@@ -70,11 +71,8 @@ class ShowTutorialsOperation: MainQueueOperation {
         }
         
         let lastShownVersion = AppVersion(versionNumber: lastShownVersionString)
+        
         // If the last time we saw a tutorial was before this new version, show the tutorial
-        if lastShownVersion < newVersionWithMajorFeatures {
-            return true
-        } else {
-            return false
-        }
+        return lastShownVersion < newVersionWithMajorFeatures
     }
 }
