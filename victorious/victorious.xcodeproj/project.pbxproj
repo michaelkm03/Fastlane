@@ -7442,11 +7442,11 @@
 		673C3A881CF3E817008E477C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				79070A2C1CFE88590049CFC3 /* AppVersion.swift */,
 				67AE49271CF4C79B00E0CC49 /* ContentMediaAssetModel.swift */,
 				673C3A8B1CF3E8EF008E477C /* ContentModel.swift */,
 				67AE49291CF4CF5400E0CC49 /* ImageAssetModel.swift */,
 				673C3A8D1CF3E909008E477C /* UserModel.swift */,
-				79070A2C1CFE88590049CFC3 /* AppVersion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
