@@ -105,8 +105,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             collectionView.insertSubview(refreshControl, atIndex: 0)
         }
         
-        dataSource.loadContent(.refresh) { [weak self] _, error in
-            self?.finishLoading(error: error)
+        dataSource.loadContent(for: collectionView, loadingType: .refresh) { [weak self] newItems, error in
+            self?.finishLoading(newItems: newItems, error: error)
         }
     }
     
@@ -123,21 +123,17 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - Refreshing
     
     func refresh() {
-        dataSource.loadContent(.refresh) { [weak self] _, error in
-            self?.finishLoading(error: error)
+        dataSource.loadContent(for: collectionView, loadingType: .refresh) { [weak self] newItems, error in
+            self?.finishLoading(newItems: newItems, error: error)
         }
     }
     
-    func finishLoading(error error: NSError?) {
+    func finishLoading(newItems newItems: [ContentModel], error: NSError?) {
         refreshControl.endRefreshing()
-        collectionView.collectionViewLayout.invalidateLayout()
         
         if error != nil {
             (navigationController ?? self).v_showErrorDefaultError()
         }
-        
-        // TODO: Get rid of this.
-        collectionView.reloadData()
     }
     
     // MARK: - Configuration
@@ -146,20 +142,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         return [.Portrait]
     }
     
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource,
-                             didUpdateVisibleItemsFrom oldValue: NSOrderedSet,
-                             to newValue: NSOrderedSet) {
-        // TODO: Replace me.
-        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
-    }
-    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        dataSource.loadContent(.older) { [weak self] _, error in
-            self?.finishLoading(error: error)
+        dataSource.loadContent(for: collectionView, loadingType: .older) { [weak self] newItems, error in
+            self?.finishLoading(newItems: newItems, error: error)
         }
     }
     

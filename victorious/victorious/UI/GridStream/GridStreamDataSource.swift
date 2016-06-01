@@ -55,9 +55,20 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         return paginatedDataSource.isLoading
     }
     
-    func loadContent(loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
+    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
         paginatedDataSource.loadItems(loadingType) { [weak self] newItems, error in
-            // TODO: Reload collection view data.
+            collectionView.collectionViewLayout.invalidateLayout()
+            
+            if let totalItemCount = self?.items.count where newItems.count > 0 {
+                let previousCount = totalItemCount - newItems.count
+                
+                let indexPaths = (0 ..< newItems.count).map {
+                    NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                }
+                
+                collectionView.insertItemsAtIndexPaths(indexPaths)
+            }
+            
             completion?(newItems: newItems, error: error)
         }
     }
