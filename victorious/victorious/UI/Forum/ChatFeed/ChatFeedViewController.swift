@@ -270,11 +270,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let asset = messageCell.content?.assetModels.first else {
+        guard let content = messageCell.content else {
             return
         }
         
-        delegate?.chatFeed(self, didSelectAsset: asset)
+        delegate?.chatFeed(self, didSelectContent: content)
     }
     
     // MARK: - UIScrollViewDelegate

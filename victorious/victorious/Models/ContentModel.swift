@@ -120,6 +120,7 @@ extension VContent: ContentModel {
             type: type,
             text: text,
             assets: assetModels.map { $0.toSDKAsset() },
+            previewImages: previewImageModels.map { $0.toSDKImageAsset() },
             author: authorModel.toSDKUser()
         )
     }

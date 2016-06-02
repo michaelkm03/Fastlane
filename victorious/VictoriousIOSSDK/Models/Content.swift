@@ -94,18 +94,18 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User) {
+    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], previewImages: [ImageAsset] = [], author: User) {
         self.id = id
         self.createdAt = createdAt
         self.type = type
         self.text = text
+        self.assets = assets
+        self.previewImages = previewImages
         self.author = author
         
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
-        self.previewImages = nil
-        self.assets = assets
         self.isVIPOnly = false
     }
     

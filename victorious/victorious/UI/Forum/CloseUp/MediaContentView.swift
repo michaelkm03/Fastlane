@@ -10,7 +10,7 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView {
+class MediaContentView: UIView, UIGestureRecognizerDelegate {
     let previewImageView = UIImageView()
     let videoContainerView = VPassthroughContainerView()
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -20,12 +20,16 @@ class MediaContentView: UIView {
     override func awakeFromNib() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
+        singleTapRecognizer.delegate = self
         addGestureRecognizer(singleTapRecognizer)
         
         videoContainerView.backgroundColor = .blackColor()
         
         backgroundColor = .clearColor()
         previewImageView.contentMode = .ScaleAspectFill
+        
+        previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        videoContainerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
     }
@@ -82,5 +86,12 @@ class MediaContentView: UIView {
             return
         }
         videoCoordinator?.toggleToolbarVisibility(true)
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // This allows the owner of the view to add its own tap gesture recognizer.
+        return true
     }
 }
