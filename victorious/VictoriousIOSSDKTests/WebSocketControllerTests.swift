@@ -22,7 +22,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     var expectationDisconnectedEvent: XCTestExpectation?
     var expectationIncomingChatMessage: XCTestExpectation?
     var expectationRefreshStageMessage: XCTestExpectation?
-    
+    var expectationChatUserCountEvent: XCTestExpectation?
+
+
     // MARK: - Life Cycle
     override func setUp() {
         super.setUp()
@@ -39,7 +41,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         expectationDisconnectedEvent = nil
         expectationIncomingChatMessage = nil
         expectationRefreshStageMessage = nil
-        
+        expectationChatUserCountEvent = nil
+
         // Brake the retain loop.
         controller = nil
         nextSender = nil
@@ -140,6 +143,21 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
+    func testChatUsersCount() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+
+        guard let mockChatUserCountURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatUserCount", withExtension: "json"),
+            let mockChatUserCountString = try? String(contentsOfURL: mockChatUserCountURL, encoding: NSUTF8StringEncoding) else {
+                XCTFail("Error reading mock JSON data for ChatUserCount")
+                return
+        }
+
+        expectationChatUserCountEvent = expectationWithDescription("WebSocket-chat-user-event")
+        controller.websocketDidReceiveMessage(webSocket, text: mockChatUserCountString)
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+
     // MARK: ForumEventReceiver
 
     func receive(event: ForumEvent) {
@@ -173,6 +191,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
             expectationIncomingChatMessage?.fulfill()
         case .refreshStage(_):
             expectationRefreshStageMessage?.fulfill()
+        case .chatUserCount(_):
+            expectationChatUserCountEvent?.fulfill()
         default:
             XCTFail("Unexpected ForumEvent type received. Event -> \(event)")
         }

@@ -22,4 +22,7 @@ public enum ForumEvent {
     
     /// Sends content created by the user.
     case sendContent(Content)
+
+    /// Indicates the current count of chat users.
+    case chatUserCount(ChatUserCount)
 }
