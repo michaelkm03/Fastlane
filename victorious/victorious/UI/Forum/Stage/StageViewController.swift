@@ -45,6 +45,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         dataSource.delegate = self
         return dataSource
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         mediaContentView.videoCoordinator?.playVideo()
