@@ -13,7 +13,7 @@ import Foundation
 public protocol ForumEventSender: class {
     
     /// Events can be propagated up to the next sender (chain of responsibility)
-    weak var nextSender: ForumEventSender? { get }
+    weak var nextSender: ForumEventSender? { get set }
     
     func send(event: ForumEvent)
 }

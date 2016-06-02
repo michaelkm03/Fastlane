@@ -83,7 +83,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - ForumEventSender
     
-    private(set) weak var nextSender: ForumEventSender?
+    weak var nextSender: ForumEventSender?
     
     func send(event: ForumEvent) {
         nextSender?.send(event)

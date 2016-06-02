@@ -1169,8 +1169,6 @@
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734AF171C499B5500ECA324 /* RequestBodyWriterType.swift */; };
 		A734AF1A1C499C9100ECA324 /* MessageRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734AF191C499C9100ECA324 /* MessageRequestBodyWriter.swift */; };
-		A73548611CA0DA3F00A7106C /* ReceivedEventQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73548601CA0DA3F00A7106C /* ReceivedEventQueue.swift */; };
-		A73548631CA0DB2500A7106C /* ChatFeedCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73548621CA0DB2400A7106C /* ChatFeedCollectionDataSource.swift */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */; };
@@ -1180,7 +1178,7 @@
 		A73BA2AF1C938B68008168B5 /* StageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2A01C938B68008168B5 /* StageViewController.swift */; };
 		A73BA2C41C9393ED008168B5 /* ChatFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */; };
 		A73BA2C51C9393ED008168B5 /* ChatFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B21C9393ED008168B5 /* ChatFeed.swift */; };
-		A73BA2C61C9393ED008168B5 /* ChatFeedNetworkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedNetworkDataSource.swift */; };
+		A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */; };
 		A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */; };
 		A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */; };
 		A73BA2CA1C9393ED008168B5 /* ChatFeedMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2B81C9393ED008168B5 /* ChatFeedMessageCell.xib */; };
@@ -1374,7 +1372,6 @@
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
-		A79E533C1CC08A85001C1F55 /* ChatFeedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */; };
 		A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */; };
 		A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A1CF601C62E03400B08F07 /* NSPredicate+Operators.swift */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
@@ -1430,7 +1427,6 @@
 		A7B844E51CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */; };
 		A7B844E71CB88D7B00CE02DE /* forum.json in Resources */ = {isa = PBXBuildFile; fileRef = A7B844E61CB88D7B00CE02DE /* forum.json */; };
 		A7B844E91CBC25F700CE02DE /* MediaAttachment+Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B844E81CBC25F700CE02DE /* MediaAttachment+Forum.swift */; };
-		A7B844EB1CBC5B8B00CE02DE /* TouchDownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B844EA1CBC5B8B00CE02DE /* TouchDownController.swift */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */; };
@@ -1612,7 +1608,6 @@
 		A7EF1BD81BF275DA00D429DE /* StreamRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */; };
 		A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F0C8691CB2E51A0007178A /* SimulatedPurchaseManager.swift */; };
 		A7F0C8711CB3253C0007178A /* UIViewController+RootPresentationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F0C8701CB3253C0007178A /* UIViewController+RootPresentationTarget.swift */; };
-		A7F14A581CB5829F00F22962 /* ReceivedEventQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */; };
 		A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */; };
 		A7F3F8061C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */; };
 		A7F3F8081C9D19F800CC2374 /* ShowPrivacyPolicyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3F8071C9D19F800CC2374 /* ShowPrivacyPolicyOperation.swift */; };
@@ -3748,8 +3743,6 @@
 		A734A04A1A98018800C3E86F /* VMultipleContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainer.h; sourceTree = "<group>"; };
 		A734AF171C499B5500ECA324 /* RequestBodyWriterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBodyWriterType.swift; sourceTree = "<group>"; };
 		A734AF191C499C9100ECA324 /* MessageRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageRequestBodyWriter.swift; sourceTree = "<group>"; };
-		A73548601CA0DA3F00A7106C /* ReceivedEventQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceivedEventQueue.swift; sourceTree = "<group>"; };
-		A73548621CA0DB2400A7106C /* ChatFeedCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedCollectionDataSource.swift; sourceTree = "<group>"; };
 		A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayer.m; sourceTree = "<group>"; };
 		A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamWebViewController.h; sourceTree = "<group>"; };
 		A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamWebViewController.m; sourceTree = "<group>"; };
@@ -3761,7 +3754,7 @@
 		A73BA2A01C938B68008168B5 /* StageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageViewController.swift; sourceTree = "<group>"; };
 		A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChatFeed.storyboard; sourceTree = "<group>"; };
 		A73BA2B21C9393ED008168B5 /* ChatFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeed.swift; sourceTree = "<group>"; };
-		A73BA2B31C9393ED008168B5 /* ChatFeedNetworkDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedNetworkDataSource.swift; sourceTree = "<group>"; };
+		A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
 		A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCell.swift; sourceTree = "<group>"; };
 		A73BA2B81C9393ED008168B5 /* ChatFeedMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatFeedMessageCell.xib; sourceTree = "<group>"; };
@@ -4067,7 +4060,6 @@
 		A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E91AD7124D00F2564A /* VProfileDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
-		A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessage.swift; sourceTree = "<group>"; };
 		A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollResultReceiver.h; sourceTree = "<group>"; };
 		A7A1CF5D1C62BE6400B08F07 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		A7A1CF5E1C62BE6400B08F07 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
@@ -4160,7 +4152,6 @@
 		A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectMediaAttachmentOperation.swift; sourceTree = "<group>"; };
 		A7B844E61CB88D7B00CE02DE /* forum.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = forum.json; sourceTree = "<group>"; };
 		A7B844E81CBC25F700CE02DE /* MediaAttachment+Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+Forum.swift"; sourceTree = "<group>"; };
-		A7B844EA1CBC5B8B00CE02DE /* TouchDownController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchDownController.swift; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTestHelpers.h; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTestHelpers.m; sourceTree = "<group>"; };
 		A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableSection.h; sourceTree = "<group>"; };
@@ -4328,7 +4319,6 @@
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F0C8691CB2E51A0007178A /* SimulatedPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedPurchaseManager.swift; sourceTree = "<group>"; };
 		A7F0C8701CB3253C0007178A /* UIViewController+RootPresentationTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootPresentationTarget.swift"; sourceTree = "<group>"; };
-		A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceivedEventQueueTests.swift; sourceTree = "<group>"; };
 		A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceParsable.swift; sourceTree = "<group>"; };
 		A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTermsOfServiceOperation.swift; sourceTree = "<group>"; };
 		A7F3F8071C9D19F800CC2374 /* ShowPrivacyPolicyOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPrivacyPolicyOperation.swift; sourceTree = "<group>"; };
@@ -8251,14 +8241,10 @@
 			children = (
 				A73BA2B11C9393ED008168B5 /* ChatFeed.storyboard */,
 				A73BA2B21C9393ED008168B5 /* ChatFeed.swift */,
-				A73548621CA0DB2400A7106C /* ChatFeedCollectionDataSource.swift */,
-				A79E533B1CC08A85001C1F55 /* ChatFeedMessage.swift */,
-				A73BA2B31C9393ED008168B5 /* ChatFeedNetworkDataSource.swift */,
+				A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */,
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
 				A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */,
-				A73548601CA0DA3F00A7106C /* ReceivedEventQueue.swift */,
-				A7B844EA1CBC5B8B00CE02DE /* TouchDownController.swift */,
 			);
 			path = ChatFeed;
 			sourceTree = "<group>";
@@ -9412,7 +9398,6 @@
 				03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
-				A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
@@ -12768,7 +12753,6 @@
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
-				A79E533C1CC08A85001C1F55 /* ChatFeedMessage.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
 				7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
@@ -13426,7 +13410,6 @@
 				A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,
-				A7B844EB1CBC5B8B00CE02DE /* TouchDownController.swift in Sources */,
 				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */,
@@ -13455,7 +13438,6 @@
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
 				BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */,
-				A73548611CA0DA3F00A7106C /* ReceivedEventQueue.swift in Sources */,
 				A7559A7F1CD0156700C37349 /* VSettingsTableViewCell.m in Sources */,
 				C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
@@ -13478,7 +13460,6 @@
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				A73BA2AF1C938B68008168B5 /* StageViewController.swift in Sources */,
 				03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */,
-				A73548631CA0DB2500A7106C /* ChatFeedCollectionDataSource.swift in Sources */,
 				A7F843681BFD44EE004C3D55 /* VMessage+Parsable.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */,
@@ -13522,7 +13503,7 @@
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
 				034BA9311C602B7F00C23D7E /* VTFLog.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
-				A73BA2C61C9393ED008168B5 /* ChatFeedNetworkDataSource.swift in Sources */,
+				A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				BF2AE2C01CD280CB00A9967A /* GridStreamDataSource.swift in Sources */,
@@ -13693,7 +13674,6 @@
 				03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
-				A7F14A581CB5829F00F22962 /* ReceivedEventQueueTests.swift in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				7AB55FE71CADF06000EBE31E /* CGSize+CornerRadiusTests.swift in Sources */,
 				BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */,

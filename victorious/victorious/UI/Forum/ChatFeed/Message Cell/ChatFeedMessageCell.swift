@@ -43,12 +43,15 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
-    var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            updateStyle()
+        }
+    }
     
     var content: ContentModel? {
         didSet {
             populateData()
-            updateStyle()
             layout.updateWithCell(self)
         }
     }
@@ -57,6 +60,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        mediaView.translatesAutoresizingMaskIntoConstraints = false
         avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped(_: ))) )
         mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onMediaTapped(_: ))) )
     }
@@ -102,16 +106,20 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
         
-        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
-        } else {
-            detailTextView.text = "" 
-        }
+        updateTimestamp()
         
         if let imageURL = content?.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
         } else {
             avatarView.image = nil
+        }
+    }
+    
+    func updateTimestamp() {
+        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
+            detailTextView.text = "\(name) (\(timeStamp))"
+        } else {
+            detailTextView.text = ""
         }
     }
     

@@ -74,11 +74,9 @@
                         <outlet property="collectionViewBottom" destination="Jzy-30-zwU" id="R8t-xZ-KkZ"/>
                         <outlet property="collectionViewHeight" destination="VF1-gQ-0Jr" id="mK6-i9-u6a"/>
                         <outlet property="newItemsController" destination="HjE-OH-UhY" id="1Qv-rK-GiC"/>
-                        <outlet property="touchDownController" destination="JYA-Cw-HVv" id="VXQ-U9-cPq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CL-ip-iM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="JYA-Cw-HVv" customClass="TouchDownController" customModule="victorious" customModuleProvider="target"/>
                 <customObject id="HjE-OH-UhY" customClass="NewItemsController" customModule="victorious" customModuleProvider="target">
                     <connections>
                         <outlet property="button" destination="qNw-uD-Ufa" id="6bh-Dk-DF1"/>

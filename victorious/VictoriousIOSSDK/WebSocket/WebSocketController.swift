@@ -118,7 +118,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     /// The `WebSocketController` has no `nextSender` since it's the last link in the chain.
     /// Messages reaching `WebSocketController` will be piped over the WebSocket.
-    public let nextSender: ForumEventSender? = nil
+    public var nextSender: ForumEventSender? = nil
     
     public func send(event: ForumEvent) {
         sendOutboundForumEvent(event)
