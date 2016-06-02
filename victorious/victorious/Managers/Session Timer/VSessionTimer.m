@@ -12,6 +12,7 @@
 #import "VSessionTimer.h"
 #import "VTracking.h"
 #import "victorious-Swift.h"
+#import <Crashlytics/Crashlytics.h>
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
@@ -58,12 +59,9 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         return;
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:)  name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:)     name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:)    name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
-    self.transitioningFromBackgroundToForeground = YES;
     self.started = YES;
     self.firstLaunch = YES;
     [self sessionDidStart];
@@ -98,8 +96,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         // Requests lingering from an old session are irrelevant and should therefore be canceled.
         // This has to be done ASAP and not when `VSessionTimerNewSessionShouldStart` is broadcasted because of the latency.
-        NSOperationQueue *globalQueue = [NSOperationQueue v_globalBackgroundQueue];
-        [globalQueue cancelAllOperations];
+        [self cancelBackgroundOperations];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
         [self.delegate sessionTimerDidResetSession:self];
@@ -134,6 +131,13 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     self.sessionID = [[NSUUID UUID] UUIDString];
 }
 
+#pragma mark - Operation management
+
+- (void)cancelBackgroundOperations
+{
+    [[NSOperationQueue v_globalBackgroundQueue] cancelAllOperations];
+}
+
 #pragma mark - Tracking
 
 - (void)trackApplicationForeground
@@ -164,34 +168,20 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 #pragma mark - NSNotification handlers
 
-- (void)applicationDidEnterBackground:(NSNotification *)notification
-{
-    [self trackApplicationBackground];
-    [self sessionDidEnd];
-}
-
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    if (self.transitioningFromBackgroundToForeground)
+    if ( ![self shouldNewSessionStartNow] )
     {
-        self.transitioningFromBackgroundToForeground = NO;
-        if ( ![self shouldNewSessionStartNow] )
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VApplicationDidBecomeActiveNotification  object:self];
-        }
-        [self sessionDidStart];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VApplicationDidBecomeActiveNotification object:self];
     }
+    [self sessionDidStart];
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-    self.transitioningFromBackgroundToForeground = NO;
-}
-
-- (void)applicationWillEnterForeground:(NSNotification *)notification
-{
-    self.transitioningFromBackgroundToForeground = YES;
+    [self trackApplicationBackground];
+    [self sessionDidEnd];
 }
 
 @end
