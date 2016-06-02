@@ -121,7 +121,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func share() {
-        /// FUTURE: Implement this
+        guard let content = content else {
+            return
+        }
+        ShowShareContentOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            content: content
+        ).queue()
     }
     
     func toggleUpvote() {
