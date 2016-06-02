@@ -26,4 +26,3 @@ public struct ContentUnupvoteRequest: RequestType {
         self.contentUnupvoteURL = validURL
     }
 }
-
