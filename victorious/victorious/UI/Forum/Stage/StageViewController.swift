@@ -18,12 +18,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         static let fixedStageHeight: CGFloat = 200.0
     }
     
-    /// The content view that grows and shrinks depending on the content it is displaying.
-    /// Is is also this size that will be broadcasted to the stage delegate.
-    @IBOutlet private weak var mainContentView: UIView!
-    @IBOutlet private weak var mainContentViewBottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet private weak var mediaContentView: MediaContentView!
+    @IBOutlet private var mediaContentView: MediaContentView!
     
     private var currentContentView: UIView?
     
@@ -77,7 +72,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func clearStageMedia(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
-        mainContentViewBottomConstraint.constant = 0
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
