@@ -125,7 +125,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        /// FUTURE: Implement this
+        guard let contentID = content?.id else {
+            return
+        }
+        ContentUpvoteToggleOperation(
+            contentID: contentID,
+            upvoteURL: dependencyManager.contentUpvoteURL,
+            unupvoteURL: dependencyManager.contentUnupvoteURL
+            ).queue() { [weak self] _ in
+                self?.updateHeader()
+        }
     }
     
     func overflow() {
