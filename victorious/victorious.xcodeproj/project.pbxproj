@@ -9700,8 +9700,8 @@
 				BF3777CF1CEE4D5800AEF7F2 /* ContentMediaAsset_ValidVideo.json */,
 				BF3777D01CEE4D5800AEF7F2 /* ContentMediaAsset_ValidYoutube.json */,
 				BF3777D21CEE4D5800AEF7F2 /* InvalidViewedContent.json */,
-				BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */,
 				BFB6EEE91D00FC3E007909F2 /* ViewedContent_unliked.json */,
+				BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */,
 				BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */,
 			);
 			name = ViewedContent;
