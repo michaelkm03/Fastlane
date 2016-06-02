@@ -129,13 +129,15 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
-        } else {
-            videoPlayer.playFromStart()
-        }
+        videoPlayer.playFromStart()
         state = .Playing
         previewView.hidden = true
+    }
+    
+    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        }
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
