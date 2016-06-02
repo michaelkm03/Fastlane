@@ -1739,6 +1739,8 @@
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
 		BFA4C9081CDD4AD500E496FD /* ContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */; };
 		BFB27DAB1C597CDA00D3A408 /* VImageAnimationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */; };
+		BFB6EEEA1D00FC3E007909F2 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BFB6EEE91D00FC3E007909F2 /* ViewedContent_unliked.json */; };
+		BFB6EEED1D00FC7E007909F2 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BFB6EEE91D00FC3E007909F2 /* ViewedContent_unliked.json */; };
 		BFBDFB3E1CBEB9CA00BE077A /* StartLoadingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */; };
 		BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */; };
 		BFC371401CED588A000849CA /* VContentMediaAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3713F1CED588A000849CA /* VContentMediaAssetTests.swift */; };
@@ -4498,6 +4500,7 @@
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
 		BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchOperation.swift; sourceTree = "<group>"; };
 		BFB27DAA1C597CDA00D3A408 /* VImageAnimationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAnimationOperationTests.m; sourceTree = "<group>"; };
+		BFB6EEE91D00FC3E007909F2 /* ViewedContent_unliked.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ViewedContent_unliked.json; sourceTree = "<group>"; };
 		BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartLoadingOperation.swift; sourceTree = "<group>"; };
 		BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerOperationTests.swift; sourceTree = "<group>"; };
 		BFC3713F1CED588A000849CA /* VContentMediaAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VContentMediaAssetTests.swift; path = Models/VContentMediaAssetTests.swift; sourceTree = "<group>"; };
@@ -9698,6 +9701,7 @@
 				BF3777D01CEE4D5800AEF7F2 /* ContentMediaAsset_ValidYoutube.json */,
 				BF3777D21CEE4D5800AEF7F2 /* InvalidViewedContent.json */,
 				BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */,
+				BFB6EEE91D00FC3E007909F2 /* ViewedContent_unliked.json */,
 				BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */,
 			);
 			name = ViewedContent;
@@ -11208,6 +11212,7 @@
 				678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */,
 				670C65921C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json in Resources */,
 				BF3777E01CEE4D5800AEF7F2 /* InvalidViewedContent.json in Resources */,
+				BFB6EEEA1D00FC3E007909F2 /* ViewedContent_unliked.json in Resources */,
 				BF3777D61CEE4D5800AEF7F2 /* ContentInvalidID.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
@@ -11303,6 +11308,7 @@
 				BF3777E51CEE50DD00AEF7F2 /* ContentInvalidPreviewType.json in Resources */,
 				62B3CC421C5631D700FD733A /* SequenceWithAdBreak.json in Resources */,
 				BF3777E81CEE50DD00AEF7F2 /* ContentMediaAsset_InvalidVideoNoIdentifier.json in Resources */,
+				BFB6EEED1D00FC7E007909F2 /* ViewedContent_unliked.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
