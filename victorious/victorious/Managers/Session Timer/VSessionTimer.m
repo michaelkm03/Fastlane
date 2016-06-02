@@ -12,7 +12,6 @@
 #import "VSessionTimer.h"
 #import "VTracking.h"
 #import "victorious-Swift.h"
-#import <Crashlytics/Crashlytics.h>
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
@@ -34,7 +33,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @interface VSessionTimer ()
 
 @property (nonatomic) BOOL firstLaunch;
-@property (nonatomic) BOOL transitioningFromBackgroundToForeground;
 @property (nonatomic, readwrite) BOOL started;
 @property (nonatomic, strong) NSDate *sessionStartTime;
 @property (nonatomic, copy, readwrite) NSString *sessionID;
@@ -96,7 +94,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         // Requests lingering from an old session are irrelevant and should therefore be canceled.
         // This has to be done ASAP and not when `VSessionTimerNewSessionShouldStart` is broadcasted because of the latency.
-        [self cancelBackgroundOperations];
+        NSOperationQueue *globalQueue = [NSOperationQueue v_globalBackgroundQueue];
+        [globalQueue cancelAllOperations];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
         [self.delegate sessionTimerDidResetSession:self];
@@ -129,13 +128,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 - (void)resetSessionID
 {
     self.sessionID = [[NSUUID UUID] UUIDString];
-}
-
-#pragma mark - Operation management
-
-- (void)cancelBackgroundOperations
-{
-    [[NSOperationQueue v_globalBackgroundQueue] cancelAllOperations];
 }
 
 #pragma mark - Tracking
