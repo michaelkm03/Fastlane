@@ -31,6 +31,6 @@ class ContentUnupvoteOperation: FetcherOperation {
         ContentUnupvoteRemoteOperation(
             contentID: contentID,
             contentUnupvoteURL: contentUnupvoteURL
-        ).after(self).queue()
+        )?.after(self).queue()
     }
 }

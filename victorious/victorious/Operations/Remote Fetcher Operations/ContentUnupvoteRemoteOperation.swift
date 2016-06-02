@@ -11,8 +11,11 @@ import UIKit
 class ContentUnupvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentUnupvoteRequest!
     
-    init( contentID: String, contentUnupvoteURL: String ) {
-        self.request = ContentUnupvoteRequest(contentID: contentID, contentUnupvoteURL: contentUnupvoteURL)
+    init?( contentID: String, contentUnupvoteURL: String ) {
+        guard let request = ContentUnupvoteRequest(contentID: contentID, contentUnupvoteURL: contentUnupvoteURL) else {
+            return nil
+        }
+        self.request = request
     }
     
     override func main() {

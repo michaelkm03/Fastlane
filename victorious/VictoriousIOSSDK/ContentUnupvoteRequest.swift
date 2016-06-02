@@ -10,18 +10,22 @@ import Foundation
 
 public struct ContentUnupvoteRequest: RequestType {
     public var urlRequest: NSURLRequest {
-        let replacementDictionary: [String: String] = [ "%%CONTENT_ID%%": contentID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentUnupvoteURL)
-        let request = NSMutableURLRequest(URL: NSURL(string: replacedURL)!)
+        let request = NSMutableURLRequest(URL: contentUnupvoteURL)
         return request
     }
     
     private let contentID: String
-    private let contentUnupvoteURL: String
+    private let contentUnupvoteURL: NSURL
     
-    public init(contentID: String, contentUnupvoteURL: String) {
+    public init?(contentID: String, contentUnupvoteURL: String) {
         self.contentID = contentID
-        self.contentUnupvoteURL = contentUnupvoteURL
+
+        let replacementDictionary: [String: String] = ["%%CONTENT_ID%%": contentID]
+        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentUnupvoteURL)
+        guard let validURL = NSURL(string: replacedURL) else {
+            return nil
+        }
+        self.contentUnupvoteURL = validURL
     }
 }
 
