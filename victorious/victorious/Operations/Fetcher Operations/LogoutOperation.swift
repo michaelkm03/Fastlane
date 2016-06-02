@@ -48,6 +48,8 @@ class LogoutOperation: RemoteFetcherOperation {
             FBSDKLoginManager().logOut()
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
+            
+            WebSocketController.sharedInstance.tearDown() 
         }
         
         // And finally, clear the user.  Don't do this early because
