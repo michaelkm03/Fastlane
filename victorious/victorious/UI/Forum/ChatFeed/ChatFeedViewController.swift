@@ -9,13 +9,13 @@
 import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private lazy var dataSource: ChatFeedDataSourceType = {
+    private lazy var dataSource: ChatFeedDataSource = {
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
-        private static let topMargin: CGFloat = 20.0
+        private static let topMargin: CGFloat = 64.0
     }
     
     private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
@@ -62,11 +62,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - NewItemsControllerDelegate
         
     func onNewItemsSelected() {
-//        paginatedDataSource.unstashAll()
-        canStashNewItems = false
-        dispatch_after(1.0) {
-            self.canStashNewItems = true
-        }
+        dataSource.unstash()
     }
     
     // MARK: - UIViewController
@@ -101,7 +97,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-//        paginatedDataSource.startStashingNewItems()
+        dataSource.stashingEnabled = true
         focusHelper.endFocusOnAllCells()
         stopTimestampUpdate()
     }
@@ -123,7 +119,33 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - ChatFeedDataSourceDelegate
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSourceType, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+        handleNewItems(newItems, loadingType: loadingType)
+    }
+    
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel]) {
+        let itemsContainCurrentUserMessage = stashedItems.contains {
+            $0.authorModel.id == VCurrentUser.user()?.remoteId.integerValue
+        }
+        
+        if itemsContainCurrentUserMessage {
+            // Unstash and scroll to bottom.
+            dataSource.unstash()
+            newItemsController.hide()
+            collectionView.v_scrollToBottomAnimated(true)
+        }
+        else if stashedItems.count > 0 {
+            // Update stash count and show stash counter.
+            newItemsController.count = dataSource.stashedItems.count
+            newItemsController.show()
+        }
+    }
+    
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel]) {
+        handleNewItems(unstashedItems, loadingType: .newer)
+    }
+    
+    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType) {
         guard newItems.count > 0 else {
             return
         }
@@ -136,10 +158,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         let bottomOffset = collectionView.contentSize.height - collectionView.contentOffset.y
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
         
+        // The collection view's layout information is guaranteed to be updated properly in the completion handler of
+        // this method, which allows us to properly manage scrolling.
         collectionView.performBatchUpdates({
             switch loadingType {
             case .newer:
-                let previousCount = dataSource.items.count - newItems.count
+                let previousCount = self.dataSource.unstashedItems.count - newItems.count
                 
                 collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                     NSIndexPath(forItem: previousCount + $0, inSection: 0)
@@ -149,7 +173,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                 collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                     NSIndexPath(forItem: $0, inSection: 0)
                 })
-                
+            
             case .refresh:
                 collectionView.reloadData()
             }
@@ -162,36 +186,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             CATransaction.commit()
             
             // If we loaded newer items and we were scrolled to the bottom, scroll down to reveal the new content.
-            if loadingType == .newer && wasScrolledToBottom {
+            if (loadingType == .newer || loadingType == .refresh) && wasScrolledToBottom {
                 collectionView.setContentOffset(collectionView.v_bottomOffset, animated: true)
             }
         })
     }
     
     // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateStashedItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        // TODO: Replace this.
-        
-//        let newItemsContainsUserMessage = newValue
-//            .filter { !oldValue.containsObject($0) }
-//            .flatMap { $0 as? ChatFeedMessage }
-//            .contains { $0.content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue }
-//        
-//        let allItemsWereUnstashed = newValue.count == 0 && oldValue.count > 0
-// 
-//        if newItemsContainsUserMessage || allItemsWereUnstashed {
-//            // Unstash and scroll to bottom
-//            newItemsController.hide()
-//            collectionView.v_scrollToBottomAnimated(true)
-//            
-//        }  else if newValue.count > 0 {
-//            // Update the count of stashed items
-//            newItemsController.count = paginatedDataSource.stashedItemsCount
-//            newItemsController.show()
-//            return
-//        }
-    }
     
 //    var totalHeight: CGFloat {
 //        var totalHeight: CGFloat = 0.0
@@ -281,60 +282,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
-        // TODO: Fix stashing.
-        
-//        if shouldStash {
-//            paginatedDataSource.startStashingNewItems()
-//        } else if shouldUnstash {
-//            paginatedDataSource.unstashAll()
-//            canStashNewItems = false
-//            let stashDisabledDuration: NSTimeInterval = 1.0
-//            dispatch_after(stashDisabledDuration) {
-//                self.canStashNewItems = true
-//            }
-//        }
+        if scrollView.v_isScrolledToBottom {
+            dataSource.unstash()
+            dataSource.stashingEnabled = false
+        } else {
+            dataSource.stashingEnabled = true
+        }
         
         focusHelper.updateFocus()
     }
-    
-//    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
-//        isDecelerating = true
-//    }
-//    
-//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        isDecelerating = false
-//    }
-    
-    // MARK: - Private
-    
-    // TODO: Fix stashing.
-    
-//    private var shouldStash: Bool {
-//        return !paginatedDataSource.isStashingNewItems && canStashNewItems && (touchDownController.isTouchDown || isDecelerating)
-//    }
-//    
-//    private var shouldUnstash: Bool {
-//        return paginatedDataSource.isStashingNewItems && isScrolledToBottom(withMargin: collectionView.bounds.height * 0.1)
-//    }
-//    
-//    private var isDecelerating: Bool = false
-//    
-//    private var shouldAutoScroll: Bool {
-//        // The user is scrolling or just released is a scroll
-//        if touchDownController.isTouchDown || isDecelerating {
-//            return false
-//        } else {
-//            let margin = collectionView.bounds.height
-//            return isScrolledToBottom(withMargin: margin) || !canStashNewItems
-//        }
-//    }
-//    
-//    private func isScrolledToBottom(withMargin margin: CGFloat) -> Bool {
-//        let height = collectionView.contentSize.height - (collectionView.contentInset.top + collectionView.contentInset.bottom) - collectionView.bounds.height
-//        let yValue = max(height, 0)
-//        let bottomOffset = CGPoint(x: 0, y: yValue)
-//        return collectionView.contentOffset.y + margin >= bottomOffset.y
-//    }
     
     // MARK: - Timestamp update timer
     

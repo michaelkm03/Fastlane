@@ -10,21 +10,12 @@ import UIKit
 import VictoriousIOSSDK
 
 protocol ChatFeedDataSourceDelegate: class {
-    func chatFeedDataSource(dataSource: ChatFeedDataSourceType, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType)
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType)
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel])
 }
 
-protocol ChatFeedDataSourceType: ForumEventReceiver, ForumEventSender, UICollectionViewDataSource {
-    var items: [ContentModel] { get }
-    
-    weak var delegate: ChatFeedDataSourceDelegate? { get set }
-    
-    func registerCells(for collectionView: UICollectionView)
-    func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-    
-    func updateTimestamps(for collectionView: UICollectionView)
-}
-
-class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
+class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, UICollectionViewDataSource {
     // MARK: Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -38,22 +29,59 @@ class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
     
     // MARK: - Managing content
     
-    private(set) var items = [ContentModel]()
+    private(set) var unstashedItems = [ContentModel]()
+    private(set) var stashedItems = [ContentModel]()
+    
+    var stashingEnabled = false
+    
+    private var justUnstashed = false
+    
+    private var shouldStash: Bool {
+        return stashingEnabled && !justUnstashed
+    }
+    
+    func unstash() {
+        if stashedItems.count > 0 {
+            justUnstashed = true
+            
+            let previouslyStashedItems = stashedItems
+            
+            unstashedItems.appendContentsOf(stashedItems)
+            stashedItems.removeAll()
+            
+            delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
+            
+            dispatch_after(1.0) { [weak self] in
+                self?.justUnstashed = false
+            }
+        }
+    }
     
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {
         switch event {
         case .appendContent(let newItems):
-            items.appendContentsOf(newItems.map { $0 as ContentModel })
-            delegate?.chatFeedDataSource(self, didLoadItems: newItems.map { $0 as ContentModel }, loadingType: .newer)
+            let newItems = newItems.map { $0 as ContentModel }
+            
+            if shouldStash {
+                stashedItems.appendContentsOf(newItems)
+                delegate?.chatFeedDataSource(self, didStashItems: newItems)
+            } else {
+                unstashedItems.appendContentsOf(newItems)
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
+            }
+        
         case .prependContent(let newItems):
-            items = newItems.map { $0 as ContentModel } + items
-            delegate?.chatFeedDataSource(self, didLoadItems: newItems.map { $0 as ContentModel }, loadingType: .older)
+            let newItems = newItems.map { $0 as ContentModel }
+            unstashedItems = newItems + unstashedItems
+            delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
+        
         case .replaceContent(let newItems):
-            items = newItems.map { $0 as ContentModel }
-            delegate?.chatFeedDataSource(self, didLoadItems: newItems.map { $0 as ContentModel }, loadingType: .refresh)
-            break
+            let newItems = newItems.map { $0 as ContentModel }
+            unstashedItems = newItems
+            delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+        
         default:
             break
         }
@@ -81,13 +109,13 @@ class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
     private let sizingCell: ChatFeedMessageCell = ChatFeedMessageCell.v_fromNib()
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return unstashedItems.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        decorateCell(cell, content: items[indexPath.row], dependencyManager: dependencyManager)
+        decorateCell(cell, content: unstashedItems[indexPath.row], dependencyManager: dependencyManager)
         return cell
     }
     
@@ -112,7 +140,7 @@ class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
     }
     
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        decorateCell(sizingCell, content: items[indexPath.row], dependencyManager: dependencyManager)
+        decorateCell(sizingCell, content: unstashedItems[indexPath.row], dependencyManager: dependencyManager)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
 }
