@@ -22,7 +22,7 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createContent(remoteID: String) -> VContent {
+    func createContent(remoteID: String, likedByCurrentUser: Bool = false) -> VContent {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let author = self.createUser(remoteId: 1)
             return context.v_createObjectAndSave { content in
@@ -30,6 +30,7 @@ struct PersistentStoreTestHelper {
                 content.v_author = author
                 content.v_createdAt = NSDate()
                 content.v_type = "image"
+                content.v_isLikedByCurrentUser = likedByCurrentUser
             }
         }
     }
