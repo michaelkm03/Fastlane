@@ -39,7 +39,9 @@ class StageDataSource: ForumEventReceiver {
             
             currentContentFetchOperation?.cancel()
             
-            let contentFetchURL = dependencyManager.contentFetchURL
+            guard let contentFetchURL = dependencyManager.contentFetchURL else {
+                return
+            }
             let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
             currentContentFetchOperation = stageContentFetchOperation
             stageContentFetchOperation.queue() { [weak self] results, error, canceled in
@@ -60,7 +62,7 @@ class StageDataSource: ForumEventReceiver {
 }
 
 private extension VDependencyManager {
-    var contentFetchURL: String {
+    var contentFetchURL: String? {
         return stringForKey("contentFetchURL")
     }
 }

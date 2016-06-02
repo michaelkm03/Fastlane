@@ -20,6 +20,7 @@ public class Content: DictionaryConvertible {
     public let type: ContentType
     public let isVIPOnly: Bool
     public let author: User
+    public let isLikedByCurrentUser: Bool
 
     /// Payload describing what will be put on the stage.
     public var stageContent: StageContent?
@@ -38,6 +39,7 @@ public class Content: DictionaryConvertible {
             return nil
         }
         
+        self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
         self.stageContent = StageContent(json: json)
         self.id = id
@@ -51,21 +53,14 @@ public class Content: DictionaryConvertible {
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
-        if type == .image {
-            self.assets = [ContentMediaAsset(
-                contentType: type,
-                sourceType: "",
-                json: json[typeString]
-            )].flatMap { $0 }
-        } else if let sourceType = json[typeString]["type"].string {
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap {
-                ContentMediaAsset(
-                    contentType: type,
-                    sourceType: sourceType,
-                    json: $0
-                )
-            }
-        } else {
+        let sourceType = json[typeString]["type"].string ?? typeString
+        
+        switch type {
+        case .image:
+            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+        case .gif, .video:
+            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+        case .text:
             self.assets = []
         }
     }
@@ -87,6 +82,7 @@ public class Content: DictionaryConvertible {
         previewImages = nil
         type = .text
         isVIPOnly = false
+        isLikedByCurrentUser = false
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || assets.count > 0 else {
@@ -107,6 +103,7 @@ public class Content: DictionaryConvertible {
         self.previewImages = nil
         self.assets = assets
         self.isVIPOnly = false
+        isLikedByCurrentUser = false
     }
     
     // MARK: - DictionaryConvertible

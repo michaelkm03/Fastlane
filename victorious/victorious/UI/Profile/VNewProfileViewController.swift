@@ -148,13 +148,13 @@ private extension VDependencyManager {
         }
         
         apiPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
-            "%%FROM_TIME%%": "\(Int(NSDate().timeIntervalSince1970*1000))",
+            "%%FROM_TIME%%": "\(Int64(NSDate().timeIntervalSince1970 * 1000))",
             "%%TO_TIME%%": "0"
         ], inURLString: apiPath)
         
         let urlComponents = NSURLComponents(string: apiPath)
         let queryItem = NSURLQueryItem(name: "user_id", value: "\(userID)" )
-        urlComponents?.queryItems = [ queryItem ]
+        urlComponents?.queryItems = (urlComponents?.queryItems ?? []) + [queryItem]
         
         return urlComponents?.string
     }
