@@ -73,8 +73,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     // MARK: Clear Media
-
-    //TODO: Implement transition on media content view and call `delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)`
     
     private func clearStageMedia(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
