@@ -97,7 +97,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     override func viewDidLoad() {
         /// Set up nav bar
-        navigationItem.rightBarButtonItems = [shareButton, overflowButton, upvoteButton]
+        navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
     }
     
     required init?(coder: NSCoder) {
@@ -121,15 +121,15 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func share() {
-        /// Future: Implement this
+        /// FUTURE: Implement this
     }
     
     func toggleUpvote() {
-        /// Future: Implement this
+        /// FUTURE: Implement this
     }
     
     func overflow() {
-        /// Future: Implement this
+        /// FUTURE: Implement this
     }
 }
 

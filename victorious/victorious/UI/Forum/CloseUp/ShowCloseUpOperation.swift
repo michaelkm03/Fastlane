@@ -67,7 +67,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         
         originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
         
-        /// Future: do a new load of the content anyway
+        /// FUTURE: do a new load of the content anyway
         if content == nil {
             guard let contentID = contentID else {
                 assertionFailure("contentID should not be nil if content is nil")
