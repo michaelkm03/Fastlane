@@ -67,7 +67,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
         
         collectionView.registerNib(

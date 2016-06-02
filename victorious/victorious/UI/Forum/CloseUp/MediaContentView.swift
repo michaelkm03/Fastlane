@@ -44,10 +44,6 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
                 assertionFailure("Content cannot be nil")
                 return
             }
-            guard let videoCoordinator = VContentVideoPlayerCoordinator(content: content) else {
-                return
-            }
-            self.videoCoordinator = videoCoordinator
             
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
@@ -56,10 +52,11 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
             }
             setupForContent(content)
             if content.type.displaysAsVideo {
+                self.videoCoordinator = VContentVideoPlayerCoordinator(content: content)
                 setupVideoContainer()
-                videoCoordinator.setupVideoPlayer(in: videoContainerView)
-                videoCoordinator.setupToolbar(in: self, initallyVisible: false)
-                videoCoordinator.loadVideo()
+                videoCoordinator?.setupVideoPlayer(in: videoContainerView)
+                videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+                videoCoordinator?.loadVideo()
             }
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ContentFeedRequest: RequestType {
+public struct ContentFeedRequest: RequestType {
     public let url: NSURL
     
     public init(url: NSURL) {

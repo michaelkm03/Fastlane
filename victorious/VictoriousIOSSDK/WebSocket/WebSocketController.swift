@@ -187,15 +187,21 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         switch event {
         case .sendContent(let content):
             sendJSON(from: content)
+            bounceBackOutboundEvent(event)
         case .blockUser(let blockUser):
             sendJSON(from: blockUser)
         default:
             break
         }
-        
-        broadcast(event)
     }
-    
+
+    /// Will send outgoing content events back over the event chain.
+    private func bounceBackOutboundEvent(event: ForumEvent) {
+        if case .sendContent(let content) = event {
+            broadcast(.appendContent([content]))
+        }
+    }
+
     private func sendJSON(from dictionaryConvertible: DictionaryConvertible) {
         guard let webSocket = webSocket where webSocket.isConnected else {
             return

@@ -111,7 +111,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         updateTimestamp()
         
-        if let imageURL = content?.previewImageURL(ofMinimumSize: avatarView.frame.size) {
+        if let imageURL = content?.authorModel.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
         } else {
             avatarView.image = nil
