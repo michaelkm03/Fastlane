@@ -15,7 +15,7 @@ class ShowShareContentOperation: MainQueueOperation {
     private let content: ContentModel
     private weak var originViewController: UIViewController?
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, content: ContentModel) {
+    init(originViewController: UIViewController, dependencyManager: VDependencyManager, content: ContentModel) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.content = content
