@@ -59,20 +59,15 @@ private extension ContentModel {
     func textForSharing() -> String {
         var shareText = ""
         
-        if type == .gif {
+        switch type {
+        case .gif:
             shareText = NSLocalizedString("UGCShareGIFFormat", comment: "")
-        }
-        else if type == .gif {
+        case .video:
             shareText = NSLocalizedString("UGCShareVideoFormat", comment: "")
-        }
-        else if type == .image {
+        case .image:
             shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
-        }
-        else if type == .text {
+        case .text:
             shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
-        }
-        else {
-            shareText = NSLocalizedString("UGCShareLinkFormat", comment: "")
         }
         
         return shareText
