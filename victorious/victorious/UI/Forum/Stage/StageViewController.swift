@@ -15,7 +15,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let contentHideAnimationDuration: NSTimeInterval = 0.5
-        static let fixedStageHeight: CGFloat = 200.0
+        static let maximumStageHeight: CGFloat = 200.0
+        static let minimumStageHeight: CGFloat = 100.0
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
@@ -55,7 +56,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
-        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
+        
+        reportHeightChange(for: stageContent)
     }
 
     func removeContent() {
@@ -77,5 +79,14 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+    
+    // MARK: - Report Height Change
+    
+    private func reportHeightChange(for content: ContentModel) {
+        let contentHeight = content.previewImageModels.first?.mediaMetaData.size?.height ?? Constants.maximumStageHeight
+        let clampedHeight = min(max(contentHeight, Constants.minimumStageHeight), Constants.maximumStageHeight)
+        
+        delegate?.stage(self, didUpdateContentHeight: clampedHeight)
     }
 }
