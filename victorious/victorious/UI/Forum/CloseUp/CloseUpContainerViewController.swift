@@ -142,7 +142,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         confirm.before(flag)
         confirm.queue()
         flag.queue() { [weak self] results, error, cancelled in
-            /// Future: Update parent view controller to remove content
+            /// FUTURE: Update parent view controller to remove content
             if !cancelled {
                 self?.dismissViewControllerAnimated(true, completion: nil)
             }
