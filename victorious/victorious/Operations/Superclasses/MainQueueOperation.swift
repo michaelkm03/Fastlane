@@ -19,14 +19,14 @@ class MainQueueOperation: NSOperation, Queueable {
     private var _executing = false
     private var _finished = false
     
-    /// Subclasses that do not implement `main()` and need to maintain excuting
-    /// state call this to move into an excuting state.
+    /// Subclasses that do not implement `main()` and need to maintain executing
+    /// state call this to move into an executing state.
     final func beganExecuting() {
         executing = true
         finished = false
     }
     
-    /// Subclasses that do not implement `main()` and need to maintain excuting
+    /// Subclasses that do not implement `main()` and need to maintain executing
     /// state call this to move out of an executing state and are finished doing work.
     final func finishedExecuting() {
         executing = false
