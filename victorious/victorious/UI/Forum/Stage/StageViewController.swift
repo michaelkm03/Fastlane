@@ -54,7 +54,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.updateContent(stageContent)
+        mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
         delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
 

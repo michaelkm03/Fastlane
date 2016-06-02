@@ -17,6 +17,9 @@ class MediaContentView: UIView {
     
     private var singleTapRecognizer: UITapGestureRecognizer!
     
+    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
+    private var shouldShowToolBarForVideo: Bool = true
+    
     override func awakeFromNib() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
@@ -30,8 +33,9 @@ class MediaContentView: UIView {
         v_addFitToParentConstraintsToSubview(previewImageView)
     }
     
-    func updateContent(content: ContentModel) {
+    func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         self.content = content
+        self.shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
     }
     
     private(set) var content: ContentModel? {
@@ -68,16 +72,12 @@ class MediaContentView: UIView {
         v_addFitToParentConstraintsToSubview(videoContainerView)
     }
     
-    private func shouldShowToolbar() -> Bool {
-        return content?.type == .video
-    }
     
     // MARK: - Actions
     
     func onContentTap() {
-        if !shouldShowToolbar() {
-            return
+        if shouldShowToolBarForVideo {
+            videoCoordinator?.toggleToolbarVisibility(true)
         }
-        videoCoordinator?.toggleToolbarVisibility(true)
     }
 }
