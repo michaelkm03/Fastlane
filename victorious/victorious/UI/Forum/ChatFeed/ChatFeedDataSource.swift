@@ -18,9 +18,6 @@ protocol ChatFeedDataSourceType: ForumEventReceiver, ForumEventSender, UICollect
     
     weak var delegate: ChatFeedDataSourceDelegate? { get set }
     
-    func startCheckingForNewItems()
-    func stopCheckingForNewItems()
-    
     func registerCells(for collectionView: UICollectionView)
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     
@@ -28,26 +25,12 @@ protocol ChatFeedDataSourceType: ForumEventReceiver, ForumEventSender, UICollect
 }
 
 class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
-//    private let eventQueue = ReceivedEventQueue<ChatFeedMessage>()
-    
-    /// If this interval is too small, the scrolling animations will become choppy
-    /// as they step on each other before finishing.
-//    private var fetchMessageInterval: NSTimeInterval = 1.0
-    
-//    private var timerManager: VTimerManager?
-    
-//    private var eventCounter = Int.max
-    
     // MARK: Initializing
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         super.init()
     }
-    
-//    deinit {
-//        stopCheckingForNewItems()
-//    }
     
     // MARK: - Dependency manager
     
@@ -83,48 +66,6 @@ class ChatFeedDataSource: NSObject, ChatFeedDataSourceType {
     // MARK: - ChatFeedNetworkDataSourceType
     
     weak var delegate: ChatFeedDataSourceDelegate?
-    
-    func startCheckingForNewItems() {
-//        guard timerManager == nil else {
-//            return
-//        }
-//        timerManager = VTimerManager.addTimerManagerWithTimeInterval(
-//            fetchMessageInterval,
-//            target: self,
-//            selector: #selector(onTimerTick),
-//            userInfo: nil,
-//            repeats: true,
-//            toRunLoop: NSRunLoop.mainRunLoop(),
-//            withRunMode: NSRunLoopCommonModes
-//        )
-//        dequeueMessages()
-    }
-    
-    func stopCheckingForNewItems() {
-//        timerManager?.invalidate()
-//        timerManager = nil
-    }
-    
-    func onTimerTick() {
-        // TODO: Implement purging.
-//        if paginatedDataSource.visibleItems.count > dependencyManager.purgeTriggerCount {
-//            // Instead of dequeuing on this tick, we need to purge
-//            paginatedDataSource.purgeOlderItems(limit: dependencyManager.purgeTargetCount)
-//        } else {
-//            // Now we can continue dequeuing
-//            dequeueMessages()
-//        }
-    }
-    
-//    private func dequeueMessages() {
-//        paginatedDataSource.loadNewItems(
-//            createOperation: {
-//                let messages = eventQueue.dequeueAll()
-//                return DequeueMessagesOperation(messages: messages)
-//            },
-//            completion: nil
-//        )
-//    }
     
     // MARK: - Managing timestamps
     

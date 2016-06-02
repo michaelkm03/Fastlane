@@ -51,6 +51,10 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     var content: ContentModel? {
         didSet {
+            if content?.id === oldValue?.id {
+                return
+            }
+            
             populateData()
             layout.updateWithCell(self)
         }
@@ -84,7 +88,6 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         detailTextView.contentInset = UIEdgeInsetsZero
         detailTextView.font = dependencyManager.userLabelFont
         detailTextView.textColor = dependencyManager.userLabelColor
-        detailTextView.textAlignment = layout.textAlignment
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor

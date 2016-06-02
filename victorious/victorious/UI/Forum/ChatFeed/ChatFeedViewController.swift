@@ -95,7 +95,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dataSource.startCheckingForNewItems()
         focusHelper.updateFocus()
         startTimestampUpdate()
     }
@@ -129,6 +128,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
+        // Disable UICollectionView insertion animation.
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
