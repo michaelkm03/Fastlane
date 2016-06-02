@@ -23,6 +23,11 @@ enum PaginatedLoadingType {
     case older
 }
 
+/// An enum for expected ordering of paginated content.
+enum PaginatedOrdering {
+    case ascending, descending
+}
+
 /// An object that manages a paginated list of items retrieved from an operation using a time-based pagination system.
 ///
 /// To use this object, you simply provide an API path with the appropriate pagination macros as well as an operation
@@ -34,16 +39,19 @@ enum PaginatedLoadingType {
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
 class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], error: NSError?) -> Void> {
+    
     // MARK: - Initializing
     
-    init(apiPath: String, createOperation: (url: NSURL) -> Operation) {
+    init(apiPath: String, ordering: PaginatedOrdering = .descending, createOperation: (url: NSURL) -> Operation) {
         self.apiPath = apiPath
+        self.ordering = ordering
         self.createOperation = createOperation
     }
     
     // MARK: - Configuration
     
     let apiPath: String
+    let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
     
     // MARK: - Managing content
@@ -77,16 +85,41 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         }
         
         createOperation(url: url).queue { [weak self] newItems, error in
+            defer {
+                completion(newItems: newItems, error: error)
+            }
+            
+            guard let ordering = self?.ordering else {
+                return
+            }
+            
             switch loadingType {
-                case .refresh: self?.items = newItems
-                case .newer:   self?.items = newItems + (self?.items ?? [])
-                case .older:   self?.items.appendContentsOf(newItems)
+                case .refresh:
+                    self?.items = newItems
+                
+                case .newer:
+                    switch ordering {
+                        case .descending: self?.prependItems(newItems)
+                        case .ascending: self?.appendItems(newItems)
+                    }
+                
+                case .older:
+                    switch ordering {
+                        case .descending: self?.appendItems(newItems)
+                        case .ascending: self?.prependItems(newItems)
+                    }
             }
             
             self?.isLoadingPage = false
-            
-            completion(newItems: newItems, error: error)
         }
+    }
+    
+    private func prependItems(newItems: [Item]) {
+        items = newItems + items
+    }
+    
+    private func appendItems(newItems: [Item]) {
+        items.appendContentsOf(newItems)
     }
     
     private func processedURL(for loadingType: PaginatedLoadingType) -> NSURL? {
@@ -106,7 +139,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         return NSURL(string: processedPath)
     }
     
-    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int, toTime: Int) {
+    /// Returns the range of timestamps needed to load new content for `loadingType`.
+    ///
+    /// - NOTE: `fromTime` will always be greater than `toTime` to match the API's pagination conventions.
+    ///
+    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int64, toTime: Int64) {
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
@@ -120,9 +157,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     // NOTE: Pagination timestamps are inclusive, so to avoid retrieving multiple copies of the same item, we adjust
     // the timestamps by 1ms to make them exclusive.
     
-    private var oldestTimestamp: Int? {
+    private var oldestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Int.max, (item as! PaginatableItem).createdAt.paginationTimestamp)
+            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.paginationTimestamp)
         }) {
             return timestamp - 1
         }
@@ -130,7 +167,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         return nil
     }
     
-    private var newestTimestamp: Int? {
+    private var newestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
             max(timestamp ?? 0, (item as! PaginatableItem).createdAt.paginationTimestamp)
         }) {
@@ -142,7 +179,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
 }
 
 private extension NSDate {
-    var paginationTimestamp: Int {
-        return Int(timeIntervalSince1970 * 1000.0)
+    var paginationTimestamp: Int64 {
+        return Int64(timeIntervalSince1970 * 1000.0)
     }
 }

@@ -17,6 +17,12 @@ public enum ForumEvent {
     /// Requests that the current chat feed content is replaced with the given content.
     case replaceContent([Content])
     
+    /// Requests loading of older content in the chat feed.
+    case loadOldContent
+    
+    /// Sends content created by the user.
+    case sendContent(Content)
+    
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)
     
@@ -25,10 +31,4 @@ public enum ForumEvent {
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
-    
-    /// Sends content created by the user.
-    case sendContent(Content)
-    
-    /// Requests loading of older content in the chat feed.
-    case loadOldContent
 }
