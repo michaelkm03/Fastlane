@@ -144,7 +144,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
 
 private extension VDependencyManager {
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysOriginal)
     }
     
     var upvoteIconUnselected: UIImage? {
