@@ -287,8 +287,4 @@ private extension VDependencyManager {
     var stageDependency: VDependencyManager? {
         return childDependencyForKey("stage")
     }
-    
-    var forumNetworkSource: ForumNetworkSource? {
-        return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
-    }
 }
