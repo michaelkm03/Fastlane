@@ -223,7 +223,7 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
     if ([fontName isKindOfClass:[NSString class]] &&
         [fontSize isKindOfClass:[NSNumber class]])
     {
-        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
+        font = [self fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
     }
     if ( font == nil )
     {
