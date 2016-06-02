@@ -154,7 +154,7 @@ private extension VDependencyManager {
         
         let urlComponents = NSURLComponents(string: apiPath)
         let queryItem = NSURLQueryItem(name: "user_id", value: "\(userID)" )
-        urlComponents?.queryItems = [ queryItem ]
+        urlComponents?.queryItems = (urlComponents?.queryItems ?? []) + [queryItem]
         
         return urlComponents?.string
     }

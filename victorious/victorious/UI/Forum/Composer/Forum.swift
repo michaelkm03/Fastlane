@@ -65,14 +65,6 @@ extension Forum {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
     }
-
-    func stage(stage: Stage, didUpdateWithMedia media: StageContent) {
-        
-    }
-
-    func stage(stage: Stage, didSelectMedia media: StageContent) {
-        
-    }
 }
 
 private extension VCreationFlowType {

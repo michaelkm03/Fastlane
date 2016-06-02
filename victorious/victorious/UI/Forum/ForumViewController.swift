@@ -53,18 +53,24 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     func receive(event: ForumEvent) {
-        if let event = event as? WebSocketEvent {
-            switch event.type {
+        switch event {
+        case .websocket(let websocketEvent):
+            switch websocketEvent {
             case .Disconnected(let webSocketError):
                 if isViewLoaded() {
                     v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                 }
-            default:
-                break
+            default:()
             }
-        } else if let event = event as? Content where event.assets.count > 0 {
+        default:()
+        }
+    }
+    
+    func sendEvent(event: ForumEvent) {
+        
+        switch event {
+        case .sendContent(let content):
             
-            //Create a persistent piece of content so long as we're not a normal user on the socket
             guard let networkResources = dependencyManager.networkResources else {
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
@@ -72,13 +78,23 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 return
             }
             
-            createPersistentContent(event, networkResourcesDependency: networkResources) { [weak self] error in
-                if let _ = error,
+            createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
+                
+                if let validError = error,
                     let strongSelf = self {
-                    strongSelf.v_showDefaultErrorAlert()
+                    
+                    if let persistenceError = validError as? PersistentContentCreatorError where
+                        persistenceError.isInvalidNetworkResourcesError {
+                        //Encountered an error where the network resources were inadequate. This does NOT
+                        //represent an error state that should be messaged to the user.
+                    } else {
+                        strongSelf.v_showDefaultErrorAlert()
+                    }
                 }
             }
+        default:()
         }
+        nextSender?.sendEvent(event)
     }
 
     // MARK: - ForumEventSender
