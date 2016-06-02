@@ -109,6 +109,8 @@ const NSTimeInterval VDefaultRefreshTimeInterval = 2592000.0f; //30 days (60 * 6
             return @"flaggedComments";
         case VFlaggedContentTypeStreamItem:
             return @"flaggedStreamItems";
+        case VFlaggedContentTypeContent:
+            return @"flaggedContent";
     }
 }
 

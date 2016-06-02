@@ -26,6 +26,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.previewImages?.count, 4)
         XCTAssertEqual(content.assets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)
+        XCTAssertTrue(content.isLikedByCurrentUser)
     }
     
     func testInvalidID() {

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CloseUpViewDelegate: class {
-    func didSelectProfile()
+    func didSelectProfileForUserID(userID: Int)
 }
 
 private let blurredImageAlpha: CGFloat = 0.5
@@ -102,7 +102,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
-        delegate?.didSelectProfile()
+        guard let userID = content?.authorModel.id else {
+            return
+        }
+        delegate?.didSelectProfileForUserID(userID)
     }
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {

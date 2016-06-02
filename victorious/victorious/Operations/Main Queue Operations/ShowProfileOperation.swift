@@ -14,7 +14,9 @@ class ShowProfileOperation: BackgroundOperation {
     private weak var originViewController: UIViewController?
     private let userId: Int
     
-    init( originViewController: UIViewController, dependencyManager: VDependencyManager, userId: Int) {
+    init( originViewController: UIViewController,
+          dependencyManager: VDependencyManager,
+          userId: Int) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.userId = userId

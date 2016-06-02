@@ -15,6 +15,7 @@ protocol ContentModel: PreviewImageContainer {
     var type: ContentType { get }
     
     var id: String? { get }
+    var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
@@ -89,6 +90,10 @@ extension VContent: ContentModel {
     
     var authorModel: UserModel {
         return v_author
+    }
+    
+    var isLikedByCurrentUser: Bool {
+        return v_isLikedByCurrentUser == true
     }
     
     /// Whether this content is only accessible for VIPs
