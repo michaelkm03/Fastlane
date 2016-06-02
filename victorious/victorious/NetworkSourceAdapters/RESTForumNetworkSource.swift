@@ -7,9 +7,6 @@
 //
 
 class RESTForumNetworkSource: NSObject, ForumNetworkSource {
-    // MARK: - Configuration
-    
-    private static let pollingInterval = NSTimeInterval(10.0)
     
     // MARK: - Initialization
     
@@ -31,17 +28,21 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    private var pollingTimer: NSTimer?
+    private static let pollingInterval = NSTimeInterval(10.0)
+    
+    private var pollingTimer: VTimerManager?
     
     private func startPolling() {
         pollingTimer?.invalidate()
         
-        pollingTimer = NSTimer.scheduledTimerWithTimeInterval(
+        pollingTimer = VTimerManager.addTimerManagerWithTimeInterval(
             RESTForumNetworkSource.pollingInterval,
             target: self,
             selector: #selector(pollForNewContent),
             userInfo: nil,
-            repeats: true
+            repeats: true,
+            toRunLoop: NSRunLoop.mainRunLoop(),
+            withRunMode: NSRunLoopCommonModes
         )
     }
     

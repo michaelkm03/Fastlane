@@ -148,8 +148,7 @@ private extension VDependencyManager {
         }
         
         apiPath.queryParameters = [
-            "user_id": "\(userID)",
-            "filter_text": "true"
+            "user_id": "\(userID)"
         ]
         
         return apiPath

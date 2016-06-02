@@ -177,7 +177,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         let shouldAutoScrollLocal = shouldAutoScroll
         let hasEnoughContentToScroll = totalHeight >= collectionView.bounds.height
-        collectionView.scrollEnabled = hasEnoughContentToScroll
         if hasEnoughContentToScroll {
             setTopInset(0.0)
             CATransaction.begin()

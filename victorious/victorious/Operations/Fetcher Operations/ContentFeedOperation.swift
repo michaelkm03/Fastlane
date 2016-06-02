@@ -10,6 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 final class ContentFeedOperation: NSOperation, Queueable {
+    
     // MARK: - Initializing
     
     init(url: NSURL) {

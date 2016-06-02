@@ -9,6 +9,7 @@
 import UIKit
 
 final class ContentFeedRemoteOperation: RemoteFetcherOperation {
+    
     // MARK: - Initializing
     
     init(request: ContentFeedRequest) {

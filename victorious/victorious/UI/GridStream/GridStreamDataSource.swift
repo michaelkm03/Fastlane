@@ -14,10 +14,14 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: APIPath) {
+        var streamAPIPath = streamAPIPath
+        
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
         self.cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
+        
+        streamAPIPath.queryParameters["filter_text"] = "true"
         
         paginatedDataSource = TimePaginatedDataSource(apiPath: streamAPIPath) {
             ContentFeedOperation(url: $0)

@@ -64,6 +64,7 @@ extension VContentMediaAsset: ContentMediaAssetModel {
         case "image":
             return .image
         default:
+            assertionFailure("Encountered unknown asset source '\(v_source)'.")
             return .image
         }
     }
