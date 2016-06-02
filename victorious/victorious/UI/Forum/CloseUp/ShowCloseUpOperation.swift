@@ -65,7 +65,13 @@ class ShowCloseUpOperation: MainQueueOperation {
             streamAPIPath: apiPath
         )
         
-        originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        if let originViewController = originViewController as? UINavigationController {
+            originViewController.pushViewController(closeUpViewController, animated: animated)
+        }
+        else {
+            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        }
+        
         
         /// FUTURE: do a new load of the content anyway
         if content == nil {

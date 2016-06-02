@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const VConversationListViewControllerDeeplinkHostComponent; ///< The host component for deepLink URLs that point to inbox messages
 extern NSString * const VConversationListViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
 
-@interface VConversationListViewController : UITableViewController <VDeeplinkSupporter, VMultipleContainerChild, VAuthorizationContextProvider, VNavigationDestination, VAccessoryNavigationSource>
+/// This class no longer conforms to VDeeplinkSupporter as we are changing how Deep Linking works
+@interface VConversationListViewController : UITableViewController <VMultipleContainerChild, VAuthorizationContextProvider, VNavigationDestination, VAccessoryNavigationSource>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
