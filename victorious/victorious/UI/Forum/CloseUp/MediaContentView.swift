@@ -47,7 +47,7 @@ class MediaContentView: UIView {
             
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
-            if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
                 previewImageView.sd_setImageWithURL(previewImageURL)
             }
             setupForContent(content)
