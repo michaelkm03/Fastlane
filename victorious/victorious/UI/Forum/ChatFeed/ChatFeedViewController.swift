@@ -90,6 +90,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        dataSource.unstash()
         focusHelper.updateFocus()
         startTimestampUpdate()
     }
