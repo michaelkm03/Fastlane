@@ -25,16 +25,16 @@ class ContentFlagOperation: FetcherOperation {
             return
         }
         
-        self.flaggedContent.addRemoteId( contentID, toFlaggedItemsWithType: .Content)
+        self.flaggedContent.addRemoteId(contentID, toFlaggedItemsWithType: .Content)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
-            guard let content: VContent = context.v_findObjects( [ "v_remoteID" : self.contentID] ).first else {
+            guard let content: VContent = context.v_findObjects( ["v_remoteID" : self.contentID] ).first else {
                 return
             }
             context.deleteObject(content)
         }
-        ContentFlagRemoteOperation(contentID: contentID, contentFlagURL: contentFlagURL).after(self).queue()
+        ContentFlagRemoteOperation(contentID: contentID, contentFlagURL: contentFlagURL)?.after(self).queue()
     }
 
 }

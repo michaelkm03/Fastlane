@@ -11,17 +11,19 @@ import Foundation
 public struct ContentFlagRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
-        let replacementDictionary: [String: String] = [ "%%CONTENT_ID%%": contentID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentFlagURL)
-        let request = NSMutableURLRequest(URL: NSURL(string: replacedURL)!)
+        let request = NSMutableURLRequest(URL: contentFlagURL)
+        request.HTTPMethod = "POST"
         return request
     }
     
-    private let contentID: String
-    private let contentFlagURL: String
+    private let contentFlagURL: NSURL
 
-    public init(contentID: String, contentFlagURL: String) {
-        self.contentID = contentID
-        self.contentFlagURL = contentFlagURL
+    public init?(contentID: String, contentFlagURL: String) {
+        let replacementDictionary: [String: String] = ["%%CONTENT_ID%%": contentID]
+        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentFlagURL)
+        guard let validURL = NSURL(string: replacedURL) else {
+            return nil
+        }
+        self.contentFlagURL = validURL
     }
 }
