@@ -72,7 +72,6 @@
                     <connections>
                         <outlet property="collectionView" destination="FkS-7s-kZf" id="YSa-cN-wF1"/>
                         <outlet property="collectionViewBottom" destination="Jzy-30-zwU" id="R8t-xZ-KkZ"/>
-                        <outlet property="collectionViewHeight" destination="VF1-gQ-0Jr" id="mK6-i9-u6a"/>
                         <outlet property="newItemsController" destination="HjE-OH-UhY" id="1Qv-rK-GiC"/>
                     </connections>
                 </viewController>

@@ -33,7 +33,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     @IBOutlet private var newItemsController: NewItemsController!
     @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var collectionViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var collectionViewBottom: NSLayoutConstraint!
     
     //MARK: - ChatFeed
@@ -114,7 +113,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return edgeInsets
+        // If there isn't enough content to fill the screen, push it down to the bottom.
+        var adjustedInsets = edgeInsets
+        adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
+        return adjustedInsets
     }
     
     // MARK: - ChatFeedDataSourceDelegate
@@ -193,6 +195,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                 collectionView.contentOffset = CGPoint(x: 0.0, y: collectionView.contentSize.height - bottomOffset)
             }
             
+            collectionView.collectionViewLayout.invalidateLayout()
+            
             CATransaction.commit()
             
             // If we loaded newer items and we were scrolled to the bottom, scroll down to reveal the new content.
@@ -203,67 +207,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             completion?()
         })
     }
-    
-    // MARK: - VPaginatedDataSourceDelegate
-    
-//    var totalHeight: CGFloat {
-//        var totalHeight: CGFloat = 0.0
-//        for i in 0..<collectionView.numberOfItemsInSection(0) {
-//            let indexPath = NSIndexPath(forItem: i, inSection: 0)
-//            totalHeight += collectionDataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath).height
-//        }
-//        return totalHeight
-//    }
-    
-    // TODO: Replace paginated data source stuff.
-    
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        // TODO: Fix autoscrolling and bottom-alignment of content.
-        
-//        let shouldAutoScrollLocal = shouldAutoScroll
-//        let hasEnoughContentToScroll = totalHeight >= collectionView.bounds.height
-////        collectionView.scrollEnabled = hasEnoughContentToScroll
-//        if hasEnoughContentToScroll {
-//            setTopInset(0.0)
-//            CATransaction.begin()
-//            CATransaction.setCompletionBlock() {
-//                dispatch_after(0.0) {
-//                    if shouldAutoScrollLocal {
-//                        self.collectionView.v_scrollToBottomAnimated(true)
-//                    }
-//                }
-//            }
-//            // Don't animate the change, the auto scroll will bring it into view
-//            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
-//            CATransaction.commit()
-//        } else {
-//            collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false)
-//            CATransaction.begin()
-//            let targetInset = max(self.collectionView.bounds.height - Layout.topMargin, 0.0)
-//            self.setTopInset(targetInset)
-//            self.collectionView.collectionViewLayout.invalidateLayout()
-//            CATransaction.setCompletionBlock() {
-//                dispatch_after(0.0) {
-//                    self.collectionView.v_scrollToBottomAnimated(true)
-//                }
-//            }
-//            CATransaction.commit()
-//        }
-    }
-    
-    // TODO: Fix purging.
-    
-//    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didPurgeVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-//        
-//        let oldContentSize = self.collectionView.contentSize
-//        let oldOffset = self.collectionView.contentOffset
-//        
-//        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue, animated: false) {
-//            let newContentSize = self.collectionView.contentSize
-//            let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
-//            self.collectionView.contentOffset = newOffset
-//        }
-//    }
     
     // MARK: - VScrollPaginatorDelegate
     
