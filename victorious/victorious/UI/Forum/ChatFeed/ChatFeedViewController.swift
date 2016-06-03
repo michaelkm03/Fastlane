@@ -129,10 +129,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         if itemsContainCurrentUserMessage {
-            // Unstash and scroll to bottom.
+            // Unstash if we got a message from the current user.
             dataSource.unstash()
-            newItemsController.hide()
-            collectionView.v_scrollToBottomAnimated(true)
         }
         else if stashedItems.count > 0 {
             // Update stash count and show stash counter.
@@ -142,10 +140,22 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel]) {
-        handleNewItems(unstashedItems, loadingType: .newer)
+        newItemsController.hide()
+        
+        handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
+            if self?.collectionView.v_isScrolledToBottom == false {
+                self?.collectionView.v_scrollToBottomAnimated(true)
+            }
+        }
     }
     
-    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didPurgeItems purgedItems: [ContentModel]) {
+        collectionView.deleteItemsAtIndexPaths((0 ..< purgedItems.count).map {
+            NSIndexPath(forItem: $0, inSection: 0)
+        })
+    }
+    
+    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 else {
             return
         }
@@ -189,6 +199,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             if (loadingType == .newer || loadingType == .refresh) && wasScrolledToBottom {
                 collectionView.setContentOffset(collectionView.v_bottomOffset, animated: true)
             }
+            
+            completion?()
         })
     }
     

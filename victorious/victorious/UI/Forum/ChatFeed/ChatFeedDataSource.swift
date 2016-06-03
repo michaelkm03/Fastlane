@@ -13,6 +13,7 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didPurgeItems purgedItems: [ContentModel])
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, UICollectionViewDataSource {
@@ -51,9 +52,27 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, UIColl
             
             delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
             
+            purgeItemsIfNeeded()
+            
             dispatch_after(1.0) { [weak self] in
                 self?.justUnstashed = false
             }
+        }
+    }
+    
+    // MARK: - Purging
+    
+    private static let purgeTriggerCount = 100
+    private static let purgeTargetCount = 80
+    
+    private func purgeItemsIfNeeded() {
+        if unstashedItems.count >= ChatFeedDataSource.purgeTriggerCount {
+            let targetCount = ChatFeedDataSource.purgeTargetCount
+            let purgeCount = unstashedItems.count - targetCount
+            let purgeRange = targetCount ..< targetCount + purgeCount
+            let purgedItems = unstashedItems[purgeRange]
+            unstashedItems.removeRange(purgeRange)
+            delegate?.chatFeedDataSource(self, didPurgeItems: Array(purgedItems))
         }
     }
     
@@ -85,6 +104,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, UIColl
         default:
             break
         }
+        
+        purgeItemsIfNeeded()
     }
     
     // MARK: - ForumEventSender
@@ -142,18 +163,5 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, UIColl
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         decorateCell(sizingCell, content: unstashedItems[indexPath.row], dependencyManager: dependencyManager)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
-    }
-}
-
-private extension VDependencyManager {
-    
-    /// Max count before purge should occur.
-    var purgeTriggerCount: Int {
-        return numberForKey("purgeTriggerCount")?.integerValue ?? 100
-    }
-    
-    /// How many items should remain after purge.
-    var purgeTargetCount: Int {
-        return numberForKey("purgeTargetCount")?.integerValue ?? 80
     }
 }
