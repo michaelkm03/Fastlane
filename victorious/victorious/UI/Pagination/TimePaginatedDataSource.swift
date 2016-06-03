@@ -80,10 +80,6 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         
         isLoading = true
         
-        if loadingType == .refresh {
-            items = []
-        }
-        
         createOperation(url: url).queue { [weak self] newItems, error in
             defer {
                 completion?(newItems: newItems, error: error)
@@ -145,7 +141,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
-        case .refresh, .newer:
+        case .refresh:
+            return (fromTime: now, toTime: 0)
+        case .newer:
             return (fromTime: now, toTime: newestTimestamp ?? 0)
         case .older:
             return (fromTime: oldestTimestamp ?? now, toTime: 0)

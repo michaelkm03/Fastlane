@@ -99,15 +99,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             refreshControl.tintColor = dependencyManager.refreshControlColor
             refreshControl.addTarget(
                 self,
-                action: #selector(GridStreamViewController.refresh),
+                action: #selector(refresh),
                 forControlEvents: .ValueChanged
             )
             collectionView.insertSubview(refreshControl, atIndex: 0)
         }
         
-        dataSource.loadContent(for: collectionView, loadingType: .refresh) { [weak self] newItems, error in
-            self?.finishLoading(newItems: newItems, error: error)
-        }
+        loadContent(.refresh)
     }
     
     required init(coder: NSCoder) {
@@ -123,16 +121,19 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - Refreshing
     
     func refresh() {
-        dataSource.loadContent(for: collectionView, loadingType: .refresh) { [weak self] newItems, error in
-            self?.finishLoading(newItems: newItems, error: error)
-        }
+        loadContent(.refresh)
     }
     
-    func finishLoading(newItems newItems: [ContentModel], error: NSError?) {
-        refreshControl.endRefreshing()
-        
-        if error != nil {
-            (navigationController ?? self).v_showErrorDefaultError()
+    private func loadContent(loadingType: PaginatedLoadingType) {
+        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
+            // Calling this method stops scrolling, so only do it if necessary.
+            if self?.refreshControl.refreshing == true {
+                self?.refreshControl.endRefreshing()
+            }
+            
+            if error != nil {
+                (self?.navigationController ?? self)?.v_showErrorDefaultError()
+            }
         }
     }
     
@@ -145,9 +146,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        dataSource.loadContent(for: collectionView, loadingType: .older) { [weak self] newItems, error in
-            self?.finishLoading(newItems: newItems, error: error)
-        }
+        loadContent(.older)
     }
     
     // MARK: - UIScrollViewDelegate

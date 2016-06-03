@@ -63,7 +63,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         paginatedDataSource.loadItems(loadingType) { [weak self] newItems, error in
             collectionView.collectionViewLayout.invalidateLayout()
             
-            if let totalItemCount = self?.items.count where newItems.count > 0 {
+            if loadingType == .refresh {
+                collectionView.reloadData()
+            }
+            else if let totalItemCount = self?.items.count where newItems.count > 0 {
                 let previousCount = totalItemCount - newItems.count
                 
                 let indexPaths = (0 ..< newItems.count).map {
