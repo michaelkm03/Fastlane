@@ -51,7 +51,9 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     var content: ContentModel? {
         didSet {
-            if content?.id === oldValue?.id {
+            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
+            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
+            if content?.id == oldValue?.id && content?.id != nil {
                 return
             }
             
