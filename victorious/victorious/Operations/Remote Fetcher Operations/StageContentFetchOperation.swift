@@ -39,15 +39,13 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         // startTime = serverTime - startTime + workTime
         if let refreshStageEvent = refreshStageEvent,
             let startTime = refreshStageEvent.startTime,
-            let operationStartTime = operationStartTime,
-            var stageContent = content.stageContent {
+            let operationStartTime = operationStartTime {
 
             let timeDiff = refreshStageEvent.serverTime.timeIntervalSinceDate(startTime)
             let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
             let seekAheadTime = timeDiff + workTime
 
-            stageContent.updateSeekAheadTime(seekAheadTime)
-            content.stageContent = stageContent
+            content.seekAheadTime = seekAheadTime
         }
 
         self.results = [content]

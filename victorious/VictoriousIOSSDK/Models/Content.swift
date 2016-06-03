@@ -21,9 +21,9 @@ public class Content: DictionaryConvertible {
     public let isVIPOnly: Bool
     public let author: User
     public let isLikedByCurrentUser: Bool
-
-    /// Payload describing what will be put on the stage.
-    public var stageContent: StageContent?
+    
+    /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
+    public var seekAheadTime : NSTimeInterval?
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -41,7 +41,6 @@ public class Content: DictionaryConvertible {
         
         self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
-        self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL

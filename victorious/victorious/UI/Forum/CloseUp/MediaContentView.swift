@@ -13,71 +13,64 @@ import UIKit
 class MediaContentView: UIView {
     let previewImageView = UIImageView()
     let videoContainerView = VPassthroughContainerView()
+    
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
+    private(set) var content: ContentModel?
     
     private var singleTapRecognizer: UITapGestureRecognizer!
+    
+    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
+    private var shouldShowToolBarForVideo: Bool = true
     
     override func awakeFromNib() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(singleTapRecognizer)
         
-        videoContainerView.backgroundColor = .blackColor()
-        
         backgroundColor = .clearColor()
-        previewImageView.contentMode = .ScaleAspectFill
+        
+        previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
-    }
-    
-    func updateContent(content: ContentModel) {
-        self.content = content
-    }
-    
-    private(set) var content: ContentModel? {
-        didSet {
-            guard let content = content else {
-                assertionFailure("Content cannot be nil")
-                return
-            }
-            
-            let minWidth = UIScreen.mainScreen().bounds.size.width
-            
-            if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-                previewImageView.sd_setImageWithURL(previewImageURL)
-            }
-            setupForContent(content)
-            if content.type.displaysAsVideo {
-                self.videoCoordinator = VContentVideoPlayerCoordinator(content: content)
-                setupVideoContainer()
-                videoCoordinator?.setupVideoPlayer(in: videoContainerView)
-                videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
-                videoCoordinator?.loadVideo()
-            }
-        }
-    }
-    
-    private func setupForContent(content: ContentModel) {
-        videoContainerView.hidden = content.type.displaysAsVideo != true
-        previewImageView.hidden = content.type.displaysAsImage != true
-    }
-    
-    private func setupVideoContainer() {
+        
         videoContainerView.frame = bounds
+        videoContainerView.backgroundColor = .blackColor()
         addSubview(videoContainerView)
         v_addFitToParentConstraintsToSubview(videoContainerView)
     }
     
-    private func shouldShowToolbar() -> Bool {
-        return content?.type == .video
+    func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
+        self.content = content
+        shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
+        
+        let minWidth = UIScreen.mainScreen().bounds.size.width
+        
+        // Set up image view if content is image
+        if content.type.displaysAsImage,
+            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
+            previewImageView.hidden = false
+            previewImageView.sd_setImageWithURL(previewImageURL)
+        } else {
+            previewImageView.hidden = true
+        }
+        
+        // Set up video view if content is video
+        if content.type.displaysAsVideo {
+            videoContainerView.hidden = false
+            videoCoordinator = VContentVideoPlayerCoordinator(content: content)
+            videoCoordinator?.setupVideoPlayer(in: videoContainerView)
+            videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+            videoCoordinator?.loadVideo()
+        } else {
+            videoContainerView.hidden = true
+        }
     }
     
     // MARK: - Actions
     
     func onContentTap() {
-        if !shouldShowToolbar() {
-            return
+        if shouldShowToolBarForVideo {
+            videoCoordinator?.toggleToolbarVisibility(true)
         }
-        videoCoordinator?.toggleToolbarVisibility(true)
     }
 }
