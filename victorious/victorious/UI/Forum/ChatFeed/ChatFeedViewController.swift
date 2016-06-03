@@ -70,7 +70,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var childEventReceivers: [ForumEventReceiver] {
         return [ networkDataSource ]
     }
-   
+    
+    // MARK: - ForumEventSender
+    
+    var nextSender: ForumEventSender?
+    
     // MARK: - NewItemsControllerDelegate
         
     func onNewItemsSelected() {
@@ -96,7 +100,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         collectionView.dataSource = collectionDataSource
         collectionView.delegate = self
         
-        scrollPaginator.delegate = networkDataSource
+        scrollPaginator.delegate = self
+        
+        networkDataSource.nextSender = self
         
         newItemsController.depedencyManager = dependencyManager
         newItemsController.delegate = self
@@ -171,7 +177,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         let shouldAutoScrollLocal = shouldAutoScroll
         let hasEnoughContentToScroll = totalHeight >= collectionView.bounds.height
-        collectionView.scrollEnabled = hasEnoughContentToScroll
         if hasEnoughContentToScroll {
             setTopInset(0.0)
             CATransaction.begin()
@@ -214,6 +219,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
             let newOffset = CGPoint(x: 0, y: oldOffset.y + (newContentSize.height - oldContentSize.height) )
             self.collectionView.contentOffset = newOffset
         }
+    }
+    
+    // MARK: - VScrollPaginatorDelegate
+    
+    func shouldLoadPreviousPage() {
+        send(.loadOldContent)
+    }
+    
+    func shouldLoadNextPage() {
+        // We don't currently load new content via scroll pagination.
     }
     
     // MARK: - ChatFeedMessageCellDelegate
