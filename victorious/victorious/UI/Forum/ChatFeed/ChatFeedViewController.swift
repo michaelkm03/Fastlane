@@ -93,7 +93,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         dataSource.unstash()
         focusHelper.updateFocus()
         startTimestampUpdate()
-        paginatedDataSource.unstashAll()
     }
     
     override func viewWillDisappear(animated: Bool) {
