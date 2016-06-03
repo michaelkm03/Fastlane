@@ -857,7 +857,7 @@
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C6547D61CF4CDAE005F58A1 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */; };
-		7CC9821F1D00F4AD00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC9821E1D00F4AD00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
+		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -3329,7 +3329,7 @@
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C68CA9BC5F670F063DA6A87 /* Pods-victoriousPersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
-		7CC9821E1D00F4AD00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
+		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
 		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6830,6 +6830,7 @@
 		039D02A71A1043D300DB9236 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */,
 				035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
@@ -6873,7 +6874,6 @@
 				03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */,
 				03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
-				7CC9821E1D00F4AD00583B70 /* VDependencyManager+ForumNetworkSource.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -11080,7 +11080,7 @@
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = P25BA56T67;
+						DevelopmentTeam = ABHRJGEGKA;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -12727,7 +12727,6 @@
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
 				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
-				7CC9821F1D00F4AD00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
 				5A75EADF1C57653200B08056 /* VPublishParameters.swift in Sources */,
@@ -12808,6 +12807,7 @@
 				A7C565F51C44A17500E4DF6A /* VSuggestedUsersDataSource.m in Sources */,
 				A7AF17AE1C584E67007BCAFE /* VDiscoverContainerViewController.swift in Sources */,
 				A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */,
+				7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
 				A79E533C1CC08A85001C1F55 /* ChatFeedMessage.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
@@ -14290,7 +14290,7 @@
 			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15454,7 +15454,7 @@
 			baseConfigurationReference = 55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15777,7 +15777,7 @@
 			baseConfigurationReference = D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15942,7 +15942,7 @@
 			baseConfigurationReference = 83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
