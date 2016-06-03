@@ -35,14 +35,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     private func startPolling() {
         pollingTimer?.invalidate()
         
-        pollingTimer = VTimerManager.addTimerManagerWithTimeInterval(
+        pollingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
             RESTForumNetworkSource.pollingInterval,
             target: self,
             selector: #selector(pollForNewContent),
             userInfo: nil,
-            repeats: true,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
+            repeats: true
         )
     }
     
