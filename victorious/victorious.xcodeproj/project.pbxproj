@@ -824,12 +824,15 @@
 		79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */; };
 		79FE184E1C53098D00170E5B /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
+		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A215BA31CF535A3005034BF /* CGSize+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A215BA21CF535A3005034BF /* CGSize+Geometry.swift */; };
 		7A215BA61CF537BE005034BF /* PreviewImageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A47849D1CF374FD00894233 /* RESTForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A47849A1CF374FD00894233 /* RESTForumNetworkSource.swift */; };
 		7A47849F1CF374FD00894233 /* WebSocketForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */; };
+		7A52F0301CFF8B9600AE7F3F /* APIPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */; };
+		7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */; };
 		7A53C15F1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
 		7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */; };
@@ -3296,12 +3299,15 @@
 		79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceExperimentsResponse.json; sourceTree = "<group>"; };
 		79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+Parsable.swift"; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
+		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A215BA21CF535A3005034BF /* CGSize+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Geometry.swift"; sourceTree = "<group>"; };
 		7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageContainer.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
 		7A47849A1CF374FD00894233 /* RESTForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTForumNetworkSource.swift; sourceTree = "<group>"; };
 		7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketForumNetworkSource.swift; sourceTree = "<group>"; };
+		7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPath.swift; sourceTree = "<group>"; };
+		7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+APIPath.swift"; sourceTree = "<group>"; };
 		7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowVIPGateOperation.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
 		7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePaginatedDataSource.swift; sourceTree = "<group>"; };
@@ -5952,6 +5958,7 @@
 				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
 				A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */,
 				79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */,
+				7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */,
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
 				F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
@@ -6070,6 +6077,7 @@
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
 				0300AA641BF29305000A121D /* AccountUpdateRequestTests.swift */,
 				79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */,
+				7A126DF41CFF956800F9C86E /* APIPathTests.swift */,
 				03BF276E1C5AED3E0064A90B /* ApplicationTrackingRequestTests.swift */,
 				F048B0161C84F973004F516A /* BlockUserRequestTests.swift */,
 				C3348B221BF53FAA004183A1 /* Bool+InitializersTests.swift */,
@@ -6833,6 +6841,7 @@
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
 				039D02AA1A1043D300DB9236 /* VDependencyManager.m */,
+				7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */,
 				F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */,
 				7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */,
 				A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */,
@@ -11976,6 +11985,7 @@
 				C323C3B71BF55F6600681059 /* CommentEditRequest.swift in Sources */,
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				A72EDF961C03FA17003D6177 /* FollowCountRequest.swift in Sources */,
+				7A52F0301CFF8B9600AE7F3F /* APIPath.swift in Sources */,
 				03BF276D1C5AE50A0064A90B /* ApplicationTrackingRequest.swift in Sources */,
 				A75DF52B1C3E0DB900A4C82A /* SearchContext.swift in Sources */,
 				03503EBB1C81070F00359AAE /* SwiftyJSON.swift in Sources */,
@@ -12160,6 +12170,7 @@
 				670C65991C52C49900BD7F3F /* UserShelfTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
+				7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */,
 				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
 				67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */,
 				67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */,
@@ -12909,6 +12920,7 @@
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
+				7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
 				A72C863E1C977FF500E97D4F /* UnfollowUserOperation.swift in Sources */,
