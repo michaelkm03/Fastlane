@@ -110,6 +110,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, UICollectionViewDelega
         networkDataSource.startCheckingForNewItems()
         focusHelper.updateFocus()
         startTimestampUpdate()
+        paginatedDataSource.unstashAll()
     }
     
     override func viewWillDisappear(animated: Bool) {
