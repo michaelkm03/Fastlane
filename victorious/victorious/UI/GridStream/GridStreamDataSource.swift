@@ -60,19 +60,20 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: PaginatedD
     // MARK: - Loading content
     
     func loadStreamItems(pageType: VPageType, completion: ((error: NSError?) -> Void)? = nil) {
-        /// Those with no streamAPIPath will not even attempt a load of the grid.
-        guard let streamAPIPath = streamAPIPath else {
-            return
-        }
-        
-        loadPage(pageType,
-                 createOperation: {
-                    return ContentFeedOperation(apiPath: streamAPIPath)
-            },
-                 completion: { results, error, cancelled in
-                    completion?(error: error)
-            }
-        )
+        // This will be fixed in a subsequent PR.
+//        /// Those with no streamAPIPath will not even attempt a load of the grid.
+//        guard let streamAPIPath = streamAPIPath else {
+//            return
+//        }
+//        
+//        loadPage(pageType,
+//                 createOperation: {
+//                    return ContentFeedOperation(apiPath: streamAPIPath)
+//            },
+//                 completion: { results, error, cancelled in
+//                    completion?(error: error)
+//            }
+//        )
     }
     
     // MARK: - UICollectionViewDataSource

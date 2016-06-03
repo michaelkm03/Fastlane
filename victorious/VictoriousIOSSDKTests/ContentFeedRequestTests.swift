@@ -13,7 +13,7 @@ class ContentFeedRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
         let apiPath: String = "API_PATH"
-        let request = ContentFeedRequest(apiPath: apiPath)
+        let request = ContentFeedRequest(url: NSURL(string: apiPath)!)
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, apiPath)
         XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
     }
@@ -27,7 +27,7 @@ class ContentFeedRequestTests: XCTestCase {
         }
         
         let apiPath: String = "API_PATH"
-        let request = ContentFeedRequest(apiPath: apiPath)
+        let request = ContentFeedRequest(url: NSURL(string: apiPath)!)
         do {
             let response = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.count, 2)
