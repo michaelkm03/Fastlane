@@ -13,6 +13,7 @@ import VictoriousIOSSDK
 class LogoutOperation: RemoteFetcherOperation {
     
     private var dependencyManager: VDependencyManager? = nil
+    
     override init() {
         super.init()
         
@@ -56,7 +57,7 @@ class LogoutOperation: RemoteFetcherOperation {
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
             
             if let dependencyManager = self.dependencyManager,
-               let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token 
+               let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token
                 forumNetworkSource.tearDown()
             }
         }
