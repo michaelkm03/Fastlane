@@ -29,7 +29,7 @@ class MediaContentView: UIView {
         
         backgroundColor = .clearColor()
         
-        previewImageView.contentMode = .ScaleAspectFill
+        previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         

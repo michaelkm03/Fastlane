@@ -21,6 +21,11 @@ enum VideoState {
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
+
+    private struct Constants {
+        static let toolbarHeight = CGFloat(41.0)
+    }
+
     private var videoPlayer: VVideoPlayer = VVideoView()
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
     private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
@@ -52,6 +57,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         videoPlayer.view.backgroundColor = .clearColor()
         
         previewView = UIImageView()
+        previewView.contentMode = .ScaleAspectFit
+        previewView.backgroundColor = .clearColor()
+
         let minWidth = UIScreen.mainScreen().bounds.size.width
         
         if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
@@ -73,7 +81,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
         superview.addSubview(toolbar)
-        toolbar.v_addHeightConstraint(41.0)
+        toolbar.v_addHeightConstraint(Constants.toolbarHeight)
         superview.v_addPinToLeadingTrailingToSubview(toolbar)
         superview.v_addPinToBottomToSubview(toolbar)
         
@@ -102,6 +110,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         if let item = item {
             item.muted = shouldMute
+            item.useAspectFit = true
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
