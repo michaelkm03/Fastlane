@@ -46,6 +46,10 @@ extension ContentModel {
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
     }
+    
+    var previewImageSize: CGSize? {
+        return previewImageModels.first?.mediaMetaData.size
+    }
 }
 
 extension VContent: ContentModel {
