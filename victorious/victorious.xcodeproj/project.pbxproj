@@ -11080,7 +11080,7 @@
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = ABHRJGEGKA;
+						DevelopmentTeam = P25BA56T67;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
