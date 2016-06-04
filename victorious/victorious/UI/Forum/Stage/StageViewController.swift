@@ -82,7 +82,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     // MARK: - Report Height Change
     
     private func reportHeightChange(for content: ContentModel) {
-        let contentHeight = content.previewImageSize?.height ?? Constants.maximumStageHeight
+        
+        let contentHeight = content.aspectRatio * view.bounds.width
         let clampedHeight = min(max(contentHeight, 0.0), Constants.maximumStageHeight)
         
         delegate?.stage(self, didUpdateContentHeight: clampedHeight)
