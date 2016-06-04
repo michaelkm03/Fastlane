@@ -17,12 +17,6 @@ class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigation
         
         super.init(nibName: nil, bundle: nil)
         
-        let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
-        addChildViewController(contentViewController)
-        view.addSubview(contentViewController.view)
-        view.v_addFitToParentConstraintsToSubview(contentViewController.view)
-        contentViewController.didMoveToParentViewController(self)
-        
         navigationItem.leftItemsSupplementBackButton = true
     }
     
@@ -34,11 +28,25 @@ class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigation
     
     let dependencyManager: VDependencyManager
     
+    // MARK: - View controllers
+    
+    /// The view controller that displays the right nav's content.
+    var contentViewController: UIViewController?
+    
     // MARK: - View events
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        
+        if contentViewController == nil {
+            let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
+            addChildViewController(contentViewController)
+            view.addSubview(contentViewController.view)
+            view.v_addFitToParentConstraintsToSubview(contentViewController.view)
+            contentViewController.didMoveToParentViewController(self)
+            self.contentViewController = contentViewController
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
