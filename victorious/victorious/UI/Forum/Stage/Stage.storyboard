@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -9,58 +9,29 @@
             <objects>
                 <viewController storyboardIdentifier="Stage" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="75x-GJ-AKe"/>
-                        <viewControllerLayoutGuide type="bottom" id="jfa-JG-qoQ"/>
+                        <viewControllerLayoutGuide type="top" id="RSM-kF-oLY"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ldt-nB-e5k"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="uNR-Mh-9DD" customClass="VPassthroughContainerView">
+                    <view key="view" contentMode="scaleToFill" id="dPd-gY-gTf">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIK-iz-Osm" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kcx-0v-akP">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </imageView>
-                                    <view alpha="0.0" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ch6-aY-OFp">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Kcx-0v-akP" secondAttribute="trailing" id="46g-tT-uMW"/>
-                                    <constraint firstItem="Kcx-0v-akP" firstAttribute="top" secondItem="qIK-iz-Osm" secondAttribute="top" id="A5q-5T-pzg"/>
-                                    <constraint firstItem="Ch6-aY-OFp" firstAttribute="leading" secondItem="qIK-iz-Osm" secondAttribute="leading" id="HAS-ri-Hed"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ch6-aY-OFp" secondAttribute="trailing" id="VbF-d6-5nv"/>
-                                    <constraint firstAttribute="height" constant="200" id="auz-wH-OTy"/>
-                                    <constraint firstAttribute="bottom" secondItem="Kcx-0v-akP" secondAttribute="bottom" id="e64-Lm-rFo"/>
-                                    <constraint firstAttribute="bottom" secondItem="Ch6-aY-OFp" secondAttribute="bottom" id="sJX-Zd-kaV"/>
-                                    <constraint firstItem="Ch6-aY-OFp" firstAttribute="top" secondItem="qIK-iz-Osm" secondAttribute="top" id="sft-R5-cSv"/>
-                                    <constraint firstItem="Kcx-0v-akP" firstAttribute="leading" secondItem="qIK-iz-Osm" secondAttribute="leading" id="zUk-OS-oZ3"/>
-                                </constraints>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jfa-JG-qoQ" firstAttribute="top" secondItem="qIK-iz-Osm" secondAttribute="bottom" id="666-eD-X5V"/>
-                            <constraint firstItem="qIK-iz-Osm" firstAttribute="top" secondItem="75x-GJ-AKe" secondAttribute="bottom" id="97a-rs-wsL"/>
-                            <constraint firstItem="qIK-iz-Osm" firstAttribute="leading" secondItem="uNR-Mh-9DD" secondAttribute="leading" id="OTh-Ep-cak"/>
-                            <constraint firstAttribute="trailing" secondItem="qIK-iz-Osm" secondAttribute="trailing" id="kNA-Hg-bxd"/>
+                            <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
+                            <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
+                            <constraint firstAttribute="bottom" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="yCG-mA-hRX"/>
+                            <constraint firstAttribute="trailing" secondItem="a1k-JM-1LN" secondAttribute="trailing" id="zqi-qs-Csp"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="666-eD-X5V"/>
-                            </mask>
-                        </variation>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="imageView" destination="Kcx-0v-akP" id="fPc-yw-E2e"/>
-                        <outlet property="mainContentView" destination="qIK-iz-Osm" id="MTX-nU-cpO"/>
-                        <outlet property="mainContentViewBottomConstraint" destination="666-eD-X5V" id="euT-t6-sBz"/>
-                        <outlet property="videoContentView" destination="Ch6-aY-OFp" id="0eS-DS-lo3"/>
+                        <outlet property="mediaContentView" destination="a1k-JM-1LN" id="axM-Ue-I6y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKP-kC-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>

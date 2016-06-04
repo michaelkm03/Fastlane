@@ -30,8 +30,8 @@ protocol ContentModel: PreviewImageContainer, PaginatableItem {
     /// An array of media assets for the content, could be any media type
     var assetModels: [ContentMediaAssetModel] { get }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? { get }
+    /// seekAheadTime to keep videos in sync for videos on VIP stage
+    var seekAheadTime: NSTimeInterval? { get set }
     
     func toSDKContent() -> Content
 }
@@ -47,6 +47,10 @@ extension ContentModel {
     
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
+    }
+    
+    var previewImageSize: CGSize? {
+        return previewImageModels.first?.mediaMetaData.size
     }
 }
 
@@ -113,9 +117,15 @@ extension VContent: ContentModel {
         return v_contentMediaAssets.map { $0 }
     }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? {
-        return nil
+    /// VContent does not provide seekAheadTime
+    var seekAheadTime: NSTimeInterval? {
+        get {
+            return nil
+        }
+        
+        set {
+            return
+        }
     }
     
     func toSDKContent() -> Content {

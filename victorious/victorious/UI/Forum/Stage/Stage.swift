@@ -15,7 +15,7 @@ protocol Stage: class, ForumEventReceiver {
     var dependencyManager: VDependencyManager! { get set }
     
     /// Replaces the currently content on the stage with the new one.
-    func addContent(stageContent: StageContent)
+    func addContent(stageContent: ContentModel)
     
     /// Removes the current content on the stage.
     func removeContent()

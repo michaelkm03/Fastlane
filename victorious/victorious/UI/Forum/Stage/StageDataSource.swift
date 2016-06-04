@@ -50,9 +50,8 @@ class StageDataSource: ForumEventReceiver {
                     where canceled != true else {
                         return
                 }
-                if let content = results?.first as? Content,
-                    let stageContent = content.stageContent {
-                    delegate.addContent(stageContent)
+                if let content = results?.first as? Content {
+                    delegate.addContent(content)
                 }
             }
         default:
