@@ -94,7 +94,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             }
         default:()
         }
-        nextSender?.sendEvent(event)
+        nextSender?.send(event)
     }
 
     // MARK: - ForumEventSender
@@ -187,6 +187,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        chatFeed?.nextSender = self
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
