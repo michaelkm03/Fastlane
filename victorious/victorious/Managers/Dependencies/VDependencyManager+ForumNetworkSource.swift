@@ -13,3 +13,4 @@ extension VDependencyManager {
         return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }
 }
+
