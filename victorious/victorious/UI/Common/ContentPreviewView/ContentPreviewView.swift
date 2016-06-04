@@ -56,7 +56,7 @@ class ContentPreviewView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var content: VContent? {
+    var content: ContentModel? {
         didSet {
             guard let content = content else {
                 assertionFailure("Content cannot be nil")

@@ -101,7 +101,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
         webSocket.connect()
         
-        sendEvent(.sendContent(chatMessageOutbound))
+        send(.sendContent(chatMessageOutbound))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
@@ -121,7 +121,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
         webSocket.connect()
 
-        sendEvent(.blockUser(blockUser))
+        send(.blockUser(blockUser))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 

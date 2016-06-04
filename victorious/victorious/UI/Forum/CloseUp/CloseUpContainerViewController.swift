@@ -48,7 +48,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     init(dependencyManager: VDependencyManager,
          content: ContentModel? = nil,
-         streamAPIPath: String?) {
+         streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -66,8 +66,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             managesBackground: true
         )
         
-        gridStreamController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            dependencyManager,
+        gridStreamController = GridStreamViewController<CloseUpView>(
+            dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
@@ -121,7 +121,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func share() {
-        /// FUTURE: Implement this
+        guard let content = content else {
+            return
+        }
+        ShowShareContentOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            content: content
+        ).queue()
     }
     
     func toggleUpvote() {

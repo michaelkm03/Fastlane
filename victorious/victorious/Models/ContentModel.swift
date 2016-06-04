@@ -10,7 +10,7 @@ import Foundation
 
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
-protocol ContentModel: PreviewImageContainer {
+protocol ContentModel: PreviewImageContainer, PaginatableItem {
     var createdAt: NSDate { get }
     var type: ContentType { get }
     
@@ -30,8 +30,10 @@ protocol ContentModel: PreviewImageContainer {
     /// An array of media assets for the content, could be any media type
     var assetModels: [ContentMediaAssetModel] { get }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? { get }
+    /// seekAheadTime to keep videos in sync for videos on VIP stage
+    var seekAheadTime: NSTimeInterval? { get set }
+    
+    func toSDKContent() -> Content
 }
 
 extension ContentModel {
@@ -45,6 +47,10 @@ extension ContentModel {
     
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
+    }
+    
+    var previewImageSize: CGSize? {
+        return previewImageModels.first?.mediaMetaData.size
     }
 }
 
@@ -111,9 +117,26 @@ extension VContent: ContentModel {
         return v_contentMediaAssets.map { $0 }
     }
     
-    // Future: Take the following property out
-    var stageContent: StageContent? {
-        return nil
+    /// VContent does not provide seekAheadTime
+    var seekAheadTime: NSTimeInterval? {
+        get {
+            return nil
+        }
+        
+        set {
+            return
+        }
+    }
+    
+    func toSDKContent() -> Content {
+        return Content(
+            id: id,
+            createdAt: createdAt,
+            type: type,
+            text: text,
+            assets: assetModels.map { $0.toSDKAsset() },
+            author: authorModel.toSDKUser()
+        )
     }
 }
 
@@ -131,4 +154,7 @@ extension Content: ContentModel {
         return assets.map { $0 as ContentMediaAssetModel }
     }
 
+    func toSDKContent() -> Content {
+        return self
+    }
 }
