@@ -21,8 +21,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// ForumEventSender
     var nextSender: ForumEventSender? {
-        get { return delegate }
-        set {}
+        return delegate
     }
     
     private var visibleKeyboardHeight: CGFloat = 0

@@ -30,11 +30,7 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
         
         backgroundColor = .clearColor()
         
-        previewImageView.contentMode = .ScaleAspectFill
-        
-        previewImageView.translatesAutoresizingMaskIntoConstraints = false
-        videoContainerView.translatesAutoresizingMaskIntoConstraints = false
-        
+        previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         
