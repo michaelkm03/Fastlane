@@ -155,7 +155,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-
+        navigationController?.navigationItem.titleView = ForumNavBarTitleView(dependencyManager: dependencyManager, frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
