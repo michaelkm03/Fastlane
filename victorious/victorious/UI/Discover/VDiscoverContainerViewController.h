@@ -14,7 +14,7 @@
 
 @protocol SearchResultsViewControllerDelegate;
 
-@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, VTabMenuContainedViewControllerNavigation, UINavigationControllerDelegate, VDeeplinkSupporter>
+@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, VTabMenuContainedViewControllerNavigation, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
