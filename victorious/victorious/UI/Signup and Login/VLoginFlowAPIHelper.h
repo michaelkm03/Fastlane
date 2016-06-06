@@ -16,6 +16,7 @@
  *  All completion blocks are called on the main thread.
  */
 @interface VLoginFlowAPIHelper : NSObject
+@property (nonatomic, readonly, strong) VDependencyManager *dependencyManager;
 
 /**
  *  Designated initializer for the class.
