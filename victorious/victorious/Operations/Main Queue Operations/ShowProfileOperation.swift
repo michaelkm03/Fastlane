@@ -40,21 +40,18 @@ class ShowProfileOperation: BackgroundOperation {
                 return
         }
         
-        let navController: UINavigationController?
-        if let customNav = originViewController?.v_navigationController()?.innerNavigationController {
-            navController = customNav
-        } else if let systemNav =  originViewController?.navigationController {
-            navController = systemNav
+        guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId) ,
+            let originViewController = originViewController else {
+            finishedExecuting()
+            return
+        }
+        
+        if let originViewController = originViewController as? UINavigationController {
+            originViewController.pushViewController(profileViewController, animated: true)
         } else {
-            navController = nil
+            originViewController.navigationController?.pushViewController(profileViewController, animated: true)
         }
         
-        guard let targetNavController = navController,
-            let viewController = dependencyManager.userProfileViewController(withRemoteID: userId) else {
-                return
-        }
-        
-        targetNavController.pushViewController(viewController, animated: true)
         finishedExecuting()
     }
 }
