@@ -82,10 +82,10 @@ class ShowCloseUpOperation: MainQueueOperation {
                 macroURLString: dependencyManager.contentFetchURL,
                 currentUserID: String(userID),
                 contentID: contentID
-                ).after(self).queue() { results, error, cancelled in
-                    if let content = results?.first as? VContent {
-                        closeUpViewController.updateContent(content)
-                    }
+            ).rechainAfter(self).queue() { results, error, cancelled in
+                if let content = results?.first as? VContent {
+                    closeUpViewController.updateContent(content)
+                }
             }
         }
     }
