@@ -15,7 +15,7 @@
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VTabMenuContainedViewControllerNavigation, VNavigationDestination, VDeeplinkSupporter>
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VTabMenuContainedViewControllerNavigation, VNavigationDestination>
 
 @property (nonatomic, strong, readwrite) VUser *user;
 
