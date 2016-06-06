@@ -9,6 +9,30 @@
 import UIKit
 import MBProgressHUD
 
+/// Conformers will receive a message after the vip gate
+/// has dismissed or permitted the user to pass through.
+protocol VIPGateViewControllerDelegate: class {
+    
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
+    
+    /// P
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) -> Bool
+}
+
+extension VIPGateViewControllerDelegate {
+    
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) -> Bool {
+        guard let vipForum = dependencyManager.viewControllerForKey("VIPForum") as? ForumViewController else {
+            assertionFailure("Failed to find a VIP forum in the current template")
+            return false
+        }
+        
+        let originViewController = dependencyManager.scaffoldViewController()
+        originViewController.presentViewController(vipForum, animated: true, completion: nil)
+        return true
+    }
+}
+
 class VIPGateViewController: UIViewController, VNavigationDestination {
     
     @IBOutlet weak private var textView: UITextView!
@@ -17,6 +41,8 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var legalPromptLabel: UILabel!
+    
+    weak var delegate: VIPGateViewControllerDelegate?
     
     var dependencyManager: VDependencyManager! {
         didSet {

@@ -16,11 +16,12 @@ struct GridStreamConfiguration {
     var managesBackground = true
 }
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VBackgroundContainer {
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VBackgroundContainer, VIPGateViewControllerDelegate {
     
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
+    private var selectedContent: ContentModel?
     private let collectionView = UICollectionView(
         frame: CGRectZero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -208,11 +209,44 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        ShowCloseUpOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            content: dataSource.items[indexPath.row]
-        )?.queue()
+        let selectedContent = dataSource.items[indexPath.row]
+        if selectedContent.isVIPOnly {
+            self.selectedContent = selectedContent
+            let showVIPGateOperation = ShowVIPGateOperation(originViewController: self, dependencyManager: dependencyManager, vipGateViewControllerDelegate: self)
+            showVIPGateOperation.queue() { [weak self] _ in
+                if !showVIPGateOperation.showedGate, let strongSelf = self {
+                    ShowCloseUpOperation(
+                        originViewController: strongSelf,
+                        dependencyManager: strongSelf.dependencyManager,
+                        content: selectedContent
+                    )?.queue()
+                    strongSelf.selectedContent = nil
+                }
+            }
+        } else {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                content: selectedContent
+            )?.queue()
+        }
+    }
+    
+    // MARK: - VIPGateViewControllerDelegate
+    
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
+        guard let selectedContent = selectedContent else {
+            return
+        }
+        
+        if allowed {
+            ShowCloseUpOperation(
+                originViewController: self,
+                dependencyManager: dependencyManager,
+                content: selectedContent
+            )?.queue()
+        }
+        self.selectedContent = nil
     }
 }
 
