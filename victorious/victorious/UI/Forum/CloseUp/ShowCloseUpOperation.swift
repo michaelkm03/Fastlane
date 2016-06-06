@@ -50,14 +50,10 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
-        let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : contentID ?? content?.id ?? "",
+        let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
+            "%%CONTENT_ID%%": contentID ?? content?.id ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
-        ]
-        let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
-            replacementDictionary,
-            inURLString: childDependencyManager.relatedContentURL
-        )
+        ])
         
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,
@@ -65,7 +61,12 @@ class ShowCloseUpOperation: MainQueueOperation {
             streamAPIPath: apiPath
         )
         
-        originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        if let originViewController = originViewController as? UINavigationController {
+            originViewController.pushViewController(closeUpViewController, animated: animated)
+        } else {
+            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        }
+        
         
         /// FUTURE: do a new load of the content anyway
         if content == nil {
@@ -81,10 +82,10 @@ class ShowCloseUpOperation: MainQueueOperation {
                 macroURLString: dependencyManager.contentFetchURL,
                 currentUserID: String(userID),
                 contentID: contentID
-                ).after(self).queue() { results, error, cancelled in
-                    if let content = results?.first as? VContent {
-                        closeUpViewController.updateContent(content)
-                    }
+            ).rechainAfter(self).queue() { results, error, cancelled in
+                if let content = results?.first as? VContent {
+                    closeUpViewController.updateContent(content)
+                }
             }
         }
     }

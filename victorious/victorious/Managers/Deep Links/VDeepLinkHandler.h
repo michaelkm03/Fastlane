@@ -32,10 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Completion block for deepLink handlers.
  
- @param viewController The view controller to display. Usually you should pass "self", but not always.
- If nil, navigation is cancelled and an error is displayed to the user.
+ @param displayedViewController The view controller presented by the handler.
  */
-typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewController *_Nullable destinationViewController );
+typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceed, UIViewController *_Nullable displayedViewController );
 
 /**
  Objects conforming to this protocol are able to provide a view controller for
@@ -50,7 +49,7 @@ typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewContro
  pointed to by the given URL.
  
  @param url A deepLink URL
- @param completion This should be called when the view controller is ready to be displayed.
+ @param completion This should be called after the view controller is displayed.
  
  @return YES if the receiver (or an alternate) can handle the given URL. NO if you should ask someone else. If NO is
          returned, the completion block MUST NOT be called.

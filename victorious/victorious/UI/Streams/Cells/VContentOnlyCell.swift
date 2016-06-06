@@ -46,7 +46,7 @@ class VContentOnlyCell: UICollectionViewCell {
         updatePreviewView()
     }
     
-    func setContent(content: VContent?) {
+    func setContent(content: ContentModel?) {
         if let content = content {
             self.content = content
             self.streamItem = nil
@@ -55,7 +55,7 @@ class VContentOnlyCell: UICollectionViewCell {
     }
     
     private var streamItem: VStreamItem?
-    private var content: VContent?
+    private var content: ContentModel?
     
     // MARK: - Dependency manager
     

@@ -48,7 +48,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     init(dependencyManager: VDependencyManager,
          content: ContentModel? = nil,
-         streamAPIPath: String?) {
+         streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -66,8 +66,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             managesBackground: true
         )
         
-        gridStreamController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            dependencyManager,
+        gridStreamController = GridStreamViewController<CloseUpView>(
+            dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
@@ -132,17 +132,43 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        /// FUTURE: Implement this
+        guard let contentID = content?.id else {
+            return
+        }
+        ContentUpvoteToggleOperation(
+            contentID: contentID,
+            upvoteURL: dependencyManager.contentUpvoteURL,
+            unupvoteURL: dependencyManager.contentUnupvoteURL
+            ).queue() { [weak self] _ in
+                self?.updateHeader()
+        }
     }
     
     func overflow() {
-        /// FUTURE: Implement this
+        guard let contentID = content?.id else {
+            return
+        }
+        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        
+        confirm.before(flag)
+        confirm.queue()
+        flag.queue() { [weak self] _, _, cancelled in
+            /// FUTURE: Update parent view controller to remove content
+            if !cancelled {
+                self?.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
 }
 
 private extension VDependencyManager {
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysOriginal)
     }
     
     var upvoteIconUnselected: UIImage? {
