@@ -14,7 +14,6 @@
 
 @protocol SearchResultsViewControllerDelegate;
 
-/// This class no longer conforms to VDeeplinkSupporter as we are changing how Deep Linking works
 @interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, VTabMenuContainedViewControllerNavigation, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;

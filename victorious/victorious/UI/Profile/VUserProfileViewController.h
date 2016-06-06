@@ -15,7 +15,6 @@
 
 @class VUser;
 
-/// This class no longer conforms to VDeeplinkSupporter as we are changing how Deep Linking works
 @interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VTabMenuContainedViewControllerNavigation, VNavigationDestination>
 
 @property (nonatomic, strong, readwrite) VUser *user;
