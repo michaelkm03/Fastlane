@@ -46,7 +46,16 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     override func viewWillDisappear(animated: Bool) {
-        hideStageMedia()
+        hideStage()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let contentFetchOperation = ContentFetchOperation(macroURLString: "https://vapi-dev.getvictorious.com/v1/content/%%CONTENT_ID%%/user/%%USER_ID%%", currentUserID: "6086", contentID: "20712")
+        contentFetchOperation.queue() { results, error, cancelled in
+            self.addContent(results?.first as! ContentModel)
+        }
     }
 
     //MARK: - Stage
@@ -60,7 +69,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     func removeContent() {
-        hideStageMedia()
+        hideStage()
     }
 
     // MARK: - ForumEventReceiver
@@ -71,7 +80,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     // MARK: Clear Media
     
-    private func hideStageMedia(animated: Bool = false) {
+    private func hideStage(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
