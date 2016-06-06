@@ -496,7 +496,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if let asset = selectedAsset {
             sendMessage(asset: asset, text: textView.text)
         } else {
-            sendMessage(text: textView.text)
+            if (!textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty) {
+                sendMessage(text: textView.text)
+            }
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
