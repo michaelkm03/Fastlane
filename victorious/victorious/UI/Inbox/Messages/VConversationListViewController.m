@@ -235,13 +235,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     return VAuthorizationContextInbox;
 }
 
-#pragma mark - VDeepLinkSupporter
-
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
-{
-    return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
-}
-
 #pragma mark - VConversationContainerViewControllerDelegate
 
 - (void)onConversationFlagged:(VConversation *)conversation
