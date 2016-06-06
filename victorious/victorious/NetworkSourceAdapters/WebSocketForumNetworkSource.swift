@@ -62,8 +62,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             return
         }
         
-        dispatch_after(reconnectTimeout) { [weak self] in
-            self?.setUpIfNeeded()
+        if (VCurrentUser.isLoggedIn()) { //Try to reconnect only if the user is still logged in 
+            dispatch_after(reconnectTimeout) { [weak self] in
+                self?.setUpIfNeeded()
+            }
         }
     }
     

@@ -4,7 +4,7 @@
 ###########
 
 FOLDER=$1        # Folder containing app resources including, crucially, an Info.plist file
-CONFIGURATION=$2 # Build configuration (e.g. Debug, QA, Staging, Stable, Release)
+CONFIGURATION=$2 # Build configuration (e.g. Debug, Staging, Stable, Release)
 
 if [ "$FOLDER" == "" ]; then
     exit 0
@@ -15,8 +15,6 @@ if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
     DEFAULT_APP_ID_KEY="VictoriousAppID"
 elif [ "$CONFIGURATION" == "Staging" ]; then
     DEFAULT_APP_ID_KEY="StagingAppID"
-elif [ "$CONFIGURATION" == "QA" ]; then
-    DEFAULT_APP_ID_KEY="QAAppID"
 else
     DEFAULT_APP_ID_KEY="VictoriousAppID"
 fi

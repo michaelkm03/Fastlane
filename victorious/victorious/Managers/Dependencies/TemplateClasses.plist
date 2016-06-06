@@ -208,6 +208,8 @@
 	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
 	<string>victorious.WebSocketForumNetworkSource</string>
+	<key>REST.networkLayer</key>
+	<string>victorious.RESTForumNetworkSource</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>

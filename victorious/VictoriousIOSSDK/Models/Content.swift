@@ -21,9 +21,9 @@ public class Content: DictionaryConvertible {
     public let isVIPOnly: Bool
     public let author: User
     public let isLikedByCurrentUser: Bool
-
-    /// Payload describing what will be put on the stage.
-    public var stageContent: StageContent?
+    
+    /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
+    public var seekAheadTime : NSTimeInterval?
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -35,13 +35,12 @@ public class Content: DictionaryConvertible {
             let previewType = json["preview"]["type"].string,
             let author = User(json: viewedContentJSON["author"])
         else {
-            NSLog("Required field missing in content json -> \(json)")
+            NSLog("Required field missing in content json -> \(viewedContentJSON)")
             return nil
         }
         
         self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
-        self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
@@ -57,12 +56,7 @@ public class Content: DictionaryConvertible {
         
         switch type {
         case .image:
-            if let asset = ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString]) {
-                self.assets = [asset]
-            } else {
-                self.assets = []
-            }
-            
+            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
         case .gif, .video:
             self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
         case .text:
