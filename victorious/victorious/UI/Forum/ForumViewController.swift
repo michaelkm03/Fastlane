@@ -155,6 +155,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.topItem?.titleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0,y: 0,width: 200,height: 45))
+        navigationController?.navigationBar.topItem?.titleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
@@ -190,8 +192,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         
-        navigationController?.navigationItem.titleView = ForumNavBarTitleView(dependencyManager: dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 80))
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
             style: .Plain,
