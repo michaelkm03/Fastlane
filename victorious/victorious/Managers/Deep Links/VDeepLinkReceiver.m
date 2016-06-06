@@ -15,7 +15,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "victorious-Swift.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 
@@ -41,7 +41,7 @@
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/5618"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
-//         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/3694"];
+         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/6086"];
 //         NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
         [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
 #endif

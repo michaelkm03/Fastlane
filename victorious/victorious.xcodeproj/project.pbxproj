@@ -1725,6 +1725,7 @@
 		BF3777EE1CEE50DD00AEF7F2 /* InvalidViewedContent.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777D21CEE4D5800AEF7F2 /* InvalidViewedContent.json */; };
 		BF3777EF1CEE50DD00AEF7F2 /* ViewedContent.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */; };
 		BF3777F01CEE50DD00AEF7F2 /* ViewedContentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */; };
+		BF3814F01D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3814EF1D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
 		BF425FF11C88EE2800283089 /* SequenceLikeToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FF01C88EE2800283089 /* SequenceLikeToggleOperationTests.swift */; };
@@ -4501,6 +4502,7 @@
 		BF3777D21CEE4D5800AEF7F2 /* InvalidViewedContent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InvalidViewedContent.json; path = ViewedContent/InvalidViewedContent.json; sourceTree = "<group>"; };
 		BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ViewedContent.json; path = ViewedContent/ViewedContent.json; sourceTree = "<group>"; };
 		BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ViewedContentsResponse.json; path = ViewedContent/ViewedContentsResponse.json; sourceTree = "<group>"; };
+		BF3814EF1D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDeepLinkHandler.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
 		BF425FF01C88EE2800283089 /* SequenceLikeToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceLikeToggleOperationTests.swift; sourceTree = "<group>"; };
@@ -8884,9 +8886,10 @@
 		A79869DF1AD7124D00F2564A /* Deep Links */ = {
 			isa = PBXGroup;
 			children = (
+				BF5BF6B81D00E0A0009FE532 /* ContentDeepLinkHandler.swift */,
+				BF3814EF1D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift */,
 				A79869E01AD7124D00F2564A /* VContentDeepLinkHandler.h */,
 				A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */,
-				BF5BF6B81D00E0A0009FE532 /* ContentDeepLinkHandler.swift */,
 				A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */,
 				A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */,
 				A79869E31AD7124D00F2564A /* VDeepLinkReceiver.h */,
@@ -13278,6 +13281,7 @@
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
+				BF3814F01D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift in Sources */,
 				F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */,
 				A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */,
 				79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */,
