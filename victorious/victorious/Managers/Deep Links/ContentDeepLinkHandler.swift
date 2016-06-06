@@ -33,7 +33,8 @@ class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
             originViewController: originViewController,
             dependencyManager: dependencyManager,
             contentID: contentID
-        )?.queue() { error, finished in
+        )?.queue() { error, cancelled in
+            let finished = (error == nil) && !cancelled
             completion?(finished, nil)
         }
         

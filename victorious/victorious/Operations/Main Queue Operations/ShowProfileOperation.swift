@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowProfileOperation: BackgroundOperation {
+class ShowProfileOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
@@ -24,26 +24,19 @@ class ShowProfileOperation: BackgroundOperation {
     
     override func start() {
         super.start()
-        beganExecuting()
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.performNavigation()
+        defer {
+            finishedExecuting()
         }
-    }
-    
-    private func performNavigation() {
         
         // Check if already showing the a user's profile
         if let originViewControllerProfile = originViewController as? VUserProfileViewController
             where originViewControllerProfile.user.remoteId.integerValue == userId {
-                finishedExecuting()
-                return
+            return
         }
         
         guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId) ,
             let originViewController = originViewController else {
-            finishedExecuting()
-            return
+                return
         }
         
         if let originViewController = originViewController as? UINavigationController {
@@ -51,7 +44,5 @@ class ShowProfileOperation: BackgroundOperation {
         } else {
             originViewController.navigationController?.pushViewController(profileViewController, animated: true)
         }
-        
-        finishedExecuting()
     }
 }

@@ -33,8 +33,9 @@ class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
             originViewController: originViewController,
             dependencyManager: dependencyManager,
             userId: userID
-        ).queue() { error, finished in
-            completion?(finished, nil)
+        ).queue() { error, cancelled in
+            let finished = (error == nil) && !cancelled
+            completion?(finished , nil)
         }
         
     }
