@@ -7,20 +7,59 @@
 //
 
 class RESTForumNetworkSource: NSObject, ForumNetworkSource {
+    
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
+        self.dependencyManager = dependencyManager.networkResources ?? dependencyManager
+        
+        dataSource = TimePaginatedDataSource(apiPath: self.dependencyManager.mainFeedAPIPath) {
+            ContentFeedOperation(url: $0)
+        }
     }
     
     // MARK: - Dependency manager
     
     private let dependencyManager: VDependencyManager
     
+    // MARK: - Data source
+    
+    let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    
+    // MARK: - Polling
+    
+    private static let pollingInterval = NSTimeInterval(10.0)
+    
+    private var pollingTimer: VTimerManager?
+    
+    private func startPolling() {
+        pollingTimer?.invalidate()
+        
+        pollingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
+            RESTForumNetworkSource.pollingInterval,
+            target: self,
+            selector: #selector(pollForNewContent),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    @objc private func pollForNewContent() {
+        dataSource.loadItems(.newer) { [weak self] contents, error in
+            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+        }
+    }
+    
     // MARK: - ForumNetworkSource
     
     func setUp() {
-        // Nothing to set up.
+        isSetUp = true
+        
+        dataSource.loadItems(.refresh) { [weak self] contents, error in
+            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+        }
+        
+        startPolling()
     }
     
     func tearDown() {
@@ -39,14 +78,24 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    var isSetUp: Bool {
-        // We're always set-up.
-        return true
-    }
+    private(set) var isSetUp = false
     
     // MARK: - ForumEventSender
     
     private(set) weak var nextSender: ForumEventSender?
+    
+    func send(event: ForumEvent) {
+        nextSender?.send(event)
+        
+        switch event {
+        case .loadOldContent:
+            dataSource.loadItems(.older) { [weak self] contents, error in
+                self?.broadcast(.prependContent(contents.reverse().map { $0.toSDKContent() }))
+            }
+        default:
+            break
+        }
+    }
     
     // MARK: - ForumEventReceiver
     
@@ -54,5 +103,16 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     func receive(event: ForumEvent) {
         // Nothing yet.
+    }
+}
+
+private extension VDependencyManager {
+    var mainFeedAPIPath: APIPath {
+        guard let apiPath = apiPathForKey("mainFeedUrl") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        
+        return apiPath
     }
 }

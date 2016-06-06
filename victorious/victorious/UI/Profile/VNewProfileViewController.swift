@@ -31,7 +31,7 @@ class VNewProfileViewController: UIViewController {
                                                         header: header,
                                                         content: nil,
                                                         configuration: configuration,
-                                                        streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID) ?? "")
+                                                        streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID))
         
         super.init(nibName: nil, bundle: nil)
         
@@ -142,20 +142,15 @@ private extension VDependencyManager {
 }
 
 private extension VDependencyManager {
-    func streamAPIPath(forUserID userID: Int) -> String? {
-        guard var apiPath = stringForKey("streamURL") else {
-            return nil
+    func streamAPIPath(forUserID userID: Int) -> APIPath {
+        guard var apiPath = apiPathForKey("streamURL") else {
+            return APIPath(templatePath: "")
         }
         
-        apiPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
-            "%%FROM_TIME%%": "\(Int64(NSDate().timeIntervalSince1970 * 1000))",
-            "%%TO_TIME%%": "0"
-        ], inURLString: apiPath)
+        apiPath.queryParameters = [
+            "user_id": "\(userID)"
+        ]
         
-        let urlComponents = NSURLComponents(string: apiPath)
-        let queryItem = NSURLQueryItem(name: "user_id", value: "\(userID)" )
-        urlComponents?.queryItems = (urlComponents?.queryItems ?? []) + [queryItem]
-        
-        return urlComponents?.string
+        return apiPath
     }
 }

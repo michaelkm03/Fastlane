@@ -11,9 +11,9 @@ import Foundation
 /// Describes a type that can transform a epemeral data type, such
 /// as Content, into a piece of media and upload it so that it persists
 /// even after the ephemeral piece it was created from is destroyed.
-public protocol PersistentContentCreator {
+protocol PersistentContentCreator {
     
-    func createPersistentContent(content: Content, networkResourcesDependency: VDependencyManager?, completion: (NSError?) -> Void)
+    func createPersistentContent(content: ContentModel, networkResourcesDependency: VDependencyManager?, completion: (NSError?) -> Void)
 }
 
 extension PersistentContentCreator {
@@ -25,9 +25,8 @@ extension PersistentContentCreator {
     /// - Parameter networkResourcesDependency: A dependency manager that, optionally, contains a unique media and/or text creation URL.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    func createPersistentContent(content: Content, networkResourcesDependency: VDependencyManager?, completion: (NSError?) -> Void) {
-    
-        if !content.assets.isEmpty {
+    func createPersistentContent(content: ContentModel, networkResourcesDependency: VDependencyManager?, completion: (NSError?) -> Void) {
+        if !content.assetModels.isEmpty {
             
             guard let publishParameters = VPublishParameters(content: content) else {
                 completion(PersistentContentCreatorError(code: .invalidChatMessage))

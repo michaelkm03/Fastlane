@@ -10,9 +10,11 @@ import UIKit
 import VictoriousIOSSDK
 import KVOController
 
-protocol ChatFeedNetworkDataSourceType: VScrollPaginatorDelegate, ForumEventReceiver {
+protocol ChatFeedNetworkDataSourceType: ForumEventReceiver, ForumEventSender {
     func startCheckingForNewItems()
     func stopCheckingForNewItems()
+    
+    weak var nextSender: ForumEventSender? { get set }
 }
 
 class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
@@ -46,16 +48,6 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
         stopCheckingForNewItems()
     }
     
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() {
-        // Pagination not supported in this implementation
-    }
-    
-    func shouldLoadPreviousPage() {
-        // Pagination not supported in this implementation
-    }
-    
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {
@@ -73,10 +65,20 @@ class ChatFeedNetworkDataSource: NSObject, ChatFeedNetworkDataSourceType {
                     dequeueMessages()
                 }
             }
+        case .prependContent(_):
+            // Not implemented yet.
+            break
+        case .replaceContent(_):
+            // Not implemented yet.
+            break
         default:
             break
         }
     }
+    
+    // MARK: - ForumEventSender
+    
+    var nextSender: ForumEventSender?
     
     // MARK: - ChatFeedNetworkDataSource
     
