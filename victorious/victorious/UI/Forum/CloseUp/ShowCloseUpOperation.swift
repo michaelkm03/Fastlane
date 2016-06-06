@@ -67,8 +67,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         
         if let originViewController = originViewController as? UINavigationController {
             originViewController.pushViewController(closeUpViewController, animated: animated)
-        }
-        else {
+        } else {
             originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
         }
         
