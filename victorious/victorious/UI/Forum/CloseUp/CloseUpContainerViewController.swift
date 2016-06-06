@@ -145,7 +145,24 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func overflow() {
-        /// FUTURE: Implement this
+        guard let contentID = content?.id else {
+            return
+        }
+        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        
+        confirm.before(flag)
+        confirm.queue()
+        flag.queue() { [weak self] _, _, cancelled in
+            /// FUTURE: Update parent view controller to remove content
+            if !cancelled {
+                self?.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
 }
 
