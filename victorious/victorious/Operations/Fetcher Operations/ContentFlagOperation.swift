@@ -25,7 +25,7 @@ class ContentFlagOperation: FetcherOperation {
             return
         }
         
-        self.flaggedContent.addRemoteId(contentID, toFlaggedItemsWithType: .Content)
+        flaggedContent.addRemoteId(contentID, toFlaggedItemsWithType: .Content)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
