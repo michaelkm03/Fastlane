@@ -132,7 +132,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        /// FUTURE: Implement this
+        guard let contentID = content?.id else {
+            return
+        }
+        ContentUpvoteToggleOperation(
+            contentID: contentID,
+            upvoteURL: dependencyManager.contentUpvoteURL,
+            unupvoteURL: dependencyManager.contentUnupvoteURL
+            ).queue() { [weak self] _ in
+                self?.updateHeader()
+        }
     }
     
     func overflow() {
@@ -142,7 +151,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
 
 private extension VDependencyManager {
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysOriginal)
     }
     
     var upvoteIconUnselected: UIImage? {
