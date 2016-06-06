@@ -330,7 +330,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     if ( [VCurrentUser user] != nil )
     {
         // Logout first if logged in
-        LogoutOperation *operation = [[LogoutOperation alloc] init];
+        LogoutOperation *operation = [[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager];
         [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
         {
             [self updateLogoutButtonState];

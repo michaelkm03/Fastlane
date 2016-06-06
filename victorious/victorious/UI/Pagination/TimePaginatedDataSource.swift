@@ -42,7 +42,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     // MARK: - Initializing
     
-    init(apiPath: String, ordering: PaginatedOrdering = .descending, createOperation: (url: NSURL) -> Operation) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, createOperation: (url: NSURL) -> Operation) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.createOperation = createOperation
@@ -50,7 +50,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     // MARK: - Configuration
     
-    let apiPath: String
+    private(set) var apiPath: APIPath
     let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
     
@@ -59,8 +59,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// The data source's list of items ordered from oldest to newest.
     private(set) var items: [Item] = []
     
-    /// Keeps track of whether we're loading a page so that we don't accidentally load the same stuff a bunch of times.
-    private var isLoadingPage = false
+    /// Whether the data source is currently loading a page of items or not.
+    private(set) var isLoading = false
     
     /// Loads a new page of items.
     ///
@@ -68,8 +68,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     ///
     /// This method does nothing if a page is already being loaded.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: (newItems: [Item], error: NSError?) -> Void) {
-        guard !isLoadingPage else {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], error: NSError?) -> Void)? = nil) {
+        guard !isLoading else {
             return
         }
         
@@ -78,15 +78,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return
         }
         
-        isLoadingPage = true
-        
-        if loadingType == .refresh {
-            items = []
-        }
+        isLoading = true
         
         createOperation(url: url).queue { [weak self] newItems, error in
             defer {
-                completion(newItems: newItems, error: error)
+                completion?(newItems: newItems, error: error)
             }
             
             guard let ordering = self?.ordering else {
@@ -110,7 +106,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
             }
             
-            self?.isLoadingPage = false
+            self?.isLoading = false
         }
     }
     
@@ -131,12 +127,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return nil
         }
         
-        let processedPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([
-            "%%FROM_TIME%%": "\(fromTime)",
-            "%%TO_TIME%%": "\(toTime)"
-        ], inURLString: apiPath)
+        apiPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
+        apiPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
         
-        return NSURL(string: processedPath)
+        return apiPath.url
     }
     
     /// Returns the range of timestamps needed to load new content for `loadingType`.
@@ -147,7 +141,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
-        case .refresh, .newer:
+        case .refresh:
+            return (fromTime: now, toTime: 0)
+        case .newer:
             return (fromTime: now, toTime: newestTimestamp ?? 0)
         case .older:
             return (fromTime: oldestTimestamp ?? now, toTime: 0)
@@ -180,6 +176,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
 
 private extension NSDate {
     var paginationTimestamp: Int64 {
+        // Must use Int64 to avoid overflow issues with 32 bit ints.
         return Int64(timeIntervalSince1970 * 1000.0)
     }
 }

@@ -522,7 +522,7 @@ private extension VDependencyManager {
     }
     
     var inputPromptText: String {
-        return stringForKey("inputTextPrompt")
+        return stringForKey("inputTextPrompt") ?? NSLocalizedString("What do you think?", comment: "")
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
@@ -538,15 +538,15 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    var confirmButtonDeselectedTextColor: UIColor {
+    var confirmButtonDeselectedTextColor: UIColor? {
         return colorForKey("color.link.deselected")
     }
     
-    var confirmButtonSelectedTextColor: UIColor {
+    var confirmButtonSelectedTextColor: UIColor? {
         return colorForKey("color.link.selected")
     }
     
-    var confirmButtonBackgroundColor: UIColor {
+    var confirmButtonBackgroundColor: UIColor? {
         return colorForKey(VDependencyManagerAccentColorKey)
     }
     
@@ -554,15 +554,15 @@ private extension VDependencyManager {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
 
-    var confirmButtonTextFont: UIFont {
+    var confirmButtonTextFont: UIFont? {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }
     
-    var tabItemDeselectedTintColor: UIColor {
+    var tabItemDeselectedTintColor: UIColor? {
         return colorForKey("color.link.deselected")
     }
     
-    var tabItemSelectedTintColor: UIColor {
+    var tabItemSelectedTintColor: UIColor? {
         return colorForKey("color.link.selected")
     }
     
@@ -571,15 +571,10 @@ private extension VDependencyManager {
     }
     
     var keyboardAppearance: UIKeyboardAppearance {
-        return keyboardStyleForKey("keyboardStyle")
+        return keyboardStyleForKey("keyboardStyle") ?? .Light
     }
     
     var confirmKeyText: String {
-        return stringForKey("confirmKeyText")
-    }
-    
-    var backgroundColor: UIColor {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as! VSolidColorBackground
-        return background.backgroundColor
+        return stringForKey("confirmKeyText") ?? NSLocalizedString("Send", comment: "")
     }
 }
