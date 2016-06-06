@@ -16,22 +16,13 @@ protocol VIPGateViewControllerDelegate: class {
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
-    ///
-    /// - returns: false if either the scaffold or vip forum is not found on the provided dependency manager; true otherwise.
-    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) -> Bool
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
 }
 
 extension VIPGateViewControllerDelegate {
     
-    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) -> Bool {
-        guard let vipForum = dependencyManager.viewControllerForKey("VIPForum") as? ForumViewController,
-            let originViewController = dependencyManager.scaffoldViewController() else {
-            assertionFailure("Failed to find a VIP forum in the current template")
-            return false
-        }
-        
-        originViewController.presentViewController(vipForum, animated: true, completion: nil)
-        return true
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) {
+        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager).queue()
     }
 }
 
@@ -164,10 +155,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     private func openGate() {
-        let originVC = dependencyManager.scaffoldViewController()
-        ShowForumOperation(originViewController: originVC, dependencyManager: dependencyManager).queue() { _ in
-            (originVC as? VTabScaffoldViewController)?.setSelectedMenuItemAtIndex(0)
-        }
+        delegate?.vipGateViewController(self, allowedAccess: true)
     }
     
     private func updateViews() {
