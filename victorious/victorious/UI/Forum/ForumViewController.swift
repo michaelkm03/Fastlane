@@ -61,7 +61,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                     v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                 }
             default:()
-            }
+            } 
         default:()
         }
     }
@@ -155,7 +155,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationItem.titleView = ForumNavBarTitleView(dependencyManager: dependencyManager, frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
@@ -190,6 +189,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewDidLoad()
         
         chatFeed?.nextSender = self
+        
+        navigationController?.navigationItem.titleView = ForumNavBarTitleView(dependencyManager: dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 80))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
