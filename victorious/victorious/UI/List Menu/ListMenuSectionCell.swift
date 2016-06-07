@@ -23,7 +23,7 @@ protocol ListMenuSectionCell: class {
     func configureCell(with _: CellData)
     
     /// Update background color regarding to the cell being selected or not
-    func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool)    
+    func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool)
 }
 
 extension ListMenuSectionCell {

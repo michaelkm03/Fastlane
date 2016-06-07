@@ -8141,8 +8141,8 @@
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
 				A7F3F8051C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift */,
 				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
-				7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */,
 				F0E25FD41D0763CE003ECF09 /* ShowVIPForumOperation.swift */,
+				7A53C15E1CE2B19E00EBFD9E /* ShowVIPGateOperation.swift */,
 				7AB14CAD1CBEF96B006E674B /* ShowWebContentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
 			);

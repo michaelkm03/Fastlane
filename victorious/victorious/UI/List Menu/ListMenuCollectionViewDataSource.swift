@@ -107,9 +107,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
         
-        if indexPath.row == 0 {
-            headerView.accessoryButton = subscribeButton
-        }
+        headerView.accessoryButton = indexPath.row == 0 ? subscribeButton : nil
         
         return headerView
     }
