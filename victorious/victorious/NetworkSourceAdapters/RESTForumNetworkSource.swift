@@ -16,6 +16,15 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         dataSource = TimePaginatedDataSource(apiPath: self.dependencyManager.mainFeedAPIPath) {
             ContentFeedOperation(url: $0)
         }
+        
+        super.init()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(handleUpdateStreamURLNotification),
+            name: RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil
+        )
     }
     
     // MARK: - Dependency manager
@@ -25,6 +34,23 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - Data source
     
     let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    
+    private var filteredStreamAPIPath: APIPath? {
+        didSet {
+            let newAPIPath = filteredStreamAPIPath ?? dependencyManager.mainFeedAPIPath
+            
+            guard newAPIPath != dataSource.apiPath else {
+                return
+            }
+            
+            dataSource.apiPath = newAPIPath
+            
+            // TODO: We duplicate our broadcasting logic a bunch
+            dataSource.loadItems(.refresh) { [weak self] contents, error in
+                self?.broadcast(.replaceContent(contents.reverse().map { $0.toSDKContent() }))
+            }
+        }
+    }
     
     // MARK: - Polling
     
@@ -48,6 +74,19 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         dataSource.loadItems(.newer) { [weak self] contents, error in
             self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
         }
+    }
+    
+    // MARK: - Notifications
+    
+    /// A notification that can be posted to update the API path used to fetch content in the stream.
+    ///
+    /// This notification's `userInfo` should contain a `streamAPIPath` key set to a `ReferenceWrapper<APIPath>`
+    /// containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
+    ///
+    static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
+    
+    private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
+        filteredStreamAPIPath = (notification.userInfo?["streamAPIPath"] as? ReferenceWrapper<APIPath>)?.value
     }
     
     // MARK: - ForumNetworkSource

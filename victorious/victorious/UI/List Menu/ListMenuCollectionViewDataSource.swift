@@ -28,9 +28,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let listMenuViewController: ListMenuViewController
     private let dependencyManager: VDependencyManager
     
-    private let communityDataSource: ListMenuCommunityDataSource
-    private let hashtagDataSource: ListMenuHashtagDataSource
-    private let creatorDataSource: ListMenuCreatorDataSource
+    let communityDataSource: ListMenuCommunityDataSource
+    let hashtagDataSource: ListMenuHashtagDataSource
+    let creatorDataSource: ListMenuCreatorDataSource
     
     // MARK: - Initialization
     

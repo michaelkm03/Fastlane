@@ -35,6 +35,30 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return viewController
     }
     
+    // MARK: - Notifications
+    
+    private func selectCommunity(atIndex index: Int) {
+        let item = collectionViewDataSource.communityDataSource.visibleItems[index]
+        
+        // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
+        postStreamAPIPath(index == 0 ? nil : item.streamAPIPath)
+    }
+    
+    private func selectHashtag(atIndex index: Int) {
+        let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
+        var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
+        apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
+        postStreamAPIPath(apiPath)
+    }
+    
+    private func postStreamAPIPath(streamAPIPath: APIPath?) {
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil,
+            userInfo: streamAPIPath.flatMap { ["streamAPIPath": ReferenceWrapper($0)] }
+        )
+    }
+    
     // MARK: - UIViewController overrides
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -75,9 +99,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         case .creator:
             break
         case .community:
-            break
+            selectCommunity(atIndex: indexPath.row)
         case .hashtags:
-            break
+            selectHashtag(atIndex: indexPath.row)
         }
     }
     

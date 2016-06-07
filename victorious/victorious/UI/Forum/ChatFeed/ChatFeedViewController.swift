@@ -171,26 +171,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         let bottomOffset = collectionView.contentSize.height - collectionView.contentOffset.y
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
         
-        // The collection view's layout information is guaranteed to be updated properly in the completion handler of
-        // this method, which allows us to properly manage scrolling.
-        collectionView.performBatchUpdates({
-            switch loadingType {
-            case .newer:
-                let previousCount = self.dataSource.unstashedItems.count - newItems.count
-                
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: previousCount + $0, inSection: 0)
-                })
-            
-            case .older:
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: $0, inSection: 0)
-                })
-            
-            case .refresh:
-                collectionView.reloadData()
-            }
-        }, completion: { _ in
+        updateCollectionView(with: newItems, loadingType: loadingType) {
             // If we loaded older items, maintain the previous scroll position.
             if loadingType == .older {
                 collectionView.contentOffset = CGPoint(x: 0.0, y: collectionView.contentSize.height - bottomOffset)
@@ -206,7 +187,40 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             }
             
             completion?()
-        })
+        }
+    }
+    
+    private func updateCollectionView(with newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: () -> Void) {
+        if loadingType == .refresh {
+            collectionView.reloadData()
+            completion()
+        } else {
+            let collectionView = self.collectionView
+            
+            // The collection view's layout information is guaranteed to be updated properly in the completion handler
+            // of this method, which allows us to properly manage scrolling. We can't call `reloadData` in this method,
+            // though, so we have to do that separately.
+            collectionView.performBatchUpdates({
+                switch loadingType {
+                case .newer:
+                    let previousCount = self.dataSource.unstashedItems.count - newItems.count
+                    
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                    })
+                
+                case .older:
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: $0, inSection: 0)
+                    })
+                
+                case .refresh:
+                    break
+                }
+            }, completion: { _ in
+                completion()
+            })
+        }
     }
     
     // MARK: - VScrollPaginatorDelegate
