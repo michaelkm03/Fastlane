@@ -14,11 +14,10 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
-        static let defaultAspectRatio: CGFloat = 9 / 16
+        static let defaultAspectRatio: CGFloat = 16 / 9
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
-    @IBOutlet weak var backgroundView: UIImageView!
     
     private var currentContentView: UIView?
     
@@ -55,15 +54,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
-        
-        if (stageContent.type.displaysAsImage) {
-            if  let imageURLString =  stageContent.assetModels.first?.resourceID,
-                let imageURL = NSURL (string: imageURLString) {
-                backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){
-                    self.backgroundView.alpha = 1.0
-                }
-            }
-        }
         
         let defaultStageHeight = view.bounds.width * Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
