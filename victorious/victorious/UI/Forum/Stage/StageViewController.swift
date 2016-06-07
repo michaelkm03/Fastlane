@@ -55,7 +55,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
         
-        let defaultStageHeight = view.bounds.width * Constants.defaultAspectRatio
+        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 
