@@ -68,7 +68,6 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
-        print(frame)
         guard let previewImageURL = content.largestPreviewImageURL else {
                 return
         }

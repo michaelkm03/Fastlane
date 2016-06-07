@@ -28,7 +28,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
 
     private var videoPlayer: VVideoPlayer = VVideoView()
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
@@ -45,6 +44,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         return content.type == .gif
     }
     
+    private var videoLoadCompletion: (()->())?
+    
     init?(content: ContentModel) {
         self.content = content
         guard let asset = content.assetModels.first else {
@@ -56,15 +57,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         videoPlayer.view.backgroundColor = .clearColor()
         
-        previewView = UIImageView()
-        previewView.contentMode = .ScaleAspectFit
-        previewView.backgroundColor = .clearColor()
-
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        
-        if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-            previewView.sd_setImageWithURL(previewImageURL)
-        }
         super.init()
         videoPlayer.delegate = self
         videoPlayer.view.backgroundColor = UIColor.clearColor()
@@ -73,8 +65,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func setupVideoPlayer(in superview: UIView) {
-        superview.addSubview(previewView)
-        superview.v_addFitToParentConstraintsToSubview(previewView)
         superview.addSubview(videoPlayer.view)
         superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
     }
@@ -92,7 +82,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
-    func loadVideo() {
+    func loadVideo(withCompletion completion: (()->())? = nil) {
+        videoLoadCompletion = completion
         guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
@@ -138,9 +129,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        videoLoadCompletion?()
         videoPlayer.playFromStart()
         state = .Playing
-        previewView.hidden = true
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
