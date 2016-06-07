@@ -26,7 +26,7 @@ extension VIPGateViewControllerDelegate {
     }
 }
 
-class VIPGateViewController: UIViewController, VNavigationDestination {
+class VIPGateViewController: UIViewController {
     
     @IBOutlet weak private var textView: UITextView!
     @IBOutlet weak private var subscribeButton: UIButton!
@@ -37,6 +37,8 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     
     weak var delegate: VIPGateViewControllerDelegate?
     
+    private var productIdentifier: String!
+    
     var dependencyManager: VDependencyManager! {
         didSet {
             updateViews()
@@ -45,10 +47,15 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
 
     //MARK: - Initialization
 
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
+        guard let productIdentifier = dependencyManager.vipSubscription?.productIdentifier else {
+            return nil
+        }
+        
         let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard("VIPGate")
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
+        viewController.productIdentifier = productIdentifier
         return viewController
     }
 
@@ -60,22 +67,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         updateViews()
     }
     
-    // MARK: - VNavigationDestination
-    
-    func shouldNavigate() -> Bool {
-        // Don't allow this tab to be selected if already validated as a VIP subscriber,
-        // skip ahead to presenting the VIP Forum section
-        if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber?.boolValue == true {
-            openGate()
-            return false
-        }
-        return true
-    }
-    
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.vipSubscription?.productIdentifier ?? ""
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
         setIsLoading(true, title: Strings.purchaseInProgress)
