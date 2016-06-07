@@ -34,7 +34,7 @@ class ShowProfileOperation: MainQueueOperation {
             return
         }
         
-        guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId) ,
+        guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
             let originViewController = originViewController else {
                 return
         }

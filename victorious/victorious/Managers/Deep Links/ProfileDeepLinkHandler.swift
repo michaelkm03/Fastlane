@@ -9,7 +9,7 @@
 import UIKit
 
 class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
-    static let kContentDeeplinkURLHostComponent = "profile";
+    static let profileDeeplinkURLHostComponent = "profile"
     
     private var dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
@@ -37,7 +37,6 @@ class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
             let finished = (error == nil) && !cancelled
             completion?(finished , nil)
         }
-        
     }
     
     func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
@@ -45,7 +44,7 @@ class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
             return false
         }
         let isValidUserID = userID > 0
-        let isHostValid = url.host == ProfileDeepLinkHandler.kContentDeeplinkURLHostComponent
+        let isHostValid = url.host == ProfileDeepLinkHandler.profileDeeplinkURLHostComponent
 
         return isHostValid && isValidUserID
     }

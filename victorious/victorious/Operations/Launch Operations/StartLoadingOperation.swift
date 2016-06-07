@@ -44,11 +44,11 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
         }
         
         var cachedTemplate = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
-        if let template = template as? [NSObject : AnyObject] {
+        if let template = template as? [NSObject: AnyObject] {
             let templateDecorator = VTemplateDecorator(templateDictionary: template )
             
             let parentManager = VDependencyManager(
-                parentManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+                parentManager: cachedTemplate,
                 configuration: nil,
                 dictionaryOfClassesByTemplateName: nil
             )

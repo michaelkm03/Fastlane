@@ -9,7 +9,7 @@
 import UIKit
 
 class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
-    static let kContentDeeplinkURLHostComponent = "content";
+    static let contentDeeplinkURLHostComponent = "content"
     
     private var dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
@@ -41,7 +41,7 @@ class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
     }
     
     func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        let isHostValid = url.host == ContentDeepLinkHandler.kContentDeeplinkURLHostComponent
+        let isHostValid = url.host == ContentDeepLinkHandler.contentDeeplinkURLHostComponent
         let isContentValid = url.v_firstNonSlashPathComponent() != nil
         return isHostValid && isContentValid
     }
