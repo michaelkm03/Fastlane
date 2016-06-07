@@ -84,10 +84,8 @@ class MediaContentView: UIView {
     }
     
     private func finishedLoadingContent() {
-        dispatch_after(5, {
-            self.spinner.stopAnimating()
-            self.animateContentToAlpha(1.0)
-        })
+        spinner.stopAnimating()
+        animateContentToAlpha(1.0)
     }
     
     private func animateContentToAlpha(alpha: CGFloat, animated: Bool = true) {
