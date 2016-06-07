@@ -116,7 +116,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         // If there isn't enough content to fill the screen, push it down to the bottom.
         var adjustedInsets = edgeInsets
-        adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
+        
+        // Doing this when the content size is zero doesn't help, and it prevents scrolling to bottom after the initial
+        // content is loaded.
+        if collectionView.contentSize.height > 0.0 {
+            adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
+        }
+        
         return adjustedInsets
     }
     
