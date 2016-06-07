@@ -13,7 +13,6 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel])
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didPurgeItems purgedItems: [ContentModel])
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
@@ -53,27 +52,9 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             
             delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
             
-            purgeItemsIfNeeded()
-            
             dispatch_after(1.0) { [weak self] in
                 self?.justUnstashed = false
             }
-        }
-    }
-    
-    // MARK: - Purging
-    
-    private static let purgeTriggerCount = 100
-    private static let purgeTargetCount = 80
-    
-    private func purgeItemsIfNeeded() {
-        if visibleItems.count >= ChatFeedDataSource.purgeTriggerCount {
-            let targetCount = ChatFeedDataSource.purgeTargetCount
-            let purgeCount = visibleItems.count - targetCount
-            let purgeRange = targetCount ..< targetCount + purgeCount
-            let purgedItems = visibleItems[purgeRange]
-            visibleItems.removeRange(purgeRange)
-            delegate?.chatFeedDataSource(self, didPurgeItems: Array(purgedItems))
         }
     }
     
@@ -105,8 +86,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         default:
             break
         }
-        
-        purgeItemsIfNeeded()
     }
     
     // MARK: - ForumEventSender

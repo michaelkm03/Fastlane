@@ -158,12 +158,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didPurgeItems purgedItems: [ContentModel]) {
-        collectionView.deleteItemsAtIndexPaths((0 ..< purgedItems.count).map {
-            NSIndexPath(forItem: $0, inSection: 0)
-        })
-    }
-    
     private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 else {
             return
