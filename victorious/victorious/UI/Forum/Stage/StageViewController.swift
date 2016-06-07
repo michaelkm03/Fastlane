@@ -14,7 +14,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
-        static let maximumStageHeight: CGFloat = 200.0
+        static let defaultAspectRatio: CGFloat = 16 / 9
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
@@ -47,16 +47,14 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     override func viewWillDisappear(animated: Bool) {
-        clearStageMedia()
+        hideStage()
     }
-
+    
     //MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
-
-        reportHeightChange(for: stageContent)
         
         if (stageContent.type.displaysAsImage) {
             if  let imageURLString =  stageContent.assetModels.first?.resourceID,
@@ -66,10 +64,13 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
                 }
             }
         }
+        
+        let defaultStageHeight = view.bounds.width * Constants.defaultAspectRatio
+        delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 
     func removeContent() {
-        clearStageMedia()
+        hideStage()
     }
 
     // MARK: - ForumEventReceiver
@@ -80,21 +81,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
 
     // MARK: Clear Media
     
-    private func clearStageMedia(animated: Bool = false) {
+    private func hideStage(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
-    }
-    
-    // MARK: - Report Height Change
-    
-    private func reportHeightChange(for content: ContentModel) {
-        let contentHeight = content.previewImageSize?.height ?? Constants.maximumStageHeight
-        let clampedHeight = min(max(contentHeight, 0.0), Constants.maximumStageHeight)
-        
-        delegate?.stage(self, didUpdateContentHeight: clampedHeight)
     }
 }

@@ -1,6 +1,7 @@
 {
     "to_client": {
         "server_time": 1459178708,
+        "type": "REFRESH",
         "refresh": {
             "section": "VIP_STAGE",
             "content_id": "BB7670057"
