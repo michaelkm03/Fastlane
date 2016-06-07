@@ -88,7 +88,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     func updateDelegateOfTextViewStatus(textView: UITextView) {
-        delegate?.textViewHasText = textView.text.characters.count > 0
+        delegate?.textViewHasText = !textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty
         delegate?.textViewContentSize = textView.contentSize
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let hasImage = textView.attributedText.length >= attachmentStringLength && textView.attributedText.containsAttachmentsInRange(imageRange)
