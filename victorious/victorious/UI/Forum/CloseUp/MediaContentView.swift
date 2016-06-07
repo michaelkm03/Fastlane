@@ -76,6 +76,10 @@ class MediaContentView: UIView {
     
     ///Called after any asynchronous content fetch is complete
     func didFinishLoadingContent() {
+        guard let content = self.content else {
+            return
+        }
+        
         let minWidth = UIScreen.mainScreen().bounds.size.width
         //Add blurred background
         if let imageURL = content?.previewImageURL(ofMinimumWidth: minWidth) {
@@ -87,7 +91,8 @@ class MediaContentView: UIView {
             }
         }
         
-        self.addSubview(backgroundView)
+        let currentContentView = content.type.displaysAsImage ? self.previewImageView : self.videoContainerView
+        self.insertSubview(backgroundView, belowSubview: currentContentView)
         self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
     
