@@ -8,9 +8,11 @@
 
 class LoginOperation: RemoteFetcherOperation, RequestOperation {
     
+    private let dependencyManager: VDependencyManager
     let request: LoginRequest!
     
-    init(email: String, password: String) {
+    init(dependencyManager: VDependencyManager, email: String, password: String) {
+        self.dependencyManager = dependencyManager
         request = LoginRequest(email: email, password: password)
         super.init()
         
@@ -26,6 +28,10 @@ class LoginOperation: RemoteFetcherOperation, RequestOperation {
     
     func onComplete(response: AccountCreateResponse) {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: self.request.email)
-        LoginSuccessOperation(response: response, parameters: parameters).rechainAfter(self).queue()
+        LoginSuccessOperation(
+            dependencyManager: dependencyManager,
+            response: response,
+            parameters: parameters
+        ).rechainAfter(self).queue()
     }
 }
