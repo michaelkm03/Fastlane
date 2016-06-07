@@ -20,9 +20,10 @@ public class Content: DictionaryConvertible {
     public let type: ContentType
     public let isVIPOnly: Bool
     public let author: User
-
-    /// Payload describing what will be put on the stage.
-    public var stageContent: StageContent?
+    public let isLikedByCurrentUser: Bool
+    
+    /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
+    public var seekAheadTime : NSTimeInterval?
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -32,15 +33,14 @@ public class Content: DictionaryConvertible {
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
-            let sourceType = json[typeString]["type"].string,
             let author = User(json: viewedContentJSON["author"])
         else {
-            NSLog("Required field missing in content json -> \(json)")
+            NSLog("Required field missing in content json -> \(viewedContentJSON)")
             return nil
         }
         
+        self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
-        self.stageContent = StageContent(json: json)
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
@@ -52,24 +52,15 @@ public class Content: DictionaryConvertible {
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
-        if type == .image {
-            if let asset = ContentMediaAsset(
-                contentType: type,
-                sourceType: sourceType,
-                json: json[typeString]
-            ) {
-                self.assets = [asset]
-            } else {
-                self.assets = []
-            }
-        } else {
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap {
-                ContentMediaAsset(
-                    contentType: type,
-                    sourceType: sourceType,
-                    json: $0
-                )
-            }
+        let sourceType = json[typeString]["type"].string ?? typeString
+        
+        switch type {
+        case .image:
+            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+        case .gif, .video:
+            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+        case .text:
+            self.assets = []
         }
     }
     
@@ -90,6 +81,7 @@ public class Content: DictionaryConvertible {
         previewImages = nil
         type = .text
         isVIPOnly = false
+        isLikedByCurrentUser = false
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || assets.count > 0 else {
@@ -110,6 +102,7 @@ public class Content: DictionaryConvertible {
         self.previewImages = nil
         self.assets = assets
         self.isVIPOnly = false
+        isLikedByCurrentUser = false
     }
     
     // MARK: - DictionaryConvertible

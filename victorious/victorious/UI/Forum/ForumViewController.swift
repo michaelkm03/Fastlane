@@ -60,11 +60,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 if isViewLoaded() {
                     v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                 }
-            default:
-                break
+            default:()
             }
-        case .sendContent(let content) where content.assets.count > 0:
-            // Create a persistent piece of content so long as we're not a normal user on the socket
+        default:()
+        }
+    }
+    
+    func sendEvent(event: ForumEvent) {
+        
+        switch event {
+        case .sendContent(let content):
+            
             guard let networkResources = dependencyManager.networkResources else {
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
@@ -73,14 +79,22 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             }
             
             createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
-                if let _ = error,
+                
+                if let validError = error,
                     let strongSelf = self {
-                    strongSelf.v_showDefaultErrorAlert()
+                    
+                    if let persistenceError = validError as? PersistentContentCreatorError where
+                        persistenceError.isInvalidNetworkResourcesError {
+                        //Encountered an error where the network resources were inadequate. This does NOT
+                        //represent an error state that should be messaged to the user.
+                    } else {
+                        strongSelf.v_showDefaultErrorAlert()
+                    }
                 }
             }
-        default:
-            break
+        default:()
         }
+        nextSender?.send(event)
     }
 
     // MARK: - ForumEventSender
@@ -173,6 +187,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        chatFeed?.nextSender = self
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Exit", comment: ""),
@@ -272,9 +288,5 @@ private extension VDependencyManager {
     
     var stageDependency: VDependencyManager? {
         return childDependencyForKey("stage")
-    }
-    
-    var forumNetworkSource: ForumNetworkSource? {
-        return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }
 }

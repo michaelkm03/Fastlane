@@ -11,7 +11,9 @@ import Foundation
 import VictoriousIOSSDK
 
 class LogoutOperation: RemoteFetcherOperation {
-
+    
+    private var dependencyManager: VDependencyManager? = nil
+    
     override init() {
         super.init()
         
@@ -25,6 +27,11 @@ class LogoutOperation: RemoteFetcherOperation {
         let pruneOperation = LogoutPrunePersistentStoreOperation()
         pruneOperation.before(self).queue()
         LogoutRemoteOperation().rechainAfter(pruneOperation).queue()
+    }
+    
+    convenience init(dependencyManager: VDependencyManager) {
+        self.init()
+        self.dependencyManager = dependencyManager
     }
     
     override func main() {
@@ -48,6 +55,11 @@ class LogoutOperation: RemoteFetcherOperation {
             FBSDKLoginManager().logOut()
             
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
+            
+            if let dependencyManager = self.dependencyManager,
+               let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token
+                forumNetworkSource.tearDown()
+            }
         }
         
         // And finally, clear the user.  Don't do this early because

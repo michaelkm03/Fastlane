@@ -19,6 +19,13 @@ extension VContent: PersistenceParsable {
         v_text = content.text ?? v_text
         v_type = content.type.rawValue
         
+        /// We do not want to update the like status after it has been populated.
+        /// If a user likes a piece of content, and the outgoing request fails, we don't want the user to know anything went wrong.
+        /// Same thing if they want to unlike a piece of content. Therefore, we will show the user a state that they always expect,
+        /// and we will update again on the next launch when our persistent store is cleared.
+        v_isLikedByCurrentUser = v_isLikedByCurrentUser ?? content.isLikedByCurrentUser
+        
+        
         let author = content.author
         v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
         v_author.populate(fromSourceModel: author)

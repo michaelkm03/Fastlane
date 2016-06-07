@@ -138,4 +138,15 @@ public enum ContentMediaAsset {
             return url.absoluteString
         }
     }
+    
+    public var contentType: ContentType {
+        switch self {
+        case .youtube(_, _), .video(_, _):
+            return .video
+        case .gif(_, _):
+            return .gif
+        case .image(_):
+            return .image
+        }
+    }
 }

@@ -40,7 +40,8 @@ class ShowCloseUpOperation: MainQueueOperation {
     
     override func start() {
         
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView")
+        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView"),
+            let originViewController = originViewController
             where !self.cancelled else {
                 finishedExecuting()
                 return
@@ -49,34 +50,25 @@ class ShowCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
-        let replacementDictionary: [String:String] = [
-            "%%CONTENT_ID%%" : contentID ?? content?.id ?? "",
+        let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
+            "%%CONTENT_ID%%": contentID ?? content?.id ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
-        ]
-        let apiPath: String? = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(
-            replacementDictionary,
-            inURLString: childDependencyManager.relatedContentURL
-        )
+        ])
         
-        let header = CloseUpView.newWithDependencyManager(childDependencyManager)
-        
-        let config = GridStreamConfiguration(
-            sectionInset: UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0),
-            interItemSpacing: CGFloat(3),
-            cellsPerRow: 3,
-            allowsForRefresh: false,
-            managesBackground: true
-        )
-        
-        let closeUpViewController = GridStreamViewController<CloseUpView>.newWithDependencyManager(
-            childDependencyManager,
-            header: header,
+        let closeUpViewController = CloseUpContainerViewController(
+            dependencyManager: childDependencyManager,
             content: content,
-            configuration: config,
             streamAPIPath: apiPath
         )
-        originViewController?.navigationController?.pushViewController(closeUpViewController, animated: animated)
         
+        if let originViewController = originViewController as? UINavigationController {
+            originViewController.pushViewController(closeUpViewController, animated: animated)
+        } else {
+            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+        }
+        
+        
+        /// FUTURE: do a new load of the content anyway
         if content == nil {
             guard let contentID = contentID else {
                 assertionFailure("contentID should not be nil if content is nil")
@@ -90,10 +82,10 @@ class ShowCloseUpOperation: MainQueueOperation {
                 macroURLString: dependencyManager.contentFetchURL,
                 currentUserID: String(userID),
                 contentID: contentID
-                ).after(self).queue() { results, error, cancelled in
-                    if let content = results?.first as? VContent {
-                        closeUpViewController.content = content
-                    }
+            ).rechainAfter(self).queue() { results, error, cancelled in
+                if let content = results?.first as? VContent {
+                    closeUpViewController.updateContent(content)
+                }
             }
         }
     }
