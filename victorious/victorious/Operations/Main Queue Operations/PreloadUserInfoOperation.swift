@@ -45,15 +45,11 @@ class PreloadUserInfoOperation: BackgroundOperation {
                 strongSelf.finishedExecuting()
             }
             
-            PollResultSummaryByUserOperation(userID: userID).queue()
-            
-            ConversationListOperation().queue()
-            
-            FollowCountOperation(userID: currentUser.remoteId.integerValue).queue()
+            FollowCountOperation(userID: userID).queue()
 
             VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
             
-            UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
+            UsersFollowedByUserOperation(userID: userID).queue()
             
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
             FollowedHashtagsRemoteOperation(request: request).queue()
