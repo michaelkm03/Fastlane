@@ -100,6 +100,7 @@
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VTracking.h"
