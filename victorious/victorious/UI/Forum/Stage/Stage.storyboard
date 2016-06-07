@@ -16,9 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GI3-Sq-M5N">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -26,11 +23,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="GI3-Sq-M5N" firstAttribute="centerX" secondItem="dPd-gY-gTf" secondAttribute="centerX" id="Aqj-ai-2mb"/>
-                            <constraint firstItem="GI3-Sq-M5N" firstAttribute="width" secondItem="dPd-gY-gTf" secondAttribute="width" id="GcH-Dq-2Vi"/>
-                            <constraint firstItem="GI3-Sq-M5N" firstAttribute="height" secondItem="dPd-gY-gTf" secondAttribute="height" id="LFK-9m-88A"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
-                            <constraint firstItem="GI3-Sq-M5N" firstAttribute="centerY" secondItem="dPd-gY-gTf" secondAttribute="centerY" id="ox5-Ty-OhN"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
                             <constraint firstAttribute="bottom" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="yCG-mA-hRX"/>
                             <constraint firstAttribute="trailing" secondItem="a1k-JM-1LN" secondAttribute="trailing" id="zqi-qs-Csp"/>
@@ -38,7 +31,6 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="backgroundView" destination="GI3-Sq-M5N" id="9w0-LX-5Pk"/>
                         <outlet property="mediaContentView" destination="a1k-JM-1LN" id="axM-Ue-I6y"/>
                     </connections>
                 </viewController>

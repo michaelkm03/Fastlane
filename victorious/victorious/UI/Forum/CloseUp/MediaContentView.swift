@@ -13,6 +13,7 @@ import UIKit
 class MediaContentView: UIView {
     let previewImageView = UIImageView()
     let videoContainerView = VPassthroughContainerView()
+    let backgroundView = UIImageView()
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private(set) var content: ContentModel?
@@ -37,19 +38,24 @@ class MediaContentView: UIView {
         videoContainerView.backgroundColor = .blackColor()
         addSubview(videoContainerView)
         v_addFitToParentConstraintsToSubview(videoContainerView)
+        
+        backgroundView.contentMode = .ScaleAspectFill
+        backgroundView.clipsToBounds = true //Required because Scale Aspect Fill tends to overflow outside bounds
     }
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         self.content = content
         shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
-        
-        let minWidth = UIScreen.mainScreen().bounds.size.width
+        self.backgroundView.removeFromSuperview()
         
         // Set up image view if content is image
+        let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
-            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
+            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
             previewImageView.hidden = false
-            previewImageView.sd_setImageWithURL(previewImageURL)
+            previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] (_, _, _, _) in
+                self?.didFinishLoadingContent()
+            }
         } else {
             previewImageView.hidden = true
         }
@@ -60,10 +66,29 @@ class MediaContentView: UIView {
             videoCoordinator = VContentVideoPlayerCoordinator(content: content)
             videoCoordinator?.setupVideoPlayer(in: videoContainerView)
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
-            videoCoordinator?.loadVideo()
+            videoCoordinator?.loadVideo() { [weak self] (item) in
+                self?.didFinishLoadingContent()
+            }
         } else {
             videoContainerView.hidden = true
         }
+    }
+    
+    ///Called after any asynchronous content fetch is complete
+    func didFinishLoadingContent() {
+        let minWidth = UIScreen.mainScreen().bounds.size.width
+        //Add blurred background
+        if let imageURL = content?.previewImageURL(ofMinimumWidth: minWidth) {
+            backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.backgroundView.alpha = 1.0
+            }
+        }
+        
+        self.addSubview(backgroundView)
+        self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
     
     // MARK: - Actions
