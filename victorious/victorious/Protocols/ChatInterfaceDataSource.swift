@@ -17,8 +17,7 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     
     var dependencyManager: VDependencyManager { get }
     
-    /// The network data source that's in charge of fetching data from the network
-    var networkDataSource: NetworkDataSource { get }
+    var visibleItems: [ContentModel] { get }
     
     func registerCells(for collectionView: UICollectionView)
     
@@ -33,13 +32,13 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 extension ChatInterfaceDataSource {
     
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
-        return networkDataSource.visibleItems.count
+        return visibleItems.count
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
         let identifier = ChatFeedMessageCell.defaultReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        let content = networkDataSource.visibleItems[indexPath.row]
+        let content = visibleItems[indexPath.row]
         decorate(cell, content: content)
         return cell
     }
@@ -51,7 +50,7 @@ extension ChatInterfaceDataSource {
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let content = networkDataSource.visibleItems[indexPath.row]
+        let content = visibleItems[indexPath.row]
         decorate(sizingCell, content: content)
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
@@ -70,7 +69,7 @@ extension ChatInterfaceDataSource {
     func updateTimeStamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
-            let content = networkDataSource.visibleItems[indexPath.row]
+            let content = visibleItems[indexPath.row]
             decorate(cell, content: content)
         }
     }
