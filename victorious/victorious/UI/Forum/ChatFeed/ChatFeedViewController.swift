@@ -176,7 +176,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         collectionView.performBatchUpdates({
             switch loadingType {
             case .newer:
-                let previousCount = self.dataSource.unstashedItems.count - newItems.count
+                let previousCount = self.dataSource.visibleItems.count - newItems.count
                 
                 collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                     NSIndexPath(forItem: previousCount + $0, inSection: 0)
@@ -278,6 +278,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimestamps(for: collectionView)
+        dataSource.updateTimeStamps(in: collectionView)
     }
 }

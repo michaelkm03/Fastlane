@@ -40,6 +40,7 @@ extension ChatInterfaceDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         let content = visibleItems[indexPath.row]
         decorate(cell, content: content)
+        
         return cell
     }
     
@@ -52,6 +53,7 @@ extension ChatInterfaceDataSource {
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
         let content = visibleItems[indexPath.row]
         decorate(sizingCell, content: content)
+        
         return sizingCell.cellSizeWithinBounds(collectionView.bounds)
     }
     
@@ -69,8 +71,7 @@ extension ChatInterfaceDataSource {
     func updateTimeStamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
-            let content = visibleItems[indexPath.row]
-            decorate(cell, content: content)
+            cell.updateTimestamp()
         }
     }
 }

@@ -45,7 +45,9 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            updateStyle()
+            if dependencyManager != oldValue {
+                updateStyle()
+            }
         }
     }
     
