@@ -41,19 +41,20 @@ class MediaContentView: UIView {
         
         backgroundView.contentMode = .ScaleAspectFill
         backgroundView.clipsToBounds = true //Required because Scale Aspect Fill tends to overflow outside bounds
+        self.insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
+        self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         self.content = content
         shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
-        self.backgroundView.removeFromSuperview()
         
         // Set up image view if content is image
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
-            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
             previewImageView.hidden = false
-            previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] (_, _, _, _) in
+            previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] _ in
                 self?.didFinishLoadingContent()
             }
         } else {
@@ -66,7 +67,7 @@ class MediaContentView: UIView {
             videoCoordinator = VContentVideoPlayerCoordinator(content: content)
             videoCoordinator?.setupVideoPlayer(in: videoContainerView)
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
-            videoCoordinator?.loadVideo() { [weak self] (item) in
+            videoCoordinator?.loadVideo() { [weak self] in
                 self?.didFinishLoadingContent()
             }
         } else {
@@ -82,7 +83,7 @@ class MediaContentView: UIView {
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         //Add blurred background
-        if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+        if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
             backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -90,10 +91,6 @@ class MediaContentView: UIView {
                 strongSelf.backgroundView.alpha = 1.0
             }
         }
-        
-        let currentContentView = content.type.displaysAsImage ? self.previewImageView : self.videoContainerView
-        self.insertSubview(backgroundView, belowSubview: currentContentView)
-        self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
     
     // MARK: - Actions
