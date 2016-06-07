@@ -66,7 +66,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    func sendEvent(event: ForumEvent) {
+    func send(event: ForumEvent) {
         
         switch event {
         case .sendContent(let content):
@@ -75,6 +75,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
                 v_log(logMessage)
+                nextSender?.send(event)
                 return
             }
             
