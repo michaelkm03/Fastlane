@@ -115,7 +115,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     // MARK: - Actions
     
     @objc private func onSubscribePressed() {
-        ShowVIPForumOperation(dependencyManager: dependencyManager).queue()
+        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager, showVIP: true).queue()
     }
     
     // MARK: - List Menu Network Data Source Delegate
