@@ -51,7 +51,7 @@ class MediaContentView: UIView {
         // Set up image view if content is image
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
-            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            let previewImageURL = NSURL(v_string: content.assetModels.first?.resourceID) {
             previewImageView.hidden = false
             previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] (_, _, _, _) in
                 self?.didFinishLoadingContent()
@@ -82,7 +82,7 @@ class MediaContentView: UIView {
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         //Add blurred background
-        if let imageURL = content?.previewImageURL(ofMinimumWidth: minWidth) {
+        if let imageURL = NSURL(v_string: content.assetModels.first?.resourceID) {
             backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
                 guard let strongSelf = self else {
                     return
