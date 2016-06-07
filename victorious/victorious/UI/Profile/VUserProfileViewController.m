@@ -417,7 +417,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             // User logged out, clear away all stream items and unload any user data
-            [self.streamDataSource unload];
             self.profileHeaderViewController = nil;
             self.user = nil;
         }
