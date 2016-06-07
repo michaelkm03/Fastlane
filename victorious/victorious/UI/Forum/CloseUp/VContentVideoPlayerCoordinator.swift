@@ -26,9 +26,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    private var videoPlayer: VVideoPlayer = VVideoView()
+    private(set) var videoPlayer: VVideoPlayer = VVideoView()
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
+    
+    let previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
@@ -74,9 +75,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(previewView)
-        superview.v_addFitToParentConstraintsToSubview(previewView)
         superview.addSubview(videoPlayer.view)
-        superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
     }
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {

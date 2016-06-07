@@ -22,7 +22,19 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
     private var shouldShowToolBarForVideo: Bool = true
     
-    override func awakeFromNib() {
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.delegate = self
@@ -32,13 +44,12 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
         
         previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
-        v_addFitToParentConstraintsToSubview(previewImageView)
         
-        videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .blackColor()
         addSubview(videoContainerView)
-        v_addFitToParentConstraintsToSubview(videoContainerView)
     }
+    
+    // MARK: - Updating content
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         self.content = content
@@ -65,6 +76,18 @@ class MediaContentView: UIView, UIGestureRecognizerDelegate {
         } else {
             videoContainerView.hidden = true
         }
+        
+        setNeedsLayout()
+    }
+    
+    // MARK: - Layout
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewImageView.frame = bounds
+        videoContainerView.frame = bounds
+        videoCoordinator?.previewView.frame = bounds
+        videoCoordinator?.videoPlayer.view.frame = bounds
     }
     
     // MARK: - Actions

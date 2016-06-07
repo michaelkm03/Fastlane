@@ -46,8 +46,7 @@ extension ChatInterfaceDataSource {
     
     func registerCells(for collectionView: UICollectionView) {
         let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
-        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ChatFeedMessageCell.self) )
-        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: identifier)
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {

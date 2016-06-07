@@ -98,7 +98,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - UICollectionViewDataSource
     
-    let sizingCell: ChatFeedMessageCell = ChatFeedMessageCell.v_fromNib()
+    let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)

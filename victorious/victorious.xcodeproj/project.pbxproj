@@ -1180,7 +1180,6 @@
 		A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */; };
 		A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */; };
 		A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */; };
-		A73BA2CA1C9393ED008168B5 /* ChatFeedMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A73BA2B81C9393ED008168B5 /* ChatFeedMessageCell.xib */; };
 		A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */; };
 		A73BA2CE1C9393ED008168B5 /* NewItemsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */; };
 		A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2D71C9394B6008168B5 /* ForumViewController.swift */; };
@@ -3783,7 +3782,6 @@
 		A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
 		A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCell.swift; sourceTree = "<group>"; };
-		A73BA2B81C9393ED008168B5 /* ChatFeedMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatFeedMessageCell.xib; sourceTree = "<group>"; };
 		A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCellLayout.swift; sourceTree = "<group>"; };
 		A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewItemsController.swift; sourceTree = "<group>"; };
 		A73BA2D71C9394B6008168B5 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
@@ -8318,7 +8316,6 @@
 			isa = PBXGroup;
 			children = (
 				A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */,
-				A73BA2B81C9393ED008168B5 /* ChatFeedMessageCell.xib */,
 				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */,
 			);
 			path = "Message Cell";
@@ -11464,7 +11461,6 @@
 				03645B0D1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
 				036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */,
-				A73BA2CA1C9393ED008168B5 /* ChatFeedMessageCell.xib in Resources */,
 				A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */,
 				A7B1335D1C6178FD006EC4F5 /* ActivityIndicatorCollectionCell.xib in Resources */,
 				F01307FE1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard in Resources */,
