@@ -32,6 +32,14 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let hashtagDataSource: ListMenuHashtagDataSource
     private let creatorDataSource: ListMenuCreatorDataSource
     
+    private lazy var subscribeButton: UIButton = {
+        // FUTURE: Make this styled via template once available
+        let button = UIButton()
+        button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
+        button.setTitle("subscribe", forState: .Normal)
+        return button
+    }()
+    
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager, listMenuViewController: ListMenuViewController) {
@@ -99,7 +107,17 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
         
+        if indexPath.row == 0 {
+            headerView.accessoryButton = subscribeButton
+        }
+        
         return headerView
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func onSubscribePressed() {
+        ShowVIPForumOperation(dependencyManager: dependencyManager).queue()
     }
     
     // MARK: - List Menu Network Data Source Delegate

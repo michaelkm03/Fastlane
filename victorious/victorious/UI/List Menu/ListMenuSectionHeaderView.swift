@@ -27,6 +27,21 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     static var preferredHeight: CGFloat {
         return 18
     }
+    
+    var accessoryButton: UIButton? {
+        willSet {
+            if newValue == nil {
+                accessoryButton?.removeFromSuperview()
+            }
+        }
+        didSet {
+            if let accessoryButton = accessoryButton {
+                addSubview(accessoryButton)
+                v_addPinToTrailingEdgeToSubview(accessoryButton)
+                v_addPinToTopBottomToSubview(accessoryButton)
+            }
+        }
+    }
 }
 
 private extension VDependencyManager {
