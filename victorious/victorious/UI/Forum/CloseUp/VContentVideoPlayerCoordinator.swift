@@ -92,7 +92,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
-    func loadVideo(completionBlock: ((VVideoPlayerItem) -> Void)?) {
+    func loadVideo(completionBlock: (() -> Void)?) {
         guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
@@ -114,7 +114,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
-            completionBlock?(item)
+            completionBlock?()
             return
         }
     }
