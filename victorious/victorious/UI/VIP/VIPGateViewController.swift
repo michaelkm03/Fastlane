@@ -9,8 +9,8 @@
 import UIKit
 import MBProgressHUD
 
-/// Conformers will receive a message after the vip gate
-/// has dismissed or permitted the user to pass through.
+/// Conformers will receive a message when the vip gate
+/// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
     
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
