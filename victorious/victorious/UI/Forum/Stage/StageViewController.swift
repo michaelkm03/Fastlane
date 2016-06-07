@@ -14,7 +14,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
-        static let defaultAspectRatio: CGFloat = 16 / 9
+        static let defaultAspectRatio: CGFloat = 9 / 16
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!

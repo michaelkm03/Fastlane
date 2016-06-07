@@ -18,10 +18,10 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
