@@ -35,27 +35,17 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     var stashingEnabled = false
     
-    private var justUnstashed = false
-    
-    private var shouldStash: Bool {
-        return stashingEnabled && !justUnstashed
-    }
-    
     func unstash() {
-        if stashedItems.count > 0 {
-            justUnstashed = true
-            
-            let previouslyStashedItems = stashedItems
-            
-            visibleItems.appendContentsOf(stashedItems)
-            stashedItems.removeAll()
-            
-            delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
-            
-            dispatch_after(1.0) { [weak self] in
-                self?.justUnstashed = false
-            }
+        guard stashedItems.count > 0 else {
+            return
         }
+        
+        let previouslyStashedItems = stashedItems
+        
+        visibleItems.appendContentsOf(stashedItems)
+        stashedItems.removeAll()
+        
+        delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
     }
     
     // MARK: - ForumEventReceiver
@@ -65,7 +55,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         case .appendContent(let newItems):
             let newItems = newItems.map { $0 as ContentModel }
             
-            if shouldStash {
+            if stashingEnabled {
                 stashedItems.appendContentsOf(newItems)
                 delegate?.chatFeedDataSource(self, didStashItems: newItems)
             } else {
