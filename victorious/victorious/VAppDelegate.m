@@ -74,7 +74,7 @@
     if ( [application applicationState] == UIApplicationStateInactive )
     {
         [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
-    }
+    }   
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
