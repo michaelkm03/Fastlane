@@ -17,6 +17,10 @@ enum VideoState {
     Scrubbing
 }
 
+protocol ContentVideoPlayerCoordinatorDelegate: class {
+    func coordinatorDidBecomeReady()
+}
+
 /// A coordinator that holds a VVideoView object adjusting for different types of VContent 
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
@@ -45,6 +49,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     private var shouldMute: Bool {
         return content.type == .gif
     }
+    
+    weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
     init?(content: ContentModel) {
         self.content = content
@@ -140,6 +146,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         videoPlayer.playFromStart()
         state = .Playing
         previewView.hidden = true
+        delegate?.coordinatorDidBecomeReady()
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
