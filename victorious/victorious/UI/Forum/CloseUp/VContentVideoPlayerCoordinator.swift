@@ -68,6 +68,11 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.delegate = self
     }
     
+    func tearDown() {
+        videoPlayer.view.removeFromSuperview()
+        toolbar.removeFromSuperview()
+    }
+    
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(videoPlayer.view)
     }
