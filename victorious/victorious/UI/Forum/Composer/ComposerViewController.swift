@@ -170,7 +170,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         if animated {
-            UIView.animateWithDuration(0.4) {
+            UIView.animateWithDuration(0.3) {
                 self.setComposerVisible(visible, animated: false)
                 self.view.layoutIfNeeded()
             }

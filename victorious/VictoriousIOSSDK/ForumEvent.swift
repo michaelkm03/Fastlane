@@ -23,6 +23,10 @@ public enum ForumEvent {
     /// Sends content created by the user.
     case sendContent(Content)
     
+    /// Notifies that a filter has been applied to the chat feed using the given API path. A nil value indicates that
+    /// no filter is being applied.
+    case filterContent(path: APIPath?)
+    
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)
     

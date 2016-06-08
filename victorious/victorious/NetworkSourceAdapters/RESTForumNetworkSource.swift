@@ -48,6 +48,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             // TODO: We duplicate our broadcasting logic a bunch
             dataSource.loadItems(.refresh) { [weak self] contents, error in
                 self?.broadcast(.replaceContent(contents.reverse().map { $0.toSDKContent() }))
+                self?.broadcast(.filterContent(path: self?.filteredStreamAPIPath))
             }
         }
     }
