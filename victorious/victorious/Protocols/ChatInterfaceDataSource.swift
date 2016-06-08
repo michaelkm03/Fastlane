@@ -36,17 +36,17 @@ extension ChatInterfaceDataSource {
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let identifier = ChatFeedMessageCell.defaultReuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         let content = visibleItems[indexPath.row]
+        let reuseIdentifier = content.type.hasMedia ? ChatFeedMessageCell.mediaCellReuseIdentifier : ChatFeedMessageCell.nonMediaCellReuseIdentifier
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         decorate(cell, content: content)
         
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: identifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.mediaCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {

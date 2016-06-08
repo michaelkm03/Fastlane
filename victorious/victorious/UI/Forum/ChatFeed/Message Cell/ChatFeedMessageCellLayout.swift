@@ -37,7 +37,7 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        cell.mediaView.frame = CGRect(
+        cell.mediaView?.frame = CGRect(
             x: 0,
             y: 0,
             width: cell.bubbleView.bounds.width,
@@ -95,7 +95,7 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: textSize.height
         )
-        cell.mediaView.frame = CGRect(
+        cell.mediaView?.frame = CGRect(
             x: 0,
             y: 0,
             width: cell.bubbleView.bounds.width,

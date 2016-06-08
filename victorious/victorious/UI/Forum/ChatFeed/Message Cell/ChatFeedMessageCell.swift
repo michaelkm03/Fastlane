@@ -21,15 +21,16 @@ protocol ChatFeedMessageCellDelegate: class {
 
 class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
-    static let suggestedReuseIdentifier = "ChatFeedMessageCell"
+    static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
+    static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
     let detailTextView = UITextView()
     let contentContainer = UIView()
     let messageContainer = UIView()
     let bubbleView = UIView()
     let textView = UITextView()
-    let mediaView = MediaContentView()
     let avatarView = VDefaultProfileImageView()
+    var mediaView: MediaContentView?
     
     let horizontalSpacing: CGFloat = 10.0
     let avatarSize = CGSize(width: 41.0, height: 41.0)
@@ -69,10 +70,6 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        mediaView.clipsToBounds = true
-        mediaView.translatesAutoresizingMaskIntoConstraints = false
-        mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
-        
         avatarView.clipsToBounds = true
         avatarView.userInteractionEnabled = true
         avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
@@ -91,7 +88,6 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         messageContainer.addSubview(bubbleView)
         
         bubbleView.addSubview(textView)
-        bubbleView.addSubview(mediaView)
     }
     
     private func configureTextView(textView: UITextView) {
@@ -140,7 +136,8 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     private func populateData() {
         textView.attributedText = attributedText
         
-        if let content = content {
+        if let content = content where content.type.hasMedia {
+            let mediaView = createMediaViewIfNeeded()
             mediaView.updateContent(content)
         }
         
@@ -153,6 +150,20 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         } else {
             avatarView.image = nil
         }
+    }
+    
+    private func createMediaViewIfNeeded() -> MediaContentView {
+        if let existingMediaView = self.mediaView {
+            return existingMediaView
+        }
+        
+        let mediaView = MediaContentView()
+        mediaView.clipsToBounds = true
+        mediaView.translatesAutoresizingMaskIntoConstraints = false
+        mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        bubbleView.addSubview(mediaView)
+        self.mediaView = mediaView
+        return mediaView
     }
     
     func updateTimestamp() {
