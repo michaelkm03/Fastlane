@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+// FUTURE: remove from project before App Store deploy.
+
 import Foundation
 import VictoriousIOSSDK
 
