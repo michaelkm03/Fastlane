@@ -10,10 +10,10 @@
                        "42"
                        ],
     "main_stage": {
-        "content_id": 21253,
+        "content_id": "21253",
         "section": "main_stage",
         "start_time": 13532432414321
-    }
+    },
     "payload": {
         "viewed_contents": [
                             {
