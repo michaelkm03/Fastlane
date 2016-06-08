@@ -45,9 +45,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             dataSource.apiPath = newAPIPath
             
-            // TODO: We duplicate our broadcasting logic a bunch
             dataSource.loadItems(.refresh) { [weak self] contents, error in
-                self?.broadcast(.replaceContent(contents.reverse().map { $0.toSDKContent() }))
+                guard let contents = self?.processContents(contents) else {
+                    return
+                }
+                
+                self?.broadcast(.replaceContent(contents))
                 self?.broadcast(.filterContent(path: self?.filteredStreamAPIPath))
             }
         }
@@ -73,8 +76,18 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     @objc private func pollForNewContent() {
         dataSource.loadItems(.newer) { [weak self] contents, error in
-            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+            guard let contents = self?.processContents(contents) else {
+                return
+            }
+            
+            self?.broadcast(.appendContent(contents))
         }
+    }
+    
+    // MARK: - Processing content
+    
+    private func processContents(contents: [ContentModel]) -> [Content] {
+        return contents.reverse().map { $0.toSDKContent() }
     }
     
     // MARK: - Notifications
@@ -96,7 +109,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         
         dataSource.loadItems(.refresh) { [weak self] contents, error in
-            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+            guard let contents = self?.processContents(contents) else {
+                return
+            }
+            
+            self?.broadcast(.appendContent(contents))
         }
         
         startPolling()
@@ -130,7 +147,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .loadOldContent:
             dataSource.loadItems(.older) { [weak self] contents, error in
-                self?.broadcast(.prependContent(contents.reverse().map { $0.toSDKContent() }))
+                guard let contents = self?.processContents(contents) else {
+                    return
+                }
+                
+                self?.broadcast(.prependContent(contents))
             }
         default:
             break
