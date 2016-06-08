@@ -13,7 +13,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     let dependencyManager: VDependencyManager
     weak var delegate: TutorialNetworkDataSourceDelegate?
     
-    let sizingCell: ChatFeedMessageCell = ChatFeedMessageCell.v_fromNib()
+    let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
     
     var visibleItems: [ContentModel] {
         return networkDataSource.visibleItems

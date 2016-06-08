@@ -74,6 +74,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
         
         avatarView.clipsToBounds = true
+        avatarView.userInteractionEnabled = true
         avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
         bubbleView.clipsToBounds = true
