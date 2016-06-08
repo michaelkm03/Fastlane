@@ -109,6 +109,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             videoCoordinator?.delegate = self
         } else {
             videoContainerView.hidden = true
+            videoCoordinator?.tearDown()
+            videoCoordinator = nil
         }
         
         setNeedsLayout()
