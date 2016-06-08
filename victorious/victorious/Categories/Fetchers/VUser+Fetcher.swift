@@ -10,6 +10,8 @@ import UIKit
 
 extension VUser {
     func isVIPValid() -> Bool {
+        return true
+        
         guard let vipEndDate = vipEndDate,
             let isVIPSubscriber = isVIPSubscriber?.boolValue else {
                 return false

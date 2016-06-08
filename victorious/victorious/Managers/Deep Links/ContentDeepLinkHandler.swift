@@ -29,11 +29,11 @@ class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
             return
         }
         
-        ShowCloseUpOperation(
-            originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            contentID: contentID
-        )?.queue() { error, finished in
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
+        ShowFetchedCloseUpOperation(
+            contentID: contentID,
+            displayModifier: displayModifier
+        ).queue() { error, finished in
             completion?(finished, nil)
         }
         

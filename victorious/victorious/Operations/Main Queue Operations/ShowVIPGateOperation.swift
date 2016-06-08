@@ -20,24 +20,17 @@ class ShowVIPGateOperation: MainQueueOperation, VIPGateViewControllerDelegate {
     }
     
     override func start() {
-        guard !cancelled else {
-            finishedExecuting()
-            return
+        
+        guard !cancelled,
+            let originViewController = originViewController,
+            let vipGate = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
+                finishedExecuting()
+                return
         }
         
-        guard let viewController = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
-            finishedExecuting()
-            return
-        }
-        
-        viewController.delegate = self
+        vipGate.delegate = self
         showedGate = true
-        
-        if let navigationController = originViewController?.navigationController {
-            navigationController.pushViewController(viewController, animated: animated)
-        } else {
-            originViewController?.presentViewController(viewController, animated: animated, completion: nil)
-        }
+        originViewController.presentViewController(vipGate, animated: animated, completion: nil)
     }
     
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
