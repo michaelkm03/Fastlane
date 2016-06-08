@@ -219,17 +219,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    // MARK: - ConfigurableHeader
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: ContentModel?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) {
         self.content = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: ContentModel?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) -> CGSize {
         let screenWidth = UIScreen.mainScreen().bounds.size.width
         guard let content = content else {
             return CGSizeMake(screenWidth, screenWidth)
