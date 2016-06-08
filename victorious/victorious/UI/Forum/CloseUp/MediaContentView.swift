@@ -179,6 +179,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     //MARK: - ContentVideoPlayerCoordinatorDelegate
     
     func coordinatorDidBecomeReady() {
+        imageToSet = UIImage() // Hack to show the video coordinator
         didFinishLoadingContent()
     }
 }
