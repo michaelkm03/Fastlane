@@ -71,6 +71,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func hideStage(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView.hideContent()
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()

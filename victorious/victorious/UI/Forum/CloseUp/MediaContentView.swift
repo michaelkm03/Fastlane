@@ -57,6 +57,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         v_addFitToParentConstraintsToSubview(backgroundView)
     }
     
+    func hideContent() {
+        animateContentToZero()
+    }
+    
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         spinner.startAnimating()
         self.content = content

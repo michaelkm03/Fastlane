@@ -102,7 +102,8 @@ extension ForumViewController {
         )!
         
         let content = Content(
-            createdAt: NSDate(),
+            id: String(1000 + Int(arc4random() % 9999)),
+            type: contentType,
             text: randomText(),
             assets: [asset],
             author: User(
