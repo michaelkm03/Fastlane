@@ -209,27 +209,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let selectedContent = dataSource.items[indexPath.row]
-        if selectedContent.isVIPOnly {
-            self.selectedContent = selectedContent
-            let showVIPGateOperation = ShowVIPGateOperation(originViewController: self, dependencyManager: dependencyManager, vipGateViewControllerDelegate: self)
-            showVIPGateOperation.queue() { [weak self] _ in
-                if !showVIPGateOperation.showedGate, let strongSelf = self {
-                    ShowCloseUpOperation(
-                        originViewController: strongSelf,
-                        dependencyManager: strongSelf.dependencyManager,
-                        content: selectedContent
-                    )?.queue()
-                    strongSelf.selectedContent = nil
-                }
-            }
-        } else {
-            ShowCloseUpOperation(
-                originViewController: self,
-                dependencyManager: dependencyManager,
-                content: selectedContent
-            )?.queue()
-        }
+        
+        ShowCloseUpOperation(
+            originViewController: self,
+            dependencyManager: dependencyManager,
+            content: dataSource.items[indexPath.row]
+        )?.queue()
     }
     
     // MARK: - VIPGateViewControllerDelegate

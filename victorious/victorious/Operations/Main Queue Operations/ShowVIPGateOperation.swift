@@ -6,17 +6,16 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class ShowVIPGateOperation: MainQueueOperation {
+class ShowVIPGateOperation: MainQueueOperation, VIPGateViewControllerDelegate {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
-    private weak var vipGateViewControllerDelegate: VIPGateViewControllerDelegate?
     var showedGate = false
+    var allowedAccess = false
     
-    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, vipGateViewControllerDelegate: VIPGateViewControllerDelegate, animated: Bool = true) {
+    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
-        self.vipGateViewControllerDelegate = vipGateViewControllerDelegate
         self.animated = animated
     }
     
@@ -31,16 +30,20 @@ class ShowVIPGateOperation: MainQueueOperation {
             return
         }
         
-        viewController.delegate = vipGateViewControllerDelegate
+        viewController.delegate = self
         showedGate = true
         
         if let navigationController = originViewController?.navigationController {
             navigationController.pushViewController(viewController, animated: animated)
-            finishedExecuting()
         } else {
-            originViewController?.presentViewController(viewController, animated: animated) {
-                self.finishedExecuting()
-            }
+            originViewController?.presentViewController(viewController, animated: animated, completion: nil)
+        }
+    }
+    
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
+        self.allowedAccess = allowed
+        vipGateViewController.dismissViewControllerAnimated(animated) { [weak self] in
+            self?.finishedExecuting()
         }
     }
 }
