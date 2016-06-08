@@ -236,6 +236,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
         return sizeForContent(content)
     }
+    
+    func headerWillAppear() {
+        mediaContentView.videoCoordinator?.playVideo()
+    }
+    
+    func headerDidDisappear() {
+        mediaContentView.videoCoordinator?.pauseVideo()
+    }
 }
 
 private extension VDependencyManager {

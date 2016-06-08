@@ -198,6 +198,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             footerView.activityIndicator.color = dependencyManager.refreshControlColor
             footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: true)
         }
+        else if elementKind == UICollectionElementKindSectionHeader {
+            header?.headerWillAppear()
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if elementKind == UICollectionElementKindSectionHeader {
+            header?.headerDidDisappear()
+        }
     }
     
     func collectionView(collectionView: UICollectionView,

@@ -18,4 +18,6 @@ protocol ConfigurableGridStreamHeader {
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
                        content: ContentType?) -> CGSize
+    func headerDidDisappear()
+    func headerWillAppear()
 }
