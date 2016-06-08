@@ -59,7 +59,6 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         
         dataSource.loadItems(.refresh) { [weak self] contents, stageEvent, error in
-            // TODO: Can we not duplicate this logic?
             self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
             if let stageEvent = stageEvent {
                 self?.broadcast(stageEvent)
