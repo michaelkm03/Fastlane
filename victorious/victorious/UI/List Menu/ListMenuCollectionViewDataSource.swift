@@ -34,7 +34,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     
     private lazy var subscribeButton: UIButton = {
         // FUTURE: Make this styled via template once available
-        let button = UIButton()
+        let button = UIButton(type: .Custom)
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
         button.setTitle("subscribe", forState: .Normal)
         return button
@@ -106,7 +106,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         case .hashtags:
             headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
-        
+
+        // A custom accessoryButton is added to the first headerView to allow entry into the VIPForum and is not related to the actual section header.
         headerView.accessoryButton = indexPath.row == 0 ? subscribeButton : nil
         
         return headerView
