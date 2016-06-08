@@ -10,7 +10,7 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
+class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
@@ -97,8 +97,8 @@ class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
         }
     }
     
-    //MARK: - VVideoCoordinatorDelegate
+    //MARK: - ContentVideoPlayerCoordinatorDelegate
     func coordinatorDidBecomeReady() {
-        self.didFinishLoadingContent()
+        didFinishLoadingContent()
     }
 }
