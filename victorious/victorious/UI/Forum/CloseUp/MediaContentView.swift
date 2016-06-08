@@ -98,6 +98,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     }
     
     //MARK: - ContentVideoPlayerCoordinatorDelegate
+    
     func coordinatorDidBecomeReady() {
         didFinishLoadingContent()
     }
