@@ -22,13 +22,18 @@ struct ShowCloseUpDisplayModifier {
     }
 }
 
-/// Shows a close up view displaying the provided content. Does not check
-/// if user has permission to view the content; to check permissions first
-/// create a ShowPermissionedCloseUpOperation instead.
+/// Shows a close up view displaying the provided content.
 class ShowCloseUpOperation: MainQueueOperation {
-    
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel
+    
+    static func showOperation(forContent content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
+        return ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier)
+    }
+    
+    static func showOperation(forContentID contentID: String, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
+        return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
+    }
     
     init(content: ContentModel,
          displayModifier: ShowCloseUpDisplayModifier) {
@@ -38,7 +43,6 @@ class ShowCloseUpOperation: MainQueueOperation {
     }
     
     override func start() {
-        
         defer {
             finishedExecuting()
         }
@@ -52,7 +56,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
             "%%CONTENT_ID%%": content.id ?? "",
             "%%CONTEXT%%" : childDependencyManager.context
-            ])
+        ])
         
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,

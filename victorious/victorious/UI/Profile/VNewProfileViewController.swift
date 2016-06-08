@@ -55,7 +55,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     // MARK: - View updating
     
     private func updateUpgradeButton() {
-        
         if VCurrentUser.user()?.isVIPValid() == true {
             // FUTURE: When new upgrade button appearance fields are read from template, update appearance of upgradeButton here
         } else {

@@ -11,7 +11,6 @@ import UIKit
 /// Shows a close up view for a given piece of content after checking
 /// permissions and displaying a vip gate as appropriate.
 class ShowPermissionedCloseUpOperation: MainQueueOperation {
-    
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel
     
@@ -23,7 +22,6 @@ class ShowPermissionedCloseUpOperation: MainQueueOperation {
     }
     
     override func start() {
-        
         defer {
             finishedExecuting()
         }

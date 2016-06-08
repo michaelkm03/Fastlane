@@ -208,12 +208,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
-        ShowPermissionedCloseUpOperation(
-            content: dataSource.items[indexPath.row],
-            displayModifier: displayModifier
-        ).queue()
+        ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
     }
 }
 
