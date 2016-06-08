@@ -10,10 +10,10 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView {
-    let previewImageView = UIImageView()
-    let videoContainerView = VPassthroughContainerView()
-    let backgroundView = UIImageView()
+class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
+    private let previewImageView = UIImageView()
+    private let videoContainerView = VPassthroughContainerView()
+    private let backgroundView = UIImageView()
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private(set) var content: ContentModel?
@@ -43,6 +43,8 @@ class MediaContentView: UIView {
         backgroundView.clipsToBounds = true //Required because Scale Aspect Fill tends to overflow outside bounds
         self.insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
         self.v_addFitToParentConstraintsToSubview(backgroundView)
+        
+        videoCoordinator.delegate = self 
     }
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
@@ -67,9 +69,7 @@ class MediaContentView: UIView {
             videoCoordinator = VContentVideoPlayerCoordinator(content: content)
             videoCoordinator?.setupVideoPlayer(in: videoContainerView)
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
-            videoCoordinator?.loadVideo() { [weak self] in
-                self?.didFinishLoadingContent()
-            }
+            videoCoordinator?.loadVideo()
         } else {
             videoContainerView.hidden = true
         }
@@ -85,10 +85,7 @@ class MediaContentView: UIView {
         //Add blurred background
         if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
             backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf.backgroundView.alpha = 1.0
+                self?.backgroundView.alpha = 1.0
             }
         }
     }
@@ -99,5 +96,10 @@ class MediaContentView: UIView {
         if shouldShowToolBarForVideo {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
+    }
+    
+    //MARK: - VVideoCoordinatorDelegate
+    func coordinatorDidBecomeReady() {
+        self.didFinishLoadingContent()
     }
 }

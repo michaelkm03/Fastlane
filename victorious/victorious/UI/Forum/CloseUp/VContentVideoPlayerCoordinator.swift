@@ -45,6 +45,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         return content.type == .gif
     }
     
+    var delegate: VContentVideoPlayerCoordinatorDelegate?
+    
     init?(content: ContentModel) {
         self.content = content
         guard let asset = content.assetModels.first else {
@@ -92,7 +94,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
-    func loadVideo(completionBlock: (() -> Void)?) {
+    func loadVideo() {
         guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
@@ -114,7 +116,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
-            completionBlock?()
             return
         }
     }
@@ -142,6 +143,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         videoPlayer.playFromStart()
         state = .Playing
         previewView.hidden = true
+        delegate?.coordinatorDidBecomeReady()
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
@@ -216,4 +218,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         state = .Scrubbing
         videoPlayer.pause()
     }
+}
+
+protocol VContentVideoPlayerCoordinatorDelegate {
+     func coordinatorDidBecomeReady()
 }
