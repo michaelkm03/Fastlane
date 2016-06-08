@@ -92,12 +92,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         if kind == UICollectionElementKindSectionFooter {
             return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
         } else {
-            if headerView != nil {
-                return headerView
+            if headerView == nil {
+                headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                                                                   withReuseIdentifier: headerName,
+                                                                                   forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                                                               withReuseIdentifier: headerName,
-                                                                               forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             header?.decorateHeader(dependencyManager,
                                    maxHeight: CGRectGetHeight(collectionView.bounds),
                                    content: content)

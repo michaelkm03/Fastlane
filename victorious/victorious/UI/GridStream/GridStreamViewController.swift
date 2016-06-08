@@ -167,8 +167,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        guard let header = header,
-            content = content else {
+        guard let header = header else {
             return CGSizeZero
         }
         let size = header.sizeForHeader(

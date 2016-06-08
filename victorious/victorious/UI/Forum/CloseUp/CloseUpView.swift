@@ -54,6 +54,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
 
     var content: ContentModel? {
         didSet {
+            if oldValue?.id == content?.id {
+                return
+            }
             guard let content = content else {
                 return
             }
@@ -148,11 +151,16 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if content == nil {
-            return
-        }
         
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
+        
+        if content == nil {
+            var mediaContentViewFrame = mediaContentView.frame
+            mediaContentViewFrame.origin.y = totalHeight
+            mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
+            mediaContentView.frame = mediaContentViewFrame
+            return
+        }
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -222,8 +230,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func sizeForHeader(dependencyManager: VDependencyManager,
                        maxHeight: CGFloat,
                        content: ContentModel?) -> CGSize {
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
         guard let content = content else {
-            return CGSizeZero
+            return CGSizeMake(screenWidth, screenWidth)
         }
         return sizeForContent(content)
     }
