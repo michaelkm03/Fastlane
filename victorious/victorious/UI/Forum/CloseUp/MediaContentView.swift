@@ -28,6 +28,7 @@ class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
         singleTapRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(singleTapRecognizer)
         
+        self.clipsToBounds = true 
         backgroundColor = .clearColor()
         
         previewImageView.contentMode = .ScaleAspectFit
@@ -40,7 +41,6 @@ class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
         v_addFitToParentConstraintsToSubview(videoContainerView)
         
         backgroundView.contentMode = .ScaleAspectFill
-        backgroundView.clipsToBounds = true //Required because Scale Aspect Fill tends to overflow outside bounds
         self.insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
         self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
