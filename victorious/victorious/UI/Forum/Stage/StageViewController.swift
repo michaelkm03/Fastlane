@@ -19,8 +19,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     @IBOutlet private var mediaContentView: MediaContentView!
     
-    private var currentContentView: UIView?
-    
     private var stageDataSource: StageDataSource?
     
     weak var delegate: StageDelegate?
