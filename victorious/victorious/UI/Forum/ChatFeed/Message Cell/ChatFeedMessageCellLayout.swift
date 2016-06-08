@@ -43,14 +43,14 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: mediaSize.height
         )
-        cell.avatarContainer.frame = CGRect(
+        cell.avatarView.frame = CGRect(
             x: 0,
             y: 0,
-            width: cell.avatarContainer.bounds.width,
-            height: cell.bubbleView.bounds.height
+            width: cell.avatarSize.width,
+            height: cell.avatarSize.height
         )
         cell.messageContainer.frame = CGRect(
-            x: cell.avatarContainer.frame.maxX + cell.horizontalSpacing,
+            x: cell.avatarView.frame.maxX + cell.horizontalSpacing,
             y: 0,
             width: cell.bubbleView.bounds.width,
             height: cell.bubbleView.bounds.height
@@ -60,13 +60,13 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             y: cell.contentMargin.top,
             width: cell.messageContainer.bounds.width
                 + cell.horizontalSpacing
-                + cell.avatarContainer.bounds.width,
+                + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
         cell.detailTextView.frame = CGRect(
             x: cell.contentMargin.left + cell.messageContainer.frame.origin.x,
             y: 0,
-            width: cell.detailTextView.frame.width,
+            width: cell.bounds.width,
             height: cell.contentMargin.top
         )
     }
@@ -107,32 +107,32 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: cell.bubbleView.bounds.width,
             height: cell.bubbleView.bounds.height
         )
-        cell.avatarContainer.frame = CGRect(
+        cell.avatarView.frame = CGRect(
             x: cell.messageContainer.bounds.width + cell.horizontalSpacing,
             y: 0,
-            width: cell.avatarContainer.bounds.width,
-            height: cell.messageContainer.bounds.height
+            width: cell.avatarSize.width,
+            height: cell.avatarSize.height
         )
         cell.contentContainer.frame = CGRect(
             x: cell.bounds.width
                 - cell.messageContainer.bounds.width
                 - cell.horizontalSpacing
-                - cell.avatarContainer.bounds.width
+                - cell.avatarView.bounds.width
                 - cell.contentMargin.left,
             y: cell.contentMargin.top,
             width: cell.messageContainer.bounds.width
                 + cell.horizontalSpacing
-                + cell.avatarContainer.bounds.width,
+                + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
         
         cell.detailTextView.frame = CGRect(
             x: cell.contentContainer.frame.maxX
-                - cell.avatarContainer.frame.width
+                - cell.avatarView.frame.width
                 - cell.horizontalSpacing
                 - cell.detailTextView.frame.width,
             y: 0,
-            width: cell.detailTextView.frame.width,
+            width: cell.bounds.width,
             height: cell.contentMargin.top
         )
     }

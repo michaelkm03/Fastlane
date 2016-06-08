@@ -74,7 +74,7 @@ extension ForumViewController {
         )
         
         totalCount += 1
-        receive(.appendContent([content]))
+        broadcast(.appendContent([content]))
     }
     
     func debug_createStageEvents() {

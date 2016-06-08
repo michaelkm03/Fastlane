@@ -70,7 +70,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(videoPlayer.view)
-        superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
     }
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
@@ -127,6 +126,12 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func pauseVideo() {
         videoPlayer.pause()
+    }
+    
+    // MARK: - Layout
+    
+    func layout(in bounds: CGRect) {
+        videoPlayer.view.frame = bounds
     }
     
     // MARK: - VVideoPlayerDelegate

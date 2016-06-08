@@ -10,7 +10,8 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
+
+class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
@@ -33,9 +34,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         addSubview(spinner)
         sendSubviewToBack(spinner)
         v_addCenterToParentContraintsToSubview(spinner)
-        
+    }
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
+        singleTapRecognizer.delegate = self
         addGestureRecognizer(singleTapRecognizer)
         
         clipsToBounds = true
@@ -43,12 +58,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         
         previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
-        v_addFitToParentConstraintsToSubview(previewImageView)
         
         videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
-        v_addFitToParentConstraintsToSubview(videoContainerView)
         
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
@@ -60,6 +73,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     func hideContent() {
         animateContentToZero()
     }
+    
+    // MARK: - Updating content
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         spinner.startAnimating()
@@ -94,6 +109,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         } else {
             videoContainerView.hidden = true
         }
+        
+        setNeedsLayout()
+    }
+    
+    // MARK: - Layout
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewImageView.frame = bounds
+        videoContainerView.frame = bounds
+        backgroundView.frame = bounds
+        videoCoordinator?.layout(in: bounds)
     }
     
     private func animateContentToZero(animated: Bool = true) {
@@ -113,9 +140,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
             }
         )
     }
+
+    /// Called after any asynchronous content fetch is complete
+    func didFinishLoadingContent() {
+        setImageIfAvailable()
+    }
     
     private func setImageIfAvailable() {
         if imageToSet != nil && animatedToZero {
+            spinner.stopAnimating()
             previewImageView.image = imageToSet
             imageToSet = nil
             animatedToZero = false
@@ -132,7 +165,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
                     self?.backgroundView.alpha = 1.0
                 }
             }
-
         }
     }
     
@@ -162,12 +194,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         )
     }
     
-    ///Called after any asynchronous content fetch is complete
-    func didFinishLoadingContent() {
-        spinner.stopAnimating()
-        setImageIfAvailable()
-    }
-    
     // MARK: - Actions
     
     func onContentTap() {
@@ -176,7 +202,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         }
     }
     
-    //MARK: - ContentVideoPlayerCoordinatorDelegate
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // This allows the owner of the view to add its own tap gesture recognizer.
+        return true
+    }
+    
+    // MARK: - ContentVideoPlayerCoordinatorDelegate
     
     func coordinatorDidBecomeReady() {
         imageToSet = UIImage() // Hack to show the video coordinator
