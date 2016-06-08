@@ -29,10 +29,12 @@ class ContentFeedRequestTests: XCTestCase {
         let apiPath: String = "API_PATH"
         let request = ContentFeedRequest(url: NSURL(string: apiPath)!)
         do {
-            let response = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(response.count, 2)
-            XCTAssertEqual(response.first?.id, "20711")
-            XCTAssertEqual(response.last?.id, "20712")
+            let (contents, refreshStage) = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            XCTAssertEqual(contents.count, 2)
+            XCTAssertEqual(contents.first?.id, "20711")
+            XCTAssertEqual(contents.last?.id, "20712")
+            XCTAssertEqual(refreshStage?.contentID, "21253")
+            XCTAssertEqual(refreshStage?.section, RefreshSection.MainStage)
         } catch {
             XCTFail("parseResponse is not supposed to throw")
             return

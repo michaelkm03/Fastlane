@@ -25,7 +25,8 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation {
     let request: ContentFeedRequest
     
     override func main() {
-        requestExecutor.executeRequest(request, onComplete: { [weak self] contents in
+        requestExecutor.executeRequest(request, onComplete: { [weak self] (contents, refreshStage) in
+            // TODO: Do somethign with refreshStage
             self?.onComplete(contents)
         }, onError: nil)
     }

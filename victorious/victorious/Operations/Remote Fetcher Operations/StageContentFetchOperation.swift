@@ -40,8 +40,9 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         if let refreshStageEvent = refreshStageEvent,
             let startTime = refreshStageEvent.startTime,
             let operationStartTime = operationStartTime {
-
-            let timeDiff = refreshStageEvent.serverTime.timeIntervalSinceDate(startTime)
+            
+            // TODO: Refactor this piece of logic
+            let timeDiff = refreshStageEvent.serverTime?.timeIntervalSinceDate(startTime) ?? 0
             let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
             let seekAheadTime = timeDiff + workTime
 
