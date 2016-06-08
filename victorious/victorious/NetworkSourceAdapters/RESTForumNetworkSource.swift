@@ -45,8 +45,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     @objc private func pollForNewContent() {
-        dataSource.loadItems(.newer) { [weak self] contents, error in
+        dataSource.loadItems(.newer) { [weak self] contents, stageEvent, error in
             self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+            if let stageEvent = stageEvent {
+                self?.broadcast(stageEvent)
+            }
         }
     }
     
@@ -55,8 +58,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     func setUp() {
         isSetUp = true
         
-        dataSource.loadItems(.refresh) { [weak self] contents, error in
+        dataSource.loadItems(.refresh) { [weak self] contents, stageEvent, error in
+            // TODO: Can we not duplicate this logic?
             self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+            if let stageEvent = stageEvent {
+                self?.broadcast(stageEvent)
+            }
         }
         
         startPolling()
@@ -89,8 +96,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         
         switch event {
         case .loadOldContent:
-            dataSource.loadItems(.older) { [weak self] contents, error in
+            dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
                 self?.broadcast(.prependContent(contents.reverse().map { $0.toSDKContent() }))
+                if let stageEvent = stageEvent {
+                    self?.broadcast(stageEvent)
+                }
             }
         default:
             break

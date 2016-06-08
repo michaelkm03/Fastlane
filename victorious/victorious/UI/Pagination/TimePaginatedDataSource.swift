@@ -38,7 +38,7 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], error: NSError?) -> Void> {
+class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void> {
     
     // MARK: - Initializing
     
@@ -68,7 +68,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     ///
     /// This method does nothing if a page is already being loaded.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], error: NSError?) -> Void)? = nil) {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) {
         guard !isLoading else {
             return
         }
@@ -80,9 +80,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         
         isLoading = true
         
-        createOperation(url: url).queue { [weak self] newItems, error in
+        
+        createOperation(url: url).queue { [weak self] newItems, stageEvent, error in
             defer {
-                completion?(newItems: newItems, error: error)
+                completion?(newItems: newItems, stageEvent: stageEvent, error: error)
             }
             
             guard let ordering = self?.ordering else {
