@@ -19,6 +19,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private(set) var content: ContentModel?
     
+    private var imageToSet: UIImage?
+    private var animatedToZero = false
+    
     private var singleTapRecognizer: UITapGestureRecognizer!
     
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
@@ -35,7 +38,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         singleTapRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(singleTapRecognizer)
         
-        self.clipsToBounds = true
+        clipsToBounds = true
         backgroundColor = .clearColor()
         
         previewImageView.contentMode = .ScaleAspectFit
@@ -56,17 +59,21 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         spinner.startAnimating()
-        animateContentToAlpha(0.0)
         self.content = content
         shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
         
+        animateContentToZero()
         // Set up image view if content is image
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
             let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
             previewImageView.hidden = false
-            previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] _ in
-                self?.didFinishLoadingContent()
+            previewImageView.sd_setImageWithURL(
+                previewImageURL,
+                placeholderImage: previewImageView.image, // Leave the image as is
+                options: .AvoidAutoSetImage) { [weak self] image, _, _, _ in
+                    self?.imageToSet = image
+                    self?.didFinishLoadingContent()
             }
         } else {
             previewImageView.hidden = true
@@ -85,30 +92,76 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         }
     }
     
-    private func animateContentToAlpha(alpha: CGFloat, animated: Bool = true) {
+    private func animateContentToZero(animated: Bool = true) {
         let animationDuration = animated ? MediaContentView.fadeInOutDuration : NSTimeInterval(0)
-        UIView.animateWithDuration(animationDuration, animations: {
-            self.videoContainerView.alpha = alpha
-            self.previewImageView.alpha = alpha
-        })
+        UIView.animateWithDuration(
+            animationDuration,
+            delay: 0,
+            options: [.BeginFromCurrentState, .AllowUserInteraction],
+            animations: {
+                self.videoContainerView.alpha = 0
+                self.previewImageView.alpha = 0
+                self.backgroundView.alpha = 0
+            },
+            completion: { [weak self] _ in
+                self?.animatedToZero = true
+                self?.setImageIfAvailable()
+            }
+        )
+    }
+    
+    private func setImageIfAvailable() {
+        if imageToSet != nil && animatedToZero {
+            previewImageView.image = imageToSet
+            imageToSet = nil
+            animatedToZero = false
+            animateContentToVisible()
+            
+            guard let content = self.content else {
+                return
+            }
+            
+            let minWidth = UIScreen.mainScreen().bounds.size.width
+            //Add blurred background
+            if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
+                backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
+                    self?.backgroundView.alpha = 1.0
+                }
+            }
+
+        }
+    }
+    
+    private func animateContentToVisible(animated: Bool = true) {
+        let animationDuration = animated ? MediaContentView.fadeInOutDuration : NSTimeInterval(0)
+        
+        // Animate the backgroundView faster
+        UIView.animateWithDuration(
+            animationDuration/2,
+            delay: 0,
+            options: [.AllowUserInteraction],
+            animations: {
+                self.backgroundView.alpha = 1
+            },
+            completion: nil
+        )
+        
+        UIView.animateWithDuration(
+            animationDuration,
+            delay: 0,
+            options: [.AllowUserInteraction],
+            animations: {
+                self.videoContainerView.alpha = 1
+                self.previewImageView.alpha = 1
+            },
+            completion: nil
+        )
     }
     
     ///Called after any asynchronous content fetch is complete
     func didFinishLoadingContent() {
         spinner.stopAnimating()
-        animateContentToAlpha(1.0)
-
-        guard let content = self.content else {
-            return
-        }
-        
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        //Add blurred background
-        if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
-            backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
-                self?.backgroundView.alpha = 1.0
-            }
-        }
+        setImageIfAvailable()
     }
     
     // MARK: - Actions
