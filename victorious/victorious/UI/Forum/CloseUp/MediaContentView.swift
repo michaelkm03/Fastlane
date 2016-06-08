@@ -12,10 +12,14 @@ import UIKit
 /// Displays an image/video/GIF/Youtube video upon setting the content property
 
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
+    private struct Constants {
+        static let blurRadius = CGFloat(12)
+        static let fadeInOutDuration: NSTimeInterval = 1.0
+    }
+    
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
-    private static let fadeInOutDuration: NSTimeInterval = 1.0
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private(set) var content: ContentModel?
@@ -71,10 +75,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         backgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     }
     
-    func hideContent() {
-        animateContentToZero()
-    }
-    
     // MARK: - Updating content
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
@@ -82,7 +82,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         self.content = content
         shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
         
-        animateContentToZero()
+        hideContent()
         // Set up image view if content is image
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
@@ -90,10 +90,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             previewImageView.hidden = false
             previewImageView.sd_setImageWithURL(
                 previewImageURL,
-                placeholderImage: previewImageView.image, // Leave the image as is
+                placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
                 options: .AvoidAutoSetImage) { [weak self] image, _, _, _ in
                     self?.imageToSet = image
-                    self?.didFinishLoadingContent()
+                    self?.setImageIfAvailable()
             }
         } else {
             previewImageView.hidden = true
@@ -126,8 +126,35 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator?.layout(in: bounds)
     }
     
-    private func animateContentToZero(animated: Bool = true) {
-        let animationDuration = animated ? MediaContentView.fadeInOutDuration : NSTimeInterval(0)
+    private func setImageIfAvailable() {
+        if imageToSet != nil && animatedToZero {
+            spinner.stopAnimating()
+            previewImageView.image = imageToSet
+            imageToSet = nil
+            animatedToZero = false
+            showContent()
+            
+            guard let content = self.content else {
+                return
+            }
+            
+            let minWidth = UIScreen.mainScreen().bounds.size.width
+            //Add blurred background
+            if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
+                backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius){ [weak self] in
+                    self?.backgroundView.alpha = 1.0
+                }
+            }
+        }
+    }
+    
+    /// Public function exposed to hide content
+    func hide() {
+        hideContent()
+    }
+    
+    private func hideContent(animated: Bool = true) {
+        let animationDuration = animated ? Constants.fadeInOutDuration : 0
         UIView.animateWithDuration(
             animationDuration,
             delay: 0,
@@ -143,36 +170,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
         )
     }
-
-    /// Called after any asynchronous content fetch is complete
-    func didFinishLoadingContent() {
-        setImageIfAvailable()
-    }
     
-    private func setImageIfAvailable() {
-        if imageToSet != nil && animatedToZero {
-            spinner.stopAnimating()
-            previewImageView.image = imageToSet
-            imageToSet = nil
-            animatedToZero = false
-            animateContentToVisible()
-            
-            guard let content = self.content else {
-                return
-            }
-            
-            let minWidth = UIScreen.mainScreen().bounds.size.width
-            //Add blurred background
-            if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
-                backgroundView.applyBlurToImageURL(imageURL, withRadius: 12.0){ [weak self] in
-                    self?.backgroundView.alpha = 1.0
-                }
-            }
-        }
-    }
-    
-    private func animateContentToVisible(animated: Bool = true) {
-        let animationDuration = animated ? MediaContentView.fadeInOutDuration : NSTimeInterval(0)
+    private func showContent(animated: Bool = true) {
+        let animationDuration = animated ? Constants.fadeInOutDuration : 0
         
         // Animate the backgroundView faster
         UIView.animateWithDuration(
@@ -216,6 +216,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     func coordinatorDidBecomeReady() {
         imageToSet = UIImage() // Hack to show the video coordinator
-        didFinishLoadingContent()
+        setImageIfAvailable()
     }
 }
