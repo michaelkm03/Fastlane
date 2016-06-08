@@ -35,7 +35,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionViewBottom: NSLayoutConstraint!
     
-    //MARK: - ChatFeed
+    // MARK: - ChatFeed
     
     weak var delegate: ChatFeedDelegate?
     

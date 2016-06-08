@@ -69,7 +69,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        guard isViewLoaded() else {
+        guard isViewLoaded() && composerIsVisible else {
             return 0
         }
         return fabs(inputViewToBottomConstraint.constant)
@@ -159,6 +159,26 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                     self.textView.resignFirstResponder()
                 }
             }
+        }
+    }
+    
+    private var composerIsVisible = true
+    
+    func setComposerVisible(visible: Bool, animated: Bool) {
+        guard visible != composerIsVisible else {
+            return
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.4) {
+                self.setComposerVisible(visible, animated: false)
+                self.view.layoutIfNeeded()
+            }
+        }
+        else {
+            composerIsVisible = visible
+            inputViewToBottomConstraint.constant = visible ? 0.0 : -interactiveContainerView.frame.height
+            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
     }
     
