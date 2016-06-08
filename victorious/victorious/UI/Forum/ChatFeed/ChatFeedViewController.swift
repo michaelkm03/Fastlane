@@ -199,7 +199,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
-        } else {
+        }
+        else {
             let collectionView = self.collectionView
             
             // The collection view's layout information is guaranteed to be updated properly in the completion handler
@@ -207,20 +208,20 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             // though, so we have to do that separately.
             collectionView.performBatchUpdates({
                 switch loadingType {
-                case .newer:
-                    let previousCount = self.dataSource.visibleItems.count - newItems.count
+                    case .newer:
+                        let previousCount = self.dataSource.visibleItems.count - newItems.count
+                        
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                        })
                     
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: previousCount + $0, inSection: 0)
-                    })
-                
-                case .older:
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: $0, inSection: 0)
-                    })
-                
-                case .refresh:
-                    break
+                    case .older:
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: $0, inSection: 0)
+                        })
+                    
+                    case .refresh:
+                        break
                 }
             }, completion: { _ in
                 completion()
