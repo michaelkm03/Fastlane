@@ -23,13 +23,12 @@ public struct RefreshStage {
     public let startTime: NSDate?
     
     public init?(json: JSON, serverTime: NSDate? = nil) {
-        self.serverTime = serverTime
-
-        guard let section = json["section"].string,
-            let contentID = json["content_id"].string else {
+        guard let contentID = json["content_id"].string else {
             return nil
         }
+        
         self.contentID = contentID
+        self.serverTime = serverTime
         
         if let startTime = json["start_time"].double {
             self.startTime = NSDate(millisecondsSince1970: startTime)
@@ -37,6 +36,10 @@ public struct RefreshStage {
             self.startTime = nil
         }
 
+        // Backend is not capable of sending a section information for Main Stage.
+        // So we are forced to make the assumption that if no section is being sent, it's the main stage 🌚
+        let section = json["section"].string ?? "main_stage"
+        
         let lowerCasedSection = section.lowercaseString
         switch lowerCasedSection {
         case "vip_stage":
