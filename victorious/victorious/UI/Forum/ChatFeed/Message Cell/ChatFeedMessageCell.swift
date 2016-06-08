@@ -23,47 +23,92 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
-    @IBOutlet private(set) weak var avatarContainer: UIView!
-    @IBOutlet private(set) weak var avatarView: VDefaultProfileImageView!
-    @IBOutlet private(set) weak var bubbleView: UIView!
-    @IBOutlet private(set) weak var contentContainer: UIView!
-    @IBOutlet private(set) weak var detailTextView: UITextView!
-    @IBOutlet private(set) weak var messageContainer: UIView!
-    @IBOutlet private(set) weak var mediaView: MediaContentView!
-    @IBOutlet private(set) weak var textView: UITextView!
+    let detailTextView = UITextView()
+    let contentContainer = UIView()
+    let messageContainer = UIView()
+    let bubbleView = UIView()
+    let textView = UITextView()
+    let mediaView = MediaContentView()
+    let avatarView = VDefaultProfileImageView()
     
     let horizontalSpacing: CGFloat = 10.0
+    let avatarSize = CGSize(width: 41.0, height: 41.0)
     let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     
     var layout: ChatFeedMessageCellLayout! {
         didSet {
-            layout.updateWithCell(self)
+            setNeedsLayout()
         }
     }
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
-    var dependencyManager: VDependencyManager!
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            if dependencyManager != oldValue {
+                updateStyle()
+            }
+        }
+    }
     
     var content: ContentModel? {
         didSet {
+            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
+            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
+            if content?.id == oldValue?.id && content?.id != nil {
+                return
+            }
+            
             populateData()
-            updateStyle()
-            layout.updateWithCell(self)
+            setNeedsLayout()
         }
+    }
+    
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        mediaView.clipsToBounds = true
+        mediaView.translatesAutoresizingMaskIntoConstraints = false
+        mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        
+        avatarView.clipsToBounds = true
+        avatarView.userInteractionEnabled = true
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
+        
+        bubbleView.clipsToBounds = true
+        
+        configureTextView(textView)
+        configureTextView(detailTextView)
+        
+        contentView.addSubview(detailTextView)
+        contentView.addSubview(contentContainer)
+        
+        contentContainer.addSubview(messageContainer)
+        contentContainer.addSubview(avatarView)
+        
+        messageContainer.addSubview(bubbleView)
+        
+        bubbleView.addSubview(textView)
+        bubbleView.addSubview(mediaView)
+    }
+    
+    private func configureTextView(textView: UITextView) {
+        textView.backgroundColor = nil
+        textView.scrollEnabled = false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
     }
     
     // MARK: - UIView
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        avatarContainer.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped(_: ))) )
-        mediaView.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(onMediaTapped(_: ))) )
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         layout.updateWithCell(self)
+        avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
     }
     
     // MARK: - Gesture Recognizer Actions
@@ -80,14 +125,12 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         detailTextView.contentInset = UIEdgeInsetsZero
         detailTextView.font = dependencyManager.userLabelFont
         detailTextView.textColor = dependencyManager.userLabelColor
-        detailTextView.textAlignment = layout.textAlignment
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
         bubbleView.layer.cornerRadius = 5.0
         bubbleView.layer.borderWidth = 0.5
         
-        avatarView.layer.cornerRadius = avatarView.bounds.width * 0.5
         avatarView.layer.borderWidth = 1.0
         avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
         avatarView.backgroundColor = dependencyManager.backgroundColor
@@ -102,11 +145,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
         
-        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
-        } else {
-            detailTextView.text = "" 
-        }
+        updateTimestamp()
         
         if let imageURL = content?.authorModel.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
@@ -115,25 +154,33 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         }
     }
     
+    func updateTimestamp() {
+        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
+            detailTextView.text = "\(name) (\(timeStamp))"
+        } else {
+            detailTextView.text = ""
+        }
+    }
+    
     // MARK: - ChatCellType
     
     func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
         let mediaSize = calculateMediaSizeWithinBounds(bounds)
         let textSize = calculateTextSizeWithinBounds(bounds)
-        let totalHeight = detailTextView.frame.height
+        let totalHeight = contentMargin.top
             + textSize.height
             + mediaSize.height
             + contentMargin.bottom
         return CGSize(
             width: bounds.width,
-            height: max(totalHeight, avatarView.frame.maxY + contentMargin.top)
+            height: max(totalHeight, avatarSize.height + contentMargin.top)
         )
     }
     
     // MARK: - Sizing
     
     private func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
-        return bounds.width - (contentMargin.left + contentMargin.right) - (avatarContainer.frame.width) - horizontalSpacing
+        return bounds.width - (contentMargin.left + contentMargin.right) - avatarSize.width - horizontalSpacing
     }
     
     func calculateTextSizeWithinBounds(bounds: CGRect) -> CGSize {

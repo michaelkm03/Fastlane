@@ -32,6 +32,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         self.dismissOnReturn = dismissOnReturn
         super.init()
         textView.delegate = self
+        updateDelegateOfTextViewStatus(textView)
     }
     
     //MARK: - Updating logic

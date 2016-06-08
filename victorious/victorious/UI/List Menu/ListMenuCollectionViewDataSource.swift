@@ -108,7 +108,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
 
         // A custom accessoryButton is added to the first headerView to allow entry into the VIPForum and is not related to the actual section header.
-        headerView.accessoryButton = indexPath.row == 0 ? subscribeButton : nil
+        headerView.accessoryButton = indexPath.section == 0 ? subscribeButton : nil
         
         return headerView
     }

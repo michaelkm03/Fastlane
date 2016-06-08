@@ -10,7 +10,8 @@
 import UIKit
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
-class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
+
+class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
@@ -23,9 +24,22 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
     private var shouldShowToolBarForVideo: Bool = true
     
-    override func awakeFromNib() {
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
         singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
+        singleTapRecognizer.delegate = self
         addGestureRecognizer(singleTapRecognizer)
         
         self.clipsToBounds = true 
@@ -33,17 +47,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         
         previewImageView.contentMode = .ScaleAspectFit
         addSubview(previewImageView)
-        v_addFitToParentConstraintsToSubview(previewImageView)
         
-        videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .blackColor()
         addSubview(videoContainerView)
-        v_addFitToParentConstraintsToSubview(videoContainerView)
         
         backgroundView.contentMode = .ScaleAspectFill
         self.insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
-        self.v_addFitToParentConstraintsToSubview(backgroundView)
     }
+    
+    // MARK: - Updating content
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         self.content = content
@@ -72,9 +84,21 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         } else {
             videoContainerView.hidden = true
         }
+        
+        setNeedsLayout()
     }
     
-    ///Called after any asynchronous content fetch is complete
+    // MARK: - Layout
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewImageView.frame = bounds
+        videoContainerView.frame = bounds
+        backgroundView.frame = bounds
+        videoCoordinator?.layout(in: bounds)
+    }
+    
+    /// Called after any asynchronous content fetch is complete
     func didFinishLoadingContent() {
         guard let content = self.content else {
             return
@@ -97,7 +121,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate {
         }
     }
     
-    //MARK: - ContentVideoPlayerCoordinatorDelegate
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // This allows the owner of the view to add its own tap gesture recognizer.
+        return true
+    }
+    
+    // MARK: - ContentVideoPlayerCoordinatorDelegate
     
     func coordinatorDidBecomeReady() {
         didFinishLoadingContent()
