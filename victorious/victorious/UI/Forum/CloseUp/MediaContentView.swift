@@ -43,8 +43,6 @@ class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
         backgroundView.clipsToBounds = true //Required because Scale Aspect Fill tends to overflow outside bounds
         self.insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
         self.v_addFitToParentConstraintsToSubview(backgroundView)
-        
-        videoCoordinator.delegate = self 
     }
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
@@ -70,6 +68,7 @@ class MediaContentView: UIView, VContentVideoPlayerCoordinatorDelegate {
             videoCoordinator?.setupVideoPlayer(in: videoContainerView)
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
             videoCoordinator?.loadVideo()
+            videoCoordinator?.delegate = self
         } else {
             videoContainerView.hidden = true
         }
