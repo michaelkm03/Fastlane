@@ -34,10 +34,9 @@ public struct UserInfoRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
-        let results = responseJSON["payload"].arrayValue.flatMap({ User(json: $0) })
-        if let user = results.first {
-            return user
+        guard let user = User(json: responseJSON["payload"]["user"]) else {
+            throw ResponseParsingError()
         }
-        throw ResponseParsingError()
+        return user
     }
 }

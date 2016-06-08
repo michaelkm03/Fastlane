@@ -40,7 +40,7 @@ public class Content: DictionaryConvertible {
         }
         
         self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
-        self.isVIPOnly = true// json["is_vip"].bool ?? false
+        self.isVIPOnly = json["is_vip"].bool ?? false
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
@@ -80,7 +80,7 @@ public class Content: DictionaryConvertible {
         shareURL = nil
         previewImages = nil
         type = .text
-        isVIPOnly = true//false
+        isVIPOnly = false
         isLikedByCurrentUser = false
         
         // Either one of these types are required to be counted as a chat message.
@@ -89,19 +89,19 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], author: User) {
+    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], previewImages: [ImageAsset] = [], author: User) {
         self.id = id
         self.createdAt = createdAt
         self.type = type
         self.text = text
+        self.assets = assets
+        self.previewImages = previewImages
         self.author = author
         
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
-        self.previewImages = nil
-        self.assets = assets
-        self.isVIPOnly = true// false
+        self.isVIPOnly = false
         isLikedByCurrentUser = false
     }
     

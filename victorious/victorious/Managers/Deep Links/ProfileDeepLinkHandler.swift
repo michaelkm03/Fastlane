@@ -1,15 +1,15 @@
 //
-//  ContentDeepLinkHandler.swift
+//  ProfileDeepLinkHandler.swift
 //  victorious
 //
-//  Created by Vincent Ho on 6/2/16.
+//  Created by Vincent Ho on 6/6/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import UIKit
 
-class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
-    static let contentDeeplinkURLHostComponent = "content"
+class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
+    static let profileDeeplinkURLHostComponent = "profile"
     
     private var dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
@@ -23,26 +23,30 @@ class ContentDeepLinkHandler: NSObject, VDeeplinkHandler {
     
     func displayContentForDeeplinkURL(url: NSURL, completion: VDeeplinkHandlerCompletionBlock?) {
         guard canDisplayContentForDeeplinkURL(url),
-            let contentID = url.v_firstNonSlashPathComponent(),
+            let userID = Int(url.v_firstNonSlashPathComponent()),
             let originViewController = originViewController else {
-            completion?(false, nil)
-            return
+                completion?(false, nil)
+                return
         }
         
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
-        ShowFetchedCloseUpOperation(
-            contentID: contentID,
-            displayModifier: displayModifier
+        ShowProfileOperation(
+            originViewController: originViewController,
+            dependencyManager: dependencyManager,
+            userId: userID
         ).queue() { error, cancelled in
             let finished = (error == nil) && !cancelled
-            completion?(finished, nil)
+            completion?(finished , nil)
         }
-        
     }
     
     func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        let isHostValid = url.host == ContentDeepLinkHandler.contentDeeplinkURLHostComponent
-        let isContentValid = url.v_firstNonSlashPathComponent() != nil
-        return isHostValid && isContentValid
+        guard let userID = Int(url.v_firstNonSlashPathComponent()) else {
+            return false
+        }
+        let isValidUserID = userID > 0
+        let isHostValid = url.host == ProfileDeepLinkHandler.profileDeeplinkURLHostComponent
+
+        return isHostValid && isValidUserID
     }
+
 }

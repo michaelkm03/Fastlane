@@ -45,8 +45,12 @@ extension Forum {
             userId: userID).queue()
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectAsset asset: ContentMediaAssetModel) {
-        // FUTURE: Show closeup/lightbox
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
+        ShowPermissionedCloseUpOperation(
+            content: content,
+            displayModifier: displayModifier
+        ).queue()
     }
     
     // MARK: - ComposerDelegate

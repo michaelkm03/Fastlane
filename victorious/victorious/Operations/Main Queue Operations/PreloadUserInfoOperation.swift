@@ -11,8 +11,10 @@ import Foundation
 /// Executes several sub operations that pre-load user info including conversations, poll responses,
 /// profile data, profile stream, etc.  Intended to be called just after login.
 class PreloadUserInfoOperation: BackgroundOperation {
-    
-    override init() {
+    private let dependencyManager: VDependencyManager
+
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
         super.init()
     }
     
@@ -34,26 +36,20 @@ class PreloadUserInfoOperation: BackgroundOperation {
                 return
             }
             
-            let apiPath = VStreamItem.apiPathForStreamWithUserID(currentUser.remoteId)
+            let apiPath = self?.dependencyManager.networkResources?.stringForKey("userInfoURL")
             let userID = currentUser.remoteId.integerValue
             
-            StreamOperation(apiPath: apiPath).queue()
-            
-            let infoOperation = UserInfoOperation(userID: userID)
+            let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
             infoOperation.queue() { _ in
                 strongSelf.user = infoOperation.user
                 strongSelf.finishedExecuting()
             }
             
-            PollResultSummaryByUserOperation(userID: userID).queue()
-            
-            ConversationListOperation().queue()
-            
-            FollowCountOperation(userID: currentUser.remoteId.integerValue).queue()
+            FollowCountOperation(userID: userID).queue()
 
             VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
             
-            UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
+            UsersFollowedByUserOperation(userID: userID).queue()
             
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
             FollowedHashtagsRemoteOperation(request: request).queue()

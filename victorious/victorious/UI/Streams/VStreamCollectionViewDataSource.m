@@ -29,7 +29,6 @@
     {
         _stream = stream;
         _paginatedDataSource = [[PaginatedDataSource alloc] init];
-        _paginatedDataSource.delegate = self;
         _visibleItems = [[NSOrderedSet alloc] init];
     }
     return self;

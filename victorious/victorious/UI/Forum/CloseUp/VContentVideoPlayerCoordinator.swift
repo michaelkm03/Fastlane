@@ -17,6 +17,10 @@ enum VideoState {
     Scrubbing
 }
 
+protocol ContentVideoPlayerCoordinatorDelegate: class {
+    func coordinatorDidBecomeReady()
+}
+
 /// A coordinator that holds a VVideoView object adjusting for different types of VContent 
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
@@ -27,8 +31,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
 
     private var videoPlayer: VVideoPlayer = VVideoView()
+    private let previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
@@ -44,6 +48,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     private var shouldMute: Bool {
         return content.type == .gif
     }
+    
+    weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
     init?(content: ContentModel) {
         self.content = content
@@ -74,9 +80,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(previewView)
-        superview.v_addFitToParentConstraintsToSubview(previewView)
         superview.addSubview(videoPlayer.view)
-        superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
     }
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
@@ -135,12 +139,20 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         videoPlayer.pause()
     }
     
+    // MARK: - Layout
+    
+    func layout(in bounds: CGRect) {
+        previewView.frame = bounds
+        videoPlayer.view.frame = bounds
+    }
+    
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
         state = .Playing
         previewView.hidden = true
+        delegate?.coordinatorDidBecomeReady()
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {

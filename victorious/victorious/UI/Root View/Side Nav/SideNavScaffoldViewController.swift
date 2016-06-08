@@ -302,7 +302,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
             return contentDeepLinkHandler
         }
         
-        let profileDeepLinkHandler = VProfileDeeplinkHandler(dependencyManager: dependencyManager)
+        let profileDeepLinkHandler = ProfileDeepLinkHandler(
+            dependencyManager: dependencyManager,
+            originViewController: mainNavigationController.innerNavigationController
+        )
         
         if profileDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
             return profileDeepLinkHandler
