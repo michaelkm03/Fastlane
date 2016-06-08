@@ -67,7 +67,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.alpha = 0.0
         backgroundView.contentMode = .ScaleAspectFill
         insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
-        v_addFitToParentConstraintsToSubview(backgroundView)
+        backgroundView.frame = bounds
+        backgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     }
     
     func hideContent() {

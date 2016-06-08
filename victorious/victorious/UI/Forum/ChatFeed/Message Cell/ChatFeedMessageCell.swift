@@ -103,6 +103,10 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         fatalError("NSCoding not supported.")
     }
     
+    override func prepareForReuse() {
+        mediaView.hideContent()
+    }
+    
     // MARK: - UIView
     
     override func layoutSubviews() {
