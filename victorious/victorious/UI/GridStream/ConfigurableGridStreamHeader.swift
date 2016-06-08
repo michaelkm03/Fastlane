@@ -9,15 +9,14 @@
 import Foundation
 
 /// Conformers of this protocol can be added into the the ConfigurableHeaderContentStreamViewController as a header.
-
 protocol ConfigurableGridStreamHeader {
     associatedtype ContentType
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: ContentType?)
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: ContentType?) -> CGSize
+
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentType?)
+
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentType?) -> CGSize
+
     func headerDidDisappear()
+
     func headerWillAppear()
 }
