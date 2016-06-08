@@ -181,9 +181,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             
             CATransaction.commit()
             
-            // If we loaded newer items and we were scrolled to the bottom, scroll down to reveal the new content.
-            if (loadingType == .newer || loadingType == .refresh) && wasScrolledToBottom {
-                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: true)
+            // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
+            // reveal the new content.
+            if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
+                // There's probably a better way to do this, but this prevents some issues with not scrolling all the
+                // way to the bottom.
+                dispatch_after(0.0) {
+                    collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
+                }
             }
             
             completion?()
