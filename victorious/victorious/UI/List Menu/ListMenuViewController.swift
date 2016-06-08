@@ -35,6 +35,17 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return viewController
     }
     
+    // MARK: - View events
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if collectionView?.indexPathsForSelectedItems()?.isEmpty != false {
+            let indexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
+            collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+    }
+    
     // MARK: - Notifications
     
     private func selectCommunity(atIndex index: Int) {
@@ -99,9 +110,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         case .creator:
             break
         case .community:
-            selectCommunity(atIndex: indexPath.row)
+            selectCommunity(atIndex: indexPath.item)
         case .hashtags:
-            selectHashtag(atIndex: indexPath.row)
+            selectHashtag(atIndex: indexPath.item)
         }
     }
     
