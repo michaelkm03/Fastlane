@@ -242,7 +242,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    func onClose() {
+    @objc private func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 
         // Close connection to network source when we close the forum.
