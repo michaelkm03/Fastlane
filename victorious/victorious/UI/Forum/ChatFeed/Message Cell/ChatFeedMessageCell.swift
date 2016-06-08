@@ -97,6 +97,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     private func configureTextView(textView: UITextView) {
         textView.backgroundColor = nil
         textView.scrollEnabled = false
+        textView.editable = false
     }
     
     required init?(coder: NSCoder) {
