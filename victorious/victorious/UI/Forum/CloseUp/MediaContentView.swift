@@ -94,9 +94,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        videoCoordinator?.previewView.frame = bounds
-        videoCoordinator?.videoPlayer.view.frame = bounds
         backgroundView.frame = bounds
+        videoCoordinator?.layout(in: bounds)
     }
     
     /// Called after any asynchronous content fetch is complete

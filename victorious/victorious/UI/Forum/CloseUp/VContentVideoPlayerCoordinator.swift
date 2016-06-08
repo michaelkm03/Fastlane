@@ -30,10 +30,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    private(set) var videoPlayer: VVideoPlayer = VVideoView()
+    private var videoPlayer: VVideoPlayer = VVideoView()
+    private let previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    
-    let previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
@@ -138,6 +137,13 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func pauseVideo() {
         videoPlayer.pause()
+    }
+    
+    // MARK: - Layout
+    
+    func layout(in bounds: CGRect) {
+        previewView.frame = bounds
+        videoPlayer.view.frame = bounds
     }
     
     // MARK: - VVideoPlayerDelegate
