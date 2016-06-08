@@ -86,8 +86,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
-    func loadVideo(withCompletion completion: (()->())? = nil) {
-        videoLoadCompletion = completion
+    func loadVideo() {
         guard let asset = content.assetModels.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
@@ -133,7 +132,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        videoLoadCompletion?()
         videoPlayer.playFromStart()
         state = .Playing
         delegate?.coordinatorDidBecomeReady()
