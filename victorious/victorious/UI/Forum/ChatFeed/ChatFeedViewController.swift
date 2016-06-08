@@ -116,7 +116,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         // If there isn't enough content to fill the screen, push it down to the bottom.
         var adjustedInsets = edgeInsets
-        adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
+        
+        // Doing this when the content size is zero doesn't help, and it prevents scrolling to bottom after the initial
+        // content is loaded.
+        if collectionView.contentSize.height > 0.0 {
+            adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
+        }
+        
         return adjustedInsets
     }
     
@@ -150,12 +156,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                 self?.collectionView.v_scrollToBottomAnimated(true)
             }
         }
-    }
-    
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didPurgeItems purgedItems: [ContentModel]) {
-        collectionView.deleteItemsAtIndexPaths((0 ..< purgedItems.count).map {
-            NSIndexPath(forItem: $0, inSection: 0)
-        })
     }
     
     private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
@@ -203,7 +203,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             collectionView.performBatchUpdates({
                 switch loadingType {
                 case .newer:
-                    let previousCount = self.dataSource.unstashedItems.count - newItems.count
+                    let previousCount = self.dataSource.visibleItems.count - newItems.count
                     
                     collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                         NSIndexPath(forItem: previousCount + $0, inSection: 0)
@@ -292,6 +292,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimestamps(for: collectionView)
+        dataSource.updateTimeStamps(in: collectionView)
     }
 }

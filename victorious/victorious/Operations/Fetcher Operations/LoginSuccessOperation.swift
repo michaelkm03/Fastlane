@@ -10,12 +10,14 @@ import Foundation
 
 class LoginSuccessOperation: FetcherOperation {
     
+    private let dependencyManager: VDependencyManager
     let parameters: AccountCreateParameters
     let response: AccountCreateResponse
     
     private var userObjectID: NSManagedObjectID?
     
-    init(response: AccountCreateResponse, parameters: AccountCreateParameters) {
+    init(dependencyManager: VDependencyManager, response: AccountCreateResponse, parameters: AccountCreateParameters) {
+        self.dependencyManager = dependencyManager
         self.response = response
         self.parameters = parameters
     }
@@ -39,7 +41,7 @@ class LoginSuccessOperation: FetcherOperation {
             
             // After saving, the objectID is available
             self.userObjectID = user.objectID
-            PreloadUserInfoOperation().after(self).queue()
+            PreloadUserInfoOperation(dependencyManager: self.dependencyManager).after(self).queue()
         }
         
         persistentStore.mainContext.v_performBlockAndWait() { context in

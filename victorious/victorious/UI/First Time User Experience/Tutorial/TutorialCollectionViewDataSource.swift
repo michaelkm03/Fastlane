@@ -15,6 +15,10 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     let sizingCell: ChatFeedMessageCell = ChatFeedMessageCell.v_fromNib()
     
+    var visibleItems: [ContentModel] {
+        return networkDataSource.visibleItems
+    }
+    
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
         dataSource.delegate = self

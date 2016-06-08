@@ -17,7 +17,11 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             return
         }
         
-        let operation = LoginOperation(email: email, password: "password")
+        let operation = LoginOperation(
+            dependencyManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+            email: email,
+            password: "password"
+        )
         
         XCTAssertFalse( operation.requiresAuthorization )
         
