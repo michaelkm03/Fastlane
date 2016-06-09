@@ -36,9 +36,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     func registerViewsFor(collectionView: UICollectionView) {
         let headerNib = UINib(nibName: headerName, bundle: nil)
-        collectionView.registerNib(headerNib,
-                                   forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                                   withReuseIdentifier: headerName)
+        collectionView.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerName)
     }
     
     // MARK: - Managing content
@@ -93,13 +91,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
         } else {
             if headerView == nil {
-                headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                                                                   withReuseIdentifier: headerName,
-                                                                                   forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
+                headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            header?.decorateHeader(dependencyManager,
-                                   maxHeight: CGRectGetHeight(collectionView.bounds),
-                                   content: content)
+            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content)
             
             guard let header = header as? UIView else {
                 assertionFailure("header is not a UIView")
@@ -111,12 +105,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = cellFactory.collectionView(
-            collectionView,
-            cellForContent: items[indexPath.row],
-            atIndexPath: indexPath
-        )
-        
+        let cell = cellFactory.collectionView( collectionView, cellForContent: items[indexPath.row], atIndexPath: indexPath)
         cell.layer.cornerRadius = 6
         cell.backgroundColor = .clearColor()
         cell.contentView.backgroundColor = .clearColor()

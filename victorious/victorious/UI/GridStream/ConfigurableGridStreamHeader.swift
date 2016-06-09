@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Conformers of this protocol can be added into the the ConfigurableHeaderContentStreamViewController as a header.
+/// Conformers of this protocol can be added into the ConfigurableHeaderContentStreamViewController as a header.
 protocol ConfigurableGridStreamHeader {
     associatedtype ContentType
 
