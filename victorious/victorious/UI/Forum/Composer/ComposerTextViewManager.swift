@@ -38,22 +38,27 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
-        var updatedText = textView.text
-        guard range.location + range.length <= updatedText.characters.count &&
-            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
-            return false
-        }
+//        guard range.location + range.length <= updatedText.characters.count &&
+//            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+//            return false
+//        }
+//        
+//        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
+//        textView.attributedText = NSAttributedString(string: updatedText)
+//        return true
         
-        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
-        textView.text = updatedText
-        return true
+        return false
+        
     }
     
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
-            textView.text = textView.text + text
+            let newString = NSMutableAttributedString()
+            newString.appendAttributedString(textView.attributedText)
+            newString.appendAttributedString(NSAttributedString(string: text))
+            textView.attributedText = newString 
         }
         else {
             delegate?.textViewDidHitCharacterLimit(textView)
