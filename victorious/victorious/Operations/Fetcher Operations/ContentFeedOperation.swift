@@ -23,7 +23,9 @@ final class ContentFeedOperation: NSOperation, Queueable {
             self?.contentIDs = (results as? [String]) ?? []
             self?.error = error
             if let refreshStage = remoteOperation.refreshStage {
-                self?.stageEvent = ForumEvent.refreshStage(refreshStage)
+                self?.stageEvent = .refreshStage(refreshStage)
+            } else {
+                self?.stageEvent = .closeMainStage
             }
         }
     }
