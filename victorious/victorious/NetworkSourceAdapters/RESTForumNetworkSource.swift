@@ -44,6 +44,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         )
     }
     
+    // TODO: Hide stage if no stageEvent for main stage.
     @objc private func pollForNewContent() {
         dataSource.loadItems(.newer) { [weak self] contents, stageEvent, error in
             self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))

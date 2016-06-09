@@ -42,7 +42,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         // Calculated time diff, used to sync users in the video for VIP stage
         // startTime = serverTime - startTime + workTime
         if let startTime = refreshStageEvent.startTime, operationStartTime = operationStartTime where refreshStageEvent.section == .VIPStage {
-            let timeDiff = refreshStageEvent.serverTime?.timeIntervalSinceDate(startTime) ?? 0
+            let timeDiff = refreshStageEvent.serverTime?.timeIntervalSinceDate(startTime) ?? 0 // TODO: This should not default to 0
             let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
             let seekAheadTime = timeDiff + workTime
             
