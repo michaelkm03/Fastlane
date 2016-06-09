@@ -177,7 +177,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         else {
             composerIsVisible = visible
-            inputViewToBottomConstraint.constant = visible ? 0.0 : -interactiveContainerView.frame.height
+            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
             delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
     }
