@@ -44,12 +44,8 @@ class ContentPreviewView: UIView {
         v_addFitToParentConstraintsToSubview(previewImageView)
         
         addSubview(vipImageView)
-        v_addPinToLeadingEdgeToSubview(
-            vipImageView,
-            leadingMargin: Constants.vipMargins)
-        v_addPinToBottomToSubview(
-            vipImageView,
-            bottomMargin: Constants.vipMargins)
+        v_addPinToLeadingEdgeToSubview(vipImageView, leadingMargin: Constants.vipMargins)
+        v_addPinToBottomToSubview(vipImageView, bottomMargin: Constants.vipMargins)
         
         addSubview(playButton)
         v_addCenterToParentContraintsToSubview(playButton)
