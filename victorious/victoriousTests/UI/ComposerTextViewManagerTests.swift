@@ -69,11 +69,10 @@ class ComposerTextViewManagerTests: XCTestCase {
         delegate.onSetTextViewHasText = {
             textViewHasTextExpectation.fulfill()
         }
-        guard let manager = ComposerTextViewManager(textView: textView, delegate: delegate) else {
+        guard let _ = ComposerTextViewManager(textView: textView, delegate: delegate) else {
             XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
             return
         }
-        manager.updateDelegateOfTextViewStatus(textView)
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
