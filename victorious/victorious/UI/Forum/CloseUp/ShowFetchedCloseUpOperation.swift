@@ -13,9 +13,7 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
-    init(contentID: String,
-         displayModifier: ShowCloseUpDisplayModifier,
-         checkPermissions: Bool = true) {
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, checkPermissions: Bool = true) {
         self.displayModifier = displayModifier
         self.contentID = contentID
         super.init()

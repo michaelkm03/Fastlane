@@ -14,8 +14,7 @@ class ShowPermissionedCloseUpOperation: MainQueueOperation {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel
     
-    init(content: ContentModel,
-         displayModifier: ShowCloseUpDisplayModifier) {
+    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.content = content
         super.init()

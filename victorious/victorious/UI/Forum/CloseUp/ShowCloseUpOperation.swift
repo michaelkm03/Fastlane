@@ -35,8 +35,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
     }
     
-    init(content: ContentModel,
-         displayModifier: ShowCloseUpDisplayModifier) {
+    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.content = content
         super.init()
