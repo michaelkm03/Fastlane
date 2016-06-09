@@ -11,10 +11,11 @@ import Foundation
 class StageDataSource: ForumEventReceiver {
     
     weak var delegate: Stage?
-
+    
     private let dependencyManager: VDependencyManager?
     
     private var currentContentFetchOperation: StageContentFetchOperation?
+    private var currentContent: ContentModel?
     
     // MARK: Initialiation
     
@@ -31,7 +32,7 @@ class StageDataSource: ForumEventReceiver {
         }
         
         switch event {
-        case .refreshStage(let stageEvent) where stageEvent.section == .VIPStage:
+        case .refreshStage(let stageEvent):
             guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
                 v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
                 return
@@ -42,17 +43,24 @@ class StageDataSource: ForumEventReceiver {
             guard let contentFetchURL = dependencyManager.contentFetchURL else {
                 return
             }
+            
             let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
             currentContentFetchOperation = stageContentFetchOperation
+            
             stageContentFetchOperation.queue() { [weak self] results, error, canceled in
-                guard let strongSelf = self,
-                    let delegate = strongSelf.delegate
-                    where canceled != true else {
-                        return
+                guard
+                    !canceled,
+                    let content = results?.first as? ContentModel
+                else {
+                    return
                 }
-                if let content = results?.first as? Content {
-                    delegate.addContent(content)
+                
+                if self?.currentContent?.id == content.id && stageEvent.section == .MainStage {
+                    return
                 }
+                
+                self?.delegate?.addContent(content)
+                self?.currentContent = content
             }
         default:
             break
