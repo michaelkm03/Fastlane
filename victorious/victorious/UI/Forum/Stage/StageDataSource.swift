@@ -38,25 +38,24 @@ class StageDataSource: ForumEventReceiver {
                     return
                 }
                 
-                currentContentFetchOperation?.cancel()
-                
                 guard let contentFetchURL = dependencyManager.contentFetchURL else {
                     return
                 }
                 
-                let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
-                currentContentFetchOperation = stageContentFetchOperation
+                if currentContent?.id == stageEvent.contentID && stageEvent.section == .MainStage {
+                    return
+                }
                 
-                stageContentFetchOperation.queue() { [weak self] results, error, canceled in
+                currentContentFetchOperation?.cancel()
+                
+                currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
+                
+                currentContentFetchOperation?.queue() { [weak self] results, error, canceled in
                     guard
                         !canceled,
                         let content = results?.first as? ContentModel
                     else {
                             return
-                    }
-                    
-                    if self?.currentContent?.id == content.id && stageEvent.section == .MainStage {
-                        return
                     }
                     
                     self?.delegate?.addContent(content)
@@ -65,6 +64,7 @@ class StageDataSource: ForumEventReceiver {
                 
             case .closeMainStage:
                 delegate?.removeContent()
+                currentContent = nil
                 
             default:
                 break
