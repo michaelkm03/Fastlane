@@ -15,40 +15,48 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     // Used to calculated the offset in videos.
     private var operationStartTime: NSDate?
     
-    private var refreshStageEvent: RefreshStage?
+    private var refreshStageEvent: RefreshStage
 
-    required init(request: ContentFetchRequest) {
-        self.request = request
-    }
-
-    convenience init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
+    init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
         let request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
-        
-        self.init(request: request)
+        self.request = request
         self.refreshStageEvent = refreshStageEvent
     }
 
     override func main() {
-        operationStartTime = NSDate()
+        guard !cancelled else {
+            return
+        }
         
+        operationStartTime = NSDate()
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
 
     func onComplete(content: ContentFetchRequest.ResultType) {
-        guard let refreshStageEvent = refreshStageEvent else {
-            return
+        var result = content
+        if refreshStageEvent.section == .VIPStage {
+            result = calculateSeekAheadTime(for: result)
+        }
+        self.results = [result]
+    }
+    
+    /// Calculated time diff, used to sync users in the video for VIP stage
+    /// startTime = serverTime - startTime + workTime
+    private func calculateSeekAheadTime(for content: Content) -> Content {
+        guard
+            let startTime = refreshStageEvent.startTime,
+            let serverTime = refreshStageEvent.serverTime,
+            let operationStartTime = operationStartTime
+        else {
+            return content
         }
         
-        // Calculated time diff, used to sync users in the video for VIP stage
-        // startTime = serverTime - startTime + workTime
-        if let startTime = refreshStageEvent.startTime, operationStartTime = operationStartTime where refreshStageEvent.section == .VIPStage {
-            let timeDiff = refreshStageEvent.serverTime?.timeIntervalSinceDate(startTime) ?? 0 // TODO: This should not default to 0
-            let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
-            let seekAheadTime = timeDiff + workTime
-            
-            content.seekAheadTime = seekAheadTime
-        }
-
-        self.results = [content]
+        let timeDiff = serverTime.timeIntervalSinceDate(startTime)
+        let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
+        let seekAheadTime = timeDiff + workTime
+        
+        content.seekAheadTime = seekAheadTime
+        
+        return content
     }
 }
