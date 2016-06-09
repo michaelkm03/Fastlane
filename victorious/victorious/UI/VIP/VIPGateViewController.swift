@@ -12,7 +12,6 @@ import MBProgressHUD
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
-    
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
@@ -20,14 +19,12 @@ protocol VIPGateViewControllerDelegate: class {
 }
 
 extension VIPGateViewControllerDelegate {
-    
     func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) {
         ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager).queue()
     }
 }
 
 class VIPGateViewController: UIViewController {
-    
     @IBOutlet weak private var textView: UITextView!
     @IBOutlet weak private var subscribeButton: UIButton!
     @IBOutlet weak private var restoreButton: UIButton!
