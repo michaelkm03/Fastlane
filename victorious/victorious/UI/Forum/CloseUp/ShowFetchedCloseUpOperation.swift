@@ -35,12 +35,16 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
             currentUserID: String(userID),
             contentID: contentID
         )
+        let completionBlock = self.completionBlock
         contentFetchOperation.rechainAfter(self).queue() { results, _, _ in
             guard let content = results?.first as? VContent else {
+                completionBlock?()
                 return
             }
             
-            ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier).after(contentFetchOperation).queue()
+            ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(contentFetchOperation).queue() { _ in
+                completionBlock?()
+            }
         }
     }
 }
