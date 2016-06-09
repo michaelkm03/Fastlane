@@ -38,16 +38,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
-//        guard range.location + range.length <= updatedText.characters.count &&
-//            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
-//            return false
-//        }
-//        
-//        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
-//        textView.attributedText = NSAttributedString(string: updatedText)
-//        return true
+        let mutableString = NSMutableAttributedString(attributedString: textView.attributedText)
         
-        return false
+        guard range.location + range.length <= mutableString.string.characters.count &&
+            canUpdateTextView(textView, textInRange: range, replacementText: text) else {
+            return false
+        }
+        
+        mutableString.replaceCharactersInRange(range, withString: text)
+        textView.attributedText = mutableString
+        
+        return true
         
     }
     
@@ -55,10 +56,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
-            let newString = NSMutableAttributedString()
-            newString.appendAttributedString(textView.attributedText)
-            newString.appendAttributedString(NSAttributedString(string: text))
-            textView.attributedText = newString 
+            let newString = NSMutableAttributedString(attributedString: textView.attributedText)
+            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextviewInputAttributes()))
+            textView.attributedText = newString
         }
         else {
             delegate?.textViewDidHitCharacterLimit(textView)
@@ -246,5 +246,20 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
+    }
+    
+    private func getTextviewInputAttributes() -> [String: AnyObject] {
+        guard
+            let delegate = delegate,
+            let color = delegate.inputTextColor(),
+            let font = delegate.inputTextFont()
+        else {
+            return [:]
+        }
+        
+        return [
+            NSForegroundColorAttributeName : color,
+            NSFontAttributeName            : font
+        ]
     }
 }

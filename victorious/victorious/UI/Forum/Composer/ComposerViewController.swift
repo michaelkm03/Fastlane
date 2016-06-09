@@ -223,7 +223,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
-                attachmentTabBar.enableButtonForIdentifier("Add Hashtag")
+                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
             }
         }
     }
@@ -250,6 +250,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func textViewDidHitCharacterLimit(textView: UITextView) {
         textView.v_performShakeAnimation()
+    }
+    
+    func inputTextFont() -> UIFont? {
+        return dependencyManager.inputTextFont
+    }
+    
+    func inputTextColor() -> UIColor? {
+        return dependencyManager.inputTextColor
     }
     
     // MARK: - View lifecycle
