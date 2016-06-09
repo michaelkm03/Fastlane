@@ -20,7 +20,6 @@ class ShowVIPGateOperation: MainQueueOperation, VIPGateViewControllerDelegate {
     }
     
     override func start() {
-        
         guard !cancelled,
             let originViewController = originViewController,
             let vipGate = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
