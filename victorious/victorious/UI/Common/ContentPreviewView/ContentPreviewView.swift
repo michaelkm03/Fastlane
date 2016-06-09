@@ -15,20 +15,19 @@ class ContentPreviewView: UIView {
     private let vipMargins: CGFloat = 6
     
     let previewImageView = UIImageView()
-    let vipImageView: UIView
+    let vipImageView = VIPBadgeView.newVIPBadgeView()
     let playButton: UIView
     
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            vipImageView.dependencyManager = dependencyManager
+        }
+    }
+    
     init() {
-        
         /// Play Button
         playButton = UIImageView(image: UIImage(named: kPlayButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
-        
-        /// VIP icon
-        let label = UILabel()
-        label.text = "VIP"
-        label.textColor = .whiteColor()
-        vipImageView = label
         
         super.init(frame: CGRectZero)
         backgroundColor = .clearColor()
@@ -38,6 +37,7 @@ class ContentPreviewView: UIView {
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         
+        // VIP Icon
         addSubview(vipImageView)
         v_addPinToLeadingEdgeToSubview(
             vipImageView,
