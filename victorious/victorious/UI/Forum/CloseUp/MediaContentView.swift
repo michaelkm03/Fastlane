@@ -14,7 +14,9 @@ import UIKit
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private struct Constants {
         static let blurRadius: CGFloat = 12
-        static let fadeInOutDuration: NSTimeInterval = 1.0
+        static let fadeDuration: NSTimeInterval = 0.75
+        static let backgroundFadeInDurationMultiplier = 0.75
+        static let fadeOutDurationMultiplier = 1.25
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -46,7 +48,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder: NSCoder) is not supported. Use init(frame: CGRect)")
+        super.init(coder: coder)
+        setup()
     }
     
     private func setup() {
@@ -61,12 +64,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         addSubview(videoContainerView)
         
         backgroundView.contentMode = .ScaleAspectFill
-        insertSubview(backgroundView, atIndex: 0) //Insert behind all other views
+        insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
         backgroundView.frame = bounds
         
         addSubview(spinner)
         sendSubviewToBack(spinner)
-        spinner.center = self.center
         
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
@@ -79,11 +81,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
         spinner.startAnimating()
-        hideContent()
         
         self.content = content
         self.shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
-        
+        hideContent()
+
         // Set up image view if content is image
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if content.type.displaysAsImage,
@@ -123,7 +125,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private func hideContent(animated: Bool = true) {
-        let animationDuration = animated ? Constants.fadeInOutDuration : 0
+        let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
         UIView.animateWithDuration(
             animationDuration,
             delay: 0,
@@ -141,11 +143,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private func showContent(animated: Bool = true) {
-        let animationDuration = animated ? Constants.fadeInOutDuration : 0
+        let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster
         UIView.animateWithDuration(
-            animationDuration / 2,
+            animationDuration * Constants.backgroundFadeInDurationMultiplier,
             delay: 0,
             options: [.AllowUserInteraction],
             animations: {
@@ -173,6 +175,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
         backgroundView.frame = bounds
+        spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
     }
     
@@ -189,7 +192,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let minWidth = UIScreen.mainScreen().bounds.size.width
         
         if let imageURL = content?.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content?.assetModels.first?.resourceID) {
-            backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius, completion: nil)
+            backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+                self?.backgroundView.alpha = 1
+            }
         }
     }
 

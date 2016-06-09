@@ -81,7 +81,7 @@ extension ForumViewController {
     
     func debug_createStageEvents() {
         VTimerManager.addTimerManagerWithTimeInterval(
-            Double(arc4random()%10),
+            5,
             target: self,
             selector: #selector(stageNext),
             userInfo: nil,
