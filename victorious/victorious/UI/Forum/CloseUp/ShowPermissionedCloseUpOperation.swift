@@ -37,13 +37,19 @@ class ShowPermissionedCloseUpOperation: MainQueueOperation {
             let scaffold = dependencyManager.scaffoldViewController()
             let showVIPGateOperation = ShowVIPGateOperation(originViewController: scaffold, dependencyManager: dependencyManager)
             
-            showVIPGateOperation.after(self).queue() { _ in
+            let completionBlock = self.completionBlock
+            showVIPGateOperation.rechainAfter(self).queue() { _ in
                 if !showVIPGateOperation.showedGate || showVIPGateOperation.allowedAccess {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).after(showVIPGateOperation).queue()
+                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(showVIPGateOperation).queue() { _ in
+                        completionBlock?()
+                    }
+                }
+                else {
+                    completionBlock?()
                 }
             }
         } else {
-            ShowCloseUpOperation(content: content, displayModifier: displayModifier).after(self).queue()
+            ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(self).queue()
         }
     }
 }
