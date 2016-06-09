@@ -53,9 +53,3 @@ class ShowPermissionedCloseUpOperation: MainQueueOperation {
         }
     }
 }
-
-private extension VDependencyManager {
-    var contentFetchURL: String {
-        return networkResources?.stringForKey("contentFetchURL") ?? ""
-    }
-}

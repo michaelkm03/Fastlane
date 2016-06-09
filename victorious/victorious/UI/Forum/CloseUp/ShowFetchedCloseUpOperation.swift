@@ -24,14 +24,15 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
             finishedExecuting()
         }
         
+        let displayModifier = self.displayModifier
         guard !cancelled,
-            let userID = VCurrentUser.user()?.remoteId.integerValue else {
+            let userID = VCurrentUser.user()?.remoteId.integerValue,
+            let contentFetchURL = displayModifier.dependencyManager.contentFetchURL else {
                 return
         }
         
-        let displayModifier = self.displayModifier
         let contentFetchOperation = ContentFetchOperation(
-            macroURLString: displayModifier.dependencyManager.contentFetchURL,
+            macroURLString: contentFetchURL,
             currentUserID: String(userID),
             contentID: contentID
         )
@@ -50,7 +51,7 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
 }
 
 private extension VDependencyManager {
-    var contentFetchURL: String {
-        return networkResources?.stringForKey("contentFetchURL") ?? ""
+    var contentFetchURL: String? {
+        return networkResources?.stringForKey("contentFetchURL")
     }
 }
