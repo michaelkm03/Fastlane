@@ -10,8 +10,8 @@ class ShowVIPGateOperation: MainQueueOperation, VIPGateViewControllerDelegate {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
-    var showedGate = false
-    var allowedAccess = false
+    private(set) var showedGate = false
+    private(set) var allowedAccess = false
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
         self.dependencyManager = dependencyManager
