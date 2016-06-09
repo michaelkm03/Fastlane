@@ -49,7 +49,6 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         textView.attributedText = mutableString
         
         return true
-        
     }
     
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
