@@ -8,9 +8,14 @@
 
 import UIKit
 
-private let headerName = "ConfigurableGridStreamHeaderView"
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDataSource {
+
+    private let headerName = "ConfigurableGridStreamHeaderView"
+    private let cellCornerRadius = CGFloat(6)
+    private let cellBackgroundColor = UIColor.clearColor()
+    private let cellContentBackgroundColor = UIColor.clearColor()
+
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: APIPath) {
@@ -81,7 +86,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     private let cellFactory: VContentOnlyCellFactory
     private var headerView: ConfigurableGridStreamHeaderView!
     private var header: HeaderType?
-    
+
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
@@ -106,9 +111,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = cellFactory.collectionView( collectionView, cellForContent: items[indexPath.row], atIndexPath: indexPath)
-        cell.layer.cornerRadius = 6
-        cell.backgroundColor = .clearColor()
-        cell.contentView.backgroundColor = .clearColor()
+        cell.layer.cornerRadius = cellCornerRadius
+        cell.backgroundColor = cellBackgroundColor
+        cell.contentView.backgroundColor = cellContentBackgroundColor
         return cell
     }
 }
