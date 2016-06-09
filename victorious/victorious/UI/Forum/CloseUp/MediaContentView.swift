@@ -13,7 +13,7 @@ import UIKit
 
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private struct Constants {
-        static let blurRadius = CGFloat(12)
+        static let blurRadius: CGFloat = 12
         static let fadeInOutDuration: NSTimeInterval = 1.0
     }
     
