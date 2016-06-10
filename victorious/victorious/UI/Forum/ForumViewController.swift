@@ -33,6 +33,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }()
     #endif
 
+    private var navBarTitleView : ForumNavBarTitleView?
+    
     // MARK: - Initialization
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
@@ -62,6 +64,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 }
             default:()
             }
+        case .chatUserCount(let userCount):
+            navBarTitleView?.numActiveUsers = userCount.userCount
+            
         default:()
         }
     }
@@ -156,8 +161,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.topItem?.titleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0,y: 0,width: 200,height: 45))
-        navigationController?.navigationBar.topItem?.titleView?.sizeToFit()
+        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        navBarTitleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
@@ -193,8 +198,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Exit", comment: ""),
+        //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack 
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0,y: 0,width: 200,height: 45))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: dependencyManager.exitButtonIcon,
             style: .Plain,
             target: self,
             action: #selector(onClose)
@@ -291,5 +299,9 @@ private extension VDependencyManager {
     
     var stageDependency: VDependencyManager? {
         return childDependencyForKey("stage")
+    }
+    
+    var exitButtonIcon: UIImage? {
+        return UIImage(named: "Close")
     }
 }

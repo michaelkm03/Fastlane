@@ -15,14 +15,6 @@ class ForumNavBarTitleView: UIView {
     private var stackView: UIStackView
     private let dependencyManager: VDependencyManager
     
-    //Dependency Manager Keys 
-    private let titleColorKey = "color.title.vip"
-    private let subtitleColorKey = "color.subtitle.vip"
-    private let titleFontKey = "font.title.vip"
-    private let subtitleFontKey = "font.subtitle.vip"
-    private let titleTextKey = "title.text"
-    private let numberOfUsersTextKey = "numberOfUsers.text"
-    
     var numActiveUsers: Int {
         didSet {
             subtitleLabel.text = getSubtitleText()
@@ -46,22 +38,22 @@ class ForumNavBarTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupViews() {
+    private func setupViews() {
         
         //Initialize the stack view and set the layout information
         stackView.axis = .Vertical
         stackView.distribution = .FillProportionally
         stackView.alignment = .Center
         
-        titleLabel.text = dependencyManager.stringForKey(titleTextKey)
-        titleLabel.font = dependencyManager.fontForKey(titleFontKey)
-        titleLabel.textColor = dependencyManager.colorForKey(titleColorKey)
+        titleLabel.text = dependencyManager.stringForKey(Keys.titleTextKey)
+        titleLabel.font = dependencyManager.fontForKey(Keys.titleFontKey)
+        titleLabel.textColor = dependencyManager.colorForKey(Keys.titleColorKey)
         stackView.addArrangedSubview(titleLabel)
         titleLabel.sizeToFit()
         
         subtitleLabel.text = getSubtitleText()
-        subtitleLabel.font = dependencyManager.fontForKey(subtitleFontKey)
-        subtitleLabel.textColor = dependencyManager.colorForKey(subtitleColorKey)
+        subtitleLabel.font = dependencyManager.fontForKey(Keys.subtitleFontKey)
+        subtitleLabel.textColor = dependencyManager.colorForKey(Keys.subtitleColorKey)
         stackView.addArrangedSubview(subtitleLabel)
         subtitleLabel.sizeToFit()
         
@@ -71,9 +63,28 @@ class ForumNavBarTitleView: UIView {
     }
     
     //Creates the string for the subtitle label
-    
-    func getSubtitleText() -> String {
-        return "\(numActiveUsers) " + dependencyManager.stringForKey(numberOfUsersTextKey)
+    private func getSubtitleText() -> String {
+        return "\(numActiveUsers) " + (dependencyManager.numActiveUsersStringByReplacingMacro() ?? "users")
     }
     
+}
+
+private extension VDependencyManager {
+    func numActiveUsersStringByReplacingMacro () -> String? {
+        guard let displayString = self.templateValueOfType(NSString.self, forKey: Keys.numberOfUsersTextKey, withAddedDependencies: [:]) as? String else {
+            return nil
+        }
+        return displayString.stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: "")
+    }
+}
+
+private struct Keys {
+    //Dependency Manager Keys
+    static let titleColorKey = "color.title.vip"
+    static let subtitleColorKey = "color.subtitle.vip"
+    static let titleFontKey = "font.title.vip"
+    static let subtitleFontKey = "font.subtitle.vip"
+    static let titleTextKey = "title.text"
+    static let numberOfUsersTextKey = "numberOfUsers.text"
+    static let visitorsMacro = "%%VISITORS%%"
 }
