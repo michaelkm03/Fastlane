@@ -128,13 +128,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - ChatFeedDataSourceDelegate
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         handleNewItems(newItems, loadingType: loadingType)
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel]) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
         let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.authorModel.id == VCurrentUser.user()?.remoteId.integerValue
+            $0.content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue
         }
         
         if itemsContainCurrentUserMessage {
@@ -148,7 +148,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel]) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController.hide()
         
         handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
@@ -158,7 +158,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
+    private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 else {
             return
         }
@@ -195,7 +195,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func updateCollectionView(with newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()

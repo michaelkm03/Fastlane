@@ -12,7 +12,7 @@ import Foundation
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     var dependencyManager: VDependencyManager { get }
     
-    var visibleItems: [ContentModel] { get }
+    var visibleItems: [ChatFeedContent] { get }
     
     func registerCells(for collectionView: UICollectionView)
     
@@ -30,7 +30,7 @@ extension ChatInterfaceDataSource {
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let content = visibleItems[indexPath.row]
+        let content = visibleItems[indexPath.row].content
         let reuseIdentifier = content.type.hasMedia ? ChatFeedMessageCell.mediaCellReuseIdentifier : ChatFeedMessageCell.nonMediaCellReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         decorate(cell, content: content)
@@ -44,10 +44,19 @@ extension ChatInterfaceDataSource {
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let content = visibleItems[indexPath.row]
-        let width = collectionView.bounds.width
-        let height = ChatFeedMessageCell.cellHeight(displaying: content, inWidth: width, dependencyManager: dependencyManager)
-        return CGSize(width: width, height: height)
+        let chatFeedContent = visibleItems[indexPath.row]
+        
+        if let size = chatFeedContent.size {
+            return size
+        }
+        else {
+            let width = collectionView.bounds.width
+            let height = ChatFeedMessageCell.cellHeight(displaying: chatFeedContent.content, inWidth: width, dependencyManager: dependencyManager)
+            let size = CGSize(width: width, height: height)
+            chatFeedContent.size = size
+            return size
+        }
+        
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {

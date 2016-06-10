@@ -53,6 +53,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Configuration
     
     static let textInsets = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
+    static let textWidthPadding = CGFloat(10.0)
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 41.0, height: 41.0)
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
@@ -189,7 +190,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
             context: nil
         ).size
         
-        size.width += contentMargin.left // no good
+        // We shouldn't need to use `textWidthPadding`, but if we size the text view based on the calculated text size,
+        // it won't be wide enough and will cut off the text. There's likely some other layout factor involved in the
+        // text view that we could account for, but it's not clear what that would be.
+        size.width += textInsets.left + textInsets.right + textWidthPadding
         size.height += textInsets.bottom + textInsets.top
         return size
     }
