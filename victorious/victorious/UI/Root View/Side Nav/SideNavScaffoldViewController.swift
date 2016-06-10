@@ -293,13 +293,19 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - VDeeplinkSupporter
     
     func deepLinkHandlerForURL(url: NSURL) -> VDeeplinkHandler {
-        let contentDeepLinkHandler = VContentDeepLinkHandler(dependencyManager: dependencyManager)
+        let contentDeepLinkHandler = ContentDeepLinkHandler(
+            dependencyManager: dependencyManager,
+            originViewController: mainNavigationController.innerNavigationController
+        )
         
         if contentDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
             return contentDeepLinkHandler
         }
         
-        let profileDeepLinkHandler = VProfileDeeplinkHandler(dependencyManager: dependencyManager)
+        let profileDeepLinkHandler = ProfileDeepLinkHandler(
+            dependencyManager: dependencyManager,
+            originViewController: mainNavigationController.innerNavigationController
+        )
         
         if profileDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
             return profileDeepLinkHandler

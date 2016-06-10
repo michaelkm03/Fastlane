@@ -31,4 +31,7 @@ public enum ForumEvent {
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
+
+    /// Indicates the current count of chat users.
+    case chatUserCount(ChatUserCount)
 }

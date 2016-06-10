@@ -135,15 +135,6 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - mark
-
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
-{
-    VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
-    handler.navigationDestination = self;
-    return handler;
-}
-
 #pragma mark - Show Profile
 
 - (void)showSuggestedPersonProfile:(NSNotification *)note

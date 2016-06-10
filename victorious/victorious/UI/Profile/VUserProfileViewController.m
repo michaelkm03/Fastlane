@@ -417,7 +417,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             // User logged out, clear away all stream items and unload any user data
-            [self.streamDataSource unload];
             self.profileHeaderViewController = nil;
             self.user = nil;
         }
@@ -809,24 +808,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
     }
     return badgeNumber;
-}
-
-#pragma mark - VDeepLinkSupporter
-
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
-{
-    if (url == TrophyCaseDeepLinkHandler.deeplinkURL )
-    {
-        return [[TrophyCaseDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    else if ([url.absoluteString containsString:@"profile"])
-    {
-        return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    else
-    {
-        return nil;
-    }
 }
 
 #pragma mark - VTabMenuContainedViewControllerNavigation

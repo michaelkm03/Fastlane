@@ -19,7 +19,11 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         let token = "ABCDEFGabcdefg"
         let response = AccountCreateResponse(token: token, user: user)
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: email)
-        let operation = LoginSuccessOperation(response: response, parameters: parameters)
+        let operation = LoginSuccessOperation(
+            dependencyManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+            response: response,
+            parameters: parameters
+        )
         
         let expectation = expectationWithDescription("")
         operation.queue() { results, error, cancelled in

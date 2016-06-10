@@ -48,10 +48,6 @@ extension ContentModel {
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
     }
-    
-    var previewImageSize: CGSize? {
-        return previewImageModels.first?.mediaMetaData.size
-    }
 }
 
 extension VContent: ContentModel {
@@ -135,6 +131,7 @@ extension VContent: ContentModel {
             type: type,
             text: text,
             assets: assetModels.map { $0.toSDKAsset() },
+            previewImages: previewImageModels.map { $0.toSDKImageAsset() },
             author: authorModel.toSDKUser()
         )
     }
