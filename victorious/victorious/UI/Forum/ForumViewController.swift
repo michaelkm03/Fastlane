@@ -302,6 +302,6 @@ private extension VDependencyManager {
     }
     
     var exitButtonIcon: UIImage? {
-        return UIImage(named: "Close")
+        return UIImage(named: "Close") //Template is currently returning incorrect path, so use the close icon in the image assets 
     }
 }
