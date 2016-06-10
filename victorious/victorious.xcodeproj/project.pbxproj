@@ -1762,6 +1762,9 @@
 		BFDB802E1CEF6EC300E66614 /* CloseUpContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB802D1CEF6EC300E66614 /* CloseUpContainerViewController.swift */; };
 		BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */; };
 		BFE098511CEFAC6E00C97F21 /* ContentFeedRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE098501CEFAC6E00C97F21 /* ContentFeedRequestTests.swift */; };
+		BFE25A451D0B7D8500F55653 /* ContentDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */; };
+		BFE25A471D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE25A461D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift */; };
+		BFE25A491D0B7E2B00F55653 /* ContentDeleteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE25A481D0B7E2B00F55653 /* ContentDeleteRequest.swift */; };
 		BFE31A801CD2968100585155 /* ShowCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE31A7F1CD2968100585155 /* ShowCloseUpOperation.swift */; };
 		BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE31A811CD2969200585155 /* CloseUpView.swift */; };
 		BFE31A841CD296A900585155 /* CloseUpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFE31A831CD296A900585155 /* CloseUpView.xib */; };
@@ -4532,6 +4535,9 @@
 		BFDC0B001C7F889300E5421B /* VSequenceActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceActionController.swift; sourceTree = "<group>"; };
 		BFDC0B021C7F9CA400E5421B /* VSequenceActionControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceActionControllerDelegate.h; sourceTree = "<group>"; };
 		BFE098501CEFAC6E00C97F21 /* ContentFeedRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedRequestTests.swift; sourceTree = "<group>"; };
+		BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteOperation.swift; sourceTree = "<group>"; };
+		BFE25A461D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteRemoteOperation.swift; sourceTree = "<group>"; };
+		BFE25A481D0B7E2B00F55653 /* ContentDeleteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteRequest.swift; sourceTree = "<group>"; };
 		BFE31A7F1CD2968100585155 /* ShowCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCloseUpOperation.swift; sourceTree = "<group>"; };
 		BFE31A811CD2969200585155 /* CloseUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpView.swift; sourceTree = "<group>"; };
 		BFE31A831CD296A900585155 /* CloseUpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloseUpView.xib; sourceTree = "<group>"; };
@@ -5978,6 +5984,7 @@
 				C323C3B61BF55F6600681059 /* CommentEditRequest.swift */,
 				A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */,
 				A7956D231C18AA3A006A76EC /* CommentRequestBodyWriter.swift */,
+				BFE25A481D0B7E2B00F55653 /* ContentDeleteRequest.swift */,
 				BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */,
 				0E8EB2D01CCF0BCB0087D815 /* ContentFetchRequest.swift */,
 				BF2022801D00BBCC006B59C5 /* ContentFlagRequest.swift */,
@@ -7997,6 +8004,7 @@
 				A72C855A1C977FF500E97D4F /* CommentEditOperation.swift */,
 				A72C855B1C977FF500E97D4F /* CommentFindOperation.swift */,
 				A72C855C1C977FF500E97D4F /* CommentFlagOperation.swift */,
+				BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */,
 				BF8F57A01CEBD63F00188C0E /* ContentFeedOperation.swift */,
 				BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */,
 				BF2022721D00B97E006B59C5 /* ContentUnupvoteOperation.swift */,
@@ -8176,6 +8184,7 @@
 				A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */,
 				A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */,
 				A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */,
+				BFE25A461D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift */,
 				BF8F57A21CEBE22F00188C0E /* ContentFeedRemoteOperation.swift */,
 				BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */,
 				BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift */,
@@ -9467,7 +9476,6 @@
 				03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
-				A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -12066,6 +12074,7 @@
 				0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */,
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
+				BFE25A491D0B7E2B00F55653 /* ContentDeleteRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
@@ -12849,6 +12858,7 @@
 				7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */,
 				A75DF5201C3DBD5100A4C82A /* ActivityIndicatorTableViewCell.swift in Sources */,
 				A72C867B1C977FF600E97D4F /* SequenceLikeRemoteOperation.swift in Sources */,
+				BFE25A451D0B7D8500F55653 /* ContentDeleteOperation.swift in Sources */,
 				7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */,
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
 				F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */,
@@ -13565,6 +13575,7 @@
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				A73BA2AF1C938B68008168B5 /* StageViewController.swift in Sources */,
+				BFE25A471D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift in Sources */,
 				03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */,
 				A7F843681BFD44EE004C3D55 /* VMessage+Parsable.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,

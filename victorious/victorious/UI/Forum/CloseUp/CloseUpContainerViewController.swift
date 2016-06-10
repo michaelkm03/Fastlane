@@ -144,16 +144,24 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         guard let contentID = content?.id else {
             return
         }
-        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let flagOperation = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        let deleteOperation = ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+        
+        let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
+        
+        let flagDeleteOperation = isCreatorOfContent ? deleteOperation : flagOperation
+        let actionTitle = isCreatorOfContent ? NSLocalizedString("DeleteButton", comment: "") : NSLocalizedString("Report/Flag", comment: "")
+        
         let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            actionTitle: actionTitle,
             originViewController: self,
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flag)
+        confirm.before(flagDeleteOperation)
         confirm.queue()
-        flag.queue() { [weak self] _, _, cancelled in
+        flagDeleteOperation.queue() { [weak self] _, _, cancelled in
             /// FUTURE: Update parent view controller to remove content
             if !cancelled {
                 self?.dismissViewControllerAnimated(true, completion: nil)
@@ -181,6 +189,10 @@ private extension VDependencyManager {
     
     var contentFlagURL: String {
         return networkResources?.stringForKey("contentFlagURL") ?? ""
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
     
     var contentUpvoteURL: String {
