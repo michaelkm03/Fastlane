@@ -44,7 +44,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             target: self,
             action: #selector(toggleUpvote)
         )
-        if let upvotedTintColor = dependencyManager.upvotedIconTint {
+        if let upvotedTintColor = self.dependencyManager.upvotedIconTint {
             button.tintColor = upvotedTintColor
         }
         return button
