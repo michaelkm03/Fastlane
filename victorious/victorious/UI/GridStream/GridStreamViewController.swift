@@ -124,7 +124,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         loadContent(.refresh)
     }
     
-    private func loadContent(loadingType: PaginatedLoadingType) {
+    private func loadContent(loadingType: PaginatedLoadingType) {        
         dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
             // Calling this method stops scrolling, so only do it if necessary.
             if self?.refreshControl.refreshing == true {
@@ -209,7 +209,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
-        ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
+        ShowCloseUpOperation.showOperation(forContentID: dataSource.items[indexPath.row].id!, displayModifier: displayModifier).queue()
     }
 }
 

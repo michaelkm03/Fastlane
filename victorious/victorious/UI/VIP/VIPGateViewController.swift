@@ -34,6 +34,8 @@ class VIPGateViewController: UIViewController {
     
     weak var delegate: VIPGateViewControllerDelegate?
     
+    private var testingTimer: VTimerManager?
+    
     private var productIdentifier: String!
     
     var dependencyManager: VDependencyManager! {
@@ -64,17 +66,28 @@ class VIPGateViewController: UIViewController {
         super.viewDidLoad()
         
         updateViews()
+        createTimer()
+    }
+    
+    func createTimer() {
+        testingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(2, target: self, selector: #selector(dismiss), userInfo: nil, repeats: false)
+    }
+    
+    func dismiss() {
+        delegate?.vipGateViewController(self, allowedAccess: false)
     }
     
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
+        testingTimer?.invalidate()
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
         setIsLoading(true, title: Strings.purchaseInProgress)
         subscribe.queue() { error, canceled in
             self.setIsLoading(false)
             guard !canceled else {
+                self.createTimer()
                 return
             }
             
@@ -152,6 +165,7 @@ class VIPGateViewController: UIViewController {
     }
     
     private func updateViews() {
+        return
         guard isViewLoaded() else {
             return
         }
