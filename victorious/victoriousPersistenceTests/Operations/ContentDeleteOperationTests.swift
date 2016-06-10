@@ -10,7 +10,6 @@ import XCTest
 @testable import victorious
 
 class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
-    
     func testWithConfirmation() {
         let operation = ContentDeleteOperation(contentID: "12345", contentDeleteURL: "")
         
@@ -48,5 +47,4 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( dependentOperations.count, 0 )
         }
     }
-    
 }

@@ -9,7 +9,6 @@
 import UIKit
 
 public struct ContentDeleteRequest: RequestType {
-    
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: contentDeleteURL)
         request.HTTPMethod = "POST"

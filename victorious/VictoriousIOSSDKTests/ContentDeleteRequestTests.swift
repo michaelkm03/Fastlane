@@ -10,7 +10,6 @@ import XCTest
 import VictoriousIOSSDK
 
 class ContentDeleteRequestTests: XCTestCase {
-    
     func testInvalidRequest() {
         let contentID: String = "123"
         let request = ContentDeleteRequest(contentID: contentID, contentDeleteURL: "$%^&")
@@ -22,5 +21,4 @@ class ContentDeleteRequestTests: XCTestCase {
         let request = ContentDeleteRequest(contentID: contentID, contentDeleteURL: "www.google.com/%%CONTENT_ID%%")
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
-    
 }
