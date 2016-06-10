@@ -39,7 +39,6 @@ class ForumNavBarTitleView: UIView {
     }
     
     private func setupViews() {
-        
         //Initialize the stack view and set the layout information
         stackView.axis = .Vertical
         stackView.distribution = .FillProportionally
@@ -59,7 +58,6 @@ class ForumNavBarTitleView: UIView {
         
         self.addSubview(stackView)
         self.v_addFitToParentConstraintsToSubview(stackView)
-        
     }
     
     //Creates the string for the subtitle label
