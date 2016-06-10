@@ -124,7 +124,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         loadContent(.refresh)
     }
     
-    private func loadContent(loadingType: PaginatedLoadingType) {        
+    private func loadContent(loadingType: PaginatedLoadingType) {
         dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
             // Calling this method stops scrolling, so only do it if necessary.
             if self?.refreshControl.refreshing == true {

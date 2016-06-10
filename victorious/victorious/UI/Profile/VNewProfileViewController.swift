@@ -57,7 +57,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     private func updateUpgradeButton() {
         if VCurrentUser.user()?.isVIPValid() == true {
             // FUTURE: When new upgrade button appearance fields are read from template, update appearance of upgradeButton here
-        } else {
+        }
+        else {
             upgradeButton.setTitle("UPGRADE", forState: .Normal)
             upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
             upgradeButton.sizeToFit()
