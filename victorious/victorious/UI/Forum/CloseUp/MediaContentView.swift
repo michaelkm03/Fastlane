@@ -87,7 +87,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         hideContent()
 
         // Set up image view if content is image
-        let minWidth = UIScreen.mainScreen().bounds.size.width
+        let minWidth = frame.size.width
         if content.type.displaysAsImage,
             let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
             previewImageView.hidden = false
@@ -209,7 +209,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
     
-    func setBackgroundBlur(withImageUrl imageURL: NSURL) {
+    private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
         backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
             self?.backgroundView.alpha = 1
         }
