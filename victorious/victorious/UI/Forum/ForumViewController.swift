@@ -61,7 +61,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                     v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                 }
             default:()
-            } 
+            }
         default:()
         }
     }

@@ -53,15 +53,15 @@ class ForumNavBarTitleView: UIView {
         stackView.distribution = .FillProportionally
         stackView.alignment = .Center
         
-        titleLabel.text = "Live Chat" //dependencyManager.stringForKey(titleTextKey)
-        titleLabel.font = UIFont.systemFontOfSize(24) //dependencyManager.fontForKey(titleFontKey)
-        titleLabel.textColor = UIColor.whiteColor() //dependencyManager.colorForKey(titleColorKey)
+        titleLabel.text = dependencyManager.stringForKey(titleTextKey)
+        titleLabel.font = dependencyManager.fontForKey(titleFontKey)
+        titleLabel.textColor = dependencyManager.colorForKey(titleColorKey)
         stackView.addArrangedSubview(titleLabel)
         titleLabel.sizeToFit()
         
         subtitleLabel.text = getSubtitleText()
-        subtitleLabel.font = UIFont.systemFontOfSize(16) //dependencyManager.fontForKey(subtitleFontKey)
-        subtitleLabel.textColor = UIColor.whiteColor() //dependencyManager.colorForKey(subtitleColorKey) 
+        subtitleLabel.font = dependencyManager.fontForKey(subtitleFontKey)
+        subtitleLabel.textColor = dependencyManager.colorForKey(subtitleColorKey)
         stackView.addArrangedSubview(subtitleLabel)
         subtitleLabel.sizeToFit()
         
@@ -73,7 +73,7 @@ class ForumNavBarTitleView: UIView {
     //Creates the string for the subtitle label
     
     func getSubtitleText() -> String {
-        return "\(numActiveUsers) " + " visitors "  //+ dependencyManager.stringForKey(numberOfUsersTextKey)
+        return "\(numActiveUsers) " + dependencyManager.stringForKey(numberOfUsersTextKey)
     }
     
 }
