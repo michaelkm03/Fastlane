@@ -93,10 +93,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         }
         
         upvoteButton.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
-    }
-    
-    override func viewDidLoad() {
-        /// Set up nav bar
         navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
     }
     

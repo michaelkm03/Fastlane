@@ -59,6 +59,36 @@ public enum ContentMediaAsset {
         }
     }
     
+    /// Remote identifier is the URL or remoteID of the content
+    public init?(contentType: ContentType, source: String?, remoteIdentifier: String) {
+        let remoteURL = NSURL(string: remoteIdentifier)
+        
+        switch contentType {
+            case .text:
+                return nil
+            case .video:
+                if source == "youtube" {
+                    self = .youtube(remoteID: remoteIdentifier, source: source)
+                }
+                else {
+                    guard let remoteURL = remoteURL else {
+                        return nil
+                    }
+                    self = .video(url: remoteURL, source: nil)
+                }
+            case .gif:
+                guard let remoteURL = remoteURL else {
+                    return nil
+                }
+                self = .gif(url: remoteURL, source: source)
+            case .image:
+                guard let remoteURL = remoteURL else {
+                    return nil
+                }
+                self = .image(url: remoteURL)
+        }
+    }
+    
     public init?(contentType: ContentType, url: NSURL) {
         switch contentType {
         case .text:
