@@ -89,7 +89,15 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], previewImages: [ImageAsset] = [], author: User) {
+    public init(
+        id: String? = nil,
+        createdAt: NSDate = NSDate(),
+        type: ContentType = .text,
+        text: String? = nil,
+        assets: [ContentMediaAsset] = [],
+        previewImages: [ImageAsset] = [],
+        author: User
+    ) {
         self.id = id
         self.createdAt = createdAt
         self.type = type

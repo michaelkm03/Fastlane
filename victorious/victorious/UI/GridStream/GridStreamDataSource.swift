@@ -8,9 +8,14 @@
 
 import UIKit
 
-private let headerName = "ConfigurableGridStreamHeaderView"
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDataSource {
+
+    private let headerName = "ConfigurableGridStreamHeaderView"
+    private let cellCornerRadius = CGFloat(6)
+    private let cellBackgroundColor = UIColor.clearColor()
+    private let cellContentBackgroundColor = UIColor.clearColor()
+
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: APIPath) {
@@ -35,12 +40,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     // MARK: - Registering views
     
     func registerViewsFor(collectionView: UICollectionView) {
-        cellFactory.registerCellsWithCollectionView(collectionView)
-        
         let headerNib = UINib(nibName: headerName, bundle: nil)
-        collectionView.registerNib(headerNib,
-                                   forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                                   withReuseIdentifier: headerName)
+        collectionView.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerName)
     }
     
     // MARK: - Managing content
@@ -85,7 +86,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     private let cellFactory: VContentOnlyCellFactory
     private var headerView: ConfigurableGridStreamHeaderView!
     private var header: HeaderType?
-    
+
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
@@ -94,15 +95,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         if kind == UICollectionElementKindSectionFooter {
             return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
         } else {
-            if headerView != nil {
-                return headerView
+            if headerView == nil {
+                headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                                                               withReuseIdentifier: headerName,
-                                                                               forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
-            header?.decorateHeader(dependencyManager,
-                                   maxHeight: CGRectGetHeight(collectionView.bounds),
-                                   content: content)
+            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content)
             
             guard let header = header as? UIView else {
                 assertionFailure("header is not a UIView")
@@ -114,15 +110,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = cellFactory.collectionView(
-            collectionView,
-            cellForContent: items[indexPath.row],
-            atIndexPath: indexPath
-        )
-        
-        cell.layer.cornerRadius = 6
-        cell.backgroundColor = .clearColor()
-        cell.contentView.backgroundColor = .clearColor()
+        let cell = cellFactory.collectionView( collectionView, cellForContent: items[indexPath.row], atIndexPath: indexPath)
+        cell.layer.cornerRadius = cellCornerRadius
+        cell.backgroundColor = cellBackgroundColor
+        cell.contentView.backgroundColor = cellContentBackgroundColor
         return cell
     }
 }
