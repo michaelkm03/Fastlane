@@ -191,17 +191,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    // MARK: - Configurable Header
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: VUser?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) {
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: VUser?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) -> CGSize {
         self.user = content
         
         setNeedsLayout()
@@ -214,6 +210,14 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         removeConstraint(widthConstraint)
         
         return CGSizeMake(width, height)
+    }
+    
+    func headerWillAppear() {
+        // Empty implementation for ConfigurableGridStreamHeader
+    }
+    
+    func headerDidDisappear() {
+        // Empty implementation for ConfigurableGridStreamHeader
     }
 }
 

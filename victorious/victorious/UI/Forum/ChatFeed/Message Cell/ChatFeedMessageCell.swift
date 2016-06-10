@@ -140,8 +140,12 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     private func populateData() {
         textView.attributedText = attributedText
         
-        if let content = content {
+        if let content = content where content.type != .text {
+            mediaView.hidden = false
             mediaView.updateContent(content)
+        }
+        else {
+            mediaView.hidden = true
         }
         
         detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
