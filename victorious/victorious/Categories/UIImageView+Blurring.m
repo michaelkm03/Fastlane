@@ -213,7 +213,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
             
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                self.image = blurredImage;
+                weakSelf.image = blurredImage;
                 callbackBlock();
             });
         });
