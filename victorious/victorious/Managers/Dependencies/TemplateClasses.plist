@@ -200,8 +200,6 @@
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
-	<key>vip.screen</key>
-	<string>victorious.VIPGateViewController</string>
 	<key>trophyCase.screen</key>
 	<string>victorious.TrophyCaseViewController</string>
 	<key>trophyCase.achievement</key>

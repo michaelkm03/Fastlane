@@ -2204,6 +2204,8 @@
 		F0E0F1B61AE8BFE200143CBF /* VInsetMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1B51AE8BFE200143CBF /* VInsetMarqueeController.m */; };
 		F0E0F1B81AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E0F1B71AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib */; };
 		F0E0F1BA1AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */; };
+		F0E25FD71D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E25FD61D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift */; };
+		F0E25FD91D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E25FD81D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift */; };
 		F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */; };
 		F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */; };
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
@@ -5253,6 +5255,8 @@
 		F0E0F1B51AE8BFE200143CBF /* VInsetMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetMarqueeController.m; sourceTree = "<group>"; };
 		F0E0F1B71AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
+		F0E25FD61D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPermissionedCloseUpOperation.swift; sourceTree = "<group>"; };
+		F0E25FD81D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowFetchedCloseUpOperation.swift; sourceTree = "<group>"; };
 		F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRightSideIconButton.swift; sourceTree = "<group>"; };
 		F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfContentCoverCell.swift; sourceTree = "<group>"; };
@@ -8270,6 +8274,8 @@
 				BFE31A831CD296A900585155 /* CloseUpView.xib */,
 				BFE31A851CD296C000585155 /* MediaContentView.swift */,
 				BFE31A7F1CD2968100585155 /* ShowCloseUpOperation.swift */,
+				F0E25FD81D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift */,
+				F0E25FD61D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift */,
 				BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */,
 			);
 			path = CloseUp;
@@ -12937,6 +12943,7 @@
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
 				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				BFE31A861CD296C000585155 /* MediaContentView.swift in Sources */,
+				F0E25FD71D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				F0411E811B45AACD00557176 /* VTimeSinceWidget.m in Sources */,
@@ -12979,6 +12986,7 @@
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
+				F0E25FD91D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift in Sources */,
 				F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */,
 				A72C86711C977FF600E97D4F /* ConversationRemoteOperation.swift in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,

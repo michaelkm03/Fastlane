@@ -6,10 +6,12 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class ShowVIPGateOperation: MainQueueOperation {
+class ShowVIPGateOperation: MainQueueOperation, VIPGateViewControllerDelegate {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
+    private(set) var showedGate = false
+    private(set) var allowedAccess = false
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
         self.dependencyManager = dependencyManager
@@ -18,23 +20,22 @@ class ShowVIPGateOperation: MainQueueOperation {
     }
     
     override func start() {
-        guard !cancelled else {
-            finishedExecuting()
-            return
+        guard !cancelled,
+            let originViewController = originViewController,
+            let vipGate = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
+                finishedExecuting()
+                return
         }
         
-        guard let viewController = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
-            finishedExecuting()
-            return
-        }
-        
-        if let navigationController = originViewController?.navigationController {
-            navigationController.pushViewController(viewController, animated: animated)
-            finishedExecuting()
-        } else {
-            originViewController?.presentViewController(viewController, animated: animated) {
-                self.finishedExecuting()
-            }
+        vipGate.delegate = self
+        showedGate = true
+        originViewController.presentViewController(vipGate, animated: animated, completion: nil)
+    }
+    
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
+        self.allowedAccess = allowed
+        vipGateViewController.dismissViewControllerAnimated(animated) { [weak self] in
+            self?.finishedExecuting()
         }
     }
 }
