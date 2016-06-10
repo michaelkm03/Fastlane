@@ -105,6 +105,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         // Set up video view if content is video
         if content.type.displaysAsVideo {
             videoContainerView.hidden = false
+            videoCoordinator?.tearDown()
             videoCoordinator = VContentVideoPlayerCoordinator(content: content)
             videoCoordinator?.setupVideoPlayer(in: videoContainerView)
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
@@ -180,7 +181,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private func updatePreviewImageIfReady() {
-        guard downloadedPreviewImage != nil && alphaHasAnimatedToZero else {
+        guard
+            let content = content where
+            downloadedPreviewImage != nil && alphaHasAnimatedToZero
+        else {
             return
         }
         spinner.stopAnimating()
@@ -190,11 +194,24 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         showContent()
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
-        
-        if let imageURL = content?.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content?.assetModels.first?.resourceID) {
-            backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
-                self?.backgroundView.alpha = 1
-            }
+        if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+            setBackgroundBlur(withImageUrl: imageURL)
+        }
+        else if
+            let dataURL = content.assetModels.first?.resourceID,
+            let imageURL = NSURL(string: dataURL)
+            where content.type == .image
+        {
+            setBackgroundBlur(withImageUrl: imageURL)
+        }
+        else {
+            backgroundView.image = nil
+        }
+    }
+    
+    func setBackgroundBlur(withImageUrl imageURL: NSURL) {
+        backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+            self?.backgroundView.alpha = 1
         }
     }
 
