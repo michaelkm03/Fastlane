@@ -11,6 +11,7 @@
 #import "UIImage+Resize.h"
 #import <SDWebImage/SDWebImageManager.h>
 #import <objc/runtime.h>
+#import "victorious-Swift.h"
 
 @import AVFoundation;
 
@@ -206,10 +207,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                 return;
             }
             
-            UIImage *blurredImage = [image applyBlurWithRadius:blurRadius
-                                                     tintColor:nil
-                                         saturationDeltaFactor:1.0
-                                                     maskImage:nil];
+            UIImage *blurredImage = [image applyBlurWithRadius:blurRadius in:self.frame];
             
             dispatch_async(dispatch_get_main_queue(), ^
             {
