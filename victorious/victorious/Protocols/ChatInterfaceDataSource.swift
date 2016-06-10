@@ -10,11 +10,6 @@ import Foundation
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
-    
-    /// A standalone cell used to calculate dynamic cell sizes
-    /// - Note: Each concrete implementation should provide a stored sizing cell, because it temporarily stores cell content to size the cell
-    var sizingCell: ChatFeedMessageCell { get }
-    
     var dependencyManager: VDependencyManager { get }
     
     var visibleItems: [ContentModel] { get }
@@ -30,7 +25,6 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 }
 
 extension ChatInterfaceDataSource {
-    
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
         return visibleItems.count
     }
@@ -51,18 +45,12 @@ extension ChatInterfaceDataSource {
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
         let content = visibleItems[indexPath.row]
-        decorate(sizingCell, content: content)
-        
-        return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+        let width = collectionView.bounds.width
+        let height = ChatFeedMessageCell.cellHeight(displaying: content, inWidth: width, dependencyManager: dependencyManager)
+        return CGSize(width: width, height: height)
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.authorModel.id {
-            cell.layout = RightAlignmentCellLayout()
-        } else {
-            cell.layout = LeftAlignmentCellLayout()
-        }
-        
         cell.dependencyManager = dependencyManager
         cell.content = content
     }

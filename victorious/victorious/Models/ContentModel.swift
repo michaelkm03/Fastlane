@@ -48,6 +48,12 @@ extension ContentModel {
     var aspectRatio: CGFloat {
         return previewImageModels.first?.mediaMetaData.size?.aspectRatio ?? 0.0
     }
+    
+    // MARK: - Author information
+    
+    var wasCreatedByCurrentUser: Bool {
+        return authorModel.id == VCurrentUser.user()?.remoteId.integerValue
+    }
 }
 
 extension VContent: ContentModel {

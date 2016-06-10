@@ -9,17 +9,12 @@
 import UIKit
 import VictoriousIOSSDK
 
-protocol ChatCellType {
-    func cellSizeWithinBounds(bounds: CGRect) -> CGSize
-    var content: ContentModel? { get set }
-}
-
 protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
+class ChatFeedMessageCell: UICollectionViewCell {
     
     static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
@@ -31,16 +26,6 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     let textView = UITextView()
     let avatarView = VDefaultProfileImageView()
     var mediaView: MediaContentView?
-    
-    let horizontalSpacing: CGFloat = 10.0
-    let avatarSize = CGSize(width: 41.0, height: 41.0)
-    let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
-    
-    var layout: ChatFeedMessageCellLayout! {
-        didSet {
-            setNeedsLayout()
-        }
-    }
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -65,6 +50,13 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         }
     }
     
+    // MARK: - Configuration
+    
+    static let textInsets = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
+    static let horizontalSpacing = CGFloat(10.0)
+    static let avatarSize = CGSize(width: 41.0, height: 41.0)
+    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    
     // MARK: - Initializing
     
     override init(frame: CGRect) {
@@ -78,6 +70,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         configureTextView(textView)
         configureTextView(detailTextView)
+        textView.textContainerInset = ChatFeedMessageCell.textInsets
         
         contentView.addSubview(detailTextView)
         contentView.addSubview(contentContainer)
@@ -104,7 +97,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layout.updateWithCell(self)
+        content?.layout.update(for: self)
         avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
     }
     
@@ -134,7 +127,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     private func populateData() {
-        textView.attributedText = attributedText
+        textView.attributedText = content?.attributedText(using: dependencyManager)
         
         if let content = content where content.type.hasMedia {
             let mediaView = createMediaViewIfNeeded()
@@ -174,79 +167,59 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         }
     }
     
-    // MARK: - ChatCellType
-    
-    func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        let mediaSize = calculateMediaSizeWithinBounds(bounds)
-        let textSize = calculateTextSizeWithinBounds(bounds)
-        let totalHeight = contentMargin.top
-            + textSize.height
-            + mediaSize.height
-            + contentMargin.bottom
-        return CGSize(
-            width: bounds.width,
-            height: max(totalHeight, avatarSize.height + contentMargin.top)
-        )
-    }
-    
     // MARK: - Sizing
     
-    private func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
-        return bounds.width - (contentMargin.left + contentMargin.right) - avatarSize.width - horizontalSpacing
+    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
+        let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
+        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
+        let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
+        return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    func calculateTextSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let attributedText = attributedText else {
+    static func textSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
+        guard let attributedText = content.attributedText(using: dependencyManager) else {
             return CGSize.zero
         }
-        let maxTextWidth = maxContentWidthWithinBounds(bounds)
-        let availableSizeForWidth = CGSize(width: maxTextWidth, height: CGFloat.max)
-        var size = attributedText.boundingRectWithSize(availableSizeForWidth,
-            options: [ .UsesLineFragmentOrigin ],
-            context: nil).size
-        size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         
-        size.width += contentMargin.left //< Eh, this isn't quite right, thought it looks okay fr now
+        let maxTextWidth = width - nonContentWidth
+        
+        var size = attributedText.boundingRectWithSize(
+            CGSize(width: maxTextWidth, height: CGFloat.max),
+            options: [.UsesLineFragmentOrigin],
+            context: nil
+        ).size
+        
+        size.width += contentMargin.left // no good
+        size.height += textInsets.bottom + textInsets.top
         return size
     }
     
-    func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let unclampedAspectRatio = content?.aspectRatio where content?.assetModels.isEmpty == false else {
+    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
+        guard !content.assetModels.isEmpty else {
             return CGSize.zero
         }
         
-        let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: unclampedAspectRatio)
+        let maxWidth = width - nonContentWidth
+        let aspectRatio = dependencyManager.clampedAspectRatio(from: content.aspectRatio)
         
         return CGSize(
-            width: maxContentWidth,
-            height: maxContentWidth / aspectRatio
+            width: maxWidth,
+            height: maxWidth / aspectRatio
         )
     }
     
-    private var attributedText: NSAttributedString? {
-        guard let text = content?.text where text != "" else {
-            return nil
-        }
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = layout.textAlignment
-        let attributes = [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSForegroundColorAttributeName: dependencyManager.messageTextColor,
-            NSFontAttributeName: dependencyManager.messageFont
-        ]
-        return NSAttributedString(string: text, attributes: attributes)
+    private static var nonContentWidth: CGFloat {
+        return contentMargin.left + contentMargin.right + avatarSize.width + horizontalSpacing
     }
 }
 
 private extension VDependencyManager {
-    
     func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
         let defaultMinimum = 1.0
         let defaultMaximum = 4.0
         let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
         let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
-        return min( maxAspect, max(rawAspectRatio, minAspect) )
+        return min(maxAspect, max(rawAspectRatio, minAspect))
     }
     
     var messageTextColor: UIColor {
@@ -271,5 +244,30 @@ private extension VDependencyManager {
     
     var userLabelColor: UIColor {
         return colorForKey("color.username.text") ?? .whiteColor()
+    }
+}
+
+private extension ContentModel {
+    var layout: ChatFeedMessageCellLayout {
+        return wasCreatedByCurrentUser ? RightAlignmentCellLayout() : LeftAlignmentCellLayout()
+    }
+    
+    var textAlignment: NSTextAlignment {
+        return wasCreatedByCurrentUser ? .Right : .Left
+    }
+    
+    func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
+        guard let text = text where text != "" else {
+            return nil
+        }
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = textAlignment
+        
+        return NSAttributedString(string: text, attributes: [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSForegroundColorAttributeName: dependencyManager.messageTextColor,
+            NSFontAttributeName: dependencyManager.messageFont
+        ])
     }
 }
