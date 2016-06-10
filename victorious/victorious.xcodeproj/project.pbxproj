@@ -15667,7 +15667,7 @@
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DefaultEnvironment = Dev;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
