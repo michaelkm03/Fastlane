@@ -16,7 +16,7 @@ class APIPathTests: XCTestCase {
             "%%PLACEHOLDER_2%%": "123"
         ])
         
-        XCTAssertEqual(path.url!.absoluteString, "http://example.com/abc/123.json")
+        XCTAssertEqual(path.url?.absoluteString, "http://example.com/abc/123.json")
     }
     
     func testQueryParameters() {
@@ -25,7 +25,7 @@ class APIPathTests: XCTestCase {
             "per": "100"
         ])
         
-        XCTAssertEqual(path.url!.absoluteString, "http://example.com/my/endpoint?per=100&page=5")
+        XCTAssertEqual(path.url?.absoluteString, "http://example.com/my/endpoint?per=100&page=5")
     }
     
     func testMacroReplacementWithQueryParameters() {
@@ -38,6 +38,6 @@ class APIPathTests: XCTestCase {
             ]
         )
         
-        XCTAssertEqual(path.url!.absoluteString, "http://example.com/users/5000/content.json?param1=thing1&param2=thing2")
+        XCTAssertEqual(path.url?.absoluteString, "http://example.com/users/5000/content.json?param1=thing1&param2=thing2")
     }
 }
