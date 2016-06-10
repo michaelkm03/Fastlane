@@ -25,25 +25,48 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
         }
         
         let displayModifier = self.displayModifier
-        guard !cancelled,
+        guard
+            !cancelled,
             let userID = VCurrentUser.user()?.remoteId.integerValue,
-            let contentFetchURL = displayModifier.dependencyManager.contentFetchURL else {
-                return
+            let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
+        else {
+            return
         }
+        
+        let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
+        showCloseUpOperation.rechainAfter(self).queue()
         
         let contentFetchOperation = ContentFetchOperation(
             macroURLString: contentFetchURL,
             currentUserID: String(userID),
             contentID: contentID
         )
-        let completionBlock = self.completionBlock
-        contentFetchOperation.rechainAfter(self).queue() { results, _, _ in
-            guard let content = results?.first as? VContent else {
+        
+        let completionBlock = showCloseUpOperation.completionBlock
+        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
+            guard
+                let content = results?.first as? VContent,
+                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
+            else {
                 completionBlock?()
                 return
             }
             
-            ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(contentFetchOperation).queue() { _ in
+            if content.isVIPOnly {
+                let dependencyManager = displayModifier.dependencyManager
+                let showVIPGateOperation = ShowVIPGateOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager)
+                
+                showVIPGateOperation.rechainAfter(self).queue() { _ in
+                    if !showVIPGateOperation.showedGate || showVIPGateOperation.allowedAccess {
+                        shownCloseUpView.updateContent(content)
+                    }
+                    else {
+                        shownCloseUpView.navigationController?.popViewControllerAnimated(true)
+                    }
+                    completionBlock?()
+                }
+            }
+            else {
                 completionBlock?()
             }
         }

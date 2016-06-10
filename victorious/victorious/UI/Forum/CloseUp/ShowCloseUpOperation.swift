@@ -25,7 +25,9 @@ struct ShowCloseUpDisplayModifier {
 /// Shows a close up view displaying the provided content.
 class ShowCloseUpOperation: MainQueueOperation {
     private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: ContentModel
+    private var content: ContentModel?
+    private var contentID: String?
+    private(set) var displayedCloseUpView: CloseUpContainerViewController?
     
     static func showOperation(forContent content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
         return ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier)
@@ -41,19 +43,28 @@ class ShowCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
+        self.displayModifier = displayModifier
+        self.contentID = contentID
+        super.init()
+    }
+    
     override func start() {
         defer {
             finishedExecuting()
         }
         
-        guard !cancelled,
+        guard
+            !cancelled,
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
-            let originViewController = displayModifier.originViewController else {
+            let originViewController = displayModifier.originViewController,
+            let contentID = contentID ?? content?.id
+        else {
                 return
         }
         
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
-            "%%CONTENT_ID%%": content.id ?? "",
+            "%%CONTENT_ID%%": contentID,
             "%%CONTEXT%%" : childDependencyManager.context
         ])
         
@@ -62,6 +73,7 @@ class ShowCloseUpOperation: MainQueueOperation {
             content: content,
             streamAPIPath: apiPath
         )
+        displayedCloseUpView = closeUpViewController
         
         let animated = displayModifier.animated
         if let originViewController = originViewController as? UINavigationController {

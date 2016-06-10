@@ -35,7 +35,7 @@ public struct APIPath {
     // MARK: - Getting the processed URL
     
     /// The processed URL value with macros replaced and query parameters added.
-    public var url: NSURL {
+    public var url: NSURL? {
         var processedPath = templatePath
         
         if macroReplacements.count > 0 {
@@ -58,6 +58,6 @@ public struct APIPath {
             }
         }
         
-        return NSURL(string: processedPath) ?? NSURL()
+        return NSURL(string: processedPath)
     }
 }
