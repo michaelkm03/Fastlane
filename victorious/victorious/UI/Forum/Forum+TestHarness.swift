@@ -14,6 +14,7 @@ import VictoriousIOSSDK
 private var debugTimer = VTimerManager()
 
 extension ForumViewController {
+    private static let defaultStageContentLength: Double = 5
     
     func debug_startGeneratingMessages(interval interval: NSTimeInterval) {
         VTimerManager.addTimerManagerWithTimeInterval(interval,
@@ -80,34 +81,26 @@ extension ForumViewController {
     }
     
     func debug_createStageEvents() {
-        VTimerManager.addTimerManagerWithTimeInterval(
-            5,
-            target: self,
-            selector: #selector(stageNext),
-            userInfo: nil,
-            repeats: true,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
-        )
         stageNext()
     }
     
     func stageNext() {
         stageCount = stageCount % sampleStageImageContents.count
-        let random = sampleStageImageContents[stageCount]
-        let contentType = ContentType(rawValue: random["type"]!)!
-        let url = NSURL(string: random["url"]!)!
+        let next = sampleStageImageContents[stageCount]
+        let contentType = ContentType(rawValue: next["type"]!)!
+        let remoteIdentifier = next["id"]!
+        let source = next["source"]
         
-        let asset = ContentMediaAsset(
-            contentType: contentType,
-            url: url
-        )!
+        let asset = ContentMediaAsset(contentType: contentType, source: source, remoteIdentifier: remoteIdentifier)!
+        
+        let previewAsset = contentType == .image ? ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: remoteIdentifier)!, size: CGSizeMake(100, 100))) : randPreviewImage()
         
         let content = Content(
             id: String(1000 + Int(arc4random() % 9999)),
             type: contentType,
             text: randomText(),
             assets: [asset],
+            previewImages: [previewAsset],
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
                 name: randName(),
@@ -116,6 +109,18 @@ extension ForumViewController {
         )
         stage?.addContent(content)
         stageCount += 1
+        
+        let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
+        
+        VTimerManager.addTimerManagerWithTimeInterval(
+            time,
+            target: self,
+            selector: #selector(stageNext),
+            userInfo: nil,
+            repeats: false,
+            toRunLoop: NSRunLoop.mainRunLoop(),
+            withRunMode: NSRunLoopCommonModes
+        )
     }
 
 }
@@ -126,72 +131,53 @@ private var totalCount = 0
 private let sampleStageImageContents = [
     [
         "type": "image",
-        "url": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg"
+        "id": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
+        "length": "10"
     ],
     [
         "type": "image",
-        "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
+        "id": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
     ],
     [
         "type": "image",
-        "url": "http://cdn.fansided.com/wp-content/blogs.dir/20/files/2016/03/kevin-durant-lebron-james-nba-oklahoma-city-thunder-cleveland-cavaliers-850x549.jpg"
+        "id": "http://images.christianpost.com/full/88618/big-bang-theory.png"
     ],
     [
-        "type": "image",
-        "url": "http://gazettereview.com/wp-content/uploads/2015/07/Paul-George.jpg"
+        "type": "gif",
+        "id": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
+        "length": "15"
     ],
     [
-        "type": "image",
-        "url": "http://download.gamezone.com/uploads/image/data/1203213/ogimage.img.jpg"
+        "type": "gif",
+        "id": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
     ],
     [
-        "type": "image",
-        "url": "http://images.christianpost.com/full/88618/big-bang-theory.png"
+        "type": "video",
+        "id": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
     ],
     [
-        "type": "image",
-        "url": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTOAIaM8CByCBip_Q4NeVR9JGjOBgUCV-BncDELPj_PO4yk3vQtTQ"
+        "type": "video",
+        "id": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
+        "length": "15"
     ],
     [
-        "type": "image",
-        "url": "http://i.huffpost.com/gen/3005992/images/o-NBAFINALS-facebook.jpg"
+        "type": "video",
+        "source": "youtube",
+        "id": "aL33-XfVccg",
+        "length": "30"
+        ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "OV0wOGUFZdw",
+        "length": "30"
     ],
     [
-        "type": "image",
-        "url": "https://www.tvnz.co.nz/content/dam/images/entertainment/shows/t/the-big-bang-theory/001_big_bang_theorycover.png.hashed.ac106368.747x420.jpg"
+        "type": "video",
+        "source": "youtube",
+        "id": "hgb8Jofr5ew",
+        "length": "30"
     ],
-    [
-        "type": "image",
-        "url": "https://cdn0.vox-cdn.com/thumbor/Nj0YGHtKn9t6w77buNrODmhkSv8=/52x592:1732x1712/1310x873/cdn0.vox-cdn.com/uploads/chorus_image/image/49141793/GettyImages-514745962.0.jpg"
-    ],
-    [
-        "type": "image",
-        "url": "http://www.trbimg.com/img-570f3080/turbine/la-kobelast-la0037819123-20160413/1300/1300x731"
-    ],
-    [
-        "type": "image",
-        "url": "http://cavaliersnation.com/wp-content/uploads/2015/06/10443155_815244895226004_7294388762478468326_o-e1433368307903.jpg"
-    ],
-    [
-        "type": "image",
-        "url": "http://a.espncdn.com/photo/2015/0720/nba_g_shaq_pippen_b1_1296x729.jpg"
-    ],
-    [
-        "type": "image",
-        "url": "http://i.cdn.turner.com/drp/nba/rockets/sites/default/files/gettyimages-502208970.jpg"
-    ],
-    [
-        "type": "image",
-        "url": "http://images.performgroup.com/di/library/sporting_news/69/ff/stephen-curry-getty-ftr-111015_prho9atrmvpr1078za4ogxo1p.jpg?t=-237508088"
-    ],
-    [
-        "type": "image",
-        "url": "http://l2.yimg.com/bt/api/res/1.2/0uxmaqDK7Ug76SZJ5PCaLA--/YXBwaWQ9eW5ld3NfbGVnbztmaT1maWxsO2g9Mzc3O2lsPXBsYW5lO3B4b2ZmPTUwO3B5b2ZmPTA7cT03NTt3PTY3MA--/http://l.yimg.com/os/publish-images/sports/2015-04-15/fc8daba0-e396-11e4-80b5-a15058a85bfe_SC41515.jpg"
-    ],
-    [
-        "type": "image",
-        "url": "http://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254"
-    ]
 ]
 
 private let sampleMedia = [
