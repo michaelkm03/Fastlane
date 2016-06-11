@@ -36,8 +36,6 @@ public struct RefreshStage {
             self.startTime = nil
         }
 
-        // Backend is not capable of sending a section information for Main Stage.
-        // So we are forced to make the assumption that if no section is being sent, it's the main stage 🌚
         let section = json["section"].string ?? "main_stage"
         
         let lowerCasedSection = section.lowercaseString
