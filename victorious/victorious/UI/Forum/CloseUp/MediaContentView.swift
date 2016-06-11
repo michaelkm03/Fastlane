@@ -8,8 +8,6 @@
 //
 
 import UIKit
-import CoreImage
-import SDWebImage
 
 /// Displays an image/video/GIF/Youtube video upon setting the content property
 
@@ -212,23 +210,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
-//        backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
-//            self?.backgroundView.alpha = 1
-//        }
-        
-        SDWebImageManager.sharedManager().downloadImageWithURL(imageURL, options: SDWebImageOptions.RetryFailed , progress: nil) { [weak self] image, _, _, _, _ in
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                let imageToBlur = CIImage(image: image)
-                let blurfilter = CIFilter(name: "CIGaussianBlur")!
-                blurfilter.setValue(imageToBlur, forKey: "inputImage")
-                let resultImage = blurfilter.valueForKey("outputImage") as! CIImage
-                let blurredImage = UIImage(CIImage: resultImage)
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    self?.backgroundView.image = blurredImage
-                }
-            }
+        backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+            self?.backgroundView.alpha = 1
         }
     }
 

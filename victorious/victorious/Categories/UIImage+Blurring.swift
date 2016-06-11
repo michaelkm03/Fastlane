@@ -14,19 +14,17 @@ extension UIImage {
             return nil
         }
         
-        blurFilter.setValue(UIKit.CIImage(image: self), forKey: kCIInputImageKey)
+        blurFilter.setValue(CoreImage.CIImage(image: self), forKey: kCIInputImageKey)
         blurFilter.setValue(radius, forKey: kCIInputRadiusKey)
         
         let ciContext  = CIContext(options: nil)
         
-        guard let result = blurFilter.valueForKey(kCIOutputImageKey) as? UIKit.CIImage else {
+        guard let result = blurFilter.valueForKey(kCIOutputImageKey) as? CoreImage.CIImage else {
             return nil
         }
         
         let cgImage = ciContext.createCGImage(result, fromRect: bounds)
         
-        let filteredImage = UIImage(CGImage: cgImage)
-        
-        return filteredImage
+        return UIImage(CGImage: cgImage)
     }
 }
