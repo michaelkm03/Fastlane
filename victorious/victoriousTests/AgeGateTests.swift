@@ -88,18 +88,6 @@ class AgeGateTests: XCTestCase {
         }
     }
     
-    func testFilterMultipleContainerItems() {
-        let inputItems: [UIViewController] = [
-            UIViewController(),
-            VDiscoverContainerViewController(),
-            VUserProfileViewController()
-        ]
-        
-        let outputItems = AgeGate.filterMultipleContainerItems(inputItems)
-        XCTAssertEqual(outputItems.count, 3)
-        XCTAssertFalse(outputItems.contains(VDiscoverContainerViewController()))
-    }
-    
     func testFilterMoreButtonItems() {
         let inputItems = [
             VActionItem.defaultActionItemWithTitle("", actionIcon: UIImage(), detailText: ""),

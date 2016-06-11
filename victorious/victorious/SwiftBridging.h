@@ -10,7 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-#import "DiscoverSearchViewController.h"
 #import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
@@ -108,7 +107,6 @@
 #import "VDirectoryCellUpdateableFactory.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDirectoryCollectionViewController.h"
-#import "VDiscoverContainerViewController.h"
 #import "VDiscoverSuggestedPersonCell.h"
 #import "VEditCommentViewController.h"
 #import "VEditableTextPostViewController.h"

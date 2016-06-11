@@ -146,8 +146,6 @@
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsViewController</string>
-	<key>discover.screen</key>
-	<string>VDiscoverContainerViewController</string>
 	<key>comments.screen</key>
 	<string>victorious.CommentsViewController</string>
 	<key>collections.directoryCell</key>
@@ -188,8 +186,6 @@
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
-	<key>userHashtagSearch.screen</key>
-	<string>DiscoverSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
 	<key>trendingTopic.shelf</key>
