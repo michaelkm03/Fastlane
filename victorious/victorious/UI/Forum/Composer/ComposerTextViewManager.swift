@@ -56,7 +56,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
             let newString = NSMutableAttributedString(attributedString: textView.attributedText)
-            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextviewInputAttributes()))
+            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
             textView.attributedText = newString
         }
         else {
@@ -247,11 +247,11 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
     }
     
-    private func getTextviewInputAttributes() -> [String: AnyObject] {
+    private func getTextViewInputAttributes() -> [String: AnyObject] {
         guard
             let delegate = delegate,
-            let color = delegate.inputTextColor(),
-            let font = delegate.inputTextFont()
+            let color = delegate.inputTextAttributes().inputTextColor,
+            let font = delegate.inputTextAttributes().inputTextFont
         else {
             return [:]
         }

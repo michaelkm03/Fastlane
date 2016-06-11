@@ -152,12 +152,8 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         var textViewCanDismiss: Bool = true
         
-        func inputTextColor() -> UIColor? {
-            return nil
-        }
-        
-        func inputTextFont() -> UIFont? {
-            return nil
+        func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+            return (nil, nil)
         }
     }
 }

@@ -24,8 +24,6 @@ protocol ComposerTextViewManagerDelegate: class {
 
     func textViewDidHitCharacterLimit(textView: UITextView)
     
-    func inputTextColor() -> UIColor?
-    
-    func inputTextFont() -> UIFont? 
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?)
     
 }

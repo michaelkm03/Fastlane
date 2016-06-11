@@ -252,12 +252,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.v_performShakeAnimation()
     }
     
-    func inputTextFont() -> UIFont? {
-        return dependencyManager.inputTextFont
-    }
-    
-    func inputTextColor() -> UIColor? {
-        return dependencyManager.inputTextColor
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+        return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
     }
     
     // MARK: - View lifecycle
