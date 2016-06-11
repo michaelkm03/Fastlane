@@ -192,8 +192,6 @@
 	<string>DiscoverSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
-	<key>explore.screen</key>
-	<string>victorious.VExploreViewController</string>
 	<key>trendingTopic.shelf</key>
 	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>

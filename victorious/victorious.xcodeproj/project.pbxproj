@@ -159,7 +159,6 @@
 		035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D11B1EA33400E910A7 /* Quicksand-Regular.ttf */; };
 		035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */; };
 		035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */; };
-		035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 035CD7891BA222DE008A01EB /* Explore.storyboard */; };
 		035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */; };
 		035FA77C1AE1B42E0002EE63 /* menuItemsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */; };
 		035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */; };
@@ -614,7 +613,6 @@
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
-		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		673B91C41C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */; };
 		673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C51C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift */; };
@@ -2068,7 +2066,6 @@
 		F022CFE21CFF984500F040BB /* VDependencyManager+SystemFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFE11CFF984500F040BB /* VDependencyManager+SystemFont.swift */; };
 		F022CFE41CFFA21B00F040BB /* VDependencyManager+SystemFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFE31CFFA21A00F040BB /* VDependencyManager+SystemFontTests.swift */; };
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
-		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
@@ -2165,7 +2162,6 @@
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
-		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
 		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
@@ -2509,7 +2505,6 @@
 		0340338C1BD085A3000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Purchases.strings"; sourceTree = "<group>"; };
 		0340338D1BD085A3000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VModernResetTokenViewController.strings"; sourceTree = "<group>"; };
 		0340338E1BD085A4000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VForceUpgradeViewController.strings"; sourceTree = "<group>"; };
-		0340338F1BD085A4000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Explore.strings"; sourceTree = "<group>"; };
 		034033901BD085A4000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/ActionSheet.strings"; sourceTree = "<group>"; };
 		034033911BD085A5000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/FindFriendsTableView.strings"; sourceTree = "<group>"; };
 		034033921BD085A5000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/settings.strings"; sourceTree = "<group>"; };
@@ -2560,14 +2555,6 @@
 		035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VDefaultTemplate.h"; sourceTree = "<group>"; };
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
 		035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultTemplateTests.m; sourceTree = "<group>"; };
-		035CD7881BA222DE008A01EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Explore.storyboard; sourceTree = "<group>"; };
-		035CD78D1BA222E2008A01EB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD78F1BA222E4008A01EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD7911BA222E6008A01EB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD7931BA222E8008A01EB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD7951BA222EA008A01EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD7971BA222EB008A01EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Explore.strings; sourceTree = "<group>"; };
-		035CD7991BA222ED008A01EB /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Explore.strings; sourceTree = "<group>"; };
 		035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManager_VNavigationMenuItemTests.m; sourceTree = "<group>"; };
 		035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = menuSectionsTemplate.json; sourceTree = "<group>"; };
 		035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = menuItemsTemplate.json; sourceTree = "<group>"; };
@@ -3095,7 +3082,6 @@
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		6728C0E71C6133020005A29F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCardSeeMoreDirectoryCell.xib; sourceTree = "<group>"; };
-		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
 		673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkRequest.swift; sourceTree = "<group>"; };
@@ -5039,7 +5025,6 @@
 		F022CFE11CFF984500F040BB /* VDependencyManager+SystemFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+SystemFont.swift"; sourceTree = "<group>"; };
 		F022CFE31CFFA21A00F040BB /* VDependencyManager+SystemFontTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+SystemFontTests.swift"; sourceTree = "<group>"; };
 		F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Addition.swift"; sourceTree = "<group>"; };
-		F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.m"; sourceTree = "<group>"; };
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
@@ -5179,8 +5164,6 @@
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
-		F0A34A891BA24274000D70EF /* CHTCollectionViewWaterfallLayout+ColumnAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"; sourceTree = "<group>"; };
-		F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentPostsExploreHeaderView.swift; sourceTree = "<group>"; };
 		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarLevelBadgeView.swift; sourceTree = "<group>"; };
 		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeImageType.h; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -5500,7 +5483,6 @@
 				0314D38319B46B5E00FA363C /* Create Poll */,
 				C35265F91B28E349001F093F /* Create Sheet */,
 				A75FAF0019E8AC1E00EB87C1 /* Discover */,
-				672E5F3C1B83A22200D898DE /* Explore */,
 				C3623E561B9A779A002B121D /* Fan Club */,
 				D85B70371B0EAF3F0038CA5B /* Find Friends */,
 				6791505A1CD41F9C00225151 /* First Time User Experience */,
@@ -7475,18 +7457,6 @@
 				672894321BFA9874001146DB /* MuseoSans-500.otf */,
 			);
 			path = MuseoSans;
-			sourceTree = "<group>";
-		};
-		672E5F3C1B83A22200D898DE /* Explore */ = {
-			isa = PBXGroup;
-			children = (
-				F0A34A891BA24274000D70EF /* CHTCollectionViewWaterfallLayout+ColumnAccessor.h */,
-				F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */,
-				035CD7891BA222DE008A01EB /* Explore.storyboard */,
-				F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */,
-				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
-			);
-			path = Explore;
 			sourceTree = "<group>";
 		};
 		673C3A881CF3E817008E477C /* Models */ = {
@@ -9473,7 +9443,6 @@
 				03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
-				A7F14A571CB5829F00F22962 /* ReceivedEventQueueTests.swift */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -11517,7 +11486,6 @@
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
-				035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
@@ -12897,7 +12865,6 @@
 				A73BA5751C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				A72C866B1C977FF600E97D4F /* CommentDeleteRemoteOperation.swift in Sources */,
-				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
 				A72C866D1C977FF600E97D4F /* CommentFlagRemoteOperation.swift in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
@@ -13274,7 +13241,6 @@
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
 				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
-				F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
@@ -13546,7 +13512,6 @@
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */,
-				672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */,
 				A72C86151C977FF500E97D4F /* FriendFindBySocialNetworkOperation.swift in Sources */,
 				A6E104D31B56C88D0062392A /* VPublishSaveCollectionViewCell.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
@@ -13916,22 +13881,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		035CD7891BA222DE008A01EB /* Explore.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				035CD7881BA222DE008A01EB /* Base */,
-				035CD78D1BA222E2008A01EB /* es */,
-				035CD78F1BA222E4008A01EB /* fr */,
-				035CD7911BA222E6008A01EB /* de */,
-				035CD7931BA222E8008A01EB /* pt */,
-				035CD7951BA222EA008A01EB /* ja */,
-				035CD7971BA222EB008A01EB /* ko */,
-				035CD7991BA222ED008A01EB /* vi */,
-				0340338F1BD085A4000A8137 /* zh-Hant */,
-			);
-			name = Explore.storyboard;
-			sourceTree = "<group>";
-		};
 		0366EAFB1B68714A0073A233 /* VAssetCollectionListViewController.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -91,7 +91,6 @@ class AgeGateTests: XCTestCase {
     func testFilterMultipleContainerItems() {
         let inputItems: [UIViewController] = [
             UIViewController(),
-            VExploreViewController(),
             VDiscoverContainerViewController(),
             VUserProfileViewController()
         ]

@@ -11,7 +11,6 @@
 #import "VFooterActivityIndicatorView.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
-#import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "victorious-Swift.h"
 
 @implementation VStreamCollectionViewDataSource
