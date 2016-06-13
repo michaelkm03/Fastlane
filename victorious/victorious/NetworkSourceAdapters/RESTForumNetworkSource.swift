@@ -43,6 +43,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                 return
             }
             
+            broadcast(.filterContent(path: filteredStreamAPIPath))
+            
             dataSource.apiPath = newAPIPath
             
             dataSource.loadItems(.refresh) { [weak self] contents, _ in
@@ -52,7 +54,6 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                 
                 let contents = strongSelf.processContents(contents)
                 strongSelf.broadcast(.replaceContent(contents))
-                strongSelf.broadcast(.filterContent(path: strongSelf.filteredStreamAPIPath))
             }
         }
     }
