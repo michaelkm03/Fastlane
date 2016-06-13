@@ -36,6 +36,7 @@ class ForumNavBarTitleView: UIView {
         stackView.axis = .Vertical
         stackView.distribution = .FillProportionally
         stackView.alignment = .Center
+        stackView.spacing = -5
         
         titleLabel.text = dependencyManager.stringForKey(Keys.titleTextKey)
         titleLabel.font = dependencyManager.fontForKey(Keys.titleFontKey)
@@ -55,7 +56,7 @@ class ForumNavBarTitleView: UIView {
     
     //Creates the string for the subtitle label
     private func getSubtitleText() -> String {
-        return "\(activeUserCount) " + (dependencyManager.activeUserCountStringByReplacingMacro() ?? "users")
+        return VLargeNumberFormatter().stringForInteger(activeUserCount) + (dependencyManager.activeUserCountStringByReplacingMacro() ?? "users")
     }
 }
 

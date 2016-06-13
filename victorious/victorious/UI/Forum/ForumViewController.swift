@@ -197,10 +197,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewDidLoad()
         
         chatFeed?.nextSender = self
-        
-        //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack 
+        //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
-
+        navigationController?.navigationBar.barStyle = .Black
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: dependencyManager.exitButtonIcon,
             style: .Plain,
@@ -302,6 +301,6 @@ private extension VDependencyManager {
     }
     
     var exitButtonIcon: UIImage? {
-        return UIImage(named: "Close") //Template is currently returning incorrect path, so use the close icon in the image assets 
+        return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
     }
 }
