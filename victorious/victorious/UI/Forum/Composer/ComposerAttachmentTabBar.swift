@@ -86,8 +86,16 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
+    func enableButtonForIdentifier(identifier: String) {
+        for button in buttons() {
+            if (button.navigationMenuItem.identifier == identifier) {
+                button.enabled = true 
+            }
+        }
+    }
+    
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
-        delegate?.composerAttachmentTabBar(self, didSelectNagiationItem: button.navigationMenuItem)
+        delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem)
     }
     
     private func buttons() -> [ComposerAttachmentTabBarButton] {
