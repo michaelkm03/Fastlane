@@ -65,7 +65,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             default:()
             }
         case .chatUserCount(let userCount):
-            navBarTitleView?.numActiveUsers = userCount.userCount
+            navBarTitleView?.activeUserCount = userCount.userCount
             
         default:()
         }
@@ -199,7 +199,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         chatFeed?.nextSender = self
         
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack 
-        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0,y: 0,width: 200,height: 45))
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: dependencyManager.exitButtonIcon,

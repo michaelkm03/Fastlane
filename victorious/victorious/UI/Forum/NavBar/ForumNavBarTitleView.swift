@@ -9,13 +9,12 @@
 import Foundation
 
 class ForumNavBarTitleView: UIView {
-    
-    private var titleLabel: UILabel
-    private var subtitleLabel: UILabel
-    private var stackView: UIStackView
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let stackView = UIStackView()
     private let dependencyManager: VDependencyManager
     
-    var numActiveUsers: Int {
+    var activeUserCount: Int {
         didSet {
             subtitleLabel.text = getSubtitleText()
         }
@@ -23,13 +22,7 @@ class ForumNavBarTitleView: UIView {
     
     init(dependencyManager: VDependencyManager, frame: CGRect) {
         self.dependencyManager = dependencyManager
-        numActiveUsers = 0
-        
-        //Initialize these to stub view for now
-        stackView = UIStackView()
-        titleLabel = UILabel()
-        subtitleLabel = UILabel()
-        
+        activeUserCount = 0
         super.init(frame: frame)
         setupViews()
     }
@@ -62,14 +55,13 @@ class ForumNavBarTitleView: UIView {
     
     //Creates the string for the subtitle label
     private func getSubtitleText() -> String {
-        return "\(numActiveUsers) " + (dependencyManager.numActiveUsersStringByReplacingMacro() ?? "users")
+        return "\(activeUserCount) " + (dependencyManager.activeUserCountStringByReplacingMacro() ?? "users")
     }
-    
 }
 
 private extension VDependencyManager {
-    func numActiveUsersStringByReplacingMacro () -> String? {
-        guard let displayString = self.templateValueOfType(NSString.self, forKey: Keys.numberOfUsersTextKey, withAddedDependencies: [:]) as? String else {
+    func activeUserCountStringByReplacingMacro() -> String? {
+        guard let displayString = templateValueOfType(NSString.self, forKey: Keys.numberOfUsersTextKey, withAddedDependencies: [:]) as? String else {
             return nil
         }
         return displayString.stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: "")
