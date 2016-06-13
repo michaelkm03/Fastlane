@@ -62,6 +62,10 @@ public class Content: DictionaryConvertible {
         case .text:
             self.assets = []
         }
+        
+        if (type == .text) {
+            text = json[typeString]["data"].string
+        }
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {

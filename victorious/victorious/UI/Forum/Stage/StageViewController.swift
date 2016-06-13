@@ -50,11 +50,17 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     //MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
-        mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
-        
-        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
-        delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+        if (stageContent.type == .text) {
+            
+        }
+        else {
+            mediaContentView.videoCoordinator?.pauseVideo()
+            mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
+            
+            let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
+            delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+
+        }
     }
 
     func removeContent() {
