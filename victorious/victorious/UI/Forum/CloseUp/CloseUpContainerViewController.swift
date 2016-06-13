@@ -145,13 +145,15 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             return
         }
         
-        let flagOperation = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
-        let deleteOperation = ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
-        
         let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
         
-        let flagDeleteOperation = isCreatorOfContent ? deleteOperation : flagOperation
-        let actionTitle = isCreatorOfContent ? NSLocalizedString("DeleteButton", comment: "") : NSLocalizedString("Report/Flag", comment: "")
+        let flagOrDeleteOperation = isCreatorOfContent
+            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let actionTitle = isCreatorOfContent
+            ? NSLocalizedString("DeleteButton", comment: "")
+            : NSLocalizedString("Report/Flag", comment: "")
         
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: actionTitle,
@@ -159,12 +161,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flagDeleteOperation)
+        confirm.before(flagOrDeleteOperation)
         confirm.queue()
-        flagDeleteOperation.queue() { [weak self] _, _, cancelled in
+        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
             /// FUTURE: Update parent view controller to remove content
             if !cancelled {
-                self?.dismissViewControllerAnimated(true, completion: nil)
+                self?.navigationController?.popViewControllerAnimated(true)
             }
         }
     }

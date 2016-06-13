@@ -11,7 +11,7 @@ import UIKit
 class ContentDeleteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentDeleteRequest!
     
-    init?( contentID: String, contentDeleteURL: String ) {
+    init?(contentID: String, contentDeleteURL: String) {
         guard let request = ContentDeleteRequest(contentID: contentID, contentDeleteURL: contentDeleteURL) else {
             return nil
         }
@@ -19,6 +19,6 @@ class ContentDeleteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

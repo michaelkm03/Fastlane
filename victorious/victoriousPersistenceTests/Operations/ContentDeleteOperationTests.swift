@@ -17,11 +17,10 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
         confirm.before(operation).queue()
         
         let expectation = expectationWithDescription("ContentDeleteOperation")
-        operation.queue() { results, error, cancelled in
-            
-            XCTAssertNil( error )
+        operation.queue { results, error, cancelled in
+            XCTAssertNil(error)
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation).flatMap { $0 as? ContentDeleteRemoteOperation }
-            XCTAssertEqual( dependentOperations.count, 1 )
+            XCTAssertEqual(dependentOperations.count, 1)
             
             expectation.fulfill()
         }
@@ -35,7 +34,7 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
         confirm.before(operation).queue()
         
         let expectation = expectationWithDescription("ContentDeleteOperation")
-        operation.queue() { results, error, cancelled in
+        operation.queue { results, error, cancelled in
             XCTFail("Should not be called")
         }
         dispatch_after(expectationThreshold/2) {
@@ -44,7 +43,7 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
         operation.v_defaultQueue.suspended = true
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
-            XCTAssertEqual( dependentOperations.count, 0 )
+            XCTAssertEqual(dependentOperations.count, 0)
         }
     }
 }
