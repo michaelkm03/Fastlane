@@ -67,6 +67,7 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
                 }
             }
             else {
+                shownCloseUpView.updateContent(content)
                 completionBlock?()
             }
         }
