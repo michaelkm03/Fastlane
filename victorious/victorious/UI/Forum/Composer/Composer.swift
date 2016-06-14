@@ -49,8 +49,7 @@ extension Composer {
         }
         
         var trimmedText = text
-        if let range = trimmedText?.rangeOfString("\n")
-        {
+        if let range = trimmedText?.rangeOfString("\n") {
             trimmedText?.removeRange(range)
         }
         let content = Content(text: trimmedText, assets: [asset], author: currentUser)
