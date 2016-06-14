@@ -20,16 +20,16 @@ extension VDependencyManager {
     static var trophyCaseScreenKey: String { return "trophyCaseScreen" }
     
     func userProfileViewController(for user: VUser) -> UIViewController? {
-        return templateValueMatchingAnyType(
-            [VNewProfileViewController.self],
+        return templateValueOfType(
+            VNewProfileViewController.self,
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userKey: user]
         ) as? UIViewController
     }
     
     func userProfileViewController(withRemoteID remoteID: NSNumber) -> UIViewController? {
-        return templateValueMatchingAnyType(
-            [VNewProfileViewController.self],
+        return templateValueOfType(
+            VNewProfileViewController.self,
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
         ) as? UIViewController

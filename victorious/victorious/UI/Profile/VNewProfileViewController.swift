@@ -108,7 +108,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            
             guard
                 let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
                 let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
