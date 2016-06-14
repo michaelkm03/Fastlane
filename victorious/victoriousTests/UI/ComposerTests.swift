@@ -12,11 +12,6 @@ import XCTest
 class ComposerTests: XCTestCase {
     let composerStub = ComposerStub()
     
-    override func setUp() {
-        super.setUp()
-        AnonymousLoginOperation().queue()
-    }
-    
     func testSendWithImage() {
         let imageText = "\u{ef}"
         let newLine = "\n"
