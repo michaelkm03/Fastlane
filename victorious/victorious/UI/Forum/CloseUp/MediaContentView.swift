@@ -133,8 +133,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         if (content.type == .text) {
             textLabel.text = content.text
-            textLabel.font = UIFont.systemFontOfSize(12.0)  //dependencyManager?.textPostFont()
-            textLabel.textColor = UIColor.redColor() //dependencyManager?.textPostColor()
+            textLabel.font = dependencyManager?.textPostFont()
+            textLabel.textColor = dependencyManager?.textPostColor()
             
             if let url = dependencyManager?.textPostBackgroundImageURL() {
                 setBackgroundBlur(withImageUrl: url)
@@ -280,6 +280,6 @@ private extension VDependencyManager {
     }
     
     func textPostBackgroundImageURL() -> NSURL? {
-        return NSURL(string: stringForKey("backgroundImage.textpost") ?? "error")
+        return NSURL(string: stringForKey("backgroundImage.textpost"))
     }
 }
