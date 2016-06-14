@@ -139,13 +139,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
             mediaView?.hidden = true
         }
         
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
+        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
         
         updateTimestamp()
         
-        if let imageURL = content?.authorModel.previewImageURL(ofMinimumSize: avatarView.frame.size) {
+        if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
-        } else {
+        }
+        else {
             avatarView.image = nil
         }
     }
@@ -165,9 +166,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     func updateTimestamp() {
-        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
+        if let name = content?.author.name, timeStamp = content?.timeLabel {
             detailTextView.text = "\(name) (\(timeStamp))"
-        } else {
+        }
+        else {
             detailTextView.text = ""
         }
     }
@@ -203,7 +205,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
-        guard !content.assetModels.isEmpty else {
+        guard !content.assets.isEmpty else {
             return CGSize.zero
         }
         
@@ -218,6 +220,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     private static var nonContentWidth: CGFloat {
         return contentMargin.left + contentMargin.right + avatarSize.width + horizontalSpacing
+    }
+}
+
+private extension ContentModel {
+    var timeLabel: String {
+        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
 }
 

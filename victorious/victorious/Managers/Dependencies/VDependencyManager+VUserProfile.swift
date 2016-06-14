@@ -10,7 +10,7 @@ import Foundation
 
 extension VDependencyManager {
     
-    static var userProfileViewComponentKey: String { return "userProfileView" }
+    static var userProfileViewComponentKey: String { return "userProfileScreen" }
     static var userProfileHeaderComponentKey: String { return "userProfileHeader" }
     static var userKey: String { return "user" }
     static var userRemoteIdKey: String { return "remoteId" }
@@ -20,16 +20,16 @@ extension VDependencyManager {
     static var trophyCaseScreenKey: String { return "trophyCaseScreen" }
     
     func userProfileViewController(for user: VUser) -> UIViewController? {
-        return templateValueMatchingAnyType(
-            [VNewProfileViewController.self, VUserProfileViewController.self],
+        return templateValueOfType(
+            VNewProfileViewController.self,
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userKey: user]
         ) as? UIViewController
     }
     
     func userProfileViewController(withRemoteID remoteID: NSNumber) -> UIViewController? {
-        return templateValueMatchingAnyType(
-            [VNewProfileViewController.self, VUserProfileViewController.self],
+        return templateValueOfType(
+            VNewProfileViewController.self,
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
         ) as? UIViewController

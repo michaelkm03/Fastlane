@@ -10,4 +10,10 @@ extension VDependencyManager {
     var networkResources: VDependencyManager? {
         return childDependencyForKey("networkResources")
     }
+    
+    /// This should only be called after calling networkResources
+    /// e.g. dependencyManager.networkResources?.userFetchAPIPath
+    var userFetchAPIPath: String? {
+        return stringForKey("userInfoURL")
+    }
 }

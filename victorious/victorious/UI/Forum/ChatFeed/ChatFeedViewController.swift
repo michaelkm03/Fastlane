@@ -134,7 +134,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
         let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.content.authorModel.id == VCurrentUser.user()?.remoteId.integerValue
+            $0.content.author.id == VCurrentUser.user()?.remoteId.integerValue
         }
         
         if itemsContainCurrentUserMessage {
@@ -238,7 +238,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.content?.authorModel.id else {
+        guard let userID = messageCell.content?.author.id else {
             return
         }
         

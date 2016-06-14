@@ -52,7 +52,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     init?(content: ContentModel) {
         self.content = content
-        guard let asset = content.assetModels.first else {
+        guard let asset = content.assets.first else {
             return nil
         }
         if content.type == .video && asset.videoSource == .youtube {
@@ -91,7 +91,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func loadVideo() {
-        guard let asset = content.assetModels.first else {
+        guard let asset = content.assets.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
