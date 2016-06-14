@@ -99,7 +99,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         }
         else {
             upvoteButton.image = dependencyManager.upvoteIconUnselected
-            upvoteButton.tintColor = .whiteColor()
+            upvoteButton.tintColor = nil
         }
         
         navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
