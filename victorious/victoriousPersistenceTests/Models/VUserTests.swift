@@ -23,7 +23,6 @@ class VUserTests: BasePersistentStoreTestCase {
         XCTAssertEqual(user.location, "Fargo, ND")
         XCTAssertEqual(user.tagline, "My coolest tagline")
         XCTAssertEqual(user.levelProgressPoints, Int(2764))
-        XCTAssertEqual(user.numberOfFollowers, Int(15))
         XCTAssertEqual(user.likesGiven, 99)
         XCTAssertEqual(user.likesReceived, 40)
         XCTAssertEqual(user.isVIPSubscriber, 1)

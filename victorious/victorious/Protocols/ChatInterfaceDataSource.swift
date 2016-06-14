@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
@@ -57,7 +58,7 @@ extension ChatInterfaceDataSource {
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.authorModel.id {
+        if VCurrentUser.user()?.remoteId.integerValue == content.author.id {
             cell.layout = RightAlignmentCellLayout()
         } else {
             cell.layout = LeftAlignmentCellLayout()

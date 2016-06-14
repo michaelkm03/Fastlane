@@ -145,7 +145,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             return
         }
         
-        let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
+        let isCreatorOfContent = content?.author.id == VCurrentUser.user()?.id
         
         let flagOrDeleteOperation = isCreatorOfContent
             ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
