@@ -88,8 +88,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Processing content
     
-    private func processContents(contents: [ContentModel]) -> [Content] {
-        return contents.reverse().map { $0.toSDKContent() }
+    private func processContents(contents: [ContentModel]) -> [ContentModel] {
+        return contents.reverse()
     }
     
     // MARK: - Notifications

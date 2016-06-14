@@ -8,14 +8,40 @@
 
 import Foundation
 
-public enum ContentMediaAsset {
+/// The source of where the video is hosted.
+/// - note: We currently only need to differentiate Youtube videos from other videos.
+/// (Giphy is indifferent from other videos as of now.)
+public enum ContentVideoAssetSource {
+    case youtube
+    case video
+}
+
+/// Conformers are models that store information about content media asset.
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
+public protocol ContentMediaAssetModel {
+    /// Returns either the youtube ID or the remote URL that links to the content
+    var resourceID: String { get }
+    
+    /// Returns where the video is hosted remotely
+    var videoSource: ContentVideoAssetSource? { get }
+    
+    /// The asset's content type.
+    var contentType: ContentType { get }
+    
+    /// The URL to the asset's content.
+    var url: NSURL? { get }
+    
+    /// The YouTube external ID of the content.
+    var externalID: String? { get }
+}
+
+public enum ContentMediaAsset: ContentMediaAssetModel {
     case video(url: NSURL, source: String?)
     case youtube(remoteID: String, source: String?)
     case gif(url: NSURL, source: String?)
     case image(url: NSURL)
     
     public init?(contentType: ContentType, sourceType: String, json: JSON) {
-        
         switch contentType {
             case .image:
                 guard let url = json["data"].URL else {
@@ -153,6 +179,20 @@ public enum ContentMediaAsset {
             case .youtube(_, _), .video(_, _): return .video
             case .gif(_, _): return .gif
             case .image(_): return .image
+        }
+    }
+    
+    // MARK: - ContentMediaAssetModel
+    
+    public var resourceID: String {
+        return uniqueID
+    }
+    
+    public var videoSource: ContentVideoAssetSource? {
+        switch self {
+            case .video(_, _), .gif(_, _): return .video
+            case .youtube(_, _): return .youtube
+            case .image(_): return nil
         }
     }
 }
