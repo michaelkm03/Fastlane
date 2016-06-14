@@ -67,17 +67,19 @@ extension VContent: ContentModel {
     
     var type: ContentType {
         switch v_type {
-        case "image":
-            return .image
-        case "video":
-            return .video
-        case "gif":
-            return .gif
-        case "text":
-            return .text
-        default:
-            assertionFailure("Should always have a valid type")
-            return .text
+            case "image":
+                return .image
+            case "video":
+                return .video
+            case "gif":
+                return .gif
+            case "text":
+                return .text
+            case "link":
+                return .link
+            default:
+                assertionFailure("Should always have a valid type")
+                return .text
         }
     }
     

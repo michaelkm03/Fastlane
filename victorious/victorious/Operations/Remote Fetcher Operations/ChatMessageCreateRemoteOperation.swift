@@ -29,10 +29,10 @@ class ChatMessageCreateRemoteOperation: RemoteFetcherOperation, RequestOperation
     }
     
     private func onComplete(sequence: ChatMessageCreateRequest.ResultType) {
-        //FUTURE: Add tracking call once spec'd
+        // FUTURE: Add tracking call once spec'd
     }
     
     private func onError(error: NSError) {
-        //FUTURE: Add tracking call once spec'd
+        // FUTURE: Add tracking call once spec'd
     }
 }

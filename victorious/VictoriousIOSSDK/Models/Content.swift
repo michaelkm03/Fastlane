@@ -59,7 +59,7 @@ public class Content: DictionaryConvertible {
             self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
         case .gif, .video:
             self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
-        case .text:
+        case .text, .link:
             self.assets = []
         }
     }
@@ -89,7 +89,15 @@ public class Content: DictionaryConvertible {
         }
     }
     
-    public init(id: String? = nil, createdAt: NSDate = NSDate(), type: ContentType = .text, text: String? = nil, assets: [ContentMediaAsset] = [], previewImages: [ImageAsset] = [], author: User) {
+    public init(
+        id: String? = nil,
+        createdAt: NSDate = NSDate(),
+        type: ContentType = .text,
+        text: String? = nil,
+        assets: [ContentMediaAsset] = [],
+        previewImages: [ImageAsset] = [],
+        author: User
+    ) {
         self.id = id
         self.createdAt = createdAt
         self.type = type

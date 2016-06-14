@@ -133,6 +133,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
         if let content = content where content.type.hasMedia {
             let mediaView = createMediaViewIfNeeded()
             mediaView.updateContent(content)
+            mediaView.hidden = false
+        }
+        else {
+            mediaView?.hidden = true
         }
         
         detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id

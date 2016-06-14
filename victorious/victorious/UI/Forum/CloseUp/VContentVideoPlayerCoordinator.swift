@@ -31,7 +31,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
 
     private var videoPlayer: VVideoPlayer = VVideoView()
-    private let previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
     private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
     
     private var lastState: VideoState = .NotStarted
@@ -62,15 +61,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         videoPlayer.view.backgroundColor = .clearColor()
         
-        previewView = UIImageView()
-        previewView.contentMode = .ScaleAspectFit
-        previewView.backgroundColor = .clearColor()
-
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        
-        if let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-            previewView.sd_setImageWithURL(previewImageURL)
-        }
         super.init()
         videoPlayer.delegate = self
         videoPlayer.view.backgroundColor = UIColor.clearColor()
@@ -78,8 +68,12 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.delegate = self
     }
     
+    func tearDown() {
+        videoPlayer.view.removeFromSuperview()
+        toolbar.removeFromSuperview()
+    }
+    
     func setupVideoPlayer(in superview: UIView) {
-        superview.addSubview(previewView)
         superview.addSubview(videoPlayer.view)
     }
     
@@ -142,7 +136,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - Layout
     
     func layout(in bounds: CGRect) {
-        previewView.frame = bounds
         videoPlayer.view.frame = bounds
     }
     
@@ -151,7 +144,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
         state = .Playing
-        previewView.hidden = true
         delegate?.coordinatorDidBecomeReady()
     }
     

@@ -43,15 +43,17 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                 return
             }
             
+            broadcast(.filterContent(path: filteredStreamAPIPath))
+            
             dataSource.apiPath = newAPIPath
             
             dataSource.loadItems(.refresh) { [weak self] contents, _ in
-                guard let contents = self?.processContents(contents) else {
+                guard let strongSelf = self else {
                     return
                 }
                 
-                self?.broadcast(.replaceContent(contents))
-                self?.broadcast(.filterContent(path: self?.filteredStreamAPIPath))
+                let contents = strongSelf.processContents(contents)
+                strongSelf.broadcast(.replaceContent(contents))
             }
         }
     }
@@ -109,11 +111,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         
         dataSource.loadItems(.refresh) { [weak self] contents, error in
-            guard let contents = self?.processContents(contents) else {
+            guard let strongSelf = self else {
                 return
             }
             
-            self?.broadcast(.appendContent(contents))
+            let contents = strongSelf.processContents(contents)
+            strongSelf.broadcast(.appendContent(contents))
         }
         
         startPolling()
@@ -147,11 +150,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .loadOldContent:
             dataSource.loadItems(.older) { [weak self] contents, error in
-                guard let contents = self?.processContents(contents) else {
+                guard let strongSelf = self else {
                     return
                 }
                 
-                self?.broadcast(.prependContent(contents))
+                let contents = strongSelf.processContents(contents)
+                strongSelf.broadcast(.prependContent(contents))
             }
         default:
             break

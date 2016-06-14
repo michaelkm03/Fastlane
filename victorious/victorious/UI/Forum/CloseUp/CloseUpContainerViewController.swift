@@ -93,10 +93,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         }
         
         upvoteButton.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
-    }
-    
-    override func viewDidLoad() {
-        /// Set up nav bar
         navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
     }
     
@@ -148,19 +144,29 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         guard let contentID = content?.id else {
             return
         }
-        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
+        
+        let flagOrDeleteOperation = isCreatorOfContent
+            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let actionTitle = isCreatorOfContent
+            ? NSLocalizedString("DeleteButton", comment: "")
+            : NSLocalizedString("Report/Flag", comment: "")
+        
         let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            actionTitle: actionTitle,
             originViewController: self,
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flag)
+        confirm.before(flagOrDeleteOperation)
         confirm.queue()
-        flag.queue() { [weak self] _, _, cancelled in
+        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
             /// FUTURE: Update parent view controller to remove content
             if !cancelled {
-                self?.dismissViewControllerAnimated(true, completion: nil)
+                self?.navigationController?.popViewControllerAnimated(true)
             }
         }
     }
@@ -185,6 +191,10 @@ private extension VDependencyManager {
     
     var contentFlagURL: String {
         return networkResources?.stringForKey("contentFlagURL") ?? ""
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
     
     var contentUpvoteURL: String {
