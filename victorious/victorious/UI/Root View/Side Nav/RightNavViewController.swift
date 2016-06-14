@@ -8,6 +8,8 @@
 
 import UIKit
 
+// FUTURE: Remove this class
+
 /// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
 class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigationDestination {
     // MARK: - Initializing

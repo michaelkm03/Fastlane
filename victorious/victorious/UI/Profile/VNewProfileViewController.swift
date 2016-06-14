@@ -108,7 +108,12 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: dependencyManager.userFetchAPIPath)
+            guard
+                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+                let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
+            else {
+                return
+            }
             
             userInfoOperation.queue { [weak self] results, error, cancelled in
                 self?.setUser(userInfoOperation.user, using: dependencyManager)
@@ -152,10 +157,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    var userFetchAPIPath: String? {
-        return stringForKey("userInfoURL")
     }
 }
 

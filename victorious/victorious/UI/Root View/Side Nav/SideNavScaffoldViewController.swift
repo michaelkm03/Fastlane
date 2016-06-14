@@ -23,7 +23,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         let leftViewController = dependencyManager.viewControllerForKey("leftNavigation")
         let centerViewController = dependencyManager.viewControllerForKey("centerScreen")
-        let rightNavViewController = dependencyManager.viewControllerForKey("rightNavigation") as? RightNavViewController
+        let rightNavViewController = dependencyManager.viewControllerForKey("rightNavigation")
         
         if leftViewController == nil || centerViewController == nil {
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
@@ -164,7 +164,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     let centerViewController: UIViewController?
     
     /// The view controller that displays the right navigation area.
-    let rightNavViewController: RightNavViewController?
+    let rightNavViewController: UIViewController?
     
     // MARK: - Actions
     
