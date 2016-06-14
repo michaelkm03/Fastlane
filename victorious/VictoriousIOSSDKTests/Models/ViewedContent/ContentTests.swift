@@ -23,7 +23,7 @@ class ContentTests: XCTestCase {
         XCTAssertTrue(content.hashtags.isEmpty)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
         XCTAssertEqual(Int(content.createdAt.timeIntervalSince1970), 314159/1000)
-        XCTAssertEqual(content.previewImages?.count, 4)
+        XCTAssertEqual(content.previewImages.count, 4)
         XCTAssertEqual(content.assets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)
         XCTAssertTrue(content.isLikedByCurrentUser)

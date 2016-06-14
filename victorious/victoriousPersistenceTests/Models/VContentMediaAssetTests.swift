@@ -16,9 +16,9 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
             fileName: "ContentMediaAsset_ValidVideo",
             contentType: "video",
             sourceType: "video_assets"
-            ) else {
-                XCTFail("Failed to create a VContentMediaAsset")
-                return
+        ) else {
+            XCTFail("Failed to create a VContentMediaAsset")
+            return
         }
         
         XCTAssertNil(asset.v_externalID)
@@ -32,9 +32,9 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
             fileName: "ContentMediaAsset_ValidYoutube",
             contentType: "video",
             sourceType: "remote_assets"
-            ) else {
-                XCTFail("Failed to create a VContentMediaAsset")
-                return
+        ) else {
+            XCTFail("Failed to create a VContentMediaAsset")
+            return
         }
         
         XCTAssertNil(asset.v_remoteSource)
@@ -48,9 +48,9 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
             fileName: "ContentMediaAsset_ValidVideo",
             contentType: "gif",
             sourceType: "video_assets"
-            ) else {
-                XCTFail("Failed to create a VContentMediaAsset")
-                return
+        ) else {
+            XCTFail("Failed to create a VContentMediaAsset")
+            return
         }
         
         XCTAssertNil(asset.v_externalID)
@@ -64,9 +64,9 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
             fileName: "ContentMediaAsset_ValidImage",
             contentType: "image",
             sourceType: "doesnt_matter"
-            ) else {
-                XCTFail("Failed to create a VContentMediaAsset")
-                return
+        ) else {
+            XCTFail("Failed to create a VContentMediaAsset")
+            return
         }
         
         XCTAssertNil(asset.v_externalID)
@@ -74,21 +74,21 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
         XCTAssertEqual(asset.v_uniqueID, asset.v_remoteSource)
     }
     
-    private func createContentMediaAssetFromJSON(fileName fileName: String,
-                                                 contentType: String,
-                                                 sourceType: String) -> VContentMediaAsset? {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
-                XCTFail("Error reading mock json data")
-                return nil
+    private func createContentMediaAssetFromJSON(fileName fileName: String, contentType: String, sourceType: String) -> VContentMediaAsset? {
+        guard
+            let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockUserDataURL)
+        else {
+            XCTFail("Error reading mock json data")
+            return nil
         }
         
-        
-        
-        guard let contentType = ContentType(rawValue: contentType),
-            contentMediaAsset = ContentMediaAsset(contentType: contentType, sourceType: sourceType, json: JSON(data: mockData)) else {
-                XCTFail("Error reading mock json data")
-                return nil
+        guard
+            let contentType = ContentType(rawValue: contentType),
+            let contentMediaAsset = ContentMediaAsset(contentType: contentType, sourceType: sourceType, json: JSON(data: mockData))
+        else {
+            XCTFail("Error reading mock json data")
+            return nil
         }
         
         let persistentSequenceModel: VContentMediaAsset = persistentStoreHelper.createContentMediaAsset("1")

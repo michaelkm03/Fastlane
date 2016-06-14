@@ -15,7 +15,7 @@ extension VPublishParameters {
         
         caption = content.text
         
-        guard let mediaAsset = content.assetModels.first else {
+        guard let mediaAsset = content.assets.first else {
             return nil
         }
         

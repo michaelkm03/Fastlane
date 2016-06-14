@@ -34,7 +34,7 @@ class ComposerTests: XCTestCase {
         }
         
         let asset = ContentMediaAsset(contentType: .image, url: NSURL())!
-        composerStub.sendMessage(asset: asset, text: imageText + newLine + text, currentUser: User())
+        composerStub.sendMessage(asset: asset, text: imageText + newLine + text, currentUser: User(id: 0))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 }

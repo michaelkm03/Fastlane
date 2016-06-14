@@ -10,8 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VUser: PersistenceParsable {
-    
-    func populate( fromSourceModel user: User ) {
+    func populate(fromSourceModel user: UserModel) {
         remoteId                    = user.id ?? remoteId
         v_completedProfile          = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
@@ -22,11 +21,7 @@ extension VUser: PersistenceParsable {
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
         isCreator                   = user.accessLevel?.isCreator ?? isCreator
-        isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
-        maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
-        numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
-        numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
         v_likesGiven                = user.likesGiven ?? likesGiven
         v_likesReceived             = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
@@ -42,8 +37,8 @@ extension VUser: PersistenceParsable {
         
         if !user.previewImages.isEmpty {
             let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
-                imageAsset.populate( fromSourceModel: $0 )
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": $0.mediaMetaData.url.absoluteString])
+                imageAsset.populate(fromSourceModel: $0)
                 return imageAsset
             }
             self.v_addObjects( newPreviewAssets, to: "previewAssets" )
@@ -55,7 +50,7 @@ extension VUser: PersistenceParsable {
         vipEndDate = nil
     }
     
-    func populateVIPStatus( fromSourceModel vipStatus: VIPStatus ) {
+    func populateVIPStatus(fromSourceModel vipStatus: VIPStatus) {
         // If the user already is a VIP, we do not want to undo that.  We only want
         // to update the status if the existing value is undefined (nil) or false.
         // The purposes of this is to allow the user to remain a VIP for the duration of

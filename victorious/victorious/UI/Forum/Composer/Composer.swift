@@ -23,9 +23,9 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func dismissKeyboard(animated: Bool)
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?)
+    func sendMessage(text text: String, currentUser: UserModel)
     
-    func sendMessage(text text: String)
+    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel)
     
     func setComposerVisible(visible: Bool, animated: Bool)
 }

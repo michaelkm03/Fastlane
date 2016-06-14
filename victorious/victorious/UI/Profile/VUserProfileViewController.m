@@ -430,19 +430,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     _userRemoteId = userRemoteId;
-    
-    UserInfoOperation *userInfoOperation = [[UserInfoOperation alloc] initWithUserID:userRemoteId.integerValue apiPath:nil];
-    [userInfoOperation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
-        VUser *user = userInfoOperation.user;
-        if ( user != nil && error == nil )
-        {
-            [self setUser:user];
-        }
-        else
-        {
-            VLog( @"Error loading user with remoteId %@ while presenting `VUserProfileViewController`", userRemoteId );
-        }
-    }];
 }
 
 - (void)setUser:(VUser *)user

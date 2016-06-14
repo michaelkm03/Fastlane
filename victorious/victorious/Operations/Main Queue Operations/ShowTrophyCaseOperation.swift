@@ -19,8 +19,11 @@ class ShowTrophyCaseOperation: MainQueueOperation {
         
         super.init()
         
-        if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
-            let userInfoOperation = UserInfoOperation(userID: currentUserID)
+        if
+            let currentUserID = VCurrentUser.user()?.remoteId.integerValue,
+            let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+            let userInfoOperation = UserInfoOperation(userID: currentUserID, apiPath: apiPath)
+        {
             userInfoOperation.before(self).queue()
         }
     }
@@ -44,4 +47,6 @@ extension VDependencyManager {
         }
         return trophyCaseViewController
     }
+    
+    
 }
