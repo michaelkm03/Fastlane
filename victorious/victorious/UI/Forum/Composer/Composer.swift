@@ -48,7 +48,12 @@ extension Composer {
             return
         }
         
-        let content = Content(text: text, assets: [asset], author: currentUser)
+        var trimmedText = text
+        if let range = trimmedText?.rangeOfString("\n")
+        {
+            trimmedText?.removeRange(range)
+        }
+        let content = Content(text: trimmedText, assets: [asset], author: currentUser)
         send(.sendContent(content))
     }
 }
