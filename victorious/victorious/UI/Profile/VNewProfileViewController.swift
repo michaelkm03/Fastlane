@@ -86,7 +86,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upgradeButton.sizeToFit()
             upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
             upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-            upgradeButton.hidden = true
             if let navigationBar = navigationController?.navigationBar {
                 upgradeButton.backgroundColor = navigationBar.tintColor
                 upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
@@ -108,7 +107,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upgradeButton), upvoteButton]
+        navigationItem.rightBarButtonItems = userIsVIPSubscriber()
+            ? [upvoteButton]
+            : [UIBarButtonItem(customView: upgradeButton), upvoteButton]
     }
     
     // MARK: - View events
@@ -146,34 +147,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     }
     
     func overflow() {
-//        guard let contentID = content?.id else {
-//            return
-//        }
-//        
-//        let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
-//        
-//        let flagOrDeleteOperation = isCreatorOfContent
-//            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
-//            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
-//        
-//        let actionTitle = isCreatorOfContent
-//            ? NSLocalizedString("DeleteButton", comment: "")
-//            : NSLocalizedString("Report/Flag", comment: "")
-//        
-//        let confirm = ConfirmDestructiveActionOperation(
-//            actionTitle: actionTitle,
-//            originViewController: self,
-//            dependencyManager: dependencyManager
-//        )
-//        
-//        confirm.before(flagOrDeleteOperation)
-//        confirm.queue()
-//        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
-//            /// FUTURE: Update parent view controller to remove content
-//            if !cancelled {
-//                self?.navigationController?.popViewControllerAnimated(true)
-//            }
-//        }
+        // FUTURE: Implement overflow button
     }
     
     // MARK: - VIPGateViewControllerDelegate
@@ -219,7 +193,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
+        upgradeButton.hidden = user.isCreator != true || userIsVIPSubscriber()
+        updateRightBarButtonItems()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -234,6 +209,13 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }
+    }
+    
+    private func userIsVIPSubscriber() -> Bool {
+        guard let currentUser = VCurrentUser.user() else {
+            return false
+        }
+        return currentUser.isVIPValid()
     }
 }
 
