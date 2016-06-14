@@ -134,15 +134,17 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     }
     
     func toggleUpvote() {
-//        guard let contentID = content?.id else {
-//            return
-//        }
-//        ContentUpvoteToggleOperation(
-//            contentID: contentID,
-//            upvoteURL: dependencyManager.contentUpvoteURL,
-//            unupvoteURL: dependencyManager.contentUnupvoteURL
-//            ).queue() { [weak self] _ in
-//                self?.updateHeader()
+        guard let user = user else {
+            return
+        }
+        let userID = Int(user.id)
+        
+//        UserUpvoteToggleOperation(
+//            userID: userID,
+//            upvoteURL: dependencyManager.userUpvoteURL,
+//            unupvoteURL: dependencyManager.userUnupvoteURL
+//        ).queue { [weak self] _ in
+//            self?.updateHeader()
 //        }
     }
     
@@ -193,7 +195,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || userIsVIPSubscriber()
         updateRightBarButtonItems()
     }
     
@@ -240,18 +241,36 @@ private extension VDependencyManager {
 }
 
 private extension VDependencyManager {
+    var userUpvoteURL: String {
+        return networkResources?.stringForKey("userUpvoteURL") ?? ""
+    }
+    
+    var userUnupvoteURL: String {
+        return networkResources?.stringForKey("userUnupvoteURL") ?? ""
+    }
+    
+    var userBlockURL: String {
+        return networkResources?.stringForKey("userBlockURL") ?? ""
+    }
+    
+    var userUnblockURL: String {
+        return networkResources?.stringForKey("userUnblockURL") ?? ""
+    }
+    
+    var upvoteIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
+// TODO: REMOVE
     var upvoteIconSelected: UIImage? {
 //        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
         return UIImage(named: "upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
+// TODO: REMOVE
     var upvoteIconUnselected: UIImage? {
 //        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
         return UIImage(named: "upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
-    }
-    
-    var upvoteIconTint: UIColor? {
-        return colorForKey("color.text.actionButton")
     }
     
     var overflowIcon: UIImage? {

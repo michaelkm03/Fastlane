@@ -1,27 +1,28 @@
 //
-//  ContentUpvoteToggleOperation.swift
+//  UserUpvoteToggleOperation.swift
 //  victorious
 //
-//  Created by Vincent Ho on 5/23/16.
+//  Created by Vincent Ho on 6/14/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import UIKit
 
-class ContentUpvoteToggleOperation: FetcherOperation {
-    private let contentID: String
+class UserUpvoteToggleOperation: FetcherOperation {
+    private let userID: Int
     private let upvoteURL: String
     private let unupvoteURL: String
     
-    init(contentID: String, upvoteURL: String, unupvoteURL: String) {
-        self.contentID = contentID
+    init(userID: Int, upvoteURL: String, unupvoteURL: String) {
+        self.userID = userID
         self.upvoteURL = upvoteURL
         self.unupvoteURL = unupvoteURL
     }
     
     override func main() {
+        
         persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
-            guard let content: VContent = context.v_findObjects(["v_remoteID": self.contentID]).first else {
+            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
             }
             
@@ -29,13 +30,13 @@ class ContentUpvoteToggleOperation: FetcherOperation {
                 ContentUnupvoteOperation(
                     contentID: self.contentID,
                     contentUnupvoteURL: self.unupvoteURL
-                ).rechainAfter(self).queue()
+                    ).rechainAfter(self).queue()
             }
             else {
                 ContentUpvoteOperation(
                     contentID: self.contentID,
                     contentUpvoteURL: self.upvoteURL
-                ).rechainAfter(self).queue()
+                    ).rechainAfter(self).queue()
             }
         })
     }
