@@ -9,7 +9,6 @@
 import UIKit
 
 extension VContent: PersistenceParsable {
-    
     func populate(fromSourceModel content: Content) {
         v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
         v_createdAt = content.createdAt ?? v_createdAt
@@ -30,18 +29,17 @@ extension VContent: PersistenceParsable {
         v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
         v_author.populate(fromSourceModel: author)
         
-        if let previewAssets = content.previewImages {
-            let persistentAssets: [VImageAsset] = previewAssets.flatMap {
-                let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
-                previewAsset.populate( fromSourceModel: $0 )
-                previewAsset.content = self
-                return previewAsset
-            }
-            v_contentPreviewAssets = Set(persistentAssets)
+        let persistentImageAssets: [VImageAsset] = content.previewImages.flatMap { imageAsset in
+            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": imageAsset.mediaMetaData.url.absoluteString ])
+            previewAsset.populate(fromSourceModel: imageAsset)
+            previewAsset.content = self
+            return previewAsset
         }
         
+        v_contentPreviewAssets = Set(persistentImageAssets)
+        
         let persistentAssets: [VContentMediaAsset] = content.assets.flatMap { asset in
-            let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_uniqueID": asset.uniqueID])
+            let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_uniqueID": asset.resourceID])
             data.populate(fromSourceModel: asset)
             data.v_content = self
             return data

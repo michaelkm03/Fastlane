@@ -6,20 +6,84 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import CoreGraphics
 import Foundation
 
-public class Content: DictionaryConvertible {
+/// Conformers are models that store information about piece of content in the app
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
+public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
+    var createdAt: NSDate { get }
+    var type: ContentType { get }
+    
+    var id: String? { get }
+    var isLikedByCurrentUser: Bool { get }
+    var text: String? { get }
+    var hashtags: [Hashtag] { get }
+    var shareURL: NSURL? { get }
+    var author: UserModel { get }
+    
+    /// Whether this content is only accessible for VIPs
+    var isVIPOnly: Bool { get }
+    
+    /// An array of preview images for the content.
+    var previewImages: [ImageAssetModel] { get }
+    
+    /// An array of media assets for the content, could be any media type
+    var assets: [ContentMediaAssetModel] { get }
+    
+    /// seekAheadTime to keep videos in sync for videos on VIP stage
+    var seekAheadTime: NSTimeInterval? { get set }
+}
+
+extension ContentModel {
+    // MARK: - Assets
+    
+    public var aspectRatio: CGFloat {
+        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
+    }
+    
+    // MARK: - DictionaryConvertible
+    
+    public var rootKey: String {
+        return "chat"
+    }
+    
+    public var rootTypeKey: String? {
+        return "type"
+    }
+    
+    public var rootTypeValue: String? {
+        return "CHAT"
+    }
+    
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+        dictionary["type"] = "TEXT"
+        dictionary["text"] = text
+        
+        if let assetURL = assets.first?.url  {
+            dictionary["media"] = [
+                "type": type.rawValue.uppercaseString,
+                "url": assetURL.absoluteString
+            ]
+        }
+        
+        return dictionary
+    }
+}
+
+public class Content: ContentModel {
     public let id: String?
     public let status: String?
     public let text: String?
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
     public let createdAt: NSDate
-    public let previewImages: [ImageAsset]?
-    public let assets: [ContentMediaAsset]
+    public let previewImages: [ImageAssetModel]
+    public let assets: [ContentMediaAssetModel]
     public let type: ContentType
     public let isVIPOnly: Bool
-    public let author: User
+    public let author: UserModel
     public let isLikedByCurrentUser: Bool
     
     /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
@@ -78,7 +142,7 @@ public class Content: DictionaryConvertible {
         status = nil
         hashtags = []
         shareURL = nil
-        previewImages = nil
+        previewImages = []
         type = .text
         isVIPOnly = false
         isLikedByCurrentUser = false
@@ -94,9 +158,9 @@ public class Content: DictionaryConvertible {
         createdAt: NSDate = NSDate(),
         type: ContentType = .text,
         text: String? = nil,
-        assets: [ContentMediaAsset] = [],
-        previewImages: [ImageAsset] = [],
-        author: User
+        assets: [ContentMediaAssetModel] = [],
+        previewImages: [ImageAssetModel] = [],
+        author: UserModel
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -111,34 +175,5 @@ public class Content: DictionaryConvertible {
         self.shareURL = nil
         self.isVIPOnly = false
         isLikedByCurrentUser = false
-    }
-    
-    // MARK: - DictionaryConvertible
-    
-    public var rootKey: String {
-        return "chat"
-    }
-    
-    public var rootTypeKey: String? {
-        return "type"
-    }
-    
-    public var rootTypeValue: String? {
-        return "CHAT"
-    }
-    
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        dictionary["type"] = "TEXT"
-        dictionary["text"] = text
-        
-        if let assetURL = assets.first?.url  {
-            dictionary["media"] = [
-                "type": type.rawValue.uppercaseString,
-                "url": assetURL.absoluteString
-            ]
-        }
-        
-        return dictionary
     }
 }
