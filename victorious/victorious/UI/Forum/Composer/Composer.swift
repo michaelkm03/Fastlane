@@ -25,7 +25,9 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?)
     
-    func sendMessage(text text: String)    
+    func sendMessage(text text: String)
+    
+    func setComposerVisible(visible: Bool, animated: Bool)
 }
 
 extension Composer {

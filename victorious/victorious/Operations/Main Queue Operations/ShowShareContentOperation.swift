@@ -57,20 +57,16 @@ class ShowShareContentOperation: MainQueueOperation {
 
 private extension ContentModel {
     func textForSharing() -> String {
-        var shareText = ""
+        let shareText: String
         
         switch type {
-        case .gif:
-            shareText = NSLocalizedString("UGCShareGIFFormat", comment: "")
-        case .video:
-            shareText = NSLocalizedString("UGCShareVideoFormat", comment: "")
-        case .image:
-            shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
-        case .text:
-            shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
+            case .gif: shareText = NSLocalizedString("UGCShareGIFFormat", comment: "")
+            case .video: shareText = NSLocalizedString("UGCShareVideoFormat", comment: "")
+            case .image: shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
+            case .text: shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
+            case .link: shareText = NSLocalizedString("UGCShareLinkFormat", comment: "")
         }
         
         return shareText
     }
-    
 }

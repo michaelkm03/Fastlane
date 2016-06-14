@@ -83,7 +83,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         performCommonInitialSetup()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange(_: )), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -202,8 +203,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     // MARK: - Notifications
     
-    func loggedInStatusDidChange(notification: NSNotification) {
+    private dynamic func loggedInStatusDidChange(notification: NSNotification) {
         handleLoggedInStatusChange()
+    }
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        sideMenuController.closeSideViewController(animated: true)
     }
     
     // MARK: - KVO

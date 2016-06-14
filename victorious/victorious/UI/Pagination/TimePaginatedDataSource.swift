@@ -50,7 +50,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     // MARK: - Configuration
     
-    private(set) var apiPath: APIPath
+    var apiPath: APIPath
     let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
     
