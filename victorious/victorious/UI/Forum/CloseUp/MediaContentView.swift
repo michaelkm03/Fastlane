@@ -23,7 +23,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private(set) var content: ContentModel?
     
     private let previewImageView = UIImageView()
-    private let textView = UITextView()
+    private let textLabel = UILabel()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
@@ -72,7 +72,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        addSubview(textView)
+        textLabel.textAlignment = .Center
+        textLabel.numberOfLines = 0
+        addSubview(textLabel)
         
         backgroundView.contentMode = .ScaleAspectFill
         insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
@@ -84,7 +86,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
         backgroundView.alpha = 0.0
-        textView.alpha = 0.0
+        textLabel.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
     }
@@ -130,13 +132,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
         
         if (content.type == .text) {
-            textView.text = content.text
-            textView.font = dependencyManager?.textPostFont()
-            textView.textColor = dependencyManager?.textPostColor()
+            textLabel.text = content.text
+            textLabel.font = UIFont.systemFontOfSize(12.0)  //dependencyManager?.textPostFont()
+            textLabel.textColor = UIColor.redColor() //dependencyManager?.textPostColor()
             
             if let url = dependencyManager?.textPostBackgroundImageURL() {
                 setBackgroundBlur(withImageUrl: url)
             }
+            
+            spinner.stopAnimating()
+            showContent()
         }
         
         setNeedsLayout()
@@ -157,6 +162,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.videoContainerView.alpha = 0
                 self.previewImageView.alpha = 0
                 self.backgroundView.alpha = 0
+                self.textLabel.alpha = 0
             },
             completion: { [weak self] _ in
                 self?.alphaHasAnimatedToZero = true
@@ -186,6 +192,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             animations: {
                 self.videoContainerView.alpha = 1
                 self.previewImageView.alpha = 1
+                self.textLabel.alpha = 1
             },
             completion: nil
         )
@@ -197,7 +204,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        textView.frame = bounds
+        textLabel.frame = bounds
         backgroundView.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)

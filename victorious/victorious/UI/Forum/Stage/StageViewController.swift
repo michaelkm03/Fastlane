@@ -41,6 +41,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         mediaContentView.videoCoordinator?.playVideo()
+        mediaContentView.dependencyManager = dependencyManager
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -50,17 +51,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     //MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
-        if (stageContent.type == .text) {
-            
-        }
-        else {
-            mediaContentView.videoCoordinator?.pauseVideo()
-            mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
-            
-            let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
-            delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
-
-        }
+        mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
+        
+        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
+        delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 
     func removeContent() {
