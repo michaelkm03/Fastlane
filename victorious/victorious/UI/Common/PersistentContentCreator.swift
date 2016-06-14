@@ -26,8 +26,7 @@ extension PersistentContentCreator {
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
     func createPersistentContent(content: ContentModel, networkResourcesDependency: VDependencyManager?, completion: (NSError?) -> Void) {
-        if !content.assetModels.isEmpty {
-            
+        if !content.assets.isEmpty {
             guard let publishParameters = VPublishParameters(content: content) else {
                 completion(PersistentContentCreatorError(code: .invalidChatMessage))
                 return

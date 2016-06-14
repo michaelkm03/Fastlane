@@ -17,7 +17,7 @@ protocol ListMenuSectionCell: class {
     static var preferredHeight: CGFloat { get }
     
     /// The cell's dependency manager
-    var dependencyManager: VDependencyManager! { get set }
+    var dependencyManager: VDependencyManager? { get set }
     
     /// Configure the content of the cell with a CellData
     func configureCell(with _: CellData)

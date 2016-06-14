@@ -97,6 +97,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     private func configureTextView(textView: UITextView) {
         textView.backgroundColor = nil
         textView.scrollEnabled = false
+        textView.editable = false
     }
     
     required init?(coder: NSCoder) {
@@ -147,21 +148,23 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
             mediaView.hidden = true
         }
         
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
+        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
         
         updateTimestamp()
         
-        if let imageURL = content?.authorModel.previewImageURL(ofMinimumSize: avatarView.frame.size) {
+        if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
-        } else {
+        }
+        else {
             avatarView.image = nil
         }
     }
     
     func updateTimestamp() {
-        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
+        if let name = content?.author.name, timeStamp = content?.timeLabel {
             detailTextView.text = "\(name) (\(timeStamp))"
-        } else {
+        }
+        else {
             detailTextView.text = ""
         }
     }
@@ -203,7 +206,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let unclampedAspectRatio = content?.aspectRatio where content?.assetModels.isEmpty == false else {
+        guard let unclampedAspectRatio = content?.aspectRatio where content?.assets.isEmpty == false else {
             return CGSize.zero
         }
         
@@ -231,8 +234,13 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
 }
 
+private extension ContentModel {
+    var timeLabel: String {
+        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+}
+
 private extension VDependencyManager {
-    
     func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
         let defaultMinimum = 1.0
         let defaultMaximum = 4.0
