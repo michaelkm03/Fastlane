@@ -23,6 +23,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private(set) var content: ContentModel?
     
     private let previewImageView = UIImageView()
+    private let textView = UITextView()
     private let videoContainerView = VPassthroughContainerView()
     private let backgroundView = UIImageView()
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
@@ -39,6 +40,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         return singleTapRecognizer
     }()
+    
+    var shouldHideBackground: Bool = true {
+        didSet {
+            self.backgroundView.hidden = shouldHideBackground
+        }
+    }
+    
+    var dependencyManager: VDependencyManager?
     
     // MARK: - Initializing
     
@@ -63,6 +72,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
+        addSubview(textView)
+        
         backgroundView.contentMode = .ScaleAspectFill
         insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
         backgroundView.frame = bounds
@@ -73,6 +84,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
         backgroundView.alpha = 0.0
+        textView.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
     }
@@ -115,6 +127,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             videoContainerView.hidden = true
             videoCoordinator?.tearDown()
             videoCoordinator = nil
+        }
+        
+        if (content.type == .text) {
+            textView.text = content.text
+            textView.font = dependencyManager?.textPostFont()
+            textView.textColor = dependencyManager?.textPostColor()
+            
+            if let url = dependencyManager?.textPostBackgroundImageURL() {
+                setBackgroundBlur(withImageUrl: url)
+            }
         }
         
         setNeedsLayout()
@@ -175,6 +197,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
+        textView.frame = bounds
         backgroundView.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
@@ -235,5 +258,21 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     func coordinatorDidBecomeReady() {
         downloadedPreviewImage = UIImage() // FUTURE: Set this to the preview image of the video
         updatePreviewImageIfReady()
+    }
+}
+
+//MARK: - VDependency Manager extension
+
+private extension VDependencyManager {
+    func textPostFont() -> UIFont {
+        return fontForKey("font.textpost")
+    }
+    
+    func textPostColor() -> UIColor {
+        return colorForKey("color.textpost")
+    }
+    
+    func textPostBackgroundImageURL() -> NSURL? {
+        return NSURL(string: stringForKey("backgroundImage.textpost") ?? "error")
     }
 }

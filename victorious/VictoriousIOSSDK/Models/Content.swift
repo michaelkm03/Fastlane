@@ -47,7 +47,14 @@ public class Content: DictionaryConvertible {
         self.createdAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
         self.hashtags = []
         self.type = type
-        self.text = json["title"].string
+        
+        if (type == .text) {
+            self.text = json[typeString]["data"].string
+        }
+        else {
+            self.text = json["title"].string
+        }
+        
         self.author = author
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
@@ -63,9 +70,7 @@ public class Content: DictionaryConvertible {
             self.assets = []
         }
         
-        if (type == .text) {
-            text = json[typeString]["data"].string
-        }
+        
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
