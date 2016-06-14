@@ -150,5 +150,9 @@ class ComposerTextViewManagerTests: XCTestCase {
         func textViewDidHitCharacterLimit(textView: UITextView) {}
         
         var textViewCanDismiss: Bool = true
+        
+        func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+            return (nil, nil)
+        }
     }
 }

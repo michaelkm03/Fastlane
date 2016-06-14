@@ -9,7 +9,6 @@
 import UIKit
 
 class ContentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
-    
     let request: ContentFlagRequest!
     
     init?( contentID: String, contentFlagURL: String ) {

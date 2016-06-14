@@ -22,17 +22,17 @@ extension VPublishParameters {
         mediaToUploadURL = mediaAsset.url
         
         switch mediaAsset.contentType {
-        case .video:
-            isGIF = false
-            isVideo = true
-        case .gif:
-            isGIF = true
-            isVideo = false
-        case .image:
-            isGIF = false
-            isVideo = false
-        case .text:
-            return nil
+            case .video:
+                isGIF = false
+                isVideo = true
+            case .gif:
+                isGIF = true
+                isVideo = false
+            case .image:
+                isGIF = false
+                isVideo = false
+            case .text, .link:
+                return nil
         }
     }
 }

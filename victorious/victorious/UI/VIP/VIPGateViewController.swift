@@ -9,14 +9,32 @@
 import UIKit
 import MBProgressHUD
 
-class VIPGateViewController: UIViewController, VNavigationDestination {
+/// Conformers will receive a message when the vip gate
+/// will dismiss or has permitted the user to pass through.
+protocol VIPGateViewControllerDelegate: class {
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
     
+    /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
+}
+
+extension VIPGateViewControllerDelegate {
+    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) {
+        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager).queue()
+    }
+}
+
+class VIPGateViewController: UIViewController {
     @IBOutlet weak private var textView: UITextView!
     @IBOutlet weak private var subscribeButton: UIButton!
     @IBOutlet weak private var restoreButton: UIButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var legalPromptLabel: UILabel!
+    
+    weak var delegate: VIPGateViewControllerDelegate?
+    
+    private var productIdentifier: String!
     
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -26,10 +44,17 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
 
     //MARK: - Initialization
 
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
+        guard let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
+            let currentUser = VCurrentUser.user() where
+            !currentUser.isVIPValid() else {
+            return nil
+        }
+        
         let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard("VIPGate")
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
+        viewController.productIdentifier = productIdentifier
         return viewController
     }
 
@@ -41,22 +66,9 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
         updateViews()
     }
     
-    // MARK: - VNavigationDestination
-    
-    func shouldNavigate() -> Bool {
-        // Don't allow this tab to be selected if already validated as a VIP subscriber,
-        // skip ahead to presenting the VIP Forum section
-        if let currentUser = VCurrentUser.user() where currentUser.isVIPSubscriber?.boolValue == true {
-            openGate()
-            return false
-        }
-        return true
-    }
-    
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let productIdentifier = dependencyManager.vipSubscription?.productIdentifier ?? ""
         let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
         
         setIsLoading(true, title: Strings.purchaseInProgress)
@@ -136,10 +148,7 @@ class VIPGateViewController: UIViewController, VNavigationDestination {
     }
     
     private func openGate() {
-        let originVC = dependencyManager.scaffoldViewController()
-        ShowForumOperation(originViewController: originVC, dependencyManager: dependencyManager).queue() { _ in
-            (originVC as? VTabScaffoldViewController)?.setSelectedMenuItemAtIndex(0)
-        }
+        delegate?.vipGateViewController(self, allowedAccess: true)
     }
     
     private func updateViews() {

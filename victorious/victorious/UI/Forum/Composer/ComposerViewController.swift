@@ -69,7 +69,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        guard isViewLoaded() else {
+        guard isViewLoaded() && composerIsVisible else {
             return 0
         }
         return fabs(inputViewToBottomConstraint.constant)
@@ -162,6 +162,26 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private var composerIsVisible = true
+    
+    func setComposerVisible(visible: Bool, animated: Bool) {
+        guard visible != composerIsVisible else {
+            return
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.3) {
+                self.setComposerVisible(visible, animated: false)
+                self.view.layoutIfNeeded()
+            }
+        }
+        else {
+            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
+            composerIsVisible = visible
+            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+        }
+    }
+    
     // MARK: - HashtagBar
     
     private var hashtagBarController: HashtagBarController! {
@@ -223,6 +243,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
             }
         }
     }
@@ -249,6 +270,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func textViewDidHitCharacterLimit(textView: UITextView) {
         textView.v_performShakeAnimation()
+    }
+    
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+        return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
     }
     
     // MARK: - View lifecycle
@@ -418,7 +443,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
