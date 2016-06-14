@@ -56,18 +56,21 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func receive(event: ForumEvent) {
         switch event {
-        case .websocket(let websocketEvent):
-            switch websocketEvent {
-            case .Disconnected(let webSocketError):
-                if isViewLoaded() {
-                    v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
+            case .websocket(let websocketEvent):
+                switch websocketEvent {
+                    case .Disconnected(let webSocketError):
+                        if isViewLoaded() {
+                            v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
+                        }
+                    default:
+                        break
                 }
-            default:()
-            }
-        case .chatUserCount(let userCount):
-            navBarTitleView?.activeUserCount = userCount.userCount
-            
-        default:()
+            case .chatUserCount(let userCount):
+                navBarTitleView?.activeUserCount = userCount.userCount
+            case .filterContent(let path):
+                composer?.setComposerVisible(path == nil, animated: true)
+            default:
+                break
         }
     }
     

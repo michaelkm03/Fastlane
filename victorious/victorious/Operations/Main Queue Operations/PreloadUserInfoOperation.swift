@@ -31,15 +31,15 @@ class PreloadUserInfoOperation: BackgroundOperation {
                 return
             }
             
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+            guard
+                let userID = VCurrentUser.user(inManagedObjectContext: context)?.remoteId.integerValue,
+                let apiPath = self?.dependencyManager.networkResources?.userFetchAPIPath,
+                let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
+            else {
                 strongSelf.finishedExecuting()
                 return
             }
             
-            let apiPath = self?.dependencyManager.networkResources?.stringForKey("userInfoURL")
-            let userID = currentUser.remoteId.integerValue
-            
-            let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
             infoOperation.queue() { _ in
                 strongSelf.user = infoOperation.user
                 strongSelf.finishedExecuting()

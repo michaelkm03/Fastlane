@@ -36,7 +36,6 @@ class ForumNavBarTitleView: UIView {
         stackView.axis = .Vertical
         stackView.distribution = .FillProportionally
         stackView.alignment = .Center
-        stackView.spacing = -5
         
         titleLabel.text = dependencyManager.stringForKey(Keys.titleTextKey)
         titleLabel.font = dependencyManager.fontForKey(Keys.titleFontKey)
@@ -50,8 +49,8 @@ class ForumNavBarTitleView: UIView {
         stackView.addArrangedSubview(subtitleLabel)
         subtitleLabel.sizeToFit()
         
-        self.addSubview(stackView)
-        self.v_addFitToParentConstraintsToSubview(stackView)
+        addSubview(stackView)
+        v_addFitToParentConstraintsToSubview(stackView, leading: 0.0, trailing: 0.0, top: 0.0, bottom: 5.0)
     }
     
     //Creates the string for the subtitle label

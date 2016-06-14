@@ -25,13 +25,15 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?)
     
-    func sendMessage(text text: String)    
+    func sendMessage(text text: String)
+    
+    func setComposerVisible(visible: Bool, animated: Bool)
 }
 
 extension Composer {
     
     func sendMessage(text text: String) {
-        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
+        guard let currentUser = VCurrentUser.user() else {
             assertionFailure("Unable to construct message from Composer.")
             return
         }
@@ -41,7 +43,7 @@ extension Composer {
     }
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?) {
-        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
+        guard let currentUser = VCurrentUser.user() else {
             assertionFailure("Unable to construct message from Composer.")
             return
         }
