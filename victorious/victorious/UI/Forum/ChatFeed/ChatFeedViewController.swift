@@ -168,15 +168,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let bottomOffset = collectionView.contentSize.height - collectionView.contentOffset.y
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
         
         updateCollectionView(with: newItems, loadingType: loadingType) {
-            // If we loaded older items, maintain the previous scroll position.
-            if loadingType == .older {
-                collectionView.contentOffset = CGPoint(x: 0.0, y: collectionView.contentSize.height - bottomOffset)
-            }
-            
             collectionView.collectionViewLayout.invalidateLayout()
             
             CATransaction.commit()
@@ -216,6 +210,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                         })
                     
                     case .older:
+                        if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                            layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                        }
+                        
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                             NSIndexPath(forItem: $0, inSection: 0)
                         })
@@ -299,5 +297,24 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimeStamps(in: collectionView)
+    }
+}
+
+/// A custom collection view layout for the chat feed which allows for inserting content at the top of the collection
+/// view without affecting the content offset.
+class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
+    /// Set this to the collection view's current content size before inserting cells at the top.
+    var contentSizeWhenInsertingAbove: CGSize?
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        if let collectionView = collectionView, oldContentSize = contentSizeWhenInsertingAbove {
+            let newContentSize = collectionViewContentSize()
+            let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
+            let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
+            collectionView.setContentOffset(newOffset, animated: false)
+            contentSizeWhenInsertingAbove = nil
+        }
     }
 }
