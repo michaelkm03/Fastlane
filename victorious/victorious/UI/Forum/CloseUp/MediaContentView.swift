@@ -88,15 +88,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
         // Set up image view if content is image
         let minWidth = frame.size.width
-        if content.type.displaysAsImage,
-            let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assetModels.first?.resourceID) {
+        if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
             previewImageView.hidden = false
             previewImageView.sd_setImageWithURL(
                 previewImageURL,
                 placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-                options: .AvoidAutoSetImage) { [weak self] image, _, _, _ in
-                    self?.downloadedPreviewImage = image
-                    self?.updatePreviewImageIfReady()
+                options: .AvoidAutoSetImage
+            ) { [weak self] image, _, _, _ in
+                self?.downloadedPreviewImage = image
+                self?.updatePreviewImageIfReady()
             }
         } else {
             previewImageView.hidden = true
@@ -198,7 +198,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             setBackgroundBlur(withImageUrl: imageURL)
         }
         else if
-            let dataURL = content.assetModels.first?.resourceID,
+            let dataURL = content.assets.first?.resourceID,
             let imageURL = NSURL(string: dataURL)
             where content.type == .image
         {

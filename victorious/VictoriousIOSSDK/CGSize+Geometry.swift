@@ -1,6 +1,6 @@
 //
 //  CGSize+Geometry.swift
-//  victorious
+//  VictoriousIOSSDK
 //
 //  Created by Jarod Long on 5/24/16.
 //  Copyright © 2016 Victorious. All rights reserved.
@@ -11,11 +11,11 @@ import CoreGraphics
 extension CGSize {
     // MARK: - Geometric properties
     
-    var area: CGFloat {
+    public var area: CGFloat {
         return width * height
     }
     
-    var aspectRatio: CGFloat {
+    public var aspectRatio: CGFloat {
         if height == 0.0 {
             return 0.0
         }
@@ -25,11 +25,11 @@ extension CGSize {
     
     // MARK: - Containment
     
-    func contains(size: CGSize) -> Bool {
+    public func contains(size: CGSize) -> Bool {
         return width >= size.width && height >= size.height
     }
     
-    func fits(in size: CGSize) -> Bool {
+    public func fits(in size: CGSize) -> Bool {
         return size.contains(self)
     }
 }
