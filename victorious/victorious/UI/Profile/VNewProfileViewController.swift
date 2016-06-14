@@ -18,9 +18,31 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     private static let upgradeButtonXPadding = CGFloat(12.0)
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
     
+    private let dependencyManager: VDependencyManager
+    private var user: VUser?
+    
+    private lazy var overflowButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+    }()
+    
+    private lazy var upvoteButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.upvoteIconUnselected,
+            style: .Done,
+            target: self,
+            action: #selector(toggleUpvote)
+        )
+    }()
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         
@@ -43,7 +65,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
         
-        updateUpgradeButton()
+        updateRightBarButtonItems()
         
         fetchUser(using: dependencyManager)
     }
@@ -65,8 +87,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
             upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
             upgradeButton.hidden = true
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: upgradeButton)
-            
             if let navigationBar = navigationController?.navigationBar {
                 upgradeButton.backgroundColor = navigationBar.tintColor
                 upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
@@ -74,11 +94,28 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
     }
     
+    private func updateRightBarButtonItems() {
+        // Upgrade button
+        updateUpgradeButton()
+        
+        // Upvote button
+        if user?.isFollowedByCurrentUser == true {
+            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
+        }
+        else {
+            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.tintColor = nil
+        }
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upgradeButton), upvoteButton]
+    }
+    
     // MARK: - View events
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateUpgradeButton()
+        updateRightBarButtonItems()
     }
     
     // MARK: - View controllers
@@ -95,6 +132,50 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         ShowVIPGateOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
     }
     
+    func toggleUpvote() {
+//        guard let contentID = content?.id else {
+//            return
+//        }
+//        ContentUpvoteToggleOperation(
+//            contentID: contentID,
+//            upvoteURL: dependencyManager.contentUpvoteURL,
+//            unupvoteURL: dependencyManager.contentUnupvoteURL
+//            ).queue() { [weak self] _ in
+//                self?.updateHeader()
+//        }
+    }
+    
+    func overflow() {
+//        guard let contentID = content?.id else {
+//            return
+//        }
+//        
+//        let isCreatorOfContent = content?.authorModel.id == VCurrentUser.user()?.id
+//        
+//        let flagOrDeleteOperation = isCreatorOfContent
+//            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+//            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+//        
+//        let actionTitle = isCreatorOfContent
+//            ? NSLocalizedString("DeleteButton", comment: "")
+//            : NSLocalizedString("Report/Flag", comment: "")
+//        
+//        let confirm = ConfirmDestructiveActionOperation(
+//            actionTitle: actionTitle,
+//            originViewController: self,
+//            dependencyManager: dependencyManager
+//        )
+//        
+//        confirm.before(flagOrDeleteOperation)
+//        confirm.queue()
+//        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
+//            /// FUTURE: Update parent view controller to remove content
+//            if !cancelled {
+//                self?.navigationController?.popViewControllerAnimated(true)
+//            }
+//        }
+    }
+    
     // MARK: - VIPGateViewControllerDelegate
     
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
@@ -108,7 +189,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            
             guard
                 let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
                 let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
@@ -130,6 +210,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             assertionFailure("Failed to fetch user for profile view controller.")
             return
         }
+        
+        self.user = user
         
         gridStreamController.content = user
         
@@ -172,5 +254,29 @@ private extension VDependencyManager {
         ]
         
         return apiPath
+    }
+}
+
+private extension VDependencyManager {
+    var upvoteIconSelected: UIImage? {
+//        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var upvoteIconUnselected: UIImage? {
+//        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var upvoteIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
+    var overflowIcon: UIImage? {
+        return imageForKey("more_icon")
+    }
+    
+    var shareIcon: UIImage? {
+        return imageForKey("share_icon")
     }
 }
