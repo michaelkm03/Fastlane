@@ -22,6 +22,9 @@ public protocol ContentMediaAssetModel {
     /// Returns either the youtube ID or the remote URL that links to the content
     var resourceID: String { get }
     
+    /// String describing the source. May return "youtube", "giphy", or nil.
+    var source: String? { get }
+    
     /// Returns where the video is hosted remotely
     var videoSource: ContentVideoAssetSource? { get }
     

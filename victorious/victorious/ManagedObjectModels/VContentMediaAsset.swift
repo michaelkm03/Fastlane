@@ -30,6 +30,10 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
         return v_uniqueID
     }
     
+    var source: String? {
+        return v_source
+    }
+    
     var videoSource: ContentVideoAssetSource? {
         guard let source = v_source else {
             return nil
