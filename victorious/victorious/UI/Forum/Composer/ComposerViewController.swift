@@ -518,10 +518,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction func pressedConfirmButton() {
+        guard let user = VCurrentUser.user() else {
+            assertionFailure("Failed to send message due to missing a valid logged in user")
+            return
+        }
+        
         if let asset = selectedAsset {
-            sendMessage(asset: asset, text: textView.text)
+            sendMessage(asset: asset, text: textView.text, currentUser: user)
         } else {
-            sendMessage(text: textView.text)
+            sendMessage(text: textView.text, currentUser: user)
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil

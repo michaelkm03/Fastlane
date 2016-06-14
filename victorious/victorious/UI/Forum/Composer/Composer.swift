@@ -32,22 +32,12 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
 
 extension Composer {
     
-    func sendMessage(text text: String) {
-        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
-            assertionFailure("Unable to construct message from Composer.")
-            return
-        }
-        
+    func sendMessage(text text: String, currentUser: UserModel) {
         let content = Content(text: text, author: currentUser)
         send(.sendContent(content))
     }
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?) {
-        guard let currentUser = VCurrentUser.user()?.toSDKUser() else {
-            assertionFailure("Unable to construct message from Composer.")
-            return
-        }
-        
+    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel) {
         var trimmedText = text
         if let range = trimmedText?.rangeOfString("\n") {
             trimmedText?.removeRange(range)
