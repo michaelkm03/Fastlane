@@ -24,7 +24,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
-    private let backgroundView = UIImageView()
+    private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
@@ -42,8 +42,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Initializing
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(showsBackground: Bool = true) {
+        self.showsBackground = showsBackground
+        super.init(frame: CGRect.zero)
         setup()
     }
     
@@ -56,25 +57,47 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         clipsToBounds = true
         backgroundColor = .clearColor()
         
-        previewImageView.contentMode = .ScaleAspectFit
+        configureBackground()
+        
         addSubview(previewImageView)
         
         videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        backgroundView.contentMode = .ScaleAspectFill
-        insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
-        backgroundView.frame = bounds
-        
         addSubview(spinner)
         sendSubviewToBack(spinner)
         
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
-        backgroundView.alpha = 0.0
+        backgroundView?.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
+    }
+    
+    // MARK: - Configuration
+    
+    var showsBackground = true {
+        didSet {
+            if showsBackground != oldValue {
+                configureBackground()
+            }
+        }
+    }
+    
+    private func configureBackground() {
+        previewImageView.contentMode = showsBackground ? .ScaleAspectFit : .ScaleAspectFill
+        
+        if showsBackground {
+            let backgroundView = UIImageView()
+            self.backgroundView = backgroundView
+            backgroundView.contentMode = .ScaleAspectFill
+            insertSubview(backgroundView, atIndex: 0)
+        }
+        else {
+            backgroundView?.removeFromSuperview()
+            backgroundView = nil
+        }
     }
     
     // MARK: - Updating content
@@ -134,7 +157,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             animations: {
                 self.videoContainerView.alpha = 0
                 self.previewImageView.alpha = 0
-                self.backgroundView.alpha = 0
+                self.backgroundView?.alpha = 0
             },
             completion: { [weak self] _ in
                 self?.alphaHasAnimatedToZero = true
@@ -152,7 +175,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             delay: 0,
             options: [.AllowUserInteraction],
             animations: {
-                self.backgroundView.alpha = 1
+                self.backgroundView?.alpha = 1
             },
             completion: nil
         )
@@ -175,7 +198,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        backgroundView.frame = bounds
+        backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
     }
@@ -205,13 +228,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             setBackgroundBlur(withImageUrl: imageURL)
         }
         else {
-            backgroundView.image = nil
+            backgroundView?.image = nil
         }
     }
     
     private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
-        backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
-            self?.backgroundView.alpha = 1
+        backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+            self?.backgroundView?.alpha = 1
         }
     }
 

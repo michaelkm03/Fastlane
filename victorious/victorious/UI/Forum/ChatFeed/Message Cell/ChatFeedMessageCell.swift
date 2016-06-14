@@ -156,7 +156,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return existingMediaView
         }
         
-        let mediaView = MediaContentView()
+        let mediaView = MediaContentView(showsBackground: false)
         mediaView.clipsToBounds = true
         mediaView.translatesAutoresizingMaskIntoConstraints = false
         mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
@@ -231,7 +231,7 @@ private extension ContentModel {
 
 private extension VDependencyManager {
     func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinimum = 1.0
+        let defaultMinimum = 0.75
         let defaultMaximum = 4.0
         let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
         let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
