@@ -52,29 +52,29 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func receive(event: ForumEvent) {
         switch event {
-        case .appendContent(let newItems):
-            let newItems = newItems.map { ChatFeedContent($0) }
+            case .appendContent(let newItems):
+                let newItems = newItems.map { ChatFeedContent($0) }
+                
+                if stashingEnabled {
+                    stashedItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didStashItems: newItems)
+                } else {
+                    visibleItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
+                }
             
-            if stashingEnabled {
-                stashedItems.appendContentsOf(newItems)
-                delegate?.chatFeedDataSource(self, didStashItems: newItems)
-            } else {
-                visibleItems.appendContentsOf(newItems)
-                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
-            }
-        
-        case .prependContent(let newItems):
-            let newItems = newItems.map { ChatFeedContent($0) }
-            visibleItems = newItems + visibleItems
-            delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
-        
-        case .replaceContent(let newItems):
-            let newItems = newItems.map { ChatFeedContent($0) }
-            visibleItems = newItems
-            delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
-        
-        default:
-            break
+            case .prependContent(let newItems):
+                let newItems = newItems.map { ChatFeedContent($0) }
+                visibleItems = newItems + visibleItems
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
+            
+            case .replaceContent(let newItems):
+                let newItems = newItems.map { ChatFeedContent($0) }
+                visibleItems = newItems
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+            
+            default:
+                break
         }
     }
     
