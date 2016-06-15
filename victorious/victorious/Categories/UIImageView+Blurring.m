@@ -207,7 +207,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                 return;
             }
             
-            UIImage *blurredImage = [image applyBlurWithRadius:blurRadius in:self.frame];
+            UIImage *blurredImage = [image applyBlurWithRadius:blurRadius];
             
             dispatch_async(dispatch_get_main_queue(), ^
             {

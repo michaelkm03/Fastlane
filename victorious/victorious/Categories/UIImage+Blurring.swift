@@ -8,22 +8,25 @@
 
 import UIKit
 
+let sharedCIContext  = CIContext(options: nil)
+
 extension UIImage {
-    func applyBlur(withRadius radius: CGFloat, in bounds: CGRect) -> UIImage? {
-        guard let blurFilter = CIFilter(name: "CIGaussianBlur") else {
+    func applyBlur(withRadius radius: CGFloat) -> UIImage? {
+        guard
+            let blurFilter = CIFilter(name: "CIGaussianBlur"),
+            let inputImage = CoreImage.CIImage(image: self)
+        else {
             return nil
         }
         
-        blurFilter.setValue(CoreImage.CIImage(image: self), forKey: kCIInputImageKey)
+        blurFilter.setValue(inputImage, forKey: kCIInputImageKey)
         blurFilter.setValue(radius, forKey: kCIInputRadiusKey)
         
-        let ciContext  = CIContext(options: nil)
-        
-        guard let result = blurFilter.valueForKey(kCIOutputImageKey) as? CoreImage.CIImage else {
+        guard let result = blurFilter.outputImage else {
             return nil
         }
         
-        let cgImage = ciContext.createCGImage(result, fromRect: bounds)
+        let cgImage = sharedCIContext.createCGImage(result, fromRect: inputImage.extent)
         
         return UIImage(CGImage: cgImage)
     }
