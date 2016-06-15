@@ -93,33 +93,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView;
-    
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-     {
-         label.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-     }];
-    [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-     {
-         label.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-     }];
-    
-    NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    
-#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
-    appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-#endif
-    
-    self.versionString.text = appVersionString;
-    self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -174,13 +147,23 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     // This is to make room for the larger titles
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
+    
+    NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    
+#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
+    appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+#endif
+    
+    self.versionString.text = appVersionString;
+    self.versionString.font = [self.dependencyManager fontForKey:@"version.font"];
+    self.versionString.textColor = [self.dependencyManager colorForKey:@"version.color"];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
-    
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
