@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, CustomAccessoryScreensKey {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -118,9 +118,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     // MARK: - CustomAccessoryScreensKey
     
-    func customAccessoryScreensKey() -> String {
+    func accessoryScreensKey() -> String? {
         guard let user = self.user else {
-            return ""
+            return nil
         }
         
         if user.isCurrentUser() {

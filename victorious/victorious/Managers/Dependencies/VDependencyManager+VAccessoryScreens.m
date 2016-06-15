@@ -236,10 +236,10 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
          
          NSString *accessoryScreensKey = nil;
          // Does this point in the responder chain provide a custom accessory screens key?
-         if ( [destination conformsToProtocol:@protocol(CustomAccessoryScreensKey)] )
+         if ( [destination conformsToProtocol:@protocol(AccessoryScreensKeyProvider)] )
          {
-             id<CustomAccessoryScreensKey> destinationWithCustomKey = (id<CustomAccessoryScreensKey>)destination;
-             accessoryScreensKey = [destinationWithCustomKey customAccessoryScreensKey];
+             id<AccessoryScreensKeyProvider> destinationWithCustomKey = (id<AccessoryScreensKeyProvider>)destination;
+             accessoryScreensKey = [destinationWithCustomKey accessoryScreensKey];
          }
          
          if ( [destination respondsToSelector:@selector(dependencyManager)] )
