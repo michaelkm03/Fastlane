@@ -1721,6 +1721,9 @@
 		BF3CD8861D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */; };
 		BF3CD8881D11BBFC00CB7764 /* UserUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */; };
 		BF3CD88A1D11BC0D00CB7764 /* UserUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */; };
+		BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */; };
+		BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */; };
+		BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */; };
 		BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -4504,6 +4507,9 @@
 		BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRemoteOperation.swift; sourceTree = "<group>"; };
 		BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRequest.swift; sourceTree = "<group>"; };
 		BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRequest.swift; sourceTree = "<group>"; };
+		BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperationTests.swift; sourceTree = "<group>"; };
+		BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRequestTests.swift; sourceTree = "<group>"; };
+		BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -6125,7 +6131,9 @@
 				A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */,
 				C3D6FA8F1BF582D0006DEE19 /* CommentAddRequestTests.swift */,
 				A798259B1C0FB26500C53A07 /* CommentFindRequestTests.swift */,
+				BFE25A4C1D0B806E00F55653 /* ContentDeleteRequestTests.swift */,
 				BFE098501CEFAC6E00C97F21 /* ContentFeedRequestTests.swift */,
+				BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */,
 				BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */,
 				BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */,
 				79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */,
@@ -6140,8 +6148,6 @@
 				0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */,
 				67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */,
 				67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */,
-				BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */,
-				BFE25A4C1D0B806E00F55653 /* ContentDeleteRequestTests.swift */,
 				67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */,
 				C32D8BD51BF2D36200AB5085 /* FollowHashtagRequestTests.swift */,
 				6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */,
@@ -6199,6 +6205,8 @@
 				C323C3B21BF55CFD00681059 /* UpdateCommentRequestTests.swift */,
 				A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */,
 				795271031C34914100BD41F1 /* UserSearchRequestTests.swift */,
+				BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */,
+				BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */,
 				A77D87B51CD7DCC000D01FA1 /* ValidateReceiptRequestTests.swift */,
 				0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */,
 				A7BBB8EE1C167861009319D9 /* VSDKURLMacroReplacementTests.m */,
@@ -8744,6 +8752,7 @@
 				F04CDB9C1C85485900696ADA /* UnblockUserRemoteOperationTests.swift */,
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
+				BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
 				A7E8CF271C90A88E00D126BF /* VIPPurchasingTests.swift */,
 				A7E8CF251C909F5200D126BF /* VIPValidateReceiptOperationTests.swift */,
@@ -12225,6 +12234,7 @@
 				6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */,
 				A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
+				BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */,
 				797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */,
 				0399E8101C51D4D200E090F7 /* TemplateRequestTests.swift in Sources */,
 				67FD54C71BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift in Sources */,
@@ -12297,6 +12307,7 @@
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
 				6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */,
+				BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */,
 				C3D6FA901BF582D0006DEE19 /* CommentAddRequestTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 				67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */,
@@ -12584,6 +12595,7 @@
 				BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
 				A7E8CF2C1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift in Sources */,
+				BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */,
 				F04CDB9D1C85485900696ADA /* UnblockUserRemoteOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
