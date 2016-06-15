@@ -19,7 +19,13 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
     
     private let dependencyManager: VDependencyManager
-    private var user: VUser?
+    private var user: VUser? {
+        didSet {
+            if user != nil && user != oldValue {
+                updateRightBarButtonItems()
+            }
+        }
+    }
     
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -64,8 +70,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         view.addSubview(gridStreamController.view)
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
-        
-        updateRightBarButtonItems()
         
         fetchUser(using: dependencyManager)
     }
@@ -116,7 +120,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateRightBarButtonItems()
     }
     
     // MARK: - View controllers
@@ -139,13 +142,13 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
         let userID = Int(user.id)
         
-//        UserUpvoteToggleOperation(
-//            userID: userID,
-//            upvoteURL: dependencyManager.userUpvoteURL,
-//            unupvoteURL: dependencyManager.userUnupvoteURL
-//        ).queue { [weak self] _ in
-//            self?.updateHeader()
-//        }
+        UserUpvoteToggleOperation(
+            userID: userID,
+            upvoteURL: dependencyManager.userUpvoteURL,
+            unupvoteURL: dependencyManager.userUnupvoteURL
+        ).queue { [weak self] _ in
+            self?.updateRightBarButtonItems()
+        }
     }
     
     func overflow() {

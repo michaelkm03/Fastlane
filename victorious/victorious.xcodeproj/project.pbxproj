@@ -856,8 +856,8 @@
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C6547D61CF4CDAE005F58A1 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */; };
-		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
+		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -1715,6 +1715,12 @@
 		BF3777EF1CEE50DD00AEF7F2 /* ViewedContent.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */; };
 		BF3777F01CEE50DD00AEF7F2 /* ViewedContentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */; };
 		BF3814F01D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3814EF1D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift */; };
+		BF3CD8801D11B65D00CB7764 /* UserUnupvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD87F1D11B65D00CB7764 /* UserUnupvoteOperation.swift */; };
+		BF3CD8821D11B66F00CB7764 /* UserUpvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8811D11B66F00CB7764 /* UserUpvoteOperation.swift */; };
+		BF3CD8841D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8831D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift */; };
+		BF3CD8861D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */; };
+		BF3CD8881D11BBFC00CB7764 /* UserUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */; };
+		BF3CD88A1D11BC0D00CB7764 /* UserUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */; };
 		BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -3345,8 +3351,8 @@
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C68CA9BC5F670F063DA6A87 /* Pods-victoriousPersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
-		7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumNavBarTitleView.swift; path = NavBar/ForumNavBarTitleView.swift; sourceTree = "<group>"; };
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
+		7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumNavBarTitleView.swift; path = NavBar/ForumNavBarTitleView.swift; sourceTree = "<group>"; };
 		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4492,6 +4498,12 @@
 		BF3777D31CEE4D5800AEF7F2 /* ViewedContent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ViewedContent.json; path = ViewedContent/ViewedContent.json; sourceTree = "<group>"; };
 		BF3777D41CEE4D5800AEF7F2 /* ViewedContentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ViewedContentsResponse.json; path = ViewedContent/ViewedContentsResponse.json; sourceTree = "<group>"; };
 		BF3814EF1D05E1E7001DFB6D /* ProfileDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDeepLinkHandler.swift; sourceTree = "<group>"; };
+		BF3CD87F1D11B65D00CB7764 /* UserUnupvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD8811D11B66F00CB7764 /* UserUpvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD8831D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRemoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRemoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRequest.swift; sourceTree = "<group>"; };
+		BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRequest.swift; sourceTree = "<group>"; };
 		BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -6084,6 +6096,8 @@
 				C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */,
 				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				795271011C348C8900BD41F1 /* UserSearchRequest.swift */,
+				BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */,
+				BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */,
 				5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */,
 				A7FFCE421C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
@@ -8021,7 +8035,6 @@
 				BF2022721D00B97E006B59C5 /* ContentUnupvoteOperation.swift */,
 				BF2022731D00B97E006B59C5 /* ContentUpvoteOperation.swift */,
 				BF2022741D00B97E006B59C5 /* ContentUpvoteToggleOperation.swift */,
-				BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */,
 				A72C855D1C977FF500E97D4F /* ConversationDeleteOperation.swift */,
 				A72C855E1C977FF500E97D4F /* ConversationDeleteUnusedOperation.swift */,
 				A72C855F1C977FF500E97D4F /* ConversationForUserOperation.swift */,
@@ -8089,6 +8102,9 @@
 				A72C859B1C977FF500E97D4F /* UserSearchOperation.swift */,
 				A72C859C1C977FF500E97D4F /* UsersFollowedByUserOperation.swift */,
 				A72C859D1C977FF500E97D4F /* UsersFollowingUserOperation.swift */,
+				BF3CD87F1D11B65D00CB7764 /* UserUnupvoteOperation.swift */,
+				BF3CD8811D11B66F00CB7764 /* UserUpvoteOperation.swift */,
+				BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */,
 			);
 			path = "Fetcher Operations";
 			sourceTree = "<group>";
@@ -8224,6 +8240,8 @@
 				A72C85E51C977FF500E97D4F /* UnfollowUsersRemoteOperation.swift */,
 				A72C85E61C977FF500E97D4F /* UsersFollowedByUserRemoteOperation.swift */,
 				A72C85E71C977FF500E97D4F /* UsersFollowingUserRemoteOperation.swift */,
+				BF3CD8831D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift */,
+				BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */,
 			);
 			path = "Remote Fetcher Operations";
 			sourceTree = "<group>";
@@ -12020,6 +12038,7 @@
 				7992DF691C17ADFE004007A1 /* DeviceExperiment.swift in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
+				BF3CD8881D11BBFC00CB7764 /* UserUpvoteRequest.swift in Sources */,
 				A7D618EF1C2A7E5A007F46EA /* SubscribedToListRequest.swift in Sources */,
 				A778CB6F1C4753E3007DF0C2 /* MediaAttachment.swift in Sources */,
 				A7EF1BCF1BF2754D00D429DE /* Stream.swift in Sources */,
@@ -12156,6 +12175,7 @@
 				C3D956171BF4368F00069FD6 /* Comment.swift in Sources */,
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				F022CFDC1CFE535500F040BB /* ChatMessageCreateRequest.swift in Sources */,
+				BF3CD88A1D11BC0D00CB7764 /* UserUnupvoteRequest.swift in Sources */,
 				67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */,
 				67A952421C443526001234B4 /* RegisterPushNotificationRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
@@ -13082,6 +13102,7 @@
 				F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */,
 				A77723E01C348240002351B5 /* PersistenceTests.xcdatamodeld in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
+				BF3CD8821D11B66F00CB7764 /* UserUpvoteOperation.swift in Sources */,
 				676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
@@ -13433,6 +13454,7 @@
 				A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */,
 				A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */,
 				A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */,
+				BF3CD8861D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift in Sources */,
 				79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */,
 				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
@@ -13489,6 +13511,7 @@
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				F0FBFA681CE1624D006318FC /* PersistentContentCreator.swift in Sources */,
 				A7F843661BFD44DB004C3D55 /* Conversation+Parsable.swift in Sources */,
+				BF3CD8841D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift in Sources */,
 				79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */,
@@ -13576,6 +13599,7 @@
 				A7559A7F1CD0156700C37349 /* VSettingsTableViewCell.m in Sources */,
 				C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
+				BF3CD8801D11B65D00CB7764 /* UserUnupvoteOperation.swift in Sources */,
 				A72C868B1C977FF600E97D4F /* BackgroundOperation.swift in Sources */,
 				A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */,
 				F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */,

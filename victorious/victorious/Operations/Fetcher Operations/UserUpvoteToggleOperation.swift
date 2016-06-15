@@ -21,23 +21,23 @@ class UserUpvoteToggleOperation: FetcherOperation {
     
     override func main() {
         
-//        persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
-//            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
-//                return
-//            }
-//            
-//            if content.v_isLikedByCurrentUser == true {
-//                ContentUnupvoteOperation(
-//                    contentID: self.contentID,
-//                    contentUnupvoteURL: self.unupvoteURL
-//                    ).rechainAfter(self).queue()
-//            }
-//            else {
-//                ContentUpvoteOperation(
-//                    contentID: self.contentID,
-//                    contentUpvoteURL: self.upvoteURL
-//                    ).rechainAfter(self).queue()
-//            }
-//        })
+        persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
+            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
+                return
+            }
+            
+            if user.isFollowedByCurrentUser == true {
+                UserUnupvoteOperation(
+                    userID: self.userID,
+                    userUnupvoteURL: self.unupvoteURL
+                ).rechainAfter(self).queue()
+            }
+            else {
+                UserUpvoteOperation(
+                    userID: self.userID,
+                    userUpvoteURL: self.upvoteURL
+                ).rechainAfter(self).queue()
+            }
+        })
     }
 }
