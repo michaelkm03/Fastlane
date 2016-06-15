@@ -459,10 +459,8 @@
 		03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */; };
 		03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */ = {isa = PBXBuildFile; fileRef = 03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */; };
 		03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */; };
-		03E7305A1C974ADD008CB191 /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
 		03E7305B1C974ADD008CB191 /* Dictionary+Union.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */; };
 		03E7305C1C974B04008CB191 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
-		03E7305D1C974B11008CB191 /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
 		03E7305E1C974B11008CB191 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
 		03E7305F1C974B11008CB191 /* ValidateReceiptRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE421C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift */; };
 		03E910831B96B032009CC937 /* TrendingTopicGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E910821B96B032009CC937 /* TrendingTopicGradientView.swift */; };
@@ -1011,7 +1009,6 @@
 		A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */; };
 		A72C85FB1C977FF500E97D4F /* AlertAcknowledgeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */; };
 		A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */; };
-		A72C85FD1C977FF500E97D4F /* BlockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85571C977FF500E97D4F /* BlockUserOperation.swift */; };
 		A72C85FE1C977FF500E97D4F /* CommentCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85581C977FF500E97D4F /* CommentCreateOperation.swift */; };
 		A72C85FF1C977FF500E97D4F /* CommentDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85591C977FF500E97D4F /* CommentDeleteOperation.swift */; };
 		A72C86001C977FF500E97D4F /* CommentEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C855A1C977FF500E97D4F /* CommentEditOperation.swift */; };
@@ -1071,7 +1068,6 @@
 		A72C86391C977FF500E97D4F /* TermsOfServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85931C977FF500E97D4F /* TermsOfServiceOperation.swift */; };
 		A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85941C977FF500E97D4F /* TrendingHashtagOperation.swift */; };
 		A72C863B1C977FF500E97D4F /* TrendingUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85951C977FF500E97D4F /* TrendingUsersOperation.swift */; };
-		A72C863C1C977FF500E97D4F /* UnblockUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85961C977FF500E97D4F /* UnblockUserOperation.swift */; };
 		A72C863D1C977FF500E97D4F /* UnfollowHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85971C977FF500E97D4F /* UnfollowHashtagOperation.swift */; };
 		A72C863F1C977FF500E97D4F /* UnloadStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85991C977FF500E97D4F /* UnloadStreamOperation.swift */; };
 		A72C86401C977FF500E97D4F /* UserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C859A1C977FF500E97D4F /* UserInfoOperation.swift */; };
@@ -1110,7 +1106,6 @@
 		A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */; };
 		A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */; };
 		A72C86681C977FF600E97D4F /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CB1C977FF500E97D4F /* Queueable.swift */; };
-		A72C86691C977FF600E97D4F /* BlockUserRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CD1C977FF500E97D4F /* BlockUserRemoteOperation.swift */; };
 		A72C866A1C977FF600E97D4F /* CommentCreateRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */; };
 		A72C866B1C977FF600E97D4F /* CommentDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */; };
 		A72C866C1C977FF600E97D4F /* CommentEditRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */; };
@@ -2045,7 +2040,6 @@
 		DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */; };
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
-		F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */; };
 		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
 		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
 		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
@@ -2087,13 +2081,6 @@
 		F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */; };
 		F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */; };
 		F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */; };
-		F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */; };
-		F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */; };
-		F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0161C84F973004F516A /* BlockUserRequestTests.swift */; };
-		F048B0191C84FCC5004F516A /* UnblockUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */; };
-		F048B01B1C84FDA7004F516A /* BlockUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */; };
-		F04CDB9D1C85485900696ADA /* UnblockUserRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04CDB9C1C85485900696ADA /* UnblockUserRemoteOperationTests.swift */; };
-		F04CDB9E1C85488200696ADA /* BlockUserRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04CDB9A1C85465100696ADA /* BlockUserRemoteOperationTests.swift */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */; };
@@ -3617,7 +3604,6 @@
 		A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
 		A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAcknowledgeOperation.swift; sourceTree = "<group>"; };
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
-		A72C85571C977FF500E97D4F /* BlockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperation.swift; sourceTree = "<group>"; };
 		A72C85581C977FF500E97D4F /* CommentCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85591C977FF500E97D4F /* CommentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDeleteOperation.swift; sourceTree = "<group>"; };
 		A72C855A1C977FF500E97D4F /* CommentEditOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentEditOperation.swift; sourceTree = "<group>"; };
@@ -3677,7 +3663,6 @@
 		A72C85931C977FF500E97D4F /* TermsOfServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceOperation.swift; sourceTree = "<group>"; };
 		A72C85941C977FF500E97D4F /* TrendingHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingHashtagOperation.swift; sourceTree = "<group>"; };
 		A72C85951C977FF500E97D4F /* TrendingUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperation.swift; sourceTree = "<group>"; };
-		A72C85961C977FF500E97D4F /* UnblockUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperation.swift; sourceTree = "<group>"; };
 		A72C85971C977FF500E97D4F /* UnfollowHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowHashtagOperation.swift; sourceTree = "<group>"; };
 		A72C85991C977FF500E97D4F /* UnloadStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnloadStreamOperation.swift; sourceTree = "<group>"; };
 		A72C859A1C977FF500E97D4F /* UserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoOperation.swift; sourceTree = "<group>"; };
@@ -3719,7 +3704,6 @@
 		A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchedResultsOperation.swift; sourceTree = "<group>"; };
 		A72C85CB1C977FF500E97D4F /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
-		A72C85CD1C977FF500E97D4F /* BlockUserRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCreateRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentEditRemoteOperation.swift; sourceTree = "<group>"; };
@@ -5015,7 +4999,6 @@
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
 		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
-		F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserOperationTests.swift; sourceTree = "<group>"; };
 		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
 		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
 		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
@@ -5075,13 +5058,6 @@
 		F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCaptionView.xib; sourceTree = "<group>"; };
 		F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFlashBarButtonItem.swift; sourceTree = "<group>"; };
 		F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDirectionButton.swift; sourceTree = "<group>"; };
-		F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequest.swift; sourceTree = "<group>"; };
-		F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequest.swift; sourceTree = "<group>"; };
-		F048B0161C84F973004F516A /* BlockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserRequestTests.swift; sourceTree = "<group>"; };
-		F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRequestTests.swift; sourceTree = "<group>"; };
-		F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockUserOperationTests.swift; sourceTree = "<group>"; };
-		F04CDB9A1C85465100696ADA /* BlockUserRemoteOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockUserRemoteOperationTests.swift; path = ../../VictoriousIOSSDKTests/BlockUserRemoteOperationTests.swift; sourceTree = "<group>"; };
-		F04CDB9C1C85485900696ADA /* UnblockUserRemoteOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserRemoteOperationTests.swift; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -5985,7 +5961,6 @@
 				79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */,
 				7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */,
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
-				F048AFC71C80DCF7004F516A /* BlockUserRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */,
 				F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */,
@@ -6077,7 +6052,6 @@
 				C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */,
 				6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */,
 				67AB3D3B1CDD462B00778F1C /* TutorialContentsRequest.swift */,
-				F048AFC81C80DCF7004F516A /* UnblockUserRequest.swift */,
 				C32D8BDB1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift */,
 				67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */,
 				79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */,
@@ -6108,7 +6082,6 @@
 				79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */,
 				7A126DF41CFF956800F9C86E /* APIPathTests.swift */,
 				03BF276E1C5AED3E0064A90B /* ApplicationTrackingRequestTests.swift */,
-				F048B0161C84F973004F516A /* BlockUserRequestTests.swift */,
 				C3348B221BF53FAA004183A1 /* Bool+InitializersTests.swift */,
 				A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */,
 				C3D6FA8F1BF582D0006DEE19 /* CommentAddRequestTests.swift */,
@@ -6177,7 +6150,6 @@
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
 				6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */,
 				676B84E01CDD568200F8FCED /* TutorialContentsRequestTests.swift */,
-				F048B0181C84FCC5004F516A /* UnblockUserRequestTests.swift */,
 				C32D8BD91BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift */,
 				67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */,
 				79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */,
@@ -8011,7 +7983,6 @@
 				A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */,
 				A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */,
 				A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */,
-				A72C85571C977FF500E97D4F /* BlockUserOperation.swift */,
 				A72C85581C977FF500E97D4F /* CommentCreateOperation.swift */,
 				A72C85591C977FF500E97D4F /* CommentDeleteOperation.swift */,
 				A72C855A1C977FF500E97D4F /* CommentEditOperation.swift */,
@@ -8080,7 +8051,6 @@
 				A72C85931C977FF500E97D4F /* TermsOfServiceOperation.swift */,
 				A72C85941C977FF500E97D4F /* TrendingHashtagOperation.swift */,
 				A72C85951C977FF500E97D4F /* TrendingUsersOperation.swift */,
-				A72C85961C977FF500E97D4F /* UnblockUserOperation.swift */,
 				A72C85971C977FF500E97D4F /* UnfollowHashtagOperation.swift */,
 				A72C85991C977FF500E97D4F /* UnloadStreamOperation.swift */,
 				BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */,
@@ -8194,7 +8164,6 @@
 		A72C85CC1C977FF500E97D4F /* Remote Fetcher Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A72C85CD1C977FF500E97D4F /* BlockUserRemoteOperation.swift */,
 				F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */,
 				A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */,
 				A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */,
@@ -8692,8 +8661,6 @@
 				A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */,
 				A7BA37E01C8544080095CFA9 /* ActionConfirmationOperationTests.swift */,
 				79CBAC121C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift */,
-				F048B01A1C84FDA7004F516A /* BlockUserOperationTests.swift */,
-				F04CDB9A1C85465100696ADA /* BlockUserRemoteOperationTests.swift */,
 				BFE25A4A1D0B800800F55653 /* ContentDeleteOperationTests.swift */,
 				BFB6EEEF1D0105F7007909F2 /* ContentFlagOperationTests.swift */,
 				BF5BF6BE1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift */,
@@ -8726,8 +8693,6 @@
 				67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */,
 				6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */,
 				67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */,
-				F006CC371C852F0800AC5077 /* UnblockUserOperationTests.swift */,
-				F04CDB9C1C85485900696ADA /* UnblockUserRemoteOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
@@ -12049,7 +12014,6 @@
 				A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */,
 				A7FFCE431C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
-				F048AFCA1C80DCF7004F516A /* UnblockUserRequest.swift in Sources */,
 				A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */,
@@ -12143,7 +12107,6 @@
 				0E9911CE1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift in Sources */,
 				670C65891C52AC0000BD7F3F /* Usershelf.swift in Sources */,
 				A72EDF991C03FAC5003D6177 /* SequenceUserInteractionsRequest.swift in Sources */,
-				F048AFC91C80DCF7004F516A /* BlockUserRequest.swift in Sources */,
 				67C5C53B1C0395ED00F99C8C /* UnlikeSequenceRequest.swift in Sources */,
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
@@ -12182,7 +12145,6 @@
 			files = (
 				0E8F131B1CA4DC6B004AF0B0 /* WebSocketControllerTests.swift in Sources */,
 				67C5C53D1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift in Sources */,
-				F048B0191C84FCC5004F516A /* UnblockUserRequestTests.swift in Sources */,
 				79D081A41BF155BF00E8A0C5 /* ConversationListRequestTests.swift in Sources */,
 				67D3DBB01CCA9AB300D9D374 /* CreatorListRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
@@ -12260,7 +12222,6 @@
 				0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */,
 				673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */,
 				795B758C1BFA628100227647 /* TermsOfServiceRequestTests.swift in Sources */,
-				F048B0171C84F973004F516A /* BlockUserRequestTests.swift in Sources */,
 				C32D8BE01BF2E08900AB5085 /* ImageSearchResultTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */,
@@ -12375,7 +12336,6 @@
 				0372BE951C84FF02004950CF /* FriendFindBySocialNetworkRequest.swift in Sources */,
 				0372BE901C84FF02004950CF /* FollowCountRequest.swift in Sources */,
 				0372BEC11C84FF02004950CF /* SuggestedUsersRequest.swift in Sources */,
-				03E7305D1C974B11008CB191 /* UnblockUserRequest.swift in Sources */,
 				0372BEED1C84FF19004950CF /* UnreadNotificationsCountRequest.swift in Sources */,
 				03E7305C1C974B04008CB191 /* AvatarBadgeType.swift in Sources */,
 				0372BEE21C84FF0C004950CF /* Usershelf.swift in Sources */,
@@ -12471,7 +12431,6 @@
 				0372BE8B1C84FF02004950CF /* DeviceExperimentsRequest.swift in Sources */,
 				0372BEDC1C84FF0C004950CF /* Shelf.swift in Sources */,
 				0372BE8F1C84FF02004950CF /* FlagSequenceRequest.swift in Sources */,
-				03E7305A1C974ADD008CB191 /* BlockUserRequest.swift in Sources */,
 				0372BEA31C84FF02004950CF /* NSDictionary+URLEncodedString.swift in Sources */,
 				0372BE961C84FF02004950CF /* GIFSearchRequest.swift in Sources */,
 				0372BEE51C84FF19004950CF /* TermsOfServiceRequest.swift in Sources */,
@@ -12526,8 +12485,6 @@
 				A7B0A63A1C347A01008B875C /* CoreDataPathHelper.swift in Sources */,
 				62575F001C54CD9400B49CB0 /* VSequenceTests.swift in Sources */,
 				BFC371421CED58A0000849CA /* VImageAssetTests.swift in Sources */,
-				F048B01B1C84FDA7004F516A /* BlockUserOperationTests.swift in Sources */,
-				F006CC381C852F0800AC5077 /* UnblockUserOperationTests.swift in Sources */,
 				A7BA37E11C8544080095CFA9 /* ActionConfirmationOperationTests.swift in Sources */,
 				6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */,
 				BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */,
@@ -12544,7 +12501,6 @@
 				6236F8801C36056A00746476 /* PaginatedDataSourceTests.swift in Sources */,
 				67A3C9F31C4D99470068E4F5 /* TrendingHashtagOperationTests.swift in Sources */,
 				678AC1731C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift in Sources */,
-				F04CDB9E1C85488200696ADA /* BlockUserRemoteOperationTests.swift in Sources */,
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
 				A60C990F1C5AE4830096691D /* FetchFromMainContextOperationTests.swift in Sources */,
 				BFE25A4B1D0B800800F55653 /* ContentDeleteOperationTests.swift in Sources */,
@@ -12565,7 +12521,6 @@
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
 				A7E8CF2C1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift in Sources */,
 				BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */,
-				F04CDB9D1C85485900696ADA /* UnblockUserRemoteOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
 				672828041C45EE3A00B02909 /* CreateTextPostOperationTests.swift in Sources */,
@@ -13029,7 +12984,6 @@
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				A7B133601C6178FD006EC4F5 /* PaginatedDataSource.swift in Sources */,
 				D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */,
-				A72C85FD1C977FF500E97D4F /* BlockUserOperation.swift in Sources */,
 				C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */,
 				F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
@@ -13174,7 +13128,6 @@
 				D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
-				A72C86691C977FF600E97D4F /* BlockUserRemoteOperation.swift in Sources */,
 				F00DEBA51CC2E39500C5C9EA /* ShowMediaDeletionPromptOperation.swift in Sources */,
 				A722B9461C3C53010014BA42 /* CommentsDataSource.swift in Sources */,
 				A72C86541C977FF500E97D4F /* ShowLikersOperation.swift in Sources */,
@@ -13674,7 +13627,6 @@
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				F07DDE351CFCC7B200C7FC8D /* TextOnColorButton.swift in Sources */,
 				BFC7FAEA1CF515390061489B /* VDependencyManager+NetworkResources.swift in Sources */,
-				A72C863C1C977FF500E97D4F /* UnblockUserOperation.swift in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,
 				7AEB294F1CCED06200B98C3B /* UIViewController+RootNavigationController.swift in Sources */,
