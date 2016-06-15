@@ -38,12 +38,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }()
     
     private lazy var upvoteButton: UIBarButtonItem = {
-        return UIBarButtonItem(
+        let button = UIBarButtonItem(
             image: self.dependencyManager.upvoteIconUnselected,
             style: .Done,
             target: self,
             action: #selector(toggleUpvote)
         )
+        return button
     }()
     
     init(dependencyManager: VDependencyManager,
@@ -92,7 +93,15 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             return
         }
         
-        upvoteButton.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+        if content.isLikedByCurrentUser {
+            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvotedIconTint
+        }
+        else {
+            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.tintColor = nil
+        }
+        
         navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
     }
     
@@ -173,12 +182,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
 }
 
 private extension VDependencyManager {
+    var upvotedIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysOriginal)
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
