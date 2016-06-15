@@ -127,6 +127,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     BOOL shouldAnimate;
     
+    navigationItem.leftItemsSupplementBackButton = YES;
+    
     shouldAnimate = newBarButtonItemsLeft.count != navigationItem.leftBarButtonItems.count;
     [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:shouldAnimate];
     
@@ -231,9 +233,18 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     [source v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
      {
          id<VNavigationDestination> destination = (id<VNavigationDestination>)responder;
+         
+         NSString *accessoryScreensKey = nil;
+         // Does this point in the responder chain provide a custom accessory screens key?
+         if ( [destination conformsToProtocol:@protocol(CustomAccessoryScreensKey)] )
+         {
+             id<CustomAccessoryScreensKey> destinationWithCustomKey = (id<CustomAccessoryScreensKey>)destination;
+             accessoryScreensKey = [destinationWithCustomKey customAccessoryScreensKey];
+         }
+         
          if ( [destination respondsToSelector:@selector(dependencyManager)] )
          {
-             [accessoryMenuItems addObjectsFromArray:[destination dependencyManager].accessoryMenuItems];
+             [accessoryMenuItems addObjectsFromArray:[[destination dependencyManager] accessoryMenuItemsWithKey:accessoryScreensKey]];
          }
      }];
     

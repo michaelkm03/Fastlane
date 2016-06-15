@@ -61,3 +61,19 @@ extern NSString * const VDependencyManagerAccessoryItemLegalInfo;
 - (BOOL)navigateToDestinationForMenuItemIdentifier:(NSString *)menuItemIdentifier;
 
 @end
+
+/**
+ Objects in the responder chain that conform to this protocol have an opportunity to provide a new key 
+ for the accessory screens infrastructure to read from in the dependencyManager.
+ */
+@protocol CustomAccessoryScreensKey <NSObject>
+
+@required
+
+/**
+ Implment this to read from a custom accessory screens key. Such as when a screen component's screens are 
+ based on some state like representing the current user or another user.
+ */
+- (NSString *)customAccessoryScreensKey;
+
+@end

@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, CustomAccessoryScreensKey {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -17,6 +17,15 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     private static let upgradeButtonXPadding = CGFloat(12.0)
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
+    private struct AccessoryScreensKeys {
+        static let userOwn = "accessories.user.own"
+        static let userOther = "accessories.user.other"
+        static let userCreator = "accessories.user.creator"
+        static let creatorOwn = "accessories.creator.own"
+    }
+    
+    var dependencyManager: VDependencyManager?
+    var user: VUser?
     
     // MARK: - Initializing
     
@@ -46,6 +55,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         updateUpgradeButton()
         
         fetchUser(using: dependencyManager)
+        
+        self.dependencyManager = dependencyManager
     }
     
     required init?(coder: NSCoder) {
@@ -79,6 +90,10 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateUpgradeButton()
+        
+        if let dependencyManager = self.dependencyManager {
+            v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        }
     }
     
     // MARK: - View controllers
@@ -99,6 +114,28 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
         updateUpgradeButton()
+    }
+    
+    // MARK: - CustomAccessoryScreensKey
+    
+    func customAccessoryScreensKey() -> String {
+        guard let user = self.user else {
+            return ""
+        }
+        
+        if user.isCurrentUser() {
+            if user.accessLevel == .owner {
+                return AccessoryScreensKeys.creatorOwn
+            } else {
+                return AccessoryScreensKeys.userOwn
+            }
+        } else {
+            if user.accessLevel == .user {
+                return AccessoryScreensKeys.userCreator
+            } else {
+                return AccessoryScreensKeys.userOther
+            }
+        }
     }
     
     // MARK: - Managing the user
@@ -130,6 +167,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return
         }
         
+        self.user = user
+        
         gridStreamController.content = user
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
@@ -137,6 +176,11 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
         upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
+        
+        if let dependencyManager = self.dependencyManager {
+            v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        }
+
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
