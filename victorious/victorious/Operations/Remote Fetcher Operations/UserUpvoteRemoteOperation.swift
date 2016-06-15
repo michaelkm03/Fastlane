@@ -11,8 +11,8 @@ import UIKit
 class UserUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: UserUpvoteRequest!
     
-    init?(userID: Int, userUpvoteURL: String) {
-        guard let request = UserUpvoteRequest(userID: userID, userUpvoteURL: userUpvoteURL) else {
+    init?(userID: Int, userUpvoteAPIPath: APIPath) {
+        guard let request = UserUpvoteRequest(userID: userID, userUpvoteAPIPath: userUpvoteAPIPath) else {
             return nil
         }
         self.request = request

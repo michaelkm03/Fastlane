@@ -10,13 +10,13 @@ import UIKit
 
 class UserUpvoteToggleOperation: FetcherOperation {
     private let userID: Int
-    private let upvoteURL: String
-    private let unupvoteURL: String
+    private let upvoteAPIPath: APIPath
+    private let unupvoteAPIPath: APIPath
     
-    init(userID: Int, upvoteURL: String, unupvoteURL: String) {
+    init(userID: Int, upvoteAPIPath: APIPath, unupvoteAPIPath: APIPath) {
         self.userID = userID
-        self.upvoteURL = upvoteURL
-        self.unupvoteURL = unupvoteURL
+        self.upvoteAPIPath = upvoteAPIPath
+        self.unupvoteAPIPath = unupvoteAPIPath
     }
     
     override func main() {
@@ -28,13 +28,13 @@ class UserUpvoteToggleOperation: FetcherOperation {
             if user.isFollowedByCurrentUser == true {
                 UserUnupvoteOperation(
                     userID: self.userID,
-                    userUnupvoteURL: self.unupvoteURL
+                    userUnupvoteAPIPath: self.unupvoteAPIPath
                     ).rechainAfter(self).queue()
             }
             else {
                 UserUpvoteOperation(
                     userID: self.userID,
-                    userUpvoteURL: self.upvoteURL
+                    userUpvoteAPIPath: self.upvoteAPIPath
                     ).rechainAfter(self).queue()
             }
         }

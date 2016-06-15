@@ -19,11 +19,12 @@ public struct UserUpvoteRequest: RequestType {
     private let userUpvoteURL: NSURL
     private let userID: String
   
-    public init?(userID: Int, userUpvoteURL: String) {
+    public init?(userID: Int, userUpvoteAPIPath: APIPath) {
+        var userUpvoteAPIPath = userUpvoteAPIPath
         self.userID = String(userID)
-        let replacementDictionary: [String: String] = ["%%USER_ID%%": self.userID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: userUpvoteURL)
-        guard let validURL = NSURL(string: replacedURL) else {
+        
+        userUpvoteAPIPath.macroReplacements["%%USER_ID%%"] = self.userID
+        guard let validURL = userUpvoteAPIPath.url else {
             return nil
         }
         self.userUpvoteURL = validURL
