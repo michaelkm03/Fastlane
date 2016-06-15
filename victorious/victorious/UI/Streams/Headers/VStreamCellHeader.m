@@ -237,10 +237,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    NSInteger userId = self.sequence.user.remoteId.integerValue;
-    NSString *sourceScreenName = self.sourceScreenName != nil ? self.sourceScreenName : VFollowSourceScreenSteamSleekCell;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 #pragma mark - Internal Methods

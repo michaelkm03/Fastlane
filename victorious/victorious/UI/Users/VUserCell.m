@@ -97,10 +97,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId
-                                                                   sourceScreenName:self.sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated
