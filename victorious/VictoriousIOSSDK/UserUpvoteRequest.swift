@@ -12,7 +12,6 @@ public struct UserUpvoteRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: userUpvoteURL)
         request.HTTPMethod = "POST"
-        // FUTURE: Possibly remove based on backend API change
         request.vsdk_addURLEncodedFormPost(["target_user_id": userID])
         return request
     }
