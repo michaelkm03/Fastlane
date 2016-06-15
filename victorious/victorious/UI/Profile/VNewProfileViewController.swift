@@ -111,9 +111,16 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = shouldShowUpgradeButton()
-            ? [UIBarButtonItem(customView: upgradeButton), upvoteButton]
-            : [upvoteButton]
+        var rightBarButtonItems:[UIBarButtonItem] = []
+        if shouldShowUpgradeButton() {
+            rightBarButtonItems.append(UIBarButtonItem(customView: upgradeButton))
+        }
+        if user?.id != VCurrentUser.user()?.id {
+            rightBarButtonItems.append(upvoteButton)
+            rightBarButtonItems.append(overflowButton)
+        }
+        
+        navigationItem.rightBarButtonItems = rightBarButtonItems
     }
     
     // MARK: - View events
@@ -152,7 +159,30 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     }
     
     func overflow() {
-        // FUTURE: Implement overflow button
+        guard
+            let isBlocked = user?.isBlockedByCurrentUser,
+            let userID = user?.id
+        else {
+                return
+        }
+        
+        let toggleBlockedOperation = UserBlockToggleOperation(
+            userID: userID,
+            blockURL: dependencyManager.userBlockURL,
+            unblockURL: dependencyManager.userUnblockURL
+        )
+        
+        let actionTitle = isBlocked
+            ? NSLocalizedString("UnblockUser", comment: "")
+            : NSLocalizedString("BlockUser", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        confirm.before(toggleBlockedOperation)
+        confirm.queue()
+        toggleBlockedOperation.queue()
     }
     
     // MARK: - VIPGateViewControllerDelegate

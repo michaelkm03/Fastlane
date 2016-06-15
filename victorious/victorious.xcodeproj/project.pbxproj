@@ -1724,6 +1724,9 @@
 		BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */; };
 		BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */; };
 		BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */; };
+		BF3CD8941D11EEA500CB7764 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8931D11EEA500CB7764 /* UserBlockToggleOperation.swift */; };
+		BF3CD8961D11EEDD00CB7764 /* UserBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */; };
+		BF3CD8981D11EF4F00CB7764 /* UserUnblockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8971D11EF4F00CB7764 /* UserUnblockOperation.swift */; };
 		BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -4510,6 +4513,9 @@
 		BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperationTests.swift; sourceTree = "<group>"; };
 		BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRequestTests.swift; sourceTree = "<group>"; };
+		BF3CD8931D11EEA500CB7764 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
+		BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockOperation.swift; sourceTree = "<group>"; };
+		BF3CD8971D11EF4F00CB7764 /* UserUnblockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockOperation.swift; sourceTree = "<group>"; };
 		BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -8106,10 +8112,13 @@
 				A72C85971C977FF500E97D4F /* UnfollowHashtagOperation.swift */,
 				A72C85981C977FF500E97D4F /* UnfollowUserOperation.swift */,
 				A72C85991C977FF500E97D4F /* UnloadStreamOperation.swift */,
+				BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */,
+				BF3CD8931D11EEA500CB7764 /* UserBlockToggleOperation.swift */,
 				A72C859A1C977FF500E97D4F /* UserInfoOperation.swift */,
 				A72C859B1C977FF500E97D4F /* UserSearchOperation.swift */,
 				A72C859C1C977FF500E97D4F /* UsersFollowedByUserOperation.swift */,
 				A72C859D1C977FF500E97D4F /* UsersFollowingUserOperation.swift */,
+				BF3CD8971D11EF4F00CB7764 /* UserUnblockOperation.swift */,
 				BF3CD87F1D11B65D00CB7764 /* UserUnupvoteOperation.swift */,
 				BF3CD8811D11B66F00CB7764 /* UserUpvoteOperation.swift */,
 				BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */,
@@ -12755,6 +12764,7 @@
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
 				F06B418F1B7C30BC008709E8 /* HashtagShelf.swift in Sources */,
+				BF3CD8981D11EF4F00CB7764 /* UserUnblockOperation.swift in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */,
 				BF20227A1D00B997006B59C5 /* ContentUnupvoteRemoteOperation.swift in Sources */,
@@ -12789,6 +12799,7 @@
 				A72C85FB1C977FF500E97D4F /* AlertAcknowledgeOperation.swift in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
 				A7F3F8061C9D19E500CC2374 /* ShowTermsOfServiceOperation.swift in Sources */,
+				BF3CD8961D11EEDD00CB7764 /* UserBlockOperation.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				BF2022771D00B97E006B59C5 /* ContentUpvoteToggleOperation.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
@@ -13137,6 +13148,7 @@
 				0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
+				BF3CD8941D11EEA500CB7764 /* UserBlockToggleOperation.swift in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
