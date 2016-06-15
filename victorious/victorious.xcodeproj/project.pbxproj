@@ -1718,6 +1718,9 @@
 		BF3CD89C1D120F6300CB7764 /* UserUnblockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89B1D120F6300CB7764 /* UserUnblockRemoteOperation.swift */; };
 		BF3CD89E1D120F8A00CB7764 /* UserBlockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89D1D120F8A00CB7764 /* UserBlockRequest.swift */; };
 		BF3CD8A01D120F9100CB7764 /* UserUnblockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89F1D120F9100CB7764 /* UserUnblockRequest.swift */; };
+		BF3CD8A21D12152C00CB7764 /* UserBlockToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8A11D12152C00CB7764 /* UserBlockToggleOperationTests.swift */; };
+		BF3CD8A41D12171100CB7764 /* UserBlockRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8A31D12171100CB7764 /* UserBlockRequestTests.swift */; };
+		BF3CD8A61D12171B00CB7764 /* UserUnblockRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8A51D12171B00CB7764 /* UserUnblockRequestTests.swift */; };
 		BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -4490,6 +4493,9 @@
 		BF3CD89B1D120F6300CB7764 /* UserUnblockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRemoteOperation.swift; sourceTree = "<group>"; };
 		BF3CD89D1D120F8A00CB7764 /* UserBlockRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRequest.swift; sourceTree = "<group>"; };
 		BF3CD89F1D120F9100CB7764 /* UserUnblockRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRequest.swift; sourceTree = "<group>"; };
+		BF3CD8A11D12152C00CB7764 /* UserBlockToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperationTests.swift; sourceTree = "<group>"; };
+		BF3CD8A31D12171100CB7764 /* UserBlockRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRequestTests.swift; sourceTree = "<group>"; };
+		BF3CD8A51D12171B00CB7764 /* UserUnblockRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRequestTests.swift; sourceTree = "<group>"; };
 		BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -6169,6 +6175,8 @@
 				795271031C34914100BD41F1 /* UserSearchRequestTests.swift */,
 				BF3CD8911D11E44B00CB7764 /* UserUnupvoteRequestTests.swift */,
 				BF3CD88F1D11E44100CB7764 /* UserUpvoteRequestTests.swift */,
+				BF3CD8A31D12171100CB7764 /* UserBlockRequestTests.swift */,
+				BF3CD8A51D12171B00CB7764 /* UserUnblockRequestTests.swift */,
 				A77D87B51CD7DCC000D01FA1 /* ValidateReceiptRequestTests.swift */,
 				0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */,
 				A7BBB8EE1C167861009319D9 /* VSDKURLMacroReplacementTests.m */,
@@ -8705,6 +8713,7 @@
 				67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */,
 				6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */,
 				67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */,
+				BF3CD8A11D12152C00CB7764 /* UserBlockToggleOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
@@ -12235,11 +12244,13 @@
 				C323C3B31BF55CFD00681059 /* UpdateCommentRequestTests.swift in Sources */,
 				0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */,
 				673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */,
+				BF3CD8A41D12171100CB7764 /* UserBlockRequestTests.swift in Sources */,
 				795B758C1BFA628100227647 /* TermsOfServiceRequestTests.swift in Sources */,
 				C32D8BE01BF2E08900AB5085 /* ImageSearchResultTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				F09E8C661C88CBAA00437ACD /* AssetTests.swift in Sources */,
 				79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */,
+				BF3CD8A61D12171B00CB7764 /* UserUnblockRequestTests.swift in Sources */,
 				A77D87B61CD7DCC000D01FA1 /* ValidateReceiptRequestTests.swift in Sources */,
 				A716F3EB1C050A15003068A2 /* RequestErrorTypeTests.swift in Sources */,
 				79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */,
@@ -12521,6 +12532,7 @@
 				622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,
 				62168C4D1C706974008E34AA /* TestIMAAdsManager.swift in Sources */,
+				BF3CD8A21D12152C00CB7764 /* UserBlockToggleOperationTests.swift in Sources */,
 				62058B6D1C54E8AD00D3C8F9 /* BasePersistentStoreTestCase.swift in Sources */,
 				67C9ADAD1C6D676F00F0038D /* FriendFindBySocialNetworkOperationTests.swift in Sources */,
 				62168C4E1C706982008E34AA /* TestIMAAdsLoader.swift in Sources */,
