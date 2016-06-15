@@ -111,9 +111,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = userIsVIPSubscriber()
-            ? [upvoteButton]
-            : [UIBarButtonItem(customView: upgradeButton), upvoteButton]
+        navigationItem.rightBarButtonItems = shouldShowUpgradeButton()
+            ? [UIBarButtonItem(customView: upgradeButton), upvoteButton]
+            : [upvoteButton]
     }
     
     // MARK: - View events
@@ -213,6 +213,10 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }
+    }
+    
+    private func shouldShowUpgradeButton() -> Bool {
+        return !userIsVIPSubscriber() && user?.isCreator == true
     }
     
     private func userIsVIPSubscriber() -> Bool {
