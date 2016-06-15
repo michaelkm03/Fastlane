@@ -13,7 +13,7 @@ public struct UserUnupvoteRequest: RequestType {
         let request = NSMutableURLRequest(URL: userUnupvoteURL)
         request.HTTPMethod = "POST"
         // FUTURE: Possibly remove based on backend API change
-        request.vsdk_addURLEncodedFormPost(["user_id": userID])
+        request.vsdk_addURLEncodedFormPost(["target_user_id": userID])
         return request
     }
     

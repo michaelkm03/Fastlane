@@ -264,16 +264,12 @@ private extension VDependencyManager {
         return colorForKey("color.text.actionButton")
     }
     
-// TODO: REMOVE
     var upvoteIconSelected: UIImage? {
-//        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
-        return UIImage(named: "upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
-// TODO: REMOVE
     var upvoteIconUnselected: UIImage? {
-//        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
-        return UIImage(named: "upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
