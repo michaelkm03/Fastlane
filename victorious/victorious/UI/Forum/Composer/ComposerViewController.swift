@@ -524,13 +524,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         if let asset = selectedAsset {
-            sendMessage(asset: asset, text: textView.text, currentUser: user)
-        } else {
+            let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
+            sendMessage(asset: asset, text: text, currentUser: user)
+        }
+        else {
             sendMessage(text: textView.text, currentUser: user)
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
     }
+    
+    //SEND IN SEPARATE METHOD
     
     // MARK: - Notification response
     

@@ -9,54 +9,41 @@
 import XCTest
 @testable import victorious
 
+//MAKE COMPOSER VIEW CONTROLLER INIT IN EXTENSION, SEND FROM THERE
+
 class ComposerTests: XCTestCase {
-    let composerStub = ComposerStub()
-    
     func testSendWithImage() {
         let imageText = "\u{ef}"
         let newLine = "\n"
         let text = "test"
         
         let expectation = expectationWithDescription("sent event")
-        composerStub.onSend = { event in
+        ComposerViewController.onSend = { event in
             expectation.fulfill()
             switch event {
                 case .sendContent(let content):
-                    XCTAssertEqual(content.text, imageText + text)
+                    XCTAssertEqual(content.text, text)
                 default:
                     XCTFail("test was setup incorrectly, did not recieve a send content message")
             }
         }
         
         let asset = ContentMediaAsset(contentType: .image, url: NSURL())!
-        composerStub.sendMessage(asset: asset, text: imageText + newLine + text, currentUser: User(id: 0))
+        ComposerViewController.newComposerViewController().sendMessage(asset: asset, text: imageText + newLine + text, currentUser: User(id: 0))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 }
 
-class ComposerStub: Composer {
+private extension ComposerViewController {
+    static var onSend: (ForumEvent -> ())?
     
-    var onSend: (ForumEvent -> ())?
-    
-    func send(event: ForumEvent) {
-        onSend?(event)
+    static func newComposerViewController() -> ComposerViewController {
+        return ComposerViewController.v_initialViewControllerFromStoryboard("Composer")
     }
-    
-    //MARK: Protocol conformance
-    
-    var maximumTextInputHeight: CGFloat = 0
-    
-    var creationFlowPresenter: VCreationFlowPresenter!
-    
-    weak var delegate: ComposerDelegate?
-    
-    var dependencyManager: VDependencyManager!
-    
-    func dismissKeyboard(animated: Bool) {}
-        
-    func setComposerVisible(visible: Bool, animated: Bool) {}
-    
-    weak var nextSender: ForumEventSender?
-    
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem) {}
+}
+
+extension ForumEventSender {
+    func send(event: ForumEvent) {
+        ComposerViewController.onSend?(event)
+    }
 }

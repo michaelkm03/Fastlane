@@ -38,11 +38,7 @@ extension Composer {
     }
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel) {
-        var trimmedText = text
-        if let range = trimmedText?.rangeOfString("\n") {
-            trimmedText?.removeRange(range)
-        }
-        let content = Content(text: trimmedText, assets: [asset], author: currentUser)
+        let content = Content(text: text, assets: [asset], author: currentUser)
         send(.sendContent(content))
     }
 }
