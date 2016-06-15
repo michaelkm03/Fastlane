@@ -20,7 +20,7 @@ class ContentUpvoteToggleOperation: FetcherOperation {
     }
     
     override func main() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let content: VContent = context.v_findObjects(["v_remoteID": self.contentID]).first else {
                 return
             }
@@ -37,6 +37,6 @@ class ContentUpvoteToggleOperation: FetcherOperation {
                     contentUpvoteURL: self.upvoteURL
                 ).rechainAfter(self).queue()
             }
-        })
+        }
     }
 }

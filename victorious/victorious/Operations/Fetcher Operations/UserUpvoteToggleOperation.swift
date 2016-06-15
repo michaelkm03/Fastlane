@@ -20,7 +20,7 @@ class UserUpvoteToggleOperation: FetcherOperation {
     }
     
     override func main() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
             }
@@ -29,14 +29,14 @@ class UserUpvoteToggleOperation: FetcherOperation {
                 UserUnupvoteOperation(
                     userID: self.userID,
                     userUnupvoteURL: self.unupvoteURL
-                ).rechainAfter(self).queue()
+                    ).rechainAfter(self).queue()
             }
             else {
                 UserUpvoteOperation(
                     userID: self.userID,
                     userUpvoteURL: self.upvoteURL
-                ).rechainAfter(self).queue()
+                    ).rechainAfter(self).queue()
             }
-        })
+        }
     }
 }
