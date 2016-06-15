@@ -27,5 +27,10 @@ class UserBlockOperation: FetcherOperation {
             user.isBlockedByMainUser = true
             context.v_save()
         }
+        
+        UserBlockRemoteOperation(
+            userID: userID,
+            userBlockURL: blockURL
+        )?.after(self).queue()
     }
 }

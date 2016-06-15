@@ -1714,6 +1714,10 @@
 		BF3CD8941D11EEA500CB7764 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8931D11EEA500CB7764 /* UserBlockToggleOperation.swift */; };
 		BF3CD8961D11EEDD00CB7764 /* UserBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */; };
 		BF3CD8981D11EF4F00CB7764 /* UserUnblockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8971D11EF4F00CB7764 /* UserUnblockOperation.swift */; };
+		BF3CD89A1D120F5B00CB7764 /* UserBlockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD8991D120F5B00CB7764 /* UserBlockRemoteOperation.swift */; };
+		BF3CD89C1D120F6300CB7764 /* UserUnblockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89B1D120F6300CB7764 /* UserUnblockRemoteOperation.swift */; };
+		BF3CD89E1D120F8A00CB7764 /* UserBlockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89D1D120F8A00CB7764 /* UserBlockRequest.swift */; };
+		BF3CD8A01D120F9100CB7764 /* UserUnblockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CD89F1D120F9100CB7764 /* UserUnblockRequest.swift */; };
 		BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */; };
 		BF420D171C879C0200E1C0AC /* VShowCommentsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */; };
 		BF425FEF1C87DB1A00283089 /* SequenceRepostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */; };
@@ -4482,6 +4486,10 @@
 		BF3CD8931D11EEA500CB7764 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
 		BF3CD8951D11EEDD00CB7764 /* UserBlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockOperation.swift; sourceTree = "<group>"; };
 		BF3CD8971D11EF4F00CB7764 /* UserUnblockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockOperation.swift; sourceTree = "<group>"; };
+		BF3CD8991D120F5B00CB7764 /* UserBlockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRemoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD89B1D120F6300CB7764 /* UserUnblockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRemoteOperation.swift; sourceTree = "<group>"; };
+		BF3CD89D1D120F8A00CB7764 /* UserBlockRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRequest.swift; sourceTree = "<group>"; };
+		BF3CD89F1D120F9100CB7764 /* UserUnblockRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRequest.swift; sourceTree = "<group>"; };
 		BF3EE3A91D10A67400074E71 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		BF420D161C879C0200E1C0AC /* VShowCommentsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowCommentsOperationTests.m; sourceTree = "<group>"; };
 		BF425FEE1C87DB1A00283089 /* SequenceRepostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostOperationTests.swift; sourceTree = "<group>"; };
@@ -6060,6 +6068,8 @@
 				795271011C348C8900BD41F1 /* UserSearchRequest.swift */,
 				BF3CD8891D11BC0D00CB7764 /* UserUnupvoteRequest.swift */,
 				BF3CD8871D11BBFC00CB7764 /* UserUpvoteRequest.swift */,
+				BF3CD89D1D120F8A00CB7764 /* UserBlockRequest.swift */,
+				BF3CD89F1D120F9100CB7764 /* UserUnblockRequest.swift */,
 				5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */,
 				A7FFCE421C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
@@ -8194,8 +8204,10 @@
 				A72C85E31C977FF500E97D4F /* SequenceUnlikeRemoteOperation.swift */,
 				0E8EB2D21CCF0C130087D815 /* StageContentFetchOperation.swift */,
 				67A7000E1CDD6DEA001E718E /* TutorialContentsRemoteOperation.swift */,
+				BF3CD8991D120F5B00CB7764 /* UserBlockRemoteOperation.swift */,
 				A72C85E61C977FF500E97D4F /* UsersFollowedByUserRemoteOperation.swift */,
 				A72C85E71C977FF500E97D4F /* UsersFollowingUserRemoteOperation.swift */,
+				BF3CD89B1D120F6300CB7764 /* UserUnblockRemoteOperation.swift */,
 				BF3CD8831D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift */,
 				BF3CD8851D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift */,
 			);
@@ -12010,6 +12022,7 @@
 				798AA5941C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift in Sources */,
 				A72EDF8F1C03E4D0003D6177 /* LogoutRequest.swift in Sources */,
 				A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */,
+				BF3CD89E1D120F8A00CB7764 /* UserBlockRequest.swift in Sources */,
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */,
 				A7FFCE431C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift in Sources */,
@@ -12042,6 +12055,7 @@
 				A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */,
 				0E0615091CA35D6800236D4A /* ForumEventSender.swift in Sources */,
 				0300AA551BF15CDE000A121D /* AdBreak.swift in Sources */,
+				BF3CD8A01D120F9100CB7764 /* UserUnblockRequest.swift in Sources */,
 				C314E6B91BF13AD800FB9591 /* TrendingHashtagRequest.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				0EBF41861CAB5CAE002966B3 /* BlockUser.swift in Sources */,
@@ -13049,6 +13063,7 @@
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
 				6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */,
 				F07DDE411CFCDB1500C7FC8D /* TrackableButton.swift in Sources */,
+				BF3CD89C1D120F6300CB7764 /* UserUnblockRemoteOperation.swift in Sources */,
 				A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */,
 				A72C86651C977FF600E97D4F /* ErrorOperation.swift in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
@@ -13490,6 +13505,7 @@
 				A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */,
 				F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
+				BF3CD89A1D120F5B00CB7764 /* UserBlockRemoteOperation.swift in Sources */,
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */,
 				A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */,
