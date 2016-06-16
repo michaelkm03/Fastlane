@@ -287,19 +287,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == 1)
     {
-        if (indexPath.row == VSettingsAboutActionTermsOfService)
-        {
-            [[[ShowTermsOfServiceOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
-        }
-        else if (indexPath.row == VSettingsAboutActionPrivacyPolicy)
-        {
-            [            
-//            [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
-        }
-        
-        else if (indexPath.row == VSettingsAboutActionHelp) {
-            
-        }
+        [self handleAboutSectionSelection: indexPath.row]
     }
     
     // Tracking

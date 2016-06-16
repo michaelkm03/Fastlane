@@ -109,11 +109,11 @@ class VIPGateViewController: UIViewController {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowPrivacyPolicyOperation(originViewController: self).queue()
+       // ShowPrivacyPolicyOperation(originViewController: self).queue()
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowTermsOfServiceOperation(originViewController: self).queue()
+        //ShowTermsOfServiceOperation(originViewController: self).queue()
     }
     
     // MARK: - Private

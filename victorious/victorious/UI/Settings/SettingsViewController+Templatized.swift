@@ -1,5 +1,5 @@
 //
-//  SettingsViewController+Decoration.swift
+//  SettingsViewController+Templatized.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 6/14/16.
@@ -22,7 +22,8 @@ private struct Constants {
     static let sectionHeaderTitles = ["Account", "About"]
 }
 
-///This extension handles all template based decoration for the settings page
+/// This extension handles all template based decoration for the settings page, as well as
+/// other template based functionality
 extension VSettingsViewController : VBackgroundContainer {
     override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
@@ -59,5 +60,9 @@ extension VSettingsViewController : VBackgroundContainer {
     
     public func backgroundContainerView() -> UIView {
         return self.tableView.backgroundView ?? self.view
+    }
+    
+    public func handleAboutSectionSelection(row: Int) {
+        
     }
 }
