@@ -31,10 +31,10 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: contentSize.width,
             height: contentSize.height
         )
-        cell.textView.frame = CGRect(
-            x: 0,
+        cell.captionLabel.frame = CGRect(
+            x: cell.captionInsets.left,
             y: mediaSize.height,
-            width: cell.bubbleView.bounds.width,
+            width: cell.bubbleView.bounds.width - (cell.captionInsets.left + cell.captionInsets.right),
             height: textSize.height
         )
         cell.mediaView.frame = CGRect(
@@ -63,7 +63,7 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
                 + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        cell.detailTextView.frame = CGRect(
+        cell.detailLabel.frame = CGRect(
             x: cell.contentMargin.left + cell.messageContainer.frame.origin.x,
             y: 0,
             width: cell.bounds.width,
@@ -89,10 +89,10 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: contentSize.width,
             height: contentSize.height
         )
-        cell.textView.frame = CGRect(
-            x: 0,
+        cell.captionLabel.frame = CGRect(
+            x: cell.captionInsets.left,
             y: mediaSize.height,
-            width: cell.bubbleView.bounds.width,
+            width: cell.bubbleView.bounds.width - (cell.captionInsets.left + cell.captionInsets.right),
             height: textSize.height
         )
         cell.mediaView.frame = CGRect(
@@ -125,12 +125,11 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
                 + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        
-        cell.detailTextView.frame = CGRect(
+        cell.detailLabel.frame = CGRect(
             x: cell.contentContainer.frame.maxX
                 - cell.avatarView.frame.width
                 - cell.horizontalSpacing
-                - cell.detailTextView.frame.width,
+                - cell.detailLabel.frame.width,
             y: 0,
             width: cell.bounds.width,
             height: cell.contentMargin.top
