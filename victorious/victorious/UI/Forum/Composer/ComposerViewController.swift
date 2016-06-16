@@ -525,8 +525,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         if let asset = selectedAsset {
-            //The textView currently contains an attachment representing the piece of selected media.
-            //Remove it before sending along the text as caption.
+            // The textView currently contains an attachment representing the piece of selected media.
+            // Remove it before sending along the text as caption.
             let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
             sendMessage(asset: asset, text: text, currentUser: user)
         }
