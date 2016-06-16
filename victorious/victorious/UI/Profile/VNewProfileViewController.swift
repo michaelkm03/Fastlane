@@ -9,20 +9,21 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreenContainer {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     
+    private struct AccessoryScreensKeys {
+        static let selfUser = "accessories.user.own"
+        static let otherUser = "accessories.user.other"
+        static let selfCreator = "accessories.user.creator"
+        static let otherCreator = "accessories.creator.own"
+    }
+    
     private static let upgradeButtonXPadding = CGFloat(12.0)
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
-    private struct AccessoryScreensKeys {
-        static let userOwn = "accessories.user.own"
-        static let userOther = "accessories.user.other"
-        static let userCreator = "accessories.user.creator"
-        static let creatorOwn = "accessories.creator.own"
-    }
     
     // MARK: Dependency Manager
     
@@ -179,18 +180,11 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return nil
         }
         
-        if user.isCurrentUser() {
-            if user.accessLevel == .owner {
-                return AccessoryScreensKeys.creatorOwn
-            } else {
-                return AccessoryScreensKeys.userOwn
-            }
-        } else {
-            if user.accessLevel == .user {
-                return AccessoryScreensKeys.userCreator
-            } else {
-                return AccessoryScreensKeys.userOther
-            }
+        if user.accessLevel?.isCreator == true {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
+        }
+        else {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
         }
     }
     
