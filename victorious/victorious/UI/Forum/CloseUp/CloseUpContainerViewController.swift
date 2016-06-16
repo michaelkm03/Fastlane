@@ -38,12 +38,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }()
     
     private lazy var upvoteButton: UIBarButtonItem = {
-        return UIBarButtonItem(
+        let button = UIBarButtonItem(
             image: self.dependencyManager.upvoteIconUnselected,
             style: .Done,
             target: self,
             action: #selector(toggleUpvote)
         )
+        return button
     }()
     
     init(dependencyManager: VDependencyManager,
@@ -92,7 +93,15 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             return
         }
         
-        upvoteButton.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+        if content.isLikedByCurrentUser {
+            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvotedIconTint
+        }
+        else {
+            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.tintColor = nil
+        }
+        
         navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
     }
     
@@ -144,31 +153,45 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         guard let contentID = content?.id else {
             return
         }
-        let flag = ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let isCreatorOfContent = content?.author.id == VCurrentUser.user()?.id
+        
+        let flagOrDeleteOperation = isCreatorOfContent
+            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+        
+        let actionTitle = isCreatorOfContent
+            ? NSLocalizedString("DeleteButton", comment: "")
+            : NSLocalizedString("Report/Flag", comment: "")
+        
         let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: NSLocalizedString("Report/Flag", comment: ""),
+            actionTitle: actionTitle,
             originViewController: self,
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flag)
+        confirm.before(flagOrDeleteOperation)
         confirm.queue()
-        flag.queue() { [weak self] _, _, cancelled in
+        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
             /// FUTURE: Update parent view controller to remove content
             if !cancelled {
-                self?.dismissViewControllerAnimated(true, completion: nil)
+                self?.navigationController?.popViewControllerAnimated(true)
             }
         }
     }
 }
 
 private extension VDependencyManager {
+    var upvotedIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysOriginal)
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
@@ -181,6 +204,10 @@ private extension VDependencyManager {
     
     var contentFlagURL: String {
         return networkResources?.stringForKey("contentFlagURL") ?? ""
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
     
     var contentUpvoteURL: String {

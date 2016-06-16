@@ -15,24 +15,24 @@ extension VPublishParameters {
         
         caption = content.text
         
-        guard let mediaAsset = content.assetModels.first else {
+        guard let mediaAsset = content.assets.first else {
             return nil
         }
         
         mediaToUploadURL = mediaAsset.url
         
         switch mediaAsset.contentType {
-        case .video:
-            isGIF = false
-            isVideo = true
-        case .gif:
-            isGIF = true
-            isVideo = false
-        case .image:
-            isGIF = false
-            isVideo = false
-        case .text:
-            return nil
+            case .video:
+                isGIF = false
+                isVideo = true
+            case .gif:
+                isGIF = true
+                isVideo = false
+            case .image:
+                isGIF = false
+                isVideo = false
+            case .text, .link:
+                return nil
         }
     }
 }

@@ -61,7 +61,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 return
             }
             
-            let author = content.authorModel
+            let author = content.author
             
             setHeader(for: content, author: author)
             
@@ -105,7 +105,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
-        guard let userID = content?.authorModel.id else {
+        guard let userID = content?.author.id else {
             return
         }
         delegate?.didSelectProfileForUserID(userID)

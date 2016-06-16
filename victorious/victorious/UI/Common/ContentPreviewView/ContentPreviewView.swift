@@ -85,10 +85,8 @@ class ContentPreviewView: UIView {
         }
         
         switch content.type {
-        case .video:
-            playButton.hidden = false
-        case .text, .gif, .image:
-            playButton.hidden = true
+            case .video: playButton.hidden = false
+            case .text, .link, .gif, .image: playButton.hidden = true
         }
     }
 }

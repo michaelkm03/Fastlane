@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -43,13 +43,7 @@ class VNewProfileViewController: UIViewController {
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
         
-        upgradeButton.setTitle("UPGRADE", forState: .Normal)
-        upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-        upgradeButton.sizeToFit()
-        upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
-        upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-        upgradeButton.hidden = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: upgradeButton)
+        updateUpgradeButton()
         
         fetchUser(using: dependencyManager)
     }
@@ -58,15 +52,33 @@ class VNewProfileViewController: UIViewController {
         fatalError("NSCoding not supported.")
     }
     
+    // MARK: - View updating
+    
+    private func updateUpgradeButton() {
+        if VCurrentUser.user()?.isVIPValid() == true {
+            // FUTURE: When new upgrade button appearance fields are read from template, update appearance of upgradeButton here
+        }
+        else {
+            upgradeButton.setTitle("UPGRADE", forState: .Normal)
+            upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
+            upgradeButton.sizeToFit()
+            upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
+            upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
+            upgradeButton.hidden = true
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: upgradeButton)
+            
+            if let navigationBar = navigationController?.navigationBar {
+                upgradeButton.backgroundColor = navigationBar.tintColor
+                upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
+            }
+        }
+    }
+    
     // MARK: - View events
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let navigationBar = navigationController?.navigationBar {
-            upgradeButton.backgroundColor = navigationBar.tintColor
-            upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
-        }
+        updateUpgradeButton()
     }
     
     // MARK: - View controllers
@@ -83,6 +95,12 @@ class VNewProfileViewController: UIViewController {
         ShowVIPGateOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
     }
     
+    // MARK: - VIPGateViewControllerDelegate
+    
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
+        updateUpgradeButton()
+    }
+    
     // MARK: - Managing the user
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
@@ -90,7 +108,12 @@ class VNewProfileViewController: UIViewController {
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: dependencyManager.userFetchAPIPath)
+            guard
+                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+                let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
+            else {
+                return
+            }
             
             userInfoOperation.queue { [weak self] results, error, cancelled in
                 self?.setUser(userInfoOperation.user, using: dependencyManager)
@@ -134,10 +157,6 @@ class VNewProfileViewController: UIViewController {
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    var userFetchAPIPath: String? {
-        return stringForKey("userInfoURL")
     }
 }
 

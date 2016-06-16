@@ -46,12 +46,8 @@ extension Forum {
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
-        ShowCloseUpOperation(
-            originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            content: content,
-            animated: true
-        )?.queue()
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
+        ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
     }
     
     // MARK: - ComposerDelegate

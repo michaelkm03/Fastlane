@@ -33,6 +33,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }()
     #endif
 
+    private var navBarTitleView : ForumNavBarTitleView?
+    
     // MARK: - Initialization
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
@@ -54,15 +56,21 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func receive(event: ForumEvent) {
         switch event {
-        case .websocket(let websocketEvent):
-            switch websocketEvent {
-            case .Disconnected(let webSocketError):
-                if isViewLoaded() {
-                    v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
+            case .websocket(let websocketEvent):
+                switch websocketEvent {
+                    case .Disconnected(let webSocketError):
+                        if isViewLoaded() {
+                            v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
+                        }
+                    default:
+                        break
                 }
-            default:()
-            }
-        default:()
+            case .chatUserCount(let userCount):
+                navBarTitleView?.activeUserCount = userCount.userCount
+            case .filterContent(let path):
+                composer?.setComposerVisible(path == nil, animated: true)
+            default:
+                break
         }
     }
     
@@ -156,7 +164,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-
+        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        navBarTitleView?.sizeToFit()
+        
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -190,9 +200,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewDidLoad()
         
         chatFeed?.nextSender = self
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Exit", comment: ""),
+        //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
+        navigationController?.navigationBar.barStyle = .Black
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: dependencyManager.exitButtonIcon,
             style: .Plain,
             target: self,
             action: #selector(onClose)
@@ -289,5 +301,9 @@ private extension VDependencyManager {
     
     var stageDependency: VDependencyManager? {
         return childDependencyForKey("stage")
+    }
+    
+    var exitButtonIcon: UIImage? {
+        return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
     }
 }
