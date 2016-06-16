@@ -119,7 +119,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             rightBarButtonItems.append(upvoteButton)
             rightBarButtonItems.append(overflowButton)
         }
-        
+
         navigationItem.rightBarButtonItems = rightBarButtonItems
     }
     
@@ -151,8 +151,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         
         UserUpvoteToggleOperation(
             userID: userID,
-            upvoteURL: dependencyManager.userUpvoteURL,
-            unupvoteURL: dependencyManager.userUnupvoteURL
+            upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
+            unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
             self?.updateRightBarButtonItems()
         }
@@ -278,20 +278,36 @@ private extension VDependencyManager {
 }
 
 private extension VDependencyManager {
-    var userUpvoteURL: String {
-        return networkResources?.stringForKey("userUpvoteURL") ?? ""
+    var userUpvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUpvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
     }
     
-    var userUnupvoteURL: String {
-        return networkResources?.stringForKey("userUnupvoteURL") ?? ""
+    var userUnupvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnupvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
     }
     
-    var userBlockURL: String {
-        return networkResources?.stringForKey("userBlockURL") ?? ""
+    var userBlockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userBlockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
     }
     
-    var userUnblockURL: String {
-        return networkResources?.stringForKey("userUnblockURL") ?? ""
+    var userUnblockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnblockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
     }
     
     var upvoteIconTint: UIColor? {

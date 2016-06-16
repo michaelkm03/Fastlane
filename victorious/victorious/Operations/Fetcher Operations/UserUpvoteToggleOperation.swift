@@ -10,18 +10,17 @@ import UIKit
 
 class UserUpvoteToggleOperation: FetcherOperation {
     private let userID: Int
-    private let upvoteURL: String
-    private let unupvoteURL: String
+    private let upvoteAPIPath: APIPath
+    private let unupvoteAPIPath: APIPath
     
-    init(userID: Int, upvoteURL: String, unupvoteURL: String) {
+    init(userID: Int, upvoteAPIPath: APIPath, unupvoteAPIPath: APIPath) {
         self.userID = userID
-        self.upvoteURL = upvoteURL
-        self.unupvoteURL = unupvoteURL
+        self.upvoteAPIPath = upvoteAPIPath
+        self.unupvoteAPIPath = unupvoteAPIPath
     }
     
     override func main() {
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait({ context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
             }
@@ -29,15 +28,15 @@ class UserUpvoteToggleOperation: FetcherOperation {
             if user.isFollowedByCurrentUser == true {
                 UserUnupvoteOperation(
                     userID: self.userID,
-                    userUnupvoteURL: self.unupvoteURL
-                ).rechainAfter(self).queue()
+                    userUnupvoteAPIPath: self.unupvoteAPIPath
+                    ).rechainAfter(self).queue()
             }
             else {
                 UserUpvoteOperation(
                     userID: self.userID,
-                    userUpvoteURL: self.upvoteURL
-                ).rechainAfter(self).queue()
+                    userUpvoteAPIPath: self.upvoteAPIPath
+                    ).rechainAfter(self).queue()
             }
-        })
+        }
     }
 }

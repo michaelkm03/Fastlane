@@ -28,8 +28,8 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
         
         let operation = UserUpvoteToggleOperation(
             userID: remoteUserID,
-            upvoteURL: "",
-            unupvoteURL: ""
+            upvoteAPIPath: APIPath(templatePath: ""),
+            unupvoteAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
@@ -48,8 +48,8 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
         
         let operation = UserUpvoteToggleOperation(
             userID: remoteUserID,
-            upvoteURL: "",
-            unupvoteURL: ""
+            upvoteAPIPath: APIPath(templatePath: ""),
+            unupvoteAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in

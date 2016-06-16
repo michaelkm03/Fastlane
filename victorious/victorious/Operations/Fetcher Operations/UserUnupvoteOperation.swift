@@ -9,17 +9,17 @@
 import UIKit
 
 class UserUnupvoteOperation: FetcherOperation {
-    private let userUnupvoteURL: String
+    private let userUnupvoteAPIPath: APIPath
     private let userID: Int
     
-    init(userID: Int, userUnupvoteURL: String) {
+    init(userID: Int, userUnupvoteAPIPath: APIPath) {
         self.userID = userID
-        self.userUnupvoteURL = userUnupvoteURL
+        self.userUnupvoteAPIPath = userUnupvoteAPIPath
     }
     
     override func main() {
         // Make data change optimistically before executing the request
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
             }
@@ -30,7 +30,7 @@ class UserUnupvoteOperation: FetcherOperation {
         
         UserUnupvoteRemoteOperation(
             userID: userID,
-            userUnupvoteURL: userUnupvoteURL
+            userUnupvoteAPIPath: userUnupvoteAPIPath
         )?.after(self).queue()
     }
 }

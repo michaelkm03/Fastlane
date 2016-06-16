@@ -1657,7 +1657,7 @@
 		BF20227E1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */; };
 		BF20227F1D00B9A4006B59C5 /* ContentUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */; };
 		BF2022811D00BBCC006B59C5 /* ContentFlagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022801D00BBCC006B59C5 /* ContentFlagRequest.swift */; };
-		BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift */; };
+		BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */; };
 		BF2022851D00BBE8006B59C5 /* ContentFlagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */; };
 		BF2677961CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2677951CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift */; };
 		BF2AE2BD1CD280CB00A9967A /* ConfigurableGridStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */; };
@@ -4425,7 +4425,7 @@
 		BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequest.swift; sourceTree = "<group>"; };
 		BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequest.swift; sourceTree = "<group>"; };
 		BF2022801D00BBCC006B59C5 /* ContentFlagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRequest.swift; sourceTree = "<group>"; };
-		BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRemoteOpearation.swift; sourceTree = "<group>"; };
+		BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRemoteOperation.swift; sourceTree = "<group>"; };
 		BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagOperation.swift; sourceTree = "<group>"; };
 		BF2677951CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+VUserProfile.swift"; sourceTree = "<group>"; };
 		BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeader.swift; path = GridStream/ConfigurableGridStreamHeader.swift; sourceTree = "<group>"; };
@@ -8148,7 +8148,7 @@
 				BFE25A461D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift */,
 				BF8F57A21CEBE22F00188C0E /* ContentFeedRemoteOperation.swift */,
 				BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */,
-				BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift */,
+				BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */,
 				BF2022781D00B997006B59C5 /* ContentUnupvoteRemoteOperation.swift */,
 				BF2022791D00B997006B59C5 /* ContentUpvoteRemoteOperation.swift */,
 				A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */,
@@ -12788,7 +12788,7 @@
 				D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */,
 				A72C86421C977FF500E97D4F /* UsersFollowedByUserOperation.swift in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
-				BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOpearation.swift in Sources */,
+				BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift in Sources */,
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,

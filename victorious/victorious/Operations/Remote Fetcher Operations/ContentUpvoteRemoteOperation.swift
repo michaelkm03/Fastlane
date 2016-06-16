@@ -19,6 +19,6 @@ class ContentUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil)
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }
