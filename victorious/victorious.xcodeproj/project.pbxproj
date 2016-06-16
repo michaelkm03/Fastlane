@@ -2171,7 +2171,6 @@
 		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
-		F0A8F1971D10A0A600A737F8 /* ComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A8F1961D10A0A600A737F8 /* ComposerTests.swift */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
 		F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */; };
 		F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */; };
@@ -5192,7 +5191,6 @@
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionFlowLayout.m; sourceTree = "<group>"; };
-		F0A8F1961D10A0A600A737F8 /* ComposerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTests.swift; sourceTree = "<group>"; };
 		F0AD21691AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCellFactory.h; sourceTree = "<group>"; };
 		F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewCellFactory.m; sourceTree = "<group>"; };
 		F0AD216C1AF318FC001BDCC6 /* VNoContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -10562,7 +10560,6 @@
 		F06FC1EB1C971BB300A014C7 /* Forum */ = {
 			isa = PBXGroup;
 			children = (
-				F0A8F1961D10A0A600A737F8 /* ComposerTests.swift */,
 				F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */,
 			);
 			name = Forum;
@@ -13748,7 +13745,6 @@
 				A7DCA4F41C128A78004E35B4 /* VKeyboardInputAccessoryViewTests.m in Sources */,
 				A76AEA551BFED31B00E8A26F /* AVAsset+OrientationTests.m in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
-				F0A8F1971D10A0A600A737F8 /* ComposerTests.swift in Sources */,
 				F022CFE41CFFA21B00F040BB /* VDependencyManager+SystemFontTests.swift in Sources */,
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
 				A7DCA4EC1C128A78004E35B4 /* VFollowersTextFormatterTests.m in Sources */,

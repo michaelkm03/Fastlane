@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
@@ -517,13 +518,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - Actions
     
-    @IBAction func pressedConfirmButton() {
+    @IBAction private func pressedConfirmButton() {
         guard let user = VCurrentUser.user() else {
             assertionFailure("Failed to send message due to missing a valid logged in user")
             return
         }
         
         if let asset = selectedAsset {
+            //The textView currently contains an attachment representing the piece of selected media.
+            //Remove it before sending along the text as caption.
             let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
             sendMessage(asset: asset, text: text, currentUser: user)
         }
@@ -533,8 +536,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
     }
-    
-    //SEND IN SEPARATE METHOD
     
     // MARK: - Notification response
     
