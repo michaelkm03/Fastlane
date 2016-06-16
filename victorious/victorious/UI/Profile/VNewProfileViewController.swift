@@ -98,8 +98,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateUpgradeButton()
-        
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - View controllers
@@ -122,9 +120,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         updateUpgradeButton()
     }
     
-    // MARK: - CustomAccessoryScreensKey
-    
-    func accessoryScreensKey() -> String? {
+    // MARK: - AccessoryScreensKeyProvider
+
+    var accessoryScreensKey: String? {
         guard let user = self.user else {
             return nil
         }

@@ -13,10 +13,11 @@ import Foundation
 @objc protocol AccessoryScreensKeyProvider {
    
     /// Implment this to read from a custom accessory screens key. Such as when a screen component's screens are
-    /// based on some state like representing the current user or another user.
+    /// based on some state like representing the current user or another user. This key is optional because some
+    /// screens may rely on the network to determine *which* key they should return here.
     ///
     /// - Returns: An appropriate key to use for finding accessory screens.
     ///
-    func accessoryScreensKey() -> String?
+    var accessoryScreensKey: String? { get }
     
 }
