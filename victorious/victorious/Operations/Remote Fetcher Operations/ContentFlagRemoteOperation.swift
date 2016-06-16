@@ -11,7 +11,7 @@ import UIKit
 class ContentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentFlagRequest!
     
-    init?( contentID: String, contentFlagURL: String ) {
+    init?(contentID: String, contentFlagURL: String) {
         guard let request = ContentFlagRequest(contentID: contentID, contentFlagURL: contentFlagURL) else {
             return nil
         }
@@ -19,6 +19,6 @@ class ContentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

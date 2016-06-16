@@ -29,46 +29,10 @@ class VDiscoverSuggestedPersonCellTests: BasePersistentStoreTestCase {
     }
 
     func testFollowing() {
-        let followControl = VFollowControl()
-        var operationsInQueue = [NSOperation]()
-
-        cell.onFollow(followControl)
-        
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUserToggleOperation }
-        guard let toggleOperation = operationsInQueue.first as? FollowUserToggleOperation else {
-            XCTFail("FollowUserToggleOperation should be queued when following a user")
-            return
-        }
-        toggleOperation.main()
-        
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUsersOperation }
-        guard let followOperation = operationsInQueue.first as? FollowUsersOperation else {
-            XCTFail("FollowUsersOperation should be queued after FollowUserToggleOperation")
-            return
-        }
-        XCTAssertEqual(VFollowSourceScreenDiscoverSuggestedUsers, followOperation.sourceScreenName)
+        // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
     }
 
     func testUnfollowing() {
-        FollowUsersOperation(userID: 1, sourceScreenName: "").main()
-        
-        let followControl = VFollowControl()
-        var operationsInQueue = [NSOperation]()
-        
-        cell.onFollow(followControl)
-        
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is FollowUserToggleOperation }
-        guard let toggleOperation = operationsInQueue.first as? FollowUserToggleOperation else {
-            XCTFail("FollowUserToggleOperation should be queued when unfollowing a user")
-            return
-        }
-        
-        toggleOperation.main()
-        operationsInQueue = sharedQueue.operations.filter { !$0.cancelled && $0 is UnfollowUserOperation }
-        guard let unFollowOperation = operationsInQueue.first as? UnfollowUserOperation else {
-            XCTFail("UnfollowUserOperation should be queued after FollowUserToggleOperation")
-            return
-        }
-        XCTAssertEqual(VFollowSourceScreenDiscoverSuggestedUsers, unFollowOperation.sourceScreenName)
+        // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
     }
 }

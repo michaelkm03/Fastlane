@@ -18,9 +18,37 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     private static let upgradeButtonXPadding = CGFloat(12.0)
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
     
+    private let dependencyManager: VDependencyManager
+    private var user: VUser? {
+        didSet {
+            if user != nil && user != oldValue {
+                updateRightBarButtonItems()
+            }
+        }
+    }
+    
+    private lazy var overflowButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+    }()
+    
+    private lazy var upvoteButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.upvoteIconUnselected,
+            style: .Done,
+            target: self,
+            action: #selector(toggleUpvote)
+        )
+    }()
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         
@@ -43,8 +71,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
         
-        updateUpgradeButton()
-        
         fetchUser(using: dependencyManager)
     }
     
@@ -64,9 +90,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             upgradeButton.sizeToFit()
             upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
             upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-            upgradeButton.hidden = true
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: upgradeButton)
-            
             if let navigationBar = navigationController?.navigationBar {
                 upgradeButton.backgroundColor = navigationBar.tintColor
                 upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
@@ -74,11 +97,35 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
     }
     
+    private func updateRightBarButtonItems() {
+        // Upgrade button
+        updateUpgradeButton()
+        
+        // Upvote button
+        if user?.isFollowedByCurrentUser == true {
+            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
+        }
+        else {
+            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.tintColor = nil
+        }
+        
+        var rightBarButtonItems:[UIBarButtonItem] = []
+        if shouldShowUpgradeButton() {
+            rightBarButtonItems.append(UIBarButtonItem(customView: upgradeButton))
+        }
+        if user?.id != VCurrentUser.user()?.id {
+            rightBarButtonItems.append(upvoteButton)
+        }
+
+        navigationItem.rightBarButtonItems = rightBarButtonItems
+    }
+    
     // MARK: - View events
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateUpgradeButton()
     }
     
     // MARK: - View controllers
@@ -93,6 +140,25 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     private dynamic func upgradeButtonWasPressed() {
         ShowVIPGateOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
+    }
+    
+    func toggleUpvote() {
+        guard let user = user else {
+            return
+        }
+        let userID = Int(user.id)
+        
+        UserUpvoteToggleOperation(
+            userID: userID,
+            upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
+            unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
+        ).queue { [weak self] _ in
+            self?.updateRightBarButtonItems()
+        }
+    }
+    
+    func overflow() {
+        // FUTURE: Implement overflow button
     }
     
     // MARK: - VIPGateViewControllerDelegate
@@ -130,13 +196,15 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return
         }
         
+        self.user = user
+        
         gridStreamController.content = user
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
+        updateRightBarButtonItems()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -151,6 +219,17 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }
+    }
+    
+    private func shouldShowUpgradeButton() -> Bool {
+        return !userIsVIPSubscriber() && user?.isCreator == true
+    }
+    
+    private func userIsVIPSubscriber() -> Bool {
+        guard let currentUser = VCurrentUser.user() else {
+            return false
+        }
+        return currentUser.isVIPValid()
     }
 }
 
@@ -171,5 +250,59 @@ private extension VDependencyManager {
         ]
         
         return apiPath
+    }
+}
+
+private extension VDependencyManager {
+    var userUpvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUpvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var userUnupvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnupvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var userBlockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userBlockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var userUnblockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnblockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var upvoteIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var overflowIcon: UIImage? {
+        return imageForKey("more_icon")
+    }
+    
+    var shareIcon: UIImage? {
+        return imageForKey("share_icon")
     }
 }
