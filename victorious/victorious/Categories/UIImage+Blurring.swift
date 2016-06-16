@@ -8,7 +8,7 @@
 
 import UIKit
 
-let sharedCIContext  = CIContext(options: nil)
+let sharedCIContext = CIContext(options: nil)
 
 extension UIImage {
     func applyBlur(withRadius radius: CGFloat) -> UIImage? {
