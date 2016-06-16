@@ -24,8 +24,17 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         static let creatorOwn = "accessories.creator.own"
     }
     
-    var dependencyManager: VDependencyManager?
-    var user: VUser?
+    // MARK: Dependency Manager
+    
+    let dependencyManager: VDependencyManager
+    
+    // MARK: Model Data
+    
+    var user: VUser? {
+        get {
+            return gridStreamController.content
+        }
+    }
     
     // MARK: - Initializing
     
@@ -36,6 +45,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         var configuration = GridStreamConfiguration()
         configuration.managesBackground = false
         
+        self.dependencyManager = dependencyManager
         gridStreamController = GridStreamViewController(dependencyManager: dependencyManager,
                                                         header: header,
                                                         content: nil,
@@ -55,8 +65,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         updateUpgradeButton()
         
         fetchUser(using: dependencyManager)
-        
-        self.dependencyManager = dependencyManager
     }
     
     required init?(coder: NSCoder) {
@@ -91,9 +99,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         super.viewWillAppear(animated)
         updateUpgradeButton()
         
-        if let dependencyManager = self.dependencyManager {
-            v_addAccessoryScreensWithDependencyManager(dependencyManager)
-        }
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - View controllers
@@ -167,8 +173,6 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return
         }
         
-        self.user = user
-        
         gridStreamController.content = user
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
@@ -177,10 +181,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         
         upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
         
-        if let dependencyManager = self.dependencyManager {
-            v_addAccessoryScreensWithDependencyManager(dependencyManager)
-        }
-
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
