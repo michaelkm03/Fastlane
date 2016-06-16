@@ -129,7 +129,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             rightBarButtonItems.append(upvoteButton)
         }
 
-        navigationItem.rightBarButtonItems = rightBarButtonItems
+        // This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
+//        navigationItem.rightBarButtonItems = rightBarButtonItems
     }
     
     // MARK: - View controllers
