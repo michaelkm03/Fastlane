@@ -20,6 +20,7 @@ extension ChatFeedMessageCellLayout {
         
         let mediaSize = ChatFeedMessageCell.mediaSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
         let textSize = ChatFeedMessageCell.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let captionInsets = ChatFeedMessageCell.captionInsets
         
         let contentSize = CGSize(
             width: max(textSize.width, mediaSize.width),
@@ -33,10 +34,10 @@ extension ChatFeedMessageCellLayout {
             height: contentSize.height
         )
         
-        cell.textView.frame = CGRect(
-            x: 0,
+        cell.captionLabel.frame = CGRect(
+            x: captionInsets.left,
             y: mediaSize.height,
-            width: cell.bubbleView.bounds.width,
+            width: cell.bubbleView.bounds.width - captionInsets.horizontal,
             height: textSize.height
         )
         
@@ -80,7 +81,7 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             height: cell.messageContainer.bounds.height
         )
         
-        cell.detailTextView.frame = CGRect(
+        cell.detailLabel.frame = CGRect(
             x: contentMargin.left + cell.messageContainer.frame.origin.x,
             y: 0,
             width: cell.bounds.width,
@@ -123,12 +124,11 @@ struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
                 + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        
-        cell.detailTextView.frame = CGRect(
+        cell.detailLabel.frame = CGRect(
             x: cell.contentContainer.frame.maxX
                 - cell.avatarView.frame.width
                 - horizontalSpacing
-                - cell.detailTextView.frame.width,
+                - cell.detailLabel.frame.width,
             y: 0,
             width: cell.bounds.width,
             height: contentMargin.top

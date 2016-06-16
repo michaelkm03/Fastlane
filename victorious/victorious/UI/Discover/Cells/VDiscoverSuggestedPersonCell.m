@@ -117,10 +117,7 @@
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = VFollowSourceScreenDiscoverSuggestedUsers;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 @end

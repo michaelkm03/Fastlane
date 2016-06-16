@@ -15,17 +15,22 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    
     static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
-    let detailTextView = UITextView()
+    let detailLabel = UILabel()
     let contentContainer = UIView()
     let messageContainer = UIView()
     let bubbleView = UIView()
-    let textView = UITextView()
+    let captionLabel = UILabel()
     let avatarView = VDefaultProfileImageView()
     var mediaView: MediaContentView?
+    
+    var layout: ChatFeedMessageCellLayout! {
+        didSet {
+            setNeedsLayout()
+        }
+    }
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -52,8 +57,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Configuration
     
-    static let textInsets = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
-    static let textWidthPadding = CGFloat(10.0)
+    static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 41.0, height: 41.0)
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
@@ -69,11 +73,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         bubbleView.clipsToBounds = true
         
-        configureTextView(textView)
-        configureTextView(detailTextView)
-        textView.textContainerInset = ChatFeedMessageCell.textInsets
+        captionLabel.backgroundColor = .clearColor()
+        captionLabel.numberOfLines = 0
+        detailLabel.backgroundColor = .clearColor()
         
-        contentView.addSubview(detailTextView)
+        contentView.addSubview(detailLabel)
         contentView.addSubview(contentContainer)
         
         contentContainer.addSubview(messageContainer)
@@ -81,13 +85,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         messageContainer.addSubview(bubbleView)
         
-        bubbleView.addSubview(textView)
-    }
-    
-    private func configureTextView(textView: UITextView) {
-        textView.backgroundColor = nil
-        textView.scrollEnabled = false
-        textView.editable = false
+        bubbleView.addSubview(captionLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -113,9 +111,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func updateStyle() {
-        detailTextView.contentInset = UIEdgeInsetsZero
-        detailTextView.font = dependencyManager.userLabelFont
-        detailTextView.textColor = dependencyManager.userLabelColor
+        detailLabel.font = dependencyManager.userLabelFont
+        detailLabel.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
@@ -128,7 +125,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func populateData() {
-        textView.attributedText = content?.attributedText(using: dependencyManager)
+        captionLabel.attributedText = content?.attributedText(using: dependencyManager)
         
         if let content = content where content.type.hasMedia {
             let mediaView = createMediaViewIfNeeded()
@@ -139,7 +136,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             mediaView?.hidden = true
         }
         
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
+        detailLabel.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
         
         updateTimestamp()
         
@@ -167,10 +164,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     func updateTimestamp() {
         if let name = content?.author.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
+            detailLabel.text = "\(name) (\(timeStamp))"
         }
         else {
-            detailTextView.text = ""
+            detailLabel.text = ""
         }
     }
     
@@ -196,11 +193,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
             context: nil
         ).size
         
-        // We shouldn't need to use `textWidthPadding`, but if we size the text view based on the calculated text size,
-        // it won't be wide enough and will cut off the text. There's likely some other layout factor involved in the
-        // text view that we could account for, but it's not clear what that would be.
-        size.width += textInsets.left + textInsets.right + textWidthPadding
-        size.height += textInsets.bottom + textInsets.top
+        size.width += captionInsets.horizontal
+        size.height += captionInsets.vertical
         return size
     }
     
