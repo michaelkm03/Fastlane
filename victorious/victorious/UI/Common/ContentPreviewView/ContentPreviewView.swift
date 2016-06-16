@@ -80,17 +80,18 @@ class ContentPreviewView: UIView {
                 return
         }
         
-//        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
-//        let contentIsForVIPOnly = content.isVIPOnly
-//        if !userIsVIP && contentIsForVIPOnly {
+        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
+        let contentIsForVIPOnly = content.isVIPOnly
+        if !userIsVIP && contentIsForVIPOnly {
             vipIcon.hidden = false
             previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                 self?.previewImageView.alpha = 1
             }
-//        } else {
-//            vipIcon.hidden = true
-//            previewImageView.sd_setImageWithURL(previewImageURL)
-//        }
+        }
+        else {
+            vipIcon.hidden = true
+            previewImageView.sd_setImageWithURL(previewImageURL)
+        }
         
         switch content.type {
             case .video: playButton.hidden = false
