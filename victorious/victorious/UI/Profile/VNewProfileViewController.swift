@@ -168,7 +168,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             let isBlocked = user?.isBlockedByCurrentUser,
             let userID = user?.id
         else {
-                return
+            return
         }
         
         let toggleBlockedOperation = UserBlockToggleOperation(
