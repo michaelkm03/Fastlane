@@ -6,9 +6,28 @@
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
 
+/// Conformers are models that store information about a user in the app
+/// Consumers can directly use this type without caring what the concrete type is, persistent or not.
+public protocol UserModel: PreviewImageContainer {
+    var id: Int { get }
+    var email: String? { get }
+    var name: String? { get }
+    var completedProfile: Bool? { get }
+    var location: String? { get }
+    var tagline: String? { get }
+    var fanLoyalty: FanLoyalty? { get }
+    var isBlockedByCurrentUser: Bool? { get }
+    var accessLevel: User.AccessLevel? { get }
+    var isFollowedByCurrentUser: Bool? { get }
+    var likesGiven: Int? { get }
+    var likesReceived: Int? { get }
+    var previewImages: [ImageAssetModel] { get }
+    var avatarBadgeType: AvatarBadgeType { get }
+    var vipStatus: VIPStatus? { get }
+}
+
 /// A struct representing a user's information
-public struct User {
-    
+public struct User: UserModel {
     public enum AccessLevel {
         case owner, user
         
@@ -43,13 +62,13 @@ public struct User {
     public let numberOfFollowing: Int?
     public let likesGiven: Int?
     public let likesReceived: Int?
-    public let previewImages: [ImageAsset]
+    public let previewImages: [ImageAssetModel]
     public let maxVideoUploadDuration: Int?
     public let avatarBadgeType: AvatarBadgeType
     public let vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
-    // comprehensive, such as the call in `UserModel`'s `toSDKUser`.
+    // comprehensive.
     public init(
         id: Int,
         email: String? = nil,
@@ -66,7 +85,7 @@ public struct User {
         numberOfFollowing: Int? = nil,
         likesGiven: Int? = nil,
         likesReceived: Int? = nil,
-        previewImages: [ImageAsset] = [],
+        previewImages: [ImageAssetModel] = [],
         maxVideoUploadDuration: Int? = nil,
         avatarBadgeType: AvatarBadgeType = .None,
         vipStatus: VIPStatus? = nil

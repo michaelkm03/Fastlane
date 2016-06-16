@@ -8,50 +8,63 @@
 
 import UIKit
 
-class ShowCloseUpOperation: MainQueueOperation {
+/// Encapsulates values used when displaying the close up view
+/// and other view controllers associated with these operations
+struct ShowCloseUpDisplayModifier {
+    let dependencyManager: VDependencyManager
+    let animated: Bool
+    weak var originViewController: UIViewController?
     
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
-    private weak var originViewController: UIViewController?
-    private var contentID: String?
-    private var content: ContentModel?
-    
-    init?( originViewController: UIViewController,
-           dependencyManager: VDependencyManager,
-           contentID: String,
-           animated: Bool = true) {
+    init(dependencyManager: VDependencyManager, originViewController: UIViewController, animated: Bool = true) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
-        self.contentID = contentID
-        super.init()
+    }
+}
+
+/// Shows a close up view displaying the provided content.
+class ShowCloseUpOperation: MainQueueOperation {
+    private let displayModifier: ShowCloseUpDisplayModifier
+    private var content: ContentModel?
+    private var contentID: String?
+    private(set) var displayedCloseUpView: CloseUpContainerViewController?
+    
+    static func showOperation(forContent content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
+        return ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier)
     }
     
-    init?( originViewController: UIViewController,
-           dependencyManager: VDependencyManager,
-           content: ContentModel,
-           animated: Bool = true) {
-        self.dependencyManager = dependencyManager
-        self.originViewController = originViewController
-        self.animated = animated
+    static func showOperation(forContentID contentID: String, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
+        return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
+    }
+    
+    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
+        self.displayModifier = displayModifier
         self.content = content
         super.init()
     }
     
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
+        self.displayModifier = displayModifier
+        self.contentID = contentID
+        super.init()
+    }
+    
     override func start() {
-        
-        guard let childDependencyManager = dependencyManager.childDependencyForKey("closeUpView"),
-            let originViewController = originViewController
-            where !self.cancelled else {
-                finishedExecuting()
-                return
-        }
         defer {
             finishedExecuting()
         }
         
+        guard
+            !cancelled,
+            let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
+            let originViewController = displayModifier.originViewController,
+            let contentID = contentID ?? content?.id
+        else {
+                return
+        }
+        
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
-            "%%CONTENT_ID%%": contentID ?? content?.id ?? "",
+            "%%CONTENT_ID%%": contentID,
             "%%CONTEXT%%" : childDependencyManager.context
         ])
         
@@ -60,41 +73,18 @@ class ShowCloseUpOperation: MainQueueOperation {
             content: content,
             streamAPIPath: apiPath
         )
+        displayedCloseUpView = closeUpViewController
         
+        let animated = displayModifier.animated
         if let originViewController = originViewController as? UINavigationController {
             originViewController.pushViewController(closeUpViewController, animated: animated)
         } else {
             originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
         }
-        
-        /// FUTURE: do a new load of the content anyway
-        if content == nil {
-            guard let contentID = contentID else {
-                assertionFailure("contentID should not be nil if content is nil")
-                return
-            }
-            /// CloseUpHeader loading
-            guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
-                return
-            }
-            ContentFetchOperation(
-                macroURLString: dependencyManager.contentFetchURL,
-                currentUserID: String(userID),
-                contentID: contentID
-            ).rechainAfter(self).queue() { results, error, cancelled in
-                if let content = results?.first as? VContent {
-                    closeUpViewController.updateContent(content)
-                }
-            }
-        }
     }
 }
 
 private extension VDependencyManager {
-    var contentFetchURL: String {
-        return networkResources?.stringForKey("contentFetchURL") ?? ""
-    }
-    
     var relatedContentURL: String {
         return stringForKey("streamURL") ?? ""
     }

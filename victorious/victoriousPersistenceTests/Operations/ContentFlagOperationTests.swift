@@ -10,7 +10,6 @@ import XCTest
 @testable import victorious
 
 class ContentFlagOperationTests: BaseFetcherOperationTestCase {
-    
     func testWithConfirmation() {
         let operation = ContentFlagOperation(contentID: "12345", contentFlagURL: "")
         
@@ -48,5 +47,4 @@ class ContentFlagOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( dependentOperations.count, 0 )
         }
     }
-    
 }

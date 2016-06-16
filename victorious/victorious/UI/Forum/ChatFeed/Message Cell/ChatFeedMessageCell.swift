@@ -23,17 +23,18 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
-    let detailTextView = UITextView()
+    let detailLabel = UILabel()
     let contentContainer = UIView()
     let messageContainer = UIView()
     let bubbleView = UIView()
-    let textView = UITextView()
+    let captionLabel = UILabel()
     let mediaView = MediaContentView()
     let avatarView = VDefaultProfileImageView()
     
     let horizontalSpacing: CGFloat = 10.0
     let avatarSize = CGSize(width: 41.0, height: 41.0)
     let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
     var layout: ChatFeedMessageCellLayout! {
         didSet {
@@ -79,10 +80,11 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         bubbleView.clipsToBounds = true
         
-        configureTextView(textView)
-        configureTextView(detailTextView)
+        captionLabel.backgroundColor = .clearColor()
+        captionLabel.numberOfLines = 0
+        detailLabel.backgroundColor = .clearColor()
         
-        contentView.addSubview(detailTextView)
+        contentView.addSubview(detailLabel)
         contentView.addSubview(contentContainer)
         
         contentContainer.addSubview(messageContainer)
@@ -90,13 +92,8 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         messageContainer.addSubview(bubbleView)
         
-        bubbleView.addSubview(textView)
+        bubbleView.addSubview(captionLabel)
         bubbleView.addSubview(mediaView)
-    }
-    
-    private func configureTextView(textView: UITextView) {
-        textView.backgroundColor = nil
-        textView.scrollEnabled = false
     }
     
     required init?(coder: NSCoder) {
@@ -122,9 +119,8 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     private func updateStyle() {
-        detailTextView.contentInset = UIEdgeInsetsZero
-        detailTextView.font = dependencyManager.userLabelFont
-        detailTextView.textColor = dependencyManager.userLabelColor
+        detailLabel.font = dependencyManager.userLabelFont
+        detailLabel.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
@@ -137,28 +133,34 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     private func populateData() {
-        textView.attributedText = attributedText
+        captionLabel.attributedText = attributedText
         
-        if let content = content {
+        if let content = content where content.type != .text {
+            mediaView.hidden = false
             mediaView.updateContent(content)
         }
+        else {
+            mediaView.hidden = true
+        }
         
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.authorModel.id
+        detailLabel.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
         
         updateTimestamp()
         
-        if let imageURL = content?.authorModel.previewImageURL(ofMinimumSize: avatarView.frame.size) {
+        if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
-        } else {
+        }
+        else {
             avatarView.image = nil
         }
     }
     
     func updateTimestamp() {
-        if let name = content?.authorModel.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
-        } else {
-            detailTextView.text = ""
+        if let name = content?.author.name, timeStamp = content?.timeLabel {
+            detailLabel.text = "\(name) (\(timeStamp))"
+        }
+        else {
+            detailLabel.text = ""
         }
     }
     
@@ -192,14 +194,14 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         var size = attributedText.boundingRectWithSize(availableSizeForWidth,
             options: [ .UsesLineFragmentOrigin ],
             context: nil).size
-        size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         
-        size.width += contentMargin.left //< Eh, this isn't quite right, thought it looks okay fr now
+        size.width += captionInsets.left + captionInsets.right
+        size.height += captionInsets.top + captionInsets.bottom
         return size
     }
     
     func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let unclampedAspectRatio = content?.aspectRatio where content?.assetModels.isEmpty == false else {
+        guard let unclampedAspectRatio = content?.aspectRatio where content?.assets.isEmpty == false else {
             return CGSize.zero
         }
         
@@ -227,8 +229,13 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
 }
 
+private extension ContentModel {
+    var timeLabel: String {
+        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+}
+
 private extension VDependencyManager {
-    
     func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
         let defaultMinimum = 1.0
         let defaultMaximum = 4.0

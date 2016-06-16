@@ -19,15 +19,17 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     
     override var selected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
         }
     }
     
     // MARK: - List Menu Section Cell
     
-    var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {
         didSet {
-            applyTemplateAppearance(with: dependencyManager)
+            if let dependencyManager = dependencyManager {
+                applyTemplateAppearance(with: dependencyManager)
+            }
         }
     }
 
@@ -41,7 +43,7 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
             titleBackgroundView.backgroundColor = nil
         } else {
             backgroundContainer.backgroundColor = nil
-            titleBackgroundView.backgroundColor = dependencyManager.hashtagBackgroundColor
+            titleBackgroundView.backgroundColor = dependencyManager?.hashtagBackgroundColor
         }
     }
     

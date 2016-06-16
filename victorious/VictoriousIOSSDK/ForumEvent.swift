@@ -9,19 +9,23 @@
 /// An event that can be broadcast in the forum event chain.
 public enum ForumEvent {
     /// Requests that the given content is appended to the chat feed.
-    case appendContent([Content])
+    case appendContent([ContentModel])
     
     /// Requests that the given content is prepended to the chat feed.
-    case prependContent([Content])
+    case prependContent([ContentModel])
     
     /// Requests that the current chat feed content is replaced with the given content.
-    case replaceContent([Content])
+    case replaceContent([ContentModel])
     
     /// Requests loading of older content in the chat feed.
     case loadOldContent
     
     /// Sends content created by the user.
-    case sendContent(Content)
+    case sendContent(ContentModel)
+    
+    /// Notifies that a filter has been applied to the chat feed using the given API path. A nil value indicates that
+    /// no filter is being applied.
+    case filterContent(path: APIPath?)
     
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)

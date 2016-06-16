@@ -55,19 +55,34 @@ NSString * const VDependencyManagerAccessoryScreensKey = @"accessoryScreens";
 
 - (NSArray *)accessoryMenuItems
 {
-    return [self accessoryMenuItemsWithInheritance:YES];
+    return [self accessoryMenuItemsWithKey:nil];
+}
+
+- (NSArray *)accessoryMenuItemsWithKey:(NSString *)key
+{
+    return [self accessoryMenuItemsWithInheritance:YES
+                                               key:key];
 }
 
 - (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance
 {
+    return [self accessoryMenuItemsWithInheritance:withInheritance
+                                               key:VDependencyManagerAccessoryScreensKey];
+}
+
+- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance
+                                           key:(NSString *)key
+{
+    NSString *nonNullKey = key ?: VDependencyManagerAccessoryScreensKey;
+    
     if ( !withInheritance )
     {
-        if ( self.configuration[ VDependencyManagerAccessoryScreensKey ] == nil )
+        if ( self.configuration[ nonNullKey ] == nil )
         {
             return nil;
         }
     }
-    NSArray *accessoryMenuItems = [self arrayForKey:VDependencyManagerAccessoryScreensKey];
+    NSArray *accessoryMenuItems = [self arrayForKey:nonNullKey];
     return [self menuItemsWithArrayOfDictionaryRepresentations:accessoryMenuItems];
 }
 

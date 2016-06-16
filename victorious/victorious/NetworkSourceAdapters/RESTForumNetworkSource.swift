@@ -16,6 +16,15 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         dataSource = TimePaginatedDataSource(apiPath: self.dependencyManager.mainFeedAPIPath) {
             ContentFeedOperation(url: $0)
         }
+        
+        super.init()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(handleUpdateStreamURLNotification),
+            name: RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil
+        )
     }
     
     // MARK: - Dependency manager
@@ -25,6 +34,29 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: - Data source
     
     let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    
+    private var filteredStreamAPIPath: APIPath? {
+        didSet {
+            let newAPIPath = filteredStreamAPIPath ?? dependencyManager.mainFeedAPIPath
+            
+            guard newAPIPath != dataSource.apiPath else {
+                return
+            }
+            
+            broadcast(.filterContent(path: filteredStreamAPIPath))
+            
+            dataSource.apiPath = newAPIPath
+            
+            dataSource.loadItems(.refresh) { [weak self] contents, _ in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                let contents = strongSelf.processContents(contents)
+                strongSelf.broadcast(.replaceContent(contents))
+            }
+        }
+    }
     
     // MARK: - Polling
     
@@ -45,9 +77,32 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     @objc private func pollForNewContent() {
-        dataSource.loadItems(.newer) { [weak self] contents, error in
-            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+        dataSource.loadItems(.newer) { [weak self] contents, _ in
+            guard let contents = self?.processContents(contents) else {
+                return
+            }
+            
+            self?.broadcast(.appendContent(contents))
         }
+    }
+    
+    // MARK: - Processing content
+    
+    private func processContents(contents: [ContentModel]) -> [ContentModel] {
+        return contents.reverse()
+    }
+    
+    // MARK: - Notifications
+    
+    /// A notification that can be posted to update the API path used to fetch content in the stream.
+    ///
+    /// This notification's `userInfo` should contain a `streamAPIPath` key set to a `ReferenceWrapper<APIPath>`
+    /// containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
+    ///
+    static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
+    
+    private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
+        filteredStreamAPIPath = (notification.userInfo?["streamAPIPath"] as? ReferenceWrapper<APIPath>)?.value
     }
     
     // MARK: - ForumNetworkSource
@@ -56,7 +111,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         
         dataSource.loadItems(.refresh) { [weak self] contents, error in
-            self?.broadcast(.appendContent(contents.reverse().map { $0.toSDKContent() }))
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let contents = strongSelf.processContents(contents)
+            strongSelf.broadcast(.appendContent(contents))
         }
         
         startPolling()
@@ -90,7 +150,12 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .loadOldContent:
             dataSource.loadItems(.older) { [weak self] contents, error in
-                self?.broadcast(.prependContent(contents.reverse().map { $0.toSDKContent() }))
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                let contents = strongSelf.processContents(contents)
+                strongSelf.broadcast(.prependContent(contents))
             }
         default:
             break

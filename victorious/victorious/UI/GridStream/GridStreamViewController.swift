@@ -167,8 +167,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        guard let header = header,
-            content = content else {
+        guard let header = header else {
             return CGSizeZero
         }
         let size = header.sizeForHeader(
@@ -199,6 +198,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             footerView.activityIndicator.color = dependencyManager.refreshControlColor
             footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: true)
         }
+        else if elementKind == UICollectionElementKindSectionHeader {
+            header?.headerWillAppear()
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if elementKind == UICollectionElementKindSectionHeader {
+            header?.headerDidDisappear()
+        }
     }
     
     func collectionView(collectionView: UICollectionView,
@@ -208,11 +216,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        ShowCloseUpOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            content: dataSource.items[indexPath.row]
-        )?.queue()
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
+        ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
     }
 }
 
