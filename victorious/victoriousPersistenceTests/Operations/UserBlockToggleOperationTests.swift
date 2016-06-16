@@ -28,8 +28,8 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
         
         let operation = UserBlockToggleOperation(
             userID: user.id,
-            blockURL: "",
-            unblockURL: ""
+            blockAPIPath: APIPath(templatePath: ""),
+            unblockAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
@@ -48,8 +48,8 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
         
         let operation = UserBlockToggleOperation(
             userID: user.id,
-            blockURL: "",
-            unblockURL: ""
+            blockAPIPath: APIPath(templatePath: ""),
+            unblockAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in

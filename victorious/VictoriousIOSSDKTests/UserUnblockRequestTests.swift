@@ -10,12 +10,12 @@ import XCTest
 
 class UserUnblockRequestTests: XCTestCase {
     func testBadRequest() {
-        let request = UserUnblockRequest(userID: 123, userUnblockURL: "#$%^&")
+        let request = UserUnblockRequest(userID: 123, userUnblockAPIPath: APIPath(templatePath: "#$%^&"))
         XCTAssertNil(request)
     }
     
     func testRequest() {
-        let request = UserUnblockRequest(userID: 123, userUnblockURL: "www.google.com/%%USER_ID%%")
+        let request = UserUnblockRequest(userID: 123, userUnblockAPIPath: APIPath(templatePath: "www.google.com/%%USER_ID%%"))
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }
