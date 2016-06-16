@@ -11,11 +11,17 @@ import Foundation
 /// Objects in the responder chain that conform to this protocol are given opportunities to customize their role in the
 /// dependency manager accessory screen system.
 @objc protocol AccessoryScreenContainer {
-    /// Implment this to read from a custom accessory screens key. Such as when a screen component's screens are
+    /// Implement this to read from a custom accessory screens key. Such as when a screen component's screens are
     /// based on some state like representing the current user or another user. This key is optional because some
     /// screens may rely on the network to determine *which* key they should return here.
     ///
     /// - Returns: An appropriate key to use for finding accessory screens.
     ///
     var accessoryScreensKey: String? { get }
+    
+    /// Allows conformers to augment the left bar button items created from the template with their own custom items.
+    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem]
+    
+    /// Allows conformers to augment the right bar button items created from the template with their own custom items.
+    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem]
 }

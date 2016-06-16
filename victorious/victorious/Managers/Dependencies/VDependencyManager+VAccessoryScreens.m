@@ -125,6 +125,13 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     objc_setAssociatedObject( sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey, [badgeableBarButtons copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC );
     
+    if ([sourceViewController conformsToProtocol:@protocol(AccessoryScreenContainer)])
+    {
+        id<AccessoryScreenContainer> container = (id<AccessoryScreenContainer>)sourceViewController;
+        newBarButtonItemsLeft = [[container addCustomLeftItemsTo:newBarButtonItemsLeft] mutableCopy];
+        newBarButtonItemsRight = [[container addCustomRightItemsTo:newBarButtonItemsRight] mutableCopy];
+    }
+    
     BOOL shouldAnimate;
     
     navigationItem.leftItemsSupplementBackButton = YES;
