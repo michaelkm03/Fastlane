@@ -1674,8 +1674,6 @@
 		BF2D25641CED3A3A0001A2AF /* VContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D255F1CED3A3A0001A2AF /* VContentMediaAsset.swift */; };
 		BF2D257B1CED40CC0001A2AF /* ContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D257A1CED40CC0001A2AF /* ContentTests.swift */; };
 		BF2D257F1CED40E60001A2AF /* ContentMediaAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D257E1CED40E60001A2AF /* ContentMediaAssetTests.swift */; };
-		BF30D1501D08C48E00398C7E /* VIPBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF30D14F1D08C48E00398C7E /* VIPBadgeView.swift */; };
-		BF30D1521D08C49800398C7E /* VIPBadgeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF30D1511D08C49800398C7E /* VIPBadgeView.xib */; };
 		BF3777D51CEE4D5800AEF7F2 /* Content.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777C71CEE4D5800AEF7F2 /* Content.json */; };
 		BF3777D61CEE4D5800AEF7F2 /* ContentInvalidID.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777C81CEE4D5800AEF7F2 /* ContentInvalidID.json */; };
 		BF3777D71CEE4D5800AEF7F2 /* ContentInvalidPreviewType.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3777C91CEE4D5800AEF7F2 /* ContentInvalidPreviewType.json */; };
@@ -4446,8 +4444,6 @@
 		BF2D257A1CED40CC0001A2AF /* ContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentTests.swift; path = ViewedContent/ContentTests.swift; sourceTree = "<group>"; };
 		BF2D257E1CED40E60001A2AF /* ContentMediaAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentMediaAssetTests.swift; path = ViewedContent/ContentMediaAssetTests.swift; sourceTree = "<group>"; };
 		BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperationTests.swift; sourceTree = "<group>"; };
-		BF30D14F1D08C48E00398C7E /* VIPBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPBadgeView.swift; sourceTree = "<group>"; };
-		BF30D1511D08C49800398C7E /* VIPBadgeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VIPBadgeView.xib; sourceTree = "<group>"; };
 		BF3777C71CEE4D5800AEF7F2 /* Content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Content.json; path = ViewedContent/Content.json; sourceTree = "<group>"; };
 		BF3777C81CEE4D5800AEF7F2 /* ContentInvalidID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ContentInvalidID.json; path = ViewedContent/ContentInvalidID.json; sourceTree = "<group>"; };
 		BF3777C91CEE4D5800AEF7F2 /* ContentInvalidPreviewType.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ContentInvalidPreviewType.json; path = ViewedContent/ContentInvalidPreviewType.json; sourceTree = "<group>"; };
@@ -5587,8 +5583,6 @@
 				A7724FEF1B33746A00B1BBB3 /* VCreatorInfoHelper.h */,
 				A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */,
 				D8C8F5711A0400DF006BE3E8 /* VExtendedView.h */,
-				BF30D14F1D08C48E00398C7E /* VIPBadgeView.swift */,
-				BF30D1511D08C49800398C7E /* VIPBadgeView.xib */,
 				D8C8F5721A0400DF006BE3E8 /* VExtendedView.m */,
 				A7D3782D1AEF39FC007FF197 /* VHashtagSelectionResponder.h */,
 				D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */,
@@ -11504,7 +11498,6 @@
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				670A3B191CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard in Resources */,
-				BF30D1521D08C49800398C7E /* VIPBadgeView.xib in Resources */,
 				A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */,
 				039269C91B5F370F00FCD0AA /* VPublishViewController.xib in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
@@ -12599,7 +12592,6 @@
 				A72C862B1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
 				A72C86911C977FF600E97D4F /* CreateTextPostOperation.swift in Sources */,
-				BF30D1501D08C48E00398C7E /* VIPBadgeView.swift in Sources */,
 				A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
 				F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */,

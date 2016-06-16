@@ -51,7 +51,7 @@ class VContentOnlyCell: UICollectionViewCell {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if oldValue != dependencyManager {
+            if dependencyManager != nil && dependencyManager != oldValue {
                 contentPreviewView.dependencyManager = dependencyManager
             }
         }
