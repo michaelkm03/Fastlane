@@ -23,17 +23,18 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
-    let detailTextView = UITextView.unselectableInstance()
+    let detailLabel = UILabel()
     let contentContainer = UIView()
     let messageContainer = UIView()
     let bubbleView = UIView()
-    let textView = UITextView.unselectableInstance()
+    let captionLabel = UILabel()
     let mediaView = MediaContentView()
     let avatarView = VDefaultProfileImageView()
     
     let horizontalSpacing: CGFloat = 10.0
     let avatarSize = CGSize(width: 41.0, height: 41.0)
     let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
     var layout: ChatFeedMessageCellLayout! {
         didSet {
@@ -79,10 +80,11 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         bubbleView.clipsToBounds = true
         
-        configureTextView(textView)
-        configureTextView(detailTextView)
+        captionLabel.backgroundColor = .clearColor()
+        captionLabel.numberOfLines = 0
+        detailLabel.backgroundColor = .clearColor()
         
-        contentView.addSubview(detailTextView)
+        contentView.addSubview(detailLabel)
         contentView.addSubview(contentContainer)
         
         contentContainer.addSubview(messageContainer)
@@ -90,14 +92,8 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         
         messageContainer.addSubview(bubbleView)
         
-        bubbleView.addSubview(textView)
+        bubbleView.addSubview(captionLabel)
         bubbleView.addSubview(mediaView)
-    }
-    
-    private func configureTextView(textView: UITextView) {
-        textView.backgroundColor = nil
-        textView.scrollEnabled = false
-        textView.editable = false
     }
     
     required init?(coder: NSCoder) {
@@ -123,9 +119,8 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     private func updateStyle() {
-        detailTextView.contentInset = UIEdgeInsetsZero
-        detailTextView.font = dependencyManager.userLabelFont
-        detailTextView.textColor = dependencyManager.userLabelColor
+        detailLabel.font = dependencyManager.userLabelFont
+        detailLabel.textColor = dependencyManager.userLabelColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
@@ -138,7 +133,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     }
     
     private func populateData() {
-        textView.attributedText = attributedText
+        captionLabel.attributedText = attributedText
         
         if let content = content where content.type != .text {
             mediaView.hidden = false
@@ -148,7 +143,7 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
             mediaView.hidden = true
         }
         
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
+        detailLabel.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
         
         updateTimestamp()
         
@@ -162,10 +157,10 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     func updateTimestamp() {
         if let name = content?.author.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
+            detailLabel.text = "\(name) (\(timeStamp))"
         }
         else {
-            detailTextView.text = ""
+            detailLabel.text = ""
         }
     }
     
@@ -199,9 +194,9 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         var size = attributedText.boundingRectWithSize(availableSizeForWidth,
             options: [ .UsesLineFragmentOrigin ],
             context: nil).size
-        size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         
-        size.width += contentMargin.left //< Eh, this isn't quite right, thought it looks okay fr now
+        size.width += captionInsets.left + captionInsets.right
+        size.height += captionInsets.top + captionInsets.bottom
         return size
     }
     
