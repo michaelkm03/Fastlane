@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -17,13 +17,22 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     private static let upgradeButtonXPadding = CGFloat(12.0)
     private static let upgradeButtonCornerRadius = CGFloat(5.0)
+    private struct AccessoryScreensKeys {
+        static let userOwn = "accessories.user.own"
+        static let userOther = "accessories.user.other"
+        static let userCreator = "accessories.user.creator"
+        static let creatorOwn = "accessories.creator.own"
+    }
     
-    private let dependencyManager: VDependencyManager
-    private var user: VUser? {
-        didSet {
-            if user != nil && user != oldValue {
-                updateRightBarButtonItems()
-            }
+    // MARK: Dependency Manager
+    
+    let dependencyManager: VDependencyManager
+    
+    // MARK: Model Data
+    
+    var user: VUser? {
+        get {
+            return gridStreamController.content
         }
     }
     
@@ -49,6 +58,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         
@@ -119,13 +129,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             rightBarButtonItems.append(upvoteButton)
         }
 
-        navigationItem.rightBarButtonItems = rightBarButtonItems
-    }
-    
-    // MARK: - View events
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
+//        navigationItem.rightBarButtonItems = rightBarButtonItems
     }
     
     // MARK: - View controllers
@@ -167,6 +172,28 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         updateUpgradeButton()
     }
     
+    // MARK: - AccessoryScreensKeyProvider
+
+    var accessoryScreensKey: String? {
+        guard let user = self.user else {
+            return nil
+        }
+        
+        if user.isCurrentUser() {
+            if user.accessLevel == .owner {
+                return AccessoryScreensKeys.creatorOwn
+            } else {
+                return AccessoryScreensKeys.userOwn
+            }
+        } else {
+            if user.accessLevel == .user {
+                return AccessoryScreensKeys.userCreator
+            } else {
+                return AccessoryScreensKeys.userOther
+            }
+        }
+    }
+    
     // MARK: - Managing the user
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
@@ -196,15 +223,15 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return
         }
         
-        self.user = user
-        
         gridStreamController.content = user
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        updateRightBarButtonItems()
+        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
+        
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
