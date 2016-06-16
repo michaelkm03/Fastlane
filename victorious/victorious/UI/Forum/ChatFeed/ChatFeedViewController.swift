@@ -109,6 +109,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         messageCell.delegate = self
     }
     
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! ChatFeedMessageCell).stopDisplaying()
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }

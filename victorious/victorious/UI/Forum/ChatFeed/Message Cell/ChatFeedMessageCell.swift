@@ -129,7 +129,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         if let content = content where content.type.hasMedia {
             let mediaView = createMediaViewIfNeeded()
-            mediaView.updateContent(content)
+            mediaView.content = content
             mediaView.hidden = false
         }
         else {
@@ -154,6 +154,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         let mediaView = MediaContentView(showsBackground: false)
+        mediaView.animatesBetweenContent = false
         mediaView.clipsToBounds = true
         mediaView.translatesAutoresizingMaskIntoConstraints = false
         mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
@@ -169,6 +170,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
         else {
             detailLabel.text = ""
         }
+    }
+    
+    // MARK: - Managing lifecycle
+    
+    /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
+    /// and frees up resources that are no longer needed.
+    func stopDisplaying() {
+        mediaView?.content = nil
     }
     
     // MARK: - Sizing
