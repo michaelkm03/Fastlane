@@ -262,20 +262,12 @@ private extension ContentModel {
         return wasCreatedByCurrentUser ? RightAlignmentCellLayout() : LeftAlignmentCellLayout()
     }
     
-    var textAlignment: NSTextAlignment {
-        return wasCreatedByCurrentUser ? .Right : .Left
-    }
-    
     func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
         guard let text = text where text != "" else {
             return nil
         }
         
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = textAlignment
-        
         return NSAttributedString(string: text, attributes: [
-            NSParagraphStyleAttributeName: paragraphStyle,
             NSForegroundColorAttributeName: dependencyManager.messageTextColor,
             NSFontAttributeName: dependencyManager.messageFont
         ])

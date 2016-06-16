@@ -213,6 +213,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                         if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
                             layout.contentSizeWhenInsertingAbove = collectionView.contentSize
                         }
+                        else {
+                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                        }
                         
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                             NSIndexPath(forItem: $0, inSection: 0)

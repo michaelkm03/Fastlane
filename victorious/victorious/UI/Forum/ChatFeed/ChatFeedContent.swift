@@ -11,7 +11,7 @@ import Foundation
 /// A wrapper around a `ContentModel` that contains extra information specific to the chat feed.
 class ChatFeedContent {
     /// The content model.
-    var content: ContentModel
+    let content: ContentModel
     
     /// The calculated size of the content's `ChatFeedMessageCell`, which we cache for performance.
     ///
