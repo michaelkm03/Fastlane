@@ -19,11 +19,12 @@ public struct UserBlockRequest: RequestType {
     private let userBlockURL: NSURL
     private let userID: String
     
-    public init?(userID: Int, userBlockURL: String) {
+    public init?(userID: Int, userBlockAPIPath: APIPath) {
+        var userBlockAPIPath = userBlockAPIPath
         self.userID = String(userID)
-        let replacementDictionary: [String: String] = ["%%USER_ID%%": self.userID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: userBlockURL)
-        guard let validURL = NSURL(string: replacedURL) else {
+        
+        userBlockAPIPath.macroReplacements["%%USER_ID%%"] = self.userID
+        guard let validURL = userBlockAPIPath.url else {
             return nil
         }
         self.userBlockURL = validURL

@@ -11,8 +11,8 @@ import UIKit
 class UserUnblockRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: UserUnblockRequest!
     
-    init?(userID: Int, userUnblockURL: String) {
-        guard let request = UserUnblockRequest(userID: userID, userUnblockURL: userUnblockURL) else {
+    init?(userID: Int, userUnblockAPIPath: APIPath) {
+        guard let request = UserUnblockRequest(userID: userID, userUnblockAPIPath: userUnblockAPIPath) else {
             return nil
         }
         self.request = request

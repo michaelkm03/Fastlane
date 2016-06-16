@@ -10,13 +10,13 @@ import UIKit
 
 class UserBlockToggleOperation: FetcherOperation {
     private let userID: Int
-    private let blockURL: String
-    private let unblockURL: String
+    private let blockAPIPath: APIPath
+    private let unblockAPIPath: APIPath
     
-    init(userID: Int, blockURL: String, unblockURL: String) {
+    init(userID: Int, blockAPIPath: APIPath, unblockAPIPath: APIPath) {
         self.userID = userID
-        self.blockURL = blockURL
-        self.unblockURL = unblockURL
+        self.blockAPIPath = blockAPIPath
+        self.unblockAPIPath = unblockAPIPath
     }
     
     override func main() {
@@ -29,13 +29,13 @@ class UserBlockToggleOperation: FetcherOperation {
             if user.isBlockedByCurrentUser == true {
                 UserUnblockOperation(
                     userID: self.userID,
-                    unblockURL: self.unblockURL
+                    unblockAPIPath: self.unblockAPIPath
                 ).rechainAfter(self).queue()
             }
             else {
                 UserBlockOperation(
                     userID: self.userID,
-                    blockURL: self.blockURL
+                    blockAPIPath: self.blockAPIPath
                 ).rechainAfter(self).queue()
             }
         })

@@ -9,12 +9,12 @@
 import UIKit
 
 class UserBlockOperation: FetcherOperation {
-    private let blockURL: String
+    private let blockAPIPath: APIPath
     private let userID: Int
     
-    init(userID: Int, blockURL: String) {
+    init(userID: Int, blockAPIPath: APIPath) {
         self.userID = userID
-        self.blockURL = blockURL
+        self.blockAPIPath = blockAPIPath
     }
     
     override func main() {
@@ -30,7 +30,7 @@ class UserBlockOperation: FetcherOperation {
         
         UserBlockRemoteOperation(
             userID: userID,
-            userBlockURL: blockURL
+            userBlockAPIPath: blockAPIPath
         )?.after(self).queue()
     }
 }

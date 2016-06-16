@@ -168,8 +168,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         
         let toggleBlockedOperation = UserBlockToggleOperation(
             userID: userID,
-            blockURL: dependencyManager.userBlockURL,
-            unblockURL: dependencyManager.userUnblockURL
+            blockAPIPath: dependencyManager.userBlockAPIPath,
+            unblockAPIPath: dependencyManager.userUnblockAPIPath
         )
         
         let actionTitle = isBlocked
