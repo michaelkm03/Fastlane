@@ -48,7 +48,9 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
 typedef NS_ENUM(NSInteger, VSettingsAboutAction)
 {
     VSettingsAboutActionTermsOfService,
-    VSettingsAboutActionPrivacyPolicy
+    VSettingsAboutActionPrivacyPolicy,
+    VSettingsAboutActionFeedback,
+    VSettingsAboutActionHelp
 };
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
@@ -291,7 +293,12 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         }
         else if (indexPath.row == VSettingsAboutActionPrivacyPolicy)
         {
-            [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
+            [            
+//            [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
+        }
+        
+        else if (indexPath.row == VSettingsAboutActionHelp) {
+            
         }
     }
     
