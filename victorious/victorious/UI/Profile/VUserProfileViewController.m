@@ -391,13 +391,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)toggleFollowUser
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = VFollowSourceScreenProfile;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-     {
-         self.profileHeaderViewController.loading = NO;
-     }];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 #pragma mark - Login status change

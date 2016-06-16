@@ -23,11 +23,11 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
     
     static let suggestedReuseIdentifier = "ChatFeedMessageCell"
     
-    let detailTextView = UITextView()
+    let detailTextView = UITextView.unselectableInstance()
     let contentContainer = UIView()
     let messageContainer = UIView()
     let bubbleView = UIView()
-    let textView = UITextView()
+    let textView = UITextView.unselectableInstance()
     let mediaView = MediaContentView()
     let avatarView = VDefaultProfileImageView()
     
