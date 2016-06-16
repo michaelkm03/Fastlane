@@ -12,7 +12,7 @@ private struct Constants {
     static let cellFontKey = "item.font"
     static let cellColorKey = "item.color"
     static let sectionTitleFontKey = "sectionTitle.font"
-    static let sectionTitleFontColor = "sectionTtitle.color"
+    static let sectionTitleFontColor = "sectionTitle.color"
     static let versionFontKey = "version.font"
     static let versionColorKey = "version.color"
     static let separatorColorKey = "separator.color"
@@ -43,8 +43,8 @@ extension VSettingsViewController : VBackgroundContainer {
         
         label.font = dependencyManager.fontForKey(Constants.cellFontKey)
         label.textColor = dependencyManager.colorForKey(Constants.cellColorKey)
-        cell.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 39)
-       
+        label.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = dependencyManager.colorForKey(Constants.itemBackgroundKey)
         //self.dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
         
     }
@@ -54,6 +54,7 @@ extension VSettingsViewController : VBackgroundContainer {
         self.tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         self.tableView.backgroundView = UIView()
         self.dependencyManager.addBackgroundToBackgroundHost(self)
+        tableView.separatorColor = dependencyManager.colorForKey(Constants.separatorColorKey)
     }
     
     public func backgroundContainerView() -> UIView {
