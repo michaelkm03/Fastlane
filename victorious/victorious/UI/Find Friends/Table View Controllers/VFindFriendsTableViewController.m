@@ -311,19 +311,7 @@
 
 - (void)selectAllRows:(id)sender
 {
-    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user)
-    {
-        return user.remoteId;
-    }];
-    
-    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:self.sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-    {
-        for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
-        {
-            [inviteFriendCell updateFollowStatusAnimated:YES];
-        }
-    }];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 - (IBAction)makeButtonGray:(UIButton *)sender
