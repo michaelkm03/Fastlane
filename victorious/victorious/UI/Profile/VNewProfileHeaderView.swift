@@ -219,6 +219,10 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     func headerDidDisappear() {
         // Empty implementation for ConfigurableGridStreamHeader
     }
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        // Empty implementation for ConfigurableGridStreamHeader
+    }
 }
 
 private extension VDependencyManager {
