@@ -20,14 +20,16 @@ class ContentPreviewView: UIView {
     }
 
     let previewImageView = UIImageView()
-    let vipButton = ImageOnImageButton(type: .Custom)
+    let vipIcon = UIImageView()
     let playButton: UIView
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if dependencyManager != nil && dependencyManager != oldValue {
-                // Update button
-                vipButton.dependencyManager = dependencyManager
+            if
+                let dependencyManager = dependencyManager
+                where dependencyManager != oldValue
+            {
+                vipIcon.image = dependencyManager.vipIcon
             }
         }
     }
@@ -46,11 +48,12 @@ class ContentPreviewView: UIView {
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         
-        addSubview(vipButton)
-        vipButton.v_addWidthConstraint(30)
-        vipButton.v_addHeightConstraint(30)
-        v_addPinToLeadingEdgeToSubview(vipButton, leadingMargin: Constants.vipMargins)
-        v_addPinToBottomToSubview(vipButton, bottomMargin: Constants.vipMargins)
+        addSubview(vipIcon)
+        vipIcon.contentMode = .ScaleAspectFit
+        vipIcon.v_addWidthConstraint(30)
+        vipIcon.v_addHeightConstraint(30)
+        v_addPinToLeadingEdgeToSubview(vipIcon, leadingMargin: Constants.vipMargins)
+        v_addPinToBottomToSubview(vipIcon, bottomMargin: Constants.vipMargins)
         
         addSubview(playButton)
         v_addCenterToParentContraintsToSubview(playButton)
@@ -77,15 +80,15 @@ class ContentPreviewView: UIView {
                 return
         }
         
-        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
-        let contentIsForVIPOnly = content.isVIPOnly
+//        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
+//        let contentIsForVIPOnly = content.isVIPOnly
 //        if !userIsVIP && contentIsForVIPOnly {
-            vipButton.hidden = false
+            vipIcon.hidden = false
             previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                 self?.previewImageView.alpha = 1
             }
 //        } else {
-//            vipButton.hidden = true
+//            vipIcon.hidden = true
 //            previewImageView.sd_setImageWithURL(previewImageURL)
 //        }
         
@@ -93,5 +96,11 @@ class ContentPreviewView: UIView {
             case .video: playButton.hidden = false
             case .text, .link, .gif, .image: playButton.hidden = true
         }
+    }
+}
+
+private extension VDependencyManager {
+    var vipIcon: UIImage? {
+        return imageForKey("vipIcon")
     }
 }
