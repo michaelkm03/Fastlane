@@ -109,32 +109,27 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         messageCell.delegate = self
     }
     
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! ChatFeedMessageCell).stopDisplaying()
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        // If there isn't enough content to fill the screen, push it down to the bottom.
-        var adjustedInsets = edgeInsets
-        
-        // Doing this when the content size is zero doesn't help, and it prevents scrolling to bottom after the initial
-        // content is loaded.
-        if collectionView.contentSize.height > 0.0 {
-            adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
-        }
-        
-        return adjustedInsets
+        return edgeInsets
     }
     
     // MARK: - ChatFeedDataSourceDelegate
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         handleNewItems(newItems, loadingType: loadingType)
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel]) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
         let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.author.id == VCurrentUser.user()?.remoteId.integerValue
+            $0.content.author.id == VCurrentUser.user()?.remoteId.integerValue
         }
         
         if itemsContainCurrentUserMessage {
@@ -148,7 +143,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel]) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController.hide()
         
         handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
@@ -158,7 +153,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
+    private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 else {
             return
         }
@@ -168,15 +163,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let bottomOffset = collectionView.contentSize.height - collectionView.contentOffset.y
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
         
         updateCollectionView(with: newItems, loadingType: loadingType) {
-            // If we loaded older items, maintain the previous scroll position.
-            if loadingType == .older {
-                collectionView.contentOffset = CGPoint(x: 0.0, y: collectionView.contentSize.height - bottomOffset)
-            }
-            
             collectionView.collectionViewLayout.invalidateLayout()
             
             CATransaction.commit()
@@ -195,7 +184,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func updateCollectionView(with newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
@@ -216,6 +205,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                         })
                     
                     case .older:
+                        if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                            layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                        }
+                        else {
+                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                        }
+                        
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                             NSIndexPath(forItem: $0, inSection: 0)
                         })
@@ -299,5 +295,57 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimeStamps(in: collectionView)
+    }
+}
+
+/// A custom collection view layout for the chat feed which allows for inserting content at the top of the collection
+/// view without affecting the content offset.
+class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
+    /// Set this to the collection view's current content size before inserting cells at the top.
+    var contentSizeWhenInsertingAbove: CGSize?
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        if let collectionView = collectionView, oldContentSize = contentSizeWhenInsertingAbove {
+            let newContentSize = collectionViewContentSize()
+            let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
+            let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
+            collectionView.setContentOffset(newOffset, animated: false)
+            contentSizeWhenInsertingAbove = nil
+        }
+    }
+    
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return (super.layoutAttributesForElementsInRect(rect) ?? []).map {
+            processLayoutAttributes($0)
+        }
+    }
+    
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)
+        
+        if let attributes = attributes {
+            return processLayoutAttributes(attributes)
+        }
+        
+        return attributes
+    }
+    
+    /// Adjusts layout attributes to align messages to the bottom when there aren't enough to fill the entire
+    /// collection view.
+    private func processLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        guard let collectionView = collectionView else {
+            return layoutAttributes
+        }
+        
+        let contentSize = collectionViewContentSize()
+        let extraHeight = collectionView.bounds.height - contentSize.height
+        
+        if extraHeight > 0.0 {
+            layoutAttributes.frame.origin.y += extraHeight
+        }
+        
+        return layoutAttributes
     }
 }

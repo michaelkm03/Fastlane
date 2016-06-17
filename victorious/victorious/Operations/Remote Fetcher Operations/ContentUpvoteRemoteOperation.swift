@@ -11,7 +11,7 @@ import UIKit
 class ContentUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentUpvoteRequest!
     
-    init?( contentID: String, contentUpvoteURL: String ) {
+    init?(contentID: String, contentUpvoteURL: String) {
         guard let request = ContentUpvoteRequest(contentID: contentID, contentUpvoteURL: contentUpvoteURL) else {
             return nil
         }
@@ -19,6 +19,6 @@ class ContentUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
     }
 }

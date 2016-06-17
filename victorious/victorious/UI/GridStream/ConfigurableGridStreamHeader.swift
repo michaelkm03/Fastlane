@@ -19,4 +19,26 @@ protocol ConfigurableGridStreamHeader {
     func headerDidDisappear()
 
     func headerWillAppear()
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel])
+    
+    func gridStreamShouldRefresh()
+}
+
+extension ConfigurableGridStreamHeader {
+    func headerDidDisappear() {
+        
+    }
+    
+    func headerWillAppear() {
+        
+    }
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        
+    }
+    
+    func gridStreamShouldRefresh() {
+        
+    }
 }

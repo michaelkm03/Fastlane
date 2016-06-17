@@ -6,7 +6,6 @@ inhibit_all_warnings!
 use_frameworks!
 
 target :victorious do
-    pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
     pod 'KVOController'
     pod 'SDWebImage'
@@ -15,7 +14,6 @@ target :victorious do
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
-    pod 'CHTCollectionViewWaterfallLayout'
     link_with 'victorious'
 
     target :test do

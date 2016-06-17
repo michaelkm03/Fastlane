@@ -15,6 +15,8 @@ protocol CloseUpViewDelegate: class {
 private let blurredImageAlpha: CGFloat = 0.5
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
+    private static let relatedAnimationDuration: Double = 1
+    
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameButton: UIButton!
@@ -84,7 +86,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.updateContent(content)
+            mediaContentView.content = content
             
             // Update size
             self.frame.size = sizeForContent(content)
@@ -147,6 +149,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         profileImageView.image = nil
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
+        relatedLabel.alpha = 0
     }
     
     override func layoutSubviews() {
@@ -239,6 +242,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func headerDidDisappear() {
         mediaContentView.videoCoordinator?.pauseVideo()
+    }
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        dispatch_async(dispatch_get_main_queue(), {
+            UIView.animateWithDuration(CloseUpView.relatedAnimationDuration, animations: {
+                self.relatedLabel.alpha = items.count == 0 ? 0 : 1
+            })
+        })
     }
 }
 

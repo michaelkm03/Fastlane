@@ -110,35 +110,7 @@ import Foundation
     /// confirmation, blocks the user and calls the completion block with a
     /// Boolean representing success/failure of the operation.
     func blockUser(user: VUser, completion: ((Bool) -> ())? ) {
-        
-        let blockOrUnblock: FetcherOperation
-        let actionTitle: String
-        if user.isBlockedByMainUser?.boolValue == true {
-            actionTitle = NSLocalizedString("UnblockUser", comment: "")
-            blockOrUnblock = UnblockUserOperation(userID: user.remoteId.integerValue)
-        } else {
-            blockOrUnblock = BlockUserOperation(userID: user.remoteId.integerValue)
-            actionTitle = NSLocalizedString("BlockUser", comment: "")
-        }
-        let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: actionTitle,
-            originViewController: originViewController,
-            dependencyManager: dependencyManager
-        )
-        
-        confirm.before(blockOrUnblock)
-        confirm.queue()
-        blockOrUnblock.queue() { (results, error, cancelled) in
-            guard !blockOrUnblock.cancelled else {
-                return
-            }
-            let didBlockUser = user.isBlockedByMainUser?.boolValue
-            if didBlockUser == true {
-                self.originViewController.v_showBlockedUserAlert() {
-                    completion?(true)
-                }
-            }
-        }
+        // BlockUserOperation is not supported in 5.0
     }
     
     // MARK: - Delete

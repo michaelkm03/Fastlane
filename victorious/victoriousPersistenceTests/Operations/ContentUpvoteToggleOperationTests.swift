@@ -31,7 +31,7 @@ class ContentUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             upvoteURL: "",
             unupvoteURL: ""
         )
-        operation.queue() { results, error, cancelled in
+        operation.queue { results, error, cancelled in
             XCTAssertFalse(content.isLikedByCurrentUser)
             expectation.fulfill()
         }
@@ -50,7 +50,7 @@ class ContentUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             upvoteURL: "",
             unupvoteURL: ""
         )
-        operation.queue() { results, error, cancelled in
+        operation.queue { results, error, cancelled in
             XCTAssertTrue(content.isLikedByCurrentUser)
             expectation.fulfill()
         }
