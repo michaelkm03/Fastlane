@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ConfigurableGridStreamContainer: class {
+protocol ConfigurableGridStreamHeaderDelegate: class {
     func shouldRefresh()
 }
 
@@ -21,7 +21,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     private static let userProfilePictureWidth: CGFloat = 80.0
     private static let creatorProfilePictureWidth: CGFloat = 90.0
     
-    weak var delegate: ConfigurableGridStreamContainer?
+    weak var delegate: ConfigurableGridStreamHeaderDelegate?
     
     // MARK: - Initializing
     

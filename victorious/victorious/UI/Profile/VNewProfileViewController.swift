@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamContainer, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -257,15 +257,15 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamContain
         guard let userID = user?.id else {
             return
         }
-        fetchUser(with: userID)
+        fetchUser(withRemoteID: userID)
     }
     
-    private func fetchUser(with remoteID: Int) {
+    private func fetchUser(withRemoteID remoteID: Int) {
         guard
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
             let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
-            else {
-                return
+        else {
+            return
         }
         
         userInfoOperation.queue { [weak self] results, error, cancelled in
