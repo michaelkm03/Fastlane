@@ -10,12 +10,12 @@ import Foundation
 
 /// Conformers can respond to the results fetched by this network data source
 protocol TutorialNetworkDataSourceDelegate: class {
-    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel])
+    func didUpdateVisibleItems(from oldValue: [ChatFeedContent], to newValue: [ChatFeedContent])
     func didFinishFetchingAllItems()
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
-    private(set) var visibleItems: [ContentModel] = [] {
+    private(set) var visibleItems: [ChatFeedContent] = [] {
         didSet {
             delegate?.didUpdateVisibleItems(from: oldValue, to: visibleItems)
         }
@@ -50,7 +50,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
 
     @objc private func dequeueTutorialMessage() {
         if !queuedTutorialMessages.isEmpty {
-            let newMessageToDisplay = queuedTutorialMessages.removeFirst()
+            let newMessageToDisplay = ChatFeedContent(queuedTutorialMessages.removeFirst())
             visibleItems.append(newMessageToDisplay)
         } else {
             timerManager?.invalidate()

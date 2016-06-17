@@ -1,4 +1,3 @@
-
 //
 //  MediaContentView.swift
 //  victorious
@@ -20,15 +19,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
-    private(set) var content: ContentModel?
     
     private let previewImageView = UIImageView()
     private let videoContainerView = VPassthroughContainerView()
-    private let backgroundView = UIImageView()
+    private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
-    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
-    private var shouldShowToolBarForVideo = true
     private var alphaHasAnimatedToZero = false
     private var downloadedPreviewImage: UIImage?
     
@@ -42,8 +38,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Initializing
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(showsBackground: Bool = true) {
+        self.showsBackground = showsBackground
+        super.init(frame: CGRect.zero)
         setup()
     }
     
@@ -56,76 +53,104 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         clipsToBounds = true
         backgroundColor = .clearColor()
         
-        previewImageView.contentMode = .ScaleAspectFit
+        configureBackground()
+        
         addSubview(previewImageView)
         
         videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        backgroundView.contentMode = .ScaleAspectFill
-        insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
-        backgroundView.frame = bounds
-        
         addSubview(spinner)
         sendSubviewToBack(spinner)
         
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
-        backgroundView.alpha = 0.0
+        backgroundView?.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
     }
     
-    // MARK: - Updating content
+    // MARK: - Configuration
     
-    func updateContent(content: ContentModel, isVideoToolBarAllowed: Bool = true) {
-        spinner.startAnimating()
+    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
+    var showsVideoControls = true
+    
+    /// Whether or not the view performs an animated transition whenever new content is displayed.
+    var animatesBetweenContent = true
+    
+    /// Whether or not the blurred preview image background is shown behind the media.
+    var showsBackground = true {
+        didSet {
+            if showsBackground != oldValue {
+                configureBackground()
+            }
+        }
+    }
+    
+    private func configureBackground() {
+        previewImageView.contentMode = showsBackground ? .ScaleAspectFit : .ScaleAspectFill
         
-        self.content = content
-        self.shouldShowToolBarForVideo = isVideoToolBarAllowed && content.type == .video
-        hideContent()
-
+        if showsBackground {
+            let backgroundView = UIImageView()
+            self.backgroundView = backgroundView
+            backgroundView.contentMode = .ScaleAspectFill
+            insertSubview(backgroundView, atIndex: 0)
+        }
+        else {
+            backgroundView?.removeFromSuperview()
+            backgroundView = nil
+        }
+    }
+    
+    // MARK: - Managing content
+    
+    var content: ContentModel? {
+        didSet {
+            guard content?.id != oldValue?.id || content?.id == nil else {
+                return
+            }
+            
+            if let content = content {
+                displayContent(content)
+            }
+            else {
+                displayNoContent()
+            }
+            
+            setNeedsLayout()
+        }
+    }
+    
+    private func displayContent(content: ContentModel) {
+        spinner.startAnimating()
+        hideContent(animated: animatesBetweenContent)
+        
         // Set up image view if content is image
         let minWidth = frame.size.width
+        
         if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
-            previewImageView.hidden = false
-            previewImageView.sd_setImageWithURL(
-                previewImageURL,
-                placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-                options: .AvoidAutoSetImage
-            ) { [weak self] image, _, _, _ in
-                self?.downloadedPreviewImage = image
-                self?.updatePreviewImageIfReady()
-            }
-        } else {
-            previewImageView.hidden = true
+            setUpPreviewImage(from: previewImageURL)
+        }
+        else {
+            tearDownPreviewImage()
         }
         
         // Set up video view if content is video
         if content.type.displaysAsVideo {
-            videoContainerView.hidden = false
-            videoCoordinator?.tearDown()
-            videoCoordinator = VContentVideoPlayerCoordinator(content: content)
-            videoCoordinator?.setupVideoPlayer(in: videoContainerView)
-            videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
-            videoCoordinator?.loadVideo()
-            videoCoordinator?.delegate = self
-        } else {
-            videoContainerView.hidden = true
-            videoCoordinator?.tearDown()
-            videoCoordinator = nil
+            setUpVideoPlayer(for: content)
         }
-        
-        setNeedsLayout()
+        else {
+            tearDownVideoPlayer()
+        }
     }
     
-    /// Calls private implementation to hide the content by animating subviews' alpha values to 0
-    func hide() {
-        hideContent()
+    private func displayNoContent() {
+        tearDownPreviewImage()
+        tearDownVideoPlayer()
     }
     
-    private func hideContent(animated: Bool = true) {
+    func hideContent(animated animated: Bool = true) {
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
         UIView.animateWithDuration(
             animationDuration,
@@ -134,7 +159,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             animations: {
                 self.videoContainerView.alpha = 0
                 self.previewImageView.alpha = 0
-                self.backgroundView.alpha = 0
+                self.backgroundView?.alpha = 0
             },
             completion: { [weak self] _ in
                 self?.alphaHasAnimatedToZero = true
@@ -143,7 +168,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         )
     }
     
-    private func showContent(animated: Bool = true) {
+    func showContent(animated animated: Bool = true) {
         let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster
@@ -152,7 +177,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             delay: 0,
             options: [.AllowUserInteraction],
             animations: {
-                self.backgroundView.alpha = 1
+                self.backgroundView?.alpha = 1
             },
             completion: nil
         )
@@ -169,13 +194,49 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         )
     }
     
+    // MARK: - Managing preview image
+    
+    private func setUpPreviewImage(from url: NSURL) {
+        previewImageView.hidden = false
+        previewImageView.sd_setImageWithURL(
+            url,
+            placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
+            options: .AvoidAutoSetImage
+        ) { [weak self] image, _, _, _ in
+            self?.downloadedPreviewImage = image
+            self?.updatePreviewImageIfReady()
+        }
+    }
+    
+    private func tearDownPreviewImage() {
+        previewImageView.hidden = true
+    }
+    
+    // MARK: - Managing video
+    
+    private func setUpVideoPlayer(for content: ContentModel) {
+        videoContainerView.hidden = false
+        videoCoordinator?.tearDown()
+        videoCoordinator = VContentVideoPlayerCoordinator(content: content)
+        videoCoordinator?.setupVideoPlayer(in: videoContainerView)
+        videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+        videoCoordinator?.loadVideo()
+        videoCoordinator?.delegate = self
+    }
+    
+    private func tearDownVideoPlayer() {
+        videoContainerView.hidden = true
+        videoCoordinator?.tearDown()
+        videoCoordinator = nil
+    }
+    
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        backgroundView.frame = bounds
+        backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
     }
@@ -191,7 +252,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
         alphaHasAnimatedToZero = false
-        showContent()
+        showContent(animated: animatesBetweenContent)
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
@@ -205,20 +266,20 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             setBackgroundBlur(withImageUrl: imageURL)
         }
         else {
-            backgroundView.image = nil
+            backgroundView?.image = nil
         }
     }
     
     private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
-        backgroundView.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
-            self?.backgroundView.alpha = 1
+        backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+            self?.backgroundView?.alpha = 1
         }
     }
 
     // MARK: - Actions
 
     func onContentTap() {
-        if shouldShowToolBarForVideo {
+        if showsVideoControls {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
     }

@@ -10,9 +10,9 @@ import UIKit
 import VictoriousIOSSDK
 
 protocol ChatFeedDataSourceDelegate: class {
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType)
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel])
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
@@ -30,8 +30,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Managing content
     
-    private(set) var visibleItems = [ContentModel]()
-    private(set) var stashedItems = [ContentModel]()
+    private(set) var visibleItems = [ChatFeedContent]()
+    private(set) var stashedItems = [ChatFeedContent]()
     
     var stashingEnabled = false
     
@@ -53,7 +53,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     func receive(event: ForumEvent) {
         switch event {
         case .appendContent(let newItems):
-            let newItems = newItems.map { $0 as ContentModel }
+            let newItems = newItems.map { ChatFeedContent($0) }
             
             if stashingEnabled {
                 stashedItems.appendContentsOf(newItems)
@@ -64,12 +64,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             }
         
         case .prependContent(let newItems):
-            let newItems = newItems.map { $0 as ContentModel }
+            let newItems = newItems.map { ChatFeedContent($0) }
             visibleItems = newItems + visibleItems
             delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
         
         case .replaceContent(let newItems):
-            let newItems = newItems.map { $0 as ContentModel }
+            let newItems = newItems.map { ChatFeedContent($0) }
             visibleItems = newItems
             delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
         
