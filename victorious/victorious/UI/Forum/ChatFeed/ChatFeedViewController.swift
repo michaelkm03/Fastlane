@@ -118,16 +118,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        // If there isn't enough content to fill the screen, push it down to the bottom.
-        var adjustedInsets = edgeInsets
-        
-        // Doing this when the content size is zero doesn't help, and it prevents scrolling to bottom after the initial
-        // content is loaded.
-        if collectionView.contentSize.height > 0.0 {
-            adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
-        }
-        
-        return adjustedInsets
+        return edgeInsets
     }
     
     // MARK: - ChatFeedDataSourceDelegate
@@ -323,5 +314,38 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
             collectionView.setContentOffset(newOffset, animated: false)
             contentSizeWhenInsertingAbove = nil
         }
+    }
+    
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return (super.layoutAttributesForElementsInRect(rect) ?? []).map {
+            processLayoutAttributes($0)
+        }
+    }
+    
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)
+        
+        if let attributes = attributes {
+            return processLayoutAttributes(attributes)
+        }
+        
+        return attributes
+    }
+    
+    /// Adjusts layout attributes to align messages to the bottom when there aren't enough to fill the entire
+    /// collection view.
+    private func processLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        guard let collectionView = collectionView else {
+            return layoutAttributes
+        }
+        
+        let contentSize = collectionViewContentSize()
+        let extraHeight = collectionView.bounds.height - contentSize.height
+        
+        if extraHeight > 0.0 {
+            layoutAttributes.frame.origin.y += extraHeight
+        }
+        
+        return layoutAttributes
     }
 }
