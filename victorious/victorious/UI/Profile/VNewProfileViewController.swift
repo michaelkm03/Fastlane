@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -72,7 +72,8 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
                                                         streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID))
         
         super.init(nibName: nil, bundle: nil)
-        
+        header.delegate = self
+
         // Applies a fallback background color while we fetch the user.
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
@@ -127,6 +128,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
         if user?.id != VCurrentUser.user()?.id {
             rightBarButtonItems.append(upvoteButton)
+            if user?.isCreator != true {
+                rightBarButtonItems.append(overflowButton)
+            }
         }
 
         // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
@@ -163,7 +167,30 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     }
     
     func overflow() {
-        // FUTURE: Implement overflow button
+        guard
+            let isBlocked = user?.isBlockedByCurrentUser,
+            let userID = user?.id
+        else {
+            return
+        }
+        
+        let toggleBlockedOperation = UserBlockToggleOperation(
+            userID: userID,
+            blockAPIPath: dependencyManager.userBlockAPIPath,
+            unblockAPIPath: dependencyManager.userUnblockAPIPath
+        )
+        
+        let actionTitle = isBlocked
+            ? NSLocalizedString("UnblockUser", comment: "")
+            : NSLocalizedString("BlockUser", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        confirm.before(toggleBlockedOperation)
+        confirm.queue()
+        toggleBlockedOperation.queue()
     }
     
     // MARK: - VIPGateViewControllerDelegate
@@ -201,16 +228,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            guard
-                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-                let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
-            else {
-                return
-            }
-            
-            userInfoOperation.queue { [weak self] results, error, cancelled in
-                self?.setUser(userInfoOperation.user, using: dependencyManager)
-            }
+            fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
             setUser(VCurrentUser.user(), using: dependencyManager)
@@ -257,6 +275,31 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return false
         }
         return currentUser.isVIPValid()
+    }
+    
+    // MARK: - ConfigurableGridStreamContainer
+    
+    func shouldRefresh() {
+        guard let userID = user?.id else {
+            return
+        }
+        fetchUser(withRemoteID: userID)
+    }
+    
+    private func fetchUser(withRemoteID remoteID: Int) {
+        guard
+            let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+            let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
+        else {
+            return
+        }
+        
+        userInfoOperation.queue { [weak self] results, error, cancelled in
+            guard let dependencyManager = self?.dependencyManager else {
+                return
+            }
+            self?.setUser(userInfoOperation.user, using: dependencyManager)
+        }
     }
 }
 
