@@ -74,7 +74,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Configuration
     
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
-    var showsVideoControls = true
+    var allowsVideoControls = true
     
     /// Whether or not the view performs an animated transition whenever new content is displayed.
     var animatesBetweenContent = true
@@ -279,7 +279,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Actions
 
     func onContentTap() {
-        if showsVideoControls && content?.type == .video {
+        if allowsVideoControls && content?.type == .video {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
     }
