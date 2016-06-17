@@ -20,6 +20,10 @@ class UserBlockToggleOperation: FetcherOperation {
     }
     
     override func main() {
+        guard didConfirmActionFromDependencies else {
+            cancel()
+            return
+        }
         persistentStore.createBackgroundContext().v_performBlockAndWait{ context in
             guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
