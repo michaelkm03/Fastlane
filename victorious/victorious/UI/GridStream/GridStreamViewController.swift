@@ -122,6 +122,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func refresh() {
         loadContent(.refresh)
+        header?.gridStreamShouldRefresh()
     }
     
     private func loadContent(loadingType: PaginatedLoadingType) {

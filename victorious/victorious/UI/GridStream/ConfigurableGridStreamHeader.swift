@@ -21,6 +21,8 @@ protocol ConfigurableGridStreamHeader {
     func headerWillAppear()
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel])
+    
+    func gridStreamShouldRefresh()
 }
 
 extension ConfigurableGridStreamHeader {
@@ -33,6 +35,10 @@ extension ConfigurableGridStreamHeader {
     }
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        
+    }
+    
+    func gridStreamShouldRefresh() {
         
     }
 }
