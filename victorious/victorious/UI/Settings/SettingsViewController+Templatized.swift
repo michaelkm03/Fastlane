@@ -50,7 +50,13 @@ extension VSettingsViewController : VBackgroundContainer {
         label.font = dependencyManager.fontForKey(Constants.cellFontKey)
         label.textColor = dependencyManager.colorForKey(Constants.cellColorKey)
         label.backgroundColor = UIColor.clearColor()
-        cell.backgroundColor = dependencyManager.colorForKey(Constants.itemBackgroundKey)
+        
+        if (cell.contentView.subviews.contains(versionString)) {
+            cell.backgroundColor = UIColor.clearColor()
+        }
+        else {
+            cell.backgroundColor = dependencyManager.colorForKey(Constants.itemBackgroundKey)
+        }
         //self.dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
         
     }

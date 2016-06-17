@@ -64,10 +64,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
-@property (nonatomic, weak) IBOutlet UILabel *versionString;
 
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
@@ -108,9 +106,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     [self.dependencyManager trackViewWillAppear:self];
-    
-    [self updateLogoutButtonState];
-    
+        
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
 #ifdef V_SWITCH_ENVIRONMENTS
@@ -218,31 +214,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self.tableView endUpdates];
 }
 
-- (void)updateLogoutButtonState
-{
-    self.logoutButton.titleLabel.textColor = [self.dependencyManager colorForKey:kItemColorKey];
-    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:kItemFontKey];
-    self.logoutButton.backgroundColor = [self.dependencyManager colorForKey:kItemBackgroundKey];
-   // [self.dependencyManager addBackgroundToBackgroundHost:self.logoutButton forKey:kItemBackgroundKey];
-    
-    if ([VCurrentUser user] != nil)
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
-        self.logoutButton.style = VButtonStyleSecondary;
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
-    }
-    else
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        self.logoutButton.style = VButtonStylePrimary;
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
-    }
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadData];
-    [self.tableView endUpdates];
-}
-
 - (void)pushLikedContent
 {
     VLikedContentStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VLikedContentStreamCollectionViewController class]
@@ -292,6 +263,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         [self handleAboutSectionSelection: indexPath.row];
     }
     
+    else if (indexPath.section == 2 && indexPath.row == 0)
+    {
+        [[[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager] queueWithCompletion:NULL];
+    }
+    
     // Tracking
     VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
@@ -301,21 +277,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - Actions
-
-- (IBAction)logout:(id)sender
-{
-    if ( [VCurrentUser user] != nil )
-    {
-        // Logout first if logged in
-        LogoutOperation *operation = [[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-        {
-            [self updateLogoutButtonState];
-        }];
-    }
 }
 
 #pragma mark - Navigation
