@@ -35,7 +35,6 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
 {
     VSettingsActionEditProfile,
     VSettingsActionLikedContent,
-    VSettingsActionInviteFriends,
     VSettingsActionChangePassword,
     VSettingsActionNotifications,
     VSettingsActionResetPurchases,
