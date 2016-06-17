@@ -153,16 +153,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
 
         if (content.type == .text) {
-            textLabel.text = content.text
-            textLabel.font = dependencyManager?.textPostFont()
-            textLabel.textColor = dependencyManager?.textPostColor()
-            
-            if let url = dependencyManager?.textPostBackgroundImageURL() {
-                setBackgroundBlur(withImageUrl: url)
-            }
-            
-            spinner.stopAnimating()
-            showContent()
+            setUpTextLabel(for: content)
+        }
+        
+        else {
+            tearDownTextLabel()
         }
         
         setNeedsLayout()
@@ -171,6 +166,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func displayNoContent() {
         tearDownPreviewImage()
         tearDownVideoPlayer()
+        tearDownTextLabel()
     }
     
     func hideContent(animated animated: Bool = true) {
@@ -184,7 +180,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 0
                 self.textLabel.alpha = 0
                 self.backgroundView?.alpha = 0
-
             },
             completion: { [weak self] _ in
                 self?.alphaHasAnimatedToZero = true
@@ -254,6 +249,25 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.hidden = true
         videoCoordinator?.tearDown()
         videoCoordinator = nil
+    }
+    
+    // MARK: - Managing Text 
+    
+    private func setUpTextLabel(for content: ContentModel) {
+        textLabel.text = content.text
+        textLabel.font = dependencyManager?.textPostFont()
+        textLabel.textColor = dependencyManager?.textPostColor()
+        
+        if let url = dependencyManager?.textPostBackgroundImageURL() {
+            setBackgroundBlur(withImageUrl: url)
+        }
+        
+        spinner.stopAnimating()
+        showContent()
+    }
+    
+    private func tearDownTextLabel() {
+        textLabel.hidden = true
     }
     
     // MARK: - Layout
