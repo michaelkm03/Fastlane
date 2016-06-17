@@ -37,12 +37,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return singleTapRecognizer
     }()
     
-    var shouldHideBackground: Bool = true {
-        didSet {
-            self.backgroundView.hidden = shouldHideBackground
-        }
-    }
-    
     var dependencyManager: VDependencyManager?
     
     // MARK: - Initializing
@@ -73,11 +67,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textLabel.textAlignment = .Center
         textLabel.numberOfLines = 0
         addSubview(textLabel)
-        
-        backgroundView.contentMode = .ScaleAspectFill
-        insertSubview(backgroundView, atIndex: 0) // Insert behind all other views
-        backgroundView.frame = bounds
-        
+  
         addSubview(spinner)
         sendSubviewToBack(spinner)
         
