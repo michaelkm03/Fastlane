@@ -149,7 +149,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         profileImageView.image = nil
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
-        relatedLabel.hidden = true
+        relatedLabel.alpha = 0
     }
     
     override func layoutSubviews() {
@@ -247,7 +247,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
         dispatch_async(dispatch_get_main_queue(), {
             UIView.animateWithDuration(CloseUpView.relatedAnimationDuration, animations: {
-                self.relatedLabel.hidden = items.count == 0
+                self.relatedLabel.alpha = items.count == 0 ? 0 : 1
             })
         })
     }
