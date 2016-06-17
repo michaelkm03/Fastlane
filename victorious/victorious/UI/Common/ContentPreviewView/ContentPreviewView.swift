@@ -72,7 +72,7 @@ class ContentPreviewView: UIView {
                 return
         }
         
-        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
+        let userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription ?? false
         let contentIsForVIPOnly = content.isVIPOnly
         if !userIsVIP && contentIsForVIPOnly {
             vipImageView.hidden = false

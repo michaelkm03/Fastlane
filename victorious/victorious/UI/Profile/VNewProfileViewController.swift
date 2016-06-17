@@ -9,11 +9,12 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreenContainer {
+class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
+    static let upgradeButtonID = "Accessory paygate"
     
     private struct AccessoryScreensKeys {
         static let selfUser = "accessories.user.own"
@@ -165,6 +166,28 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
         return items + supplementalRightButtons
+    }
+    
+    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
+        if identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
+    }
+    
+    // MARK: - VAccessoryNavigationSource
+    
+    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
+        return true
+    }
+    
+    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
+        if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
     }
     
     // MARK: - Managing the user

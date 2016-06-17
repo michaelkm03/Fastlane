@@ -14,4 +14,14 @@ extension UserModel {
     var isCurrentUser: Bool {
         return id == VCurrentUser.user()?.remoteId.integerValue
     }
+    
+    // MARK: - VIP information
+    
+    var hasValidVIPSubscription: Bool {
+        guard let endDate = vipStatus?.endDate where vipStatus?.isVIP == true else {
+            return false
+        }
+        
+        return endDate > NSDate()
+    }
 }

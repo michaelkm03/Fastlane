@@ -45,9 +45,11 @@ class VIPGateViewController: UIViewController {
     //MARK: - Initialization
 
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
-        guard let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
-            let currentUser = VCurrentUser.user() where
-            !currentUser.isVIPValid() else {
+        guard
+            let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
+            let currentUser = VCurrentUser.user()
+            where !currentUser.hasValidVIPSubscription
+        else {
             return nil
         }
         
