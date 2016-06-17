@@ -127,7 +127,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
         if user?.id != VCurrentUser.user()?.id {
             rightBarButtonItems.append(upvoteButton)
-            rightBarButtonItems.append(overflowButton)
+            if user?.isCreator != true {
+                rightBarButtonItems.append(overflowButton)
+            }
         }
 
         // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
