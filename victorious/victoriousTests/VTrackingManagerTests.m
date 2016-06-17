@@ -20,7 +20,7 @@
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName;
-- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)addSessionParameters:(NSDictionary *)sessionParameters toDictionary:(NSDictionary *)dictionary;
 
 @end
 

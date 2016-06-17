@@ -99,6 +99,11 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
             return
         }
     }
+    
+    var tracking: ContentTracking? {
+        //TODO: Figure out if I need to implement this
+        return nil
+    }
 }
 
 extension Content: PaginatableItem {}

@@ -9,7 +9,7 @@
 import UIKit
 
 /// A collection view cell that only shows a stream item's content.
-class VContentOnlyCell: UICollectionViewCell {
+class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
     private static let cornerRadius: CGFloat = 6.0
@@ -45,7 +45,7 @@ class VContentOnlyCell: UICollectionViewCell {
         updatePreviewView()
     }
     
-    private var content: ContentModel?
+    private(set) var content: ContentModel?
     
     // MARK: - Dependency manager
     
