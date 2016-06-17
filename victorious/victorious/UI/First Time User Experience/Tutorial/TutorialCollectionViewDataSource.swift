@@ -9,13 +9,12 @@
 import Foundation
 
 class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, TutorialNetworkDataSourceDelegate {
-    
     let dependencyManager: VDependencyManager
     weak var delegate: TutorialNetworkDataSourceDelegate?
     
     let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
     
-    var visibleItems: [ContentModel] {
+    var visibleItems: [ChatFeedContent] {
         return networkDataSource.visibleItems
     }
     
@@ -42,7 +41,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel]) {
+    func didUpdateVisibleItems(from oldValue: [ChatFeedContent], to newValue: [ChatFeedContent]) {
         delegate?.didUpdateVisibleItems(from: oldValue, to: newValue)
     }
     

@@ -231,12 +231,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         if delegate.textViewHasPrependedImage {
-            let imageRange = NSMakeRange(0, attachmentStringLength)
-            let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-            mutableText.deleteCharactersInRange(imageRange)
-            textView.attributedText = mutableText
+            textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
         }
         updateDelegateOfTextViewStatus(textView)
+    }
+    
+    func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+        let imageRange = NSMakeRange(0, attachmentStringLength)
+        let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
+        mutableText.deleteCharactersInRange(imageRange)
+        let immutableCopy = mutableText.copy() as! NSAttributedString
+        return immutableCopy.length > 0 ? immutableCopy : nil
     }
     
     private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {

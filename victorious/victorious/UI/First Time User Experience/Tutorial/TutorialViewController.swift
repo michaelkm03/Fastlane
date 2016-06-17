@@ -100,7 +100,7 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel]) {
+    func didUpdateVisibleItems(from oldValue: [ChatFeedContent], to newValue: [ChatFeedContent]) {
         
         collectionView.reloadData()
         CATransaction.begin()
