@@ -133,8 +133,6 @@ public class Content: ContentModel {
         case .text, .link:
             self.assets = []
         }
-        
-        
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
