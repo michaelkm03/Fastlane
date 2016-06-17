@@ -91,9 +91,6 @@
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
-    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
-          forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
-                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];

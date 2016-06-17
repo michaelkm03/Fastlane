@@ -211,14 +211,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         return CGSizeMake(width, height)
     }
-    
-    func headerWillAppear() {
-        // Empty implementation for ConfigurableGridStreamHeader
-    }
-    
-    func headerDidDisappear() {
-        // Empty implementation for ConfigurableGridStreamHeader
-    }
 }
 
 private extension VDependencyManager {

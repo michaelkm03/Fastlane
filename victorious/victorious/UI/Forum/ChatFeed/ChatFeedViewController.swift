@@ -109,6 +109,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         messageCell.delegate = self
     }
     
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! ChatFeedMessageCell).stopDisplaying()
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }
@@ -203,6 +207,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                     case .older:
                         if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
                             layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                        }
+                        else {
+                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
                         }
                         
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
