@@ -102,6 +102,6 @@ class ContentPreviewView: UIView {
 
 private extension VDependencyManager {
     var vipIcon: UIImage? {
-        return imageForKey("vipIcon")
+        return imageForKey("icon.vip")
     }
 }
