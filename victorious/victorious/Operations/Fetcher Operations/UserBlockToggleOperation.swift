@@ -24,7 +24,7 @@ class UserBlockToggleOperation: FetcherOperation {
             cancel()
             return
         }
-        persistentStore.createBackgroundContext().v_performBlockAndWait{ context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
                 return
             }
