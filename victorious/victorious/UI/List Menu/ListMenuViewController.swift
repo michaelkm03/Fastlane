@@ -48,6 +48,20 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - Notifications
     
+    private func selectCreator(atIndex index: Int) {
+        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
+        let deepLinkURL = ProfileDeepLinkHandler.deepLinkURL(for: creator)
+        
+        VRootViewController.sharedRootViewController()?.openURL(deepLinkURL)
+        
+        // This notification closes the side view controller
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil,
+            userInfo: nil
+        )
+    }
+    
     private func selectCommunity(atIndex index: Int) {
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
         
@@ -101,7 +115,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-            case .creator: break
+            case .creator: selectCreator(atIndex: indexPath.item)
             case .community: selectCommunity(atIndex: indexPath.item)
             case .hashtags: selectHashtag(atIndex: indexPath.item)
         }
