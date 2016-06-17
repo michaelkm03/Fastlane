@@ -127,6 +127,9 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
         if user?.id != VCurrentUser.user()?.id {
             rightBarButtonItems.append(upvoteButton)
+            if user?.isCreator != true {
+                rightBarButtonItems.append(overflowButton)
+            }
         }
 
         // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
@@ -163,7 +166,30 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     }
     
     func overflow() {
-        // FUTURE: Implement overflow button
+        guard
+            let isBlocked = user?.isBlockedByCurrentUser,
+            let userID = user?.id
+        else {
+            return
+        }
+        
+        let toggleBlockedOperation = UserBlockToggleOperation(
+            userID: userID,
+            blockAPIPath: dependencyManager.userBlockAPIPath,
+            unblockAPIPath: dependencyManager.userUnblockAPIPath
+        )
+        
+        let actionTitle = isBlocked
+            ? NSLocalizedString("UnblockUser", comment: "")
+            : NSLocalizedString("BlockUser", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        confirm.before(toggleBlockedOperation)
+        confirm.queue()
+        toggleBlockedOperation.queue()
     }
     
     // MARK: - VIPGateViewControllerDelegate
