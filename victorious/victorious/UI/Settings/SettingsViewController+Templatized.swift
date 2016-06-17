@@ -39,7 +39,7 @@ extension VSettingsViewController : VBackgroundContainer {
     }
     
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20 
+        return 25
     }
     
     override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
