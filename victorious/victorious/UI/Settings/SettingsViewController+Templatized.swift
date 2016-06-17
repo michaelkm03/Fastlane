@@ -20,6 +20,7 @@ private struct Constants {
     static let screenBackgroundKey = "background"
     static let bundleShortVersionStringKey = "CFBundleShortVersionString"
     static let sectionHeaderTitles = ["Account", "About"]
+    static let aboutSectionURLs = [.]
 }
 
 /// This extension handles all template based decoration for the settings page, as well as
@@ -63,6 +64,21 @@ extension VSettingsViewController : VBackgroundContainer {
     }
     
     public func handleAboutSectionSelection(row: Int) {
+        switch row {
+            case 0:
+                ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
+            case 1:
+                showFeedbackEmailView()
+            case 2:
+                ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
+            case 3:
+                ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
+            default:
+                break
+            }
+    }
+    
+    private func showFeedbackEmailView() {
         
     }
 }

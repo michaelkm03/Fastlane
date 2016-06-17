@@ -646,8 +646,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type: WebContentOperationTypePrivacyPolicy forceModal:false animated:true dependencyManager:self.dependencyManager] queueWithCompletion: NULL];
-    
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypePrivacyPolicy forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
 }
 
 - (void)showTermsOfService
@@ -656,6 +655,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypeTermsOfService forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
+
 }
 
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath

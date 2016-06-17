@@ -287,7 +287,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == 1)
     {
-        [self handleAboutSectionSelection: indexPath.row]
+        [self handleAboutSectionSelection: indexPath.row];
     }
     
     // Tracking

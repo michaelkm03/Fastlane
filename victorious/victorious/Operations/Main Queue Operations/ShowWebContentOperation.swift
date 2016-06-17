@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-enum WebContentOperationType : Int {
+@objc enum WebContentOperationType : Int {
     case PrivacyPolicy
     case HelpCenter
     case TermsOfService
