@@ -279,7 +279,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Actions
 
     func onContentTap() {
-        if showsVideoControls {
+        if showsVideoControls && content?.type == .video {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
     }
