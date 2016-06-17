@@ -25,7 +25,7 @@ private struct Constants {
 
 /// This extension handles all template based decoration for the settings page, as well as
 /// other template based functionality
-extension VSettingsViewController : VBackgroundContainer {
+extension VSettingsViewController: VBackgroundContainer {
     override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
             return nil
@@ -51,40 +51,33 @@ extension VSettingsViewController : VBackgroundContainer {
         label.textColor = dependencyManager.colorForKey(Constants.cellColorKey)
         label.backgroundColor = UIColor.clearColor()
         
-        if (cell.contentView.subviews.contains(versionString)) {
+        if cell.contentView.subviews.contains(versionString) {
             cell.backgroundColor = UIColor.clearColor()
         }
         else {
-            cell.backgroundColor = dependencyManager.colorForKey(Constants.itemBackgroundKey)
+            self.dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
         }
-        //self.dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
-        
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
-        self.tableView.backgroundView = UIView()
-        self.dependencyManager.addBackgroundToBackgroundHost(self)
+        tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
+        tableView.backgroundView = UIView()
+        dependencyManager.addBackgroundToBackgroundHost(self)
         tableView.separatorColor = dependencyManager.colorForKey(Constants.separatorColorKey)
     }
     
     public func backgroundContainerView() -> UIView {
-        return self.tableView.backgroundView ?? self.view
+        return tableView.backgroundView ?? self.view
     }
     
     public func handleAboutSectionSelection(row: Int) {
         switch row {
-            case 0:
-                ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
-            case 1:
-                sendHelp()
-            case 2:
-                ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
-            case 3:
-                ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
-            default:
-                break
-            }
+            case 0: ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
+            case 1: sendHelp()
+            case 2: ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
+            case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
+            default: break
+        }
     }
 }

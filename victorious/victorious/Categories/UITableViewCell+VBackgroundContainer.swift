@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension UITableViewCell : VBackgroundContainer {
+extension UITableViewCell: VBackgroundContainer {
     public func backgroundContainerView() -> UIView {
-        return self.contentView
+        return contentView
     }
 }

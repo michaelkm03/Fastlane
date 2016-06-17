@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension VButton : VBackgroundContainer {
+extension VButton: VBackgroundContainer {
     public func backgroundContainerView() -> UIView {
         return self
     }

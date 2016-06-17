@@ -6,8 +6,9 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+import Foundation
+
 public struct WebViewHTMLFetchRequest: RequestType {
-    
     private let fullURL: NSURL
     public var urlRequest: NSURLRequest
     public var publicBaseURL: NSURL?
@@ -19,9 +20,14 @@ public struct WebViewHTMLFetchRequest: RequestType {
         fullURL = url
         urlRequest = NSURLRequest(URL: fullURL)
         
-        if let hostString = fullURL.host
-        {
-            publicBaseURL = NSURL(string: fullURL.scheme + "://" + hostString)
+        if let hostString = fullURL.host {
+            let urlComponents = NSURLComponents()
+            urlComponents.scheme = fullURL.scheme
+            urlComponents.host = hostString
+            
+            if let baseURL = urlComponents.URL {
+                publicBaseURL = baseURL
+            }
         }
     }
     
@@ -33,5 +39,4 @@ public struct WebViewHTMLFetchRequest: RequestType {
         }
         return htmlString
     }
-    
 }

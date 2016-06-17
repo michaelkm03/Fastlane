@@ -9,7 +9,6 @@
 import Foundation
 
 class WebViewHTMLFetchOperation: FetchWebContentOperation, RequestOperation {
-    
     let request: WebViewHTMLFetchRequest!
     
     init(urlPath: String) {
@@ -26,10 +25,10 @@ class WebViewHTMLFetchOperation: FetchWebContentOperation, RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    private func onComplete( htmlString: WebViewHTMLFetchRequest.ResultType ) {
+    private func onComplete(htmlString: WebViewHTMLFetchRequest.ResultType) {
         resultHTMLString = htmlString
     }
 }

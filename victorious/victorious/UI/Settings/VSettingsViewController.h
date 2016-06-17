@@ -16,5 +16,7 @@
 
 // These are exposed here since they are used in the Swift extension
 @property (weak, nonatomic) IBOutlet UILabel *versionString;
--(void)sendHelp;
+
+- (void)sendHelp;
+
 @end
