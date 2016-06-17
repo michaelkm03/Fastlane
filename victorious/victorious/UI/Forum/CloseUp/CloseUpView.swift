@@ -86,7 +86,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.updateContent(content)
+            mediaContentView.content = content
             
             // Update size
             self.frame.size = sizeForContent(content)
