@@ -36,12 +36,6 @@ public extension VConversationContainerViewController {
     }
     
     public func blockUser() {
-        if let userID = conversation.user?.remoteId.integerValue,
-            conversationID = conversation.remoteId?.integerValue {
-                BlockUserOperation(userID: userID, conversationID: conversationID).queue() { results, error, cancelled in
-                    self.navigationController?.popViewControllerAnimated(true)
-                }
-        }
-        
+        // BlockUserOperation is not supported in 5.0
     }
 }
