@@ -14,4 +14,5 @@
 
 @interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination, VAccessoryNavigationSource>
 
+-(void)sendHelp;
 @end

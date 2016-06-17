@@ -19,8 +19,9 @@ public struct WebViewHTMLFetchRequest: RequestType {
         fullURL = url
         urlRequest = NSURLRequest(URL: fullURL)
         
-        if let hostString = fullURL.host {
-            publicBaseURL = NSURL(string: hostString)
+        if let hostString = fullURL.host
+        {
+            publicBaseURL = NSURL(string: fullURL.scheme + "://" + hostString)
         }
     }
     

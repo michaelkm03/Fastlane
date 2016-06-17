@@ -19,8 +19,8 @@ private struct Constants {
     static let itemBackgroundKey = "item.background"
     static let screenBackgroundKey = "background"
     static let bundleShortVersionStringKey = "CFBundleShortVersionString"
+    static let supportEmailKey = "email.support"
     static let sectionHeaderTitles = ["Account", "About"]
-    static let aboutSectionURLs = [.]
 }
 
 /// This extension handles all template based decoration for the settings page, as well as
@@ -36,6 +36,10 @@ extension VSettingsViewController : VBackgroundContainer {
         headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleFontColor)
         headerLabel.sizeToFit()
         return headerLabel
+    }
+    
+    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20 
     }
     
     override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -68,7 +72,7 @@ extension VSettingsViewController : VBackgroundContainer {
             case 0:
                 ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
             case 1:
-                showFeedbackEmailView()
+                sendHelp()
             case 2:
                 ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
             case 3:
@@ -76,9 +80,5 @@ extension VSettingsViewController : VBackgroundContainer {
             default:
                 break
             }
-    }
-    
-    private func showFeedbackEmailView() {
-        
     }
 }

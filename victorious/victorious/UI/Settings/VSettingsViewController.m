@@ -33,9 +33,10 @@ static const NSInteger kSettingsSectionIndex = 0;
 
 typedef NS_ENUM(NSInteger, VSettingsAction)
 {
+    VSettingsActionEditProfile,
     VSettingsActionLikedContent,
+    VSettingsActionInviteFriends,
     VSettingsActionChangePassword,
-    VSettingsActionHelp,
     VSettingsActionNotifications,
     VSettingsActionResetPurchases,
     VSettingsActionServerEnvironment,
@@ -55,6 +56,9 @@ typedef NS_ENUM(NSInteger, VSettingsAboutAction)
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
+static NSString * const kItemFontKey = @"item.font";
+static NSString * const kItemColorKey = @"item.color";
+static NSString * const kItemBackgroundKey = @"item.background";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
@@ -216,8 +220,10 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.logoutButton.titleLabel.textColor = [self.dependencyManager colorForKey:kItemColorKey];
+    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:kItemFontKey];
+    self.logoutButton.backgroundColor = [self.dependencyManager colorForKey:kItemBackgroundKey];
+   // [self.dependencyManager addBackgroundToBackgroundHost:self.logoutButton forKey:kItemBackgroundKey];
     
     if ([VCurrentUser user] != nil)
     {
@@ -273,10 +279,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         if ( indexPath.row == VSettingsActionLikedContent )
         {
             [self pushLikedContent];
-        }
-        else if (indexPath.row == VSettingsActionHelp )
-        {
-            [self sendHelp:self];
         }
         else if ( indexPath.row == VSettingsActionResetCoachmarks )
         {
@@ -376,7 +378,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return self.tableView.rowHeight;
 }
 
-- (IBAction)sendHelp:(id)sender
+- (void)sendHelp
 {
     if ([MFMailComposeViewController canSendMail])
     {
