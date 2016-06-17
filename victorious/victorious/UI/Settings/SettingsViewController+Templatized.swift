@@ -55,7 +55,8 @@ extension VSettingsViewController: VBackgroundContainer {
             cell.backgroundColor = UIColor.clearColor()
         }
         else {
-            self.dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
+            cell.backgroundView = UIView() // Must set this here so that we can add a background
+            dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
         }
     }
     

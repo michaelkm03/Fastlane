@@ -10,6 +10,6 @@ import Foundation
 
 extension UITableViewCell: VBackgroundContainer {
     public func backgroundContainerView() -> UIView {
-        return contentView
+        return backgroundView ?? contentView
     }
 }
