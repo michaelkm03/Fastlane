@@ -24,7 +24,7 @@ private struct Constants {
 }
 
 /// This extension handles all template based decoration for the settings page, as well as
-/// other template based functionality
+/// other template based functionality.
 extension VSettingsViewController: VBackgroundContainer {
     override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
