@@ -96,11 +96,11 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction private func tappedTermsOfService(sender: UIButton) {
-        ShowTermsOfServiceOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
     }
     
     @IBAction private func tappedPrivacyPolicy(sender: UIButton) {
-        ShowPrivacyPolicyOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
     }
     
     //MARK: - Private functions
