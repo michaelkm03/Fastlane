@@ -398,6 +398,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return self.tableView.rowHeight;
 }
 
+- (IBAction)unwindToSettings:(UIStoryboardSegue *)sender
+{
+    
+}
+
 - (IBAction)sendHelp:(id)sender
 {
     if ([MFMailComposeViewController canSendMail])

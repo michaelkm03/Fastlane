@@ -272,3 +272,4 @@
 #import "VWorkspaceShimDestination.h"
 #import "VWorkspaceViewController.h"
 #import "YTPlayerView.h"
+#import "VDependencyManager+VBackground.h"
