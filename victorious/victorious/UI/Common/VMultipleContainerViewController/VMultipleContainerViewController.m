@@ -183,15 +183,6 @@ static NSString * const kInitialKey = @"initial";
          child.multipleContainerChildDelegate = self;
     }];
     
-    NSArray *childViewControllers = [viewControllers copy];
-    
-    // Filter the view controllers
-    if ([AgeGate isAnonymousUser])
-    {
-        childViewControllers = [AgeGate filterMultipleContainerItems:childViewControllers];
-    }
-    
-    _viewControllers = childViewControllers;
     self.selector.viewControllers = _viewControllers;
     
     [self.collectionView reloadData];

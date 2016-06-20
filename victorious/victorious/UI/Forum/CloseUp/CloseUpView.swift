@@ -15,6 +15,8 @@ protocol CloseUpViewDelegate: class {
 private let blurredImageAlpha: CGFloat = 0.5
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
+    private static let relatedAnimationDuration: Double = 1
+    
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameButton: UIButton!
@@ -54,11 +56,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
 
     var content: ContentModel? {
         didSet {
+            if oldValue?.id == content?.id {
+                return
+            }
             guard let content = content else {
                 return
             }
             
-            let author = content.authorModel
+            let author = content.author
             
             setHeader(for: content, author: author)
             
@@ -81,7 +86,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.updateContent(content)
+            mediaContentView.content = content
             
             // Update size
             self.frame.size = sizeForContent(content)
@@ -102,7 +107,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
-        guard let userID = content?.authorModel.id else {
+        guard let userID = content?.author.id else {
             return
         }
         delegate?.didSelectProfileForUserID(userID)
@@ -144,15 +149,21 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         profileImageView.image = nil
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
+        relatedLabel.alpha = 0
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if content == nil {
-            return
-        }
         
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
+        
+        if content == nil {
+            var mediaContentViewFrame = mediaContentView.frame
+            mediaContentViewFrame.origin.y = totalHeight
+            mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
+            mediaContentView.frame = mediaContentViewFrame
+            return
+        }
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -211,21 +222,34 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    // MARK: - ConfigurableHeader
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: ContentModel?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) {
         self.content = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: ContentModel?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) -> CGSize {
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
         guard let content = content else {
-            return CGSizeZero
+            return CGSizeMake(screenWidth, screenWidth)
         }
         return sizeForContent(content)
+    }
+    
+    func headerWillAppear() {
+        mediaContentView.videoCoordinator?.playVideo()
+    }
+    
+    func headerDidDisappear() {
+        mediaContentView.videoCoordinator?.pauseVideo()
+    }
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        dispatch_async(dispatch_get_main_queue(), {
+            UIView.animateWithDuration(CloseUpView.relatedAnimationDuration, animations: {
+                self.relatedLabel.alpha = items.count == 0 ? 0 : 1
+            })
+        })
     }
 }
 

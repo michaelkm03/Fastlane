@@ -9,7 +9,6 @@
 import Foundation
 
 public struct ContentFlagRequest: RequestType {
-    
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: contentFlagURL)
         request.HTTPMethod = "POST"

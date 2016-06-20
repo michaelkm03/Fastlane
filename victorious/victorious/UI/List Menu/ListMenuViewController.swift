@@ -35,6 +35,55 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return viewController
     }
     
+    // MARK: - View events
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if collectionView?.indexPathsForSelectedItems()?.isEmpty != false {
+            let indexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
+            collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+    }
+    
+    // MARK: - Notifications
+    
+    private func selectCreator(atIndex index: Int) {
+        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
+        let deepLinkURL = ProfileDeepLinkHandler.deepLinkURL(for: creator)
+        
+        VRootViewController.sharedRootViewController()?.openURL(deepLinkURL)
+        
+        // This notification closes the side view controller
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil,
+            userInfo: nil
+        )
+    }
+    
+    private func selectCommunity(atIndex index: Int) {
+        let item = collectionViewDataSource.communityDataSource.visibleItems[index]
+        
+        // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
+        postStreamAPIPath(index == 0 ? nil : item.streamAPIPath)
+    }
+    
+    private func selectHashtag(atIndex index: Int) {
+        let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
+        var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
+        apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
+        postStreamAPIPath(apiPath)
+    }
+    
+    private func postStreamAPIPath(streamAPIPath: APIPath?) {
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil,
+            userInfo: streamAPIPath.flatMap { ["streamAPIPath": ReferenceWrapper($0)] }
+        )
+    }
+    
     // MARK: - UIViewController overrides
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -44,16 +93,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UICollectionView Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
-        
-        switch listMenuSection {
-        case .creator:
-            return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
-        case .community:
-            return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
-        case .hashtags:
-            return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
+        switch ListMenuSection(rawValue: indexPath.section)! {
+            case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
+            case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
+            case .hashtags: return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
         }
     }
     
@@ -72,13 +115,22 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-        case .creator:
-            break
-        case .community:
-            break
-        case .hashtags:
-            break
+            case .creator: selectCreator(atIndex: indexPath.item)
+            case .community: selectCommunity(atIndex: indexPath.item)
+            case .hashtags: selectHashtag(atIndex: indexPath.item)
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let validIndices: Range<Int>
+        
+        switch ListMenuSection(rawValue: indexPath.section)! {
+            case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
+            case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
+            case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
+        }
+        
+        return validIndices ~= indexPath.row
     }
     
     // MARK - VCoachmarkDisplayer

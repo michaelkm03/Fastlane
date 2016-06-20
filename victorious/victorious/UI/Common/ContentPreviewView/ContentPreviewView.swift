@@ -9,19 +9,23 @@
 import UIKit
 
 class ContentPreviewView: UIView {
-    // Change to actual assets
-    private let kPlayButtonPlayImageName = "directory_play_btn"
-    private let playButtonSize: CGFloat = 30
-    private let vipMargins: CGFloat = 6
-    
+
+    private struct Constants {
+        // Change to actual assets
+        static let playButtonPlayImageName = "directory_play_btn"
+        static let playButtonSize: CGFloat = 30
+        static let vipMargins: CGFloat = 6
+        static let loadingColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        static let imageViewBlurEffectRadius: CGFloat = 6.0
+    }
+
     let previewImageView = UIImageView()
     let vipImageView: UIView
     let playButton: UIView
     
     init() {
-        
         /// Play Button
-        playButton = UIImageView(image: UIImage(named: kPlayButtonPlayImageName))
+        playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
         
         /// VIP icon
@@ -31,7 +35,8 @@ class ContentPreviewView: UIView {
         vipImageView = label
         
         super.init(frame: CGRectZero)
-        backgroundColor = .clearColor()
+        backgroundColor = Constants.loadingColor
+        previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
         previewImageView.contentMode = UIViewContentMode.ScaleAspectFill
@@ -39,17 +44,13 @@ class ContentPreviewView: UIView {
         v_addFitToParentConstraintsToSubview(previewImageView)
         
         addSubview(vipImageView)
-        v_addPinToLeadingEdgeToSubview(
-            vipImageView,
-            leadingMargin: vipMargins)
-        v_addPinToBottomToSubview(
-            vipImageView,
-            bottomMargin: vipMargins)
+        v_addPinToLeadingEdgeToSubview(vipImageView, leadingMargin: Constants.vipMargins)
+        v_addPinToBottomToSubview(vipImageView, bottomMargin: Constants.vipMargins)
         
         addSubview(playButton)
         v_addCenterToParentContraintsToSubview(playButton)
-        playButton.v_addWidthConstraint(playButtonSize)
-        playButton.v_addHeightConstraint(playButtonSize)
+        playButton.v_addWidthConstraint(Constants.playButtonSize)
+        playButton.v_addHeightConstraint(Constants.playButtonSize)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,7 +60,7 @@ class ContentPreviewView: UIView {
     var content: ContentModel? {
         didSet {
             guard let content = content else {
-                assertionFailure("Content cannot be nil")
+                assertionFailure("Content cannot be nil in ContentPreviewView.")
                 return
             }
             setupForContent(content)
@@ -75,7 +76,7 @@ class ContentPreviewView: UIView {
         let contentIsForVIPOnly = content.isVIPOnly
         if !userIsVIP && contentIsForVIPOnly {
             vipImageView.hidden = false
-            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
+            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                 self?.previewImageView.alpha = 1
             }
         } else {
@@ -84,10 +85,8 @@ class ContentPreviewView: UIView {
         }
         
         switch content.type {
-        case .video:
-            playButton.hidden = false
-        case .text, .gif, .image:
-            playButton.hidden = true
+            case .video: playButton.hidden = false
+            case .text, .link, .gif, .image: playButton.hidden = true
         }
     }
 }

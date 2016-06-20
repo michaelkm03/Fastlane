@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol ConfigurableGridStreamHeaderDelegate: class {
+    func shouldRefresh()
+}
+
 /// The collection header view used for `VNewProfileViewController`.
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
     // MARK: - Constants
@@ -16,6 +20,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     private static let shadowOpacity: Float = 0.5
     private static let userProfilePictureWidth: CGFloat = 80.0
     private static let creatorProfilePictureWidth: CGFloat = 90.0
+    
+    weak var delegate: ConfigurableGridStreamHeaderDelegate?
     
     // MARK: - Initializing
     
@@ -191,17 +197,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    // MARK: - Configurable Header
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: VUser?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) {
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: VUser?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) -> CGSize {
         self.user = content
         
         setNeedsLayout()
@@ -214,6 +216,10 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         removeConstraint(widthConstraint)
         
         return CGSizeMake(width, height)
+    }
+    
+    func gridStreamShouldRefresh() {
+        delegate?.shouldRefresh()
     }
 }
 

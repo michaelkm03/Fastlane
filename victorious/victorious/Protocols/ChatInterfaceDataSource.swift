@@ -7,17 +7,13 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
-    
-    /// A standalone cell used to calculate dynamic cell sizes
-    /// - Note: Each concrete implementation should provide a stored sizing cell, because it temporarily stores cell content to size the cell
-    var sizingCell: ChatFeedMessageCell { get }
-    
     var dependencyManager: VDependencyManager { get }
     
-    var visibleItems: [ContentModel] { get }
+    var visibleItems: [ChatFeedContent] { get }
     
     func registerCells(for collectionView: UICollectionView)
     
@@ -30,39 +26,41 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 }
 
 extension ChatInterfaceDataSource {
-    
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
         return visibleItems.count
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let identifier = ChatFeedMessageCell.defaultReuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        let content = visibleItems[indexPath.row]
+        let content = visibleItems[indexPath.row].content
+        let reuseIdentifier = content.type.hasMedia ? ChatFeedMessageCell.mediaCellReuseIdentifier : ChatFeedMessageCell.nonMediaCellReuseIdentifier
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         decorate(cell, content: content)
         
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: identifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.mediaCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let content = visibleItems[indexPath.row]
-        decorate(sizingCell, content: content)
+        let chatFeedContent = visibleItems[indexPath.row]
         
-        return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+        if let size = chatFeedContent.size {
+            return size
+        }
+        else {
+            let width = collectionView.bounds.width
+            let height = ChatFeedMessageCell.cellHeight(displaying: chatFeedContent.content, inWidth: width, dependencyManager: dependencyManager)
+            let size = CGSize(width: width, height: height)
+            chatFeedContent.size = size
+            return size
+        }
+        
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.authorModel.id {
-            cell.layout = RightAlignmentCellLayout()
-        } else {
-            cell.layout = LeftAlignmentCellLayout()
-        }
-        
         cell.dependencyManager = dependencyManager
         cell.content = content
     }

@@ -39,14 +39,16 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
-        var updatedText = textView.text
-        guard range.location + range.length <= updatedText.characters.count &&
+        let mutableString = NSMutableAttributedString(attributedString: textView.attributedText)
+        
+        guard range.location + range.length <= mutableString.string.characters.count &&
             canUpdateTextView(textView, textInRange: range, replacementText: text) else {
             return false
         }
         
-        updatedText = (updatedText as NSString).stringByReplacingCharactersInRange(range, withString: text)
-        textView.text = updatedText
+        mutableString.replaceCharactersInRange(range, withString: text)
+        textView.attributedText = mutableString
+        
         return true
     }
     
@@ -54,7 +56,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
-            textView.text = textView.text + text
+            let newString = NSMutableAttributedString(attributedString: textView.attributedText)
+            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
+            textView.attributedText = newString
         }
         else {
             delegate?.textViewDidHitCharacterLimit(textView)
@@ -227,12 +231,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         if delegate.textViewHasPrependedImage {
-            let imageRange = NSMakeRange(0, attachmentStringLength)
-            let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-            mutableText.deleteCharactersInRange(imageRange)
-            textView.attributedText = mutableText
+            textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
         }
         updateDelegateOfTextViewStatus(textView)
+    }
+    
+    func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+        let imageRange = NSMakeRange(0, attachmentStringLength)
+        let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
+        mutableText.deleteCharactersInRange(imageRange)
+        let immutableCopy = mutableText.copy() as! NSAttributedString
+        return immutableCopy.length > 0 ? immutableCopy : nil
     }
     
     private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
@@ -242,5 +251,20 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
+    }
+    
+    private func getTextViewInputAttributes() -> [String: AnyObject] {
+        guard
+            let delegate = delegate,
+            let color = delegate.inputTextAttributes().inputTextColor,
+            let font = delegate.inputTextAttributes().inputTextFont
+        else {
+            return [:]
+        }
+        
+        return [
+            NSForegroundColorAttributeName : color,
+            NSFontAttributeName            : font
+        ]
     }
 }

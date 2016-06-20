@@ -19,6 +19,10 @@ public protocol RequestType {
     /// A custom base URL can be specified by the request.
     var baseURL: NSURL? { get }
     
+    /// Some requests get a full URL path from the template. In that case, it is not necessary to combine the urlRequest
+    /// path with the base path. These requests should override this method to return true
+    var providesFullURL: Bool { get }
+    
     /// Translates the raw data response from the server into an instance of ResponseType
     ///
     /// - parameter response: Details about the server's response
@@ -64,7 +68,8 @@ extension RequestType {
         let urlSession = NSURLSession.sharedSession()
         let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
         
-        if let requestURLString = mutableRequest.URL?.absoluteString {
+        // Combine only if current path is relative, not full
+        if let requestURLString = mutableRequest.URL?.absoluteString where !providesFullURL {
             mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
         }
         
@@ -121,5 +126,9 @@ extension RequestType {
         if let errorCode = responseJSON["error"].int where errorCode != 0  {
             throw APIError(localizedDescription: responseJSON["message"].stringValue, code: errorCode)
         }
+    }
+
+    public var providesFullURL: Bool {
+        return false
     }
 }

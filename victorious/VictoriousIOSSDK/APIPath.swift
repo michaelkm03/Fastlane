@@ -9,7 +9,7 @@
 import Foundation
 
 /// A wrapper around a templatized API path which handles macro substitution and query parameters.
-public struct APIPath {
+public struct APIPath: Equatable {
     // MARK: - Initializing
     
     public init(templatePath: String, macroReplacements: [String: String] = [:], queryParameters: [String: String] = [:]) {
@@ -35,7 +35,7 @@ public struct APIPath {
     // MARK: - Getting the processed URL
     
     /// The processed URL value with macros replaced and query parameters added.
-    public var url: NSURL {
+    public var url: NSURL? {
         var processedPath = templatePath
         
         if macroReplacements.count > 0 {
@@ -58,6 +58,14 @@ public struct APIPath {
             }
         }
         
-        return NSURL(string: processedPath) ?? NSURL()
+        return NSURL(string: processedPath)
     }
+}
+
+public func ==(lhs: APIPath, rhs: APIPath) -> Bool {
+    return (
+        lhs.templatePath == rhs.templatePath &&
+        lhs.macroReplacements == rhs.macroReplacements &&
+        lhs.queryParameters == rhs.queryParameters
+    )
 }

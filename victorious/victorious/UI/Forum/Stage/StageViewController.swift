@@ -40,6 +40,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        mediaContentView.allowsVideoControls = false
         mediaContentView.videoCoordinator?.playVideo()
     }
 
@@ -51,7 +52,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.updateContent(stageContent, isVideoToolBarAllowed: false)
+        mediaContentView.content = stageContent
         
         let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
@@ -71,6 +72,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private func hideStage(animated: Bool = false) {
         mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView.hideContent(animated: animated)
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()

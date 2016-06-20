@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
@@ -69,7 +70,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        guard isViewLoaded() else {
+        guard isViewLoaded() && composerIsVisible else {
             return 0
         }
         return fabs(inputViewToBottomConstraint.constant)
@@ -162,6 +163,26 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private var composerIsVisible = true
+    
+    func setComposerVisible(visible: Bool, animated: Bool) {
+        guard visible != composerIsVisible else {
+            return
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.3) {
+                self.setComposerVisible(visible, animated: false)
+                self.view.layoutIfNeeded()
+            }
+        }
+        else {
+            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
+            composerIsVisible = visible
+            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+        }
+    }
+    
     // MARK: - HashtagBar
     
     private var hashtagBarController: HashtagBarController! {
@@ -223,6 +244,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
             }
         }
     }
@@ -249,6 +271,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func textViewDidHitCharacterLimit(textView: UITextView) {
         textView.v_performShakeAnimation()
+    }
+    
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+        return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
     }
     
     // MARK: - View lifecycle
@@ -418,7 +444,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
@@ -492,11 +518,20 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - Actions
     
-    @IBAction func pressedConfirmButton() {
+    @IBAction private func pressedConfirmButton() {
+        guard let user = VCurrentUser.user() else {
+            assertionFailure("Failed to send message due to missing a valid logged in user")
+            return
+        }
+        
         if let asset = selectedAsset {
-            sendMessage(asset: asset, text: textView.text)
-        } else {
-            sendMessage(text: textView.text)
+            // The textView currently contains an attachment representing the piece of selected media.
+            // Remove it before sending along the text as caption.
+            let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
+            sendMessage(asset: asset, text: text, currentUser: user)
+        }
+        else {
+            sendMessage(text: textView.text, currentUser: user)
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
