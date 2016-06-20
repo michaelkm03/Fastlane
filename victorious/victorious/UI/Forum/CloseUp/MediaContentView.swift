@@ -16,6 +16,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let fadeDuration: NSTimeInterval = 0.75
         static let backgroundFadeInDurationMultiplier = 0.75
         static let fadeOutDurationMultiplier = 1.25
+        static let textPostLineSpacing: CGFloat = 2.0
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -65,7 +66,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         addSubview(videoContainerView)
         
         textLabel.textAlignment = .Center
-        textLabel.numberOfLines = 0
+        textLabel.numberOfLines = 4
         addSubview(textLabel)
   
         addSubview(spinner)
@@ -254,8 +255,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel(for content: ContentModel) {
-        textLabel.text = content.text
+        guard let text = content.text else {
+            return
+        }
+    
+        textLabel.text = text
+        textLabel.textAlignment = .Center
         textLabel.font = dependencyManager?.textPostFont()
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.8
         textLabel.textColor = dependencyManager?.textPostColor()
         
         if let url = dependencyManager?.textPostBackgroundImageURL() {
@@ -276,7 +284,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        textLabel.frame = bounds
+        v_addFitToParentConstraintsToSubview(textLabel, leading: 25, trailing: 25, top: 0, bottom: 0)
         backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
