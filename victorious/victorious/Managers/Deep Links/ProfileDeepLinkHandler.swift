@@ -48,5 +48,9 @@ class ProfileDeepLinkHandler: NSObject, VDeeplinkHandler {
 
         return isHostValid && isValidUserID
     }
+    
+    class func deepLinkURL(for user: UserModel) -> NSURL {
+        return NSURL(string: "vthisapp://\(profileDeeplinkURLHostComponent)/\(user.id)")!
+    }
 
 }

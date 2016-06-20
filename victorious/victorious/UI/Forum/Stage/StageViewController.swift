@@ -40,7 +40,7 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        mediaContentView.showsVideoControls = false
+        mediaContentView.allowsVideoControls = false
         mediaContentView.videoCoordinator?.playVideo()
         mediaContentView.dependencyManager = dependencyManager
     }
