@@ -8,6 +8,7 @@
 
 "Back"                  =   "Back";
 "OK"                    =   "OK";
+"DeletePost"            =   "Delete Post";
 "DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";

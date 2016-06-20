@@ -161,7 +161,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
         
         let actionTitle = isCreatorOfContent
-            ? NSLocalizedString("DeleteButton", comment: "")
+            ? NSLocalizedString("DeletePost", comment: "")
             : NSLocalizedString("Report/Flag", comment: "")
         
         let confirm = ConfirmDestructiveActionOperation(
