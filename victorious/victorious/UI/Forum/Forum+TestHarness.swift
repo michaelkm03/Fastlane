@@ -98,7 +98,7 @@ extension ForumViewController {
         let content = Content(
             id: String(1000 + Int(arc4random() % 9999)),
             type: contentType,
-            text: randomText(),
+            text: contentType == .text ? next["text"] : randomText(),
             assets: [asset],
             previewImages: [previewAsset],
             author: User(
@@ -178,6 +178,14 @@ private let sampleStageImageContents = [
         "id": "hgb8Jofr5ew",
         "length": "30"
     ],
+    [
+        "type" : "text",
+        "text" : "Stage post text test content"
+    ],
+    [
+        "type" : "text",
+        "text" : "VIP Event happening now! Switch to VIP chat to check it out!"
+    ]
 ]
 
 private let sampleMedia = [
