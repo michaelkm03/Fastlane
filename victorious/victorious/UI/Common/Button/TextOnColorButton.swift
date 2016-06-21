@@ -11,7 +11,7 @@ import Foundation
 /// A template-styled button that displays text on top of a solid-color background
 @objc(VTextOnColorButton)
 class TextOnColorButton: UIButton, TrackableButton {
-    var dependencyManager: VDependencyManager? {>>>>>>> dev
+    var dependencyManager: VDependencyManager? {
         didSet {
             backgroundColor = templateAppearanceValue(.backgroundColor)
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
