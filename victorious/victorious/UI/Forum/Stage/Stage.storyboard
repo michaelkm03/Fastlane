@@ -34,30 +34,25 @@
                                             <action selector="didTapOnUser" destination="BQJ-IP-Emu" eventType="touchUpInside" id="pjs-ud-OTo"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P2A-0v-vTc">
-                                        <rect key="frame" x="62" y="21" width="43" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DAf-y5-PcP">
+                                        <rect key="frame" x="60" y="17" width="41" height="30"/>
+                                        <state key="normal" title="Name"/>
+                                        <connections>
+                                            <action selector="didTapOnUser" destination="BQJ-IP-Emu" eventType="touchUpInside" id="qDz-mX-flK"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="2sb-t2-eQL"/>
                                     <constraint firstItem="dPD-mB-M3H" firstAttribute="leading" secondItem="BQJ-IP-Emu" secondAttribute="leading" constant="8" id="KXr-73-YEk"/>
-                                    <constraint firstItem="P2A-0v-vTc" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="R3e-ff-2tz"/>
-                                    <constraint firstItem="P2A-0v-vTc" firstAttribute="leading" secondItem="dPD-mB-M3H" secondAttribute="trailing" constant="14" id="geH-h6-CjZ"/>
-                                    <constraint firstItem="P2A-0v-vTc" firstAttribute="centerX" secondItem="BQJ-IP-Emu" secondAttribute="centerX" id="t8i-zc-X0V"/>
+                                    <constraint firstItem="DAf-y5-PcP" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="OOO-WF-bom"/>
+                                    <constraint firstItem="DAf-y5-PcP" firstAttribute="leading" secondItem="dPD-mB-M3H" secondAttribute="trailing" constant="12" id="jue-hU-HDA"/>
                                     <constraint firstItem="dPD-mB-M3H" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="wIR-Ee-TzB"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="t8i-zc-X0V"/>
-                                    </mask>
-                                </variation>
                                 <connections>
                                     <outlet property="profileButton" destination="dPD-mB-M3H" id="4Zu-5n-33B"/>
-                                    <outlet property="userNameLabel" destination="P2A-0v-vTc" id="dVT-jk-UfQ"/>
+                                    <outlet property="userNameButton" destination="DAf-y5-PcP" id="ZRq-3o-7pJ"/>
                                 </connections>
                             </view>
                         </subviews>

@@ -12,26 +12,29 @@ protocol AttributionBarDelegate: class {
     func didTapOnUser(user: UserModel)
 }
 
+/// An attribution bar that displays author information of a piece of content
 class AttributionBar: UIView {
     
+    // MARK: - Configuration
     var dependencyManager: VDependencyManager?
     weak var delegate: AttributionBarDelegate?
-    
-    @IBOutlet private var profileButton: VDefaultProfileButton!
-    @IBOutlet private var userNameLabel: UILabel! {
-        didSet {
-            userNameLabel.textColor = dependencyManager?.userNameLabelTextColor
-            userNameLabel.font = dependencyManager?.userNameLabelFont
-        }
-    }
     
     private var displayingUser: UserModel!
     
     func configure(with user: UserModel) {
         displayingUser = user
-        userNameLabel.text = user.name
+        userNameButton.setTitle(user.name, forState: .Normal)
         if let profileImageURL = user.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
             profileButton?.setProfileImageURL(profileImageURL, forState: .Normal)
+        }
+    }
+    
+    // MARK: - Outlets and Actions
+    @IBOutlet private var profileButton: VDefaultProfileButton!
+    @IBOutlet private var userNameButton: UIButton! {
+        didSet {
+            userNameButton.setTitleColor(dependencyManager?.userNameLabelTextColor, forState: .Normal)
+            userNameButton.titleLabel?.font = dependencyManager?.userNameLabelFont
         }
     }
     
