@@ -151,6 +151,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     func hideContent(animated animated: Bool = true) {
+        videoCoordinator?.pauseVideo()
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
         UIView.animateWithDuration(
             animationDuration,
@@ -169,6 +170,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     func showContent(animated animated: Bool = true) {
+        videoCoordinator?.playVideo()
         let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster

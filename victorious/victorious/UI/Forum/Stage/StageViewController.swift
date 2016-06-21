@@ -11,26 +11,27 @@ import VictoriousIOSSDK
 import SDWebImage
 
 class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
-    
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
     }
     
+    private lazy var defaultStageHeight: CGFloat = {
+        return self.view.bounds.width / Constants.defaultAspectRatio
+    }()
+    
     @IBOutlet private var mediaContentView: MediaContentView!
-    
     private var stageDataSource: StageDataSource?
-    
+
     weak var delegate: StageDelegate?
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
             stageDataSource = setupDataSource(dependencyManager)
         }
     }
-
-    // MARK: Life cycle
+    
+    // MARK: - Life cycle
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
         let dataSource = StageDataSource(dependencyManager: dependencyManager)
@@ -45,16 +46,16 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
 
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         hideStage(animated)
     }
     
-    //MARK: - Stage
+    // MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
         
-        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 
@@ -68,10 +69,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return [stageDataSource].flatMap { $0 }
     }
 
-    // MARK: Clear Media
+    // MARK: - Show/Hide Stage
     
     private func hideStage(animated: Bool = false) {
-        mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.hideContent(animated: animated)
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
@@ -81,14 +81,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func showStage(animated: Bool = false) {
-        mediaContentView.videoCoordinator?.playVideo()
         mediaContentView.showContent(animated: animated)
         
         UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
         
-        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         self.delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 }
