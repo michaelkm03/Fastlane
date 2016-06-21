@@ -110,7 +110,7 @@ extension ForumViewController {
         stage?.addContent(content)
         stageCount += 1
         
-        let time = Double(10)//next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
+        let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
         
         VTimerManager.addTimerManagerWithTimeInterval(
             time,
