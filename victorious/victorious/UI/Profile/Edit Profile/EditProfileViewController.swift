@@ -13,6 +13,7 @@ class EditProfileViewController: UITableViewController {
     private static let unwindToSettingsSegueKey = "unwindToSettings"
 
     var dependencyManager: VDependencyManager?
+    var dataSource: EditProfileTableViewDataSource?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,13 @@ class EditProfileViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
+        
+        if let dependencyManager = dependencyManager {
+            dataSource = EditProfileTableViewDataSource(dependencyManager: dependencyManager,
+                                                        tableView: tableView)
+            tableView.dataSource = dataSource
+        }
+        
     }
     
     //MARK: - Target Action
@@ -32,39 +40,7 @@ class EditProfileViewController: UITableViewController {
     @IBAction func tappedSave(sender: UIBarButtonItem) {
         self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
     }
-    
-    // MARK: - UITableViewDataSource
-//TODO: Move to data source object
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            // Username, locaiton and camera
-            return tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell")!
-        } else {
-            // About Me
-            let aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
-            configueAboutMeCell(aboutMeCell)
-            return aboutMeCell
-        }
-    }
-    
-    // MARK: - Cell Configuration
-    
-    private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
-        
-        // Support resizing
-        aboutMeCell.onDesiredHeightChangeClosure = { height in
-            print(height)
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }
-        
-        aboutMeCell.dependencyManager = dependencyManager
-    }
-    
+
 }
 
 
@@ -85,10 +61,61 @@ private extension VDependencyManager {
     var cellBackgroundColor: UIColor? {
         return colorForKey("color.accent")
     }
-    
 }
 
-class UsernameLocationAvatarCell: UITableViewCell {
+class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
+    
+    let dependencyManager: VDependencyManager
+    let tableView: UITableView
+    let nameAndLocationCell: UsernameLocationAvatarCell
+    let aboutMeCell: AboutMeTextCell
+    
+    init(dependencyManager: VDependencyManager,
+         tableView: UITableView) {
+        self.dependencyManager = dependencyManager
+        self.tableView = tableView
+        nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! UsernameLocationAvatarCell
+        aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            // Username, locaiton and camera
+            configureNameAndLocationCell(nameAndLocationCell)
+            return nameAndLocationCell
+        } else {
+            // About Me
+            configueAboutMeCell(aboutMeCell)
+            return aboutMeCell
+        }
+    }
+    
+    private func configureNameAndLocationCell(nameCell: UsernameLocationAvatarCell) {
+        nameCell.onReturnKeySelected = { [weak self] in
+            self?.aboutMeCell.textView.becomeFirstResponder()
+        }
+    }
+    
+    private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
+        
+        // Support resizing
+        aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
+            print(height)
+            self?.tableView.beginUpdates()
+            self?.tableView.endUpdates()
+        }
+        
+        aboutMeCell.dependencyManager = dependencyManager
+    }
+}
+
+class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
+    
+    var onReturnKeySelected: (() -> ())?
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -118,9 +145,32 @@ class UsernameLocationAvatarCell: UITableViewCell {
         }
     }
     
-    @IBOutlet private var usernameField: UITextField!
-    @IBOutlet private var locationField: UITextField!
-    @IBOutlet var textFields: [UITextField]!
+    @IBOutlet private var usernameField: UITextField! {
+        didSet {
+            usernameField.delegate = self
+        }
+    }
+    @IBOutlet private var locationField: UITextField! {
+        didSet {
+            locationField.delegate = self
+        }
+    }
+    
+    //MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+    
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        if textField == usernameField {
+            locationField.becomeFirstResponder()
+        } else if textField == locationField {
+            onReturnKeySelected?()
+        }
+        return true
+    }
     
 }
 
