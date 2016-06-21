@@ -33,7 +33,7 @@ public enum ForumEvent {
     /// Requests that the stage is refreshed with new content.
     case refreshStage(RefreshStage)
     
-    /// Close the stage when no stage payload was returned from REST requests
+    /// Closes the main stage
     case closeMainStage
     
     /// Requests that the given user is blocked.
