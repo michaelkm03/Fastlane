@@ -63,6 +63,7 @@ class StageDataSource: ForumEventReceiver {
                 }
                 
             case .closeMainStage:
+                currentContentFetchOperation?.cancel()
                 delegate?.removeContent()
                 currentContent = nil
                 
